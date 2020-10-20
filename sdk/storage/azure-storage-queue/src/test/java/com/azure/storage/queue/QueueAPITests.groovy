@@ -498,4 +498,19 @@ class QueueAPITests extends APISpec {
         then:
         thrown(IllegalArgumentException)
     }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+    def "Per call policy"() {
+        given:
+        def queueClient = queueBuilderHelper(interceptorManager)
+            .addPolicy(getPerCallVersionPolicy()).buildClient()
+        queueClient.create()
+
+        when:
+        def response = queueClient.getPropertiesWithResponse(null, null)
+
+        then:
+        notThrown(QueueStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2017-11-09"
+    }
 }

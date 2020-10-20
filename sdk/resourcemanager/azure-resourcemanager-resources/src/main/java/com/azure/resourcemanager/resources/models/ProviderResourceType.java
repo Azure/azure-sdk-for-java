@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The ProviderResourceType model. */
+/** Resource type managed by the resource provider. */
 @Fluent
 public final class ProviderResourceType {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ProviderResourceType.class);

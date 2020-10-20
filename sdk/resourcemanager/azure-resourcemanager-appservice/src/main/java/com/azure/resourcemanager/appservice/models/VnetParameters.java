@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VnetParameters model. */
+/** The required set of inputs to validate a VNET. */
 @JsonFlatten
 @Fluent
 public class VnetParameters extends ProxyOnlyResource {

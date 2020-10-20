@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ImageDiskReference model. */
+/** The source image used for creating the disk. */
 @Fluent
 public final class ImageDiskReference {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageDiskReference.class);

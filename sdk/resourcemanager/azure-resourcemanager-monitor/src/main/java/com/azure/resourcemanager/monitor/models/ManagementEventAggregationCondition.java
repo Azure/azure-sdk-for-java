@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
-/** The ManagementEventAggregationCondition model. */
+/** How the data that is collected should be combined over time. */
 @Fluent
 public final class ManagementEventAggregationCondition {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementEventAggregationCondition.class);

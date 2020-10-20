@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The IpConfigurationBgpPeeringAddress model. */
+/** Properties of IPConfigurationBgpPeeringAddress. */
 @Fluent
 public final class IpConfigurationBgpPeeringAddress {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(IpConfigurationBgpPeeringAddress.class);

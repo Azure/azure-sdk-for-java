@@ -25,6 +25,9 @@ public final class OrcCompressionCodec extends ExpandableStringEnum<OrcCompressi
     /** Static value snappy for OrcCompressionCodec. */
     public static final OrcCompressionCodec SNAPPY = fromString("snappy");
 
+    /** Static value lzo for OrcCompressionCodec. */
+    public static final OrcCompressionCodec LZO = fromString("lzo");
+
     /**
      * Creates or finds a OrcCompressionCodec from its string representation.
      * @param name a name to look for

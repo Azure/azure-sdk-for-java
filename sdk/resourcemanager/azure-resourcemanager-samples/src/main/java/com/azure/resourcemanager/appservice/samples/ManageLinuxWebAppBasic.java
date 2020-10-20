@@ -14,7 +14,7 @@ import com.azure.resourcemanager.appservice.models.RuntimeStack;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebAppBasic;
 import com.azure.resourcemanager.appservice.models.WebContainer;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -37,11 +37,11 @@ public final class ManageLinuxWebAppBasic {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         // New resources
-        final String app1Name       = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
-        final String app2Name       = azureResourceManager.sdkContext().randomResourceName("webapp2-", 20);
-        final String app3Name       = azureResourceManager.sdkContext().randomResourceName("webapp3-", 20);
-        final String rg1Name        = azureResourceManager.sdkContext().randomResourceName("rg1NEMV_", 24);
-        final String rg2Name        = azureResourceManager.sdkContext().randomResourceName("rg2NEMV_", 24);
+        final String app1Name       = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
+        final String app2Name       = Utils.randomResourceName(azureResourceManager, "webapp2-", 20);
+        final String app3Name       = Utils.randomResourceName(azureResourceManager, "webapp3-", 20);
+        final String rg1Name        = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
+        final String rg2Name        = Utils.randomResourceName(azureResourceManager, "rg2NEMV_", 24);
 
         try {
 
@@ -56,7 +56,7 @@ public final class ManageLinuxWebAppBasic {
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rg1Name)
                     .withNewLinuxPlan(PricingTier.STANDARD_S1)
-                    .withBuiltInImage(RuntimeStack.NODEJS_6_9)
+                    .withBuiltInImage(RuntimeStack.NODEJS_10_LTS)
                     .create();
 
             System.out.println("Created web app " + app1.name());
@@ -71,7 +71,7 @@ public final class ManageLinuxWebAppBasic {
                     .define(app2Name)
                     .withExistingLinuxPlan(plan)
                     .withExistingResourceGroup(rg1Name)
-                    .withBuiltInImage(RuntimeStack.NODEJS_6_9)
+                    .withBuiltInImage(RuntimeStack.NODEJS_10_LTS)
                     .create();
 
             System.out.println("Created web app " + app2.name());
@@ -86,7 +86,7 @@ public final class ManageLinuxWebAppBasic {
                     .define(app3Name)
                     .withExistingLinuxPlan(plan)
                     .withNewResourceGroup(rg2Name)
-                    .withBuiltInImage(RuntimeStack.NODEJS_6_9)
+                    .withBuiltInImage(RuntimeStack.NODEJS_10_LTS)
                     .create();
 
             System.out.println("Created web app " + app3.name());

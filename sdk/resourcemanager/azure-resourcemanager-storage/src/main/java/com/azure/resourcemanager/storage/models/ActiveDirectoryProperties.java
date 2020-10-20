@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ActiveDirectoryProperties model. */
+/** Settings properties for Active Directory (AD). */
 @Fluent
 public final class ActiveDirectoryProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ActiveDirectoryProperties.class);

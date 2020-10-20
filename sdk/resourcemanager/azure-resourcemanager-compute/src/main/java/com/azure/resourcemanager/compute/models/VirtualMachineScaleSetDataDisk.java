@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VirtualMachineScaleSetDataDisk model. */
+/** Describes a virtual machine scale set data disk. */
 @Fluent
 public final class VirtualMachineScaleSetDataDisk {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetDataDisk.class);

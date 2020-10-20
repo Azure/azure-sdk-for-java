@@ -9,7 +9,7 @@ package com.azure.search.documents.indexes.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SynonymMap model. */
+/** Represents a synonym map definition. */
 @Fluent
 public final class SynonymMap {
     /*

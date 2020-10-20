@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The GalleryImageUpdate model. */
+/** Specifies information about the gallery Image Definition that you want to update. */
 @JsonFlatten
 @Fluent
 public class GalleryImageUpdate extends UpdateResourceDefinition {

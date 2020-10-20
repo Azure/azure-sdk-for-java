@@ -13,7 +13,6 @@ public final class AspectSentiment {
     private final String text;
     private final TextSentiment sentiment;
     private final SentimentConfidenceScores confidenceScores;
-    private final int length;
     private final int offset;
 
     /**
@@ -23,15 +22,13 @@ public final class AspectSentiment {
      * @param sentiment The text sentiment label: POSITIVE, NEGATIVE, MIXED. {@link TextSentiment} has
      * NEUTRAL sentiment type additionally, but aspect sentiment can only be POSITIVE, NEGATIVE, or MIXED.
      * @param offset The aspect text offset from the start of document.
-     * @param length The length of aspect text.
      * @param confidenceScores The {@link SentimentConfidenceScores}.
      */
-    public AspectSentiment(String text, TextSentiment sentiment,
-        int offset, int length, SentimentConfidenceScores confidenceScores) {
+    public AspectSentiment(String text, TextSentiment sentiment, int offset,
+        SentimentConfidenceScores confidenceScores) {
         this.text = text;
         this.sentiment = sentiment;
         this.confidenceScores = confidenceScores;
-        this.length = length;
         this.offset = offset;
     }
 
@@ -62,15 +59,6 @@ public final class AspectSentiment {
      */
     public int getOffset() {
         return offset;
-    }
-
-    /**
-     * Get the length of aspect text.
-     *
-     * @return The length of aspect text.
-     */
-    public int getLength() {
-        return length;
     }
 
     /**

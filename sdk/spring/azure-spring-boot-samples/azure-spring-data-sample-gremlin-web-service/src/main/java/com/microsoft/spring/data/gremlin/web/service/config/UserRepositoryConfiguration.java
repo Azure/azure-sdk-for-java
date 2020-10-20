@@ -3,9 +3,9 @@
 
 package com.microsoft.spring.data.gremlin.web.service.config;
 
-import com.microsoft.spring.data.gremlin.common.GremlinConfig;
-import com.microsoft.spring.data.gremlin.config.AbstractGremlinConfiguration;
-import com.microsoft.spring.data.gremlin.repository.config.EnableGremlinRepositories;
+import com.azure.spring.data.gremlin.common.GremlinConfig;
+import com.azure.spring.data.gremlin.config.AbstractGremlinConfiguration;
+import com.azure.spring.data.gremlin.repository.config.EnableGremlinRepositories;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;

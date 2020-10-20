@@ -3,13 +3,13 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.sql.fluent.inner.SyncGroupLogPropertiesInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
+import com.azure.resourcemanager.sql.fluent.models.SyncGroupLogPropertiesInner;
 import java.time.OffsetDateTime;
 
 /** An immutable client-side representation of an Azure SQL Server Sync Group. */
 @Fluent
-public interface SqlSyncGroupLogProperty extends HasInner<SyncGroupLogPropertiesInner> {
+public interface SqlSyncGroupLogProperty extends HasInnerModel<SyncGroupLogPropertiesInner> {
 
     /** @return timestamp of the sync group log */
     OffsetDateTime timestamp();

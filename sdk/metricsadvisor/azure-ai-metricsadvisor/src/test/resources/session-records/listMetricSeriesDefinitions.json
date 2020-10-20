@@ -1,0 +1,48 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//metrics/3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5/series/query",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "336438f5-184d-46c2-8df5-4be0b1292ad5",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "51e7e87d-1742-4328-ac0e-a1e7d2cb622a",
+      "x-envoy-upstream-service-time" : "105",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "51e7e87d-1742-4328-ac0e-a1e7d2cb622a",
+      "retry-after" : "0",
+      "Content-Length" : "2326",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Amphibian\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Cherry Laurel\",\"Dim2\":\"Amphibian\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"African buffalo\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Aphid\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Cabbage Palm\",\"Dim2\":\"Amphibian\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Anteater\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Alpaca\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Ant\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Beech\",\"Dim2\":\"Amphibian\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Blackthorn\",\"Dim2\":\"Amphibian\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Caucasian Fir\",\"Dim2\":\"Amphibian\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Alligator\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Beetle\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Animals by number of neurons\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Aardwolf\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Animals by size\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"African leopard\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Bear\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Blue Atlas Cedar\",\"Dim2\":\"Amphibian\"}}],\"@nextLink\":\"https://anuchan-cg-metric-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/metrics/3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5/series/query?$top=20&$skip=20\"}",
+      "Date" : "Mon, 14 Sep 2020 07:09:44 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/metrics/3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5/series/query?$top=20&$skip=20",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "410fe726-7e4b-4f8f-8279-6547aeff783d",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "b8bd8096-aa2a-40b1-981a-fa8a44270964",
+      "x-envoy-upstream-service-time" : "94",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "b8bd8096-aa2a-40b1-981a-fa8a44270964",
+      "retry-after" : "0",
+      "Content-Length" : "2296",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Antelope\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Bird\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Cherry Laurel\",\"Dim2\":\"Alpaca\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Blackthorn\",\"Dim2\":\"Anteater\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Barracuda\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Antlion\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Cabbage Palm\",\"Dim2\":\"Anteater\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Cherry Laurel\",\"Dim2\":\"African buffalo\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Cabbage Palm\",\"Dim2\":\"Aphid\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Bee\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Cabbage Palm\",\"Dim2\":\"Alpaca\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Cabbage Palm\",\"Dim2\":\"African buffalo\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Beech\",\"Dim2\":\"Anteater\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Cherry Laurel\",\"Dim2\":\"Ant\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Black panther\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Blackthorn\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Bison\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Blackthorn\",\"Dim2\":\"Antelope\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Arctic Fox\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"African elephant\"}}],\"@nextLink\":\"https://anuchan-cg-metric-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/metrics/3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5/series/query?$top=20&$skip=40\"}",
+      "Date" : "Mon, 14 Sep 2020 07:09:45 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

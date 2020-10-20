@@ -6,7 +6,7 @@ package com.azure.resourcemanager.appservice;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificate;
 import com.azure.resourcemanager.keyvault.models.Vault;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import java.io.File;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;

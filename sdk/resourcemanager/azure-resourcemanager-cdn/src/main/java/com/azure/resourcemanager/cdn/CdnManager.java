@@ -7,19 +7,18 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.cdn.fluent.CdnManagementClient;
-import com.azure.resourcemanager.cdn.fluent.CdnManagementClientBuilder;
+import com.azure.resourcemanager.cdn.implementation.CdnManagementClientBuilder;
 import com.azure.resourcemanager.cdn.implementation.CdnProfilesImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.cdn.models.CdnProfiles;
 
 /**
  * Entry point to Azure CDN management.
  */
-public final class CdnManager extends Manager<CdnManager, CdnManagementClient> {
+public final class CdnManager extends Manager<CdnManagementClient> {
     // Collections
     private CdnProfiles profiles;
 
@@ -51,20 +50,8 @@ public final class CdnManager extends Manager<CdnManager, CdnManagementClient> {
      * @param profile the profile to use
      * @return the CDN Manager
      */
-    public static CdnManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile, new SdkContext());
-    }
-
-    /**
-     * Creates an instance of CDN Manager that exposes CDN manager management API entry points.
-     *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
-     * @param profile the profile to use
-     * @param sdkContext the sdk context
-     * @return the CDN Manager
-     */
-    public static CdnManager authenticate(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        return new CdnManager(httpPipeline, profile, sdkContext);
+    private static CdnManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        return new CdnManager(httpPipeline, profile);
     }
 
     /**
@@ -93,7 +80,7 @@ public final class CdnManager extends Manager<CdnManager, CdnManagementClient> {
         }
     }
 
-    private CdnManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+    private CdnManager(HttpPipeline httpPipeline, AzureProfile profile) {
         super(
             httpPipeline,
             profile,
@@ -101,9 +88,7 @@ public final class CdnManager extends Manager<CdnManager, CdnManagementClient> {
                 .pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
-                .buildClient(),
-            sdkContext
-        );
+                .buildClient());
     }
 
     /**

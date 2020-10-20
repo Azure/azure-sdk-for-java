@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PreAuthorizedApplication model. */
+/** Contains information about pre authorized client application. */
 @Fluent
 public final class PreAuthorizedApplication {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PreAuthorizedApplication.class);

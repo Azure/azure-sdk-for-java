@@ -8,7 +8,7 @@ import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
 import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.SqlElasticPool;
 import com.azure.resourcemanager.sql.models.SqlServer;
-import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolInner;
+import com.azure.resourcemanager.sql.fluent.models.ElasticPoolInner;
 import java.util.ArrayList;
 import java.util.List;
 

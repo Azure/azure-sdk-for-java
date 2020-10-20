@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VpnClientConnectionHealthDetail model. */
+/** VPN client connection health detail. */
 @Immutable
 public final class VpnClientConnectionHealthDetail {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnClientConnectionHealthDetail.class);

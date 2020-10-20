@@ -15,7 +15,7 @@ best parts of Azure cloud.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-tables</artifactId>
-  <version>12.0.0-beta.1</version>
+  <version>12.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -53,7 +53,7 @@ Your Table API account URL, subsequently identified as `<your-table-account-url>
 `http(s)://<cosmosdb-account-name>.table.cosmosdb.azure.com`.
 
 ### Authenticate the client
-Every request made to the Table service must be authorized using a connection string, shared key credential, or shared access signature. The samples below demonstrate the usage of these methods.
+Every request made to the Tables service must be authorized using a connection string, shared key credential, or shared access signature. The samples below demonstrate the usage of these methods.
 
 Note: Azure Tables doesn't support Azure Active Directory (AAD) authentication.
 
@@ -75,7 +75,7 @@ az cosmosdb list-connection-strings \
 ```
 
 #### Shared Key credential
-Shared Key authorization relies on your account access keys and other parameters to produce an encrypted signature string that is passed on the request in the Authorization header. See [Authenticate with a Shared Key credential](#authenticate-with-a-shared-key-credential) for an example of how to use Shared Key authorization with a `TableServiceClient`.
+Shared Key authorization relies on your account access keys and other parameters to produce an encrypted signature string that is passed on the request in the Authorization header. See [Authenticate with a Shared Key credential](#authenticate-with-a-shared-key) for an example of how to use Shared Key authorization with a `TableServiceClient`.
 
 To use Shared Key authorization you'll need your account name and URL, as well as an account access key. You can obtain your primary access key from the Azure Portal (click **Access keys** under **Settings** in the Portal Storage account blade, or **Connection String** under **Settings** in the Portal Cosmos DB account blade) or using the Azure CLI:
 
@@ -92,7 +92,7 @@ az cosmosdb list-keys \
 ```
 
 #### Shared Access Signature (SAS)
-A shared access signature allows administrators to delegate granular access to an Azure table without sharing the access key directly. You can control what resources the client may access, what permissions it has on those resources, and how long the SAS is valid, among other parameters. It relies on your account access keys and other parameters to produce an encrypted signature string that is passed on the request in the query string. See [Authenticate with a Shared Access Signature (SAS) token](#authenticate-with-a-shared-access-signature-sas-token) for an example of how to use shared access signatures with a `TableServiceClient`.
+A shared access signature allows administrators to delegate granular access to an Azure table without sharing the access key directly. You can control what resources the client may access, what permissions it has on those resources, and how long the SAS is valid, among other parameters. It relies on your account access keys and other parameters to produce an encrypted signature string that is passed on the request in the query string. See [Authenticate with a Shared Access Signature (SAS) token](#authenticate-with-a-shared-access-signature-sas) for an example of how to use shared access signatures with a `TableServiceClient`.
 
 To use SAS token authorization you'll need your account name and URL, as well as the SAS. You can obtain your SAS from the Azure Portal (click **Shared access signature** under **Settings** in the Portal Storage account blade) or using the Azure CLI:
 
@@ -120,7 +120,7 @@ az storage table generate-sas \
 - **Partition Key** - An entity's partition key identifies the partition within the table to which the entity belongs. Entities with the same partition key can be queried more quickly, and inserted/updated in atomic operations.
 - **Row Key** - An entity's row key is its unique identifier within a partition.
 
-Common uses of the Table service include:
+Common uses of the Tables service include:
 
 - Storing TBs of structured data capable of serving web scale applications
 - Storing datasets that don't require complex joins, foreign keys, or stored procedures and can be de-normalized for fast access

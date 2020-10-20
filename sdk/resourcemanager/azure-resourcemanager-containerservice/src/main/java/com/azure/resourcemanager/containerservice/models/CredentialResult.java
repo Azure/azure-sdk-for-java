@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CredentialResult model. */
+/** The credential result response. */
 @Immutable
 public final class CredentialResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CredentialResult.class);

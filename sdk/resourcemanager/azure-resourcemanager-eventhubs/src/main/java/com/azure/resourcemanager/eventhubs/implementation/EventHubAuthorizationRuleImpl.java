@@ -4,8 +4,8 @@
 package com.azure.resourcemanager.eventhubs.implementation;
 
 import com.azure.resourcemanager.eventhubs.EventHubsManager;
-import com.azure.resourcemanager.eventhubs.fluent.inner.AccessKeysInner;
-import com.azure.resourcemanager.eventhubs.fluent.inner.AuthorizationRuleInner;
+import com.azure.resourcemanager.eventhubs.fluent.models.AccessKeysInner;
+import com.azure.resourcemanager.eventhubs.fluent.models.AuthorizationRuleInner;
 import com.azure.resourcemanager.eventhubs.models.EventHub;
 import com.azure.resourcemanager.eventhubs.models.EventHubAuthorizationRule;
 import com.azure.resourcemanager.eventhubs.models.KeyType;
@@ -71,7 +71,7 @@ class EventHubAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<EventHubAu
 
     @Override
     protected Mono<AuthorizationRuleInner> getInnerAsync() {
-        return this.manager.inner().getEventHubs()
+        return this.manager.serviceClient().getEventHubs()
                 .getAuthorizationRuleAsync(this.ancestor().resourceGroupName(),
                         this.ancestor().ancestor2Name(),
                         this.ancestor().ancestor1Name(),
@@ -80,18 +80,18 @@ class EventHubAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<EventHubAu
 
     @Override
     public Mono<EventHubAuthorizationRule> createResourceAsync() {
-        return this.manager.inner().getEventHubs()
+        return this.manager.serviceClient().getEventHubs()
                 .createOrUpdateAuthorizationRuleAsync(this.ancestor().resourceGroupName(),
                         this.ancestor().ancestor2Name(),
                         this.ancestor().ancestor1Name(),
                         this.name(),
-                        this.inner().rights())
+                        this.innerModel().rights())
                 .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<AccessKeysInner> getKeysInnerAsync() {
-        return this.manager.inner().getEventHubs()
+        return this.manager.serviceClient().getEventHubs()
                 .listKeysAsync(this.ancestor().resourceGroupName(),
                         this.ancestor().ancestor2Name(),
                         this.ancestor().ancestor1Name(),
@@ -102,7 +102,7 @@ class EventHubAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<EventHubAu
     protected Mono<AccessKeysInner> regenerateKeysInnerAsync(KeyType keyType) {
         final RegenerateAccessKeyParameters regenKeyInner = new RegenerateAccessKeyParameters()
                 .withKeyType(keyType);
-        return this.manager.inner().getEventHubs()
+        return this.manager.serviceClient().getEventHubs()
                 .regenerateKeysAsync(this.ancestor().resourceGroupName(),
                         this.ancestor().ancestor2Name(),
                         this.ancestor().ancestor1Name(),

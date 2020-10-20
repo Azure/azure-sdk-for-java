@@ -14,7 +14,11 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The StemmerOverrideTokenFilter model. */
+/**
+ * Provides the ability to override other stemming filters with custom dictionary-based stemming. Any dictionary-stemmed
+ * terms will be marked as keywords so that they will not be stemmed with stemmers down the chain. Must be placed before
+ * any stemming filters. This token filter is implemented using Apache Lucene.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.StemmerOverrideTokenFilter")
 @JsonFlatten

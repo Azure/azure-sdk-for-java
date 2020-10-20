@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CacheExpirationActionParameters model. */
+/** Defines the parameters for the cache expiration action. */
 @Fluent
 public final class CacheExpirationActionParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CacheExpirationActionParameters.class);

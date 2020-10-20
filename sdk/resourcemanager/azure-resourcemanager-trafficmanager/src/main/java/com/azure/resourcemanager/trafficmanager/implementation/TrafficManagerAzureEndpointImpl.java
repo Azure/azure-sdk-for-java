@@ -5,7 +5,7 @@ package com.azure.resourcemanager.trafficmanager.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.trafficmanager.fluent.EndpointsClient;
-import com.azure.resourcemanager.trafficmanager.fluent.inner.EndpointInner;
+import com.azure.resourcemanager.trafficmanager.fluent.models.EndpointInner;
 import com.azure.resourcemanager.trafficmanager.models.TargetAzureResourceType;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerAzureEndpoint;
 
@@ -18,7 +18,7 @@ class TrafficManagerAzureEndpointImpl extends TrafficManagerEndpointImpl impleme
 
     @Override
     public String targetAzureResourceId() {
-        return inner().targetResourceId();
+        return innerModel().targetResourceId();
     }
 
     @Override

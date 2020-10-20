@@ -4,156 +4,39 @@
 
 package com.azure.resourcemanager.appplatform.fluent;
 
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.Delete;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Headers;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.Patch;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Put;
-import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
-import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.appplatform.fluent.inner.BindingResourceInner;
-import com.azure.resourcemanager.appplatform.models.BindingResourceCollection;
+import com.azure.resourcemanager.appplatform.fluent.models.BindingResourceInner;
 import com.azure.resourcemanager.appplatform.models.BindingResourceProperties;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Bindings. */
-public final class BindingsClient {
-    private final ClientLogger logger = new ClientLogger(BindingsClient.class);
-
-    /** The proxy service used to perform REST calls. */
-    private final BindingsService service;
-
-    /** The service client containing this operation class. */
-    private final AppPlatformManagementClient client;
-
+/** An instance of this class provides access to all the operations defined in BindingsClient. */
+public interface BindingsClient {
     /**
-     * Initializes an instance of BindingsClient.
+     * Get a Binding and its properties.
      *
-     * @param client the instance of the service client containing this operation class.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param bindingName The name of the Binding resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Binding and its properties.
      */
-    BindingsClient(AppPlatformManagementClient client) {
-        this.service = RestProxy.create(BindingsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
-    }
-
-    /**
-     * The interface defining all the services for AppPlatformManagementClientBindings to be used by the proxy service
-     * to perform REST calls.
-     */
-    @Host("{$host}")
-    @ServiceInterface(name = "AppPlatformManagemen")
-    private interface BindingsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/bindings/{bindingName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BindingResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("appName") String appName,
-            @PathParam("bindingName") String bindingName,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/bindings/{bindingName}")
-        @ExpectedResponses({200, 201, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("appName") String appName,
-            @PathParam("bindingName") String bindingName,
-            @BodyParam("application/json") BindingResourceInner bindingResource,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/bindings/{bindingName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("appName") String appName,
-            @PathParam("bindingName") String bindingName,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/bindings/{bindingName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("appName") String appName,
-            @PathParam("bindingName") String bindingName,
-            @BodyParam("application/json") BindingResourceInner bindingResource,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/bindings")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BindingResourceCollection>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("appName") String appName,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BindingResourceCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-    }
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BindingResourceInner>> getWithResponseAsync(
+        String resourceGroupName, String serviceName, String appName, String bindingName);
 
     /**
      * Get a Binding and its properties.
@@ -164,53 +47,29 @@ public final class BindingsClient {
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Binding and its properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BindingResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String bindingName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (bindingName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter bindingName is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            appName,
-                            bindingName,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<BindingResourceInner> getAsync(
+        String resourceGroupName, String serviceName, String appName, String bindingName);
+
+    /**
+     * Get a Binding and its properties.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param bindingName The name of the Binding resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Binding and its properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BindingResourceInner get(String resourceGroupName, String serviceName, String appName, String bindingName);
 
     /**
      * Get a Binding and its properties.
@@ -222,143 +81,13 @@ public final class BindingsClient {
      * @param bindingName The name of the Binding resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Binding and its properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BindingResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String bindingName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (bindingName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter bindingName is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                appName,
-                bindingName,
-                context);
-    }
-
-    /**
-     * Get a Binding and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param bindingName The name of the Binding resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Binding and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BindingResourceInner> getAsync(
-        String resourceGroupName, String serviceName, String appName, String bindingName) {
-        return getWithResponseAsync(resourceGroupName, serviceName, appName, bindingName)
-            .flatMap(
-                (Response<BindingResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get a Binding and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param bindingName The name of the Binding resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Binding and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BindingResourceInner> getAsync(
-        String resourceGroupName, String serviceName, String appName, String bindingName, Context context) {
-        return getWithResponseAsync(resourceGroupName, serviceName, appName, bindingName, context)
-            .flatMap(
-                (Response<BindingResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get a Binding and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param bindingName The name of the Binding resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Binding and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BindingResourceInner get(String resourceGroupName, String serviceName, String appName, String bindingName) {
-        return getAsync(resourceGroupName, serviceName, appName, bindingName).block();
-    }
-
-    /**
-     * Get a Binding and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param bindingName The name of the Binding resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Binding and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BindingResourceInner get(
-        String resourceGroupName, String serviceName, String appName, String bindingName, Context context) {
-        return getAsync(resourceGroupName, serviceName, appName, bindingName, context).block();
-    }
+    Response<BindingResourceInner> getWithResponse(
+        String resourceGroupName, String serviceName, String appName, String bindingName, Context context);
 
     /**
      * Create a new Binding or update an exiting Binding.
@@ -370,63 +99,61 @@ public final class BindingsClient {
      * @param bindingName The name of the Binding resource.
      * @param properties Binding resource properties payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return binding resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String serviceName,
         String appName,
         String bindingName,
-        BindingResourceProperties properties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (bindingName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter bindingName is required and cannot be null."));
-        }
-        if (properties != null) {
-            properties.validate();
-        }
-        BindingResourceInner bindingResource = new BindingResourceInner();
-        bindingResource.withProperties(properties);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            appName,
-                            bindingName,
-                            bindingResource,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+        BindingResourceProperties properties);
+
+    /**
+     * Create a new Binding or update an exiting Binding.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param bindingName The name of the Binding resource.
+     * @param properties Binding resource properties payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return binding resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<BindingResourceInner>, BindingResourceInner> beginCreateOrUpdateAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String bindingName,
+        BindingResourceProperties properties);
+
+    /**
+     * Create a new Binding or update an exiting Binding.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param bindingName The name of the Binding resource.
+     * @param properties Binding resource properties payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return binding resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<BindingResourceInner>, BindingResourceInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String bindingName,
+        BindingResourceProperties properties);
 
     /**
      * Create a new Binding or update an exiting Binding.
@@ -439,61 +166,18 @@ public final class BindingsClient {
      * @param properties Binding resource properties payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return binding resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+    SyncPoller<PollResult<BindingResourceInner>, BindingResourceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serviceName,
         String appName,
         String bindingName,
         BindingResourceProperties properties,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (bindingName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter bindingName is required and cannot be null."));
-        }
-        if (properties != null) {
-            properties.validate();
-        }
-        BindingResourceInner bindingResource = new BindingResourceInner();
-        bindingResource.withProperties(properties);
-        context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                appName,
-                bindingName,
-                bindingResource,
-                context);
-    }
+        Context context);
 
     /**
      * Create a new Binding or update an exiting Binding.
@@ -505,28 +189,56 @@ public final class BindingsClient {
      * @param bindingName The name of the Binding resource.
      * @param properties Binding resource properties payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return binding resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<BindingResourceInner>, BindingResourceInner> beginCreateOrUpdateAsync(
+    Mono<BindingResourceInner> createOrUpdateAsync(
         String resourceGroupName,
         String serviceName,
         String appName,
         String bindingName,
-        BindingResourceProperties properties) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serviceName, appName, bindingName, properties);
-        return this
-            .client
-            .<BindingResourceInner, BindingResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                BindingResourceInner.class,
-                BindingResourceInner.class,
-                Context.NONE);
-    }
+        BindingResourceProperties properties);
+
+    /**
+     * Create a new Binding or update an exiting Binding.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param bindingName The name of the Binding resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return binding resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<BindingResourceInner> createOrUpdateAsync(
+        String resourceGroupName, String serviceName, String appName, String bindingName);
+
+    /**
+     * Create a new Binding or update an exiting Binding.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param bindingName The name of the Binding resource.
+     * @param properties Binding resource properties payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return binding resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BindingResourceInner createOrUpdate(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String bindingName,
+        BindingResourceProperties properties);
 
     /**
      * Create a new Binding or update an exiting Binding.
@@ -539,26 +251,18 @@ public final class BindingsClient {
      * @param properties Binding resource properties payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return binding resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<BindingResourceInner>, BindingResourceInner> beginCreateOrUpdateAsync(
+    BindingResourceInner createOrUpdate(
         String resourceGroupName,
         String serviceName,
         String appName,
         String bindingName,
         BindingResourceProperties properties,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serviceName, appName, bindingName, properties, context);
-        return this
-            .client
-            .<BindingResourceInner, BindingResourceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), BindingResourceInner.class, BindingResourceInner.class, context);
-    }
+        Context context);
 
     /**
      * Create a new Binding or update an exiting Binding.
@@ -568,153 +272,14 @@ public final class BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @param properties Binding resource properties payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return binding resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<BindingResourceInner>, BindingResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String bindingName,
-        BindingResourceProperties properties) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, bindingName, properties)
-            .getSyncPoller();
-    }
-
-    /**
-     * Create a new Binding or update an exiting Binding.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param bindingName The name of the Binding resource.
-     * @param properties Binding resource properties payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return binding resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<BindingResourceInner>, BindingResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String bindingName,
-        BindingResourceProperties properties,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, bindingName, properties, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Create a new Binding or update an exiting Binding.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param bindingName The name of the Binding resource.
-     * @param properties Binding resource properties payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return binding resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BindingResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String bindingName,
-        BindingResourceProperties properties) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, bindingName, properties)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create a new Binding or update an exiting Binding.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param bindingName The name of the Binding resource.
-     * @param properties Binding resource properties payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return binding resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BindingResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String bindingName,
-        BindingResourceProperties properties,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, bindingName, properties, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create a new Binding or update an exiting Binding.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param bindingName The name of the Binding resource.
-     * @param properties Binding resource properties payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return binding resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BindingResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String bindingName,
-        BindingResourceProperties properties) {
-        return createOrUpdateAsync(resourceGroupName, serviceName, appName, bindingName, properties).block();
-    }
-
-    /**
-     * Create a new Binding or update an exiting Binding.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param bindingName The name of the Binding resource.
-     * @param properties Binding resource properties payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return binding resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BindingResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String bindingName,
-        BindingResourceProperties properties,
-        Context context) {
-        return createOrUpdateAsync(resourceGroupName, serviceName, appName, bindingName, properties, context).block();
-    }
+    BindingResourceInner createOrUpdate(
+        String resourceGroupName, String serviceName, String appName, String bindingName);
 
     /**
      * Operation to delete a Binding.
@@ -725,53 +290,47 @@ public final class BindingsClient {
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String bindingName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (bindingName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter bindingName is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            appName,
-                            bindingName,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String serviceName, String appName, String bindingName);
+
+    /**
+     * Operation to delete a Binding.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param bindingName The name of the Binding resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String serviceName, String appName, String bindingName);
+
+    /**
+     * Operation to delete a Binding.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param bindingName The name of the Binding resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String serviceName, String appName, String bindingName);
 
     /**
      * Operation to delete a Binding.
@@ -783,50 +342,13 @@ public final class BindingsClient {
      * @param bindingName The name of the Binding resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String bindingName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (bindingName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter bindingName is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                appName,
-                bindingName,
-                context);
-    }
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String serviceName, String appName, String bindingName, Context context);
 
     /**
      * Operation to delete a Binding.
@@ -837,19 +359,27 @@ public final class BindingsClient {
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serviceName, String appName, String bindingName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, serviceName, appName, bindingName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
-    }
+    Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String appName, String bindingName);
+
+    /**
+     * Operation to delete a Binding.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param bindingName The name of the Binding resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String serviceName, String appName, String bindingName);
 
     /**
      * Operation to delete a Binding.
@@ -861,137 +391,11 @@ public final class BindingsClient {
      * @param bindingName The name of the Binding resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serviceName, String appName, String bindingName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, serviceName, appName, bindingName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Operation to delete a Binding.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param bindingName The name of the Binding resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serviceName, String appName, String bindingName) {
-        return beginDeleteAsync(resourceGroupName, serviceName, appName, bindingName).getSyncPoller();
-    }
-
-    /**
-     * Operation to delete a Binding.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param bindingName The name of the Binding resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serviceName, String appName, String bindingName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serviceName, appName, bindingName, context).getSyncPoller();
-    }
-
-    /**
-     * Operation to delete a Binding.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param bindingName The name of the Binding resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String appName, String bindingName) {
-        return beginDeleteAsync(resourceGroupName, serviceName, appName, bindingName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Operation to delete a Binding.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param bindingName The name of the Binding resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName, String serviceName, String appName, String bindingName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serviceName, appName, bindingName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Operation to delete a Binding.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param bindingName The name of the Binding resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String serviceName, String appName, String bindingName) {
-        deleteAsync(resourceGroupName, serviceName, appName, bindingName).block();
-    }
-
-    /**
-     * Operation to delete a Binding.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param bindingName The name of the Binding resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String serviceName, String appName, String bindingName, Context context) {
-        deleteAsync(resourceGroupName, serviceName, appName, bindingName, context).block();
-    }
+    void delete(String resourceGroupName, String serviceName, String appName, String bindingName, Context context);
 
     /**
      * Operation to update an exiting Binding.
@@ -1003,63 +407,61 @@ public final class BindingsClient {
      * @param bindingName The name of the Binding resource.
      * @param properties Binding resource properties payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return binding resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName,
         String serviceName,
         String appName,
         String bindingName,
-        BindingResourceProperties properties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (bindingName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter bindingName is required and cannot be null."));
-        }
-        if (properties != null) {
-            properties.validate();
-        }
-        BindingResourceInner bindingResource = new BindingResourceInner();
-        bindingResource.withProperties(properties);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            appName,
-                            bindingName,
-                            bindingResource,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+        BindingResourceProperties properties);
+
+    /**
+     * Operation to update an exiting Binding.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param bindingName The name of the Binding resource.
+     * @param properties Binding resource properties payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return binding resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<BindingResourceInner>, BindingResourceInner> beginUpdateAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String bindingName,
+        BindingResourceProperties properties);
+
+    /**
+     * Operation to update an exiting Binding.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param bindingName The name of the Binding resource.
+     * @param properties Binding resource properties payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return binding resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<BindingResourceInner>, BindingResourceInner> beginUpdate(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String bindingName,
+        BindingResourceProperties properties);
 
     /**
      * Operation to update an exiting Binding.
@@ -1072,61 +474,18 @@ public final class BindingsClient {
      * @param properties Binding resource properties payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return binding resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+    SyncPoller<PollResult<BindingResourceInner>, BindingResourceInner> beginUpdate(
         String resourceGroupName,
         String serviceName,
         String appName,
         String bindingName,
         BindingResourceProperties properties,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (bindingName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter bindingName is required and cannot be null."));
-        }
-        if (properties != null) {
-            properties.validate();
-        }
-        BindingResourceInner bindingResource = new BindingResourceInner();
-        bindingResource.withProperties(properties);
-        context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                appName,
-                bindingName,
-                bindingResource,
-                context);
-    }
+        Context context);
 
     /**
      * Operation to update an exiting Binding.
@@ -1138,28 +497,56 @@ public final class BindingsClient {
      * @param bindingName The name of the Binding resource.
      * @param properties Binding resource properties payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return binding resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<BindingResourceInner>, BindingResourceInner> beginUpdateAsync(
+    Mono<BindingResourceInner> updateAsync(
         String resourceGroupName,
         String serviceName,
         String appName,
         String bindingName,
-        BindingResourceProperties properties) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, serviceName, appName, bindingName, properties);
-        return this
-            .client
-            .<BindingResourceInner, BindingResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                BindingResourceInner.class,
-                BindingResourceInner.class,
-                Context.NONE);
-    }
+        BindingResourceProperties properties);
+
+    /**
+     * Operation to update an exiting Binding.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param bindingName The name of the Binding resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return binding resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<BindingResourceInner> updateAsync(
+        String resourceGroupName, String serviceName, String appName, String bindingName);
+
+    /**
+     * Operation to update an exiting Binding.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param bindingName The name of the Binding resource.
+     * @param properties Binding resource properties payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return binding resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BindingResourceInner update(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String bindingName,
+        BindingResourceProperties properties);
 
     /**
      * Operation to update an exiting Binding.
@@ -1172,26 +559,18 @@ public final class BindingsClient {
      * @param properties Binding resource properties payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return binding resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<BindingResourceInner>, BindingResourceInner> beginUpdateAsync(
+    BindingResourceInner update(
         String resourceGroupName,
         String serviceName,
         String appName,
         String bindingName,
         BindingResourceProperties properties,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, serviceName, appName, bindingName, properties, context);
-        return this
-            .client
-            .<BindingResourceInner, BindingResourceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), BindingResourceInner.class, BindingResourceInner.class, context);
-    }
+        Context context);
 
     /**
      * Operation to update an exiting Binding.
@@ -1201,152 +580,13 @@ public final class BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @param properties Binding resource properties payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return binding resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<BindingResourceInner>, BindingResourceInner> beginUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String bindingName,
-        BindingResourceProperties properties) {
-        return beginUpdateAsync(resourceGroupName, serviceName, appName, bindingName, properties).getSyncPoller();
-    }
-
-    /**
-     * Operation to update an exiting Binding.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param bindingName The name of the Binding resource.
-     * @param properties Binding resource properties payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return binding resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<BindingResourceInner>, BindingResourceInner> beginUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String bindingName,
-        BindingResourceProperties properties,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, serviceName, appName, bindingName, properties, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Operation to update an exiting Binding.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param bindingName The name of the Binding resource.
-     * @param properties Binding resource properties payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return binding resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BindingResourceInner> updateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String bindingName,
-        BindingResourceProperties properties) {
-        return beginUpdateAsync(resourceGroupName, serviceName, appName, bindingName, properties)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Operation to update an exiting Binding.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param bindingName The name of the Binding resource.
-     * @param properties Binding resource properties payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return binding resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BindingResourceInner> updateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String bindingName,
-        BindingResourceProperties properties,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, serviceName, appName, bindingName, properties, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Operation to update an exiting Binding.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param bindingName The name of the Binding resource.
-     * @param properties Binding resource properties payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return binding resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BindingResourceInner update(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String bindingName,
-        BindingResourceProperties properties) {
-        return updateAsync(resourceGroupName, serviceName, appName, bindingName, properties).block();
-    }
-
-    /**
-     * Operation to update an exiting Binding.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param bindingName The name of the Binding resource.
-     * @param properties Binding resource properties payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return binding resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BindingResourceInner update(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String bindingName,
-        BindingResourceProperties properties,
-        Context context) {
-        return updateAsync(resourceGroupName, serviceName, appName, bindingName, properties, context).block();
-    }
+    BindingResourceInner update(String resourceGroupName, String serviceName, String appName, String bindingName);
 
     /**
      * Handles requests to list all resources in an App.
@@ -1356,136 +596,27 @@ public final class BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Binding resources and a possible link for next set.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BindingResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String serviceName, String appName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            appName,
-                            context))
-            .<PagedResponse<BindingResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Handles requests to list all resources in an App.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Binding resources and a possible link for next set.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BindingResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String serviceName, String appName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                appName,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Handles requests to list all resources in an App.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Binding resources and a possible link for next set.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BindingResourceInner> listAsync(String resourceGroupName, String serviceName, String appName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, serviceName, appName),
-            nextLink -> listNextSinglePageAsync(nextLink));
-    }
+    PagedFlux<BindingResourceInner> listAsync(String resourceGroupName, String serviceName, String appName);
+
+    /**
+     * Handles requests to list all resources in an App.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return object that includes an array of Binding resources and a possible link for next set.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BindingResourceInner> list(String resourceGroupName, String serviceName, String appName);
 
     /**
      * Handles requests to list all resources in an App.
@@ -1496,108 +627,11 @@ public final class BindingsClient {
      * @param appName The name of the App resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Binding resources and a possible link for next set.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BindingResourceInner> listAsync(
-        String resourceGroupName, String serviceName, String appName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, serviceName, appName, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Handles requests to list all resources in an App.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Binding resources and a possible link for next set.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BindingResourceInner> list(String resourceGroupName, String serviceName, String appName) {
-        return new PagedIterable<>(listAsync(resourceGroupName, serviceName, appName));
-    }
-
-    /**
-     * Handles requests to list all resources in an App.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Binding resources and a possible link for next set.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BindingResourceInner> list(
-        String resourceGroupName, String serviceName, String appName, Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, serviceName, appName, context));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Binding resources and a possible link for next set.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BindingResourceInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
-            .<PagedResponse<BindingResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Binding resources and a possible link for next set.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BindingResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
+    PagedIterable<BindingResourceInner> list(
+        String resourceGroupName, String serviceName, String appName, Context context);
 }

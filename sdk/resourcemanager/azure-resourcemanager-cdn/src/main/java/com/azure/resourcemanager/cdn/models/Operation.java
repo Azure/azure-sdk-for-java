@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.cdn.models;
 
-import com.azure.resourcemanager.cdn.fluent.inner.OperationInner;
+import com.azure.resourcemanager.cdn.fluent.models.OperationInner;
 
 /**
  * Operation that CDN service supports.

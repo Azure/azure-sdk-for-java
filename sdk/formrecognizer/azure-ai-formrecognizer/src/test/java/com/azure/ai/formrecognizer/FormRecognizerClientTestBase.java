@@ -44,16 +44,21 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.AbstractMap;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
+import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_API_KEY;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL;
@@ -82,26 +87,29 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static final String RECEIPT_CONTOSO_PNG = "contoso-receipt.png";
     static final String INVOICE_6_PDF = "Invoice_6.pdf";
     static final String MULTIPAGE_INVOICE_PDF = "multipage_invoice1.pdf";
-    static final String EXPECTED_MODEL_ID_NOT_FOUND_ERROR_CODE = "1022";
-    static final String EXPECTED_URL_BADLY_FORMATTED_ERROR_CODE = "2001";
-    static final String INVALID_ENDPOINT = "https://notreal.azure.com";
-    static final String EXPECTED_BAD_ARGUMENT_CODE = "BadArgument";
-    static final String EXPECTED_BAD_ARGUMENT_ERROR_MESSAGE = "Bad or unrecognizable request JSON or binary file.";
-    static final String EXPECTED_HTTPS_EXCEPTION_MESSAGE =
+    static final String BUSINESS_CARD_JPG = "businessCard.jpg";
+    static final String BUSINESS_CARD_PNG = "businessCard.png";
+    // Error code
+    static final String BAD_ARGUMENT_CODE = "BadArgument";
+    static final String INVALID_IMAGE_ERROR_CODE = "InvalidImage";
+    static final String INVALID_MODEL_ID_ERROR_CODE = "1001";
+    static final String MODEL_ID_NOT_FOUND_ERROR_CODE = "1022";
+    static final String URL_BADLY_FORMATTED_ERROR_CODE = "2001";
+    static final String UNABLE_TO_READ_FILE_ERROR_CODE = "2005";
+    // Error Message
+    static final String HTTPS_EXCEPTION_MESSAGE =
         "Max retries 3 times exceeded. Error Details: Key credentials require HTTPS to prevent leaking the key.";
-    static final String EXPECTED_INVALID_IMAGE_CODE = "InvalidImage";
-    static final String EXPECTED_INVALID_IMAGE_ERROR_MESSAGE = "The input data is not a valid image or password "
-        + "protected.";
-    static final String EXPECTED_INVALID_MODEL_ID_ERROR_CODE = "1001";
-    static final String EXPECTED_INVALID_MODEL_ID_ERROR_MESSAGE =
-        "Specified model not found or not ready, Model Id: 00000000-0000-0000-0000-000000000000";
-    static final String EXPECTED_INVALID_UUID_EXCEPTION_MESSAGE = "Invalid UUID string: ";
-    static final String EXPECTED_MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE = "'modelId' is required and cannot be null.";
-    static final String EXPECTED_UNABLE_TO_READ_FILE = "Analyze operation failed, errorCode: [2005], message: Unable "
-        + "to read file.";
-    static final String LOCAL_FILE_PATH = "src/test/resources/sample_files/Test/";
+    static final String INVALID_UUID_EXCEPTION_MESSAGE = "Invalid UUID string: ";
+    static final String MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE = "'modelId' is required and cannot be null.";
 
+    static final String INVALID_ENDPOINT = "https://notreal.azure.com";
+    static final String LOCAL_FILE_PATH = "src/test/resources/sample_files/Test/";
     static final String ENCODED_EMPTY_SPACE = "{\"source\":\"https://fakeuri.com/blank%20space\"}";
+
+    // Business Card fields
+    static final List<String> BUSINESS_CARD_FIELDS = Arrays.asList("ContactNames", "JobTitles", "Departments",
+        "Emails", "Websites", "MobilePhones", "OtherPhones", "Faxes", "Addresses", "CompanyNames");
+
     Duration durationTestMode;
 
     /**
@@ -144,7 +152,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
         } else {
-            builder.credential(new DefaultAzureCredentialBuilder().build());
+            builder.credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_API_KEY)));
         }
         return builder;
     }
@@ -509,6 +517,54 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     abstract void recognizeCustomFormUrlMultiPageLabeled(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
 
+    // Business Card - data
+    @Test
+    abstract void recognizeBusinessCardData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeBusinessCardDataNullData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeBusinessCardDataWithContentTypeAutoDetection(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeBusinessCardDataIncludeFieldElements(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeBusinessCardDataWithPngFile(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeBusinessCardDataWithBlankPdf(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeBusinessCardFromDamagedPdf(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    // Business card - URL
+
+    @Test
+    abstract void recognizeBusinessCardSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeBusinessCardFromUrlWithEncodedBlankSpaceSourceUrl(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeBusinessCardInvalidSourceUrl(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeBusinessCardFromUrlIncludeFieldElements(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeBusinessCardSourceUrlWithPngFile(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
     // Receipt
     void validateReceiptDataFields(Map<String, FormField> actualRecognizedReceiptFields, boolean includeFieldElements) {
         final AnalyzeResult analyzeResult = getAnalyzeRawResponse().getAnalyzeResult();
@@ -599,6 +655,31 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         }
     }
 
+    // Business cards
+    void validateBusinessCardDataFields(Map<String, FormField> actualRecognizedBusinessCardFields, boolean includeFieldElements) {
+        final AnalyzeResult analyzeResult = getAnalyzeRawResponse().getAnalyzeResult();
+        List<ReadResult> readResults = analyzeResult.getReadResults();
+        DocumentResult documentResult = analyzeResult.getDocumentResults().get(0);
+        Map<String, FieldValue> expectedReceiptFields = documentResult.getFields();
+
+        BUSINESS_CARD_FIELDS.forEach(businessCardField ->
+            validateFieldValueTransforms(expectedReceiptFields.get(businessCardField),
+                actualRecognizedBusinessCardFields.get(businessCardField), readResults, includeFieldElements));
+
+    }
+
+    void validateBusinessCardResultData(List<RecognizedForm> actualBusinessCardList, boolean includeFieldElements) {
+        final AnalyzeResult rawResponse = getAnalyzeRawResponse().getAnalyzeResult();
+        for (int i = 0; i < actualBusinessCardList.size(); i++) {
+            final RecognizedForm actualBusinessCard = actualBusinessCardList.get(i);
+            validateLabeledData(actualBusinessCard, includeFieldElements, rawResponse.getReadResults(),
+                rawResponse.getDocumentResults().get(i));
+            validateBusinessCardDataFields(actualBusinessCard.getFields(), includeFieldElements);
+        }
+    }
+
+    // Others
+
     void invalidSourceUrlRunner(Consumer<String> testRunner) {
         testRunner.accept(TestUtils.INVALID_RECEIPT_URL);
     }
@@ -627,6 +708,11 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                 throw new RuntimeException("Local file not found.", e);
             }
         }
+    }
+
+    void localFilePathRunner(BiConsumer<String, Long> testRunner, String fileName) {
+        final long fileLength = new File(LOCAL_FILE_PATH + fileName).length();
+        testRunner.accept(LOCAL_FILE_PATH + fileName, fileLength);
     }
 
     void damagedPdfDataRunner(BiConsumer<InputStream, Integer> testRunner) {
@@ -833,5 +919,29 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             });
         interceptorManager.getRecordedData().addNetworkCall(networkCallRecord);
         return deserializeRawResponse(serializerAdapter, networkCallRecord, AnalyzeOperationResult.class);
+    }
+
+    void validateNetworkCallRecord(String requestParam, String value) {
+        final NetworkCallRecord networkCallRecord =
+            interceptorManager.getRecordedData().findFirstAndRemoveNetworkCall(record -> true);
+        interceptorManager.getRecordedData().addNetworkCall(networkCallRecord);
+
+        URL url = null;
+        try {
+            url = new URL(networkCallRecord.getUri());
+        } catch (MalformedURLException e) {
+            assertFalse(false, e.getMessage());
+        }
+        Pattern.compile("&").splitAsStream(url.getQuery())
+            .map(s -> Arrays.copyOf(s.split("="), 2))
+            .map(o -> new AbstractMap.SimpleEntry<String, String>(o[0], o[1] == null ? "" : o[1]))
+            .map(entry -> {
+                if (entry.getKey().equals(requestParam)) {
+                    assertEquals(value, entry.getValue());
+                    return true;
+                } else {
+                    return false;
+                }
+            });
     }
 }

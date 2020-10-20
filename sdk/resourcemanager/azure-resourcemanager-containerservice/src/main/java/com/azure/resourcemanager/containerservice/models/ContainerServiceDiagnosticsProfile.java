@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ContainerServiceDiagnosticsProfile model. */
+/** Profile for diagnostics on the container service cluster. */
 @Fluent
 public final class ContainerServiceDiagnosticsProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerServiceDiagnosticsProfile.class);

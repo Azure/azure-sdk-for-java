@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The StaticSitePatchResource model. */
+/** ARM resource for a static site when patching. */
 @JsonFlatten
 @Fluent
 public class StaticSitePatchResource extends ProxyOnlyResource {

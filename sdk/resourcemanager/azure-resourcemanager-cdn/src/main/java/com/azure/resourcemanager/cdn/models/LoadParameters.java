@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The LoadParameters model. */
+/** Parameters required for content load. */
 @Fluent
 public final class LoadParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadParameters.class);

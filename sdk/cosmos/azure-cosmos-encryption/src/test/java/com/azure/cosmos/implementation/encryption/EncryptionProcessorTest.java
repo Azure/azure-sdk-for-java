@@ -3,11 +3,13 @@
 
 package com.azure.cosmos.implementation.encryption;
 
+import com.azure.cosmos.encryption.DecryptionContext;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.encryption.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.DataEncryptionKey;
 import com.azure.cosmos.encryption.EncryptionOptions;
 import com.azure.cosmos.encryption.EncryptionType;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -93,9 +95,12 @@ public class EncryptionProcessorTest {
         TestPojo testDate = getTestDate();
         byte[] inputAsByteArray = toByteArray(testDate);
 
-
         byte[] itemObjectWithEncryptedSensitiveDataAsByteArray = EncryptionProcessor.encrypt(inputAsByteArray, encryptor, encryptionOptions).block();
-        byte[] itemObjectWithDecryptedSensitiveDataAsByteArray = EncryptionProcessor.decrypt(itemObjectWithEncryptedSensitiveDataAsByteArray, encryptor).block();
+        Pair<byte[],
+            DecryptionContext> decryptResultPair =
+            EncryptionProcessor.decrypt(itemObjectWithEncryptedSensitiveDataAsByteArray, encryptor).block();
+
+        byte[] itemObjectWithDecryptedSensitiveDataAsByteArray = decryptResultPair.getKey();
 
         assertThat(itemObjectWithDecryptedSensitiveDataAsByteArray).isEqualTo(inputAsByteArray);
     }

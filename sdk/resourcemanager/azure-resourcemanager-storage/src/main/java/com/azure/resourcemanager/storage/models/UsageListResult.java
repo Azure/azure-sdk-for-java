@@ -6,12 +6,12 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.storage.fluent.inner.UsageInner;
+import com.azure.resourcemanager.storage.fluent.models.UsageInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The UsageListResult model. */
+/** The response from the List Usages operation. */
 @Fluent
 public final class UsageListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageListResult.class);

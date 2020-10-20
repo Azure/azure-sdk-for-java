@@ -12,7 +12,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImageVers
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImageVersions;
 import com.azure.resourcemanager.compute.models.VirtualMachinePublisher;
 import com.azure.resourcemanager.test.utils.TestUtilities;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

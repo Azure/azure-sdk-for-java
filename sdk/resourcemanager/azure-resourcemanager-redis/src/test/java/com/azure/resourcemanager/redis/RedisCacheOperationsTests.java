@@ -14,7 +14,7 @@ import com.azure.resourcemanager.redis.models.ReplicationRole;
 import com.azure.resourcemanager.redis.models.ScheduleEntry;
 import com.azure.resourcemanager.redis.models.SkuFamily;
 import com.azure.resourcemanager.redis.models.SkuName;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;

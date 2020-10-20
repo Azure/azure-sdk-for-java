@@ -106,14 +106,19 @@ public class KeyVaultKey {
         this.key = properties.createKeyMaterialFromJson(key);
     }
 
-    @JsonProperty(value = "kid")
-    private void unpackKid(String kid) {
-        properties.unpackId(kid);
-    }
-
     @JsonProperty("attributes")
     @SuppressWarnings("unchecked")
     private void unpackAttributes(Map<String, Object> attributes) {
         properties.unpackAttributes(attributes);
+    }
+
+    @JsonProperty("tags")
+    private void setTags(Map<String, String> tags) {
+        properties.setTags(tags);
+    }
+
+    @JsonProperty("managed")
+    private void setManaged(boolean managed) {
+        properties.setManaged(managed);
     }
 }

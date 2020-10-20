@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VnetRoute model. */
+/** List of routes that control routing from VirtualHub into a virtual network connection. */
 @Fluent
 public final class VnetRoute {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VnetRoute.class);

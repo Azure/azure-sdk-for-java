@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ConnStringValueTypePair model. */
+/** Database connection string value to type pair. */
 @Fluent
 public final class ConnStringValueTypePair {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnStringValueTypePair.class);

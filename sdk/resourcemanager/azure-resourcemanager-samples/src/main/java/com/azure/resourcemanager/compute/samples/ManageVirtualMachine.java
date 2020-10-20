@@ -14,7 +14,7 @@ import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.network.models.Network;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
@@ -43,9 +43,9 @@ public final class ManageVirtualMachine {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_WEST_CENTRAL;
-        final String windowsVMName = azureResourceManager.sdkContext().randomResourceName("wVM", 15);
-        final String linuxVMName = azureResourceManager.sdkContext().randomResourceName("lVM", 15);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOMV", 15);
+        final String windowsVMName = Utils.randomResourceName(azureResourceManager, "wVM", 15);
+        final String linuxVMName = Utils.randomResourceName(azureResourceManager, "lVM", 15);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOMV", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
 
@@ -56,7 +56,7 @@ public final class ManageVirtualMachine {
 
             // Prepare a creatable data disk for VM
             //
-            Creatable<Disk> dataDiskCreatable = azureResourceManager.disks().define(azureResourceManager.sdkContext().randomResourceName("dsk-", 15))
+            Creatable<Disk> dataDiskCreatable = azureResourceManager.disks().define(Utils.randomResourceName(azureResourceManager, "dsk-", 15))
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withData()
@@ -65,7 +65,7 @@ public final class ManageVirtualMachine {
             // Create a data disk to attach to VM
             //
             Disk dataDisk = azureResourceManager.disks()
-                    .define(azureResourceManager.sdkContext().randomResourceName("dsk-", 15))
+                    .define(Utils.randomResourceName(azureResourceManager, "dsk-", 15))
                         .withRegion(region)
                         .withNewResourceGroup(rgName)
                         .withData()

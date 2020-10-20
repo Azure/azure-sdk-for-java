@@ -6,12 +6,12 @@ package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.fluent.inner.PolicySetDefinitionInner;
+import com.azure.resourcemanager.resources.fluent.models.PolicySetDefinitionInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PolicySetDefinitionListResult model. */
+/** List of policy set definitions. */
 @Fluent
 public final class PolicySetDefinitionListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicySetDefinitionListResult.class);

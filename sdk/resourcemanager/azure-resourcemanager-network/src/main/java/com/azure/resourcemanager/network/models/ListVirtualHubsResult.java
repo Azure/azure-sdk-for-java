@@ -6,12 +6,15 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.fluent.inner.VirtualHubInner;
+import com.azure.resourcemanager.network.fluent.models.VirtualHubInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ListVirtualHubsResult model. */
+/**
+ * Result of the request to list VirtualHubs. It contains a list of VirtualHubs and a URL nextLink to get the next set
+ * of results.
+ */
 @Fluent
 public final class ListVirtualHubsResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ListVirtualHubsResult.class);

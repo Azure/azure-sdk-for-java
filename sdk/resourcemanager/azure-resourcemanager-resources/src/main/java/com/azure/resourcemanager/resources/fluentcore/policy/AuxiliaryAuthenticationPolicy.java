@@ -10,7 +10,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -45,7 +45,8 @@ public class AuxiliaryAuthenticationPolicy implements HttpPipelinePolicy {
         }
         return Flux.fromIterable(Arrays.asList(tokenCredentials))
             .flatMap(credential -> {
-                String defaultScope = Utils.getDefaultScopeFromRequest(context.getHttpRequest(), environment);
+                String defaultScope = ResourceManagerUtils.getDefaultScopeFromRequest(
+                    context.getHttpRequest(), environment);
                 return credential.getToken(new TokenRequestContext().addScopes(defaultScope))
                     .map(token -> String.format(SCHEMA_FORMAT, token.getToken()));
             })

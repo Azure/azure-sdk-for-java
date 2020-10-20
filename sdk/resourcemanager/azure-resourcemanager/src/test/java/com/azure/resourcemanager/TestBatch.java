@@ -8,7 +8,7 @@
 // import com.microsoft.azure.management.batch.BatchAccounts;
 // import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 // import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
-// import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+// import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerUtils;
 // import org.junit.Assert;
 // import rx.Observable;
 // import rx.functions.Action1;
@@ -27,7 +27,7 @@
 //                .withTag("mytag", "testtag")
 //                .createAsync();
 //
-//        Utils.<BatchAccount>rootResource(resourceStream)
+//        ResourceManagerUtils.<BatchAccount>rootResource(resourceStream)
 //                .subscribe(new Action1<BatchAccount>() {
 //                    @Override
 //                    public void call(BatchAccount batchAccount) {

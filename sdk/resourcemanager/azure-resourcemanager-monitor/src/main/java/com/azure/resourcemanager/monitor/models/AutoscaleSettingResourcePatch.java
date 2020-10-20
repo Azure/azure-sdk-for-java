@@ -7,13 +7,13 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.fluent.inner.AutoscaleProfileInner;
+import com.azure.resourcemanager.monitor.fluent.models.AutoscaleProfileInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The AutoscaleSettingResourcePatch model. */
+/** The autoscale setting object for patch operations. */
 @JsonFlatten
 @Fluent
 public class AutoscaleSettingResourcePatch {

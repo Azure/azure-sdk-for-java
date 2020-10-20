@@ -2,8 +2,11 @@ package com.azure.digitaltwins.core;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.models.EventRoute;
+import com.azure.digitaltwins.core.models.ListEventRoutesOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -11,6 +14,8 @@ import java.net.HttpURLConnection;
 
 import static com.azure.digitaltwins.core.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.digitaltwins.core.TestHelper.assertRestException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for the sync client's event route APIs
@@ -74,5 +79,38 @@ public class EventRoutesTest extends EventRoutesTestBase {
         eventRouteToCreate.setFilter("this is not a valid filter");
 
         assertRestException(() -> client.createEventRoute(eventRouteId, eventRouteToCreate), HttpURLConnection.HTTP_BAD_REQUEST);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
+    @Override
+    public void listEventRoutesPaginationWorks(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
+        DigitalTwinsClient client = getClient(httpClient, serviceVersion);
+        final int eventRouteCountToCreate = 5;
+        final int expectedPageSize = 2;
+
+        // create enough event routes so that the list API can have multiple pages
+        for (int i = 0; i < eventRouteCountToCreate; i++) {
+            String eventRouteId = testResourceNamer.randomUuid();
+            EventRoute eventRouteToCreate = new EventRoute(EVENT_ROUTE_ENDPOINT_NAME);
+            eventRouteToCreate.setFilter(FILTER);
+            client.createEventRoute(eventRouteId, eventRouteToCreate);
+        }
+
+        // list event routes by page, make sure that all non-final pages have the expected page size
+        ListEventRoutesOptions listEventRoutesOptions = (new ListEventRoutesOptions()).setMaxItemsPerPage(expectedPageSize);
+        PagedIterable<EventRoute> eventRoutes = client.listEventRoutes(listEventRoutesOptions, Context.NONE);
+        Iterable<PagedResponse<EventRoute>> eventRoutePages = eventRoutes.iterableByPage();
+        int pageCount = 0;
+        for (PagedResponse<EventRoute> eventRoutePagedResponse : eventRoutePages) {
+            pageCount++;
+
+            // Any page of results with a continuation token should be a non-final page, and should have the exact page size that we specified above
+            if (eventRoutePagedResponse.getContinuationToken() != null) {
+                assertEquals(expectedPageSize, eventRoutePagedResponse.getValue().size(), "Unexpected page size for a non-terminal page");
+            }
+        }
+
+        assertTrue(pageCount >= 3, "At least three pages should have been returned.");
     }
 }

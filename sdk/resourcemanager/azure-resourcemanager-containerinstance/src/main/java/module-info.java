@@ -11,11 +11,11 @@ module com.azure.resourcemanager.containerinstance {
     // export public APIs of containerinstance
     exports com.azure.resourcemanager.containerinstance;
     exports com.azure.resourcemanager.containerinstance.fluent;
-    exports com.azure.resourcemanager.containerinstance.fluent.inner;
+    exports com.azure.resourcemanager.containerinstance.fluent.models;
     exports com.azure.resourcemanager.containerinstance.models;
 
     // open packages specifically for azure core and jackson
-    opens com.azure.resourcemanager.containerinstance.fluent.inner to
+    opens com.azure.resourcemanager.containerinstance.fluent.models to
         com.azure.core,
         com.fasterxml.jackson.databind;
     opens com.azure.resourcemanager.containerinstance.models to

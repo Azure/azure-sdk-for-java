@@ -6,12 +6,12 @@ package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.fluent.inner.ProviderInner;
+import com.azure.resourcemanager.resources.fluent.models.ProviderInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ProviderListResult model. */
+/** List of resource providers. */
 @Fluent
 public final class ProviderListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ProviderListResult.class);

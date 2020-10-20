@@ -7,11 +7,11 @@ module com.azure.resourcemanager.storage {
     // export public APIs of storage
     exports com.azure.resourcemanager.storage;
     exports com.azure.resourcemanager.storage.fluent;
-    exports com.azure.resourcemanager.storage.fluent.inner;
+    exports com.azure.resourcemanager.storage.fluent.models;
     exports com.azure.resourcemanager.storage.models;
 
     // open packages specifically for azure core and jackson
-    opens com.azure.resourcemanager.storage.fluent.inner to
+    opens com.azure.resourcemanager.storage.fluent.models to
         com.azure.core,
         com.fasterxml.jackson.databind;
     opens com.azure.resourcemanager.storage.models to

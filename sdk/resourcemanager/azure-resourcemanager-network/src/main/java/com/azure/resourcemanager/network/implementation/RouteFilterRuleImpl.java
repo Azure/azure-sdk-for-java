@@ -6,7 +6,7 @@ import com.azure.resourcemanager.network.models.Access;
 import com.azure.resourcemanager.network.models.RouteFilter;
 import com.azure.resourcemanager.network.models.RouteFilterRule;
 import com.azure.resourcemanager.network.models.RouteFilterRuleType;
-import com.azure.resourcemanager.network.fluent.inner.RouteFilterRuleInner;
+import com.azure.resourcemanager.network.fluent.models.RouteFilterRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,66 +31,66 @@ class RouteFilterRuleImpl extends ChildResourceImpl<RouteFilterRuleInner, RouteF
 
     @Override
     public RouteFilterRuleImpl withBgpCommunities(String... communities) {
-        inner().withCommunities(Arrays.asList(communities));
+        innerModel().withCommunities(Arrays.asList(communities));
         return this;
     }
 
     @Override
     public RouteFilterRuleImpl withBgpCommunity(String community) {
-        if (inner().communities() == null) {
-            inner().withCommunities(new ArrayList<String>());
+        if (innerModel().communities() == null) {
+            innerModel().withCommunities(new ArrayList<String>());
         }
-        inner().communities().add(community);
+        innerModel().communities().add(community);
         return this;
     }
 
     @Override
     public Update withoutBgpCommunity(String community) {
-        if (inner().communities() != null) {
-            inner().communities().remove(community);
+        if (innerModel().communities() != null) {
+            innerModel().communities().remove(community);
         }
         return this;
     }
 
     @Override
     public RouteFilterRuleImpl allowAccess() {
-        inner().withAccess(Access.ALLOW);
+        innerModel().withAccess(Access.ALLOW);
         return this;
     }
 
     @Override
     public RouteFilterRuleImpl denyAccess() {
-        inner().withAccess(Access.DENY);
+        innerModel().withAccess(Access.DENY);
         return this;
     }
 
     @Override
     public String name() {
-        return inner().name();
+        return innerModel().name();
     }
 
     @Override
     public Access access() {
-        return inner().access();
+        return innerModel().access();
     }
 
     @Override
     public RouteFilterRuleType routeFilterRuleType() {
-        return inner().routeFilterRuleType();
+        return innerModel().routeFilterRuleType();
     }
 
     @Override
     public List<String> communities() {
-        return Collections.unmodifiableList(inner().communities());
+        return Collections.unmodifiableList(innerModel().communities());
     }
 
     @Override
     public String provisioningState() {
-        return inner().provisioningState().toString();
+        return innerModel().provisioningState().toString();
     }
 
     @Override
     public String location() {
-        return inner().location();
+        return innerModel().location();
     }
 }

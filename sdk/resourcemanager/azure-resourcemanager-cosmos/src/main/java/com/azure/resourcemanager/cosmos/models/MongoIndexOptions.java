@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The MongoIndexOptions model. */
+/** Cosmos DB MongoDB collection index options. */
 @Fluent
 public final class MongoIndexOptions {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MongoIndexOptions.class);

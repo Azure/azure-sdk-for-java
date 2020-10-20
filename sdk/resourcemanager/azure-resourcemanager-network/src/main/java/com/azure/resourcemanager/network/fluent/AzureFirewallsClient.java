@@ -4,37 +4,16 @@
 
 package com.azure.resourcemanager.network.fluent;
 
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.Delete;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Headers;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.Patch;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Put;
-import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
-import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.fluent.inner.AzureFirewallInner;
-import com.azure.resourcemanager.network.models.AzureFirewallListResult;
-import com.azure.resourcemanager.network.models.TagsObject;
+import com.azure.resourcemanager.network.fluent.models.AzureFirewallInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -43,132 +22,21 @@ import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AzureFirewalls. */
-public final class AzureFirewallsClient
-    implements InnerSupportsGet<AzureFirewallInner>,
-        InnerSupportsListing<AzureFirewallInner>,
-        InnerSupportsDelete<Void> {
-    private final ClientLogger logger = new ClientLogger(AzureFirewallsClient.class);
-
-    /** The proxy service used to perform REST calls. */
-    private final AzureFirewallsService service;
-
-    /** The service client containing this operation class. */
-    private final NetworkManagementClient client;
-
+/** An instance of this class provides access to all the operations defined in AzureFirewallsClient. */
+public interface AzureFirewallsClient
+    extends InnerSupportsGet<AzureFirewallInner>, InnerSupportsListing<AzureFirewallInner>, InnerSupportsDelete<Void> {
     /**
-     * Initializes an instance of AzureFirewallsClient.
+     * Deletes the specified Azure Firewall.
      *
-     * @param client the instance of the service client containing this operation class.
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
-    AzureFirewallsClient(NetworkManagementClient client) {
-        this.service =
-            RestProxy.create(AzureFirewallsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
-    }
-
-    /**
-     * The interface defining all the services for NetworkManagementClientAzureFirewalls to be used by the proxy service
-     * to perform REST calls.
-     */
-    @Host("{$host}")
-    @ServiceInterface(name = "NetworkManagementCli")
-    private interface AzureFirewallsService {
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/azureFirewalls/{azureFirewallName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("azureFirewallName") String azureFirewallName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/azureFirewalls/{azureFirewallName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AzureFirewallInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("azureFirewallName") String azureFirewallName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/azureFirewalls/{azureFirewallName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("azureFirewallName") String azureFirewallName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") AzureFirewallInner parameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/azureFirewalls/{azureFirewallName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateTags(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("azureFirewallName") String azureFirewallName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") TagsObject parameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/azureFirewalls")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AzureFirewallListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/azureFirewalls")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AzureFirewallListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AzureFirewallListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AzureFirewallListResult>> listAllNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-    }
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String azureFirewallName);
 
     /**
      * Deletes the specified Azure Firewall.
@@ -176,47 +44,25 @@ public final class AzureFirewallsClient
      * @param resourceGroupName The name of the resource group.
      * @param azureFirewallName The name of the Azure Firewall.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String azureFirewallName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (azureFirewallName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter azureFirewallName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            azureFirewallName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String azureFirewallName);
+
+    /**
+     * Deletes the specified Azure Firewall.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String azureFirewallName);
 
     /**
      * Deletes the specified Azure Firewall.
@@ -225,44 +71,12 @@ public final class AzureFirewallsClient
      * @param azureFirewallName The name of the Azure Firewall.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String azureFirewallName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (azureFirewallName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter azureFirewallName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                azureFirewallName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String azureFirewallName, Context context);
 
     /**
      * Deletes the specified Azure Firewall.
@@ -270,17 +84,24 @@ public final class AzureFirewallsClient
      * @param resourceGroupName The name of the resource group.
      * @param azureFirewallName The name of the Azure Firewall.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String azureFirewallName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, azureFirewallName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
-    }
+    Mono<Void> deleteAsync(String resourceGroupName, String azureFirewallName);
+
+    /**
+     * Deletes the specified Azure Firewall.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String azureFirewallName);
 
     /**
      * Deletes the specified Azure Firewall.
@@ -289,115 +110,11 @@ public final class AzureFirewallsClient
      * @param azureFirewallName The name of the Azure Firewall.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String azureFirewallName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, azureFirewallName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Deletes the specified Azure Firewall.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureFirewallName The name of the Azure Firewall.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String azureFirewallName) {
-        return beginDeleteAsync(resourceGroupName, azureFirewallName).getSyncPoller();
-    }
-
-    /**
-     * Deletes the specified Azure Firewall.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureFirewallName The name of the Azure Firewall.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String azureFirewallName, Context context) {
-        return beginDeleteAsync(resourceGroupName, azureFirewallName, context).getSyncPoller();
-    }
-
-    /**
-     * Deletes the specified Azure Firewall.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureFirewallName The name of the Azure Firewall.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String azureFirewallName) {
-        return beginDeleteAsync(resourceGroupName, azureFirewallName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes the specified Azure Firewall.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureFirewallName The name of the Azure Firewall.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String azureFirewallName, Context context) {
-        return beginDeleteAsync(resourceGroupName, azureFirewallName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes the specified Azure Firewall.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureFirewallName The name of the Azure Firewall.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String azureFirewallName) {
-        deleteAsync(resourceGroupName, azureFirewallName).block();
-    }
-
-    /**
-     * Deletes the specified Azure Firewall.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureFirewallName The name of the Azure Firewall.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String azureFirewallName, Context context) {
-        deleteAsync(resourceGroupName, azureFirewallName, context).block();
-    }
+    void delete(String resourceGroupName, String azureFirewallName, Context context);
 
     /**
      * Gets the specified Azure Firewall.
@@ -405,47 +122,39 @@ public final class AzureFirewallsClient
      * @param resourceGroupName The name of the resource group.
      * @param azureFirewallName The name of the Azure Firewall.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Azure Firewall.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AzureFirewallInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String azureFirewallName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (azureFirewallName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter azureFirewallName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            azureFirewallName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<AzureFirewallInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String azureFirewallName);
+
+    /**
+     * Gets the specified Azure Firewall.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Azure Firewall.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<AzureFirewallInner> getByResourceGroupAsync(String resourceGroupName, String azureFirewallName);
+
+    /**
+     * Gets the specified Azure Firewall.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Azure Firewall.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AzureFirewallInner getByResourceGroup(String resourceGroupName, String azureFirewallName);
 
     /**
      * Gets the specified Azure Firewall.
@@ -454,123 +163,13 @@ public final class AzureFirewallsClient
      * @param azureFirewallName The name of the Azure Firewall.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Azure Firewall.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AzureFirewallInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String azureFirewallName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (azureFirewallName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter azureFirewallName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                azureFirewallName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * Gets the specified Azure Firewall.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureFirewallName The name of the Azure Firewall.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Azure Firewall.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AzureFirewallInner> getByResourceGroupAsync(String resourceGroupName, String azureFirewallName) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, azureFirewallName)
-            .flatMap(
-                (Response<AzureFirewallInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the specified Azure Firewall.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureFirewallName The name of the Azure Firewall.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Azure Firewall.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AzureFirewallInner> getByResourceGroupAsync(
-        String resourceGroupName, String azureFirewallName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, azureFirewallName, context)
-            .flatMap(
-                (Response<AzureFirewallInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the specified Azure Firewall.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureFirewallName The name of the Azure Firewall.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Azure Firewall.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AzureFirewallInner getByResourceGroup(String resourceGroupName, String azureFirewallName) {
-        return getByResourceGroupAsync(resourceGroupName, azureFirewallName).block();
-    }
-
-    /**
-     * Gets the specified Azure Firewall.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureFirewallName The name of the Azure Firewall.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Azure Firewall.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AzureFirewallInner getByResourceGroup(String resourceGroupName, String azureFirewallName, Context context) {
-        return getByResourceGroupAsync(resourceGroupName, azureFirewallName, context).block();
-    }
+    Response<AzureFirewallInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String azureFirewallName, Context context);
 
     /**
      * Creates or updates the specified Azure Firewall.
@@ -579,53 +178,43 @@ public final class AzureFirewallsClient
      * @param azureFirewallName The name of the Azure Firewall.
      * @param parameters Azure Firewall resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Firewall resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (azureFirewallName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter azureFirewallName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2020-05-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            azureFirewallName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters);
+
+    /**
+     * Creates or updates the specified Azure Firewall.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @param parameters Azure Firewall resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure Firewall resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<AzureFirewallInner>, AzureFirewallInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters);
+
+    /**
+     * Creates or updates the specified Azure Firewall.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @param parameters Azure Firewall resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure Firewall resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<AzureFirewallInner>, AzureFirewallInner> beginCreateOrUpdate(
+        String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters);
 
     /**
      * Creates or updates the specified Azure Firewall.
@@ -635,50 +224,13 @@ public final class AzureFirewallsClient
      * @param parameters Azure Firewall resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Firewall resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (azureFirewallName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter azureFirewallName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2020-05-01";
-        context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                azureFirewallName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
+    SyncPoller<PollResult<AzureFirewallInner>, AzureFirewallInner> beginCreateOrUpdate(
+        String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters, Context context);
 
     /**
      * Creates or updates the specified Azure Firewall.
@@ -687,20 +239,28 @@ public final class AzureFirewallsClient
      * @param azureFirewallName The name of the Azure Firewall.
      * @param parameters Azure Firewall resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Firewall resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<AzureFirewallInner>, AzureFirewallInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, azureFirewallName, parameters);
-        return this
-            .client
-            .<AzureFirewallInner, AzureFirewallInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AzureFirewallInner.class, AzureFirewallInner.class, Context.NONE);
-    }
+    Mono<AzureFirewallInner> createOrUpdateAsync(
+        String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters);
+
+    /**
+     * Creates or updates the specified Azure Firewall.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @param parameters Azure Firewall resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure Firewall resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AzureFirewallInner createOrUpdate(
+        String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters);
 
     /**
      * Creates or updates the specified Azure Firewall.
@@ -710,130 +270,13 @@ public final class AzureFirewallsClient
      * @param parameters Azure Firewall resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Firewall resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<AzureFirewallInner>, AzureFirewallInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, azureFirewallName, parameters, context);
-        return this
-            .client
-            .<AzureFirewallInner, AzureFirewallInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AzureFirewallInner.class, AzureFirewallInner.class, context);
-    }
-
-    /**
-     * Creates or updates the specified Azure Firewall.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureFirewallName The name of the Azure Firewall.
-     * @param parameters Azure Firewall resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Firewall resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<AzureFirewallInner>, AzureFirewallInner> beginCreateOrUpdate(
-        String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, azureFirewallName, parameters).getSyncPoller();
-    }
-
-    /**
-     * Creates or updates the specified Azure Firewall.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureFirewallName The name of the Azure Firewall.
-     * @param parameters Azure Firewall resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Firewall resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<AzureFirewallInner>, AzureFirewallInner> beginCreateOrUpdate(
-        String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, azureFirewallName, parameters, context).getSyncPoller();
-    }
-
-    /**
-     * Creates or updates the specified Azure Firewall.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureFirewallName The name of the Azure Firewall.
-     * @param parameters Azure Firewall resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Firewall resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AzureFirewallInner> createOrUpdateAsync(
-        String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, azureFirewallName, parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates or updates the specified Azure Firewall.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureFirewallName The name of the Azure Firewall.
-     * @param parameters Azure Firewall resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Firewall resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AzureFirewallInner> createOrUpdateAsync(
-        String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, azureFirewallName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates or updates the specified Azure Firewall.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureFirewallName The name of the Azure Firewall.
-     * @param parameters Azure Firewall resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Firewall resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AzureFirewallInner createOrUpdate(
-        String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, azureFirewallName, parameters).block();
-    }
-
-    /**
-     * Creates or updates the specified Azure Firewall.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureFirewallName The name of the Azure Firewall.
-     * @param parameters Azure Firewall resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Firewall resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AzureFirewallInner createOrUpdate(
-        String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters, Context context) {
-        return createOrUpdateAsync(resourceGroupName, azureFirewallName, parameters, context).block();
-    }
+    AzureFirewallInner createOrUpdate(
+        String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters, Context context);
 
     /**
      * Updates tags of an Azure Firewall resource.
@@ -842,50 +285,43 @@ public final class AzureFirewallsClient
      * @param azureFirewallName The name of the Azure Firewall.
      * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Firewall resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
-        String resourceGroupName, String azureFirewallName, Map<String, String> tags) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (azureFirewallName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter azureFirewallName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateTags(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            azureFirewallName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
+        String resourceGroupName, String azureFirewallName, Map<String, String> tags);
+
+    /**
+     * Updates tags of an Azure Firewall resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @param tags Resource tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure Firewall resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<AzureFirewallInner>, AzureFirewallInner> beginUpdateTagsAsync(
+        String resourceGroupName, String azureFirewallName, Map<String, String> tags);
+
+    /**
+     * Updates tags of an Azure Firewall resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @param tags Resource tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure Firewall resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<AzureFirewallInner>, AzureFirewallInner> beginUpdateTags(
+        String resourceGroupName, String azureFirewallName, Map<String, String> tags);
 
     /**
      * Updates tags of an Azure Firewall resource.
@@ -895,47 +331,13 @@ public final class AzureFirewallsClient
      * @param tags Resource tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Firewall resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
-        String resourceGroupName, String azureFirewallName, Map<String, String> tags, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (azureFirewallName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter azureFirewallName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
-        context = this.client.mergeContext(context);
-        return service
-            .updateTags(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                azureFirewallName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
+    SyncPoller<PollResult<AzureFirewallInner>, AzureFirewallInner> beginUpdateTags(
+        String resourceGroupName, String azureFirewallName, Map<String, String> tags, Context context);
 
     /**
      * Updates tags of an Azure Firewall resource.
@@ -944,19 +346,40 @@ public final class AzureFirewallsClient
      * @param azureFirewallName The name of the Azure Firewall.
      * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Firewall resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<AzureFirewallInner>, AzureFirewallInner> beginUpdateTagsAsync(
-        String resourceGroupName, String azureFirewallName, Map<String, String> tags) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updateTagsWithResponseAsync(resourceGroupName, azureFirewallName, tags);
-        return this
-            .client
-            .<AzureFirewallInner, AzureFirewallInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AzureFirewallInner.class, AzureFirewallInner.class, Context.NONE);
-    }
+    Mono<AzureFirewallInner> updateTagsAsync(
+        String resourceGroupName, String azureFirewallName, Map<String, String> tags);
+
+    /**
+     * Updates tags of an Azure Firewall resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure Firewall resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<AzureFirewallInner> updateTagsAsync(String resourceGroupName, String azureFirewallName);
+
+    /**
+     * Updates tags of an Azure Firewall resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @param tags Resource tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure Firewall resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AzureFirewallInner updateTags(String resourceGroupName, String azureFirewallName, Map<String, String> tags);
 
     /**
      * Updates tags of an Azure Firewall resource.
@@ -966,179 +389,50 @@ public final class AzureFirewallsClient
      * @param tags Resource tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Firewall resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<AzureFirewallInner>, AzureFirewallInner> beginUpdateTagsAsync(
-        String resourceGroupName, String azureFirewallName, Map<String, String> tags, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, azureFirewallName, tags, context);
-        return this
-            .client
-            .<AzureFirewallInner, AzureFirewallInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AzureFirewallInner.class, AzureFirewallInner.class, context);
-    }
+    AzureFirewallInner updateTags(
+        String resourceGroupName, String azureFirewallName, Map<String, String> tags, Context context);
 
     /**
      * Updates tags of an Azure Firewall resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param azureFirewallName The name of the Azure Firewall.
-     * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Firewall resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<AzureFirewallInner>, AzureFirewallInner> beginUpdateTags(
-        String resourceGroupName, String azureFirewallName, Map<String, String> tags) {
-        return beginUpdateTagsAsync(resourceGroupName, azureFirewallName, tags).getSyncPoller();
-    }
-
-    /**
-     * Updates tags of an Azure Firewall resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureFirewallName The name of the Azure Firewall.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Firewall resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<AzureFirewallInner>, AzureFirewallInner> beginUpdateTags(
-        String resourceGroupName, String azureFirewallName, Map<String, String> tags, Context context) {
-        return beginUpdateTagsAsync(resourceGroupName, azureFirewallName, tags, context).getSyncPoller();
-    }
-
-    /**
-     * Updates tags of an Azure Firewall resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureFirewallName The name of the Azure Firewall.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Firewall resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AzureFirewallInner> updateTagsAsync(
-        String resourceGroupName, String azureFirewallName, Map<String, String> tags) {
-        return beginUpdateTagsAsync(resourceGroupName, azureFirewallName, tags)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Updates tags of an Azure Firewall resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureFirewallName The name of the Azure Firewall.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Firewall resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AzureFirewallInner> updateTagsAsync(
-        String resourceGroupName, String azureFirewallName, Map<String, String> tags, Context context) {
-        return beginUpdateTagsAsync(resourceGroupName, azureFirewallName, tags, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Updates tags of an Azure Firewall resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureFirewallName The name of the Azure Firewall.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Firewall resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AzureFirewallInner updateTags(String resourceGroupName, String azureFirewallName, Map<String, String> tags) {
-        return updateTagsAsync(resourceGroupName, azureFirewallName, tags).block();
-    }
-
-    /**
-     * Updates tags of an Azure Firewall resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureFirewallName The name of the Azure Firewall.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Firewall resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AzureFirewallInner updateTags(
-        String resourceGroupName, String azureFirewallName, Map<String, String> tags, Context context) {
-        return updateTagsAsync(resourceGroupName, azureFirewallName, tags, context).block();
-    }
+    AzureFirewallInner updateTags(String resourceGroupName, String azureFirewallName);
 
     /**
      * Lists all Azure Firewalls in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListAzureFirewalls API service call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<AzureFirewallInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .<PagedResponse<AzureFirewallInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<AzureFirewallInner> listByResourceGroupAsync(String resourceGroupName);
+
+    /**
+     * Lists all Azure Firewalls in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for ListAzureFirewalls API service call.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<AzureFirewallInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Lists all Azure Firewalls in a resource group.
@@ -1146,346 +440,42 @@ public final class AzureFirewallsClient
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListAzureFirewalls API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<AzureFirewallInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(
-                this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Lists all Azure Firewalls in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListAzureFirewalls API service call.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AzureFirewallInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName), nextLink -> listNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Lists all Azure Firewalls in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListAzureFirewalls API service call.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AzureFirewallInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Lists all Azure Firewalls in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListAzureFirewalls API service call.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AzureFirewallInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
-    }
-
-    /**
-     * Lists all Azure Firewalls in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListAzureFirewalls API service call.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AzureFirewallInner> listByResourceGroup(String resourceGroupName, Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
-    }
+    PagedIterable<AzureFirewallInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Gets all the Azure Firewalls in a subscription.
      *
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Azure Firewalls in a subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<AzureFirewallInner>> listSinglePageAsync() {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context))
-            .<PagedResponse<AzureFirewallInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<AzureFirewallInner> listAsync();
+
+    /**
+     * Gets all the Azure Firewalls in a subscription.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the Azure Firewalls in a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<AzureFirewallInner> list();
 
     /**
      * Gets all the Azure Firewalls in a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Azure Firewalls in a subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<AzureFirewallInner>> listSinglePageAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Gets all the Azure Firewalls in a subscription.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Azure Firewalls in a subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AzureFirewallInner> listAsync() {
-        return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listAllNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Gets all the Azure Firewalls in a subscription.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Azure Firewalls in a subscription.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AzureFirewallInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets all the Azure Firewalls in a subscription.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Azure Firewalls in a subscription.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AzureFirewallInner> list() {
-        return new PagedIterable<>(listAsync());
-    }
-
-    /**
-     * Gets all the Azure Firewalls in a subscription.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Azure Firewalls in a subscription.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AzureFirewallInner> list(Context context) {
-        return new PagedIterable<>(listAsync(context));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListAzureFirewalls API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<AzureFirewallInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
-            .<PagedResponse<AzureFirewallInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListAzureFirewalls API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<AzureFirewallInner>> listNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListAzureFirewalls API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<AzureFirewallInner>> listAllNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listAllNext(nextLink, context))
-            .<PagedResponse<AzureFirewallInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListAzureFirewalls API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<AzureFirewallInner>> listAllNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listAllNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
+    PagedIterable<AzureFirewallInner> list(Context context);
 }

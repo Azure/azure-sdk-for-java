@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The UpgradePolicy model. */
+/** Describes an upgrade policy - automatic, manual, or rolling. */
 @Fluent
 public final class UpgradePolicy {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UpgradePolicy.class);

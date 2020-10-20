@@ -17,7 +17,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
@@ -41,11 +41,11 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String rgName1 = azureResourceManager.sdkContext().randomResourceName("uamsi-rg-1", 15);
-        final String rgName2 = azureResourceManager.sdkContext().randomResourceName("uamsi-rg-2", 15);
-        final String identityName = azureResourceManager.sdkContext().randomResourceName("id", 15);
-        final String linuxVMName = azureResourceManager.sdkContext().randomResourceName("VM1", 15);
-        final String pipName = azureResourceManager.sdkContext().randomResourceName("pip1", 15);
+        final String rgName1 = Utils.randomResourceName(azureResourceManager, "uamsi-rg-1", 15);
+        final String rgName2 = Utils.randomResourceName(azureResourceManager, "uamsi-rg-2", 15);
+        final String identityName = Utils.randomResourceName(azureResourceManager, "id", 15);
+        final String linuxVMName = Utils.randomResourceName(azureResourceManager, "VM1", 15);
+        final String pipName = Utils.randomResourceName(azureResourceManager, "pip1", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
         final Region region = Region.US_WEST_CENTRAL;

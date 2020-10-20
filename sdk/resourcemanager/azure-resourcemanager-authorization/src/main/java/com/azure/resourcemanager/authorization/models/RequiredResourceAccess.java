@@ -14,7 +14,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** The RequiredResourceAccess model. */
+/**
+ * Specifies the set of OAuth 2.0 permission scopes and app roles under the specified resource that an application
+ * requires access to. The specified OAuth 2.0 permission scopes may be requested by client applications (through the
+ * requiredResourceAccess collection) when calling a resource application. The requiredResourceAccess property of the
+ * Application entity is a collection of RequiredResourceAccess.
+ */
 @Fluent
 public final class RequiredResourceAccess {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RequiredResourceAccess.class);

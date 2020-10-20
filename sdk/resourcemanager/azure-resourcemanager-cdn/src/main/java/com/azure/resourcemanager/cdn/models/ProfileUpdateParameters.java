@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The ProfileUpdateParameters model. */
+/** Properties required to update a profile. */
 @Fluent
 public final class ProfileUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ProfileUpdateParameters.class);

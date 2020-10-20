@@ -11,7 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The InboundNatPool model. */
+/** Inbound NAT pool of the load balancer. */
 @JsonFlatten
 @Fluent
 public class InboundNatPool extends SubResource {

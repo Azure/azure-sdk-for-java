@@ -6,6 +6,7 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
@@ -24,14 +25,15 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * builds the table service clients
+ * This class provides a fluent builder API to help aid the configuration and instantiation of
+ * {@link TableServiceClient} and {@link TableServiceAsyncClient} objects. Call {@link #buildClient()} or
+ * {@link #buildAsyncClient()}, respectively, to construct an instance of the desired client.
  */
 @ServiceClientBuilder(serviceClients = {TableServiceClient.class, TableServiceAsyncClient.class})
 public class TableServiceClientBuilder {
     private final ClientLogger logger = new ClientLogger(TableServiceClientBuilder.class);
     private final SerializerAdapter serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
     private final List<HttpPipelinePolicy> policies;
-    private String connectionString;
     private Configuration configuration;
     private String endpoint;
     private HttpClient httpClient;
@@ -39,12 +41,13 @@ public class TableServiceClientBuilder {
     private TablesServiceVersion version;
     private TokenCredential tokenCredential;
     private HttpPipeline httpPipeline;
+    private TablesSharedKeyCredential tablesSharedKeyCredential;
     private SasTokenCredential sasTokenCredential;
-    private String accountName;
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
 
     /**
-     * constructor
+     * Creates a builder instance that is able to configure and construct {@link TableServiceClient} and
+     * {@link TableServiceAsyncClient} objects.
      */
     public TableServiceClientBuilder() {
         policies = new ArrayList<>();
@@ -52,35 +55,36 @@ public class TableServiceClientBuilder {
     }
 
     /**
-     * builds a sync TableServiceClient
+     * Creates a {@link TableServiceClient} based on options set in the builder.
      *
-     * @return a sync TableServiceClient
+     * @return A {@link TableServiceClient} created from the configurations in this builder.
      */
     public TableServiceClient buildClient() {
         return new TableServiceClient(buildAsyncClient());
     }
 
     /**
-     * builds an async TableServiceAsyncClient
+     * Creates a {@link TableServiceAsyncClient} based on options set in the builder.
      *
-     * @return TableServiceAsyncClient an aysnc TableServiceAsyncClient
+     * @return A {@link TableServiceAsyncClient} created from the configurations in this builder.
      */
     public TableServiceAsyncClient buildAsyncClient() {
 
         TablesServiceVersion serviceVersion = version != null ? version : TablesServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            (TablesSharedKeyCredential) tokenCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions,
-            httpLogOptions, httpClient, policies, configuration, logger);
+            tablesSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, httpLogOptions,
+            httpClient, policies, configuration, logger);
 
         return new TableServiceAsyncClient(pipeline, endpoint, serviceVersion, serializerAdapter);
     }
 
     /**
-     * Sets the connection string to help build the client
+     * Sets the connection string to connect to the service.
      *
-     * @param connectionString the connection string to the storage account
-     * @return the TableServiceClientBuilder
+     * @param connectionString Connection string of the storage or CosmosDB table API account.
+     * @return The updated {@code TableServiceClientBuilder}.
+     * @throws IllegalArgumentException if {@code connectionString} isn't a valid connection string.
      */
     public TableServiceClientBuilder connectionString(String connectionString) {
         StorageConnectionString storageConnectionString
@@ -89,15 +93,12 @@ public class TableServiceClientBuilder {
         if (endpoint == null || endpoint.getPrimaryUri() == null) {
             throw logger
                 .logExceptionAsError(new IllegalArgumentException(
-                    "connectionString missing required settings to derive blob service endpoint."));
+                    "connectionString missing required settings to derive tables service endpoint."));
         }
         this.endpoint(endpoint.getPrimaryUri());
-        if (storageConnectionString.getAccountName() != null) {
-            this.accountName = storageConnectionString.getAccountName();
-        }
         StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
         if (authSettings.getType() == StorageAuthenticationSettings.Type.ACCOUNT_NAME_KEY) {
-            this.credential((TokenCredential) new TablesSharedKeyCredential(authSettings.getAccount().getName(),
+            this.credential(new TablesSharedKeyCredential(authSettings.getAccount().getName(),
                 authSettings.getAccount().getAccessKey()));
         } else if (authSettings.getType() == StorageAuthenticationSettings.Type.SAS_TOKEN) {
             this.sasToken(authSettings.getSasToken());
@@ -106,10 +107,11 @@ public class TableServiceClientBuilder {
     }
 
     /**
-     * Sets the table service endpoint
+     * Sets the service endpoint.
      *
-     * @param endpoint URL of the service
-     * @return the updated TableServiceClientBuilder object
+     * @param endpoint The URL of the storage or CosmosDB table API account endpoint.
+     * @return The updated {@code TableServiceClientBuilder}.
+     * @throws IllegalArgumentException if {@code endpoint} isn't a valid URL.
      */
     public TableServiceClientBuilder endpoint(String endpoint) {
         try {
@@ -122,10 +124,11 @@ public class TableServiceClientBuilder {
     }
 
     /**
-     * Sets the HTTP pipeline to use for the service client.
+     * Sets the {@link HttpPipeline} to use for the service client. If {@code pipeline} is set, all other settings are
+     * ignored, aside from {@code endpoint}.
      *
-     * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
-     * @return The updated TableServiceClientBuilder object.
+     * @param pipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
+     * @return The updated {@code TableServiceClientBuilder}.
      */
     public TableServiceClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.httpPipeline != null && pipeline == null) {
@@ -137,24 +140,13 @@ public class TableServiceClientBuilder {
     }
 
     /**
-     * Sets the SAS token used to authorize requests sent to the service.
-     *
-     * @param sasToken The SAS token to use for authenticating requests.
-     * @return the updated BlobServiceClientBuilder
-     * @throws NullPointerException If {@code sasToken} is {@code null}.
-     */
-    public TableServiceClientBuilder sasToken(String sasToken) {
-        this.sasTokenCredential = new SasTokenCredential(Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null."));
-        this.tokenCredential = null;
-        return this;
-    }
-
-    /**
      * Sets the configuration object used to retrieve environment configuration values during building of the client.
      *
+     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
+     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
+     *
      * @param configuration Configuration store used to retrieve environment configurations.
-     * @return the updated TableServiceClientBuilder object
+     * @return The updated {@code TableServiceClientBuilder}.
      */
     public TableServiceClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
@@ -162,22 +154,53 @@ public class TableServiceClientBuilder {
     }
 
     /**
-     * update credential
+     * Sets the SAS token used to authorize requests sent to the service.
      *
-     * @param credential the tables shared key credential
-     * @return the updated TableServiceClient builder
-     * @throws NullPointerException If {@code credential} is {@code null}.
+     * @param sasToken The SAS token to use for authenticating requests.
+     * @return The updated {@code TableServiceClientBuilder}.
+     * @throws NullPointerException if {@code sasToken} is {@code null}.
      */
-    public TableServiceClientBuilder credential(TokenCredential credential) {
-        this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+    public TableServiceClientBuilder sasToken(String sasToken) {
+        this.sasTokenCredential = new SasTokenCredential(Objects.requireNonNull(sasToken,
+            "'sasToken' cannot be null."));
+        this.tablesSharedKeyCredential = null;
+        this.tokenCredential = null;
         return this;
     }
 
     /**
-     * Sets the {@link HttpClient} to use for sending a receiving requests to and from the service.
+     * Sets the {@link TablesSharedKeyCredential} used to authorize requests sent to the service.
      *
-     * @param httpClient HttpClient to use for requests.
-     * @return the updated TableServiceClientBuilder object
+     * @param credential {@link TablesSharedKeyCredential} used to authorize requests sent to the service.
+     * @return The updated {@code TableServiceClientBuilder}.
+     * @throws NullPointerException if {@code credential} is {@code null}.
+     */
+    public TableServiceClientBuilder credential(TablesSharedKeyCredential credential) {
+        this.tablesSharedKeyCredential = Objects.requireNonNull(credential, "credential cannot be null.");
+        this.tokenCredential = null;
+        this.sasTokenCredential = null;
+        return this;
+    }
+
+    /**
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service.
+     *
+     * @param credential {@link TokenCredential} used to authorize requests sent to the service.
+     * @return The updated {@code TableServiceClientBuilder}.
+     * @throws NullPointerException if {@code credential} is {@code null}.
+     */
+    public TableServiceClientBuilder credential(TokenCredential credential) {
+        this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.tablesSharedKeyCredential = null;
+        this.sasTokenCredential = null;
+        return this;
+    }
+
+    /**
+     * Sets the {@link HttpClient} to use for sending and receiving requests to and from the service.
+     *
+     * @param httpClient The {@link HttpClient} to use for requests.
+     * @return The updated {@code TableServiceClientBuilder}.
      */
     public TableServiceClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
@@ -188,11 +211,13 @@ public class TableServiceClientBuilder {
     }
 
     /**
-     * Sets the {@link HttpLogOptions} for service requests.
+     * Sets the logging configuration to use when sending and receiving requests to and from the service.
      *
-     * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
-     * @return the updated TableServiceClientBuilder object
-     * @throws NullPointerException If {@code logOptions} is {@code null}.
+     * If a {@code logLevel} is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.
+     *
+     * @param logOptions The logging configuration to use when sending and receiving requests to and from the service.
+     * @return The updated {@code TableServiceClientBuilder}.
+     * @throws NullPointerException if {@code logOptions} is {@code null}.
      */
     public TableServiceClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
@@ -203,9 +228,9 @@ public class TableServiceClientBuilder {
      * Adds a pipeline policy to apply on each request sent. The policy will be added after the retry policy. If
      * the method is called multiple times, all policies will be added and their order preserved.
      *
-     * @param pipelinePolicy a pipeline policy
-     * @return the updated TableServiceClientBuilder object
-     * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
+     * @param pipelinePolicy A pipeline policy
+     * @return The updated {@code TableServiceClientBuilder}.
+     * @throws NullPointerException if {@code pipelinePolicy} is {@code null}.
      */
     public TableServiceClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         this.policies.add(Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null"));
@@ -213,16 +238,16 @@ public class TableServiceClientBuilder {
     }
 
     /**
-     * Sets the TablesServiceVersion that is used when making API requests.
-     * <p>
+     * Sets the {@link TablesServiceVersion} that is used when making API requests.
+     *
      * If a service version is not provided, the service version that will be used will be the latest known service
      * version based on the version of the client library being used. If no service version is specified, updating to a
      * newer version of the client library will have the result of potentially moving to a newer service version.
-     * <p>
+     *
      * Targeting a specific service version may also mean that the service will return an error for newer APIs.
      *
-     * @param version {@link TablesServiceVersion} of the service to be used when making requests.
-     * @return the updated TableServiceClientBuilder object
+     * @param version The {@link TablesServiceVersion} of the service to be used when making requests.
+     * @return The updated {@code TableServiceClientBuilder}.
      */
     public TableServiceClientBuilder serviceVersion(TablesServiceVersion version) {
         this.version = version;
@@ -233,8 +258,8 @@ public class TableServiceClientBuilder {
      * Sets the request retry options for all the requests made through the client.
      *
      * @param retryOptions {@link RequestRetryOptions}.
-     * @return the updated TableServiceClientBuilder object
-     * @throws NullPointerException If {@code retryOptions} is {@code null}.
+     * @return The updated {@code TableServiceClientBuilder}.
+     * @throws NullPointerException if {@code retryOptions} is {@code null}.
      */
     public TableServiceClientBuilder retryOptions(RequestRetryOptions retryOptions) {
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");

@@ -11,7 +11,7 @@ Running this sample will be charged by Azure. You can check the usage and bill a
 
 * An Azure subscription. If you don't already have an Azure subscription, you can activate your [MSDN subscriber benefits](https://azure.microsoft.com/pricing/member-offers/msdn-benefits-details/) or sign up for a [free Azure account](https://azure.microsoft.com/free/).
 
-* A [Java Development Kit (JDK)](http://www.oracle.com/technetwork/java/javase/downloads/), version 1.8.
+* A [Java Development Kit (JDK)][jdk_link], version 1.8.
 
 * [Apache Maven](http://maven.apache.org/), version 3.0 or later.
 
@@ -36,6 +36,7 @@ Running this sample will be charged by Azure. You can check the usage and bill a
 2. Specify your queue name. Update `QUEUE_NAME` in [QueueSendController](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-queue/src/main/java/com/azure/jms/queue/QueueSendController.java) and [QueueReceiveController](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-queue/src/main/java/com/azure/jms/queue/QueueReceiveController.java).
                                                                                           
 ### How to run
+First, we need to ensure that this [instruction] is completed before run.
 
 1. Run with Maven
     ```
@@ -67,3 +68,7 @@ Type | Reference Link
 `Queues` | [https://docs.microsoft.com/azure/service-bus-messaging/service-bus-java-how-to-use-queues](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-java-how-to-use-queues)
 
 ## Contributing
+
+<!-- LINKS -->
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[instruction]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source

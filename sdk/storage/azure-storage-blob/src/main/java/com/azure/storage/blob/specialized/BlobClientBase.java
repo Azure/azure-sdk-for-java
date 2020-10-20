@@ -25,6 +25,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
+import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.models.BlobRange;
@@ -41,6 +42,7 @@ import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.Exceptions;
@@ -219,7 +221,7 @@ public class BlobClientBase {
      * @throws BlobStorageException If a storage service error occurred.
      */
     public final BlobInputStream openInputStream() {
-        return openInputStream(new BlobRange(0), null);
+        return openInputStream(null, null);
     }
 
     /**
@@ -233,7 +235,23 @@ public class BlobClientBase {
      * @throws BlobStorageException If a storage service error occurred.
      */
     public final BlobInputStream openInputStream(BlobRange range, BlobRequestConditions requestConditions) {
-        return new BlobInputStream(client, range.getOffset(), range.getCount(), requestConditions);
+        return openInputStream(new BlobInputStreamOptions().setRange(range).setRequestConditions(requestConditions));
+    }
+
+    /**
+     * Opens a blob input stream to download the specified range of the blob.
+     *
+     * @param options {@link BlobInputStreamOptions}
+     * @return An <code>InputStream</code> object that represents the stream to use for reading from the blob.
+     * @throws BlobStorageException If a storage service error occurred.
+     */
+    public BlobInputStream openInputStream(BlobInputStreamOptions options) {
+        options = options == null ? new BlobInputStreamOptions() : options;
+        BlobRange range = options.getRange() == null ? new BlobRange(0) : options.getRange();
+        int chunkSize = options.getBlockSize() == null ? 4 * Constants.MB : options.getBlockSize();
+
+        return new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize,
+            options.getRequestConditions(), getProperties());
     }
 
     /**
@@ -268,6 +286,11 @@ public class BlobClientBase {
 
     /**
      * Copies the data at the source URL to a blob.
+     * <p>
+     * This method triggers a long-running, asynchronous operations. The source may be another blob or an Azure File. If
+     * the source is in another account, the source must either be public or authenticated with a SAS token. If the
+     * source is in the same account, the Shared Key authorization on the destination will also be applied to the
+     * source. The source URL must be URL encoded.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -292,6 +315,11 @@ public class BlobClientBase {
 
     /**
      * Copies the data at the source URL to a blob.
+     * <p>
+     * This method triggers a long-running, asynchronous operations. The source may be another blob or an Azure File. If
+     * the source is in another account, the source must either be public or authenticated with a SAS token. If the
+     * source is in the same account, the Shared Key authorization on the destination will also be applied to the
+     * source. The source URL must be URL encoded.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -324,6 +352,11 @@ public class BlobClientBase {
 
     /**
      * Copies the data at the source URL to a blob.
+     * <p>
+     * This method triggers a long-running, asynchronous operations. The source may be another blob or an Azure File. If
+     * the source is in another account, the source must either be public or authenticated with a SAS token. If the
+     * source is in the same account, the Shared Key authorization on the destination will also be applied to the
+     * source. The source URL must be URL encoded.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -380,6 +413,9 @@ public class BlobClientBase {
 
     /**
      * Copies the data at the source URL to a blob and waits for the copy to complete before returning a response.
+     * <p>
+     * The source must be a block blob no larger than 256MB. The source must also be either public or have a sas token
+     * attached. The URL must be URL encoded.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -398,6 +434,9 @@ public class BlobClientBase {
 
     /**
      * Copies the data at the source URL to a blob and waits for the copy to complete before returning a response.
+     * <p>
+     * The source must be a block blob no larger than 256MB. The source must also be either public or have a sas token
+     * attached. The URL must be URL encoded.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -429,6 +468,9 @@ public class BlobClientBase {
 
     /**
      * Copies the data at the source URL to a blob and waits for the copy to complete before returning a response.
+     * <p>
+     * The source must be a block blob no larger than 256MB. The source must also be either public or have a sas token
+     * attached. The URL must be URL encoded.
      *
      * <p><strong>Code Samples</strong></p>
      *

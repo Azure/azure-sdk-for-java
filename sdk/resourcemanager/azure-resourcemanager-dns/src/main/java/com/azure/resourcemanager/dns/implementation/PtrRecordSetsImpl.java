@@ -4,10 +4,11 @@ package com.azure.resourcemanager.dns.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.dns.models.PtrRecordSet;
 import com.azure.resourcemanager.dns.models.PtrRecordSets;
 import com.azure.resourcemanager.dns.models.RecordType;
-import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
+import com.azure.resourcemanager.dns.fluent.models.RecordSetInner;
 import reactor.core.publisher.Mono;
 
 /** Implementation of PtrRecordSets. */
@@ -27,7 +28,7 @@ class PtrRecordSetsImpl extends DnsRecordSetsBaseImpl<PtrRecordSet, PtrRecordSet
         return this
             .parent()
             .manager()
-            .inner()
+            .serviceClient()
             .getRecordSets()
             .getAsync(this.dnsZone.resourceGroupName(), this.dnsZone.name(), name, this.recordType)
             .map(this::wrapModel);
@@ -40,14 +41,15 @@ class PtrRecordSetsImpl extends DnsRecordSetsBaseImpl<PtrRecordSet, PtrRecordSet
                 this
                     .parent()
                     .manager()
-                    .inner()
+                    .serviceClient()
                     .getRecordSets()
                     .listByType(
                         this.dnsZone.resourceGroupName(),
                         this.dnsZone.name(),
                         recordType,
                         pageSize,
-                        recordSetNameSuffix));
+                        recordSetNameSuffix,
+                        Context.NONE));
     }
 
     @Override
@@ -56,7 +58,7 @@ class PtrRecordSetsImpl extends DnsRecordSetsBaseImpl<PtrRecordSet, PtrRecordSet
             this
                 .parent()
                 .manager()
-                .inner()
+                .serviceClient()
                 .getRecordSets()
                 .listByTypeAsync(this.dnsZone.resourceGroupName(), this.dnsZone.name(), this.recordType));
     }

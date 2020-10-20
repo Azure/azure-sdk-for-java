@@ -1,0 +1,32 @@
+{
+    "parameters": {
+        "endpoint": "https://contoso.westus.communications.azure.com",
+        "api-version": "2020-09-21-preview2",
+        "body": {
+            "topic": "Lunch",
+            "members": [{
+                    "id": "8:acs:16c4f448-db02-1234-62da-108a6b26c747_2a711a-6c8ffcdc41",
+                    "displayName": "Jane"
+                },
+                {
+                    "id": "8:acs:16c4f448-db02-1234-62da-108a6b26c747_db0104-0800d69090",
+                    "displayName": "Alex"
+                },
+                {
+                    "id": "8:acs:16c4f448-db02-1234-62da-108a6b26c747_2a711a-6c8ffcdc43",
+                    "displayName": "Bob"
+                }
+            ]
+        }
+    },
+    "responses": {
+        "201": {
+            "headers": {
+                "Location": "https://contoso.westus.communications.azure.com/chat/threads/19%3Auni01_zbnh3nt2dfuffezc3sox7dog7wfhk6y5qe2rwlnfhlhdzirihdpq@thread.v2"
+            },
+            "body": {
+                "id": "19:uni01_zbnh3nt2dfuffezc3sox7dog7wfhk6y5qe2rwlnfhlhdzirihdpq@thread.v2"
+            }
+        }
+    }
+}

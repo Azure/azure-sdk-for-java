@@ -6,7 +6,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineOffer;
 import com.azure.resourcemanager.compute.models.VirtualMachinePublisher;
 import com.azure.resourcemanager.compute.models.VirtualMachineSkus;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineImagesClient;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 
 /** The implementation for {@link VirtualMachineOffer}. */
 class VirtualMachineOfferImpl implements VirtualMachineOffer {

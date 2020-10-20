@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SupportedRuntimeVersion model. */
+/** Supported deployment runtime version descriptor. */
 @Fluent
 public final class SupportedRuntimeVersion {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SupportedRuntimeVersion.class);

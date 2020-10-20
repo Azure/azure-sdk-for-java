@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-/** The GalleryOSDiskImage model. */
+/** This is the OS disk image. */
 @Immutable
 public final class GalleryOSDiskImage extends GalleryDiskImage {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryOSDiskImage.class);

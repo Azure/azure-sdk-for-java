@@ -4,168 +4,54 @@
 
 package com.azure.resourcemanager.trafficmanager.fluent;
 
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Headers;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
-import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.trafficmanager.fluent.inner.TrafficManagerGeographicHierarchyInner;
+import com.azure.resourcemanager.trafficmanager.fluent.models.TrafficManagerGeographicHierarchyInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in GeographicHierarchies. */
-public final class GeographicHierarchiesClient {
-    private final ClientLogger logger = new ClientLogger(GeographicHierarchiesClient.class);
-
-    /** The proxy service used to perform REST calls. */
-    private final GeographicHierarchiesService service;
-
-    /** The service client containing this operation class. */
-    private final TrafficManagerManagementClient client;
-
-    /**
-     * Initializes an instance of GeographicHierarchiesClient.
-     *
-     * @param client the instance of the service client containing this operation class.
-     */
-    GeographicHierarchiesClient(TrafficManagerManagementClient client) {
-        this.service =
-            RestProxy
-                .create(GeographicHierarchiesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
-    }
-
-    /**
-     * The interface defining all the services for TrafficManagerManagementClientGeographicHierarchies to be used by the
-     * proxy service to perform REST calls.
-     */
-    @Host("{$host}")
-    @ServiceInterface(name = "TrafficManagerManage")
-    private interface GeographicHierarchiesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("/providers/Microsoft.Network/trafficManagerGeographicHierarchies/default")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TrafficManagerGeographicHierarchyInner>> getDefault(
-            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
-    }
-
+/** An instance of this class provides access to all the operations defined in GeographicHierarchiesClient. */
+public interface GeographicHierarchiesClient {
     /**
      * Gets the default Geographic Hierarchy used by the Geographic traffic routing method.
      *
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the default Geographic Hierarchy used by the Geographic traffic routing method.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TrafficManagerGeographicHierarchyInner>> getDefaultWithResponseAsync() {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.getDefault(this.client.getEndpoint(), this.client.getApiVersion(), context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<TrafficManagerGeographicHierarchyInner>> getDefaultWithResponseAsync();
+
+    /**
+     * Gets the default Geographic Hierarchy used by the Geographic traffic routing method.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the default Geographic Hierarchy used by the Geographic traffic routing method.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<TrafficManagerGeographicHierarchyInner> getDefaultAsync();
+
+    /**
+     * Gets the default Geographic Hierarchy used by the Geographic traffic routing method.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the default Geographic Hierarchy used by the Geographic traffic routing method.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    TrafficManagerGeographicHierarchyInner getDefault();
 
     /**
      * Gets the default Geographic Hierarchy used by the Geographic traffic routing method.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the default Geographic Hierarchy used by the Geographic traffic routing method.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TrafficManagerGeographicHierarchyInner>> getDefaultWithResponseAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service.getDefault(this.client.getEndpoint(), this.client.getApiVersion(), context);
-    }
-
-    /**
-     * Gets the default Geographic Hierarchy used by the Geographic traffic routing method.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default Geographic Hierarchy used by the Geographic traffic routing method.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TrafficManagerGeographicHierarchyInner> getDefaultAsync() {
-        return getDefaultWithResponseAsync()
-            .flatMap(
-                (Response<TrafficManagerGeographicHierarchyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the default Geographic Hierarchy used by the Geographic traffic routing method.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default Geographic Hierarchy used by the Geographic traffic routing method.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TrafficManagerGeographicHierarchyInner> getDefaultAsync(Context context) {
-        return getDefaultWithResponseAsync(context)
-            .flatMap(
-                (Response<TrafficManagerGeographicHierarchyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the default Geographic Hierarchy used by the Geographic traffic routing method.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default Geographic Hierarchy used by the Geographic traffic routing method.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TrafficManagerGeographicHierarchyInner getDefault() {
-        return getDefaultAsync().block();
-    }
-
-    /**
-     * Gets the default Geographic Hierarchy used by the Geographic traffic routing method.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default Geographic Hierarchy used by the Geographic traffic routing method.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TrafficManagerGeographicHierarchyInner getDefault(Context context) {
-        return getDefaultAsync(context).block();
-    }
+    Response<TrafficManagerGeographicHierarchyInner> getDefaultWithResponse(Context context);
 }

@@ -1,45 +1,63 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
-package com.azure.resourcemanager.appservice.samples;
-
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.management.AzureEnvironment;
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.AzureResourceManager;
-//import com.azure.management.containerregistry.AccessKeyType;
-//import com.azure.management.containerregistry.Registry;
-//import com.azure.management.containerregistry.RegistryCredentials;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.management.profile.AzureProfile;
-
-/**
- * Azure App Service basic sample for managing web apps.
- *  - Create a Cosmos DB with credentials stored in a Key Vault
- *  - Create a web app which interacts with the Cosmos DB by first
- *      reading the secrets from the Key Vault.
- *
- *      The source code of the web app is located at
- *      https://github.com/Microsoft/todo-app-java-on-azure/tree/keyvault-secrets
- */
-public final class ManageLinuxWebAppCosmosDbByMsi {
-
-    /**
-     * Main function which runs the actual sample.
-     * @param azureResourceManager instance of the azure client
-     * @return true if sample runs successfully
-     */
-    public static boolean runSample(AzureResourceManager azureResourceManager) {
-        System.out.println("removed later");
-        return true;
+//
+//package com.azure.resourcemanager.appservice.samples;
+//
+//import com.azure.core.credential.TokenCredential;
+//import com.azure.core.http.policy.HttpLogDetailLevel;
+//import com.azure.core.management.AzureEnvironment;
+//import com.azure.core.management.Region;
+//import com.azure.core.management.profile.AzureProfile;
+//import com.azure.identity.DefaultAzureCredentialBuilder;
+//import com.azure.resourcemanager.AzureResourceManager;
+//import com.azure.resourcemanager.appservice.models.PricingTier;
+//import com.azure.resourcemanager.appservice.models.WebApp;
+//import com.azure.resourcemanager.authorization.models.ServicePrincipal;
+//import com.azure.resourcemanager.containerregistry.models.AccessKeyType;
+//import com.azure.resourcemanager.containerregistry.models.Registry;
+//import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
+//import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
+//import com.azure.resourcemanager.keyvault.models.SecretPermissions;
+//import com.azure.resourcemanager.keyvault.models.Vault;
+//import com.azure.resourcemanager.samples.DockerUtils;
+//import com.azure.resourcemanager.samples.Utils;
+//import com.github.dockerjava.api.DockerClient;
+//import com.github.dockerjava.api.command.PullImageResultCallback;
+//import com.github.dockerjava.api.model.AuthConfig;
+//import com.github.dockerjava.core.command.PushImageResultCallback;
+//
+//import java.io.IOException;
+//import java.nio.file.Files;
+//import java.nio.file.Paths;
+//
+///**
+// * Azure App Service basic sample for managing web apps.
+// *  - Create a Cosmos DB with credentials stored in a Key Vault
+// *  - Create a web app which interacts with the Cosmos DB by first
+// *      reading the secrets from the Key Vault.
+// *
+// *      The source code of the web app is located at
+// *      https://github.com/Microsoft/todo-app-java-on-azure/tree/keyvault-secrets
+// */
+//public final class ManageLinuxWebAppCosmosDbByMsi {
+//
+//    /**
+//     * Main function which runs the actual sample.
+//     * @param azure instance of the azure client
+//     * @param clientId the client ID
+//     * @return true if sample runs successfully
+//     */
+//    public static boolean runSample(AzureResourceManager azure, String clientId) throws IOException, InterruptedException {
 //        // New resources
 //        final Region region         = Region.US_WEST;
-//        final String acrName        = azure.sdkContext().randomResourceName("acr", 20);
-//        final String appName        = azure.sdkContext().randomResourceName("webapp1-", 20);
-//        final String password       = SdkContext.randomUuid();
-//        final String rgName         = azure.sdkContext().randomResourceName("rg1NEMV_", 24);
-//        final String vaultName      = azure.sdkContext().randomResourceName("vault", 20);
-//        final String cosmosName     = azure.sdkContext().randomResourceName("cosmosdb", 20);
+//        final String acrName        = Utils.randomResourceName(azure, "acr", 20);
+//        final String appName        = Utils.randomResourceName(azure, "webapp1-", 20);
+//        final String password       = Utils.password();
+//        final String rgName         = Utils.randomResourceName(azure, "rg1NEMV_", 24);
+//        final String vaultName      = Utils.randomResourceName(azure, "vault", 20);
+//        final String cosmosName     = Utils.randomResourceName(azure, "cosmosdb", 20);
+//
+//        String servicePrincipalClientId = clientId; // replace with a real service principal client id
 //
 //        try {
 //            //============================================================
@@ -49,10 +67,8 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
 //            CosmosDBAccount cosmosDBAccount = azure.cosmosDBAccounts().define(cosmosName)
 //                    .withRegion(region)
 //                    .withNewResourceGroup(rgName)
-//                    .withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB)
-//                    .withEventualConsistency()
-//                    .withWriteReplication(Region.US_EAST)
-//                    .withReadReplication(Region.US_CENTRAL)
+//                    .withDataModelSql()
+//                    .withStrongConsistency()
 //                    .create();
 //
 //            System.out.println("Created CosmosDB");
@@ -61,16 +77,32 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
 //            //============================================================
 //            // Create a service principal
 //
-//            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
-//            final ApplicationTokenCredential credentials = ApplicationTokenCredential.fromFile(credFile);
-//
-//            ServicePrincipal servicePrincipal = Azure.authenticate(credentials).servicePrincipals()
+//            ServicePrincipal servicePrincipal = azure.accessManagement().servicePrincipals()
 //                    .define(appName)
 //                    .withNewApplication("http://" + appName + ".azurewebsites.net")
 //                    .definePasswordCredential("password")
 //                        .withPasswordValue(password)
 //                        .attach()
 //                    .create();
+//
+//            //=============================================================
+//            // If service principal client id and secret are not set via the local variables, attempt to read the service
+//            // principal client id and secret from a secondary ".azureauth" file set through an environment variable.
+//            //
+//            // If the environment variable was not set then reuse the main service principal set for running this sample.
+//
+//            if (servicePrincipalClientId == null || servicePrincipalClientId.isEmpty()) {
+//                servicePrincipalClientId = System.getenv("AZURE_CLIENT_ID");
+//                if (servicePrincipalClientId == null || servicePrincipalClientId.isEmpty()) {
+//                    String envSecondaryServicePrincipal = System.getenv("AZURE_AUTH_LOCATION_2");
+//
+//                    if (envSecondaryServicePrincipal == null || !envSecondaryServicePrincipal.isEmpty() || !Files.exists(Paths.get(envSecondaryServicePrincipal))) {
+//                        envSecondaryServicePrincipal = System.getenv("AZURE_AUTH_LOCATION");
+//                    }
+//
+//                    servicePrincipalClientId = Utils.getSecondaryServicePrincipalClientID(envSecondaryServicePrincipal);
+//                }
+//            }
 //
 //            //============================================================
 //            // Create a key vault
@@ -80,7 +112,7 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
 //                    .withRegion(region)
 //                    .withExistingResourceGroup(rgName)
 //                    .defineAccessPolicy()
-//                        .forServicePrincipal(credentials.getClientId())
+//                        .forServicePrincipal(servicePrincipalClientId)
 //                        .allowSecretAllPermissions()
 //                        .attach()
 //                    .defineAccessPolicy()
@@ -89,25 +121,23 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
 //                        .attach()
 //                    .create();
 //
-//            SdkContext.sleep(10000);
-//
-//            KeyVaultClient client = new KeyVaultClient(new KeyVaultCredentials() {
-//                @Override
-//                public String doAuthenticate(String authorization, String resource, String scope) {
-//                    try {
-//                        return credentials.getToken(resource);
-//                    } catch (IOException e) {
-//                        return null;
-//                    }
-//                }
-//            });
+////            SdkContext.sleep(10000);
 //
 //            //============================================================
 //            // Store Cosmos DB credentials in Key Vault
 //
-//            client.setSecret(new SetSecretRequest.Builder(vault.vaultUri(), "azure-documentdb-uri", cosmosDBAccount.documentEndpoint()).build());
-//            client.setSecret(new SetSecretRequest.Builder(vault.vaultUri(), "azure-documentdb-key", cosmosDBAccount.listKeys().primaryMasterKey()).build());
-//            client.setSecret(new SetSecretRequest.Builder(vault.vaultUri(), "azure-documentdb-database", "tododb").build());
+//            vault.secrets().define("azure-documentdb-uri")
+//                .withValue(cosmosDBAccount.documentEndpoint())
+//                .create();
+//
+//            vault.secrets().define("azure-documentdb-key")
+//                .withValue(cosmosDBAccount.listKeys().primaryMasterKey())
+//                .create();
+//
+//            vault.secrets().define("azure-documentdb-database")
+//                .withValue("tododb")
+//                .create();
+//
 ////            client.setSecret(new SetSecretRequest.Builder(vault.vaultUri(), "azure.documentdb.uri", cosmosDBAccount.documentEndpoint()).build());
 ////            client.setSecret(new SetSecretRequest.Builder(vault.vaultUri(), "azure.documentdb.key", cosmosDBAccount.listKeys().primaryMasterKey()).build());
 ////            client.setSecret(new SetSecretRequest.Builder(vault.vaultUri(), "azure.documentdb.database", "tododb").build());
@@ -117,7 +147,7 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
 //
 //            System.out.println("Creating an Azure Container Registry");
 //
-//            Date t1 = new Date();
+//            long t1 = System.currentTimeMillis();
 //
 //            Registry azureRegistry = azure.containerRegistries().define(acrName)
 //                    .withRegion(region)
@@ -126,8 +156,8 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
 //                    .withRegistryNameAsAdminUser()
 //                    .create();
 //
-//            Date t2 = new Date();
-//            System.out.println("Created Azure Container Registry: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + azureRegistry.id());
+//            long t2 = System.currentTimeMillis();
+//            System.out.println("Created Azure Container Registry: (took " + ((t2 - t1) / 1000) + " seconds) " + azureRegistry.id());
 //            Utils.print(azureRegistry);
 //
 //            //=============================================================
@@ -137,14 +167,18 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
 //            DockerClient dockerClient = DockerUtils.createDockerClient(azure, rgName, region,
 //                    azureRegistry.loginServerUrl(), acrCredentials.username(), acrCredentials.accessKeys().get(AccessKeyType.PRIMARY));
 //
+//            String imageName = "tomcat:7.0-slim";
 //            String privateRepoUrl = azureRegistry.loginServerUrl() + "/todoapp";
-//            dockerClient.buildImageCmd(new File(ManageLinuxWebAppCosmosDbByMsi.class.getResource("/todoapp-cosmosdb/Dockerfile").getFile()))
-//                    .withTag(privateRepoUrl)
-//                    .exec(new BuildImageResultCallback()).awaitCompletion();
+//            dockerClient.pullImageCmd(imageName)
+//                .withAuthConfig(new AuthConfig()) // anonymous
+//                .exec(new PullImageResultCallback())
+//                .awaitCompletion();
+//
+//            String imageId = dockerClient.inspectImageCmd(imageName).exec().getId();
+//            dockerClient.tagImageCmd(imageId, privateRepoUrl, "latest").exec();
 //
 //            dockerClient.pushImageCmd(privateRepoUrl)
-//                    .withAuthConfig(dockerClient.authConfig())
-//                    .exec(new PushImageResultCallback()).awaitSuccess();
+//                    .exec(new PushImageResultCallback()).awaitCompletion();
 //
 //            //============================================================
 //            // Create a web app with a new app service plan
@@ -167,9 +201,6 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
 //            Utils.print(app1);
 //
 //            return true;
-//        } catch (Exception e) {
-//            System.err.println(e.getMessage());
-//            e.printStackTrace();
 //        } finally {
 //            try {
 //                System.out.println("Deleting Resource Group: " + rgName);
@@ -181,37 +212,36 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
 //                g.printStackTrace();
 //            }
 //        }
-//        return false;
-    }
-
-    /**
-     * Main entry point.
-     * @param args the parameters
-     */
-    public static void main(String[] args) {
-        try {
-
-            //=============================================================
-            // Authenticate
-
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
-            final TokenCredential credential = new DefaultAzureCredentialBuilder()
-                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
-                .build();
-
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
-                .withLogLevel(HttpLogDetailLevel.BASIC)
-                .authenticate(credential, profile)
-                .withDefaultSubscription();
-
-            // Print selected subscription
-            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
-            runSample(azureResourceManager);
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-        }
-    }
-}
+//    }
+//
+//    /**
+//     * Main entry point.
+//     * @param args the parameters
+//     */
+//    public static void main(String[] args) {
+//        try {
+//
+//            //=============================================================
+//            // Authenticate
+//
+//            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+//            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+//                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
+//                .build();
+//
+//            AzureResourceManager azureResourceManager = AzureResourceManager
+//                .configure()
+//                .withLogLevel(HttpLogDetailLevel.BASIC)
+//                .authenticate(credential, profile)
+//                .withDefaultSubscription();
+//
+//            // Print selected subscription
+//            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
+//            runSample(azureResourceManager, "");
+//
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//            e.printStackTrace();
+//        }
+//    }
+//}

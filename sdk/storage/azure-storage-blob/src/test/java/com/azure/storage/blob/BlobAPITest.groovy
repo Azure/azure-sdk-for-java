@@ -229,6 +229,7 @@ class BlobAPITest extends APISpec {
         headers.getBlobCommittedBlockCount() == null
         headers.isServerEncrypted() != null
         headers.getBlobContentMD5() == null
+//        headers.getLastAccessedTime() /* TODO (gapra): re-enable when last access time enabled. */
     }
 
     def "Download empty file"() {
@@ -973,6 +974,7 @@ class BlobAPITest extends APISpec {
         properties.getTagCount() == 1
         properties.getRehydratePriority() == null // tested in setTier rehydrate priority
         !properties.isSealed() // tested in AppendBlob. "seal blob"
+//        properties.getLastAccessedTime() /* TODO: re-enable when last access time enabled. */
     }
 
     def "Get properties min"() {
@@ -2690,4 +2692,16 @@ class BlobAPITest extends APISpec {
         then:
         thrown(IllegalArgumentException)
     }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+     def "Per call policy"() {
+         bc = getBlobClient(primaryCredential, bc.getBlobUrl(), getPerCallVersionPolicy())
+
+         when:
+         def response = bc.getPropertiesWithResponse(null, null, null)
+
+         then:
+         notThrown(BlobStorageException)
+         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
+     }
 }

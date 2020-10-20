@@ -19,6 +19,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
+import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
@@ -54,6 +55,7 @@ import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_MESSAGE_LENGTH_BYTES;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_TRACING_SERVICE_NAME;
 
 /**
  * An <b>asynchronous</b> producer responsible for transmitting {@link EventData} to a specific Event Hub, grouped
@@ -421,7 +423,8 @@ public class EventHubProducerAsyncClient implements Closeable {
             if (isTracingEnabled) {
                 parentContext.set(event.getContext());
                 if (i == 0) {
-                    sharedContext = tracerProvider.getSharedSpanBuilder(parentContext.get());
+                    sharedContext = tracerProvider.getSharedSpanBuilder(ClientConstants.AZ_TRACING_SERVICE_NAME,
+                        parentContext.get());
                 }
                 tracerProvider.addSpanLinks(sharedContext.addData(SPAN_CONTEXT_KEY, event.getContext()));
             }
@@ -445,7 +448,7 @@ public class EventHubProducerAsyncClient implements Closeable {
                     .addData(HOST_NAME_KEY, fullyQualifiedNamespace)
                     .addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
             // Start send span and store updated context
-            parentContext.set(tracerProvider.startSpan(finalSharedContext, ProcessKind.SEND));
+            parentContext.set(tracerProvider.startSpan(AZ_TRACING_SERVICE_NAME, finalSharedContext, ProcessKind.SEND));
         }
 
         return withRetry(getSendLink(batch.getPartitionId())

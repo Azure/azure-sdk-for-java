@@ -12,7 +12,7 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.compute.models.ComputeResourceType;
 import com.azure.resourcemanager.compute.models.ComputeSku;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 
 import java.util.Map;

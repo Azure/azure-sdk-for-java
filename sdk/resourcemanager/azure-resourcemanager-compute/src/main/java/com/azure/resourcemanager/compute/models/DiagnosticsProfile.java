@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DiagnosticsProfile model. */
+/** Specifies the boot diagnostic settings state. &lt;br&gt;&lt;br&gt;Minimum api-version: 2015-06-15. */
 @Fluent
 public final class DiagnosticsProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DiagnosticsProfile.class);

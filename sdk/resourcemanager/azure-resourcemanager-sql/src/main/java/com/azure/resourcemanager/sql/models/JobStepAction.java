@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The JobStepAction model. */
+/** The action to be executed by a job step. */
 @Fluent
 public final class JobStepAction {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(JobStepAction.class);

@@ -11,7 +11,7 @@ import com.azure.search.documents.indexes.models.CorsOptions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SearchIndex model. */
+/** Represents a search index definition, which describes the fields and search behavior of an index. */
 @Fluent
 public final class SearchIndex {
     /*

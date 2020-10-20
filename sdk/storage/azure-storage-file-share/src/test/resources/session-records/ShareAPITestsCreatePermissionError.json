@@ -1,48 +1,48 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gaprastg71.file.core.windows.net/shareapitestscreatepermissionerror799772bd1c597d5?restype=share",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestscreatepermissionerror57641837f153085?restype=share",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "f575a546-3faf-47f4-a416-83c89626d816"
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "aabb03d3-4f71-4031-a27e-dc7737ccab47"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2020-02-10",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D7791201BBEC2C",
-      "Last-Modified" : "Wed, 04 Dec 2019 23:30:54 GMT",
+      "ETag" : "0x8D8448C99EFC547",
+      "Last-Modified" : "Wed, 19 Aug 2020 22:09:54 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "9ba99f71-201a-0011-6bfa-aa088f000000",
-      "Date" : "Wed, 04 Dec 2019 23:30:53 GMT",
-      "x-ms-client-request-id" : "f575a546-3faf-47f4-a416-83c89626d816"
+      "x-ms-request-id" : "8c89f98e-601a-0022-7075-761fdd000000",
+      "Date" : "Wed, 19 Aug 2020 22:09:54 GMT",
+      "x-ms-client-request-id" : "aabb03d3-4f71-4031-a27e-dc7737ccab47"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://gaprastg71.file.core.windows.net/shareapitestscreatepermissionerror799772bd1c597d5?restype=share&comp=filepermission",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestscreatepermissionerror57641837f153085?restype=share&comp=filepermission",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "807d83ff-81f2-438e-a3bb-e7333964b131",
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5614cdfd-ebd0-435d-acaa-25041f96f922",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2020-02-10",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "FileInvalidPermission",
       "retry-after" : "0",
       "Content-Length" : "233",
       "StatusCode" : "400",
-      "x-ms-request-id" : "9ba99f73-201a-0011-6cfa-aa088f000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>FileInvalidPermission</Code><Message>The specified file permission is not valid.\nRequestId:9ba99f73-201a-0011-6cfa-aa088f000000\nTime:2019-12-04T23:30:54.2660302Z</Message></Error>",
-      "Date" : "Wed, 04 Dec 2019 23:30:53 GMT",
-      "x-ms-client-request-id" : "807d83ff-81f2-438e-a3bb-e7333964b131",
+      "x-ms-request-id" : "8c89f990-601a-0022-7175-761fdd000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>FileInvalidPermission</Code><Message>The specified file permission is not valid.\nRequestId:8c89f990-601a-0022-7175-761fdd000000\nTime:2020-08-19T22:09:54.2403573Z</Message></Error>",
+      "Date" : "Wed, 19 Aug 2020 22:09:54 GMT",
+      "x-ms-client-request-id" : "5614cdfd-ebd0-435d-acaa-25041f96f922",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareapitestscreatepermissionerror799772bd1c597d5" ]
+  "variables" : [ "shareapitestscreatepermissionerror57641837f153085" ]
 }

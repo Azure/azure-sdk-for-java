@@ -6,12 +6,12 @@ package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.fluent.inner.ADGroupInner;
+import com.azure.resourcemanager.authorization.fluent.models.ADGroupInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The GroupListResult model. */
+/** Server response for Get tenant groups API call. */
 @Fluent
 public final class GroupListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GroupListResult.class);

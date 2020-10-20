@@ -1,0 +1,22 @@
+{
+    "parameters": {
+        "endpoint": "https://contoso.westus.communications.azure.com",
+        "api-version": "2020-09-21-preview2",
+        "chatThreadId": "19:f2167429acf6482880c6b7790a9086c1@thread.v2"
+    },
+    "responses": {
+        "200": {
+            "body": [{
+                    "id": "8:acs:16c4f448-db02-1234-62da-108a6b26c747_2a711a-6c8ffcdc41",
+                    "displayName": "Jane",
+                    "shareHistoryTime": "0"
+                },
+                {
+                    "id": "8:acs:16c4f448-db02-1234-62da-108a6b26c747_db0104-0800d69090",
+                    "displayName": "Alex",
+                    "shareHistoryTime": "0"
+                }
+            ]
+        }
+    }
+}

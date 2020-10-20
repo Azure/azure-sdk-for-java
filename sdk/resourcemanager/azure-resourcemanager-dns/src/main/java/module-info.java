@@ -7,11 +7,11 @@ module com.azure.resourcemanager.dns {
     // export public APIs of dns
     exports com.azure.resourcemanager.dns;
     exports com.azure.resourcemanager.dns.fluent;
-    exports com.azure.resourcemanager.dns.fluent.inner;
+    exports com.azure.resourcemanager.dns.fluent.models;
     exports com.azure.resourcemanager.dns.models;
 
     // open packages specifically for azure core and jackson
-    opens com.azure.resourcemanager.dns.fluent.inner to
+    opens com.azure.resourcemanager.dns.fluent.models to
         com.azure.core,
         com.fasterxml.jackson.databind;
     opens com.azure.resourcemanager.dns.models to

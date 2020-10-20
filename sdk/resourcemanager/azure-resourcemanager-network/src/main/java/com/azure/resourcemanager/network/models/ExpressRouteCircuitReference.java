@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ExpressRouteCircuitReference model. */
+/** Reference to an express route circuit. */
 @Fluent
 public final class ExpressRouteCircuitReference {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitReference.class);

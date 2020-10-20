@@ -34,26 +34,26 @@ public abstract class NestedResourceImpl<
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
     public String name() {
-        if (this.inner().name() == null) {
+        if (this.innerModel().name() == null) {
             return super.name();
         } else {
-            return this.inner().name();
+            return this.innerModel().name();
         }
     }
 
     @Override
     public String type() {
-        return this.inner().type();
+        return this.innerModel().type();
     }
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().id() == null;
+        return this.innerModel().id() == null;
     }
 
     @Override

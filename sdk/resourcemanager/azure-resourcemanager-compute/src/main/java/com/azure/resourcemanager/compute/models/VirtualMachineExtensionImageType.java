@@ -4,13 +4,13 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineExtensionImageInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionImageInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /** An immutable client-side representation of an Azure virtual machine extension image type. */
 @Fluent
-public interface VirtualMachineExtensionImageType extends HasInner<VirtualMachineExtensionImageInner>, HasName {
+public interface VirtualMachineExtensionImageType extends HasInnerModel<VirtualMachineExtensionImageInner>, HasName {
     /** @return the resource ID of the virtual machine extension image type */
     String id();
 

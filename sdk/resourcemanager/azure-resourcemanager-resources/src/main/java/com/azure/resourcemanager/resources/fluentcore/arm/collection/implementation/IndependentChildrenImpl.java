@@ -4,17 +4,17 @@
 package com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
+import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByParent;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByParent;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsListingByParent;
-import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
-import com.azure.resourcemanager.resources.fluentcore.arm.ManagerBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.IndependentChild;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import reactor.core.publisher.Mono;
 
 /**
@@ -33,7 +33,7 @@ public abstract class IndependentChildrenImpl<
         ImplT extends T,
         InnerT,
         InnerCollectionT,
-        ManagerT extends ManagerBase,
+        ManagerT extends Manager<?>,
         ParentT extends Resource & HasResourceGroup>
         extends CreatableResourcesImpl<T, ImplT, InnerT>
         implements
@@ -42,7 +42,7 @@ public abstract class IndependentChildrenImpl<
         SupportsListingByParent<T, ParentT, ManagerT>,
         SupportsDeletingByParent,
         HasManager<ManagerT>,
-        HasInner<InnerCollectionT> {
+        HasInnerModel<InnerCollectionT> {
     protected final InnerCollectionT innerCollection;
     protected final ManagerT manager;
 
@@ -52,7 +52,7 @@ public abstract class IndependentChildrenImpl<
     }
 
     @Override
-    public InnerCollectionT inner() {
+    public InnerCollectionT innerModel() {
         return this.innerCollection;
     }
 

@@ -5,7 +5,7 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.network.fluent.ConnectionMonitorsClient;
-import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorResultInner;
+import com.azure.resourcemanager.network.fluent.models.ConnectionMonitorResultInner;
 import com.azure.resourcemanager.network.models.ConnectionMonitor;
 import com.azure.resourcemanager.network.models.ConnectionMonitors;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;

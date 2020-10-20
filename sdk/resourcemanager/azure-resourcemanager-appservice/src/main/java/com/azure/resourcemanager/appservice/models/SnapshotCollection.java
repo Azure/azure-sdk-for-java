@@ -6,12 +6,12 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.inner.SnapshotInner;
+import com.azure.resourcemanager.appservice.fluent.models.SnapshotInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SnapshotCollection model. */
+/** Collection of snapshots which can be used to revert an app to a previous time. */
 @Fluent
 public final class SnapshotCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotCollection.class);

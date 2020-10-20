@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -58,11 +59,11 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
     private final FetchExecutionRangeAccumulator fetchExecutionRangeAccumulator;
     private static final String DEFAULT_PARTITION_KEY_RANGE_ID = "0";
 
-    public DefaultDocumentQueryExecutionContext(IDocumentQueryClient client, ResourceType resourceTypeEnum,
+    public DefaultDocumentQueryExecutionContext(DiagnosticsClientContext diagnosticsClientContext, IDocumentQueryClient client, ResourceType resourceTypeEnum,
                                                 Class<T> resourceType, SqlQuerySpec query, CosmosQueryRequestOptions cosmosQueryRequestOptions, String resourceLink,
                                                 UUID correlatedActivityId, boolean isContinuationExpected) {
 
-        super(client,
+        super(diagnosticsClientContext, client,
                 resourceTypeEnum,
                 resourceType,
                 query,
@@ -137,7 +138,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
 
         retryPolicyInstance = new InvalidPartitionExceptionRetryPolicy(collectionCache, retryPolicyInstance, resourceLink, cosmosQueryRequestOptions);
         if (super.resourceTypeEnum.isPartitioned()) {
-            retryPolicyInstance = new PartitionKeyRangeGoneRetryPolicy(
+            retryPolicyInstance = new PartitionKeyRangeGoneRetryPolicy(this.diagnosticsClientContext,
                     collectionCache,
                     partitionKeyRangeCache,
                     PathsHelper.getCollectionPath(super.resourceLink),

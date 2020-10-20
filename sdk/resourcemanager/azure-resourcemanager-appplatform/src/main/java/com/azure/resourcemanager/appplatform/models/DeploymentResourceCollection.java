@@ -6,12 +6,12 @@ package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appplatform.fluent.inner.DeploymentResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.DeploymentResourceInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The DeploymentResourceCollection model. */
+/** Object that includes an array of App resources and a possible link for next set. */
 @Fluent
 public final class DeploymentResourceCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentResourceCollection.class);

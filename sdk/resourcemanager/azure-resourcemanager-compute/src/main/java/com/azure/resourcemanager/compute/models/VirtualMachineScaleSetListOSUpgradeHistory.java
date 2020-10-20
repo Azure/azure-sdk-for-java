@@ -6,12 +6,12 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.fluent.inner.UpgradeOperationHistoricalStatusInfoInner;
+import com.azure.resourcemanager.compute.fluent.models.UpgradeOperationHistoricalStatusInfoInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VirtualMachineScaleSetListOSUpgradeHistory model. */
+/** List of Virtual Machine Scale Set OS Upgrade History operation response. */
 @Fluent
 public final class VirtualMachineScaleSetListOSUpgradeHistory {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetListOSUpgradeHistory.class);

@@ -5,15 +5,15 @@ The Spring Data Gremlin Starter provides Spring Data support for the Gremlin que
 
 ## Getting started
 ### Prerequisites
-- Java Development Kit (JDK) with version 8 or above
+- [Java Development Kit (JDK)][jdk_link] with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [Maven](http://maven.apache.org/) 3.0 and above
 
 ### Include the package
-[//]: # ({x-version-update-start;com.azure:azure-spring-boot-starter-data-gremlin;current})
+[//]: # ({x-version-update-start;com.azure.spring:azure-spring-boot-starter-data-gremlin;current})
 ```xml
 <dependency>
-    <groupId>com.azure</groupId>
+    <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-data-gremlin</artifactId>
     <version>3.0.0-beta.1</version>
 </dependency>
@@ -232,3 +232,4 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-data-gremlin
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [azure_subscription]: https://azure.microsoft.com/free
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable

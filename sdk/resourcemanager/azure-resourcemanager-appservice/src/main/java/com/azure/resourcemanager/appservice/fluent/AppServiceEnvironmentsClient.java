@@ -4,62 +4,31 @@
 
 package com.azure.resourcemanager.appservice.fluent;
 
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.Delete;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Headers;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.Patch;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
-import com.azure.core.annotation.Put;
-import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.appservice.fluent.inner.AddressResponseInner;
-import com.azure.resourcemanager.appservice.fluent.inner.AppServiceEnvironmentResourceInner;
-import com.azure.resourcemanager.appservice.fluent.inner.AppServicePlanInner;
-import com.azure.resourcemanager.appservice.fluent.inner.CsmUsageQuotaInner;
-import com.azure.resourcemanager.appservice.fluent.inner.HostingEnvironmentDiagnosticsInner;
-import com.azure.resourcemanager.appservice.fluent.inner.InboundEnvironmentEndpointInner;
-import com.azure.resourcemanager.appservice.fluent.inner.OperationInner;
-import com.azure.resourcemanager.appservice.fluent.inner.OutboundEnvironmentEndpointInner;
-import com.azure.resourcemanager.appservice.fluent.inner.ResourceMetricDefinitionInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SkuInfoInner;
-import com.azure.resourcemanager.appservice.fluent.inner.StampCapacityInner;
-import com.azure.resourcemanager.appservice.fluent.inner.UsageInner;
-import com.azure.resourcemanager.appservice.fluent.inner.WorkerPoolResourceInner;
-import com.azure.resourcemanager.appservice.models.AppServiceEnvironmentCollection;
+import com.azure.resourcemanager.appservice.fluent.models.AddressResponseInner;
+import com.azure.resourcemanager.appservice.fluent.models.AppServiceEnvironmentResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.AppServicePlanInner;
+import com.azure.resourcemanager.appservice.fluent.models.CsmUsageQuotaInner;
+import com.azure.resourcemanager.appservice.fluent.models.HostingEnvironmentDiagnosticsInner;
+import com.azure.resourcemanager.appservice.fluent.models.InboundEnvironmentEndpointInner;
+import com.azure.resourcemanager.appservice.fluent.models.OperationInner;
+import com.azure.resourcemanager.appservice.fluent.models.OutboundEnvironmentEndpointInner;
+import com.azure.resourcemanager.appservice.fluent.models.ResourceMetricDefinitionInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.models.SkuInfoInner;
+import com.azure.resourcemanager.appservice.fluent.models.StampCapacityInner;
+import com.azure.resourcemanager.appservice.fluent.models.UsageInner;
+import com.azure.resourcemanager.appservice.fluent.models.WorkerPoolResourceInner;
 import com.azure.resourcemanager.appservice.models.AppServiceEnvironmentPatchResource;
-import com.azure.resourcemanager.appservice.models.AppServicePlanCollection;
-import com.azure.resourcemanager.appservice.models.CsmUsageQuotaCollection;
-import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
-import com.azure.resourcemanager.appservice.models.InboundEnvironmentEndpointCollection;
-import com.azure.resourcemanager.appservice.models.OutboundEnvironmentEndpointCollection;
-import com.azure.resourcemanager.appservice.models.ResourceMetricDefinitionCollection;
-import com.azure.resourcemanager.appservice.models.SkuInfoCollection;
-import com.azure.resourcemanager.appservice.models.StampCapacityCollection;
-import com.azure.resourcemanager.appservice.models.UsageCollection;
 import com.azure.resourcemanager.appservice.models.VirtualNetworkProfile;
-import com.azure.resourcemanager.appservice.models.WebAppCollection;
-import com.azure.resourcemanager.appservice.models.WorkerPoolCollection;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -68,886 +37,71 @@ import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AppServiceEnvironments. */
-public final class AppServiceEnvironmentsClient
-    implements InnerSupportsGet<AppServiceEnvironmentResourceInner>,
+/** An instance of this class provides access to all the operations defined in AppServiceEnvironmentsClient. */
+public interface AppServiceEnvironmentsClient
+    extends InnerSupportsGet<AppServiceEnvironmentResourceInner>,
         InnerSupportsListing<AppServiceEnvironmentResourceInner>,
         InnerSupportsDelete<Void> {
-    private final ClientLogger logger = new ClientLogger(AppServiceEnvironmentsClient.class);
-
-    /** The proxy service used to perform REST calls. */
-    private final AppServiceEnvironmentsService service;
-
-    /** The service client containing this operation class. */
-    private final WebSiteManagementClient client;
-
     /**
-     * Initializes an instance of AppServiceEnvironmentsClient.
+     * Description for Get all App Service Environments for a subscription.
      *
-     * @param client the instance of the service client containing this operation class.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of App Service Environments.
      */
-    AppServiceEnvironmentsClient(WebSiteManagementClient client) {
-        this.service =
-            RestProxy
-                .create(AppServiceEnvironmentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
-    }
-
-    /**
-     * The interface defining all the services for WebSiteManagementClientAppServiceEnvironments to be used by the proxy
-     * service to perform REST calls.
-     */
-    @Host("{$host}")
-    @ServiceInterface(name = "WebSiteManagementCli")
-    private interface AppServiceEnvironmentsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/hostingEnvironments")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppServiceEnvironmentCollection>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppServiceEnvironmentCollection>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppServiceEnvironmentResourceInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}")
-        @ExpectedResponses({200, 201, 202})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}")
-        @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @QueryParam("forceDelete") Boolean forceDelete,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}")
-        @ExpectedResponses({200, 201, 202})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppServiceEnvironmentResourceInner>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") AppServiceEnvironmentPatchResource hostingEnvironmentEnvelope,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/capacities/compute")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<StampCapacityCollection>> listCapacities(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/capacities/virtualip")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AddressResponseInner>> getVipInfo(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/changeVirtualNetwork")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> changeVnet(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") VirtualNetworkProfile vnetInfo,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/diagnostics")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<List<HostingEnvironmentDiagnosticsInner>>> listDiagnostics(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/diagnostics/{diagnosticsName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<HostingEnvironmentDiagnosticsInner>> getDiagnosticsItem(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("diagnosticsName") String diagnosticsName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/inboundNetworkDependenciesEndpoints")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<InboundEnvironmentEndpointCollection>> getInboundNetworkDependenciesEndpoints(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/multiRolePools")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<WorkerPoolCollection>> listMultiRolePools(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/multiRolePools/default")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<WorkerPoolResourceInner>> getMultiRolePool(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/multiRolePools/default")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdateMultiRolePool(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") WorkerPoolResourceInner multiRolePoolEnvelope,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/multiRolePools/default")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<WorkerPoolResourceInner>> updateMultiRolePool(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") WorkerPoolResourceInner multiRolePoolEnvelope,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/multiRolePools/default/instances/{instance}/metricdefinitions")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ResourceMetricDefinitionCollection>> listMultiRolePoolInstanceMetricDefinitions(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("instance") String instance,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/multiRolePools/default/metricdefinitions")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ResourceMetricDefinitionCollection>> listMultiRoleMetricDefinitions(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/multiRolePools/default/skus")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<SkuInfoCollection>> listMultiRolePoolSkus(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/multiRolePools/default/usages")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<UsageCollection>> listMultiRoleUsages(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/operations")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<List<OperationInner>>> listOperations(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/outboundNetworkDependenciesEndpoints")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<OutboundEnvironmentEndpointCollection>> getOutboundNetworkDependenciesEndpoints(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/reboot")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Void>> reboot(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/resume")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> resume(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/serverfarms")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppServicePlanCollection>> listAppServicePlans(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/sites")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<WebAppCollection>> listWebApps(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @QueryParam("propertiesToInclude") String propertiesToInclude,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/suspend")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> suspend(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/usages")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<CsmUsageQuotaCollection>> listUsages(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @QueryParam(value = "$filter", encoded = true) String filter,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/workerPools")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<WorkerPoolCollection>> listWorkerPools(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/workerPools/{workerPoolName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<WorkerPoolResourceInner>> getWorkerPool(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("workerPoolName") String workerPoolName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/workerPools/{workerPoolName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdateWorkerPool(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("workerPoolName") String workerPoolName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") WorkerPoolResourceInner workerPoolEnvelope,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/workerPools/{workerPoolName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<WorkerPoolResourceInner>> updateWorkerPool(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("workerPoolName") String workerPoolName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") WorkerPoolResourceInner workerPoolEnvelope,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/workerPools/{workerPoolName}/instances/{instance}/metricdefinitions")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ResourceMetricDefinitionCollection>> listWorkerPoolInstanceMetricDefinitions(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("workerPoolName") String workerPoolName,
-            @PathParam("instance") String instance,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/workerPools/{workerPoolName}/metricdefinitions")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ResourceMetricDefinitionCollection>> listWebWorkerMetricDefinitions(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("workerPoolName") String workerPoolName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/workerPools/{workerPoolName}/skus")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<SkuInfoCollection>> listWorkerPoolSkus(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("workerPoolName") String workerPoolName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/workerPools/{workerPoolName}/usages")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<UsageCollection>> listWebWorkerUsages(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("workerPoolName") String workerPoolName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppServiceEnvironmentCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppServiceEnvironmentCollection>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<StampCapacityCollection>> listCapacitiesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<WebAppCollection>> changeVnetNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<InboundEnvironmentEndpointCollection>> getInboundNetworkDependenciesEndpointsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<WorkerPoolCollection>> listMultiRolePoolsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ResourceMetricDefinitionCollection>> listMultiRolePoolInstanceMetricDefinitionsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ResourceMetricDefinitionCollection>> listMultiRoleMetricDefinitionsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<SkuInfoCollection>> listMultiRolePoolSkusNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<UsageCollection>> listMultiRoleUsagesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<OutboundEnvironmentEndpointCollection>> getOutboundNetworkDependenciesEndpointsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<WebAppCollection>> resumeNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppServicePlanCollection>> listAppServicePlansNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<WebAppCollection>> listWebAppsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<WebAppCollection>> suspendNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<CsmUsageQuotaCollection>> listUsagesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<WorkerPoolCollection>> listWorkerPoolsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ResourceMetricDefinitionCollection>> listWorkerPoolInstanceMetricDefinitionsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ResourceMetricDefinitionCollection>> listWebWorkerMetricDefinitionsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<SkuInfoCollection>> listWorkerPoolSkusNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<UsageCollection>> listWebWorkerUsagesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<AppServiceEnvironmentResourceInner> listAsync();
 
     /**
      * Description for Get all App Service Environments for a subscription.
      *
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of App Service Environments.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<AppServiceEnvironmentResourceInner>> listSinglePageAsync() {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .<PagedResponse<AppServiceEnvironmentResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<AppServiceEnvironmentResourceInner> list();
 
     /**
      * Description for Get all App Service Environments for a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service Environments.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<AppServiceEnvironmentResourceInner>> listSinglePageAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Description for Get all App Service Environments for a subscription.
-     *
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of App Service Environments.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AppServiceEnvironmentResourceInner> listAsync() {
-        return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Description for Get all App Service Environments for a subscription.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service Environments.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AppServiceEnvironmentResourceInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Description for Get all App Service Environments for a subscription.
-     *
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service Environments.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AppServiceEnvironmentResourceInner> list() {
-        return new PagedIterable<>(listAsync());
-    }
-
-    /**
-     * Description for Get all App Service Environments for a subscription.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service Environments.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AppServiceEnvironmentResourceInner> list(Context context) {
-        return new PagedIterable<>(listAsync(context));
-    }
+    PagedIterable<AppServiceEnvironmentResourceInner> list(Context context);
 
     /**
      * Description for Get all App Service Environments in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of App Service Environments.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<AppServiceEnvironmentResourceInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .<PagedResponse<AppServiceEnvironmentResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<AppServiceEnvironmentResourceInner> listByResourceGroupAsync(String resourceGroupName);
+
+    /**
+     * Description for Get all App Service Environments in a resource group.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of App Service Environments.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<AppServiceEnvironmentResourceInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Description for Get all App Service Environments in a resource group.
@@ -955,111 +109,13 @@ public final class AppServiceEnvironmentsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service Environments.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<AppServiceEnvironmentResourceInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Description for Get all App Service Environments in a resource group.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of App Service Environments.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AppServiceEnvironmentResourceInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Description for Get all App Service Environments in a resource group.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service Environments.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AppServiceEnvironmentResourceInner> listByResourceGroupAsync(
-        String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Description for Get all App Service Environments in a resource group.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service Environments.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AppServiceEnvironmentResourceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
-    }
-
-    /**
-     * Description for Get all App Service Environments in a resource group.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service Environments.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AppServiceEnvironmentResourceInner> listByResourceGroup(
-        String resourceGroupName, Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
-    }
+    PagedIterable<AppServiceEnvironmentResourceInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Description for Get the properties of an App Service Environment.
@@ -1067,45 +123,42 @@ public final class AppServiceEnvironmentsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service Environment ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AppServiceEnvironmentResourceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String name) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<AppServiceEnvironmentResourceInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String name);
+
+    /**
+     * Description for Get the properties of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return app Service Environment ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<AppServiceEnvironmentResourceInner> getByResourceGroupAsync(String resourceGroupName, String name);
+
+    /**
+     * Description for Get the properties of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return app Service Environment ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AppServiceEnvironmentResourceInner getByResourceGroup(String resourceGroupName, String name);
 
     /**
      * Description for Get the properties of an App Service Environment.
@@ -1114,122 +167,14 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service Environment ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AppServiceEnvironmentResourceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context);
-    }
-
-    /**
-     * Description for Get the properties of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AppServiceEnvironmentResourceInner> getByResourceGroupAsync(String resourceGroupName, String name) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, name)
-            .flatMap(
-                (Response<AppServiceEnvironmentResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Description for Get the properties of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AppServiceEnvironmentResourceInner> getByResourceGroupAsync(
-        String resourceGroupName, String name, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, name, context)
-            .flatMap(
-                (Response<AppServiceEnvironmentResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Description for Get the properties of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AppServiceEnvironmentResourceInner getByResourceGroup(String resourceGroupName, String name) {
-        return getByResourceGroupAsync(resourceGroupName, name).block();
-    }
-
-    /**
-     * Description for Get the properties of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AppServiceEnvironmentResourceInner getByResourceGroup(
-        String resourceGroupName, String name, Context context) {
-        return getByResourceGroupAsync(resourceGroupName, name, context).block();
-    }
+    Response<AppServiceEnvironmentResourceInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String name, Context context);
 
     /**
      * Description for Create or update an App Service Environment.
@@ -1238,111 +183,14 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope App Service Environment ARM resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service Environment ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (hostingEnvironmentEnvelope == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter hostingEnvironmentEnvelope is required and cannot be null."));
-        } else {
-            hostingEnvironmentEnvelope.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            hostingEnvironmentEnvelope,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Description for Create or update an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param hostingEnvironmentEnvelope App Service Environment ARM resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String name,
-        AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (hostingEnvironmentEnvelope == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter hostingEnvironmentEnvelope is required and cannot be null."));
-        } else {
-            hostingEnvironmentEnvelope.validate();
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                hostingEnvironmentEnvelope,
-                context);
-    }
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope);
 
     /**
      * Description for Create or update an App Service Environment.
@@ -1351,25 +199,31 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope App Service Environment ARM resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service Environment ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<AppServiceEnvironmentResourceInner>, AppServiceEnvironmentResourceInner>
+    PollerFlux<PollResult<AppServiceEnvironmentResourceInner>, AppServiceEnvironmentResourceInner>
         beginCreateOrUpdateAsync(
-            String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope);
-        return this
-            .client
-            .<AppServiceEnvironmentResourceInner, AppServiceEnvironmentResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AppServiceEnvironmentResourceInner.class,
-                AppServiceEnvironmentResourceInner.class,
-                Context.NONE);
-    }
+            String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope);
+
+    /**
+     * Description for Create or update an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param hostingEnvironmentEnvelope App Service Environment ARM resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return app Service Environment ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<AppServiceEnvironmentResourceInner>, AppServiceEnvironmentResourceInner> beginCreateOrUpdate(
+        String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope);
 
     /**
      * Description for Create or update an App Service Environment.
@@ -1379,111 +233,17 @@ public final class AppServiceEnvironmentsClient
      * @param hostingEnvironmentEnvelope App Service Environment ARM resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service Environment ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<AppServiceEnvironmentResourceInner>, AppServiceEnvironmentResourceInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String name,
-            AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope,
-            Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope, context);
-        return this
-            .client
-            .<AppServiceEnvironmentResourceInner, AppServiceEnvironmentResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AppServiceEnvironmentResourceInner.class,
-                AppServiceEnvironmentResourceInner.class,
-                context);
-    }
-
-    /**
-     * Description for Create or update an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param hostingEnvironmentEnvelope App Service Environment ARM resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<AppServiceEnvironmentResourceInner>, AppServiceEnvironmentResourceInner>
-        beginCreateOrUpdate(
-            String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope) {
-        return beginCreateOrUpdateAsync(resourceGroupName, name, hostingEnvironmentEnvelope).getSyncPoller();
-    }
-
-    /**
-     * Description for Create or update an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param hostingEnvironmentEnvelope App Service Environment ARM resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<AppServiceEnvironmentResourceInner>, AppServiceEnvironmentResourceInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String name,
-            AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope,
-            Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, name, hostingEnvironmentEnvelope, context).getSyncPoller();
-    }
-
-    /**
-     * Description for Create or update an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param hostingEnvironmentEnvelope App Service Environment ARM resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AppServiceEnvironmentResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope) {
-        return beginCreateOrUpdateAsync(resourceGroupName, name, hostingEnvironmentEnvelope)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Description for Create or update an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param hostingEnvironmentEnvelope App Service Environment ARM resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AppServiceEnvironmentResourceInner> createOrUpdateAsync(
+    SyncPoller<PollResult<AppServiceEnvironmentResourceInner>, AppServiceEnvironmentResourceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String name,
         AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, name, hostingEnvironmentEnvelope, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
+        Context context);
 
     /**
      * Description for Create or update an App Service Environment.
@@ -1492,15 +252,30 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope App Service Environment ARM resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service Environment ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AppServiceEnvironmentResourceInner createOrUpdate(
-        String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope) {
-        return createOrUpdateAsync(resourceGroupName, name, hostingEnvironmentEnvelope).block();
-    }
+    Mono<AppServiceEnvironmentResourceInner> createOrUpdateAsync(
+        String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope);
+
+    /**
+     * Description for Create or update an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param hostingEnvironmentEnvelope App Service Environment ARM resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return app Service Environment ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AppServiceEnvironmentResourceInner createOrUpdate(
+        String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope);
 
     /**
      * Description for Create or update an App Service Environment.
@@ -1510,18 +285,17 @@ public final class AppServiceEnvironmentsClient
      * @param hostingEnvironmentEnvelope App Service Environment ARM resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service Environment ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AppServiceEnvironmentResourceInner createOrUpdate(
+    AppServiceEnvironmentResourceInner createOrUpdate(
         String resourceGroupName,
         String name,
         AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope,
-        Context context) {
-        return createOrUpdateAsync(resourceGroupName, name, hostingEnvironmentEnvelope, context).block();
-    }
+        Context context);
 
     /**
      * Description for Delete an App Service Environment.
@@ -1531,46 +305,46 @@ public final class AppServiceEnvironmentsClient
      * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service
      *     Environment contains resources. The default is &lt;code&gt;false&lt;/code&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String name, Boolean forceDelete) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            forceDelete,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String name, Boolean forceDelete);
+
+    /**
+     * Description for Delete an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service
+     *     Environment contains resources. The default is &lt;code&gt;false&lt;/code&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name, Boolean forceDelete);
+
+    /**
+     * Description for Delete an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service
+     *     Environment contains resources. The default is &lt;code&gt;false&lt;/code&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, Boolean forceDelete);
 
     /**
      * Description for Delete an App Service Environment.
@@ -1581,43 +355,14 @@ public final class AppServiceEnvironmentsClient
      *     Environment contains resources. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String name, Boolean forceDelete, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                forceDelete,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context);
-    }
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String name, Boolean forceDelete, Context context);
 
     /**
      * Description for Delete an App Service Environment.
@@ -1627,18 +372,42 @@ public final class AppServiceEnvironmentsClient
      * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service
      *     Environment contains resources. The default is &lt;code&gt;false&lt;/code&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String name, Boolean forceDelete) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, name, forceDelete);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
-    }
+    Mono<Void> deleteAsync(String resourceGroupName, String name, Boolean forceDelete);
+
+    /**
+     * Description for Delete an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteAsync(String resourceGroupName, String name);
+
+    /**
+     * Description for Delete an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service
+     *     Environment contains resources. The default is &lt;code&gt;false&lt;/code&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String name, Boolean forceDelete);
 
     /**
      * Description for Delete an App Service Environment.
@@ -1649,94 +418,12 @@ public final class AppServiceEnvironmentsClient
      *     Environment contains resources. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String name, Boolean forceDelete, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, name, forceDelete, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Description for Delete an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service
-     *     Environment contains resources. The default is &lt;code&gt;false&lt;/code&gt;.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, Boolean forceDelete) {
-        return beginDeleteAsync(resourceGroupName, name, forceDelete).getSyncPoller();
-    }
-
-    /**
-     * Description for Delete an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service
-     *     Environment contains resources. The default is &lt;code&gt;false&lt;/code&gt;.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String name, Boolean forceDelete, Context context) {
-        return beginDeleteAsync(resourceGroupName, name, forceDelete, context).getSyncPoller();
-    }
-
-    /**
-     * Description for Delete an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service
-     *     Environment contains resources. The default is &lt;code&gt;false&lt;/code&gt;.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String name, Boolean forceDelete) {
-        return beginDeleteAsync(resourceGroupName, name, forceDelete)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Description for Delete an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service
-     *     Environment contains resources. The default is &lt;code&gt;false&lt;/code&gt;.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String name, Boolean forceDelete, Context context) {
-        return beginDeleteAsync(resourceGroupName, name, forceDelete, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
+    void delete(String resourceGroupName, String name, Boolean forceDelete, Context context);
 
     /**
      * Description for Delete an App Service Environment.
@@ -1744,67 +431,12 @@ public final class AppServiceEnvironmentsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String name) {
-        final Boolean forceDelete = null;
-        final Context context = null;
-        return beginDeleteAsync(resourceGroupName, name, forceDelete)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Description for Delete an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service
-     *     Environment contains resources. The default is &lt;code&gt;false&lt;/code&gt;.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String name, Boolean forceDelete) {
-        deleteAsync(resourceGroupName, name, forceDelete).block();
-    }
-
-    /**
-     * Description for Delete an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service
-     *     Environment contains resources. The default is &lt;code&gt;false&lt;/code&gt;.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String name, Boolean forceDelete, Context context) {
-        deleteAsync(resourceGroupName, name, forceDelete, context).block();
-    }
-
-    /**
-     * Description for Delete an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String name) {
-        final Boolean forceDelete = null;
-        final Context context = null;
-        deleteAsync(resourceGroupName, name, forceDelete).block();
-    }
+    void delete(String resourceGroupName, String name);
 
     /**
      * Description for Create or update an App Service Environment.
@@ -1813,54 +445,46 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope ARM resource for a app service environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service Environment ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AppServiceEnvironmentResourceInner>> updateWithResponseAsync(
-        String resourceGroupName, String name, AppServiceEnvironmentPatchResource hostingEnvironmentEnvelope) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (hostingEnvironmentEnvelope == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter hostingEnvironmentEnvelope is required and cannot be null."));
-        } else {
-            hostingEnvironmentEnvelope.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            hostingEnvironmentEnvelope,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<AppServiceEnvironmentResourceInner>> updateWithResponseAsync(
+        String resourceGroupName, String name, AppServiceEnvironmentPatchResource hostingEnvironmentEnvelope);
+
+    /**
+     * Description for Create or update an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param hostingEnvironmentEnvelope ARM resource for a app service environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return app Service Environment ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<AppServiceEnvironmentResourceInner> updateAsync(
+        String resourceGroupName, String name, AppServiceEnvironmentPatchResource hostingEnvironmentEnvelope);
+
+    /**
+     * Description for Create or update an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param hostingEnvironmentEnvelope ARM resource for a app service environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return app Service Environment ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AppServiceEnvironmentResourceInner update(
+        String resourceGroupName, String name, AppServiceEnvironmentPatchResource hostingEnvironmentEnvelope);
 
     /**
      * Description for Create or update an App Service Environment.
@@ -1870,146 +494,17 @@ public final class AppServiceEnvironmentsClient
      * @param hostingEnvironmentEnvelope ARM resource for a app service environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service Environment ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AppServiceEnvironmentResourceInner>> updateWithResponseAsync(
+    Response<AppServiceEnvironmentResourceInner> updateWithResponse(
         String resourceGroupName,
         String name,
         AppServiceEnvironmentPatchResource hostingEnvironmentEnvelope,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (hostingEnvironmentEnvelope == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter hostingEnvironmentEnvelope is required and cannot be null."));
-        } else {
-            hostingEnvironmentEnvelope.validate();
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                hostingEnvironmentEnvelope,
-                context);
-    }
-
-    /**
-     * Description for Create or update an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param hostingEnvironmentEnvelope ARM resource for a app service environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AppServiceEnvironmentResourceInner> updateAsync(
-        String resourceGroupName, String name, AppServiceEnvironmentPatchResource hostingEnvironmentEnvelope) {
-        return updateWithResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope)
-            .flatMap(
-                (Response<AppServiceEnvironmentResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Description for Create or update an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param hostingEnvironmentEnvelope ARM resource for a app service environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AppServiceEnvironmentResourceInner> updateAsync(
-        String resourceGroupName,
-        String name,
-        AppServiceEnvironmentPatchResource hostingEnvironmentEnvelope,
-        Context context) {
-        return updateWithResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope, context)
-            .flatMap(
-                (Response<AppServiceEnvironmentResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Description for Create or update an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param hostingEnvironmentEnvelope ARM resource for a app service environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AppServiceEnvironmentResourceInner update(
-        String resourceGroupName, String name, AppServiceEnvironmentPatchResource hostingEnvironmentEnvelope) {
-        return updateAsync(resourceGroupName, name, hostingEnvironmentEnvelope).block();
-    }
-
-    /**
-     * Description for Create or update an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param hostingEnvironmentEnvelope ARM resource for a app service environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AppServiceEnvironmentResourceInner update(
-        String resourceGroupName,
-        String name,
-        AppServiceEnvironmentPatchResource hostingEnvironmentEnvelope,
-        Context context) {
-        return updateAsync(resourceGroupName, name, hostingEnvironmentEnvelope, context).block();
-    }
+        Context context);
 
     /**
      * Description for Get the used, available, and total worker capacity an App Service Environment.
@@ -2017,124 +512,27 @@ public final class AppServiceEnvironmentsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of stamp capacities.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<StampCapacityInner>> listCapacitiesSinglePageAsync(
-        String resourceGroupName, String name) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listCapacities(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .<PagedResponse<StampCapacityInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Description for Get the used, available, and total worker capacity an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of stamp capacities.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<StampCapacityInner>> listCapacitiesSinglePageAsync(
-        String resourceGroupName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listCapacities(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Description for Get the used, available, and total worker capacity an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of stamp capacities.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<StampCapacityInner> listCapacitiesAsync(String resourceGroupName, String name) {
-        return new PagedFlux<>(
-            () -> listCapacitiesSinglePageAsync(resourceGroupName, name),
-            nextLink -> listCapacitiesNextSinglePageAsync(nextLink));
-    }
+    PagedFlux<StampCapacityInner> listCapacitiesAsync(String resourceGroupName, String name);
+
+    /**
+     * Description for Get the used, available, and total worker capacity an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of stamp capacities.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<StampCapacityInner> listCapacities(String resourceGroupName, String name);
 
     /**
      * Description for Get the used, available, and total worker capacity an App Service Environment.
@@ -2143,47 +541,13 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of stamp capacities.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<StampCapacityInner> listCapacitiesAsync(String resourceGroupName, String name, Context context) {
-        return new PagedFlux<>(
-            () -> listCapacitiesSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> listCapacitiesNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Description for Get the used, available, and total worker capacity an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of stamp capacities.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<StampCapacityInner> listCapacities(String resourceGroupName, String name) {
-        return new PagedIterable<>(listCapacitiesAsync(resourceGroupName, name));
-    }
-
-    /**
-     * Description for Get the used, available, and total worker capacity an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of stamp capacities.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<StampCapacityInner> listCapacities(String resourceGroupName, String name, Context context) {
-        return new PagedIterable<>(listCapacitiesAsync(resourceGroupName, name, context));
-    }
+    PagedIterable<StampCapacityInner> listCapacities(String resourceGroupName, String name, Context context);
 
     /**
      * Description for Get IP addresses assigned to an App Service Environment.
@@ -2191,44 +555,41 @@ public final class AppServiceEnvironmentsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes main public IP address and any extra virtual IPs.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AddressResponseInner>> getVipInfoWithResponseAsync(String resourceGroupName, String name) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getVipInfo(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<AddressResponseInner>> getVipInfoWithResponseAsync(String resourceGroupName, String name);
+
+    /**
+     * Description for Get IP addresses assigned to an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes main public IP address and any extra virtual IPs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<AddressResponseInner> getVipInfoAsync(String resourceGroupName, String name);
+
+    /**
+     * Description for Get IP addresses assigned to an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes main public IP address and any extra virtual IPs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AddressResponseInner getVipInfo(String resourceGroupName, String name);
 
     /**
      * Description for Get IP addresses assigned to an App Service Environment.
@@ -2237,120 +598,13 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes main public IP address and any extra virtual IPs.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AddressResponseInner>> getVipInfoWithResponseAsync(
-        String resourceGroupName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .getVipInfo(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context);
-    }
-
-    /**
-     * Description for Get IP addresses assigned to an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes main public IP address and any extra virtual IPs.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AddressResponseInner> getVipInfoAsync(String resourceGroupName, String name) {
-        return getVipInfoWithResponseAsync(resourceGroupName, name)
-            .flatMap(
-                (Response<AddressResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Description for Get IP addresses assigned to an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes main public IP address and any extra virtual IPs.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AddressResponseInner> getVipInfoAsync(String resourceGroupName, String name, Context context) {
-        return getVipInfoWithResponseAsync(resourceGroupName, name, context)
-            .flatMap(
-                (Response<AddressResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Description for Get IP addresses assigned to an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes main public IP address and any extra virtual IPs.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AddressResponseInner getVipInfo(String resourceGroupName, String name) {
-        return getVipInfoAsync(resourceGroupName, name).block();
-    }
-
-    /**
-     * Description for Get IP addresses assigned to an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes main public IP address and any extra virtual IPs.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AddressResponseInner getVipInfo(String resourceGroupName, String name, Context context) {
-        return getVipInfoAsync(resourceGroupName, name, context).block();
-    }
+    Response<AddressResponseInner> getVipInfoWithResponse(String resourceGroupName, String name, Context context);
 
     /**
      * Description for Move an App Service Environment to a different VNET.
@@ -2359,76 +613,28 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param vnetInfo Specification for using a Virtual Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of App Service apps.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SiteInner>> changeVnetSinglePageAsync(
-        String resourceGroupName, String name, VirtualNetworkProfile vnetInfo) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (vnetInfo == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vnetInfo is required and cannot be null."));
-        } else {
-            vnetInfo.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context -> {
-                    Mono<Response<Flux<ByteBuffer>>> mono =
-                        service
-                            .changeVnet(
-                                this.client.getEndpoint(),
-                                resourceGroupName,
-                                name,
-                                this.client.getSubscriptionId(),
-                                this.client.getApiVersion(),
-                                vnetInfo,
-                                context)
-                            .cache();
-                    return Mono
-                        .zip(
-                            mono,
-                            this
-                                .client
-                                .<WebAppCollection, WebAppCollection>getLroResult(
-                                    mono,
-                                    this.client.getHttpPipeline(),
-                                    WebAppCollection.class,
-                                    WebAppCollection.class,
-                                    Context.NONE)
-                                .last()
-                                .flatMap(this.client::getLroFinalResultOrError));
-                })
-            .<PagedResponse<SiteInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getT1().getRequest(),
-                        res.getT1().getStatusCode(),
-                        res.getT1().getHeaders(),
-                        res.getT2().value(),
-                        res.getT2().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SiteInner> changeVnetAsync(String resourceGroupName, String name, VirtualNetworkProfile vnetInfo);
+
+    /**
+     * Description for Move an App Service Environment to a different VNET.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param vnetInfo Specification for using a Virtual Network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of App Service apps.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SiteInner> changeVnet(String resourceGroupName, String name, VirtualNetworkProfile vnetInfo);
 
     /**
      * Description for Move an App Service Environment to a different VNET.
@@ -2438,140 +644,14 @@ public final class AppServiceEnvironmentsClient
      * @param vnetInfo Specification for using a Virtual Network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SiteInner>> changeVnetSinglePageAsync(
-        String resourceGroupName, String name, VirtualNetworkProfile vnetInfo, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (vnetInfo == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vnetInfo is required and cannot be null."));
-        } else {
-            vnetInfo.validate();
-        }
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            service
-                .changeVnet(
-                    this.client.getEndpoint(),
-                    resourceGroupName,
-                    name,
-                    this.client.getSubscriptionId(),
-                    this.client.getApiVersion(),
-                    vnetInfo,
-                    context)
-                .cache();
-        return Mono
-            .zip(
-                mono,
-                this
-                    .client
-                    .<WebAppCollection, WebAppCollection>getLroResult(
-                        mono, this.client.getHttpPipeline(), WebAppCollection.class, WebAppCollection.class, context)
-                    .last()
-                    .flatMap(this.client::getLroFinalResultOrError))
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getT1().getRequest(),
-                        res.getT1().getStatusCode(),
-                        res.getT1().getHeaders(),
-                        res.getT2().value(),
-                        res.getT2().nextLink(),
-                        null));
-    }
-
-    /**
-     * Description for Move an App Service Environment to a different VNET.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param vnetInfo Specification for using a Virtual Network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of App Service apps.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SiteInner> changeVnetAsync(String resourceGroupName, String name, VirtualNetworkProfile vnetInfo) {
-        return new PagedFlux<>(
-            () -> changeVnetSinglePageAsync(resourceGroupName, name, vnetInfo),
-            nextLink -> changeVnetNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Description for Move an App Service Environment to a different VNET.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param vnetInfo Specification for using a Virtual Network.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SiteInner> changeVnetAsync(
-        String resourceGroupName, String name, VirtualNetworkProfile vnetInfo, Context context) {
-        return new PagedFlux<>(
-            () -> changeVnetSinglePageAsync(resourceGroupName, name, vnetInfo, context),
-            nextLink -> changeVnetNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Description for Move an App Service Environment to a different VNET.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param vnetInfo Specification for using a Virtual Network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SiteInner> changeVnet(String resourceGroupName, String name, VirtualNetworkProfile vnetInfo) {
-        return new PagedIterable<>(changeVnetAsync(resourceGroupName, name, vnetInfo));
-    }
-
-    /**
-     * Description for Move an App Service Environment to a different VNET.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param vnetInfo Specification for using a Virtual Network.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SiteInner> changeVnet(
-        String resourceGroupName, String name, VirtualNetworkProfile vnetInfo, Context context) {
-        return new PagedIterable<>(changeVnetAsync(resourceGroupName, name, vnetInfo, context));
-    }
+    PagedIterable<SiteInner> changeVnet(
+        String resourceGroupName, String name, VirtualNetworkProfile vnetInfo, Context context);
 
     /**
      * Description for Get diagnostic information for an App Service Environment.
@@ -2579,45 +659,42 @@ public final class AppServiceEnvironmentsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of HostingEnvironmentDiagnostics.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<HostingEnvironmentDiagnosticsInner>>> listDiagnosticsWithResponseAsync(
-        String resourceGroupName, String name) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listDiagnostics(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<List<HostingEnvironmentDiagnosticsInner>>> listDiagnosticsWithResponseAsync(
+        String resourceGroupName, String name);
+
+    /**
+     * Description for Get diagnostic information for an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of HostingEnvironmentDiagnostics.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<List<HostingEnvironmentDiagnosticsInner>> listDiagnosticsAsync(String resourceGroupName, String name);
+
+    /**
+     * Description for Get diagnostic information for an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of HostingEnvironmentDiagnostics.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<HostingEnvironmentDiagnosticsInner> listDiagnostics(String resourceGroupName, String name);
 
     /**
      * Description for Get diagnostic information for an App Service Environment.
@@ -2626,122 +703,14 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of HostingEnvironmentDiagnostics.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<HostingEnvironmentDiagnosticsInner>>> listDiagnosticsWithResponseAsync(
-        String resourceGroupName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listDiagnostics(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context);
-    }
-
-    /**
-     * Description for Get diagnostic information for an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of HostingEnvironmentDiagnostics.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<HostingEnvironmentDiagnosticsInner>> listDiagnosticsAsync(String resourceGroupName, String name) {
-        return listDiagnosticsWithResponseAsync(resourceGroupName, name)
-            .flatMap(
-                (Response<List<HostingEnvironmentDiagnosticsInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Description for Get diagnostic information for an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of HostingEnvironmentDiagnostics.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<HostingEnvironmentDiagnosticsInner>> listDiagnosticsAsync(
-        String resourceGroupName, String name, Context context) {
-        return listDiagnosticsWithResponseAsync(resourceGroupName, name, context)
-            .flatMap(
-                (Response<List<HostingEnvironmentDiagnosticsInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Description for Get diagnostic information for an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of HostingEnvironmentDiagnostics.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<HostingEnvironmentDiagnosticsInner> listDiagnostics(String resourceGroupName, String name) {
-        return listDiagnosticsAsync(resourceGroupName, name).block();
-    }
-
-    /**
-     * Description for Get diagnostic information for an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of HostingEnvironmentDiagnostics.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<HostingEnvironmentDiagnosticsInner> listDiagnostics(
-        String resourceGroupName, String name, Context context) {
-        return listDiagnosticsAsync(resourceGroupName, name, context).block();
-    }
+    Response<List<HostingEnvironmentDiagnosticsInner>> listDiagnosticsWithResponse(
+        String resourceGroupName, String name, Context context);
 
     /**
      * Description for Get a diagnostics item for an App Service Environment.
@@ -2750,50 +719,46 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param diagnosticsName Name of the diagnostics item.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return diagnostics for an App Service Environment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<HostingEnvironmentDiagnosticsInner>> getDiagnosticsItemWithResponseAsync(
-        String resourceGroupName, String name, String diagnosticsName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (diagnosticsName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter diagnosticsName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getDiagnosticsItem(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            diagnosticsName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<HostingEnvironmentDiagnosticsInner>> getDiagnosticsItemWithResponseAsync(
+        String resourceGroupName, String name, String diagnosticsName);
+
+    /**
+     * Description for Get a diagnostics item for an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param diagnosticsName Name of the diagnostics item.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return diagnostics for an App Service Environment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<HostingEnvironmentDiagnosticsInner> getDiagnosticsItemAsync(
+        String resourceGroupName, String name, String diagnosticsName);
+
+    /**
+     * Description for Get a diagnostics item for an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param diagnosticsName Name of the diagnostics item.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return diagnostics for an App Service Environment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    HostingEnvironmentDiagnosticsInner getDiagnosticsItem(
+        String resourceGroupName, String name, String diagnosticsName);
 
     /**
      * Description for Get a diagnostics item for an App Service Environment.
@@ -2803,133 +768,14 @@ public final class AppServiceEnvironmentsClient
      * @param diagnosticsName Name of the diagnostics item.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return diagnostics for an App Service Environment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<HostingEnvironmentDiagnosticsInner>> getDiagnosticsItemWithResponseAsync(
-        String resourceGroupName, String name, String diagnosticsName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (diagnosticsName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter diagnosticsName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .getDiagnosticsItem(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                diagnosticsName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context);
-    }
-
-    /**
-     * Description for Get a diagnostics item for an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param diagnosticsName Name of the diagnostics item.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return diagnostics for an App Service Environment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<HostingEnvironmentDiagnosticsInner> getDiagnosticsItemAsync(
-        String resourceGroupName, String name, String diagnosticsName) {
-        return getDiagnosticsItemWithResponseAsync(resourceGroupName, name, diagnosticsName)
-            .flatMap(
-                (Response<HostingEnvironmentDiagnosticsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Description for Get a diagnostics item for an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param diagnosticsName Name of the diagnostics item.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return diagnostics for an App Service Environment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<HostingEnvironmentDiagnosticsInner> getDiagnosticsItemAsync(
-        String resourceGroupName, String name, String diagnosticsName, Context context) {
-        return getDiagnosticsItemWithResponseAsync(resourceGroupName, name, diagnosticsName, context)
-            .flatMap(
-                (Response<HostingEnvironmentDiagnosticsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Description for Get a diagnostics item for an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param diagnosticsName Name of the diagnostics item.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return diagnostics for an App Service Environment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public HostingEnvironmentDiagnosticsInner getDiagnosticsItem(
-        String resourceGroupName, String name, String diagnosticsName) {
-        return getDiagnosticsItemAsync(resourceGroupName, name, diagnosticsName).block();
-    }
-
-    /**
-     * Description for Get a diagnostics item for an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param diagnosticsName Name of the diagnostics item.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return diagnostics for an App Service Environment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public HostingEnvironmentDiagnosticsInner getDiagnosticsItem(
-        String resourceGroupName, String name, String diagnosticsName, Context context) {
-        return getDiagnosticsItemAsync(resourceGroupName, name, diagnosticsName, context).block();
-    }
+    Response<HostingEnvironmentDiagnosticsInner> getDiagnosticsItemWithResponse(
+        String resourceGroupName, String name, String diagnosticsName, Context context);
 
     /**
      * Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
@@ -2937,54 +783,29 @@ public final class AppServiceEnvironmentsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Inbound Environment Endpoints.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<InboundEnvironmentEndpointInner>> getInboundNetworkDependenciesEndpointsSinglePageAsync(
-        String resourceGroupName, String name) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getInboundNetworkDependenciesEndpoints(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .<PagedResponse<InboundEnvironmentEndpointInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<InboundEnvironmentEndpointInner> getInboundNetworkDependenciesEndpointsAsync(
+        String resourceGroupName, String name);
+
+    /**
+     * Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Inbound Environment Endpoints.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<InboundEnvironmentEndpointInner> getInboundNetworkDependenciesEndpoints(
+        String resourceGroupName, String name);
 
     /**
      * Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
@@ -2993,121 +814,14 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Inbound Environment Endpoints.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<InboundEnvironmentEndpointInner>> getInboundNetworkDependenciesEndpointsSinglePageAsync(
-        String resourceGroupName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .getInboundNetworkDependenciesEndpoints(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Inbound Environment Endpoints.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<InboundEnvironmentEndpointInner> getInboundNetworkDependenciesEndpointsAsync(
-        String resourceGroupName, String name) {
-        return new PagedFlux<>(
-            () -> getInboundNetworkDependenciesEndpointsSinglePageAsync(resourceGroupName, name),
-            nextLink -> getInboundNetworkDependenciesEndpointsNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Inbound Environment Endpoints.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<InboundEnvironmentEndpointInner> getInboundNetworkDependenciesEndpointsAsync(
-        String resourceGroupName, String name, Context context) {
-        return new PagedFlux<>(
-            () -> getInboundNetworkDependenciesEndpointsSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> getInboundNetworkDependenciesEndpointsNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Inbound Environment Endpoints.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<InboundEnvironmentEndpointInner> getInboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String name) {
-        return new PagedIterable<>(getInboundNetworkDependenciesEndpointsAsync(resourceGroupName, name));
-    }
-
-    /**
-     * Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Inbound Environment Endpoints.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<InboundEnvironmentEndpointInner> getInboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String name, Context context) {
-        return new PagedIterable<>(getInboundNetworkDependenciesEndpointsAsync(resourceGroupName, name, context));
-    }
+    PagedIterable<InboundEnvironmentEndpointInner> getInboundNetworkDependenciesEndpoints(
+        String resourceGroupName, String name, Context context);
 
     /**
      * Description for Get all multi-role pools.
@@ -3115,54 +829,27 @@ public final class AppServiceEnvironmentsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of worker pools.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<WorkerPoolResourceInner>> listMultiRolePoolsSinglePageAsync(
-        String resourceGroupName, String name) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listMultiRolePools(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .<PagedResponse<WorkerPoolResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<WorkerPoolResourceInner> listMultiRolePoolsAsync(String resourceGroupName, String name);
+
+    /**
+     * Description for Get all multi-role pools.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of worker pools.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<WorkerPoolResourceInner> listMultiRolePools(String resourceGroupName, String name);
 
     /**
      * Description for Get all multi-role pools.
@@ -3171,119 +858,13 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of worker pools.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<WorkerPoolResourceInner>> listMultiRolePoolsSinglePageAsync(
-        String resourceGroupName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listMultiRolePools(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Description for Get all multi-role pools.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of worker pools.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<WorkerPoolResourceInner> listMultiRolePoolsAsync(String resourceGroupName, String name) {
-        return new PagedFlux<>(
-            () -> listMultiRolePoolsSinglePageAsync(resourceGroupName, name),
-            nextLink -> listMultiRolePoolsNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Description for Get all multi-role pools.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of worker pools.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<WorkerPoolResourceInner> listMultiRolePoolsAsync(
-        String resourceGroupName, String name, Context context) {
-        return new PagedFlux<>(
-            () -> listMultiRolePoolsSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> listMultiRolePoolsNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Description for Get all multi-role pools.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of worker pools.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<WorkerPoolResourceInner> listMultiRolePools(String resourceGroupName, String name) {
-        return new PagedIterable<>(listMultiRolePoolsAsync(resourceGroupName, name));
-    }
-
-    /**
-     * Description for Get all multi-role pools.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of worker pools.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<WorkerPoolResourceInner> listMultiRolePools(
-        String resourceGroupName, String name, Context context) {
-        return new PagedIterable<>(listMultiRolePoolsAsync(resourceGroupName, name, context));
-    }
+    PagedIterable<WorkerPoolResourceInner> listMultiRolePools(String resourceGroupName, String name, Context context);
 
     /**
      * Description for Get properties of a multi-role pool.
@@ -3291,45 +872,41 @@ public final class AppServiceEnvironmentsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return worker pool of an App Service Environment ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<WorkerPoolResourceInner>> getMultiRolePoolWithResponseAsync(
-        String resourceGroupName, String name) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getMultiRolePool(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<WorkerPoolResourceInner>> getMultiRolePoolWithResponseAsync(String resourceGroupName, String name);
+
+    /**
+     * Description for Get properties of a multi-role pool.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return worker pool of an App Service Environment ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<WorkerPoolResourceInner> getMultiRolePoolAsync(String resourceGroupName, String name);
+
+    /**
+     * Description for Get properties of a multi-role pool.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return worker pool of an App Service Environment ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkerPoolResourceInner getMultiRolePool(String resourceGroupName, String name);
 
     /**
      * Description for Get properties of a multi-role pool.
@@ -3338,120 +915,14 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return worker pool of an App Service Environment ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<WorkerPoolResourceInner>> getMultiRolePoolWithResponseAsync(
-        String resourceGroupName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .getMultiRolePool(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context);
-    }
-
-    /**
-     * Description for Get properties of a multi-role pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<WorkerPoolResourceInner> getMultiRolePoolAsync(String resourceGroupName, String name) {
-        return getMultiRolePoolWithResponseAsync(resourceGroupName, name)
-            .flatMap(
-                (Response<WorkerPoolResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Description for Get properties of a multi-role pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<WorkerPoolResourceInner> getMultiRolePoolAsync(String resourceGroupName, String name, Context context) {
-        return getMultiRolePoolWithResponseAsync(resourceGroupName, name, context)
-            .flatMap(
-                (Response<WorkerPoolResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Description for Get properties of a multi-role pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkerPoolResourceInner getMultiRolePool(String resourceGroupName, String name) {
-        return getMultiRolePoolAsync(resourceGroupName, name).block();
-    }
-
-    /**
-     * Description for Get properties of a multi-role pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkerPoolResourceInner getMultiRolePool(String resourceGroupName, String name, Context context) {
-        return getMultiRolePoolAsync(resourceGroupName, name, context).block();
-    }
+    Response<WorkerPoolResourceInner> getMultiRolePoolWithResponse(
+        String resourceGroupName, String name, Context context);
 
     /**
      * Description for Create or update a multi-role pool.
@@ -3460,52 +931,46 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Worker pool of an App Service Environment ARM resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return worker pool of an App Service Environment ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateMultiRolePoolWithResponseAsync(
-        String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (multiRolePoolEnvelope == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter multiRolePoolEnvelope is required and cannot be null."));
-        } else {
-            multiRolePoolEnvelope.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdateMultiRolePool(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            multiRolePoolEnvelope,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateMultiRolePoolWithResponseAsync(
+        String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope);
+
+    /**
+     * Description for Create or update a multi-role pool.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param multiRolePoolEnvelope Worker pool of an App Service Environment ARM resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return worker pool of an App Service Environment ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<WorkerPoolResourceInner>, WorkerPoolResourceInner> beginCreateOrUpdateMultiRolePoolAsync(
+        String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope);
+
+    /**
+     * Description for Create or update a multi-role pool.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param multiRolePoolEnvelope Worker pool of an App Service Environment ARM resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return worker pool of an App Service Environment ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<WorkerPoolResourceInner>, WorkerPoolResourceInner> beginCreateOrUpdateMultiRolePool(
+        String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope);
 
     /**
      * Description for Create or update a multi-role pool.
@@ -3515,49 +980,14 @@ public final class AppServiceEnvironmentsClient
      * @param multiRolePoolEnvelope Worker pool of an App Service Environment ARM resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return worker pool of an App Service Environment ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateMultiRolePoolWithResponseAsync(
-        String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (multiRolePoolEnvelope == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter multiRolePoolEnvelope is required and cannot be null."));
-        } else {
-            multiRolePoolEnvelope.validate();
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .createOrUpdateMultiRolePool(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                multiRolePoolEnvelope,
-                context);
-    }
+    SyncPoller<PollResult<WorkerPoolResourceInner>, WorkerPoolResourceInner> beginCreateOrUpdateMultiRolePool(
+        String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope, Context context);
 
     /**
      * Description for Create or update a multi-role pool.
@@ -3566,25 +996,30 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Worker pool of an App Service Environment ARM resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return worker pool of an App Service Environment ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<WorkerPoolResourceInner>, WorkerPoolResourceInner>
-        beginCreateOrUpdateMultiRolePoolAsync(
-            String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateMultiRolePoolWithResponseAsync(resourceGroupName, name, multiRolePoolEnvelope);
-        return this
-            .client
-            .<WorkerPoolResourceInner, WorkerPoolResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                WorkerPoolResourceInner.class,
-                WorkerPoolResourceInner.class,
-                Context.NONE);
-    }
+    Mono<WorkerPoolResourceInner> createOrUpdateMultiRolePoolAsync(
+        String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope);
+
+    /**
+     * Description for Create or update a multi-role pool.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param multiRolePoolEnvelope Worker pool of an App Service Environment ARM resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return worker pool of an App Service Environment ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkerPoolResourceInner createOrUpdateMultiRolePool(
+        String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope);
 
     /**
      * Description for Create or update a multi-role pool.
@@ -3594,26 +1029,14 @@ public final class AppServiceEnvironmentsClient
      * @param multiRolePoolEnvelope Worker pool of an App Service Environment ARM resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return worker pool of an App Service Environment ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<WorkerPoolResourceInner>, WorkerPoolResourceInner>
-        beginCreateOrUpdateMultiRolePoolAsync(
-            String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateMultiRolePoolWithResponseAsync(resourceGroupName, name, multiRolePoolEnvelope, context);
-        return this
-            .client
-            .<WorkerPoolResourceInner, WorkerPoolResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                WorkerPoolResourceInner.class,
-                WorkerPoolResourceInner.class,
-                context);
-    }
+    WorkerPoolResourceInner createOrUpdateMultiRolePool(
+        String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope, Context context);
 
     /**
      * Description for Create or update a multi-role pool.
@@ -3622,34 +1045,14 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Worker pool of an App Service Environment ARM resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return worker pool of an App Service Environment ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<WorkerPoolResourceInner>, WorkerPoolResourceInner> beginCreateOrUpdateMultiRolePool(
-        String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope) {
-        return beginCreateOrUpdateMultiRolePoolAsync(resourceGroupName, name, multiRolePoolEnvelope).getSyncPoller();
-    }
-
-    /**
-     * Description for Create or update a multi-role pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param multiRolePoolEnvelope Worker pool of an App Service Environment ARM resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<WorkerPoolResourceInner>, WorkerPoolResourceInner> beginCreateOrUpdateMultiRolePool(
-        String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope, Context context) {
-        return beginCreateOrUpdateMultiRolePoolAsync(resourceGroupName, name, multiRolePoolEnvelope, context)
-            .getSyncPoller();
-    }
+    Mono<Response<WorkerPoolResourceInner>> updateMultiRolePoolWithResponseAsync(
+        String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope);
 
     /**
      * Description for Create or update a multi-role pool.
@@ -3658,17 +1061,30 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Worker pool of an App Service Environment ARM resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return worker pool of an App Service Environment ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<WorkerPoolResourceInner> createOrUpdateMultiRolePoolAsync(
-        String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope) {
-        return beginCreateOrUpdateMultiRolePoolAsync(resourceGroupName, name, multiRolePoolEnvelope)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
+    Mono<WorkerPoolResourceInner> updateMultiRolePoolAsync(
+        String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope);
+
+    /**
+     * Description for Create or update a multi-role pool.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param multiRolePoolEnvelope Worker pool of an App Service Environment ARM resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return worker pool of an App Service Environment ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkerPoolResourceInner updateMultiRolePool(
+        String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope);
 
     /**
      * Description for Create or update a multi-role pool.
@@ -3678,244 +1094,14 @@ public final class AppServiceEnvironmentsClient
      * @param multiRolePoolEnvelope Worker pool of an App Service Environment ARM resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return worker pool of an App Service Environment ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<WorkerPoolResourceInner> createOrUpdateMultiRolePoolAsync(
-        String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope, Context context) {
-        return beginCreateOrUpdateMultiRolePoolAsync(resourceGroupName, name, multiRolePoolEnvelope, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Description for Create or update a multi-role pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param multiRolePoolEnvelope Worker pool of an App Service Environment ARM resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkerPoolResourceInner createOrUpdateMultiRolePool(
-        String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope) {
-        return createOrUpdateMultiRolePoolAsync(resourceGroupName, name, multiRolePoolEnvelope).block();
-    }
-
-    /**
-     * Description for Create or update a multi-role pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param multiRolePoolEnvelope Worker pool of an App Service Environment ARM resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkerPoolResourceInner createOrUpdateMultiRolePool(
-        String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope, Context context) {
-        return createOrUpdateMultiRolePoolAsync(resourceGroupName, name, multiRolePoolEnvelope, context).block();
-    }
-
-    /**
-     * Description for Create or update a multi-role pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param multiRolePoolEnvelope Worker pool of an App Service Environment ARM resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<WorkerPoolResourceInner>> updateMultiRolePoolWithResponseAsync(
-        String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (multiRolePoolEnvelope == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter multiRolePoolEnvelope is required and cannot be null."));
-        } else {
-            multiRolePoolEnvelope.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateMultiRolePool(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            multiRolePoolEnvelope,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Description for Create or update a multi-role pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param multiRolePoolEnvelope Worker pool of an App Service Environment ARM resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<WorkerPoolResourceInner>> updateMultiRolePoolWithResponseAsync(
-        String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (multiRolePoolEnvelope == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter multiRolePoolEnvelope is required and cannot be null."));
-        } else {
-            multiRolePoolEnvelope.validate();
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .updateMultiRolePool(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                multiRolePoolEnvelope,
-                context);
-    }
-
-    /**
-     * Description for Create or update a multi-role pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param multiRolePoolEnvelope Worker pool of an App Service Environment ARM resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<WorkerPoolResourceInner> updateMultiRolePoolAsync(
-        String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope) {
-        return updateMultiRolePoolWithResponseAsync(resourceGroupName, name, multiRolePoolEnvelope)
-            .flatMap(
-                (Response<WorkerPoolResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Description for Create or update a multi-role pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param multiRolePoolEnvelope Worker pool of an App Service Environment ARM resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<WorkerPoolResourceInner> updateMultiRolePoolAsync(
-        String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope, Context context) {
-        return updateMultiRolePoolWithResponseAsync(resourceGroupName, name, multiRolePoolEnvelope, context)
-            .flatMap(
-                (Response<WorkerPoolResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Description for Create or update a multi-role pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param multiRolePoolEnvelope Worker pool of an App Service Environment ARM resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkerPoolResourceInner updateMultiRolePool(
-        String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope) {
-        return updateMultiRolePoolAsync(resourceGroupName, name, multiRolePoolEnvelope).block();
-    }
-
-    /**
-     * Description for Create or update a multi-role pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param multiRolePoolEnvelope Worker pool of an App Service Environment ARM resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkerPoolResourceInner updateMultiRolePool(
-        String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope, Context context) {
-        return updateMultiRolePoolAsync(resourceGroupName, name, multiRolePoolEnvelope, context).block();
-    }
+    Response<WorkerPoolResourceInner> updateMultiRolePoolWithResponse(
+        String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope, Context context);
 
     /**
      * Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
@@ -3925,58 +1111,31 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param instance Name of the instance in the multi-role pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of metric definitions.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ResourceMetricDefinitionInner>> listMultiRolePoolInstanceMetricDefinitionsSinglePageAsync(
-        String resourceGroupName, String name, String instance) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (instance == null) {
-            return Mono.error(new IllegalArgumentException("Parameter instance is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listMultiRolePoolInstanceMetricDefinitions(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            instance,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .<PagedResponse<ResourceMetricDefinitionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<ResourceMetricDefinitionInner> listMultiRolePoolInstanceMetricDefinitionsAsync(
+        String resourceGroupName, String name, String instance);
+
+    /**
+     * Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
+     * Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param instance Name of the instance in the multi-role pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of metric definitions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ResourceMetricDefinitionInner> listMultiRolePoolInstanceMetricDefinitions(
+        String resourceGroupName, String name, String instance);
 
     /**
      * Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
@@ -3987,134 +1146,14 @@ public final class AppServiceEnvironmentsClient
      * @param instance Name of the instance in the multi-role pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of metric definitions.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ResourceMetricDefinitionInner>> listMultiRolePoolInstanceMetricDefinitionsSinglePageAsync(
-        String resourceGroupName, String name, String instance, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (instance == null) {
-            return Mono.error(new IllegalArgumentException("Parameter instance is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listMultiRolePoolInstanceMetricDefinitions(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                instance,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
-     * Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param instance Name of the instance in the multi-role pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of metric definitions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ResourceMetricDefinitionInner> listMultiRolePoolInstanceMetricDefinitionsAsync(
-        String resourceGroupName, String name, String instance) {
-        return new PagedFlux<>(
-            () -> listMultiRolePoolInstanceMetricDefinitionsSinglePageAsync(resourceGroupName, name, instance),
-            nextLink -> listMultiRolePoolInstanceMetricDefinitionsNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
-     * Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param instance Name of the instance in the multi-role pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of metric definitions.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ResourceMetricDefinitionInner> listMultiRolePoolInstanceMetricDefinitionsAsync(
-        String resourceGroupName, String name, String instance, Context context) {
-        return new PagedFlux<>(
-            () -> listMultiRolePoolInstanceMetricDefinitionsSinglePageAsync(resourceGroupName, name, instance, context),
-            nextLink -> listMultiRolePoolInstanceMetricDefinitionsNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
-     * Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param instance Name of the instance in the multi-role pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of metric definitions.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ResourceMetricDefinitionInner> listMultiRolePoolInstanceMetricDefinitions(
-        String resourceGroupName, String name, String instance) {
-        return new PagedIterable<>(listMultiRolePoolInstanceMetricDefinitionsAsync(resourceGroupName, name, instance));
-    }
-
-    /**
-     * Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
-     * Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param instance Name of the instance in the multi-role pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of metric definitions.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ResourceMetricDefinitionInner> listMultiRolePoolInstanceMetricDefinitions(
-        String resourceGroupName, String name, String instance, Context context) {
-        return new PagedIterable<>(
-            listMultiRolePoolInstanceMetricDefinitionsAsync(resourceGroupName, name, instance, context));
-    }
+    PagedIterable<ResourceMetricDefinitionInner> listMultiRolePoolInstanceMetricDefinitions(
+        String resourceGroupName, String name, String instance, Context context);
 
     /**
      * Description for Get metric definitions for a multi-role pool of an App Service Environment.
@@ -4122,54 +1161,27 @@ public final class AppServiceEnvironmentsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of metric definitions.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ResourceMetricDefinitionInner>> listMultiRoleMetricDefinitionsSinglePageAsync(
-        String resourceGroupName, String name) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listMultiRoleMetricDefinitions(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .<PagedResponse<ResourceMetricDefinitionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<ResourceMetricDefinitionInner> listMultiRoleMetricDefinitionsAsync(String resourceGroupName, String name);
+
+    /**
+     * Description for Get metric definitions for a multi-role pool of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of metric definitions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ResourceMetricDefinitionInner> listMultiRoleMetricDefinitions(String resourceGroupName, String name);
 
     /**
      * Description for Get metric definitions for a multi-role pool of an App Service Environment.
@@ -4178,121 +1190,14 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of metric definitions.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ResourceMetricDefinitionInner>> listMultiRoleMetricDefinitionsSinglePageAsync(
-        String resourceGroupName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listMultiRoleMetricDefinitions(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Description for Get metric definitions for a multi-role pool of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of metric definitions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ResourceMetricDefinitionInner> listMultiRoleMetricDefinitionsAsync(
-        String resourceGroupName, String name) {
-        return new PagedFlux<>(
-            () -> listMultiRoleMetricDefinitionsSinglePageAsync(resourceGroupName, name),
-            nextLink -> listMultiRoleMetricDefinitionsNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Description for Get metric definitions for a multi-role pool of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of metric definitions.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ResourceMetricDefinitionInner> listMultiRoleMetricDefinitionsAsync(
-        String resourceGroupName, String name, Context context) {
-        return new PagedFlux<>(
-            () -> listMultiRoleMetricDefinitionsSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> listMultiRoleMetricDefinitionsNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Description for Get metric definitions for a multi-role pool of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of metric definitions.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ResourceMetricDefinitionInner> listMultiRoleMetricDefinitions(
-        String resourceGroupName, String name) {
-        return new PagedIterable<>(listMultiRoleMetricDefinitionsAsync(resourceGroupName, name));
-    }
-
-    /**
-     * Description for Get metric definitions for a multi-role pool of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of metric definitions.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ResourceMetricDefinitionInner> listMultiRoleMetricDefinitions(
-        String resourceGroupName, String name, Context context) {
-        return new PagedIterable<>(listMultiRoleMetricDefinitionsAsync(resourceGroupName, name, context));
-    }
+    PagedIterable<ResourceMetricDefinitionInner> listMultiRoleMetricDefinitions(
+        String resourceGroupName, String name, Context context);
 
     /**
      * Description for Get available SKUs for scaling a multi-role pool.
@@ -4300,54 +1205,27 @@ public final class AppServiceEnvironmentsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of SKU information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SkuInfoInner>> listMultiRolePoolSkusSinglePageAsync(
-        String resourceGroupName, String name) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listMultiRolePoolSkus(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .<PagedResponse<SkuInfoInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SkuInfoInner> listMultiRolePoolSkusAsync(String resourceGroupName, String name);
+
+    /**
+     * Description for Get available SKUs for scaling a multi-role pool.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of SKU information.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SkuInfoInner> listMultiRolePoolSkus(String resourceGroupName, String name);
 
     /**
      * Description for Get available SKUs for scaling a multi-role pool.
@@ -4356,117 +1234,13 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of SKU information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SkuInfoInner>> listMultiRolePoolSkusSinglePageAsync(
-        String resourceGroupName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listMultiRolePoolSkus(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Description for Get available SKUs for scaling a multi-role pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of SKU information.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SkuInfoInner> listMultiRolePoolSkusAsync(String resourceGroupName, String name) {
-        return new PagedFlux<>(
-            () -> listMultiRolePoolSkusSinglePageAsync(resourceGroupName, name),
-            nextLink -> listMultiRolePoolSkusNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Description for Get available SKUs for scaling a multi-role pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of SKU information.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SkuInfoInner> listMultiRolePoolSkusAsync(String resourceGroupName, String name, Context context) {
-        return new PagedFlux<>(
-            () -> listMultiRolePoolSkusSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> listMultiRolePoolSkusNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Description for Get available SKUs for scaling a multi-role pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of SKU information.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SkuInfoInner> listMultiRolePoolSkus(String resourceGroupName, String name) {
-        return new PagedIterable<>(listMultiRolePoolSkusAsync(resourceGroupName, name));
-    }
-
-    /**
-     * Description for Get available SKUs for scaling a multi-role pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of SKU information.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SkuInfoInner> listMultiRolePoolSkus(String resourceGroupName, String name, Context context) {
-        return new PagedIterable<>(listMultiRolePoolSkusAsync(resourceGroupName, name, context));
-    }
+    PagedIterable<SkuInfoInner> listMultiRolePoolSkus(String resourceGroupName, String name, Context context);
 
     /**
      * Description for Get usage metrics for a multi-role pool of an App Service Environment.
@@ -4474,53 +1248,27 @@ public final class AppServiceEnvironmentsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of usages.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<UsageInner>> listMultiRoleUsagesSinglePageAsync(String resourceGroupName, String name) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listMultiRoleUsages(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .<PagedResponse<UsageInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<UsageInner> listMultiRoleUsagesAsync(String resourceGroupName, String name);
+
+    /**
+     * Description for Get usage metrics for a multi-role pool of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of usages.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<UsageInner> listMultiRoleUsages(String resourceGroupName, String name);
 
     /**
      * Description for Get usage metrics for a multi-role pool of an App Service Environment.
@@ -4529,117 +1277,13 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of usages.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<UsageInner>> listMultiRoleUsagesSinglePageAsync(
-        String resourceGroupName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listMultiRoleUsages(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Description for Get usage metrics for a multi-role pool of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of usages.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<UsageInner> listMultiRoleUsagesAsync(String resourceGroupName, String name) {
-        return new PagedFlux<>(
-            () -> listMultiRoleUsagesSinglePageAsync(resourceGroupName, name),
-            nextLink -> listMultiRoleUsagesNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Description for Get usage metrics for a multi-role pool of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of usages.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<UsageInner> listMultiRoleUsagesAsync(String resourceGroupName, String name, Context context) {
-        return new PagedFlux<>(
-            () -> listMultiRoleUsagesSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> listMultiRoleUsagesNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Description for Get usage metrics for a multi-role pool of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of usages.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<UsageInner> listMultiRoleUsages(String resourceGroupName, String name) {
-        return new PagedIterable<>(listMultiRoleUsagesAsync(resourceGroupName, name));
-    }
-
-    /**
-     * Description for Get usage metrics for a multi-role pool of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of usages.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<UsageInner> listMultiRoleUsages(String resourceGroupName, String name, Context context) {
-        return new PagedIterable<>(listMultiRoleUsagesAsync(resourceGroupName, name, context));
-    }
+    PagedIterable<UsageInner> listMultiRoleUsages(String resourceGroupName, String name, Context context);
 
     /**
      * Description for List all currently running operations on the App Service Environment.
@@ -4647,44 +1291,41 @@ public final class AppServiceEnvironmentsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of Operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<OperationInner>>> listOperationsWithResponseAsync(String resourceGroupName, String name) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listOperations(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<List<OperationInner>>> listOperationsWithResponseAsync(String resourceGroupName, String name);
+
+    /**
+     * Description for List all currently running operations on the App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of Operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<List<OperationInner>> listOperationsAsync(String resourceGroupName, String name);
+
+    /**
+     * Description for List all currently running operations on the App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of Operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<OperationInner> listOperations(String resourceGroupName, String name);
 
     /**
      * Description for List all currently running operations on the App Service Environment.
@@ -4693,120 +1334,13 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of Operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<OperationInner>>> listOperationsWithResponseAsync(
-        String resourceGroupName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listOperations(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context);
-    }
-
-    /**
-     * Description for List all currently running operations on the App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<OperationInner>> listOperationsAsync(String resourceGroupName, String name) {
-        return listOperationsWithResponseAsync(resourceGroupName, name)
-            .flatMap(
-                (Response<List<OperationInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Description for List all currently running operations on the App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<OperationInner>> listOperationsAsync(String resourceGroupName, String name, Context context) {
-        return listOperationsWithResponseAsync(resourceGroupName, name, context)
-            .flatMap(
-                (Response<List<OperationInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Description for List all currently running operations on the App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<OperationInner> listOperations(String resourceGroupName, String name) {
-        return listOperationsAsync(resourceGroupName, name).block();
-    }
-
-    /**
-     * Description for List all currently running operations on the App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<OperationInner> listOperations(String resourceGroupName, String name, Context context) {
-        return listOperationsAsync(resourceGroupName, name, context).block();
-    }
+    Response<List<OperationInner>> listOperationsWithResponse(String resourceGroupName, String name, Context context);
 
     /**
      * Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
@@ -4814,125 +1348,29 @@ public final class AppServiceEnvironmentsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Outbound Environment Endpoints.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<OutboundEnvironmentEndpointInner>> getOutboundNetworkDependenciesEndpointsSinglePageAsync(
-        String resourceGroupName, String name) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getOutboundNetworkDependenciesEndpoints(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .<PagedResponse<OutboundEnvironmentEndpointInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Outbound Environment Endpoints.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<OutboundEnvironmentEndpointInner>> getOutboundNetworkDependenciesEndpointsSinglePageAsync(
-        String resourceGroupName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .getOutboundNetworkDependenciesEndpoints(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Outbound Environment Endpoints.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<OutboundEnvironmentEndpointInner> getOutboundNetworkDependenciesEndpointsAsync(
-        String resourceGroupName, String name) {
-        return new PagedFlux<>(
-            () -> getOutboundNetworkDependenciesEndpointsSinglePageAsync(resourceGroupName, name),
-            nextLink -> getOutboundNetworkDependenciesEndpointsNextSinglePageAsync(nextLink));
-    }
+    PagedFlux<OutboundEnvironmentEndpointInner> getOutboundNetworkDependenciesEndpointsAsync(
+        String resourceGroupName, String name);
+
+    /**
+     * Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Outbound Environment Endpoints.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<OutboundEnvironmentEndpointInner> getOutboundNetworkDependenciesEndpoints(
+        String resourceGroupName, String name);
 
     /**
      * Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
@@ -4941,50 +1379,14 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Outbound Environment Endpoints.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<OutboundEnvironmentEndpointInner> getOutboundNetworkDependenciesEndpointsAsync(
-        String resourceGroupName, String name, Context context) {
-        return new PagedFlux<>(
-            () -> getOutboundNetworkDependenciesEndpointsSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> getOutboundNetworkDependenciesEndpointsNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Outbound Environment Endpoints.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OutboundEnvironmentEndpointInner> getOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String name) {
-        return new PagedIterable<>(getOutboundNetworkDependenciesEndpointsAsync(resourceGroupName, name));
-    }
-
-    /**
-     * Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Outbound Environment Endpoints.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OutboundEnvironmentEndpointInner> getOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String name, Context context) {
-        return new PagedIterable<>(getOutboundNetworkDependenciesEndpointsAsync(resourceGroupName, name, context));
-    }
+    PagedIterable<OutboundEnvironmentEndpointInner> getOutboundNetworkDependenciesEndpoints(
+        String resourceGroupName, String name, Context context);
 
     /**
      * Description for Reboot all machines in an App Service Environment.
@@ -4992,87 +1394,27 @@ public final class AppServiceEnvironmentsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> rebootWithResponseAsync(String resourceGroupName, String name) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .reboot(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Void>> rebootWithResponseAsync(String resourceGroupName, String name);
 
     /**
      * Description for Reboot all machines in an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> rebootWithResponseAsync(String resourceGroupName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .reboot(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context);
-    }
+    Mono<Void> rebootAsync(String resourceGroupName, String name);
 
     /**
      * Description for Reboot all machines in an App Service Environment.
@@ -5080,14 +1422,12 @@ public final class AppServiceEnvironmentsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> rebootAsync(String resourceGroupName, String name) {
-        return rebootWithResponseAsync(resourceGroupName, name).flatMap((Response<Void> res) -> Mono.empty());
-    }
+    void reboot(String resourceGroupName, String name);
 
     /**
      * Description for Reboot all machines in an App Service Environment.
@@ -5096,43 +1436,13 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> rebootAsync(String resourceGroupName, String name, Context context) {
-        return rebootWithResponseAsync(resourceGroupName, name, context).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Description for Reboot all machines in an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reboot(String resourceGroupName, String name) {
-        rebootAsync(resourceGroupName, name).block();
-    }
-
-    /**
-     * Description for Reboot all machines in an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reboot(String resourceGroupName, String name, Context context) {
-        rebootAsync(resourceGroupName, name, context).block();
-    }
+    Response<Void> rebootWithResponse(String resourceGroupName, String name, Context context);
 
     /**
      * Description for Resume an App Service Environment.
@@ -5140,69 +1450,27 @@ public final class AppServiceEnvironmentsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of App Service apps.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SiteInner>> resumeSinglePageAsync(String resourceGroupName, String name) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context -> {
-                    Mono<Response<Flux<ByteBuffer>>> mono =
-                        service
-                            .resume(
-                                this.client.getEndpoint(),
-                                resourceGroupName,
-                                name,
-                                this.client.getSubscriptionId(),
-                                this.client.getApiVersion(),
-                                context)
-                            .cache();
-                    return Mono
-                        .zip(
-                            mono,
-                            this
-                                .client
-                                .<WebAppCollection, WebAppCollection>getLroResult(
-                                    mono,
-                                    this.client.getHttpPipeline(),
-                                    WebAppCollection.class,
-                                    WebAppCollection.class,
-                                    Context.NONE)
-                                .last()
-                                .flatMap(this.client::getLroFinalResultOrError));
-                })
-            .<PagedResponse<SiteInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getT1().getRequest(),
-                        res.getT1().getStatusCode(),
-                        res.getT1().getHeaders(),
-                        res.getT2().value(),
-                        res.getT2().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SiteInner> resumeAsync(String resourceGroupName, String name);
+
+    /**
+     * Description for Resume an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of App Service apps.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SiteInner> resume(String resourceGroupName, String name);
 
     /**
      * Description for Resume an App Service Environment.
@@ -5211,127 +1479,13 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SiteInner>> resumeSinglePageAsync(
-        String resourceGroupName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            service
-                .resume(
-                    this.client.getEndpoint(),
-                    resourceGroupName,
-                    name,
-                    this.client.getSubscriptionId(),
-                    this.client.getApiVersion(),
-                    context)
-                .cache();
-        return Mono
-            .zip(
-                mono,
-                this
-                    .client
-                    .<WebAppCollection, WebAppCollection>getLroResult(
-                        mono, this.client.getHttpPipeline(), WebAppCollection.class, WebAppCollection.class, context)
-                    .last()
-                    .flatMap(this.client::getLroFinalResultOrError))
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getT1().getRequest(),
-                        res.getT1().getStatusCode(),
-                        res.getT1().getHeaders(),
-                        res.getT2().value(),
-                        res.getT2().nextLink(),
-                        null));
-    }
-
-    /**
-     * Description for Resume an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of App Service apps.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SiteInner> resumeAsync(String resourceGroupName, String name) {
-        return new PagedFlux<>(
-            () -> resumeSinglePageAsync(resourceGroupName, name), nextLink -> resumeNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Description for Resume an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SiteInner> resumeAsync(String resourceGroupName, String name, Context context) {
-        return new PagedFlux<>(
-            () -> resumeSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> resumeNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Description for Resume an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SiteInner> resume(String resourceGroupName, String name) {
-        return new PagedIterable<>(resumeAsync(resourceGroupName, name));
-    }
-
-    /**
-     * Description for Resume an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SiteInner> resume(String resourceGroupName, String name, Context context) {
-        return new PagedIterable<>(resumeAsync(resourceGroupName, name, context));
-    }
+    PagedIterable<SiteInner> resume(String resourceGroupName, String name, Context context);
 
     /**
      * Description for Get all App Service plans in an App Service Environment.
@@ -5339,54 +1493,27 @@ public final class AppServiceEnvironmentsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of App Service plans.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<AppServicePlanInner>> listAppServicePlansSinglePageAsync(
-        String resourceGroupName, String name) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listAppServicePlans(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .<PagedResponse<AppServicePlanInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<AppServicePlanInner> listAppServicePlansAsync(String resourceGroupName, String name);
+
+    /**
+     * Description for Get all App Service plans in an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of App Service plans.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<AppServicePlanInner> listAppServicePlans(String resourceGroupName, String name);
 
     /**
      * Description for Get all App Service plans in an App Service Environment.
@@ -5395,119 +1522,13 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service plans.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<AppServicePlanInner>> listAppServicePlansSinglePageAsync(
-        String resourceGroupName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listAppServicePlans(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Description for Get all App Service plans in an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of App Service plans.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AppServicePlanInner> listAppServicePlansAsync(String resourceGroupName, String name) {
-        return new PagedFlux<>(
-            () -> listAppServicePlansSinglePageAsync(resourceGroupName, name),
-            nextLink -> listAppServicePlansNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Description for Get all App Service plans in an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service plans.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AppServicePlanInner> listAppServicePlansAsync(
-        String resourceGroupName, String name, Context context) {
-        return new PagedFlux<>(
-            () -> listAppServicePlansSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> listAppServicePlansNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Description for Get all App Service plans in an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service plans.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AppServicePlanInner> listAppServicePlans(String resourceGroupName, String name) {
-        return new PagedIterable<>(listAppServicePlansAsync(resourceGroupName, name));
-    }
-
-    /**
-     * Description for Get all App Service plans in an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service plans.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AppServicePlanInner> listAppServicePlans(
-        String resourceGroupName, String name, Context context) {
-        return new PagedIterable<>(listAppServicePlansAsync(resourceGroupName, name, context));
-    }
+    PagedIterable<AppServicePlanInner> listAppServicePlans(String resourceGroupName, String name, Context context);
 
     /**
      * Description for Get all apps in an App Service Environment.
@@ -5516,55 +1537,27 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param propertiesToInclude Comma separated list of app properties to include.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of App Service apps.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SiteInner>> listWebAppsSinglePageAsync(
-        String resourceGroupName, String name, String propertiesToInclude) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listWebApps(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            propertiesToInclude,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .<PagedResponse<SiteInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SiteInner> listWebAppsAsync(String resourceGroupName, String name, String propertiesToInclude);
+
+    /**
+     * Description for Get all apps in an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of App Service apps.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SiteInner> listWebAppsAsync(String resourceGroupName, String name);
 
     /**
      * Description for Get all apps in an App Service Environment.
@@ -5574,90 +1567,14 @@ public final class AppServiceEnvironmentsClient
      * @param propertiesToInclude Comma separated list of app properties to include.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SiteInner>> listWebAppsSinglePageAsync(
-        String resourceGroupName, String name, String propertiesToInclude, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listWebApps(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                propertiesToInclude,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Description for Get all apps in an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param propertiesToInclude Comma separated list of app properties to include.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of App Service apps.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SiteInner> listWebAppsAsync(String resourceGroupName, String name, String propertiesToInclude) {
-        return new PagedFlux<>(
-            () -> listWebAppsSinglePageAsync(resourceGroupName, name, propertiesToInclude),
-            nextLink -> listWebAppsNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Description for Get all apps in an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param propertiesToInclude Comma separated list of app properties to include.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SiteInner> listWebAppsAsync(
-        String resourceGroupName, String name, String propertiesToInclude, Context context) {
-        return new PagedFlux<>(
-            () -> listWebAppsSinglePageAsync(resourceGroupName, name, propertiesToInclude, context),
-            nextLink -> listWebAppsNextSinglePageAsync(nextLink, context));
-    }
+    PagedIterable<SiteInner> listWebApps(
+        String resourceGroupName, String name, String propertiesToInclude, Context context);
 
     /**
      * Description for Get all apps in an App Service Environment.
@@ -5665,69 +1582,13 @@ public final class AppServiceEnvironmentsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of App Service apps.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SiteInner> listWebAppsAsync(String resourceGroupName, String name) {
-        final String propertiesToInclude = null;
-        final Context context = null;
-        return new PagedFlux<>(
-            () -> listWebAppsSinglePageAsync(resourceGroupName, name, propertiesToInclude),
-            nextLink -> listWebAppsNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Description for Get all apps in an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param propertiesToInclude Comma separated list of app properties to include.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SiteInner> listWebApps(String resourceGroupName, String name, String propertiesToInclude) {
-        return new PagedIterable<>(listWebAppsAsync(resourceGroupName, name, propertiesToInclude));
-    }
-
-    /**
-     * Description for Get all apps in an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param propertiesToInclude Comma separated list of app properties to include.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SiteInner> listWebApps(
-        String resourceGroupName, String name, String propertiesToInclude, Context context) {
-        return new PagedIterable<>(listWebAppsAsync(resourceGroupName, name, propertiesToInclude, context));
-    }
-
-    /**
-     * Description for Get all apps in an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SiteInner> listWebApps(String resourceGroupName, String name) {
-        final String propertiesToInclude = null;
-        final Context context = null;
-        return new PagedIterable<>(listWebAppsAsync(resourceGroupName, name, propertiesToInclude));
-    }
+    PagedIterable<SiteInner> listWebApps(String resourceGroupName, String name);
 
     /**
      * Description for Suspend an App Service Environment.
@@ -5735,69 +1596,27 @@ public final class AppServiceEnvironmentsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of App Service apps.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SiteInner>> suspendSinglePageAsync(String resourceGroupName, String name) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context -> {
-                    Mono<Response<Flux<ByteBuffer>>> mono =
-                        service
-                            .suspend(
-                                this.client.getEndpoint(),
-                                resourceGroupName,
-                                name,
-                                this.client.getSubscriptionId(),
-                                this.client.getApiVersion(),
-                                context)
-                            .cache();
-                    return Mono
-                        .zip(
-                            mono,
-                            this
-                                .client
-                                .<WebAppCollection, WebAppCollection>getLroResult(
-                                    mono,
-                                    this.client.getHttpPipeline(),
-                                    WebAppCollection.class,
-                                    WebAppCollection.class,
-                                    Context.NONE)
-                                .last()
-                                .flatMap(this.client::getLroFinalResultOrError));
-                })
-            .<PagedResponse<SiteInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getT1().getRequest(),
-                        res.getT1().getStatusCode(),
-                        res.getT1().getHeaders(),
-                        res.getT2().value(),
-                        res.getT2().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SiteInner> suspendAsync(String resourceGroupName, String name);
+
+    /**
+     * Description for Suspend an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of App Service apps.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SiteInner> suspend(String resourceGroupName, String name);
 
     /**
      * Description for Suspend an App Service Environment.
@@ -5806,127 +1625,13 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SiteInner>> suspendSinglePageAsync(
-        String resourceGroupName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            service
-                .suspend(
-                    this.client.getEndpoint(),
-                    resourceGroupName,
-                    name,
-                    this.client.getSubscriptionId(),
-                    this.client.getApiVersion(),
-                    context)
-                .cache();
-        return Mono
-            .zip(
-                mono,
-                this
-                    .client
-                    .<WebAppCollection, WebAppCollection>getLroResult(
-                        mono, this.client.getHttpPipeline(), WebAppCollection.class, WebAppCollection.class, context)
-                    .last()
-                    .flatMap(this.client::getLroFinalResultOrError))
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getT1().getRequest(),
-                        res.getT1().getStatusCode(),
-                        res.getT1().getHeaders(),
-                        res.getT2().value(),
-                        res.getT2().nextLink(),
-                        null));
-    }
-
-    /**
-     * Description for Suspend an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of App Service apps.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SiteInner> suspendAsync(String resourceGroupName, String name) {
-        return new PagedFlux<>(
-            () -> suspendSinglePageAsync(resourceGroupName, name), nextLink -> suspendNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Description for Suspend an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SiteInner> suspendAsync(String resourceGroupName, String name, Context context) {
-        return new PagedFlux<>(
-            () -> suspendSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> suspendNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Description for Suspend an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SiteInner> suspend(String resourceGroupName, String name) {
-        return new PagedIterable<>(suspendAsync(resourceGroupName, name));
-    }
-
-    /**
-     * Description for Suspend an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SiteInner> suspend(String resourceGroupName, String name, Context context) {
-        return new PagedIterable<>(suspendAsync(resourceGroupName, name, context));
-    }
+    PagedIterable<SiteInner> suspend(String resourceGroupName, String name, Context context);
 
     /**
      * Description for Get global usage metrics of an App Service Environment.
@@ -5937,55 +1642,27 @@ public final class AppServiceEnvironmentsClient
      *     $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and
      *     endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of CSM usage quotas.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<CsmUsageQuotaInner>> listUsagesSinglePageAsync(
-        String resourceGroupName, String name, String filter) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listUsages(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            filter,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .<PagedResponse<CsmUsageQuotaInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<CsmUsageQuotaInner> listUsagesAsync(String resourceGroupName, String name, String filter);
+
+    /**
+     * Description for Get global usage metrics of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of CSM usage quotas.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<CsmUsageQuotaInner> listUsagesAsync(String resourceGroupName, String name);
 
     /**
      * Description for Get global usage metrics of an App Service Environment.
@@ -5997,94 +1674,13 @@ public final class AppServiceEnvironmentsClient
      *     endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of CSM usage quotas.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<CsmUsageQuotaInner>> listUsagesSinglePageAsync(
-        String resourceGroupName, String name, String filter, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listUsages(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                filter,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Description for Get global usage metrics of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example:
-     *     $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and
-     *     endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of CSM usage quotas.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CsmUsageQuotaInner> listUsagesAsync(String resourceGroupName, String name, String filter) {
-        return new PagedFlux<>(
-            () -> listUsagesSinglePageAsync(resourceGroupName, name, filter),
-            nextLink -> listUsagesNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Description for Get global usage metrics of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example:
-     *     $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and
-     *     endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of CSM usage quotas.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CsmUsageQuotaInner> listUsagesAsync(
-        String resourceGroupName, String name, String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listUsagesSinglePageAsync(resourceGroupName, name, filter, context),
-            nextLink -> listUsagesNextSinglePageAsync(nextLink, context));
-    }
+    PagedIterable<CsmUsageQuotaInner> listUsages(String resourceGroupName, String name, String filter, Context context);
 
     /**
      * Description for Get global usage metrics of an App Service Environment.
@@ -6092,73 +1688,13 @@ public final class AppServiceEnvironmentsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of CSM usage quotas.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CsmUsageQuotaInner> listUsagesAsync(String resourceGroupName, String name) {
-        final String filter = null;
-        final Context context = null;
-        return new PagedFlux<>(
-            () -> listUsagesSinglePageAsync(resourceGroupName, name, filter),
-            nextLink -> listUsagesNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Description for Get global usage metrics of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example:
-     *     $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and
-     *     endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of CSM usage quotas.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CsmUsageQuotaInner> listUsages(String resourceGroupName, String name, String filter) {
-        return new PagedIterable<>(listUsagesAsync(resourceGroupName, name, filter));
-    }
-
-    /**
-     * Description for Get global usage metrics of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example:
-     *     $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and
-     *     endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of CSM usage quotas.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CsmUsageQuotaInner> listUsages(
-        String resourceGroupName, String name, String filter, Context context) {
-        return new PagedIterable<>(listUsagesAsync(resourceGroupName, name, filter, context));
-    }
-
-    /**
-     * Description for Get global usage metrics of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of CSM usage quotas.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CsmUsageQuotaInner> listUsages(String resourceGroupName, String name) {
-        final String filter = null;
-        final Context context = null;
-        return new PagedIterable<>(listUsagesAsync(resourceGroupName, name, filter));
-    }
+    PagedIterable<CsmUsageQuotaInner> listUsages(String resourceGroupName, String name);
 
     /**
      * Description for Get all worker pools of an App Service Environment.
@@ -6166,54 +1702,27 @@ public final class AppServiceEnvironmentsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of worker pools.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<WorkerPoolResourceInner>> listWorkerPoolsSinglePageAsync(
-        String resourceGroupName, String name) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listWorkerPools(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .<PagedResponse<WorkerPoolResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<WorkerPoolResourceInner> listWorkerPoolsAsync(String resourceGroupName, String name);
+
+    /**
+     * Description for Get all worker pools of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of worker pools.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<WorkerPoolResourceInner> listWorkerPools(String resourceGroupName, String name);
 
     /**
      * Description for Get all worker pools of an App Service Environment.
@@ -6222,119 +1731,13 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of worker pools.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<WorkerPoolResourceInner>> listWorkerPoolsSinglePageAsync(
-        String resourceGroupName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listWorkerPools(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Description for Get all worker pools of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of worker pools.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<WorkerPoolResourceInner> listWorkerPoolsAsync(String resourceGroupName, String name) {
-        return new PagedFlux<>(
-            () -> listWorkerPoolsSinglePageAsync(resourceGroupName, name),
-            nextLink -> listWorkerPoolsNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Description for Get all worker pools of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of worker pools.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<WorkerPoolResourceInner> listWorkerPoolsAsync(
-        String resourceGroupName, String name, Context context) {
-        return new PagedFlux<>(
-            () -> listWorkerPoolsSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> listWorkerPoolsNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Description for Get all worker pools of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of worker pools.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<WorkerPoolResourceInner> listWorkerPools(String resourceGroupName, String name) {
-        return new PagedIterable<>(listWorkerPoolsAsync(resourceGroupName, name));
-    }
-
-    /**
-     * Description for Get all worker pools of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of worker pools.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<WorkerPoolResourceInner> listWorkerPools(
-        String resourceGroupName, String name, Context context) {
-        return new PagedIterable<>(listWorkerPoolsAsync(resourceGroupName, name, context));
-    }
+    PagedIterable<WorkerPoolResourceInner> listWorkerPools(String resourceGroupName, String name, Context context);
 
     /**
      * Description for Get properties of a worker pool.
@@ -6343,49 +1746,44 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return worker pool of an App Service Environment ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<WorkerPoolResourceInner>> getWorkerPoolWithResponseAsync(
-        String resourceGroupName, String name, String workerPoolName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (workerPoolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workerPoolName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getWorkerPool(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            workerPoolName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<WorkerPoolResourceInner>> getWorkerPoolWithResponseAsync(
+        String resourceGroupName, String name, String workerPoolName);
+
+    /**
+     * Description for Get properties of a worker pool.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param workerPoolName Name of the worker pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return worker pool of an App Service Environment ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<WorkerPoolResourceInner> getWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName);
+
+    /**
+     * Description for Get properties of a worker pool.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param workerPoolName Name of the worker pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return worker pool of an App Service Environment ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkerPoolResourceInner getWorkerPool(String resourceGroupName, String name, String workerPoolName);
 
     /**
      * Description for Get properties of a worker pool.
@@ -6395,131 +1793,14 @@ public final class AppServiceEnvironmentsClient
      * @param workerPoolName Name of the worker pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return worker pool of an App Service Environment ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<WorkerPoolResourceInner>> getWorkerPoolWithResponseAsync(
-        String resourceGroupName, String name, String workerPoolName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (workerPoolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workerPoolName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .getWorkerPool(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                workerPoolName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context);
-    }
-
-    /**
-     * Description for Get properties of a worker pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<WorkerPoolResourceInner> getWorkerPoolAsync(
-        String resourceGroupName, String name, String workerPoolName) {
-        return getWorkerPoolWithResponseAsync(resourceGroupName, name, workerPoolName)
-            .flatMap(
-                (Response<WorkerPoolResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Description for Get properties of a worker pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<WorkerPoolResourceInner> getWorkerPoolAsync(
-        String resourceGroupName, String name, String workerPoolName, Context context) {
-        return getWorkerPoolWithResponseAsync(resourceGroupName, name, workerPoolName, context)
-            .flatMap(
-                (Response<WorkerPoolResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Description for Get properties of a worker pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkerPoolResourceInner getWorkerPool(String resourceGroupName, String name, String workerPoolName) {
-        return getWorkerPoolAsync(resourceGroupName, name, workerPoolName).block();
-    }
-
-    /**
-     * Description for Get properties of a worker pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkerPoolResourceInner getWorkerPool(
-        String resourceGroupName, String name, String workerPoolName, Context context) {
-        return getWorkerPoolAsync(resourceGroupName, name, workerPoolName, context).block();
-    }
+    Response<WorkerPoolResourceInner> getWorkerPoolWithResponse(
+        String resourceGroupName, String name, String workerPoolName, Context context);
 
     /**
      * Description for Create or update a worker pool.
@@ -6529,56 +1810,48 @@ public final class AppServiceEnvironmentsClient
      * @param workerPoolName Name of the worker pool.
      * @param workerPoolEnvelope Worker pool of an App Service Environment ARM resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return worker pool of an App Service Environment ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWorkerPoolWithResponseAsync(
-        String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (workerPoolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workerPoolName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (workerPoolEnvelope == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter workerPoolEnvelope is required and cannot be null."));
-        } else {
-            workerPoolEnvelope.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdateWorkerPool(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            workerPoolName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            workerPoolEnvelope,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWorkerPoolWithResponseAsync(
+        String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope);
+
+    /**
+     * Description for Create or update a worker pool.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param workerPoolName Name of the worker pool.
+     * @param workerPoolEnvelope Worker pool of an App Service Environment ARM resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return worker pool of an App Service Environment ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<WorkerPoolResourceInner>, WorkerPoolResourceInner> beginCreateOrUpdateWorkerPoolAsync(
+        String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope);
+
+    /**
+     * Description for Create or update a worker pool.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param workerPoolName Name of the worker pool.
+     * @param workerPoolEnvelope Worker pool of an App Service Environment ARM resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return worker pool of an App Service Environment ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<WorkerPoolResourceInner>, WorkerPoolResourceInner> beginCreateOrUpdateWorkerPool(
+        String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope);
 
     /**
      * Description for Create or update a worker pool.
@@ -6589,57 +1862,18 @@ public final class AppServiceEnvironmentsClient
      * @param workerPoolEnvelope Worker pool of an App Service Environment ARM resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return worker pool of an App Service Environment ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWorkerPoolWithResponseAsync(
+    SyncPoller<PollResult<WorkerPoolResourceInner>, WorkerPoolResourceInner> beginCreateOrUpdateWorkerPool(
         String resourceGroupName,
         String name,
         String workerPoolName,
         WorkerPoolResourceInner workerPoolEnvelope,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (workerPoolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workerPoolName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (workerPoolEnvelope == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter workerPoolEnvelope is required and cannot be null."));
-        } else {
-            workerPoolEnvelope.validate();
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .createOrUpdateWorkerPool(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                workerPoolName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                workerPoolEnvelope,
-                context);
-    }
+        Context context);
 
     /**
      * Description for Create or update a worker pool.
@@ -6649,24 +1883,31 @@ public final class AppServiceEnvironmentsClient
      * @param workerPoolName Name of the worker pool.
      * @param workerPoolEnvelope Worker pool of an App Service Environment ARM resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return worker pool of an App Service Environment ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<WorkerPoolResourceInner>, WorkerPoolResourceInner> beginCreateOrUpdateWorkerPoolAsync(
-        String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWorkerPoolWithResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope);
-        return this
-            .client
-            .<WorkerPoolResourceInner, WorkerPoolResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                WorkerPoolResourceInner.class,
-                WorkerPoolResourceInner.class,
-                Context.NONE);
-    }
+    Mono<WorkerPoolResourceInner> createOrUpdateWorkerPoolAsync(
+        String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope);
+
+    /**
+     * Description for Create or update a worker pool.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param workerPoolName Name of the worker pool.
+     * @param workerPoolEnvelope Worker pool of an App Service Environment ARM resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return worker pool of an App Service Environment ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkerPoolResourceInner createOrUpdateWorkerPool(
+        String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope);
 
     /**
      * Description for Create or update a worker pool.
@@ -6677,30 +1918,18 @@ public final class AppServiceEnvironmentsClient
      * @param workerPoolEnvelope Worker pool of an App Service Environment ARM resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return worker pool of an App Service Environment ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<WorkerPoolResourceInner>, WorkerPoolResourceInner> beginCreateOrUpdateWorkerPoolAsync(
+    WorkerPoolResourceInner createOrUpdateWorkerPool(
         String resourceGroupName,
         String name,
         String workerPoolName,
         WorkerPoolResourceInner workerPoolEnvelope,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWorkerPoolWithResponseAsync(
-                resourceGroupName, name, workerPoolName, workerPoolEnvelope, context);
-        return this
-            .client
-            .<WorkerPoolResourceInner, WorkerPoolResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                WorkerPoolResourceInner.class,
-                WorkerPoolResourceInner.class,
-                context);
-    }
+        Context context);
 
     /**
      * Description for Create or update a worker pool.
@@ -6710,16 +1939,48 @@ public final class AppServiceEnvironmentsClient
      * @param workerPoolName Name of the worker pool.
      * @param workerPoolEnvelope Worker pool of an App Service Environment ARM resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return worker pool of an App Service Environment ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<WorkerPoolResourceInner>, WorkerPoolResourceInner> beginCreateOrUpdateWorkerPool(
-        String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope) {
-        return beginCreateOrUpdateWorkerPoolAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope)
-            .getSyncPoller();
-    }
+    Mono<Response<WorkerPoolResourceInner>> updateWorkerPoolWithResponseAsync(
+        String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope);
+
+    /**
+     * Description for Create or update a worker pool.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param workerPoolName Name of the worker pool.
+     * @param workerPoolEnvelope Worker pool of an App Service Environment ARM resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return worker pool of an App Service Environment ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<WorkerPoolResourceInner> updateWorkerPoolAsync(
+        String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope);
+
+    /**
+     * Description for Create or update a worker pool.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param workerPoolName Name of the worker pool.
+     * @param workerPoolEnvelope Worker pool of an App Service Environment ARM resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return worker pool of an App Service Environment ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkerPoolResourceInner updateWorkerPool(
+        String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope);
 
     /**
      * Description for Create or update a worker pool.
@@ -6730,325 +1991,18 @@ public final class AppServiceEnvironmentsClient
      * @param workerPoolEnvelope Worker pool of an App Service Environment ARM resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return worker pool of an App Service Environment ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<WorkerPoolResourceInner>, WorkerPoolResourceInner> beginCreateOrUpdateWorkerPool(
+    Response<WorkerPoolResourceInner> updateWorkerPoolWithResponse(
         String resourceGroupName,
         String name,
         String workerPoolName,
         WorkerPoolResourceInner workerPoolEnvelope,
-        Context context) {
-        return beginCreateOrUpdateWorkerPoolAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Description for Create or update a worker pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @param workerPoolEnvelope Worker pool of an App Service Environment ARM resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<WorkerPoolResourceInner> createOrUpdateWorkerPoolAsync(
-        String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope) {
-        return beginCreateOrUpdateWorkerPoolAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Description for Create or update a worker pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @param workerPoolEnvelope Worker pool of an App Service Environment ARM resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<WorkerPoolResourceInner> createOrUpdateWorkerPoolAsync(
-        String resourceGroupName,
-        String name,
-        String workerPoolName,
-        WorkerPoolResourceInner workerPoolEnvelope,
-        Context context) {
-        return beginCreateOrUpdateWorkerPoolAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Description for Create or update a worker pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @param workerPoolEnvelope Worker pool of an App Service Environment ARM resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkerPoolResourceInner createOrUpdateWorkerPool(
-        String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope) {
-        return createOrUpdateWorkerPoolAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope).block();
-    }
-
-    /**
-     * Description for Create or update a worker pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @param workerPoolEnvelope Worker pool of an App Service Environment ARM resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkerPoolResourceInner createOrUpdateWorkerPool(
-        String resourceGroupName,
-        String name,
-        String workerPoolName,
-        WorkerPoolResourceInner workerPoolEnvelope,
-        Context context) {
-        return createOrUpdateWorkerPoolAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope, context)
-            .block();
-    }
-
-    /**
-     * Description for Create or update a worker pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @param workerPoolEnvelope Worker pool of an App Service Environment ARM resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<WorkerPoolResourceInner>> updateWorkerPoolWithResponseAsync(
-        String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (workerPoolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workerPoolName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (workerPoolEnvelope == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter workerPoolEnvelope is required and cannot be null."));
-        } else {
-            workerPoolEnvelope.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateWorkerPool(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            workerPoolName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            workerPoolEnvelope,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Description for Create or update a worker pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @param workerPoolEnvelope Worker pool of an App Service Environment ARM resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<WorkerPoolResourceInner>> updateWorkerPoolWithResponseAsync(
-        String resourceGroupName,
-        String name,
-        String workerPoolName,
-        WorkerPoolResourceInner workerPoolEnvelope,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (workerPoolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workerPoolName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (workerPoolEnvelope == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter workerPoolEnvelope is required and cannot be null."));
-        } else {
-            workerPoolEnvelope.validate();
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .updateWorkerPool(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                workerPoolName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                workerPoolEnvelope,
-                context);
-    }
-
-    /**
-     * Description for Create or update a worker pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @param workerPoolEnvelope Worker pool of an App Service Environment ARM resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<WorkerPoolResourceInner> updateWorkerPoolAsync(
-        String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope) {
-        return updateWorkerPoolWithResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope)
-            .flatMap(
-                (Response<WorkerPoolResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Description for Create or update a worker pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @param workerPoolEnvelope Worker pool of an App Service Environment ARM resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<WorkerPoolResourceInner> updateWorkerPoolAsync(
-        String resourceGroupName,
-        String name,
-        String workerPoolName,
-        WorkerPoolResourceInner workerPoolEnvelope,
-        Context context) {
-        return updateWorkerPoolWithResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope, context)
-            .flatMap(
-                (Response<WorkerPoolResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Description for Create or update a worker pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @param workerPoolEnvelope Worker pool of an App Service Environment ARM resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkerPoolResourceInner updateWorkerPool(
-        String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope) {
-        return updateWorkerPoolAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope).block();
-    }
-
-    /**
-     * Description for Create or update a worker pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @param workerPoolEnvelope Worker pool of an App Service Environment ARM resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkerPoolResourceInner updateWorkerPool(
-        String resourceGroupName,
-        String name,
-        String workerPoolName,
-        WorkerPoolResourceInner workerPoolEnvelope,
-        Context context) {
-        return updateWorkerPoolAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope, context).block();
-    }
+        Context context);
 
     /**
      * Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
@@ -7058,62 +2012,31 @@ public final class AppServiceEnvironmentsClient
      * @param workerPoolName Name of the worker pool.
      * @param instance Name of the instance in the worker pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of metric definitions.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ResourceMetricDefinitionInner>> listWorkerPoolInstanceMetricDefinitionsSinglePageAsync(
-        String resourceGroupName, String name, String workerPoolName, String instance) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (workerPoolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workerPoolName is required and cannot be null."));
-        }
-        if (instance == null) {
-            return Mono.error(new IllegalArgumentException("Parameter instance is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listWorkerPoolInstanceMetricDefinitions(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            workerPoolName,
-                            instance,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .<PagedResponse<ResourceMetricDefinitionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<ResourceMetricDefinitionInner> listWorkerPoolInstanceMetricDefinitionsAsync(
+        String resourceGroupName, String name, String workerPoolName, String instance);
+
+    /**
+     * Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param workerPoolName Name of the worker pool.
+     * @param instance Name of the instance in the worker pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of metric definitions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ResourceMetricDefinitionInner> listWorkerPoolInstanceMetricDefinitions(
+        String resourceGroupName, String name, String workerPoolName, String instance);
 
     /**
      * Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
@@ -7124,143 +2047,14 @@ public final class AppServiceEnvironmentsClient
      * @param instance Name of the instance in the worker pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of metric definitions.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ResourceMetricDefinitionInner>> listWorkerPoolInstanceMetricDefinitionsSinglePageAsync(
-        String resourceGroupName, String name, String workerPoolName, String instance, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (workerPoolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workerPoolName is required and cannot be null."));
-        }
-        if (instance == null) {
-            return Mono.error(new IllegalArgumentException("Parameter instance is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listWorkerPoolInstanceMetricDefinitions(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                workerPoolName,
-                instance,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @param instance Name of the instance in the worker pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of metric definitions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ResourceMetricDefinitionInner> listWorkerPoolInstanceMetricDefinitionsAsync(
-        String resourceGroupName, String name, String workerPoolName, String instance) {
-        return new PagedFlux<>(
-            () ->
-                listWorkerPoolInstanceMetricDefinitionsSinglePageAsync(
-                    resourceGroupName, name, workerPoolName, instance),
-            nextLink -> listWorkerPoolInstanceMetricDefinitionsNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @param instance Name of the instance in the worker pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of metric definitions.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ResourceMetricDefinitionInner> listWorkerPoolInstanceMetricDefinitionsAsync(
-        String resourceGroupName, String name, String workerPoolName, String instance, Context context) {
-        return new PagedFlux<>(
-            () ->
-                listWorkerPoolInstanceMetricDefinitionsSinglePageAsync(
-                    resourceGroupName, name, workerPoolName, instance, context),
-            nextLink -> listWorkerPoolInstanceMetricDefinitionsNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @param instance Name of the instance in the worker pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of metric definitions.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ResourceMetricDefinitionInner> listWorkerPoolInstanceMetricDefinitions(
-        String resourceGroupName, String name, String workerPoolName, String instance) {
-        return new PagedIterable<>(
-            listWorkerPoolInstanceMetricDefinitionsAsync(resourceGroupName, name, workerPoolName, instance));
-    }
-
-    /**
-     * Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @param instance Name of the instance in the worker pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of metric definitions.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ResourceMetricDefinitionInner> listWorkerPoolInstanceMetricDefinitions(
-        String resourceGroupName, String name, String workerPoolName, String instance, Context context) {
-        return new PagedIterable<>(
-            listWorkerPoolInstanceMetricDefinitionsAsync(resourceGroupName, name, workerPoolName, instance, context));
-    }
+    PagedIterable<ResourceMetricDefinitionInner> listWorkerPoolInstanceMetricDefinitions(
+        String resourceGroupName, String name, String workerPoolName, String instance, Context context);
 
     /**
      * Description for Get metric definitions for a worker pool of an App Service Environment.
@@ -7269,58 +2063,30 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of metric definitions.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ResourceMetricDefinitionInner>> listWebWorkerMetricDefinitionsSinglePageAsync(
-        String resourceGroupName, String name, String workerPoolName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (workerPoolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workerPoolName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listWebWorkerMetricDefinitions(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            workerPoolName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .<PagedResponse<ResourceMetricDefinitionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<ResourceMetricDefinitionInner> listWebWorkerMetricDefinitionsAsync(
+        String resourceGroupName, String name, String workerPoolName);
+
+    /**
+     * Description for Get metric definitions for a worker pool of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param workerPoolName Name of the worker pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of metric definitions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ResourceMetricDefinitionInner> listWebWorkerMetricDefinitions(
+        String resourceGroupName, String name, String workerPoolName);
 
     /**
      * Description for Get metric definitions for a worker pool of an App Service Environment.
@@ -7330,130 +2096,14 @@ public final class AppServiceEnvironmentsClient
      * @param workerPoolName Name of the worker pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of metric definitions.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ResourceMetricDefinitionInner>> listWebWorkerMetricDefinitionsSinglePageAsync(
-        String resourceGroupName, String name, String workerPoolName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (workerPoolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workerPoolName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listWebWorkerMetricDefinitions(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                workerPoolName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Description for Get metric definitions for a worker pool of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of metric definitions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ResourceMetricDefinitionInner> listWebWorkerMetricDefinitionsAsync(
-        String resourceGroupName, String name, String workerPoolName) {
-        return new PagedFlux<>(
-            () -> listWebWorkerMetricDefinitionsSinglePageAsync(resourceGroupName, name, workerPoolName),
-            nextLink -> listWebWorkerMetricDefinitionsNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Description for Get metric definitions for a worker pool of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of metric definitions.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ResourceMetricDefinitionInner> listWebWorkerMetricDefinitionsAsync(
-        String resourceGroupName, String name, String workerPoolName, Context context) {
-        return new PagedFlux<>(
-            () -> listWebWorkerMetricDefinitionsSinglePageAsync(resourceGroupName, name, workerPoolName, context),
-            nextLink -> listWebWorkerMetricDefinitionsNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Description for Get metric definitions for a worker pool of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of metric definitions.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ResourceMetricDefinitionInner> listWebWorkerMetricDefinitions(
-        String resourceGroupName, String name, String workerPoolName) {
-        return new PagedIterable<>(listWebWorkerMetricDefinitionsAsync(resourceGroupName, name, workerPoolName));
-    }
-
-    /**
-     * Description for Get metric definitions for a worker pool of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of metric definitions.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ResourceMetricDefinitionInner> listWebWorkerMetricDefinitions(
-        String resourceGroupName, String name, String workerPoolName, Context context) {
-        return new PagedIterable<>(
-            listWebWorkerMetricDefinitionsAsync(resourceGroupName, name, workerPoolName, context));
-    }
+    PagedIterable<ResourceMetricDefinitionInner> listWebWorkerMetricDefinitions(
+        String resourceGroupName, String name, String workerPoolName, Context context);
 
     /**
      * Description for Get available SKUs for scaling a worker pool.
@@ -7462,58 +2112,28 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of SKU information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SkuInfoInner>> listWorkerPoolSkusSinglePageAsync(
-        String resourceGroupName, String name, String workerPoolName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (workerPoolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workerPoolName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listWorkerPoolSkus(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            workerPoolName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .<PagedResponse<SkuInfoInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SkuInfoInner> listWorkerPoolSkusAsync(String resourceGroupName, String name, String workerPoolName);
+
+    /**
+     * Description for Get available SKUs for scaling a worker pool.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param workerPoolName Name of the worker pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of SKU information.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SkuInfoInner> listWorkerPoolSkus(String resourceGroupName, String name, String workerPoolName);
 
     /**
      * Description for Get available SKUs for scaling a worker pool.
@@ -7523,129 +2143,14 @@ public final class AppServiceEnvironmentsClient
      * @param workerPoolName Name of the worker pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of SKU information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SkuInfoInner>> listWorkerPoolSkusSinglePageAsync(
-        String resourceGroupName, String name, String workerPoolName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (workerPoolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workerPoolName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listWorkerPoolSkus(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                workerPoolName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Description for Get available SKUs for scaling a worker pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of SKU information.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SkuInfoInner> listWorkerPoolSkusAsync(
-        String resourceGroupName, String name, String workerPoolName) {
-        return new PagedFlux<>(
-            () -> listWorkerPoolSkusSinglePageAsync(resourceGroupName, name, workerPoolName),
-            nextLink -> listWorkerPoolSkusNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Description for Get available SKUs for scaling a worker pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of SKU information.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SkuInfoInner> listWorkerPoolSkusAsync(
-        String resourceGroupName, String name, String workerPoolName, Context context) {
-        return new PagedFlux<>(
-            () -> listWorkerPoolSkusSinglePageAsync(resourceGroupName, name, workerPoolName, context),
-            nextLink -> listWorkerPoolSkusNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Description for Get available SKUs for scaling a worker pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of SKU information.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SkuInfoInner> listWorkerPoolSkus(
-        String resourceGroupName, String name, String workerPoolName) {
-        return new PagedIterable<>(listWorkerPoolSkusAsync(resourceGroupName, name, workerPoolName));
-    }
-
-    /**
-     * Description for Get available SKUs for scaling a worker pool.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of SKU information.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SkuInfoInner> listWorkerPoolSkus(
-        String resourceGroupName, String name, String workerPoolName, Context context) {
-        return new PagedIterable<>(listWorkerPoolSkusAsync(resourceGroupName, name, workerPoolName, context));
-    }
+    PagedIterable<SkuInfoInner> listWorkerPoolSkus(
+        String resourceGroupName, String name, String workerPoolName, Context context);
 
     /**
      * Description for Get usage metrics for a worker pool of an App Service Environment.
@@ -7654,58 +2159,28 @@ public final class AppServiceEnvironmentsClient
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of usages.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<UsageInner>> listWebWorkerUsagesSinglePageAsync(
-        String resourceGroupName, String name, String workerPoolName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (workerPoolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workerPoolName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listWebWorkerUsages(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            workerPoolName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .<PagedResponse<UsageInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<UsageInner> listWebWorkerUsagesAsync(String resourceGroupName, String name, String workerPoolName);
+
+    /**
+     * Description for Get usage metrics for a worker pool of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param workerPoolName Name of the worker pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of usages.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<UsageInner> listWebWorkerUsages(String resourceGroupName, String name, String workerPoolName);
 
     /**
      * Description for Get usage metrics for a worker pool of an App Service Environment.
@@ -7715,1342 +2190,12 @@ public final class AppServiceEnvironmentsClient
      * @param workerPoolName Name of the worker pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of usages.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<UsageInner>> listWebWorkerUsagesSinglePageAsync(
-        String resourceGroupName, String name, String workerPoolName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (workerPoolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workerPoolName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listWebWorkerUsages(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                workerPoolName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Description for Get usage metrics for a worker pool of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of usages.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<UsageInner> listWebWorkerUsagesAsync(
-        String resourceGroupName, String name, String workerPoolName) {
-        return new PagedFlux<>(
-            () -> listWebWorkerUsagesSinglePageAsync(resourceGroupName, name, workerPoolName),
-            nextLink -> listWebWorkerUsagesNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Description for Get usage metrics for a worker pool of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of usages.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<UsageInner> listWebWorkerUsagesAsync(
-        String resourceGroupName, String name, String workerPoolName, Context context) {
-        return new PagedFlux<>(
-            () -> listWebWorkerUsagesSinglePageAsync(resourceGroupName, name, workerPoolName, context),
-            nextLink -> listWebWorkerUsagesNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Description for Get usage metrics for a worker pool of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of usages.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<UsageInner> listWebWorkerUsages(String resourceGroupName, String name, String workerPoolName) {
-        return new PagedIterable<>(listWebWorkerUsagesAsync(resourceGroupName, name, workerPoolName));
-    }
-
-    /**
-     * Description for Get usage metrics for a worker pool of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of usages.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<UsageInner> listWebWorkerUsages(
-        String resourceGroupName, String name, String workerPoolName, Context context) {
-        return new PagedIterable<>(listWebWorkerUsagesAsync(resourceGroupName, name, workerPoolName, context));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service Environments.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<AppServiceEnvironmentResourceInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
-            .<PagedResponse<AppServiceEnvironmentResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service Environments.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<AppServiceEnvironmentResourceInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service Environments.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<AppServiceEnvironmentResourceInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listByResourceGroupNext(nextLink, context))
-            .<PagedResponse<AppServiceEnvironmentResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service Environments.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<AppServiceEnvironmentResourceInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of stamp capacities.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<StampCapacityInner>> listCapacitiesNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listCapacitiesNext(nextLink, context))
-            .<PagedResponse<StampCapacityInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of stamp capacities.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<StampCapacityInner>> listCapacitiesNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listCapacitiesNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SiteInner>> changeVnetNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.changeVnetNext(nextLink, context))
-            .<PagedResponse<SiteInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SiteInner>> changeVnetNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .changeVnetNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Inbound Environment Endpoints.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<InboundEnvironmentEndpointInner>>
-        getInboundNetworkDependenciesEndpointsNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.getInboundNetworkDependenciesEndpointsNext(nextLink, context))
-            .<PagedResponse<InboundEnvironmentEndpointInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Inbound Environment Endpoints.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<InboundEnvironmentEndpointInner>>
-        getInboundNetworkDependenciesEndpointsNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .getInboundNetworkDependenciesEndpointsNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of worker pools.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<WorkerPoolResourceInner>> listMultiRolePoolsNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listMultiRolePoolsNext(nextLink, context))
-            .<PagedResponse<WorkerPoolResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of worker pools.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<WorkerPoolResourceInner>> listMultiRolePoolsNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listMultiRolePoolsNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of metric definitions.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ResourceMetricDefinitionInner>>
-        listMultiRolePoolInstanceMetricDefinitionsNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listMultiRolePoolInstanceMetricDefinitionsNext(nextLink, context))
-            .<PagedResponse<ResourceMetricDefinitionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of metric definitions.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ResourceMetricDefinitionInner>>
-        listMultiRolePoolInstanceMetricDefinitionsNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listMultiRolePoolInstanceMetricDefinitionsNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of metric definitions.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ResourceMetricDefinitionInner>> listMultiRoleMetricDefinitionsNextSinglePageAsync(
-        String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listMultiRoleMetricDefinitionsNext(nextLink, context))
-            .<PagedResponse<ResourceMetricDefinitionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of metric definitions.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ResourceMetricDefinitionInner>> listMultiRoleMetricDefinitionsNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listMultiRoleMetricDefinitionsNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of SKU information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SkuInfoInner>> listMultiRolePoolSkusNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listMultiRolePoolSkusNext(nextLink, context))
-            .<PagedResponse<SkuInfoInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of SKU information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SkuInfoInner>> listMultiRolePoolSkusNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listMultiRolePoolSkusNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of usages.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<UsageInner>> listMultiRoleUsagesNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listMultiRoleUsagesNext(nextLink, context))
-            .<PagedResponse<UsageInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of usages.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<UsageInner>> listMultiRoleUsagesNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listMultiRoleUsagesNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Outbound Environment Endpoints.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<OutboundEnvironmentEndpointInner>>
-        getOutboundNetworkDependenciesEndpointsNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.getOutboundNetworkDependenciesEndpointsNext(nextLink, context))
-            .<PagedResponse<OutboundEnvironmentEndpointInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Outbound Environment Endpoints.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<OutboundEnvironmentEndpointInner>>
-        getOutboundNetworkDependenciesEndpointsNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .getOutboundNetworkDependenciesEndpointsNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SiteInner>> resumeNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.resumeNext(nextLink, context))
-            .<PagedResponse<SiteInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SiteInner>> resumeNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .resumeNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service plans.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<AppServicePlanInner>> listAppServicePlansNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listAppServicePlansNext(nextLink, context))
-            .<PagedResponse<AppServicePlanInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service plans.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<AppServicePlanInner>> listAppServicePlansNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listAppServicePlansNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SiteInner>> listWebAppsNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listWebAppsNext(nextLink, context))
-            .<PagedResponse<SiteInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SiteInner>> listWebAppsNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listWebAppsNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SiteInner>> suspendNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.suspendNext(nextLink, context))
-            .<PagedResponse<SiteInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SiteInner>> suspendNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .suspendNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of CSM usage quotas.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<CsmUsageQuotaInner>> listUsagesNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listUsagesNext(nextLink, context))
-            .<PagedResponse<CsmUsageQuotaInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of CSM usage quotas.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<CsmUsageQuotaInner>> listUsagesNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listUsagesNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of worker pools.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<WorkerPoolResourceInner>> listWorkerPoolsNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listWorkerPoolsNext(nextLink, context))
-            .<PagedResponse<WorkerPoolResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of worker pools.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<WorkerPoolResourceInner>> listWorkerPoolsNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listWorkerPoolsNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of metric definitions.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ResourceMetricDefinitionInner>>
-        listWorkerPoolInstanceMetricDefinitionsNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listWorkerPoolInstanceMetricDefinitionsNext(nextLink, context))
-            .<PagedResponse<ResourceMetricDefinitionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of metric definitions.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ResourceMetricDefinitionInner>>
-        listWorkerPoolInstanceMetricDefinitionsNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listWorkerPoolInstanceMetricDefinitionsNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of metric definitions.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ResourceMetricDefinitionInner>> listWebWorkerMetricDefinitionsNextSinglePageAsync(
-        String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listWebWorkerMetricDefinitionsNext(nextLink, context))
-            .<PagedResponse<ResourceMetricDefinitionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of metric definitions.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ResourceMetricDefinitionInner>> listWebWorkerMetricDefinitionsNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listWebWorkerMetricDefinitionsNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of SKU information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SkuInfoInner>> listWorkerPoolSkusNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listWorkerPoolSkusNext(nextLink, context))
-            .<PagedResponse<SkuInfoInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of SKU information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SkuInfoInner>> listWorkerPoolSkusNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listWorkerPoolSkusNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of usages.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<UsageInner>> listWebWorkerUsagesNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listWebWorkerUsagesNext(nextLink, context))
-            .<PagedResponse<UsageInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of usages.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<UsageInner>> listWebWorkerUsagesNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listWebWorkerUsagesNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
+    PagedIterable<UsageInner> listWebWorkerUsages(
+        String resourceGroupName, String name, String workerPoolName, Context context);
 }

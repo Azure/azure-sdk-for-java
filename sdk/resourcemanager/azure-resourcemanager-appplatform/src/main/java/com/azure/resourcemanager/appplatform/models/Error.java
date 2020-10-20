@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Error model. */
+/** The error code compose of code and message. */
 @Fluent
 public final class Error {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Error.class);

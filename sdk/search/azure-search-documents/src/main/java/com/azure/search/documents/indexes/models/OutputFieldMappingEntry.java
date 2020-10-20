@@ -10,7 +10,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The OutputFieldMappingEntry model. */
+/** Output field mapping for a skill. */
 @Fluent
 public final class OutputFieldMappingEntry {
     /*

@@ -3,7 +3,7 @@
 
 package com.microsoft.spring.data.gremlin.web.service.domain;
 
-import com.microsoft.spring.data.gremlin.annotation.Vertex;
+import com.azure.spring.data.gremlin.annotation.Vertex;
 import org.springframework.data.annotation.Id;
 
 import java.util.HashMap;

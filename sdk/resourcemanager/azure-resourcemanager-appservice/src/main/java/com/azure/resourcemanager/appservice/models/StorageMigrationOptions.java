@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The StorageMigrationOptions model. */
+/** Options for app content migration. */
 @JsonFlatten
 @Fluent
 public class StorageMigrationOptions extends ProxyOnlyResource {

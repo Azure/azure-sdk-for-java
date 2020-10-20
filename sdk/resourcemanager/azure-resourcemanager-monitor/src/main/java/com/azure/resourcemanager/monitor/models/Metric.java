@@ -3,12 +3,12 @@
 
 package com.azure.resourcemanager.monitor.models;
 
-import com.azure.resourcemanager.monitor.fluent.inner.MetricInner;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.monitor.fluent.models.MetricInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.util.List;
 
 /** The Azure metric entries are of type Metric. */
-public interface Metric extends HasInner<MetricInner> {
+public interface Metric extends HasInnerModel<MetricInner> {
     /**
      * Get the metric Id.
      *

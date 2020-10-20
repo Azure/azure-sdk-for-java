@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ServiceTagInformationPropertiesFormat model. */
+/** Properties of the service tag information. */
 @Immutable
 public final class ServiceTagInformationPropertiesFormat {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceTagInformationPropertiesFormat.class);

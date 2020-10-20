@@ -18,21 +18,21 @@ class GeographicLocationImpl extends WrapperImpl<Region> implements GeographicLo
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String code() {
-        return this.inner().code();
+        return this.innerModel().code();
     }
 
     @Override
     public List<GeographicLocation> childLocations() {
-        if (this.inner().regions() == null || this.inner().regions().isEmpty()) {
+        if (this.innerModel().regions() == null || this.innerModel().regions().isEmpty()) {
             return Collections.unmodifiableList(new ArrayList<GeographicLocation>());
         }
         ArrayList<GeographicLocation> subLocations = new ArrayList<>();
-        for (Region innerRegion : this.inner().regions()) {
+        for (Region innerRegion : this.innerModel().regions()) {
             subLocations.add(new GeographicLocationImpl(innerRegion));
         }
         return Collections.unmodifiableList(subLocations);

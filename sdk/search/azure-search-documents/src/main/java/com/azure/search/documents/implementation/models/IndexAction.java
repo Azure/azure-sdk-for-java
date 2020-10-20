@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The IndexAction model. */
+/** Represents an index action that operates on a document. */
 @Fluent
 public final class IndexAction {
     /*

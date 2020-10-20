@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VirtualMachineScaleSetVMInstanceIDs model. */
+/** Specifies a list of virtual machine instance IDs from the VM scale set. */
 @Fluent
 public final class VirtualMachineScaleSetVMInstanceIDs {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMInstanceIDs.class);

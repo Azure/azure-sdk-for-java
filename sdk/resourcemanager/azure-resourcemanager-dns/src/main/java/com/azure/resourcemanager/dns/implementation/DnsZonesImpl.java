@@ -4,7 +4,7 @@ package com.azure.resourcemanager.dns.implementation;
 
 import com.azure.resourcemanager.dns.DnsZoneManager;
 import com.azure.resourcemanager.dns.fluent.ZonesClient;
-import com.azure.resourcemanager.dns.fluent.inner.ZoneInner;
+import com.azure.resourcemanager.dns.fluent.models.ZoneInner;
 import com.azure.resourcemanager.dns.models.DnsZone;
 import com.azure.resourcemanager.dns.models.DnsZones;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
@@ -12,12 +12,12 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import reactor.core.publisher.Mono;
 
 /** Implementation of DnsZones. */
-public class DnsZonesImpl 
+public class DnsZonesImpl
     extends TopLevelModifiableResourcesImpl<DnsZone, DnsZoneImpl, ZoneInner, ZonesClient, DnsZoneManager>
     implements DnsZones {
 
     public DnsZonesImpl(final DnsZoneManager dnsZoneManager) {
-        super(dnsZoneManager.inner().getZones(), dnsZoneManager);
+        super(dnsZoneManager.serviceClient().getZones(), dnsZoneManager);
     }
 
     @Override
@@ -40,18 +40,18 @@ public class DnsZonesImpl
 
     private DnsZoneImpl setDefaults(DnsZoneImpl dnsZone) {
         // Zone location must be 'global' irrespective of region of the resource group it resides.
-        dnsZone.inner().withLocation("global");
+        dnsZone.innerModel().withLocation("global");
         return dnsZone;
     }
 
     @Override
     public Mono<Void> deleteByResourceGroupNameAsync(String resourceGroupName, String zoneName) {
-        return this.manager().inner().getZones().deleteAsync(resourceGroupName, zoneName);
+        return this.manager().serviceClient().getZones().deleteAsync(resourceGroupName, zoneName);
     }
 
     @Override
     public Mono<Void> deleteByResourceGroupNameAsync(String resourceGroupName, String zoneName, String eTagValue) {
-        return this.manager().inner().getZones().deleteAsync(resourceGroupName, zoneName, eTagValue);
+        return this.manager().serviceClient().getZones().deleteAsync(resourceGroupName, zoneName, eTagValue);
     }
 
     @Override

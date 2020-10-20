@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The JobSchedule model. */
+/** Scheduling properties of a job. */
 @Fluent
 public final class JobSchedule {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(JobSchedule.class);

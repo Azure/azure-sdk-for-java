@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ConnectionMonitorWorkspaceSettings model. */
+/** Describes the settings for producing output into a log analytics workspace. */
 @Fluent
 public final class ConnectionMonitorWorkspaceSettings {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorWorkspaceSettings.class);

@@ -13,7 +13,7 @@ import com.azure.search.documents.models.SearchMode;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SearchRequest model. */
+/** Parameters for filtering, sorting, faceting, paging, and other search query behaviors. */
 @Fluent
 public final class SearchRequest {
     /*

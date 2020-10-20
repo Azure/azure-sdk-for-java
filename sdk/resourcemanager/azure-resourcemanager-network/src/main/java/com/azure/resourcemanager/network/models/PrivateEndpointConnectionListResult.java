@@ -6,12 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.fluent.inner.PrivateEndpointConnectionInner;
+import com.azure.resourcemanager.network.fluent.models.PrivateEndpointConnectionInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PrivateEndpointConnectionListResult model. */
+/** Response for the ListPrivateEndpointConnection API service call. */
 @Fluent
 public final class PrivateEndpointConnectionListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionListResult.class);

@@ -16,7 +16,7 @@ class DomainContactImpl extends ChildResourceImpl<Contact, AppServiceDomainImpl,
 
     DomainContactImpl(Contact inner, AppServiceDomainImpl parent) {
         super(inner, parent);
-        inner().withAddressMailing(new Address());
+        innerModel().withAddressMailing(new Address());
     }
 
     @Override
@@ -26,146 +26,146 @@ class DomainContactImpl extends ChildResourceImpl<Contact, AppServiceDomainImpl,
 
     @Override
     public Address addressMailing() {
-        return inner().addressMailing();
+        return innerModel().addressMailing();
     }
 
     @Override
     public String email() {
-        return inner().email();
+        return innerModel().email();
     }
 
     @Override
     public String fax() {
-        return inner().fax();
+        return innerModel().fax();
     }
 
     @Override
     public String jobTitle() {
-        return inner().jobTitle();
+        return innerModel().jobTitle();
     }
 
     @Override
     public String firstName() {
-        return inner().nameFirst();
+        return innerModel().nameFirst();
     }
 
     @Override
     public String lastName() {
-        return inner().nameLast();
+        return innerModel().nameLast();
     }
 
     @Override
     public String middleName() {
-        return inner().nameMiddle();
+        return innerModel().nameMiddle();
     }
 
     @Override
     public String organization() {
-        return inner().organization();
+        return innerModel().organization();
     }
 
     @Override
     public String phone() {
-        return inner().phone();
+        return innerModel().phone();
     }
 
     @Override
     public AppServiceDomainImpl attach() {
-        return parent().withRegistrantContact(inner());
+        return parent().withRegistrantContact(innerModel());
     }
 
     @Override
     public DomainContactImpl withFirstName(String firstName) {
-        inner().withNameFirst(firstName);
+        innerModel().withNameFirst(firstName);
         return this;
     }
 
     @Override
     public DomainContactImpl withMiddleName(String middleName) {
-        inner().withNameMiddle(middleName);
+        innerModel().withNameMiddle(middleName);
         return this;
     }
 
     @Override
     public DomainContactImpl withLastName(String lastName) {
-        inner().withNameLast(lastName);
+        innerModel().withNameLast(lastName);
         return this;
     }
 
     @Override
     public DomainContactImpl withEmail(String email) {
-        inner().withEmail(email);
+        innerModel().withEmail(email);
         return this;
     }
 
     @Override
     public DomainContactImpl withAddressLine1(String addressLine1) {
-        inner().addressMailing().withAddress1(addressLine1);
+        innerModel().addressMailing().withAddress1(addressLine1);
         return this;
     }
 
     @Override
     public DomainContactImpl withAddressLine2(String addressLine2) {
-        inner().addressMailing().withAddress2(addressLine2);
+        innerModel().addressMailing().withAddress2(addressLine2);
         return this;
     }
 
     @Override
     public DomainContactImpl withCity(String city) {
-        inner().addressMailing().withCity(city);
+        innerModel().addressMailing().withCity(city);
         return this;
     }
 
     @Override
     public DomainContactImpl withStateOrProvince(String stateOrProvince) {
-        inner().addressMailing().withState(stateOrProvince);
+        innerModel().addressMailing().withState(stateOrProvince);
         return this;
     }
 
     @Override
     public DomainContactImpl withCountry(CountryIsoCode country) {
-        inner().addressMailing().withCountry(country.toString());
+        innerModel().addressMailing().withCountry(country.toString());
         return this;
     }
 
     @Override
     public DomainContactImpl withPostalCode(String postalCode) {
-        inner().addressMailing().withPostalCode(postalCode);
+        innerModel().addressMailing().withPostalCode(postalCode);
         return this;
     }
 
     @Override
     public DomainContactImpl withPhoneCountryCode(CountryPhoneCode code) {
-        inner().withPhone(code.toString() + ".");
+        innerModel().withPhone(code.toString() + ".");
         return this;
     }
 
     @Override
     public DomainContactImpl withPhoneNumber(String phoneNumber) {
-        inner().withPhone(inner().phone() + phoneNumber);
+        innerModel().withPhone(innerModel().phone() + phoneNumber);
         return this;
     }
 
     @Override
     public DomainContactImpl withFaxNumber(String faxNumber) {
-        inner().withFax(faxNumber);
+        innerModel().withFax(faxNumber);
         return this;
     }
 
     @Override
     public DomainContactImpl withOrganization(String organziation) {
-        inner().withOrganization(organziation);
+        innerModel().withOrganization(organziation);
         return this;
     }
 
     @Override
     public DomainContactImpl withJobTitle(String jobTitle) {
-        inner().withJobTitle(jobTitle);
+        innerModel().withJobTitle(jobTitle);
         return this;
     }
 
     @Override
     public Contact build() {
-        return inner();
+        return innerModel();
     }
 }

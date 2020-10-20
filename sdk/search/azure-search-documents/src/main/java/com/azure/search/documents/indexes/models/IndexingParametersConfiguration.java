@@ -14,7 +14,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The IndexingParametersConfiguration model. */
+/**
+ * A dictionary of indexer-specific configuration properties. Each name is the name of a specific property. Each value
+ * must be of a primitive type.
+ */
 @Fluent
 public final class IndexingParametersConfiguration {
     /*

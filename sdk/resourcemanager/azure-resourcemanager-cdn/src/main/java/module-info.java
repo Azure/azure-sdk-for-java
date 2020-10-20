@@ -7,11 +7,11 @@ module com.azure.resourcemanager.cdn {
     // export public APIs of cdn
     exports com.azure.resourcemanager.cdn;
     exports com.azure.resourcemanager.cdn.fluent;
-    exports com.azure.resourcemanager.cdn.fluent.inner;
+    exports com.azure.resourcemanager.cdn.fluent.models;
     exports com.azure.resourcemanager.cdn.models;
 
     // open packages specifically for azure core and jackson
-    opens com.azure.resourcemanager.cdn.fluent.inner to
+    opens com.azure.resourcemanager.cdn.fluent.models to
         com.azure.core,
         com.fasterxml.jackson.databind;
     opens com.azure.resourcemanager.cdn.models to

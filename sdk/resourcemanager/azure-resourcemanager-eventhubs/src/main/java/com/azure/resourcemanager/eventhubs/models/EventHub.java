@@ -6,11 +6,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.eventhubs.EventHubsManager;
-import com.azure.resourcemanager.eventhubs.fluent.inner.EventhubInner;
+import com.azure.resourcemanager.eventhubs.fluent.models.EventhubInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.storage.models.StorageAccount;
@@ -26,7 +26,7 @@ public interface EventHub extends
     HasManager<EventHubsManager>,
     Refreshable<EventHub>,
     Updatable<EventHub.Update>,
-    HasInner<EventhubInner> {
+        HasInnerModel<EventhubInner> {
     /**
      * @return the resource group of the parent namespace
      */

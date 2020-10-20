@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The HeatMapEndpoint model. */
+/** Class which is a sparse representation of a Traffic Manager endpoint. */
 @Fluent
 public final class HeatMapEndpoint {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(HeatMapEndpoint.class);

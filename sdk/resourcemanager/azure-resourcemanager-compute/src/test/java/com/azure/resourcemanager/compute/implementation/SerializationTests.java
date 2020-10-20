@@ -2,11 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.compute.implementation;
 
-import com.azure.core.management.serializer.AzureJacksonAdapter;
+import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.compute.models.VirtualMachineIdentity;
 import com.azure.resourcemanager.compute.models.VirtualMachineIdentityUserAssignedIdentities;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,8 +15,8 @@ import org.junit.jupiter.api.Test;
 
 public class SerializationTests {
     @Test
-    public void test1() throws IOException {
-        AzureJacksonAdapter jacksonAdapter = new AzureJacksonAdapter();
+    public void testIdentity() throws IOException {
+        SerializerAdapter adapter = SerializerFactory.createDefaultManagementSerializerAdapter();
 
         Map<String, VirtualMachineIdentityUserAssignedIdentities> userAssignedIdentities = new HashMap<>();
         userAssignedIdentities.put("af.B/C", new VirtualMachineIdentityUserAssignedIdentities());
@@ -29,7 +30,7 @@ public class SerializationTests {
 
         virtualMachine.withLicenseType("abs");
 
-        String serialized = jacksonAdapter.serialize(virtualMachine, SerializerEncoding.JSON);
+        String serialized = adapter.serialize(virtualMachine, SerializerEncoding.JSON);
 
         System.out.println(serialized);
     }

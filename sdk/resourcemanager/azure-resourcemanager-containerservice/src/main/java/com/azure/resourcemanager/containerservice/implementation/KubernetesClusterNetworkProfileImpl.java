@@ -60,9 +60,9 @@ public class KubernetesClusterNetworkProfileImpl
     }
 
     private ContainerServiceNetworkProfile ensureNetworkProfile() {
-        if (this.parentKubernetesCluster.inner().networkProfile() == null) {
-            this.parentKubernetesCluster.inner().withNetworkProfile(new ContainerServiceNetworkProfile());
+        if (this.parentKubernetesCluster.innerModel().networkProfile() == null) {
+            this.parentKubernetesCluster.innerModel().withNetworkProfile(new ContainerServiceNetworkProfile());
         }
-        return this.parentKubernetesCluster.inner().networkProfile();
+        return this.parentKubernetesCluster.innerModel().networkProfile();
     }
 }

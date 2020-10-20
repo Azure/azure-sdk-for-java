@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The LogSearchRuleResourcePatch model. */
+/** The log search rule resource for patch operations. */
 @JsonFlatten
 @Fluent
 public class LogSearchRuleResourcePatch {

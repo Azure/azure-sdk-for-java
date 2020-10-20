@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The UserManagedHttpsParameters model. */
+/** Defines the certificate source parameters using user's keyvault certificate for enabling SSL. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "certificateSource")
 @JsonTypeName("AzureKeyVault")
 @Fluent

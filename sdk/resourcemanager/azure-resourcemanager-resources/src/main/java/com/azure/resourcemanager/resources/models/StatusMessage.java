@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The StatusMessage model. */
+/** Operation status message object. */
 @Fluent
 public final class StatusMessage {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StatusMessage.class);

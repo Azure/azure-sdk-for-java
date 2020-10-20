@@ -15,13 +15,13 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
 import com.azure.resourcemanager.network.models.NicIpConfigurationBase;
 import com.azure.resourcemanager.network.models.Subnet;
-import com.azure.resourcemanager.network.fluent.inner.BackendAddressPoolInner;
-import com.azure.resourcemanager.network.fluent.inner.InboundNatRuleInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.BackendAddressPoolInner;
+import com.azure.resourcemanager.network.fluent.models.InboundNatRuleInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceIpConfigurationInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -49,11 +49,11 @@ abstract class NicIpConfigurationBaseImpl<ParentImplT extends ParentT, ParentT e
     }
 
     public String name() {
-        return inner().name();
+        return innerModel().name();
     }
 
     public boolean isPrimary() {
-        return Utils.toPrimitiveBoolean(this.inner().primary());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().primary());
     }
 
     @Override
@@ -78,21 +78,21 @@ abstract class NicIpConfigurationBaseImpl<ParentImplT extends ParentT, ParentT e
 
     @Override
     public String privateIpAddress() {
-        return this.inner().privateIpAddress();
+        return this.innerModel().privateIpAddress();
     }
 
     @Override
     public IpAllocationMethod privateIpAllocationMethod() {
-        return this.inner().privateIpAllocationMethod();
+        return this.innerModel().privateIpAllocationMethod();
     }
 
     @Override
     public IpVersion privateIpAddressVersion() {
-        return this.inner().privateIpAddressVersion();
+        return this.innerModel().privateIpAddressVersion();
     }
 
     public String networkId() {
-        SubResource subnetRef = this.inner().subnet();
+        SubResource subnetRef = this.innerModel().subnet();
         if (subnetRef == null) {
             return null;
         }
@@ -109,7 +109,7 @@ abstract class NicIpConfigurationBaseImpl<ParentImplT extends ParentT, ParentT e
 
     @Override
     public String subnetName() {
-        SubResource subnetRef = this.inner().subnet();
+        SubResource subnetRef = this.innerModel().subnet();
         if (subnetRef == null) {
             return null;
         }
@@ -118,14 +118,19 @@ abstract class NicIpConfigurationBaseImpl<ParentImplT extends ParentT, ParentT e
 
     @Override
     public Collection<ApplicationGatewayBackend> listAssociatedApplicationGatewayBackends() {
-        return com.azure.resourcemanager.network.implementation.Utils.listAssociatedApplicationGatewayBackends(
-            this.parent().manager(), this.inner().applicationGatewayBackendAddressPools()
-        );
+        return com
+            .azure
+            .resourcemanager
+            .network
+            .implementation
+            .Utils
+            .listAssociatedApplicationGatewayBackends(
+                this.parent().manager(), this.innerModel().applicationGatewayBackendAddressPools());
     }
 
     @Override
     public List<LoadBalancerBackend> listAssociatedLoadBalancerBackends() {
-        final List<BackendAddressPoolInner> backendRefs = this.inner().loadBalancerBackendAddressPools();
+        final List<BackendAddressPoolInner> backendRefs = this.innerModel().loadBalancerBackendAddressPools();
         if (backendRefs == null) {
             return Collections.unmodifiableList(new ArrayList<LoadBalancerBackend>());
         }
@@ -146,7 +151,7 @@ abstract class NicIpConfigurationBaseImpl<ParentImplT extends ParentT, ParentT e
 
     @Override
     public List<LoadBalancerInboundNatRule> listAssociatedLoadBalancerInboundNatRules() {
-        final List<InboundNatRuleInner> inboundNatPoolRefs = this.inner().loadBalancerInboundNatRules();
+        final List<InboundNatRuleInner> inboundNatPoolRefs = this.innerModel().loadBalancerInboundNatRules();
         if (inboundNatPoolRefs == null) {
             return Collections.unmodifiableList(new ArrayList<LoadBalancerInboundNatRule>());
         }

@@ -6,12 +6,15 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.cdn.fluent.inner.ProfileInner;
+import com.azure.resourcemanager.cdn.fluent.models.ProfileInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ProfileListResult model. */
+/**
+ * Result of the request to list profiles. It contains a list of profile objects and a URL link to get the next set of
+ * results.
+ */
 @Fluent
 public final class ProfileListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ProfileListResult.class);

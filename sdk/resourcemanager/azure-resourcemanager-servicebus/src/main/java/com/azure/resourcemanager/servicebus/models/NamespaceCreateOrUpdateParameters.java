@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The NamespaceCreateOrUpdateParameters model. */
+/** Parameters supplied to the Create Or Update Namespace operation. */
 @JsonFlatten
 @Fluent
 public class NamespaceCreateOrUpdateParameters {

@@ -30,7 +30,6 @@ import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
-import spock.lang.Ignore
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -161,7 +160,6 @@ class ServiceAPITest extends APISpec {
         containers.each { container -> container.delete() }
     }
 
-    @Ignore // Container soft delete
     def "List deleted"() {
         given:
         def NUM_CONTAINERS = 5
@@ -188,7 +186,6 @@ class ServiceAPITest extends APISpec {
         listResult.size() == NUM_CONTAINERS
     }
 
-    @Ignore // Container soft delete
     def "List with all details"() {
         given:
         def NUM_CONTAINERS = 5
@@ -739,7 +736,6 @@ class ServiceAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @Ignore // Container soft delete
     def "Restore Container"() {
         given:
         def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
@@ -766,7 +762,6 @@ class ServiceAPITest extends APISpec {
         restoredContainerClient.listBlobs().first().getName() == blobName
     }
 
-    @Ignore // Container soft delete
     def "Restore Container into other container"() {
         given:
         def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
@@ -795,7 +790,6 @@ class ServiceAPITest extends APISpec {
         restoredContainerClient.listBlobs().first().getName() == blobName
     }
 
-    @Ignore // Container soft delete
     def "Restore Container with response"() {
         given:
         def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
@@ -826,7 +820,6 @@ class ServiceAPITest extends APISpec {
         restoredContainerClient.listBlobs().first().getName() == blobName
     }
 
-    @Ignore // Container soft delete
     def "Restore Container async"() {
         given:
         def cc1 = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName())
@@ -857,7 +850,6 @@ class ServiceAPITest extends APISpec {
         .verifyComplete()
     }
 
-    @Ignore // Container soft delete
     def "Restore Container async with response"() {
         given:
         def cc1 = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName())
@@ -891,7 +883,6 @@ class ServiceAPITest extends APISpec {
         .verifyComplete()
     }
 
-    @Ignore // Container soft delete
     def "Restore Container error"() {
         when:
         primaryBlobServiceClient.undeleteBlobContainer(generateContainerName(), "01D60F8BB59A4652")
@@ -900,7 +891,6 @@ class ServiceAPITest extends APISpec {
         thrown(BlobStorageException.class)
     }
 
-    @Ignore // Container soft delete
     def "Restore Container into existing container error"() {
         given:
         def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
@@ -964,5 +954,17 @@ class ServiceAPITest extends APISpec {
         "https://doesntmatter. blob.core.windows.net" | "containername"  || _
         "https://doesntmatter.blob.core.windows.net"  | "container name" || _
         /* Note: the check is on the blob builder as well but I can't test it this way since we encode all blob names - so it will not be invalid. */
+    }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+    def "Per call policy"() {
+        def sc = getServiceClientBuilder(primaryCredential, primaryBlobServiceClient.getAccountUrl(), getPerCallVersionPolicy()).buildClient()
+
+        when:
+        def response = sc.getPropertiesWithResponse(null, null)
+
+        then:
+        notThrown(BlobStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
 }

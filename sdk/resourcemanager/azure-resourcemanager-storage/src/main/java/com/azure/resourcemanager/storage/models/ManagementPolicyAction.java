@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ManagementPolicyAction model. */
+/** Actions are applied to the filtered blobs when the execution condition is met. */
 @Fluent
 public final class ManagementPolicyAction {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementPolicyAction.class);

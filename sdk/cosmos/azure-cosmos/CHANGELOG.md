@@ -1,7 +1,34 @@
 ## Release History
 
-### 4.6.0-beta.1 (Unreleased)
+## 4.8.0-beta.1 (Unreleased)
 
+
+### 4.7.0 (2020-10-17) NOTE: WE STRONGLY RECOMMEND OUR CUSTOMERS TO USE VERSION 4.7.0 AND ABOVE
+#### New Features
+* Added Beta for transactional batches.
+
+#### Key Bug Fixes
+* Fixed an error parsing query metrics on locales with ',' as floating-point delimiter.
+* Stopped excessive regional fail-overs when retrieving responses with invalid json from Gateway.
+* Fixed an error resulting in certain queries unnecessarily being expected in the Gateway even when using Direct transport.
+* Reduced logging noise level by handling SSLException on channel closure.
+* Improved efficiency of retry logic for "404 - ReadSession not available" errors.
+
+### 4.6.0 (2020-09-30)
+#### New Features
+* Added new API to support AAD role-based access control in Cosmos. This is a preview feature which needs to be enabled at the account settings.
+* Added handler API(beta) to `CosmosPagedFlux`/`CosmosPagedIterable` to be invoked on every response.
+
+### 4.5.2 (2020-09-29)
+#### Key Bug Fixes
+* Increased robustness of query execution and fetching metadata cache in case of intermittent connectivity issues.
+
+### 4.5.1 (2020-09-25)
+#### Key Bug Fixes
+* Added preview implementation for ChangeFeedProcessor which allows for a more detailed view of the current state.
+* Fixed Multiple partition supervisor tasks running simultaneously if leaseAcquireInterval is smaller than leaseRenewInterval.
+* Improved Diagnostics for Rntbd connectivity.
+* Stopped onError Dropped events from leaking into default reactor hook.
 
 ### 4.5.0 (2020-09-16)
 #### New Features

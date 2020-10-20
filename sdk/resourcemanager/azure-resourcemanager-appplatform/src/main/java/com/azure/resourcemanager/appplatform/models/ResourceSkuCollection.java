@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ResourceSkuCollection model. */
+/** Object that includes an array of Azure Spring Cloud SKU and a possible link for next set. */
 @Fluent
 public final class ResourceSkuCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuCollection.class);

@@ -4,7 +4,7 @@ package com.azure.resourcemanager.test.utils;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
+import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -39,11 +39,11 @@ public final class AuthFile {
     @JsonIgnore
     private final AzureEnvironment environment;
     @JsonIgnore
-    private static final SerializerAdapter ADAPTER = new AzureJacksonAdapter();
+    private static final SerializerAdapter ADAPTER = SerializerFactory.createDefaultManagementSerializerAdapter();
 
     private AuthFile() {
         environment = new AzureEnvironment(new HashMap<>());
-        environment.endpoints().putAll(AzureEnvironment.AZURE.endpoints());
+        environment.getEndpoints().putAll(AzureEnvironment.AZURE.getEndpoints());
     }
 
     /**
@@ -87,7 +87,7 @@ public final class AuthFile {
             Map<String, String> endpoints = ADAPTER.deserialize(content,
                 createParameterizedType(Map.class, String.class, String.class),
                 SerializerEncoding.JSON);
-            authFile.environment.endpoints().putAll(endpoints);
+            authFile.environment.getEndpoints().putAll(endpoints);
         } else {
             // Set defaults
             Properties authSettings = new Properties();
@@ -116,15 +116,15 @@ public final class AuthFile {
                 authSettings.getProperty(AuthFile.CredentialSettings.CLIENT_CERT_PASS.toString());
             authFile.subscriptionId = authSettings.getProperty(AuthFile.CredentialSettings.SUBSCRIPTION_ID.toString());
 
-            authFile.environment.endpoints().put(AzureEnvironment.Endpoint.MANAGEMENT.identifier(),
+            authFile.environment.getEndpoints().put(AzureEnvironment.Endpoint.MANAGEMENT.identifier(),
                 authSettings.getProperty(AuthFile.CredentialSettings.MANAGEMENT_URI.toString()));
-            authFile.environment.endpoints().put(AzureEnvironment.Endpoint.ACTIVE_DIRECTORY.identifier(),
+            authFile.environment.getEndpoints().put(AzureEnvironment.Endpoint.ACTIVE_DIRECTORY.identifier(),
                 authSettings.getProperty(AuthFile.CredentialSettings.AUTH_URL.toString()));
-            authFile.environment.endpoints().put(AzureEnvironment.Endpoint.RESOURCE_MANAGER.identifier(),
+            authFile.environment.getEndpoints().put(AzureEnvironment.Endpoint.RESOURCE_MANAGER.identifier(),
                 authSettings.getProperty(AuthFile.CredentialSettings.BASE_URL.toString()));
-            authFile.environment.endpoints().put(AzureEnvironment.Endpoint.GRAPH.identifier(),
+            authFile.environment.getEndpoints().put(AzureEnvironment.Endpoint.GRAPH.identifier(),
                 authSettings.getProperty(AuthFile.CredentialSettings.GRAPH_URL.toString()));
-            authFile.environment.endpoints().put(AzureEnvironment.Endpoint.KEYVAULT.identifier(),
+            authFile.environment.getEndpoints().put(AzureEnvironment.Endpoint.KEYVAULT.identifier(),
                 authSettings.getProperty(AuthFile.CredentialSettings.VAULT_SUFFIX.toString()));
         }
         return authFile;

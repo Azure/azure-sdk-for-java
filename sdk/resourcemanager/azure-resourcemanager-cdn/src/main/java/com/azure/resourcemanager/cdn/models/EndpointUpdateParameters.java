@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The EndpointUpdateParameters model. */
+/** Properties required to create or update an endpoint. */
 @JsonFlatten
 @Fluent
 public class EndpointUpdateParameters {

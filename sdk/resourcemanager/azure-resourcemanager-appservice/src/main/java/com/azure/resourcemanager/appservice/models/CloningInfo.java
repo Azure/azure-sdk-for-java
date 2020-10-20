@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 import java.util.UUID;
 
-/** The CloningInfo model. */
+/** Information needed for cloning operation. */
 @Fluent
 public final class CloningInfo {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CloningInfo.class);

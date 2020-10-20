@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-/** The GalleryImageVersionPublishingProfile model. */
+/** The publishing profile of a gallery Image Version. */
 @Immutable
 public final class GalleryImageVersionPublishingProfile extends GalleryArtifactPublishingProfileBase {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageVersionPublishingProfile.class);

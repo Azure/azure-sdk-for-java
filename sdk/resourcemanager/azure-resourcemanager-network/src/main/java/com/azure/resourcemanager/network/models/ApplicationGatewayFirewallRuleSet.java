@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ApplicationGatewayFirewallRuleSet model. */
+/** A web application firewall rule set. */
 @JsonFlatten
 @Fluent
 public class ApplicationGatewayFirewallRuleSet extends Resource {

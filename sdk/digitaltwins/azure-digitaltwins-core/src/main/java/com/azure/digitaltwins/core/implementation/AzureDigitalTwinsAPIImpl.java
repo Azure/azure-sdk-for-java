@@ -110,7 +110,11 @@ public final class AzureDigitalTwinsAPIImpl {
         return this.eventRoutes;
     }
 
-    /** Initializes an instance of AzureDigitalTwinsAPI client. */
+    /**
+     * Initializes an instance of AzureDigitalTwinsAPI client.
+     *
+     * @param host server parameter.
+     */
     AzureDigitalTwinsAPIImpl(String host) {
         this(
                 new HttpPipelineBuilder()
@@ -124,6 +128,7 @@ public final class AzureDigitalTwinsAPIImpl {
      * Initializes an instance of AzureDigitalTwinsAPI client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param host server parameter.
      */
     AzureDigitalTwinsAPIImpl(HttpPipeline httpPipeline, String host) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), host);
@@ -134,12 +139,13 @@ public final class AzureDigitalTwinsAPIImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param host server parameter.
      */
     AzureDigitalTwinsAPIImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String host) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.host = host;
-        this.apiVersion = "2020-05-31-preview";
+        this.apiVersion = "2020-10-31";
         this.digitalTwinModels = new DigitalTwinModelsImpl(this);
         this.queries = new QueriesImpl(this);
         this.digitalTwins = new DigitalTwinsImpl(this);

@@ -6,12 +6,12 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.cosmos.fluent.inner.PrivateEndpointConnectionInner;
+import com.azure.resourcemanager.cosmos.fluent.models.PrivateEndpointConnectionInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PrivateEndpointConnectionListResult model. */
+/** A list of private endpoint connections. */
 @Fluent
 public final class PrivateEndpointConnectionListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionListResult.class);

@@ -38,27 +38,27 @@ class MetricDynamicAlertConditionImpl
 
     @Override
     public DynamicThresholdOperator condition() {
-        return DynamicThresholdOperator.fromString(this.inner().operator().toString());
+        return DynamicThresholdOperator.fromString(this.innerModel().operator().toString());
     }
 
     @Override
     public DynamicThresholdSensitivity alertSensitivity() {
-        return DynamicThresholdSensitivity.fromString(this.inner().alertSensitivity().toString());
+        return DynamicThresholdSensitivity.fromString(this.innerModel().alertSensitivity().toString());
     }
 
     @Override
     public DynamicThresholdFailingPeriods failingPeriods() {
-        return this.inner().failingPeriods();
+        return this.innerModel().failingPeriods();
     }
 
     @Override
     public OffsetDateTime ignoreDataBefore() {
-        return this.inner().ignoreDataBefore();
+        return this.innerModel().ignoreDataBefore();
     }
 
     @Override
     public MetricAlertImpl attach() {
-        this.inner().withDimensions(new ArrayList<>(this.dimensions.values()));
+        this.innerModel().withDimensions(new ArrayList<>(this.dimensions.values()));
         return this.parent().withDynamicAlertCriteria(this);
     }
 
@@ -67,9 +67,9 @@ class MetricDynamicAlertConditionImpl
         MetricAlertRuleTimeAggregation timeAggregation,
         DynamicThresholdOperator condition,
         DynamicThresholdSensitivity alertSensitivity) {
-        this.inner().withOperator(condition);
-        this.inner().withTimeAggregation(AggregationType.fromString(timeAggregation.toString()));
-        this.inner().withAlertSensitivity(alertSensitivity);
+        this.innerModel().withOperator(condition);
+        this.innerModel().withTimeAggregation(AggregationType.fromString(timeAggregation.toString()));
+        this.innerModel().withAlertSensitivity(alertSensitivity);
         return this;
     }
 
@@ -80,19 +80,19 @@ class MetricDynamicAlertConditionImpl
                 "The number of evaluation periods should be greater than or equal to the number of failing periods"));
         }
 
-        this.inner().withFailingPeriods(failingPeriods);
+        this.innerModel().withFailingPeriods(failingPeriods);
         return this;
     }
 
     @Override
     public MetricDynamicAlertConditionImpl withIgnoreDataBefore(OffsetDateTime date) {
-        this.inner().withIgnoreDataBefore(date);
+        this.innerModel().withIgnoreDataBefore(date);
         return this;
     }
 
     @Override
     public MetricDynamicAlertConditionImpl withoutIgnoreDataBefore() {
-        this.inner().withIgnoreDataBefore(null);
+        this.innerModel().withIgnoreDataBefore(null);
         return this;
     }
 }

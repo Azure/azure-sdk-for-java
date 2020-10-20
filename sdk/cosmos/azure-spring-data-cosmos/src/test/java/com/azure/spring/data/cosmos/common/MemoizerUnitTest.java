@@ -2,48 +2,48 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.common;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.IntStream;
-
-import static org.junit.Assert.assertEquals;
+import org.junit.Before;
+import org.junit.Test;
 
 public class MemoizerUnitTest {
+
     private static final String KEY = "key_1";
-    private static final Map<String, AtomicInteger> countMap = new HashMap<>();
-    private static final Function<String, Integer> memoizedFunction =
-            Memoizer.memoize(MemoizerUnitTest::incrCount);
+    private static final Map<String, AtomicInteger> COUNT_MAP = new HashMap<>();
+    private static final Function<String, Integer> MEMOIZED_FUNCTION =
+        Memoizer.memoize(MemoizerUnitTest::incrCount);
 
     @Before
     public void setUp() {
-        countMap.put(KEY, new AtomicInteger(0));
+        COUNT_MAP.put(KEY, new AtomicInteger(0));
     }
 
     @Test
     public void testMemoizedFunctionShouldBeCalledOnlyOnce() {
         IntStream
-        .range(0, 10)
-            .forEach(number -> memoizedFunction.apply(KEY));
+            .range(0, 10)
+            .forEach(number -> MEMOIZED_FUNCTION.apply(KEY));
 
-        assertEquals(1, countMap.get(KEY).get());
+        assertEquals(1, COUNT_MAP.get(KEY).get());
     }
 
     @Test
     public void testDifferentMemoizersShouldNotShareTheSameCache() {
         IntStream
-        .range(0, 10)
+            .range(0, 10)
             .forEach(number -> Memoizer.memoize(MemoizerUnitTest::incrCount).apply(KEY));
 
-        assertEquals(10, countMap.get(KEY).get());
+        assertEquals(10, COUNT_MAP.get(KEY).get());
     }
 
     private static int incrCount(String key) {
-        return countMap.get(key).incrementAndGet();
+        return COUNT_MAP.get(key).incrementAndGet();
     }
 
 }

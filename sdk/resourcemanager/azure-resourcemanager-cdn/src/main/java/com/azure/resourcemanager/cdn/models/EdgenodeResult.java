@@ -6,12 +6,15 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.cdn.fluent.inner.EdgeNodeInner;
+import com.azure.resourcemanager.cdn.fluent.models.EdgeNodeInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The EdgenodeResult model. */
+/**
+ * Result of the request to list CDN edgenodes. It contains a list of ip address group and a URL link to get the next
+ * set of results.
+ */
 @Fluent
 public final class EdgenodeResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EdgenodeResult.class);

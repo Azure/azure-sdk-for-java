@@ -3,16 +3,16 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.inner.RouteFilterRuleInner;
+import com.azure.resourcemanager.network.fluent.models.RouteFilterRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import java.util.List;
 
 /** A route filter rule in a route filter group. */
 @Fluent
-public interface RouteFilterRule extends HasInner<RouteFilterRuleInner>, ChildResource<RouteFilter> {
+public interface RouteFilterRule extends HasInnerModel<RouteFilterRuleInner>, ChildResource<RouteFilter> {
 
     /** @return the access type of the rule */
     Access access();

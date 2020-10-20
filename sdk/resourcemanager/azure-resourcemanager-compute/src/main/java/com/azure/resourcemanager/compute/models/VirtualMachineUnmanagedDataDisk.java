@@ -6,12 +6,12 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 
 /** A native data disk of a virtual machine. */
 @Fluent
-public interface VirtualMachineUnmanagedDataDisk extends HasInner<DataDisk>, ChildResource<VirtualMachine> {
+public interface VirtualMachineUnmanagedDataDisk extends HasInnerModel<DataDisk>, ChildResource<VirtualMachine> {
     /** @return the size of this data disk in GB */
     int size();
 

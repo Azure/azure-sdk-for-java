@@ -20,6 +20,7 @@ class ChangeFeedQueryImpl<T extends Resource> {
 
     private static final String IfNonMatchAllHeaderValue = "*";
     private final RxDocumentClientImpl client;
+    private final DiagnosticsClientContext clientContext;
     private final ResourceType resourceType;
     private final Class<T> klass;
     private final String documentsLink;
@@ -30,7 +31,7 @@ class ChangeFeedQueryImpl<T extends Resource> {
             Class<T> klass,
             String collectionLink,
             ChangeFeedOptions changeFeedOptions) {
-
+        this.clientContext = client;
         this.client = client;
         this.resourceType = resourceType;
         this.klass = klass;
@@ -71,7 +72,7 @@ class ChangeFeedQueryImpl<T extends Resource> {
 
     private RxDocumentServiceRequest createDocumentServiceRequest(String continuationToken, int pageSize) {
         Map<String, String> headers = new HashMap<>();
-        RxDocumentServiceRequest req = RxDocumentServiceRequest.create(
+        RxDocumentServiceRequest req = RxDocumentServiceRequest.create(clientContext,
             OperationType.ReadFeed,
             resourceType,
             documentsLink,

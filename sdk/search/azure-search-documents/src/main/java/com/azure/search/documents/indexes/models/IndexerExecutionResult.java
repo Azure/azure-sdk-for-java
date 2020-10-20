@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The IndexerExecutionResult model. */
+/** Represents the result of an individual indexer execution. */
 @Immutable
 public final class IndexerExecutionResult {
     /*

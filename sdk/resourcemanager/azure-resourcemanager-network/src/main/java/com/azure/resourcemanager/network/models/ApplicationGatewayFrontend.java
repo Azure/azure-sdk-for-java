@@ -6,17 +6,17 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasSubnet;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 
 /** A client-side representation of an application gateway frontend. */
 @Fluent()
 public interface ApplicationGatewayFrontend
-    extends HasInner<ApplicationGatewayFrontendIpConfiguration>,
+    extends HasInnerModel<ApplicationGatewayFrontendIpConfiguration>,
         ChildResource<ApplicationGateway>,
-    HasPrivateIpAddress,
+        HasPrivateIpAddress,
         HasSubnet,
-    HasPublicIpAddress {
+        HasPublicIpAddress {
 
     /** @return true if the frontend is accessible via a public IP address, else false */
     boolean isPublic();

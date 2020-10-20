@@ -6,7 +6,7 @@ package com.azure.resourcemanager.resources.implementation;
 import com.azure.resourcemanager.resources.models.Provider;
 import com.azure.resourcemanager.resources.models.ProviderResourceType;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
-import com.azure.resourcemanager.resources.fluent.inner.ProviderInner;
+import com.azure.resourcemanager.resources.fluent.models.ProviderInner;
 
 import java.util.List;
 
@@ -24,16 +24,16 @@ final class ProviderImpl extends
 
     @Override
     public String namespace() {
-        return inner().namespace();
+        return innerModel().namespace();
     }
 
     @Override
     public String registrationState() {
-        return inner().registrationState();
+        return innerModel().registrationState();
     }
 
     @Override
     public List<ProviderResourceType> resourceTypes() {
-        return inner().resourceTypes();
+        return innerModel().resourceTypes();
     }
 }

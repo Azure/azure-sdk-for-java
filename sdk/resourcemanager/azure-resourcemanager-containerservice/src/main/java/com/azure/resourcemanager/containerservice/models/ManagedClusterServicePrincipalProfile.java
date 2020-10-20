@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ManagedClusterServicePrincipalProfile model. */
+/** Information about a service principal identity for the cluster to use for manipulating Azure APIs. */
 @Fluent
 public final class ManagedClusterServicePrincipalProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterServicePrincipalProfile.class);

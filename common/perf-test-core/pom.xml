@@ -55,7 +55,7 @@
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.11.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
 
                 <!-- special allowance for perf-test-core as it is not a shipping library: -->
-                <include>com.beust:jcommander:[1.58]</include> <!-- {x-include-update;com.beust:jcommander;external_dependency} -->
+                <include>com.beust:jcommander:[1.78]</include> <!-- {x-include-update;com.beust:jcommander;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -73,12 +73,12 @@
     <dependency>
       <groupId>com.beust</groupId>
       <artifactId>jcommander</artifactId>
-      <version>1.58</version> <!-- {x-version-update;com.beust:jcommander;external_dependency} -->
+      <version>1.78</version> <!-- {x-version-update;com.beust:jcommander;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.6.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.6.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
   </dependencies>
 </project>

@@ -8,7 +8,7 @@ import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
 import com.azure.resourcemanager.compute.models.AvailabilitySetSkuTypes;
 import com.azure.resourcemanager.compute.models.AvailabilitySets;
-import com.azure.resourcemanager.compute.fluent.inner.AvailabilitySetInner;
+import com.azure.resourcemanager.compute.fluent.models.AvailabilitySetInner;
 import com.azure.resourcemanager.compute.fluent.AvailabilitySetsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import reactor.core.publisher.Mono;
@@ -20,17 +20,17 @@ public class AvailabilitySetsImpl
     implements AvailabilitySets {
 
     public AvailabilitySetsImpl(final ComputeManager computeManager) {
-        super(computeManager.inner().getAvailabilitySets(), computeManager);
+        super(computeManager.serviceClient().getAvailabilitySets(), computeManager);
     }
 
     @Override
     public PagedIterable<AvailabilitySet> list() {
-        return manager().inner().getAvailabilitySets().list().mapPage(this::wrapModel);
+        return manager().serviceClient().getAvailabilitySets().list().mapPage(this::wrapModel);
     }
 
     @Override
     public PagedFlux<AvailabilitySet> listAsync() {
-        return this.manager().inner().getAvailabilitySets().listAsync().mapPage(this::wrapModel);
+        return this.manager().serviceClient().getAvailabilitySets().listAsync().mapPage(this::wrapModel);
     }
 
     @Override

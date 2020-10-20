@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ConnectionMonitorEndpoint model. */
+/** Describes the connection monitor endpoint. */
 @Fluent
 public final class ConnectionMonitorEndpoint {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorEndpoint.class);

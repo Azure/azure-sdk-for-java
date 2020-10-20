@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ManagementPolicyRule model. */
+/** An object that wraps the Lifecycle rule. Each rule is uniquely defined by name. */
 @Fluent
 public final class ManagementPolicyRule {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementPolicyRule.class);

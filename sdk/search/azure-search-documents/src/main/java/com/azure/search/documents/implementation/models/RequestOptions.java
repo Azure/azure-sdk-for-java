@@ -10,7 +10,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** The RequestOptions model. */
+/** Parameter group. */
 @Fluent
 public final class RequestOptions {
     /*

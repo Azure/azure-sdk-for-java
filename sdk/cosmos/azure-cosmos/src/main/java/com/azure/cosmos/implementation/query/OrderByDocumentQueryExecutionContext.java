@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -53,6 +54,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
     private final Map<String, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap;
 
     private OrderByDocumentQueryExecutionContext(
+            DiagnosticsClientContext diagnosticsClientContext,
             IDocumentQueryClient client,
             List<PartitionKeyRange> partitionKeyRanges,
             ResourceType resourceTypeEnum,
@@ -66,7 +68,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             OrderbyRowComparer<T> consumeComparer,
             String collectionRid,
             UUID correlatedActivityId) {
-        super(client, partitionKeyRanges, resourceTypeEnum, klass, query, cosmosQueryRequestOptions, resourceLink, rewrittenQuery,
+        super(diagnosticsClientContext, client, partitionKeyRanges, resourceTypeEnum, klass, query, cosmosQueryRequestOptions, resourceLink, rewrittenQuery,
                 isContinuationExpected, getLazyFeedResponse, correlatedActivityId);
         this.collectionRid = collectionRid;
         this.consumeComparer = consumeComparer;
@@ -76,10 +78,11 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
     }
 
     public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
+            DiagnosticsClientContext diagnosticsClientContext,
             IDocumentQueryClient client,
             PipelinedDocumentQueryParams<T> initParams) {
 
-        OrderByDocumentQueryExecutionContext<T> context = new OrderByDocumentQueryExecutionContext<T>(
+        OrderByDocumentQueryExecutionContext<T> context = new OrderByDocumentQueryExecutionContext<T>(diagnosticsClientContext,
                 client,
                 initParams.getPartitionKeyRanges(),
                 initParams.getResourceTypeEnum(),

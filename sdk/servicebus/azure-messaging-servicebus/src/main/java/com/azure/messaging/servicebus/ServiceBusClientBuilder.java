@@ -33,6 +33,7 @@ import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnec
 import com.azure.messaging.servicebus.implementation.ServiceBusSharedKeyCredential;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
+import org.apache.qpid.proton.engine.SslDomain;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -53,7 +54,6 @@ import java.util.regex.Pattern;
 @ServiceClientBuilder(serviceClients = {ServiceBusReceiverAsyncClient.class, ServiceBusSenderAsyncClient.class,
     ServiceBusSenderClient.class, ServiceBusReceiverClient.class})
 public final class ServiceBusClientBuilder {
-    private static final String AZURE_SERVICE_BUS_CONNECTION_STRING = "AZURE_SERVICE_BUS_CONNECTION_STRING";
     private static final AmqpRetryOptions DEFAULT_RETRY =
         new AmqpRetryOptions().setTryTimeout(ServiceBusConstants.OPERATION_TIMEOUT);
 
@@ -332,18 +332,11 @@ public final class ServiceBusClientBuilder {
 
     private ConnectionOptions getConnectionOptions() {
         configuration = configuration == null ? Configuration.getGlobalConfiguration().clone() : configuration;
-
         if (credentials == null) {
-            final String connectionString = configuration.get(AZURE_SERVICE_BUS_CONNECTION_STRING);
-
-            if (CoreUtils.isNullOrEmpty(connectionString)) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("Credentials have not been set. "
-                    + "They can be set using: connectionString(String), connectionString(String, String), "
-                    + "credentials(String, String, TokenCredential), or setting the environment variable '"
-                    + AZURE_SERVICE_BUS_CONNECTION_STRING + "' with a connection string"));
-            }
-
-            connectionString(connectionString);
+            throw logger.logExceptionAsError(new IllegalArgumentException("Credentials have not been set. "
+                + "They can be set using: connectionString(String), connectionString(String, String), "
+                + "or credentials(String, String, TokenCredential)"
+            ));
         }
 
         // If the proxy has been configured by the user but they have overridden the TransportType with something that
@@ -361,9 +354,10 @@ public final class ServiceBusClientBuilder {
         final CbsAuthorizationType authorizationType = credentials instanceof ServiceBusSharedKeyCredential
             ? CbsAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CbsAuthorizationType.JSON_WEB_TOKEN;
+        final ClientOptions options = clientOptions != null ? clientOptions : new ClientOptions();
 
         return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport, retryOptions,
-            proxyOptions, scheduler, clientOptions);
+            proxyOptions, scheduler, options, SslDomain.VerifyMode.VERIFY_PEER_NAME);
     }
 
     private ProxyOptions getDefaultProxyConfiguration(Configuration configuration) {

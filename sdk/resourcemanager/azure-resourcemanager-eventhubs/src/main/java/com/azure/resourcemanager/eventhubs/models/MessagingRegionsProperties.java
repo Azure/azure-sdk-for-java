@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The MessagingRegionsProperties model. */
+/** Properties of Messaging Region. */
 @Immutable
 public final class MessagingRegionsProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MessagingRegionsProperties.class);

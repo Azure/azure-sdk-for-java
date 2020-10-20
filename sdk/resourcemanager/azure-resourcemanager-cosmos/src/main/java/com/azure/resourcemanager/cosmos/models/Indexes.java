@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Indexes model. */
+/** The indexes for the path. */
 @Fluent
 public final class Indexes {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Indexes.class);

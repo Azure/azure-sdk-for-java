@@ -4,7 +4,6 @@
 package com.azure.ai.formrecognizer.training.models;
 
 import com.azure.ai.formrecognizer.models.FormRecognizerError;
-import com.azure.core.annotation.Immutable;
 
 import java.util.Collections;
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.List;
 /**
  * The TrainingDocumentInfo model.
  */
-@Immutable
 public final class TrainingDocumentInfo {
 
     /*
@@ -35,6 +33,8 @@ public final class TrainingDocumentInfo {
      */
     private final List<FormRecognizerError> errors;
 
+    private String modelId;
+
     /**
      * Constructs a TrainingDocumentInfo object.
      *
@@ -48,8 +48,7 @@ public final class TrainingDocumentInfo {
         this.name = name;
         this.status = status;
         this.pageCount = pageCount;
-        this.errors = errors == null ? null
-            : Collections.unmodifiableList(errors);
+        this.errors = errors == null ? null : Collections.unmodifiableList(errors);
     }
 
     /**
@@ -87,4 +86,14 @@ public final class TrainingDocumentInfo {
     public List<FormRecognizerError> getErrors() {
         return this.errors;
     }
+
+    /**
+     * Get the Model identifier.
+     *
+     * @return the {@code modelId} value.
+     */
+    public String getModelId() {
+        return this.modelId;
+    }
+
 }

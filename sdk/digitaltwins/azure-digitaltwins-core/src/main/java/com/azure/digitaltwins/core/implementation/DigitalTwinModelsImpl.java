@@ -26,10 +26,14 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsAddOptions;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsDeleteOptions;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsGetByIdOptions;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsUpdateOptions;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinsModelData;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
-import com.azure.digitaltwins.core.implementation.models.ModelData;
-import com.azure.digitaltwins.core.implementation.models.PagedModelDataCollection;
+import com.azure.digitaltwins.core.implementation.models.PagedDigitalTwinsModelDataCollection;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
@@ -63,8 +67,10 @@ public final class DigitalTwinModelsImpl {
         @Post("/models")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<List<ModelData>>> add(
+        Mono<Response<List<DigitalTwinsModelData>>> add(
                 @HostParam("$host") String host,
+                @HeaderParam("traceparent") String traceparent,
+                @HeaderParam("tracestate") String tracestate,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") List<Object> models,
                 Context context);
@@ -72,19 +78,23 @@ public final class DigitalTwinModelsImpl {
         @Get("/models")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<PagedModelDataCollection>> list(
+        Mono<Response<PagedDigitalTwinsModelDataCollection>> list(
                 @HostParam("$host") String host,
+                @HeaderParam("traceparent") String traceparent,
+                @HeaderParam("tracestate") String tracestate,
                 @QueryParam("dependenciesFor") String dependenciesFor,
                 @QueryParam("includeModelDefinition") Boolean includeModelDefinition,
-                @HeaderParam("x-ms-max-item-count") Integer maxItemCount,
+                @HeaderParam("max-items-per-page") Integer maxItemsPerPage,
                 @QueryParam("api-version") String apiVersion,
                 Context context);
 
         @Get("/models/{id}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<ModelData>> getById(
+        Mono<Response<DigitalTwinsModelData>> getById(
                 @HostParam("$host") String host,
+                @HeaderParam("traceparent") String traceparent,
+                @HeaderParam("tracestate") String tracestate,
                 @PathParam("id") String id,
                 @QueryParam("includeModelDefinition") Boolean includeModelDefinition,
                 @QueryParam("api-version") String apiVersion,
@@ -95,6 +105,8 @@ public final class DigitalTwinModelsImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> update(
                 @HostParam("$host") String host,
+                @HeaderParam("traceparent") String traceparent,
+                @HeaderParam("tracestate") String tracestate,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json-patch+json") List<Object> updateModel,
@@ -105,6 +117,8 @@ public final class DigitalTwinModelsImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> delete(
                 @HostParam("$host") String host,
+                @HeaderParam("traceparent") String traceparent,
+                @HeaderParam("tracestate") String tracestate,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
                 Context context);
@@ -112,33 +126,58 @@ public final class DigitalTwinModelsImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<PagedModelDataCollection>> listNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+        Mono<Response<PagedDigitalTwinsModelDataCollection>> listNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("$host") String host,
+                @HeaderParam("traceparent") String traceparent,
+                @HeaderParam("tracestate") String tracestate,
+                @HeaderParam("max-items-per-page") Integer maxItemsPerPage,
+                Context context);
     }
 
     /**
-     * Uploads one or more models. When any error occurs, no models are uploaded. Status codes: 200 (OK): Success. 400
-     * (Bad Request): The request is invalid. 409 (Conflict): One or more of the provided models already exist.
+     * Uploads one or more models. When any error occurs, no models are uploaded. Status codes: * 201 Created * 400 Bad
+     * Request * DTDLParserError - The models provided are not valid DTDL. * InvalidArgument - The model id is invalid.
+     * * LimitExceeded - The maximum number of model ids allowed in 'dependenciesFor' has been reached. *
+     * ModelVersionNotSupported - The version of DTDL used is not supported. * 409 Conflict * ModelAlreadyExists - The
+     * model provided already exists.
      *
      * @param models Array of any.
+     * @param digitalTwinModelsAddOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of ModelData objects.
+     * @return a collection of DigitalTwinsModelData objects.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<ModelData>>> addWithResponseAsync(List<Object> models, Context context) {
+    public Mono<Response<List<DigitalTwinsModelData>>> addWithResponseAsync(
+            List<Object> models, DigitalTwinModelsAddOptions digitalTwinModelsAddOptions, Context context) {
         if (this.client.getHost() == null) {
             return Mono.error(
                     new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
-        return service.add(this.client.getHost(), this.client.getApiVersion(), models, context);
+        if (digitalTwinModelsAddOptions != null) {
+            digitalTwinModelsAddOptions.validate();
+        }
+        String traceparentInternal = null;
+        if (digitalTwinModelsAddOptions != null) {
+            traceparentInternal = digitalTwinModelsAddOptions.getTraceparent();
+        }
+        String traceparent = traceparentInternal;
+        String tracestateInternal = null;
+        if (digitalTwinModelsAddOptions != null) {
+            tracestateInternal = digitalTwinModelsAddOptions.getTracestate();
+        }
+        String tracestate = tracestateInternal;
+        return service.add(
+                this.client.getHost(), traceparent, tracestate, this.client.getApiVersion(), models, context);
     }
 
     /**
-     * Retrieves model metadata and, optionally, model definitions. Status codes: 200 (OK): Success. 400 (Bad Request):
-     * The request is invalid.
+     * Retrieves model metadata and, optionally, model definitions. Status codes: * 200 OK * 400 Bad Request *
+     * InvalidArgument - The model id is invalid. * LimitExceeded - The maximum number of model ids allowed in
+     * 'dependenciesFor' has been reached. * 404 Not Found * ModelNotFound - The model was not found.
      *
      * @param dependenciesFor Array of Get0ItemsItem.
      * @param includeModelDefinition When true the model definition will be returned as part of the result.
@@ -147,10 +186,10 @@ public final class DigitalTwinModelsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of ModelData objects.
+     * @return a collection of DigitalTwinsModelData objects.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ModelData>> listSinglePageAsync(
+    public Mono<PagedResponse<DigitalTwinsModelData>> listSinglePageAsync(
             List<String> dependenciesFor,
             Boolean includeModelDefinition,
             DigitalTwinModelsListOptions digitalTwinModelsListOptions,
@@ -162,18 +201,30 @@ public final class DigitalTwinModelsImpl {
         if (digitalTwinModelsListOptions != null) {
             digitalTwinModelsListOptions.validate();
         }
-        Integer maxItemCountInternal = null;
+        String traceparentInternal = null;
         if (digitalTwinModelsListOptions != null) {
-            maxItemCountInternal = digitalTwinModelsListOptions.getMaxItemCount();
+            traceparentInternal = digitalTwinModelsListOptions.getTraceparent();
         }
-        Integer maxItemCount = maxItemCountInternal;
+        String traceparent = traceparentInternal;
+        String tracestateInternal = null;
+        if (digitalTwinModelsListOptions != null) {
+            tracestateInternal = digitalTwinModelsListOptions.getTracestate();
+        }
+        String tracestate = tracestateInternal;
+        Integer maxItemsPerPageInternal = null;
+        if (digitalTwinModelsListOptions != null) {
+            maxItemsPerPageInternal = digitalTwinModelsListOptions.getMaxItemsPerPage();
+        }
+        Integer maxItemsPerPage = maxItemsPerPageInternal;
         String dependenciesForConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(dependenciesFor, CollectionFormat.CSV);
         return service.list(
                         this.client.getHost(),
+                        traceparent,
+                        tracestate,
                         dependenciesForConverted,
                         includeModelDefinition,
-                        maxItemCount,
+                        maxItemsPerPage,
                         this.client.getApiVersion(),
                         context)
                 .map(
@@ -188,11 +239,13 @@ public final class DigitalTwinModelsImpl {
     }
 
     /**
-     * Retrieves model metadata and optionally the model definition. Status codes: 200 (OK): Success. 404 (Not Found):
-     * There is no model with the provided id.
+     * Retrieves model metadata and optionally the model definition. Status codes: * 200 OK * 400 Bad Request *
+     * InvalidArgument - The model id is invalid. * MissingArgument - The model id was not provided. * 404 Not Found *
+     * ModelNotFound - The model was not found.
      *
      * @param id The id for the model. The id is globally unique and case sensitive.
      * @param includeModelDefinition When true the model definition will be returned as part of the result.
+     * @param digitalTwinModelsGetByIdOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -200,8 +253,11 @@ public final class DigitalTwinModelsImpl {
      * @return a model definition and metadata for that model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ModelData>> getByIdWithResponseAsync(
-            String id, Boolean includeModelDefinition, Context context) {
+    public Mono<Response<DigitalTwinsModelData>> getByIdWithResponseAsync(
+            String id,
+            Boolean includeModelDefinition,
+            DigitalTwinModelsGetByIdOptions digitalTwinModelsGetByIdOptions,
+            Context context) {
         if (this.client.getHost() == null) {
             return Mono.error(
                     new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -209,15 +265,38 @@ public final class DigitalTwinModelsImpl {
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
-        return service.getById(this.client.getHost(), id, includeModelDefinition, this.client.getApiVersion(), context);
+        if (digitalTwinModelsGetByIdOptions != null) {
+            digitalTwinModelsGetByIdOptions.validate();
+        }
+        String traceparentInternal = null;
+        if (digitalTwinModelsGetByIdOptions != null) {
+            traceparentInternal = digitalTwinModelsGetByIdOptions.getTraceparent();
+        }
+        String traceparent = traceparentInternal;
+        String tracestateInternal = null;
+        if (digitalTwinModelsGetByIdOptions != null) {
+            tracestateInternal = digitalTwinModelsGetByIdOptions.getTracestate();
+        }
+        String tracestate = tracestateInternal;
+        return service.getById(
+                this.client.getHost(),
+                traceparent,
+                tracestate,
+                id,
+                includeModelDefinition,
+                this.client.getApiVersion(),
+                context);
     }
 
     /**
-     * Updates the metadata for a model. Status codes: 200 (OK): Success. 400 (Bad Request): The request is invalid. 404
-     * (Not Found): There is no model with the provided id.
+     * Updates the metadata for a model. Status codes: * 204 No Content * 400 Bad Request * InvalidArgument - The model
+     * id is invalid. * JsonPatchInvalid - The JSON Patch provided is invalid. * MissingArgument - The model id was not
+     * provided. * 404 Not Found * ModelNotFound - The model was not found. * 409 Conflict *
+     * ModelReferencesNotDecommissioned - The model refers to models that are not decommissioned.
      *
      * @param id The id for the model. The id is globally unique and case sensitive.
      * @param updateModel Array of any.
+     * @param digitalTwinModelsUpdateOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -225,7 +304,11 @@ public final class DigitalTwinModelsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateWithResponseAsync(String id, List<Object> updateModel, Context context) {
+    public Mono<Response<Void>> updateWithResponseAsync(
+            String id,
+            List<Object> updateModel,
+            DigitalTwinModelsUpdateOptions digitalTwinModelsUpdateOptions,
+            Context context) {
         if (this.client.getHost() == null) {
             return Mono.error(
                     new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -236,15 +319,31 @@ public final class DigitalTwinModelsImpl {
         if (updateModel == null) {
             return Mono.error(new IllegalArgumentException("Parameter updateModel is required and cannot be null."));
         }
-        return service.update(this.client.getHost(), id, this.client.getApiVersion(), updateModel, context);
+        if (digitalTwinModelsUpdateOptions != null) {
+            digitalTwinModelsUpdateOptions.validate();
+        }
+        String traceparentInternal = null;
+        if (digitalTwinModelsUpdateOptions != null) {
+            traceparentInternal = digitalTwinModelsUpdateOptions.getTraceparent();
+        }
+        String traceparent = traceparentInternal;
+        String tracestateInternal = null;
+        if (digitalTwinModelsUpdateOptions != null) {
+            tracestateInternal = digitalTwinModelsUpdateOptions.getTracestate();
+        }
+        String tracestate = tracestateInternal;
+        return service.update(
+                this.client.getHost(), traceparent, tracestate, id, this.client.getApiVersion(), updateModel, context);
     }
 
     /**
-     * Deletes a model. A model can only be deleted if no other models reference it. Status codes: 204 (No Content):
-     * Success. 400 (Bad Request): The request is invalid. 404 (Not Found): There is no model with the provided id. 409
-     * (Conflict): There are dependencies on the model that prevent it from being deleted.
+     * Deletes a model. A model can only be deleted if no other models reference it. Status codes: * 204 No Content *
+     * 400 Bad Request * InvalidArgument - The model id is invalid. * MissingArgument - The model id was not provided. *
+     * 404 Not Found * ModelNotFound - The model was not found. * 409 Conflict * ModelReferencesNotDeleted - The model
+     * refers to models that are not deleted.
      *
      * @param id The id for the model. The id is globally unique and case sensitive.
+     * @param digitalTwinModelsDeleteOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -252,7 +351,8 @@ public final class DigitalTwinModelsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String id, Context context) {
+    public Mono<Response<Void>> deleteWithResponseAsync(
+            String id, DigitalTwinModelsDeleteOptions digitalTwinModelsDeleteOptions, Context context) {
         if (this.client.getHost() == null) {
             return Mono.error(
                     new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -260,25 +360,62 @@ public final class DigitalTwinModelsImpl {
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
-        return service.delete(this.client.getHost(), id, this.client.getApiVersion(), context);
+        if (digitalTwinModelsDeleteOptions != null) {
+            digitalTwinModelsDeleteOptions.validate();
+        }
+        String traceparentInternal = null;
+        if (digitalTwinModelsDeleteOptions != null) {
+            traceparentInternal = digitalTwinModelsDeleteOptions.getTraceparent();
+        }
+        String traceparent = traceparentInternal;
+        String tracestateInternal = null;
+        if (digitalTwinModelsDeleteOptions != null) {
+            tracestateInternal = digitalTwinModelsDeleteOptions.getTracestate();
+        }
+        String tracestate = tracestateInternal;
+        return service.delete(this.client.getHost(), traceparent, tracestate, id, this.client.getApiVersion(), context);
     }
 
     /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param digitalTwinModelsListOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of ModelData objects.
+     * @return a collection of DigitalTwinsModelData objects.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ModelData>> listNextSinglePageAsync(String nextLink, Context context) {
+    public Mono<PagedResponse<DigitalTwinsModelData>> listNextSinglePageAsync(
+            String nextLink, DigitalTwinModelsListOptions digitalTwinModelsListOptions, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
-        return service.listNext(nextLink, context)
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (digitalTwinModelsListOptions != null) {
+            digitalTwinModelsListOptions.validate();
+        }
+        String traceparentInternal = null;
+        if (digitalTwinModelsListOptions != null) {
+            traceparentInternal = digitalTwinModelsListOptions.getTraceparent();
+        }
+        String traceparent = traceparentInternal;
+        String tracestateInternal = null;
+        if (digitalTwinModelsListOptions != null) {
+            tracestateInternal = digitalTwinModelsListOptions.getTracestate();
+        }
+        String tracestate = tracestateInternal;
+        Integer maxItemsPerPageInternal = null;
+        if (digitalTwinModelsListOptions != null) {
+            maxItemsPerPageInternal = digitalTwinModelsListOptions.getMaxItemsPerPage();
+        }
+        Integer maxItemsPerPage = maxItemsPerPageInternal;
+        return service.listNext(nextLink, this.client.getHost(), traceparent, tracestate, maxItemsPerPage, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

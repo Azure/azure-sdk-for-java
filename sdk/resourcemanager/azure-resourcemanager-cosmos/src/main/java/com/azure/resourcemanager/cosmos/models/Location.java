@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Location model. */
+/** A region in which the Azure Cosmos DB database account is deployed. */
 @Fluent
 public final class Location {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Location.class);

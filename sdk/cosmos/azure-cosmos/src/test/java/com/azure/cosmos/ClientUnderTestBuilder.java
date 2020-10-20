@@ -3,6 +3,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.RxDocumentClientUnderTest;
+import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 
 import java.net.URI;
@@ -11,13 +12,22 @@ import java.net.URISyntaxException;
 public class ClientUnderTestBuilder extends CosmosClientBuilder {
 
     public ClientUnderTestBuilder(CosmosClientBuilder builder) {
+        if (!Strings.isNullOrEmpty(builder.getKey())) {
+            this.key(builder.getKey());
+        }
+
+        if (!Strings.isNullOrEmpty(builder.getEndpoint())) {
+            this.endpoint(builder.getEndpoint());
+        }
+
+        if (builder.getCredential() != null) {
+            this.credential(builder.getCredential());
+        }
+
         this.configs(builder.configs());
         this.gatewayMode(builder.getGatewayConnectionConfig());
         this.directMode(builder.getDirectConnectionConfig());
         this.consistencyLevel(builder.getConsistencyLevel());
-        this.key(builder.getKey());
-        this.endpoint(builder.getEndpoint());
-        this.credential(builder.getCredential());
         this.contentResponseOnWriteEnabled(builder.isContentResponseOnWriteEnabled());
         this.userAgentSuffix(builder.getUserAgentSuffix());
         this.throttlingRetryOptions(builder.getThrottlingRetryOptions());

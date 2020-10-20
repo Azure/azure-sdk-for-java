@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ContainerGroupPropertiesInstanceView model. */
+/** The instance view of the container group. Only valid in response. */
 @Immutable
 public final class ContainerGroupPropertiesInstanceView {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerGroupPropertiesInstanceView.class);

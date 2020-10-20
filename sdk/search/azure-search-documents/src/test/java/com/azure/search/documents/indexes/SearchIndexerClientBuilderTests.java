@@ -3,14 +3,18 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.Header;
 import com.azure.search.documents.SearchServiceVersion;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -21,10 +25,12 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.SecureRandom;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SearchIndexerClientBuilderTests {
     private final AzureKeyCredential searchApiKeyCredential = new AzureKeyCredential("0123");
@@ -155,5 +161,52 @@ public class SearchIndexerClientBuilderTests {
 
             return new DateTimeRfc1123(dateHeader);
         }
+    }
+
+    @Test
+    public void clientOptionsIsPreferredOverLogOptions() {
+        SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
+            .endpoint(searchEndpoint)
+            .credential(searchApiKeyCredential)
+            .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
+            .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
+            .httpClient(httpRequest -> {
+                assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("aNewApplication"));
+                return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
+            })
+            .buildClient();
+
+        assertThrows(RuntimeException.class, () -> searchIndexerClient.getIndexer("anindexer"));
+    }
+
+    @Test
+    public void applicationIdFallsBackToLogOptions() {
+        SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
+            .endpoint(searchEndpoint)
+            .credential(searchApiKeyCredential)
+            .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
+            .httpClient(httpRequest -> {
+                assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("anOldApplication"));
+                return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
+            })
+            .buildClient();
+
+        assertThrows(RuntimeException.class, () -> searchIndexerClient.getIndexer("anindexer"));
+    }
+
+    @Test
+    public void clientOptionHeadersAreAddedLast() {
+        SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
+            .endpoint(searchEndpoint)
+            .credential(searchApiKeyCredential)
+            .clientOptions(new ClientOptions()
+                .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
+            .httpClient(httpRequest -> {
+                assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
+                return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
+            })
+            .buildClient();
+
+        assertThrows(RuntimeException.class, () -> searchIndexerClient.getIndexer("anindexer"));
     }
 }

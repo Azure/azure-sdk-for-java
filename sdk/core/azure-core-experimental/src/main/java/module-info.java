@@ -7,6 +7,9 @@ module com.azure.core.experimental {
     exports com.azure.core.experimental.jsonpatch;
     exports com.azure.core.experimental.serializer;
     exports com.azure.core.experimental.spatial;
+    exports com.azure.core.experimental.util;
+
+    opens com.azure.core.experimental.jsonpatch to com.fasterxml.jackson.databind;
 
     uses com.azure.core.experimental.serializer.AvroSerializerProvider;
 }

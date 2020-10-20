@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The KeyVaultCertificateSourceParameters model. */
+/** Describes the parameters for using a user's KeyVault certificate for securing custom domain. */
 @Fluent
 public final class KeyVaultCertificateSourceParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultCertificateSourceParameters.class);

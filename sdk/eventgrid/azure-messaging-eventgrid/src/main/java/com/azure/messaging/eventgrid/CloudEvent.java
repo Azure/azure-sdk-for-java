@@ -20,6 +20,7 @@ import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -336,6 +337,9 @@ public final class CloudEvent {
      * @return the extension attributes as an unmodifiable map.
      */
     public Map<String, Object> getExtensionAttributes() {
+        if (this.cloudEvent.getAdditionalProperties() == null) {
+            return null;
+        }
         return Collections.unmodifiableMap(this.cloudEvent.getAdditionalProperties());
     }
 
@@ -348,6 +352,9 @@ public final class CloudEvent {
      * @return the cloud event itself.
      */
     public CloudEvent addExtensionAttribute(String name, Object value) {
+        if (this.cloudEvent.getAdditionalProperties() == null) {
+            this.cloudEvent.setAdditionalProperties(new HashMap<>());
+        }
         this.cloudEvent.getAdditionalProperties().put(name.toLowerCase(Locale.ENGLISH), value);
         return this;
     }

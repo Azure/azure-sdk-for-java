@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ResourceListResult model. */
+/** List of vault resources. */
 @Fluent
 public final class ResourceListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceListResult.class);

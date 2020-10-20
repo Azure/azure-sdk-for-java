@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ManagedClusterWindowsProfile model. */
+/** Profile for Windows VMs in the container service cluster. */
 @Fluent
 public final class ManagedClusterWindowsProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterWindowsProfile.class);

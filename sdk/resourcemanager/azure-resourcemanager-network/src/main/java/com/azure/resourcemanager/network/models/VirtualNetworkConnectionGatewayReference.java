@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VirtualNetworkConnectionGatewayReference model. */
+/** A reference to VirtualNetworkGateway or LocalNetworkGateway resource. */
 @Fluent
 public final class VirtualNetworkConnectionGatewayReference {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkConnectionGatewayReference.class);

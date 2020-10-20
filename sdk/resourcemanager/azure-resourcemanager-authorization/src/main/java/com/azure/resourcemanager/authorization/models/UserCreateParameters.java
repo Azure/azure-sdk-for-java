@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The UserCreateParameters model. */
+/** Request parameters for creating a new work or school account user. */
 @Fluent
 public final class UserCreateParameters extends UserBase {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UserCreateParameters.class);

@@ -252,9 +252,10 @@ public class KeyProperties {
     }
 
     /**
-     * Unpacks the attributes json response and updates the variables in the Key Attributes object.
-     * Uses Lazy Update to set values for variables id, tags, contentType, managed and id as these variables are
-     * part of main json body and not attributes json body when the key response comes from list keys operations.
+     * Unpacks the attributes JSON response and updates the variables in the Key Attributes object. Uses Lazy Update to
+     * set values for variables id, contentType, and id as these variables are part of main JSON body and not attributes
+     * JSON body when the key response comes from list keys operations.
+     *
      * @param attributes The key value mapping of the key attributes
      */
     @JsonProperty("attributes")
@@ -266,10 +267,7 @@ public class KeyProperties {
         this.createdOn = epochToOffsetDateTime(attributes.get("created"));
         this.updatedOn = epochToOffsetDateTime(attributes.get("updated"));
         this.recoveryLevel = (String) attributes.get("recoveryLevel");
-        this.tags = (Map<String, String>) lazyValueSelection(attributes.get("tags"), this.tags);
-        this.managed = (Boolean) lazyValueSelection(attributes.get("managed"), this.managed);
         this.recoverableDays = (Integer) attributes.get("recoverableDays");
-        unpackId((String) lazyValueSelection(attributes.get("id"), this.id));
     }
 
     private OffsetDateTime epochToOffsetDateTime(Object epochValue) {
@@ -331,6 +329,10 @@ public class KeyProperties {
                 .setId((String) key.get("kid"));
         unpackId((String) key.get("kid"));
         return outputKey;
+    }
+
+    void setManaged(boolean managed) {
+        this.managed = managed;
     }
 
     private byte[] decode(String in) {

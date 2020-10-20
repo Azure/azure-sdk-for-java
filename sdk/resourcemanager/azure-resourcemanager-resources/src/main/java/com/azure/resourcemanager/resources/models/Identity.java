@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The Identity model. */
+/** Identity for the resource. */
 @Fluent
 public class Identity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Identity.class);

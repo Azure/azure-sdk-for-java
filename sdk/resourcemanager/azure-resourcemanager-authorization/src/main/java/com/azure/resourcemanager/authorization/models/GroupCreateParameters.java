@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The GroupCreateParameters model. */
+/** Request parameters for creating a new group. */
 @Fluent
 public final class GroupCreateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GroupCreateParameters.class);

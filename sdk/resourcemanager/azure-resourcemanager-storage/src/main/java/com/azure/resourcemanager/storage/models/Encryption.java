@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Encryption model. */
+/** The encryption settings on the storage account. */
 @Fluent
 public final class Encryption {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Encryption.class);

@@ -9,7 +9,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The EncryptionSetIdentity model. */
+/**
+ * The managed identity for the disk encryption set. It should be given permission on the key vault before it can be
+ * used to encrypt disks.
+ */
 @Fluent
 public class EncryptionSetIdentity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionSetIdentity.class);

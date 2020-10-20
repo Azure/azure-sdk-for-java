@@ -223,6 +223,7 @@ public class ModelHelper {
         }
         headers.setObjectReplicationSourcePolicies(objectReplicationSourcePolicies);
         headers.setSealed(internalHeaders.isSealed());
+        headers.setLastAccessedTime(internalHeaders.getLastAccessed());
 
         return headers;
     }
@@ -301,6 +302,7 @@ public class ModelHelper {
         blobItemProperties.setTagCount(blobItemPropertiesInternal.getTagCount());
         blobItemProperties.setRehydratePriority(blobItemPropertiesInternal.getRehydratePriority());
         blobItemProperties.setSealed(blobItemPropertiesInternal.isSealed());
+        blobItemProperties.setLastAccessedTime(blobItemPropertiesInternal.getLastAccessedOn());
 
         return blobItemProperties;
     }
@@ -390,5 +392,34 @@ public class ModelHelper {
             .setIfModifiedSince(requestConditions.getIfModifiedSince())
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince())
             .setTagsConditions(null);
+    }
+
+    public static String getObjectReplicationDestinationPolicyId(Map<String, String> objectReplicationStatus) {
+        objectReplicationStatus = objectReplicationStatus == null ? new HashMap<>() : objectReplicationStatus;
+        return objectReplicationStatus.getOrDefault("policy-id", null);
+    }
+
+    public static List<ObjectReplicationPolicy> getObjectReplicationSourcePolicies(
+        Map<String, String> objectReplicationStatus) {
+        Map<String, List<ObjectReplicationRule>> internalSourcePolicies = new HashMap<>();
+        objectReplicationStatus = objectReplicationStatus == null ? new HashMap<>() : objectReplicationStatus;
+        if (getObjectReplicationDestinationPolicyId(objectReplicationStatus) == null) {
+            for (Map.Entry<String, String> entry : objectReplicationStatus.entrySet()) {
+                String[] split = entry.getKey().split("_");
+                String policyId = split[0];
+                String ruleId = split[1];
+                ObjectReplicationRule rule = new ObjectReplicationRule(ruleId,
+                    ObjectReplicationStatus.fromString(entry.getValue()));
+                if (!internalSourcePolicies.containsKey(policyId)) {
+                    internalSourcePolicies.put(policyId, new ArrayList<>());
+                }
+                internalSourcePolicies.get(policyId).add(rule);
+            }
+        }
+        List<ObjectReplicationPolicy> objectReplicationSourcePolicies = new ArrayList<>();
+        for (Map.Entry<String, List<ObjectReplicationRule>> entry : internalSourcePolicies.entrySet()) {
+            objectReplicationSourcePolicies.add(new ObjectReplicationPolicy(entry.getKey(), entry.getValue()));
+        }
+        return objectReplicationSourcePolicies;
     }
 }

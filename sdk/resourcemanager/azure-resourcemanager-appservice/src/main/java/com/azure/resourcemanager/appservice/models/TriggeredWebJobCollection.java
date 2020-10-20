@@ -6,12 +6,12 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.inner.TriggeredWebJobInner;
+import com.azure.resourcemanager.appservice.fluent.models.TriggeredWebJobInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The TriggeredWebJobCollection model. */
+/** Collection of Kudu continuous web job information elements. */
 @Fluent
 public final class TriggeredWebJobCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggeredWebJobCollection.class);

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TopLevelDomainAgreementOption model. */
+/** Options for retrieving the list of top level domain legal agreements. */
 @Fluent
 public final class TopLevelDomainAgreementOption {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TopLevelDomainAgreementOption.class);

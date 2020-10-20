@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The Baseline model. */
+/** The baseline values for a single sensitivity value. */
 @Fluent
 public final class Baseline {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Baseline.class);

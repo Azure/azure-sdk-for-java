@@ -11,7 +11,7 @@ import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
 import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
 import com.azure.digitaltwins.core.models.BasicDigitalTwin;
 import com.azure.digitaltwins.core.models.DigitalTwinMetadata;
-import com.azure.digitaltwins.core.models.DigitalTwinsModelProperties;
+import com.azure.digitaltwins.core.models.ModelProperties;
 import com.azure.digitaltwins.core.models.UpdateOperationUtility;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -83,8 +83,7 @@ public class ComponentSyncSamples {
 
         ConsoleLogger.printHeader("Create digital twin with components");
         // Create digital twin with component payload using the BasicDigitalTwin serialization helper.
-        BasicDigitalTwin basicTwin = new BasicDigitalTwin()
-            .setId(basicDigitalTwinId)
+        BasicDigitalTwin basicTwin = new BasicDigitalTwin(basicDigitalTwinId)
             .setMetadata(
                 new DigitalTwinMetadata()
                     .setModelId(modelId)
@@ -93,7 +92,7 @@ public class ComponentSyncSamples {
             .addCustomProperty("Prop2", 987)
             .addCustomProperty(
                 "Component1",
-                new DigitalTwinsModelProperties()
+                new ModelProperties()
                     .addCustomProperties("ComponentProp1", "Component value 1")
                     .addCustomProperties("ComponentProp2", 123)
             );
@@ -105,7 +104,7 @@ public class ComponentSyncSamples {
         ConsoleLogger.print("Created digital twin " + basicTwinResponse.getId());
 
         // You can get a digital twin in json string format and deserialize it on your own
-        Response<String> getStringDigitalTwinResponse = client.getDigitalTwinWithResponse(basicDigitalTwinId, String.class, Context.NONE);
+        Response<String> getStringDigitalTwinResponse = client.getDigitalTwinWithResponse(basicDigitalTwinId, String.class, null, Context.NONE);
         ConsoleLogger.print("Successfully retrieved digital twin as a json string \n" + getStringDigitalTwinResponse.getValue());
 
         BasicDigitalTwin deserializedDigitalTwin = mapper.readValue(getStringDigitalTwinResponse.getValue(), BasicDigitalTwin.class);
@@ -114,7 +113,7 @@ public class ComponentSyncSamples {
         // You can also get a digital twin using the built in deserializer into a BasicDigitalTwin.
         // It works well for basic stuff, but as you can see it gets more difficult when delving into
         // more complex properties, like components.
-        Response<BasicDigitalTwin> basicDigitalTwinResponse = client.getDigitalTwinWithResponse(basicDigitalTwinId, BasicDigitalTwin.class, Context.NONE);
+        Response<BasicDigitalTwin> basicDigitalTwinResponse = client.getDigitalTwinWithResponse(basicDigitalTwinId, BasicDigitalTwin.class, null, Context.NONE);
 
         if (basicDigitalTwinResponse.getStatusCode() == HttpsURLConnection.HTTP_OK) {
 

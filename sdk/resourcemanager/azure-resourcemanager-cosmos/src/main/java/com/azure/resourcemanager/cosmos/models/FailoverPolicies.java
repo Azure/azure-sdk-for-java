@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The FailoverPolicies model. */
+/** The list of new failover policies for the failover priority change. */
 @Fluent
 public final class FailoverPolicies {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FailoverPolicies.class);

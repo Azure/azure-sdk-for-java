@@ -6,12 +6,15 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayPrivateEndpointConnectionInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayPrivateEndpointConnectionInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ApplicationGatewayPrivateEndpointConnectionListResult model. */
+/**
+ * Response for ListApplicationGatewayPrivateEndpointConnection API service call. Gets all private endpoint connections
+ * for an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayPrivateEndpointConnectionListResult {
     @JsonIgnore

@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.resourcemanager.network.NetworkManager;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasSubnet;
@@ -24,7 +24,7 @@ public interface ApplicationGateway
         Updatable<ApplicationGateway.Update>,
         UpdatableWithTags<ApplicationGateway>,
         HasSubnet,
-    HasPrivateIpAddress {
+        HasPrivateIpAddress {
 
     // Actions
 

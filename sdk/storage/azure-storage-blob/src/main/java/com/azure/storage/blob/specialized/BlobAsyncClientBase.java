@@ -397,6 +397,11 @@ public class BlobAsyncClientBase {
 
     /**
      * Copies the data at the source URL to a blob.
+     * <p>
+     * This method triggers a long-running, asynchronous operations. The source may be another blob or an Azure File. If
+     * the source is in another account, the source must either be public or authenticated with a SAS token. If the
+     * source is in the same account, the Shared Key authorization on the destination will also be applied to the
+     * source. The source URL must be URL encoded.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -417,6 +422,11 @@ public class BlobAsyncClientBase {
 
     /**
      * Copies the data at the source URL to a blob.
+     * <p>
+     * This method triggers a long-running, asynchronous operations. The source may be another blob or an Azure File. If
+     * the source is in another account, the source must either be public or authenticated with a SAS token. If the
+     * source is in the same account, the Shared Key authorization on the destination will also be applied to the
+     * source. The source URL must be URL encoded.
      *
      * <p><strong>Starting a copy operation</strong></p>
      * Starting a copy operation and polling on the responses.
@@ -451,6 +461,11 @@ public class BlobAsyncClientBase {
 
     /**
      * Copies the data at the source URL to a blob.
+     * <p>
+     * This method triggers a long-running, asynchronous operations. The source may be another blob or an Azure File. If
+     * the source is in another account, the source must either be public or authenticated with a SAS token. If the
+     * source is in the same account, the Shared Key authorization on the destination will also be applied to the
+     * source. The source URL must be URL encoded.
      *
      * <p><strong>Starting a copy operation</strong></p>
      * Starting a copy operation and polling on the responses.
@@ -664,6 +679,9 @@ public class BlobAsyncClientBase {
 
     /**
      * Copies the data at the source URL to a blob and waits for the copy to complete before returning a response.
+     * <p>
+     * The source must be a block blob no larger than 256MB. The source must also be either public or have a sas token
+     * attached. The URL must be URL encoded.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -685,6 +703,9 @@ public class BlobAsyncClientBase {
 
     /**
      * Copies the data at the source URL to a blob and waits for the copy to complete before returning a response.
+     * <p>
+     * The source must be a block blob no larger than 256MB. The source must also be either public or have a sas token
+     * attached. The URL must be URL encoded.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -713,7 +734,10 @@ public class BlobAsyncClientBase {
 
     /**
      * Copies the data at the source URL to a blob and waits for the copy to complete before returning a response.
-     *
+     * <p>
+     * The source must be a block blob no larger than 256MB. The source must also be either public or have a sas token
+     * attached. The URL must be URL encoded.
+     * 
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromUrlWithResponse#BlobCopyFromUrlOptions}
@@ -1083,28 +1107,18 @@ public class BlobAsyncClientBase {
 
     private static Response<BlobProperties> buildBlobPropertiesResponse(BlobDownloadAsyncResponse response) {
         // blobSize determination - contentLength only returns blobSize if the download is not chunked.
-        long blobSize = getBlobLength(response.getDeserializedHeaders());
-        BlobProperties properties = new BlobProperties(null, response.getDeserializedHeaders().getLastModified(),
-            response.getDeserializedHeaders().getETag(), blobSize, response.getDeserializedHeaders().getContentType(),
-            null, response.getDeserializedHeaders().getContentEncoding(),
-            response.getDeserializedHeaders().getContentDisposition(),
-            response.getDeserializedHeaders().getContentLanguage(), response.getDeserializedHeaders().getCacheControl(),
-            response.getDeserializedHeaders().getBlobSequenceNumber(), response.getDeserializedHeaders().getBlobType(),
-            response.getDeserializedHeaders().getLeaseStatus(), response.getDeserializedHeaders().getLeaseState(),
-            response.getDeserializedHeaders().getLeaseDuration(), response.getDeserializedHeaders().getCopyId(),
-            response.getDeserializedHeaders().getCopyStatus(), response.getDeserializedHeaders().getCopySource(),
-            response.getDeserializedHeaders().getCopyProgress(),
-            response.getDeserializedHeaders().getCopyCompletionTime(),
-            response.getDeserializedHeaders().getCopyStatusDescription(),
-            response.getDeserializedHeaders().isServerEncrypted(), null, null, null, null, null,
-            response.getDeserializedHeaders().getEncryptionKeySha256(),
-            response.getDeserializedHeaders().getEncryptionScope(), null,
-            response.getDeserializedHeaders().getMetadata(),
-            response.getDeserializedHeaders().getBlobCommittedBlockCount(),
-            response.getDeserializedHeaders().getTagCount(),
-            response.getDeserializedHeaders().getVersionId(), null,
-            response.getDeserializedHeaders().getObjectReplicationSourcePolicies(),
-            response.getDeserializedHeaders().getObjectReplicationDestinationPolicyId());
+        BlobDownloadHeaders hd = response.getDeserializedHeaders();
+        long blobSize = getBlobLength(hd);
+        BlobProperties properties = new BlobProperties(null, hd.getLastModified(), hd.getETag(), blobSize,
+            hd.getContentType(), hd.getContentMd5(), hd.getContentEncoding(), hd.getContentDisposition(),
+            hd.getContentLanguage(), hd.getCacheControl(), hd.getBlobSequenceNumber(), hd.getBlobType(),
+            hd.getLeaseStatus(), hd.getLeaseState(), hd.getLeaseDuration(), hd.getCopyId(), hd.getCopyStatus(),
+            hd.getCopySource(), hd.getCopyProgress(), hd.getCopyCompletionTime(), hd.getCopyStatusDescription(),
+            hd.isServerEncrypted(), null, null, null, null, null,
+            hd.getEncryptionKeySha256(), hd.getEncryptionScope(), null, hd.getMetadata(),
+            hd.getBlobCommittedBlockCount(), hd.getTagCount(), hd.getVersionId(), null,
+            hd.getObjectReplicationSourcePolicies(), hd.getObjectReplicationDestinationPolicyId(), null,
+            hd.isSealed(), hd.getLastAccessedTime(), null);
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), properties);
     }
 
@@ -1244,8 +1258,12 @@ public class BlobAsyncClientBase {
                     hd.isIncrementalCopy(), hd.getDestinationSnapshot(), AccessTier.fromString(hd.getAccessTier()),
                     hd.isAccessTierInferred(), ArchiveStatus.fromString(hd.getArchiveStatus()),
                     hd.getEncryptionKeySha256(), hd.getEncryptionScope(), hd.getAccessTierChangeTime(),
-                    hd.getMetadata(), hd.getBlobCommittedBlockCount(), hd.getVersionId(), hd.isCurrentVersion(),
-                    hd.getTagCount(), hd.getObjectReplicationRules(), hd.getRehydratePriority(), hd.isSealed());
+                    hd.getMetadata(), hd.getBlobCommittedBlockCount(), hd.getTagCount(), hd.getVersionId(),
+                    hd.isCurrentVersion(),
+                    ModelHelper.getObjectReplicationSourcePolicies(hd.getObjectReplicationRules()),
+                    ModelHelper.getObjectReplicationDestinationPolicyId(hd.getObjectReplicationRules()),
+                    RehydratePriority.fromString(hd.getRehydratePriority()), hd.isSealed(), hd.getLastAccessed(),
+                    hd.getExpiresOn());
                 return new SimpleResponse<>(rb, properties);
             });
     }
@@ -1797,9 +1815,9 @@ public class BlobAsyncClientBase {
         BlobRequestConditions requestConditions = queryOptions.getRequestConditions() == null
             ? new BlobRequestConditions() : queryOptions.getRequestConditions();
 
-        QuerySerialization in = BlobQueryReader.transformSerialization(queryOptions.getInputSerialization(),
+        QuerySerialization in = BlobQueryReader.transformInputSerialization(queryOptions.getInputSerialization(),
             logger);
-        QuerySerialization out = BlobQueryReader.transformSerialization(queryOptions.getOutputSerialization(),
+        QuerySerialization out = BlobQueryReader.transformOutputSerialization(queryOptions.getOutputSerialization(),
             logger);
 
         QueryRequest qr = new QueryRequest()

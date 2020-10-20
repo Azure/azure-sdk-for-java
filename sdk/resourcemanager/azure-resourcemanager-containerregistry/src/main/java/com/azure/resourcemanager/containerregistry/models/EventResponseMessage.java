@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The EventResponseMessage model. */
+/** The event response message received from the service URI. */
 @Fluent
 public final class EventResponseMessage {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EventResponseMessage.class);

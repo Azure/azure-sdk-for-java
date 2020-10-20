@@ -62,13 +62,30 @@ azure.keyvault.uri=put-your-azure-keyvault-uri-here
 azure.keyvault.client-id=put-your-azure-client-id-here
 azure.keyvault.client-key=put-your-azure-client-key-here
 azure.keyvault.tenant-id=put-your-azure-tenant-id-here
+azure.keyvault.authority-host=put-your-own-authority-host-here(fill with default value if empty)
+azure.keyvault.secret-service-version=specify secretServiceVersion value(fill with default value if empty)
+
 
 # Uncomment following property if you want to specify the secrets to load from Key Vault
 # azure.keyvault.secret-keys=yourSecretPropertyName1,yourSecretPropertyName2
 ```
 
+`azure.keyvault.authority-host`
+
+The URL at which your identity provider can be reached.
+
+- If working with azure global, just left the property blank, and the value will be filled with the default value.
+
+- If working with azure stack, set the property with authority URL.
+
+`azure.keyvault.secret-service-version`
+
+The valid secret-service-version value can be found [here][version_link]. 
+
+If property not set, the property will be filled with the latest value.
 
 ## Run with Maven
+First, we need to ensure that this [instruction] is completed before run.
 ```
 # Under sdk/spring project root directory
 mvn clean install -DskipTests
@@ -79,3 +96,8 @@ mvn spring-boot:run
 ## Troubleshooting
 ## Next steps
 ## Contributing
+
+
+<!-- links -->
+[version_link]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-secrets/src/main/java/com/azure/security/keyvault/secrets/SecretServiceVersion.java#L12
+[instruction]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source

@@ -4,257 +4,34 @@
 
 package com.azure.resourcemanager.servicebus.fluent;
 
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.Delete;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Headers;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
-import com.azure.core.annotation.Put;
-import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
-import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.servicebus.fluent.inner.QueueResourceInner;
-import com.azure.resourcemanager.servicebus.fluent.inner.ResourceListKeysInner;
-import com.azure.resourcemanager.servicebus.fluent.inner.SharedAccessAuthorizationRuleResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.QueueResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.ResourceListKeysInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SharedAccessAuthorizationRuleResourceInner;
 import com.azure.resourcemanager.servicebus.models.Policykey;
 import com.azure.resourcemanager.servicebus.models.QueueCreateOrUpdateParameters;
-import com.azure.resourcemanager.servicebus.models.QueueListResult;
-import com.azure.resourcemanager.servicebus.models.RegenerateKeysParameters;
 import com.azure.resourcemanager.servicebus.models.SharedAccessAuthorizationRuleCreateOrUpdateParameters;
-import com.azure.resourcemanager.servicebus.models.SharedAccessAuthorizationRuleListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Queues. */
-public final class QueuesClient {
-    private final ClientLogger logger = new ClientLogger(QueuesClient.class);
-
-    /** The proxy service used to perform REST calls. */
-    private final QueuesService service;
-
-    /** The service client containing this operation class. */
-    private final ServiceBusManagementClient client;
-
+/** An instance of this class provides access to all the operations defined in QueuesClient. */
+public interface QueuesClient {
     /**
-     * Initializes an instance of QueuesClient.
+     * Gets the queues within a namespace.
      *
-     * @param client the instance of the service client containing this operation class.
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the queues within a namespace.
      */
-    QueuesClient(ServiceBusManagementClient client) {
-        this.service = RestProxy.create(QueuesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
-    }
-
-    /**
-     * The interface defining all the services for ServiceBusManagementClientQueues to be used by the proxy service to
-     * perform REST calls.
-     */
-    @Host("{$host}")
-    @ServiceInterface(name = "ServiceBusManagement")
-    private interface QueuesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/queues")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<QueueListResult>> listAll(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/queues/{queueName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<QueueResourceInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @PathParam("queueName") String queueName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") QueueCreateOrUpdateParameters parameters,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/queues/{queueName}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @PathParam("queueName") String queueName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/queues/{queueName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<QueueResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @PathParam("queueName") String queueName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/queues/{queueName}/authorizationRules")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SharedAccessAuthorizationRuleListResult>> listAuthorizationRules(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @PathParam("queueName") String queueName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/queues/{queueName}/authorizationRules/{authorizationRuleName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SharedAccessAuthorizationRuleResourceInner>> createOrUpdateAuthorizationRule(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @PathParam("queueName") String queueName,
-            @PathParam("authorizationRuleName") String authorizationRuleName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/queues/{queueName}/authorizationRules/{authorizationRuleName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SharedAccessAuthorizationRuleResourceInner>> postAuthorizationRule(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @PathParam("queueName") String queueName,
-            @PathParam("authorizationRuleName") String authorizationRuleName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/queues/{queueName}/authorizationRules/{authorizationRuleName}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> deleteAuthorizationRule(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @PathParam("queueName") String queueName,
-            @PathParam("authorizationRuleName") String authorizationRuleName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/queues/{queueName}/authorizationRules/{authorizationRuleName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SharedAccessAuthorizationRuleResourceInner>> getAuthorizationRule(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @PathParam("queueName") String queueName,
-            @PathParam("authorizationRuleName") String authorizationRuleName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/queues/{queueName}/authorizationRules/{authorizationRuleName}/ListKeys")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceListKeysInner>> listKeys(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @PathParam("queueName") String queueName,
-            @PathParam("authorizationRuleName") String authorizationRuleName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/queues/{queueName}/authorizationRules/{authorizationRuleName}"
-                + "/regenerateKeys")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceListKeysInner>> regenerateKeys(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @PathParam("queueName") String queueName,
-            @PathParam("authorizationRuleName") String authorizationRuleName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") RegenerateKeysParameters parameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<QueueListResult>> listAllNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SharedAccessAuthorizationRuleListResult>> listAuthorizationRulesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<QueueResourceInner> listAllAsync(String resourceGroupName, String namespaceName);
 
     /**
      * Gets the queues within a namespace.
@@ -262,54 +39,12 @@ public final class QueuesClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the queues within a namespace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<QueueResourceInner>> listAllSinglePageAsync(
-        String resourceGroupName, String namespaceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listAll(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            namespaceName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            context))
-            .<PagedResponse<QueueResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<QueueResourceInner> listAll(String resourceGroupName, String namespaceName);
 
     /**
      * Gets the queues within a namespace.
@@ -318,117 +53,12 @@ public final class QueuesClient {
      * @param namespaceName The namespace name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the queues within a namespace.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<QueueResourceInner>> listAllSinglePageAsync(
-        String resourceGroupName, String namespaceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listAll(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                namespaceName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Gets the queues within a namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the queues within a namespace.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<QueueResourceInner> listAllAsync(String resourceGroupName, String namespaceName) {
-        return new PagedFlux<>(
-            () -> listAllSinglePageAsync(resourceGroupName, namespaceName),
-            nextLink -> listAllNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Gets the queues within a namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the queues within a namespace.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<QueueResourceInner> listAllAsync(String resourceGroupName, String namespaceName, Context context) {
-        return new PagedFlux<>(
-            () -> listAllSinglePageAsync(resourceGroupName, namespaceName, context),
-            nextLink -> listAllNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets the queues within a namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the queues within a namespace.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<QueueResourceInner> listAll(String resourceGroupName, String namespaceName) {
-        return new PagedIterable<>(listAllAsync(resourceGroupName, namespaceName));
-    }
-
-    /**
-     * Gets the queues within a namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the queues within a namespace.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<QueueResourceInner> listAll(String resourceGroupName, String namespaceName, Context context) {
-        return new PagedIterable<>(listAllAsync(resourceGroupName, namespaceName, context));
-    }
+    PagedIterable<QueueResourceInner> listAll(String resourceGroupName, String namespaceName, Context context);
 
     /**
      * Creates or updates a Service Bus queue. This operation is idempotent.
@@ -438,55 +68,45 @@ public final class QueuesClient {
      * @param queueName The queue name.
      * @param parameters Parameters supplied to the Create Or Update Queue operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return description of queue Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<QueueResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String namespaceName, String queueName, QueueCreateOrUpdateParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (queueName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            namespaceName,
-                            queueName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<QueueResourceInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String namespaceName, String queueName, QueueCreateOrUpdateParameters parameters);
+
+    /**
+     * Creates or updates a Service Bus queue. This operation is idempotent.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param queueName The queue name.
+     * @param parameters Parameters supplied to the Create Or Update Queue operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of queue Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<QueueResourceInner> createOrUpdateAsync(
+        String resourceGroupName, String namespaceName, String queueName, QueueCreateOrUpdateParameters parameters);
+
+    /**
+     * Creates or updates a Service Bus queue. This operation is idempotent.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param queueName The queue name.
+     * @param parameters Parameters supplied to the Create Or Update Queue operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of queue Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    QueueResourceInner createOrUpdate(
+        String resourceGroupName, String namespaceName, String queueName, QueueCreateOrUpdateParameters parameters);
 
     /**
      * Creates or updates a Service Bus queue. This operation is idempotent.
@@ -497,154 +117,17 @@ public final class QueuesClient {
      * @param parameters Parameters supplied to the Create Or Update Queue operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return description of queue Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<QueueResourceInner>> createOrUpdateWithResponseAsync(
+    Response<QueueResourceInner> createOrUpdateWithResponse(
         String resourceGroupName,
         String namespaceName,
         String queueName,
         QueueCreateOrUpdateParameters parameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (queueName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                namespaceName,
-                queueName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Creates or updates a Service Bus queue. This operation is idempotent.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param parameters Parameters supplied to the Create Or Update Queue operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of queue Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<QueueResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String namespaceName, String queueName, QueueCreateOrUpdateParameters parameters) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, namespaceName, queueName, parameters)
-            .flatMap(
-                (Response<QueueResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a Service Bus queue. This operation is idempotent.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param parameters Parameters supplied to the Create Or Update Queue operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of queue Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<QueueResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String queueName,
-        QueueCreateOrUpdateParameters parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, namespaceName, queueName, parameters, context)
-            .flatMap(
-                (Response<QueueResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a Service Bus queue. This operation is idempotent.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param parameters Parameters supplied to the Create Or Update Queue operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of queue Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public QueueResourceInner createOrUpdate(
-        String resourceGroupName, String namespaceName, String queueName, QueueCreateOrUpdateParameters parameters) {
-        return createOrUpdateAsync(resourceGroupName, namespaceName, queueName, parameters).block();
-    }
-
-    /**
-     * Creates or updates a Service Bus queue. This operation is idempotent.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param parameters Parameters supplied to the Create Or Update Queue operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of queue Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public QueueResourceInner createOrUpdate(
-        String resourceGroupName,
-        String namespaceName,
-        String queueName,
-        QueueCreateOrUpdateParameters parameters,
-        Context context) {
-        return createOrUpdateAsync(resourceGroupName, namespaceName, queueName, parameters, context).block();
-    }
+        Context context);
 
     /**
      * Deletes a queue from the specified namespace in a resource group.
@@ -653,49 +136,12 @@ public final class QueuesClient {
      * @param namespaceName The namespace name.
      * @param queueName The queue name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String namespaceName, String queueName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (queueName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            namespaceName,
-                            queueName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String namespaceName, String queueName);
 
     /**
      * Deletes a queue from the specified namespace in a resource group.
@@ -703,48 +149,13 @@ public final class QueuesClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param queueName The queue name.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String namespaceName, String queueName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (queueName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                namespaceName,
-                queueName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                context);
-    }
+    Mono<Void> deleteAsync(String resourceGroupName, String namespaceName, String queueName);
 
     /**
      * Deletes a queue from the specified namespace in a resource group.
@@ -753,15 +164,11 @@ public final class QueuesClient {
      * @param namespaceName The namespace name.
      * @param queueName The queue name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String namespaceName, String queueName) {
-        return deleteWithResponseAsync(resourceGroupName, namespaceName, queueName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
+    void delete(String resourceGroupName, String namespaceName, String queueName);
 
     /**
      * Deletes a queue from the specified namespace in a resource group.
@@ -771,46 +178,13 @@ public final class QueuesClient {
      * @param queueName The queue name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String namespaceName, String queueName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, namespaceName, queueName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a queue from the specified namespace in a resource group.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String namespaceName, String queueName) {
-        deleteAsync(resourceGroupName, namespaceName, queueName).block();
-    }
-
-    /**
-     * Deletes a queue from the specified namespace in a resource group.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String namespaceName, String queueName, Context context) {
-        deleteAsync(resourceGroupName, namespaceName, queueName, context).block();
-    }
+    Response<Void> deleteWithResponse(
+        String resourceGroupName, String namespaceName, String queueName, Context context);
 
     /**
      * Returns a description for the specified queue.
@@ -819,49 +193,41 @@ public final class QueuesClient {
      * @param namespaceName The namespace name.
      * @param queueName The queue name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return description of queue Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<QueueResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String namespaceName, String queueName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (queueName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            namespaceName,
-                            queueName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<QueueResourceInner>> getWithResponseAsync(
+        String resourceGroupName, String namespaceName, String queueName);
+
+    /**
+     * Returns a description for the specified queue.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param queueName The queue name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of queue Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<QueueResourceInner> getAsync(String resourceGroupName, String namespaceName, String queueName);
+
+    /**
+     * Returns a description for the specified queue.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param queueName The queue name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of queue Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    QueueResourceInner get(String resourceGroupName, String namespaceName, String queueName);
 
     /**
      * Returns a description for the specified queue.
@@ -871,129 +237,13 @@ public final class QueuesClient {
      * @param queueName The queue name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return description of queue Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<QueueResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String namespaceName, String queueName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (queueName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                namespaceName,
-                queueName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * Returns a description for the specified queue.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of queue Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<QueueResourceInner> getAsync(String resourceGroupName, String namespaceName, String queueName) {
-        return getWithResponseAsync(resourceGroupName, namespaceName, queueName)
-            .flatMap(
-                (Response<QueueResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Returns a description for the specified queue.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of queue Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<QueueResourceInner> getAsync(
-        String resourceGroupName, String namespaceName, String queueName, Context context) {
-        return getWithResponseAsync(resourceGroupName, namespaceName, queueName, context)
-            .flatMap(
-                (Response<QueueResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Returns a description for the specified queue.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of queue Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public QueueResourceInner get(String resourceGroupName, String namespaceName, String queueName) {
-        return getAsync(resourceGroupName, namespaceName, queueName).block();
-    }
-
-    /**
-     * Returns a description for the specified queue.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of queue Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public QueueResourceInner get(String resourceGroupName, String namespaceName, String queueName, Context context) {
-        return getAsync(resourceGroupName, namespaceName, queueName, context).block();
-    }
+    Response<QueueResourceInner> getWithResponse(
+        String resourceGroupName, String namespaceName, String queueName, Context context);
 
     /**
      * Gets all authorization rules for a queue.
@@ -1002,135 +252,28 @@ public final class QueuesClient {
      * @param namespaceName The namespace name.
      * @param queueName The queue name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all authorization rules for a queue.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SharedAccessAuthorizationRuleResourceInner>> listAuthorizationRulesSinglePageAsync(
-        String resourceGroupName, String namespaceName, String queueName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (queueName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listAuthorizationRules(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            namespaceName,
-                            queueName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            context))
-            .<PagedResponse<SharedAccessAuthorizationRuleResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Gets all authorization rules for a queue.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all authorization rules for a queue.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SharedAccessAuthorizationRuleResourceInner>> listAuthorizationRulesSinglePageAsync(
-        String resourceGroupName, String namespaceName, String queueName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (queueName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listAuthorizationRules(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                namespaceName,
-                queueName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Gets all authorization rules for a queue.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all authorization rules for a queue.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SharedAccessAuthorizationRuleResourceInner> listAuthorizationRulesAsync(
-        String resourceGroupName, String namespaceName, String queueName) {
-        return new PagedFlux<>(
-            () -> listAuthorizationRulesSinglePageAsync(resourceGroupName, namespaceName, queueName),
-            nextLink -> listAuthorizationRulesNextSinglePageAsync(nextLink));
-    }
+    PagedFlux<SharedAccessAuthorizationRuleResourceInner> listAuthorizationRulesAsync(
+        String resourceGroupName, String namespaceName, String queueName);
+
+    /**
+     * Gets all authorization rules for a queue.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param queueName The queue name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all authorization rules for a queue.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SharedAccessAuthorizationRuleResourceInner> listAuthorizationRules(
+        String resourceGroupName, String namespaceName, String queueName);
 
     /**
      * Gets all authorization rules for a queue.
@@ -1140,52 +283,13 @@ public final class QueuesClient {
      * @param queueName The queue name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all authorization rules for a queue.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SharedAccessAuthorizationRuleResourceInner> listAuthorizationRulesAsync(
-        String resourceGroupName, String namespaceName, String queueName, Context context) {
-        return new PagedFlux<>(
-            () -> listAuthorizationRulesSinglePageAsync(resourceGroupName, namespaceName, queueName, context),
-            nextLink -> listAuthorizationRulesNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets all authorization rules for a queue.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all authorization rules for a queue.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SharedAccessAuthorizationRuleResourceInner> listAuthorizationRules(
-        String resourceGroupName, String namespaceName, String queueName) {
-        return new PagedIterable<>(listAuthorizationRulesAsync(resourceGroupName, namespaceName, queueName));
-    }
-
-    /**
-     * Gets all authorization rules for a queue.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all authorization rules for a queue.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SharedAccessAuthorizationRuleResourceInner> listAuthorizationRules(
-        String resourceGroupName, String namespaceName, String queueName, Context context) {
-        return new PagedIterable<>(listAuthorizationRulesAsync(resourceGroupName, namespaceName, queueName, context));
-    }
+    PagedIterable<SharedAccessAuthorizationRuleResourceInner> listAuthorizationRules(
+        String resourceGroupName, String namespaceName, String queueName, Context context);
 
     /**
      * Creates an authorization rule for a queue.
@@ -1196,64 +300,59 @@ public final class QueuesClient {
      * @param authorizationRuleName The authorization rule name.
      * @param parameters Parameters supplied to the Create Or Update Authorization Rules operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return description of a namespace authorization rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SharedAccessAuthorizationRuleResourceInner>> createOrUpdateAuthorizationRuleWithResponseAsync(
+    Mono<Response<SharedAccessAuthorizationRuleResourceInner>> createOrUpdateAuthorizationRuleWithResponseAsync(
         String resourceGroupName,
         String namespaceName,
         String queueName,
         String authorizationRuleName,
-        SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (queueName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
-        }
-        if (authorizationRuleName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter authorizationRuleName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdateAuthorizationRule(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            namespaceName,
-                            queueName,
-                            authorizationRuleName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+        SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters);
+
+    /**
+     * Creates an authorization rule for a queue.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param queueName The queue name.
+     * @param authorizationRuleName The authorization rule name.
+     * @param parameters Parameters supplied to the Create Or Update Authorization Rules operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of a namespace authorization rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SharedAccessAuthorizationRuleResourceInner> createOrUpdateAuthorizationRuleAsync(
+        String resourceGroupName,
+        String namespaceName,
+        String queueName,
+        String authorizationRuleName,
+        SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters);
+
+    /**
+     * Creates an authorization rule for a queue.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param queueName The queue name.
+     * @param authorizationRuleName The authorization rule name.
+     * @param parameters Parameters supplied to the Create Or Update Authorization Rules operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of a namespace authorization rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SharedAccessAuthorizationRuleResourceInner createOrUpdateAuthorizationRule(
+        String resourceGroupName,
+        String namespaceName,
+        String queueName,
+        String authorizationRuleName,
+        SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters);
 
     /**
      * Creates an authorization rule for a queue.
@@ -1265,180 +364,18 @@ public final class QueuesClient {
      * @param parameters Parameters supplied to the Create Or Update Authorization Rules operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return description of a namespace authorization rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SharedAccessAuthorizationRuleResourceInner>> createOrUpdateAuthorizationRuleWithResponseAsync(
+    Response<SharedAccessAuthorizationRuleResourceInner> createOrUpdateAuthorizationRuleWithResponse(
         String resourceGroupName,
         String namespaceName,
         String queueName,
         String authorizationRuleName,
         SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (queueName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
-        }
-        if (authorizationRuleName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter authorizationRuleName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .createOrUpdateAuthorizationRule(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                namespaceName,
-                queueName,
-                authorizationRuleName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Creates an authorization rule for a queue.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to the Create Or Update Authorization Rules operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharedAccessAuthorizationRuleResourceInner> createOrUpdateAuthorizationRuleAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String queueName,
-        String authorizationRuleName,
-        SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters) {
-        return createOrUpdateAuthorizationRuleWithResponseAsync(
-                resourceGroupName, namespaceName, queueName, authorizationRuleName, parameters)
-            .flatMap(
-                (Response<SharedAccessAuthorizationRuleResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates an authorization rule for a queue.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to the Create Or Update Authorization Rules operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharedAccessAuthorizationRuleResourceInner> createOrUpdateAuthorizationRuleAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String queueName,
-        String authorizationRuleName,
-        SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters,
-        Context context) {
-        return createOrUpdateAuthorizationRuleWithResponseAsync(
-                resourceGroupName, namespaceName, queueName, authorizationRuleName, parameters, context)
-            .flatMap(
-                (Response<SharedAccessAuthorizationRuleResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates an authorization rule for a queue.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to the Create Or Update Authorization Rules operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SharedAccessAuthorizationRuleResourceInner createOrUpdateAuthorizationRule(
-        String resourceGroupName,
-        String namespaceName,
-        String queueName,
-        String authorizationRuleName,
-        SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters) {
-        return createOrUpdateAuthorizationRuleAsync(
-                resourceGroupName, namespaceName, queueName, authorizationRuleName, parameters)
-            .block();
-    }
-
-    /**
-     * Creates an authorization rule for a queue.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to the Create Or Update Authorization Rules operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SharedAccessAuthorizationRuleResourceInner createOrUpdateAuthorizationRule(
-        String resourceGroupName,
-        String namespaceName,
-        String queueName,
-        String authorizationRuleName,
-        SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters,
-        Context context) {
-        return createOrUpdateAuthorizationRuleAsync(
-                resourceGroupName, namespaceName, queueName, authorizationRuleName, parameters, context)
-            .block();
-    }
+        Context context);
 
     /**
      * Gets an authorization rule for a queue by rule name.
@@ -1448,54 +385,45 @@ public final class QueuesClient {
      * @param queueName The queue name.
      * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an authorization rule for a queue by rule name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SharedAccessAuthorizationRuleResourceInner>> postAuthorizationRuleWithResponseAsync(
-        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (queueName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
-        }
-        if (authorizationRuleName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter authorizationRuleName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .postAuthorizationRule(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            namespaceName,
-                            queueName,
-                            authorizationRuleName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<SharedAccessAuthorizationRuleResourceInner>> postAuthorizationRuleWithResponseAsync(
+        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName);
+
+    /**
+     * Gets an authorization rule for a queue by rule name.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param queueName The queue name.
+     * @param authorizationRuleName The authorization rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an authorization rule for a queue by rule name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SharedAccessAuthorizationRuleResourceInner> postAuthorizationRuleAsync(
+        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName);
+
+    /**
+     * Gets an authorization rule for a queue by rule name.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param queueName The queue name.
+     * @param authorizationRuleName The authorization rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an authorization rule for a queue by rule name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SharedAccessAuthorizationRuleResourceInner postAuthorizationRule(
+        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName);
 
     /**
      * Gets an authorization rule for a queue by rule name.
@@ -1506,156 +434,17 @@ public final class QueuesClient {
      * @param authorizationRuleName The authorization rule name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an authorization rule for a queue by rule name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SharedAccessAuthorizationRuleResourceInner>> postAuthorizationRuleWithResponseAsync(
+    Response<SharedAccessAuthorizationRuleResourceInner> postAuthorizationRuleWithResponse(
         String resourceGroupName,
         String namespaceName,
         String queueName,
         String authorizationRuleName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (queueName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
-        }
-        if (authorizationRuleName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter authorizationRuleName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .postAuthorizationRule(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                namespaceName,
-                queueName,
-                authorizationRuleName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * Gets an authorization rule for a queue by rule name.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a queue by rule name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharedAccessAuthorizationRuleResourceInner> postAuthorizationRuleAsync(
-        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName) {
-        return postAuthorizationRuleWithResponseAsync(
-                resourceGroupName, namespaceName, queueName, authorizationRuleName)
-            .flatMap(
-                (Response<SharedAccessAuthorizationRuleResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets an authorization rule for a queue by rule name.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a queue by rule name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharedAccessAuthorizationRuleResourceInner> postAuthorizationRuleAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String queueName,
-        String authorizationRuleName,
-        Context context) {
-        return postAuthorizationRuleWithResponseAsync(
-                resourceGroupName, namespaceName, queueName, authorizationRuleName, context)
-            .flatMap(
-                (Response<SharedAccessAuthorizationRuleResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets an authorization rule for a queue by rule name.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a queue by rule name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SharedAccessAuthorizationRuleResourceInner postAuthorizationRule(
-        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName) {
-        return postAuthorizationRuleAsync(resourceGroupName, namespaceName, queueName, authorizationRuleName).block();
-    }
-
-    /**
-     * Gets an authorization rule for a queue by rule name.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a queue by rule name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SharedAccessAuthorizationRuleResourceInner postAuthorizationRule(
-        String resourceGroupName,
-        String namespaceName,
-        String queueName,
-        String authorizationRuleName,
-        Context context) {
-        return postAuthorizationRuleAsync(resourceGroupName, namespaceName, queueName, authorizationRuleName, context)
-            .block();
-    }
+        Context context);
 
     /**
      * Deletes a queue authorization rule.
@@ -1665,54 +454,13 @@ public final class QueuesClient {
      * @param queueName The queue name.
      * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteAuthorizationRuleWithResponseAsync(
-        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (queueName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
-        }
-        if (authorizationRuleName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter authorizationRuleName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .deleteAuthorizationRule(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            namespaceName,
-                            queueName,
-                            authorizationRuleName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Void>> deleteAuthorizationRuleWithResponseAsync(
+        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName);
 
     /**
      * Deletes a queue authorization rule.
@@ -1721,57 +469,14 @@ public final class QueuesClient {
      * @param namespaceName The namespace name.
      * @param queueName The queue name.
      * @param authorizationRuleName The authorization rule name.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteAuthorizationRuleWithResponseAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String queueName,
-        String authorizationRuleName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (queueName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
-        }
-        if (authorizationRuleName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter authorizationRuleName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .deleteAuthorizationRule(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                namespaceName,
-                queueName,
-                authorizationRuleName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                context);
-    }
+    Mono<Void> deleteAuthorizationRuleAsync(
+        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName);
 
     /**
      * Deletes a queue authorization rule.
@@ -1781,17 +486,12 @@ public final class QueuesClient {
      * @param queueName The queue name.
      * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAuthorizationRuleAsync(
-        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName) {
-        return deleteAuthorizationRuleWithResponseAsync(
-                resourceGroupName, namespaceName, queueName, authorizationRuleName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
+    void deleteAuthorizationRule(
+        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName);
 
     /**
      * Deletes a queue authorization rule.
@@ -1802,61 +502,17 @@ public final class QueuesClient {
      * @param authorizationRuleName The authorization rule name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAuthorizationRuleAsync(
+    Response<Void> deleteAuthorizationRuleWithResponse(
         String resourceGroupName,
         String namespaceName,
         String queueName,
         String authorizationRuleName,
-        Context context) {
-        return deleteAuthorizationRuleWithResponseAsync(
-                resourceGroupName, namespaceName, queueName, authorizationRuleName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a queue authorization rule.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteAuthorizationRule(
-        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName) {
-        deleteAuthorizationRuleAsync(resourceGroupName, namespaceName, queueName, authorizationRuleName).block();
-    }
-
-    /**
-     * Deletes a queue authorization rule.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteAuthorizationRule(
-        String resourceGroupName,
-        String namespaceName,
-        String queueName,
-        String authorizationRuleName,
-        Context context) {
-        deleteAuthorizationRuleAsync(resourceGroupName, namespaceName, queueName, authorizationRuleName, context)
-            .block();
-    }
+        Context context);
 
     /**
      * Gets an authorization rule for a queue by rule name.
@@ -1866,54 +522,45 @@ public final class QueuesClient {
      * @param queueName The queue name.
      * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an authorization rule for a queue by rule name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SharedAccessAuthorizationRuleResourceInner>> getAuthorizationRuleWithResponseAsync(
-        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (queueName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
-        }
-        if (authorizationRuleName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter authorizationRuleName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getAuthorizationRule(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            namespaceName,
-                            queueName,
-                            authorizationRuleName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<SharedAccessAuthorizationRuleResourceInner>> getAuthorizationRuleWithResponseAsync(
+        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName);
+
+    /**
+     * Gets an authorization rule for a queue by rule name.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param queueName The queue name.
+     * @param authorizationRuleName The authorization rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an authorization rule for a queue by rule name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SharedAccessAuthorizationRuleResourceInner> getAuthorizationRuleAsync(
+        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName);
+
+    /**
+     * Gets an authorization rule for a queue by rule name.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param queueName The queue name.
+     * @param authorizationRuleName The authorization rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an authorization rule for a queue by rule name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SharedAccessAuthorizationRuleResourceInner getAuthorizationRule(
+        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName);
 
     /**
      * Gets an authorization rule for a queue by rule name.
@@ -1924,155 +571,17 @@ public final class QueuesClient {
      * @param authorizationRuleName The authorization rule name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an authorization rule for a queue by rule name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SharedAccessAuthorizationRuleResourceInner>> getAuthorizationRuleWithResponseAsync(
+    Response<SharedAccessAuthorizationRuleResourceInner> getAuthorizationRuleWithResponse(
         String resourceGroupName,
         String namespaceName,
         String queueName,
         String authorizationRuleName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (queueName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
-        }
-        if (authorizationRuleName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter authorizationRuleName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .getAuthorizationRule(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                namespaceName,
-                queueName,
-                authorizationRuleName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * Gets an authorization rule for a queue by rule name.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a queue by rule name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharedAccessAuthorizationRuleResourceInner> getAuthorizationRuleAsync(
-        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName) {
-        return getAuthorizationRuleWithResponseAsync(resourceGroupName, namespaceName, queueName, authorizationRuleName)
-            .flatMap(
-                (Response<SharedAccessAuthorizationRuleResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets an authorization rule for a queue by rule name.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a queue by rule name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharedAccessAuthorizationRuleResourceInner> getAuthorizationRuleAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String queueName,
-        String authorizationRuleName,
-        Context context) {
-        return getAuthorizationRuleWithResponseAsync(
-                resourceGroupName, namespaceName, queueName, authorizationRuleName, context)
-            .flatMap(
-                (Response<SharedAccessAuthorizationRuleResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets an authorization rule for a queue by rule name.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a queue by rule name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SharedAccessAuthorizationRuleResourceInner getAuthorizationRule(
-        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName) {
-        return getAuthorizationRuleAsync(resourceGroupName, namespaceName, queueName, authorizationRuleName).block();
-    }
-
-    /**
-     * Gets an authorization rule for a queue by rule name.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a queue by rule name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SharedAccessAuthorizationRuleResourceInner getAuthorizationRule(
-        String resourceGroupName,
-        String namespaceName,
-        String queueName,
-        String authorizationRuleName,
-        Context context) {
-        return getAuthorizationRuleAsync(resourceGroupName, namespaceName, queueName, authorizationRuleName, context)
-            .block();
-    }
+        Context context);
 
     /**
      * Primary and secondary connection strings to the queue.
@@ -2082,54 +591,45 @@ public final class QueuesClient {
      * @param queueName The queue name.
      * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ResourceListKeysInner>> listKeysWithResponseAsync(
-        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (queueName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
-        }
-        if (authorizationRuleName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter authorizationRuleName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listKeys(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            namespaceName,
-                            queueName,
-                            authorizationRuleName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<ResourceListKeysInner>> listKeysWithResponseAsync(
+        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName);
+
+    /**
+     * Primary and secondary connection strings to the queue.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param queueName The queue name.
+     * @param authorizationRuleName The authorization rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return namespace/ServiceBus Connection String.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ResourceListKeysInner> listKeysAsync(
+        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName);
+
+    /**
+     * Primary and secondary connection strings to the queue.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param queueName The queue name.
+     * @param authorizationRuleName The authorization rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return namespace/ServiceBus Connection String.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ResourceListKeysInner listKeys(
+        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName);
 
     /**
      * Primary and secondary connection strings to the queue.
@@ -2140,153 +640,17 @@ public final class QueuesClient {
      * @param authorizationRuleName The authorization rule name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ResourceListKeysInner>> listKeysWithResponseAsync(
+    Response<ResourceListKeysInner> listKeysWithResponse(
         String resourceGroupName,
         String namespaceName,
         String queueName,
         String authorizationRuleName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (queueName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
-        }
-        if (authorizationRuleName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter authorizationRuleName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listKeys(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                namespaceName,
-                queueName,
-                authorizationRuleName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * Primary and secondary connection strings to the queue.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/ServiceBus Connection String.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResourceListKeysInner> listKeysAsync(
-        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName) {
-        return listKeysWithResponseAsync(resourceGroupName, namespaceName, queueName, authorizationRuleName)
-            .flatMap(
-                (Response<ResourceListKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Primary and secondary connection strings to the queue.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/ServiceBus Connection String.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResourceListKeysInner> listKeysAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String queueName,
-        String authorizationRuleName,
-        Context context) {
-        return listKeysWithResponseAsync(resourceGroupName, namespaceName, queueName, authorizationRuleName, context)
-            .flatMap(
-                (Response<ResourceListKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Primary and secondary connection strings to the queue.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/ServiceBus Connection String.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceListKeysInner listKeys(
-        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName) {
-        return listKeysAsync(resourceGroupName, namespaceName, queueName, authorizationRuleName).block();
-    }
-
-    /**
-     * Primary and secondary connection strings to the queue.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/ServiceBus Connection String.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceListKeysInner listKeys(
-        String resourceGroupName,
-        String namespaceName,
-        String queueName,
-        String authorizationRuleName,
-        Context context) {
-        return listKeysAsync(resourceGroupName, namespaceName, queueName, authorizationRuleName, context).block();
-    }
+        Context context);
 
     /**
      * Regenerates the primary or secondary connection strings to the queue.
@@ -2297,61 +661,70 @@ public final class QueuesClient {
      * @param authorizationRuleName The authorization rule name.
      * @param policykey Key that needs to be regenerated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ResourceListKeysInner>> regenerateKeysWithResponseAsync(
+    Mono<Response<ResourceListKeysInner>> regenerateKeysWithResponseAsync(
         String resourceGroupName,
         String namespaceName,
         String queueName,
         String authorizationRuleName,
-        Policykey policykey) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (queueName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
-        }
-        if (authorizationRuleName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter authorizationRuleName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        RegenerateKeysParameters parameters = new RegenerateKeysParameters();
-        parameters.withPolicykey(policykey);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .regenerateKeys(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            namespaceName,
-                            queueName,
-                            authorizationRuleName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+        Policykey policykey);
+
+    /**
+     * Regenerates the primary or secondary connection strings to the queue.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param queueName The queue name.
+     * @param authorizationRuleName The authorization rule name.
+     * @param policykey Key that needs to be regenerated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return namespace/ServiceBus Connection String.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ResourceListKeysInner> regenerateKeysAsync(
+        String resourceGroupName,
+        String namespaceName,
+        String queueName,
+        String authorizationRuleName,
+        Policykey policykey);
+
+    /**
+     * Regenerates the primary or secondary connection strings to the queue.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param queueName The queue name.
+     * @param authorizationRuleName The authorization rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return namespace/ServiceBus Connection String.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ResourceListKeysInner> regenerateKeysAsync(
+        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName);
+
+    /**
+     * Regenerates the primary or secondary connection strings to the queue.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param queueName The queue name.
+     * @param authorizationRuleName The authorization rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return namespace/ServiceBus Connection String.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ResourceListKeysInner regenerateKeys(
+        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName);
 
     /**
      * Regenerates the primary or secondary connection strings to the queue.
@@ -2363,290 +736,16 @@ public final class QueuesClient {
      * @param policykey Key that needs to be regenerated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ResourceListKeysInner>> regenerateKeysWithResponseAsync(
+    Response<ResourceListKeysInner> regenerateKeysWithResponse(
         String resourceGroupName,
         String namespaceName,
         String queueName,
         String authorizationRuleName,
         Policykey policykey,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (queueName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
-        }
-        if (authorizationRuleName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter authorizationRuleName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        RegenerateKeysParameters parameters = new RegenerateKeysParameters();
-        parameters.withPolicykey(policykey);
-        context = this.client.mergeContext(context);
-        return service
-            .regenerateKeys(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                namespaceName,
-                queueName,
-                authorizationRuleName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Regenerates the primary or secondary connection strings to the queue.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param policykey Key that needs to be regenerated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/ServiceBus Connection String.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResourceListKeysInner> regenerateKeysAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String queueName,
-        String authorizationRuleName,
-        Policykey policykey) {
-        return regenerateKeysWithResponseAsync(
-                resourceGroupName, namespaceName, queueName, authorizationRuleName, policykey)
-            .flatMap(
-                (Response<ResourceListKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Regenerates the primary or secondary connection strings to the queue.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param policykey Key that needs to be regenerated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/ServiceBus Connection String.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResourceListKeysInner> regenerateKeysAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String queueName,
-        String authorizationRuleName,
-        Policykey policykey,
-        Context context) {
-        return regenerateKeysWithResponseAsync(
-                resourceGroupName, namespaceName, queueName, authorizationRuleName, policykey, context)
-            .flatMap(
-                (Response<ResourceListKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Regenerates the primary or secondary connection strings to the queue.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param policykey Key that needs to be regenerated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/ServiceBus Connection String.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceListKeysInner regenerateKeys(
-        String resourceGroupName,
-        String namespaceName,
-        String queueName,
-        String authorizationRuleName,
-        Policykey policykey) {
-        return regenerateKeysAsync(resourceGroupName, namespaceName, queueName, authorizationRuleName, policykey)
-            .block();
-    }
-
-    /**
-     * Regenerates the primary or secondary connection strings to the queue.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param policykey Key that needs to be regenerated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/ServiceBus Connection String.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceListKeysInner regenerateKeys(
-        String resourceGroupName,
-        String namespaceName,
-        String queueName,
-        String authorizationRuleName,
-        Policykey policykey,
-        Context context) {
-        return regenerateKeysAsync(
-                resourceGroupName, namespaceName, queueName, authorizationRuleName, policykey, context)
-            .block();
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to the List Queues operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<QueueResourceInner>> listAllNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listAllNext(nextLink, context))
-            .<PagedResponse<QueueResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to the List Queues operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<QueueResourceInner>> listAllNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listAllNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to the List Namespace operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SharedAccessAuthorizationRuleResourceInner>> listAuthorizationRulesNextSinglePageAsync(
-        String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listAuthorizationRulesNext(nextLink, context))
-            .<PagedResponse<SharedAccessAuthorizationRuleResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to the List Namespace operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SharedAccessAuthorizationRuleResourceInner>> listAuthorizationRulesNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listAuthorizationRulesNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
+        Context context);
 }

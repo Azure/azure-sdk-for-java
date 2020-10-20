@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DeepCreatedOrigin model. */
+/** The main origin of CDN content which is added when creating a CDN endpoint. */
 @JsonFlatten
 @Fluent
 public class DeepCreatedOrigin {

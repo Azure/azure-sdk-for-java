@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
@@ -31,7 +32,8 @@ class QueryPlanRetriever {
                                                                QueryFeature.Top.name() + ", " +
                                                                QueryFeature.NonValueAggregate.name();
 
-    static Mono<PartitionedQueryExecutionInfo> getQueryPlanThroughGatewayAsync(IDocumentQueryClient queryClient,
+    static Mono<PartitionedQueryExecutionInfo> getQueryPlanThroughGatewayAsync(DiagnosticsClientContext diagnosticsClientContext,
+                                                                               IDocumentQueryClient queryClient,
                                                                                SqlQuerySpec sqlQuerySpec,
                                                                                String resourceLink) {
         final Map<String, String> requestHeaders = new HashMap<>();
@@ -40,7 +42,8 @@ class QueryPlanRetriever {
         requestHeaders.put(HttpConstants.HttpHeaders.SUPPORTED_QUERY_FEATURES, SUPPORTED_QUERY_FEATURES);
         requestHeaders.put(HttpConstants.HttpHeaders.QUERY_VERSION, HttpConstants.Versions.QUERY_VERSION);
 
-        final RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.QueryPlan,
+        final RxDocumentServiceRequest request = RxDocumentServiceRequest.create(diagnosticsClientContext,
+                                                                                 OperationType.QueryPlan,
                                                                                  ResourceType.Document,
                                                                                  resourceLink,
                                                                                  requestHeaders);

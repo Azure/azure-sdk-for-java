@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The TrafficSelectorPolicy model. */
+/** An traffic selector policy for a virtual network gateway connection. */
 @Fluent
 public final class TrafficSelectorPolicy {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TrafficSelectorPolicy.class);

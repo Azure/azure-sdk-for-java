@@ -37,6 +37,8 @@ import reactor.core.publisher.MonoSink;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +77,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     private final ReceiveLinkHandler handler;
     private final ReactorProvider provider;
     private final Mono<String> sessionIdMono;
-    private final Mono<Instant> sessionLockedUntil;
+    private final Mono<OffsetDateTime> sessionLockedUntil;
 
     public ServiceBusReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler,
         TokenManager tokenManager, ReactorProvider provider, Duration timeout, AmqpRetryPolicy retryPolicy) {
@@ -109,11 +111,11 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                 if (receiver.getRemoteProperties() != null
                     && receiver.getRemoteProperties().containsKey(LOCKED_UNTIL_UTC)) {
                     final long ticks = (long) receiver.getRemoteProperties().get(LOCKED_UNTIL_UTC);
-                    return MessageUtils.convertDotNetTicksToInstant(ticks);
+                    return MessageUtils.convertDotNetTicksToOffsetDateTime(ticks);
                 } else {
                     logger.info("entityPath[{}], linkName[{}]. Locked until not set.", entityPath, getLinkName());
 
-                    return Instant.EPOCH;
+                    return Instant.EPOCH.atOffset(ZoneOffset.UTC);
                 }
             })
             .cache(value -> Duration.ofMillis(Long.MAX_VALUE), error -> Duration.ZERO, () -> Duration.ZERO);
@@ -139,7 +141,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     }
 
     @Override
-    public Mono<Instant> getSessionLockedUntil() {
+    public Mono<OffsetDateTime> getSessionLockedUntil() {
         return sessionLockedUntil;
     }
 

@@ -50,14 +50,14 @@ public class TwinTests extends TwinTestBase{
             assertEquals(createdTwin.getId(), roomTwinId);
 
             // Get Twin.
-            DigitalTwinsResponse<String> getTwinResponse = client.getDigitalTwinWithResponse(roomTwinId, String.class, Context.NONE);
+            DigitalTwinsResponse<String> getTwinResponse = client.getDigitalTwinWithResponse(roomTwinId, String.class, null, Context.NONE);
             assertEquals(getTwinResponse.getStatusCode(), HttpURLConnection.HTTP_OK);
 
             // Update Twin.
             DigitalTwinsResponse<Void> updateTwinResponse = client.updateDigitalTwinWithResponse(
                 roomTwinId,
                 TestAssetsHelper.getRoomTwinUpdatePayload(),
-                new UpdateDigitalTwinRequestOptions(),
+                null,
                 Context.NONE);
 
             assertEquals(updateTwinResponse.getStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
