@@ -14,7 +14,6 @@ public final class OpinionSentiment {
     private final TextSentiment sentiment;
     private final SentimentConfidenceScores confidenceScores;
     private final boolean isNegated;
-    private final int length;
     private final int offset;
 
     /**
@@ -24,16 +23,14 @@ public final class OpinionSentiment {
      * @param sentiment The text sentiment label: POSITIVE, NEGATIVE, MIXED. {@link TextSentiment} has
      * {@code neutral} sentiment type additionally, but opinion sentiment can only be positive, negative, or mixed.
      * @param offset The offset of opinion text.
-     * @param length The length of opinion text.
      * @param isNegated The boolean indicator to show if the opinion text negated or not.
      * @param confidenceScores The {@link SentimentConfidenceScores}.
      */
-    public OpinionSentiment(String text, TextSentiment sentiment, int offset, int length,
+    public OpinionSentiment(String text, TextSentiment sentiment, int offset,
         boolean isNegated, SentimentConfidenceScores confidenceScores) {
         this.text = text;
         this.sentiment = sentiment;
         this.offset = offset;
-        this.length = length;
         this.isNegated = isNegated;
         this.confidenceScores = confidenceScores;
     }
@@ -64,15 +61,6 @@ public final class OpinionSentiment {
      */
     public int getOffset() {
         return offset;
-    }
-
-    /**
-     * Get the length of opinion text.
-     *
-     * @return The length of opinion text.
-     */
-    public int getLength() {
-        return length;
     }
 
     /**

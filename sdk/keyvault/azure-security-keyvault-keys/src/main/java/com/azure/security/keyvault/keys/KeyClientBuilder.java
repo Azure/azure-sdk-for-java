@@ -6,8 +6,11 @@ package com.azure.security.keyvault.keys;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -15,10 +18,13 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
+import com.azure.security.keyvault.keys.models.KeyVaultKeyIdentifier;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -73,6 +79,7 @@ public final class KeyClientBuilder {
     private RetryPolicy retryPolicy;
     private Configuration configuration;
     private KeyServiceVersion version;
+    private ClientOptions clientOptions;
 
     /**
      * The constructor with defaults.
@@ -143,12 +150,22 @@ public final class KeyClientBuilder {
 
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
-            buildConfiguration));
+        String applicationId =
+            clientOptions == null ? httpLogOptions.getApplicationId() : clientOptions.getApplicationId();
+
+        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy);
         policies.add(new KeyVaultCredentialPolicy(credential));
         policies.addAll(this.policies);
+
+        if (clientOptions != null) {
+            List<HttpHeader> httpHeaderList = new ArrayList<>();
+            clientOptions.getHeaders().forEach(header ->
+                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+        }
+
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
@@ -163,7 +180,9 @@ public final class KeyClientBuilder {
     /**
      * Sets the vault url to send HTTP requests to.
      *
-     * @param vaultUrl The vault url is used as destination on Azure to send requests to.
+     * @param vaultUrl The vault url is used as destination on Azure to send requests to. If you have a key identifier,
+     * use {@link KeyVaultKeyIdentifier#parse(String)} to parse it and obtain the {@code vaultUrl} and other
+     * information.
      * @return the updated ServiceClientBuilder object.
      * @throws IllegalArgumentException if {@code vaultUrl} is null or it cannot be parsed into a valid URL.
      */
@@ -286,6 +305,21 @@ public final class KeyClientBuilder {
     public KeyClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         Objects.requireNonNull(retryPolicy, "The retry policy cannot be bull");
         this.retryPolicy = retryPolicy;
+        return this;
+    }
+
+    /**
+     * Sets the {@link ClientOptions} which enables various options to be set on the client. For example setting an
+     * {@code applicationId} using {@link ClientOptions#setApplicationId(String)} to configure
+     * the {@link UserAgentPolicy} for telemetry/monitoring purposes.
+     *
+     * <p>More About <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>
+     *
+     * @param clientOptions the {@link ClientOptions} to be set on the client.
+     * @return The updated KeyClientBuilder object.
+     */
+    public KeyClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
         return this;
     }
 

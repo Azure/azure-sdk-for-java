@@ -50,7 +50,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
             .buildAsyncClient());
 
         if (interceptorManager.isPlaybackMode()) {
-            when(client.getPollDuration()).thenReturn(Duration.ofMillis(10));
+            when(client.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
         }
     }
 

@@ -35,29 +35,20 @@ public final class PiiEntity {
      */
     private final int offset;
 
-    /*
-     * The length for the entity text.
-     */
-    private final int length;
-
     /**
      * Creates a {@link PiiEntity} model that describes entity.
-     *
      * @param text The entity text as appears in the request.
      * @param category The entity category, such as Person/Location/Org/SSN etc.
      * @param subcategory The entity subcategory, such as Medical/Stock exchange/Sports etc.
      * @param confidenceScore A confidence score between 0 and 1 of the recognized entity.
      * @param offset The start position for the entity text
-     * @param length The length for the entity text
      */
-    public PiiEntity(String text, EntityCategory category, String subcategory, double confidenceScore, int offset,
-        int length) {
+    public PiiEntity(String text, EntityCategory category, String subcategory, double confidenceScore, int offset) {
         this.text = text;
         this.category = category;
         this.subcategory = subcategory;
         this.confidenceScore = confidenceScore;
         this.offset = offset;
-        this.length = length;
     }
 
     /**
@@ -103,14 +94,5 @@ public final class PiiEntity {
      */
     public int getOffset() {
         return this.offset;
-    }
-
-    /**
-     * Get the length property: the length for the entity text.
-     *
-     * @return The {@code length} value.
-     */
-    public int getLength() {
-        return this.length;
     }
 }

@@ -26,6 +26,9 @@ import com.azure.core.util.Context;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
 import com.azure.digitaltwins.core.implementation.models.EventRoute;
 import com.azure.digitaltwins.core.implementation.models.EventRouteCollection;
+import com.azure.digitaltwins.core.implementation.models.EventRoutesAddOptions;
+import com.azure.digitaltwins.core.implementation.models.EventRoutesDeleteOptions;
+import com.azure.digitaltwins.core.implementation.models.EventRoutesGetByIdOptions;
 import com.azure.digitaltwins.core.implementation.models.EventRoutesListOptions;
 import reactor.core.publisher.Mono;
 
@@ -60,7 +63,9 @@ public final class EventRoutesImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<EventRouteCollection>> list(
                 @HostParam("$host") String host,
-                @HeaderParam("x-ms-max-item-count") Integer maxItemCount,
+                @HeaderParam("traceparent") String traceparent,
+                @HeaderParam("tracestate") String tracestate,
+                @HeaderParam("max-items-per-page") Integer maxItemsPerPage,
                 @QueryParam("api-version") String apiVersion,
                 Context context);
 
@@ -69,6 +74,8 @@ public final class EventRoutesImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<EventRoute>> getById(
                 @HostParam("$host") String host,
+                @HeaderParam("traceparent") String traceparent,
+                @HeaderParam("tracestate") String tracestate,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
                 Context context);
@@ -78,6 +85,8 @@ public final class EventRoutesImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> add(
                 @HostParam("$host") String host,
+                @HeaderParam("traceparent") String traceparent,
+                @HeaderParam("tracestate") String tracestate,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") EventRoute eventRoute,
@@ -88,6 +97,8 @@ public final class EventRoutesImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> delete(
                 @HostParam("$host") String host,
+                @HeaderParam("traceparent") String traceparent,
+                @HeaderParam("tracestate") String tracestate,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
                 Context context);
@@ -96,11 +107,16 @@ public final class EventRoutesImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<EventRouteCollection>> listNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("$host") String host,
+                @HeaderParam("traceparent") String traceparent,
+                @HeaderParam("tracestate") String tracestate,
+                @HeaderParam("max-items-per-page") Integer maxItemsPerPage,
+                Context context);
     }
 
     /**
-     * Retrieves all event routes. Status codes: 200 (OK): Success. 400 (Bad Request): The request is invalid.
+     * Retrieves all event routes. Status codes: * 200 OK.
      *
      * @param eventRoutesListOptions Parameter group.
      * @param context The context to associate with this operation.
@@ -119,12 +135,28 @@ public final class EventRoutesImpl {
         if (eventRoutesListOptions != null) {
             eventRoutesListOptions.validate();
         }
-        Integer maxItemCountInternal = null;
+        String traceparentInternal = null;
         if (eventRoutesListOptions != null) {
-            maxItemCountInternal = eventRoutesListOptions.getMaxItemCount();
+            traceparentInternal = eventRoutesListOptions.getTraceparent();
         }
-        Integer maxItemCount = maxItemCountInternal;
-        return service.list(this.client.getHost(), maxItemCount, this.client.getApiVersion(), context)
+        String traceparent = traceparentInternal;
+        String tracestateInternal = null;
+        if (eventRoutesListOptions != null) {
+            tracestateInternal = eventRoutesListOptions.getTracestate();
+        }
+        String tracestate = tracestateInternal;
+        Integer maxItemsPerPageInternal = null;
+        if (eventRoutesListOptions != null) {
+            maxItemsPerPageInternal = eventRoutesListOptions.getMaxItemsPerPage();
+        }
+        Integer maxItemsPerPage = maxItemsPerPageInternal;
+        return service.list(
+                        this.client.getHost(),
+                        traceparent,
+                        tracestate,
+                        maxItemsPerPage,
+                        this.client.getApiVersion(),
+                        context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -137,10 +169,11 @@ public final class EventRoutesImpl {
     }
 
     /**
-     * Retrieves an event route. Status codes: 200 (OK): Success. 404 (Not Found): There is no event route with the
-     * provided id.
+     * Retrieves an event route. Status codes: * 200 OK * 404 Not Found * EventRouteNotFound - The event route was not
+     * found.
      *
      * @param id The id for an event route. The id is unique within event routes and case sensitive.
+     * @param eventRoutesGetByIdOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -148,7 +181,8 @@ public final class EventRoutesImpl {
      * @return a route which directs notification and telemetry events to an endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<EventRoute>> getByIdWithResponseAsync(String id, Context context) {
+    public Mono<Response<EventRoute>> getByIdWithResponseAsync(
+            String id, EventRoutesGetByIdOptions eventRoutesGetByIdOptions, Context context) {
         if (this.client.getHost() == null) {
             return Mono.error(
                     new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -156,15 +190,33 @@ public final class EventRoutesImpl {
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
-        return service.getById(this.client.getHost(), id, this.client.getApiVersion(), context);
+        if (eventRoutesGetByIdOptions != null) {
+            eventRoutesGetByIdOptions.validate();
+        }
+        String traceparentInternal = null;
+        if (eventRoutesGetByIdOptions != null) {
+            traceparentInternal = eventRoutesGetByIdOptions.getTraceparent();
+        }
+        String traceparent = traceparentInternal;
+        String tracestateInternal = null;
+        if (eventRoutesGetByIdOptions != null) {
+            tracestateInternal = eventRoutesGetByIdOptions.getTracestate();
+        }
+        String tracestate = tracestateInternal;
+        return service.getById(
+                this.client.getHost(), traceparent, tracestate, id, this.client.getApiVersion(), context);
     }
 
     /**
-     * Adds or replaces an event route. Status codes: 200 (OK): Success. 400 (Bad Request): The request is invalid.
+     * Adds or replaces an event route. Status codes: * 204 No Content * 400 Bad Request * EventRouteEndpointInvalid -
+     * The endpoint provided does not exist or is not active. * EventRouteFilterInvalid - The event route filter is
+     * invalid. * EventRouteIdInvalid - The event route id is invalid. * LimitExceeded - The maximum number of event
+     * routes allowed has been reached.
      *
      * @param id The id for an event route. The id is unique within event routes and case sensitive.
      * @param eventRoute A route which directs notification and telemetry events to an endpoint. Endpoints are a
      *     destination outside of Azure Digital Twins such as an EventHub.
+     * @param eventRoutesAddOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -172,25 +224,41 @@ public final class EventRoutesImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addWithResponseAsync(String id, EventRoute eventRoute, Context context) {
+    public Mono<Response<Void>> addWithResponseAsync(
+            String id, EventRoute eventRoute, EventRoutesAddOptions eventRoutesAddOptions, Context context) {
         if (this.client.getHost() == null) {
             return Mono.error(
                     new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
+        if (eventRoutesAddOptions != null) {
+            eventRoutesAddOptions.validate();
         }
         if (eventRoute != null) {
             eventRoute.validate();
         }
-        return service.add(this.client.getHost(), id, this.client.getApiVersion(), eventRoute, context);
+        String traceparentInternal = null;
+        if (eventRoutesAddOptions != null) {
+            traceparentInternal = eventRoutesAddOptions.getTraceparent();
+        }
+        String traceparent = traceparentInternal;
+        String tracestateInternal = null;
+        if (eventRoutesAddOptions != null) {
+            tracestateInternal = eventRoutesAddOptions.getTracestate();
+        }
+        String tracestate = tracestateInternal;
+        return service.add(
+                this.client.getHost(), traceparent, tracestate, id, this.client.getApiVersion(), eventRoute, context);
     }
 
     /**
-     * Deletes an event route. Status codes: 200 (OK): Success. 404 (Not Found): There is no event route with the
-     * provided id.
+     * Deletes an event route. Status codes: * 204 No Content * 404 Not Found * EventRouteNotFound - The event route was
+     * not found.
      *
      * @param id The id for an event route. The id is unique within event routes and case sensitive.
+     * @param eventRoutesDeleteOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -198,7 +266,8 @@ public final class EventRoutesImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String id, Context context) {
+    public Mono<Response<Void>> deleteWithResponseAsync(
+            String id, EventRoutesDeleteOptions eventRoutesDeleteOptions, Context context) {
         if (this.client.getHost() == null) {
             return Mono.error(
                     new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -206,13 +275,27 @@ public final class EventRoutesImpl {
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
-        return service.delete(this.client.getHost(), id, this.client.getApiVersion(), context);
+        if (eventRoutesDeleteOptions != null) {
+            eventRoutesDeleteOptions.validate();
+        }
+        String traceparentInternal = null;
+        if (eventRoutesDeleteOptions != null) {
+            traceparentInternal = eventRoutesDeleteOptions.getTraceparent();
+        }
+        String traceparent = traceparentInternal;
+        String tracestateInternal = null;
+        if (eventRoutesDeleteOptions != null) {
+            tracestateInternal = eventRoutesDeleteOptions.getTracestate();
+        }
+        String tracestate = tracestateInternal;
+        return service.delete(this.client.getHost(), traceparent, tracestate, id, this.client.getApiVersion(), context);
     }
 
     /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param eventRoutesListOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -220,11 +303,34 @@ public final class EventRoutesImpl {
      * @return a collection of EventRoute objects.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<EventRoute>> listNextSinglePageAsync(String nextLink, Context context) {
+    public Mono<PagedResponse<EventRoute>> listNextSinglePageAsync(
+            String nextLink, EventRoutesListOptions eventRoutesListOptions, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
-        return service.listNext(nextLink, context)
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (eventRoutesListOptions != null) {
+            eventRoutesListOptions.validate();
+        }
+        String traceparentInternal = null;
+        if (eventRoutesListOptions != null) {
+            traceparentInternal = eventRoutesListOptions.getTraceparent();
+        }
+        String traceparent = traceparentInternal;
+        String tracestateInternal = null;
+        if (eventRoutesListOptions != null) {
+            tracestateInternal = eventRoutesListOptions.getTracestate();
+        }
+        String tracestate = tracestateInternal;
+        Integer maxItemsPerPageInternal = null;
+        if (eventRoutesListOptions != null) {
+            maxItemsPerPageInternal = eventRoutesListOptions.getMaxItemsPerPage();
+        }
+        Integer maxItemsPerPage = maxItemsPerPageInternal;
+        return service.listNext(nextLink, this.client.getHost(), traceparent, tracestate, maxItemsPerPage, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

@@ -18,7 +18,7 @@ For the best development experience, developers should use the official Microsof
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-digitaltwins-core</artifactId>
-  <version>1.0.0-beta.1</version>
+  <version>1.0.0-beta.3</version>
 </dependency>
 ```
 
@@ -59,11 +59,14 @@ You can familiarize yourself with different APIs using [samples for Digital Twin
 - The Digital Twins public sync and async clients [`DigitalTwinsClient`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/digitaltwins/azure-digitaltwins-core/src/main/java/com/azure/digitaltwins/core/DigitalTwinsClient.java), [`DigitalTwinsAsyncClient`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/digitaltwins/azure-digitaltwins-core/src/main/java/com/azure/digitaltwins/core/DigitalTwinsAsyncClient.java)
 - [`models` package](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/digitaltwins/azure-digitaltwins-core/src/main/java/com/azure/digitaltwins/core/models)
 
-### /src/swagger
+Portions of the client library are generated through Autorest, and the swagger file used is defined in the Autorest config file.
 
-A local copy of the swagger file that defines the structure of the REST APIs supported by the Azure Digital Twins service.
+To regenerate the code, run the Powershell script [generate.ps1](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/digitaltwins/azure-digitaltwins-core/generate.ps1).
 
-To regenerate the code, run the powershell script [generate.ps1](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/digitaltwins/azure-digitaltwins-core/generate.ps1).
+### /src/samples
+
+This directory contains sample code that demonstrates basic usage of this client library. For additional information, 
+see the [sample readme](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/digitaltwins/azure-digitaltwins-core/src/samples/README.md)
 
 ## Troubleshooting
 

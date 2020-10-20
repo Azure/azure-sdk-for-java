@@ -48,6 +48,12 @@ public final class ShareServiceProperties {
     @JsonProperty(value = "Cors")
     private CorsWrapper cors;
 
+    /*
+     * Protocol settings
+     */
+    @JsonProperty(value = "ProtocolSettings")
+    private ShareProtocolSettings protocol;
+
     /**
      * Get the hourMetrics property: A summary of request statistics grouped by
      * API in hourly aggregates for files.
@@ -112,6 +118,26 @@ public final class ShareServiceProperties {
      */
     public ShareServiceProperties setCors(List<ShareCorsRule> cors) {
         this.cors = new CorsWrapper(cors);
+        return this;
+    }
+
+    /**
+     * Get the protocol property: Protocol settings.
+     *
+     * @return the protocol value.
+     */
+    public ShareProtocolSettings getProtocol() {
+        return this.protocol;
+    }
+
+    /**
+     * Set the protocol property: Protocol settings.
+     *
+     * @param protocol the protocol value to set.
+     * @return the ShareServiceProperties object itself.
+     */
+    public ShareServiceProperties setProtocol(ShareProtocolSettings protocol) {
+        this.protocol = protocol;
         return this;
     }
 }

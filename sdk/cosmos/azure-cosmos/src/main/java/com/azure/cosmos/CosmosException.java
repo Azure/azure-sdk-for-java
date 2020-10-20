@@ -59,20 +59,12 @@ public class CosmosException extends AzureException {
     private int rntbdPendingRequestQueueSize;
     private int rntbdRequestLength;
     private int rntbdResponseLength;
+    private boolean sendingRequestHasStarted;
 
     protected CosmosException(int statusCode, String message, Map<String, String> responseHeaders, Throwable cause) {
         super(message, cause);
         this.statusCode = statusCode;
         this.responseHeaders = responseHeaders == null ? new HashMap<>() : new HashMap<>(responseHeaders);
-    }
-
-    /**
-     * Creates a new instance of the CosmosException class.
-     *
-     * @param statusCode the http status code of the response.
-     */
-    CosmosException(int statusCode) {
-        this(statusCode, null, null, null);
     }
 
     /**
@@ -122,6 +114,26 @@ public class CosmosException extends AzureException {
                               CosmosError cosmosErrorResource,
                               Map<String, String> responseHeaders) {
         this(statusCode, cosmosErrorResource == null ? null : cosmosErrorResource.getMessage(), responseHeaders, null);
+        this.resourceAddress = resourceAddress;
+        this.cosmosError = cosmosErrorResource;
+    }
+
+    /**
+     * Creates a new instance of the CosmosException class.
+     *
+     * @param resourceAddress the address of the resource the request is associated with.
+     * @param statusCode the http status code of the response.
+     * @param cosmosErrorResource the error resource object.
+     * @param responseHeaders the response headers.
+     * @param cause the inner exception
+     */
+
+    protected CosmosException(String resourceAddress,
+                              int statusCode,
+                              CosmosError cosmosErrorResource,
+                              Map<String, String> responseHeaders,
+                              Throwable cause) {
+        this(statusCode, cosmosErrorResource == null ? null : cosmosErrorResource.getMessage(), responseHeaders, cause);
         this.resourceAddress = resourceAddress;
         this.cosmosError = cosmosErrorResource;
     }
@@ -347,6 +359,14 @@ public class CosmosException extends AzureException {
 
     int getRequestPayloadLength() {
         return this.requestPayloadLength;
+    }
+
+    boolean hasSendingRequestStarted() {
+        return this.sendingRequestHasStarted;
+    }
+
+    void setSendingRequestHasStarted(boolean hasSendingRequestStarted) {
+        this.sendingRequestHasStarted = hasSendingRequestStarted;
     }
 
     int getRntbdChannelTaskQueueSize() {

@@ -4,8 +4,8 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
+import com.azure.digitaltwins.core.models.ListModelsOptions;
 import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
-import com.azure.digitaltwins.core.models.ModelsListOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -77,7 +77,7 @@ public class ModelsTest extends ModelsTestBase {
     @Override
     public void getModelThrowsIfModelDoesNotExist(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
-        final String nonExistentModelId = "urn:doesnotexist:fakemodel:1000";
+        final String nonExistentModelId = "dtmi:doesnotexist:fakemodel;1000";
         getModelRunner(nonExistentModelId, (modelId) -> assertRestException(() -> client.getModel(modelId), HttpURLConnection.HTTP_NOT_FOUND));
     }
 
@@ -120,7 +120,7 @@ public class ModelsTest extends ModelsTestBase {
         AtomicInteger pageCount = new AtomicInteger();
 
         // List models in multiple pages
-        client.listModels(new ModelsListOptions().setMaxItemCount(2), Context.NONE)
+        client.listModels(new ListModelsOptions().setMaxItemsPerPage(2), Context.NONE)
             .iterableByPage()
             .forEach(digitalTwinsModelDataPagedResponse -> {
                 pageCount.getAndIncrement();

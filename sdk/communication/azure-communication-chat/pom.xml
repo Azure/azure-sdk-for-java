@@ -14,10 +14,14 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-chat</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-chat;current} -->
+  <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-communication-chat;current} -->
 
   <name>Microsoft Azure client library for chat application</name>
-  <description>This package contains a Java SDK for Chat Azure Communication Services.</description>
+  <description>
+    This package contains a Java SDK for Chat Azure Communication Service. 
+    For this release, see notes - https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-chat/README.md and https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-chat/CHANGELOG.md. 
+    Microsoft Azure Communication Chat quickstart - https://docs.microsoft.com/azure/communication-services/quickstarts/chat/get-started?pivots=programming-language-java
+  </description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>
@@ -35,28 +39,28 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.8.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.9.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
+      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-administration</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-administration;current} -->
+      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-communication-administration;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.6.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.6.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.4.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.5.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

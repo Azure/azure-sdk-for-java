@@ -10,7 +10,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.search.documents.indexes.models.IndexingParametersConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The IndexingParameters model. */
+/** Represents parameters for indexer execution. */
 @Fluent
 public final class IndexingParameters {
     /*

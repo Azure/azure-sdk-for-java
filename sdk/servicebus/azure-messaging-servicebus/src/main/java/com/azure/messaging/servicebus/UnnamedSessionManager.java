@@ -28,7 +28,6 @@ import reactor.util.retry.Retry;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
@@ -167,12 +166,12 @@ class UnnamedSessionManager implements AutoCloseable {
                 final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
                 final String associatedLinkName = receiver != null ? receiver.getLinkName() : null;
 
-                return channel.renewSessionLock(sessionId, associatedLinkName).handle((instant, sink) -> {
+                return channel.renewSessionLock(sessionId, associatedLinkName).handle((offsetDateTime, sink) -> {
                     if (receiver != null) {
-                        receiver.setSessionLockedUntil(instant.atOffset(ZoneOffset.UTC));
+                        receiver.setSessionLockedUntil(offsetDateTime);
                     }
 
-                    sink.next(instant.atOffset(ZoneOffset.UTC));
+                    sink.next(offsetDateTime);
                 });
             }));
     }

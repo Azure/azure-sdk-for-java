@@ -1,7 +1,11 @@
 ## Release History
 
-## 3.0.0-beta.3 (Unreleased)
+## 3.1.0-beta.1 (Unreleased)
 
+
+### 3.0.0 (2020-09-30)
+#### New features
+* Updated azure-cosmos dependency to `4.6.0`
 
 ## 3.0.0-beta.2 (2020-09-17)
 #### New features

@@ -21,7 +21,7 @@ public class AcsChatThreadEventBaseProperties extends AcsChatEventBaseProperties
      * The version of the thread
      */
     @JsonProperty(value = "version")
-    private Integer version;
+    private Long version;
 
     /**
      * Get the createTime property: The original creation time of the thread.
@@ -48,7 +48,7 @@ public class AcsChatThreadEventBaseProperties extends AcsChatEventBaseProperties
      *
      * @return the version value.
      */
-    public Integer getVersion() {
+    public Long getVersion() {
         return this.version;
     }
 
@@ -58,7 +58,7 @@ public class AcsChatThreadEventBaseProperties extends AcsChatEventBaseProperties
      * @param version the version value to set.
      * @return the AcsChatThreadEventBaseProperties object itself.
      */
-    public AcsChatThreadEventBaseProperties setVersion(Integer version) {
+    public AcsChatThreadEventBaseProperties setVersion(Long version) {
         this.version = version;
         return this;
     }

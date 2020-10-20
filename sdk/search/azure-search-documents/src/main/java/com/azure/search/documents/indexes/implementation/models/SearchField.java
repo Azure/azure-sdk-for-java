@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SearchField model. */
+/** Represents a field in an index definition, which describes the name, data type, and search behavior of a field. */
 @Fluent
 public final class SearchField {
     /*

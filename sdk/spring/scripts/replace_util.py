@@ -18,10 +18,17 @@ ARTIFACT_ID_PAIRS = 'artifact_id_pairs'
 VERSION_UPDATE_ITEMS = 'version_update_items'
 
 config = {
+    'appconfiguration': {
+        'sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config/pom.xml': {
+            VERSION_UPDATE_ITEMS: (
+                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.9.RELEASE'),
+            )
+        }
+    },
     'cosmos': {
         'sdk/cosmos/azure-spring-data-cosmos-test/pom.xml': {
             VERSION_UPDATE_ITEMS: (
-                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.9.RELEASE'),
+                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.10.RELEASE'),
             )
         }
     },
@@ -55,6 +62,16 @@ config = {
             VERSION_UPDATE_ITEMS: (
                 VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.9.RELEASE'),
             )
+        },
+        'sdk/spring/azure-spring-cloud-test-eventhubs/pom.xml': {
+            VERSION_UPDATE_ITEMS: (
+                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.9.RELEASE'),
+            )
+        },
+        'sdk/spring/azure-spring-cloud-test-storage/pom.xml': {
+            VERSION_UPDATE_ITEMS: (
+                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.9.RELEASE'),
+            )
         }
     }
 }
@@ -83,7 +100,7 @@ def get_args():
     parser.add_argument(
         '--module',
         type = str,
-        choices = ['spring', 'cosmos'],
+        choices = ['spring', 'cosmos', 'appconfiguration'],
         required = False,
         default = 'cosmos',
         help = 'Specify the target module.'

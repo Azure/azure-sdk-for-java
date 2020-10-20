@@ -10,7 +10,6 @@ final class Utility {
     private final static Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
     public static void traceInformation(String payload) {
-        System.out.println(payload);
         LOGGER.info(payload);
     }
 }

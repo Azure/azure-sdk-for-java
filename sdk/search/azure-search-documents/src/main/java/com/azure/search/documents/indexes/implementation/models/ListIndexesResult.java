@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ListIndexesResult model. */
+/** Response from a List Indexes request. If successful, it includes the full definitions of all indexes. */
 @Immutable
 public final class ListIndexesResult {
     /*

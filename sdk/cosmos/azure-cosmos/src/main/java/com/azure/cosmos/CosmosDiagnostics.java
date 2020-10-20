@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -23,8 +24,8 @@ public final class CosmosDiagnostics {
 
     static final String USER_AGENT = Utils.getUserAgent();
 
-    CosmosDiagnostics() {
-        this.clientSideRequestStatistics = new ClientSideRequestStatistics();
+    CosmosDiagnostics(DiagnosticsClientContext diagnosticsClientContext) {
+        this.clientSideRequestStatistics = new ClientSideRequestStatistics(diagnosticsClientContext);
     }
 
     CosmosDiagnostics(FeedResponseDiagnostics feedResponseDiagnostics) {

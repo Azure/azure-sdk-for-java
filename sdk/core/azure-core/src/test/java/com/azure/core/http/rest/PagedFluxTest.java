@@ -3,34 +3,35 @@
 
 package com.azure.core.http.rest;
 
-import static com.azure.core.util.FluxUtil.withContext;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
-import java.util.Collections;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import reactor.util.context.Context;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import reactor.util.context.Context;
+
+import static com.azure.core.util.FluxUtil.withContext;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Unit tests for {@link PagedFlux}
  */
 public class PagedFluxTest {
+    private static final int DEFAULT_PAGE_COUNT = 4;
 
     private List<PagedResponse<Integer>> pagedResponses;
     private List<PagedResponse<String>> pagedStringResponses;
@@ -284,7 +285,12 @@ public class PagedFluxTest {
             return Mono.empty();
         }
 
-        return Mono.just(pagedResponses.get(Integer.valueOf(continuationToken)));
+        int parsedToken = Integer.parseInt(continuationToken);
+        if (parsedToken >= pagedResponses.size()) {
+            return Mono.empty();
+        }
+
+        return Mono.just(pagedResponses.get(parsedToken));
     }
 
     private List<Integer> getItems(Integer i) {
@@ -292,7 +298,36 @@ public class PagedFluxTest {
     }
 
     private List<String> getStringItems(Integer i) {
-        return IntStream.range(i * 3, i * 3 + 3).boxed().map(val -> String.valueOf(val)).collect(Collectors.toList());
+        return IntStream.range(i * 3, i * 3 + 3).boxed().map(String::valueOf).collect(Collectors.toList());
     }
 
+    @Test
+    public void fluxByItemOnlyRetrievesOnePage() throws InterruptedException {
+        OnlyOnePageRetriever pageRetriever = new OnlyOnePageRetriever(DEFAULT_PAGE_COUNT);
+        OnlyOnePagedFlux pagedFlux = new OnlyOnePagedFlux(() -> pageRetriever);
+
+        pagedFlux.ignoreElements().block();
+        assertEquals(DEFAULT_PAGE_COUNT, pageRetriever.getGetCount());
+
+        pagedFlux.blockFirst();
+
+        Thread.sleep(2000);
+
+        assertEquals(1, pageRetriever.getGetCount() - DEFAULT_PAGE_COUNT);
+    }
+
+    @Test
+    public void fluxByPageOnlyRetrievesOnePage() throws InterruptedException {
+        OnlyOnePageRetriever pageRetriever = new OnlyOnePageRetriever(DEFAULT_PAGE_COUNT);
+        OnlyOnePagedFlux pagedFlux = new OnlyOnePagedFlux(() -> pageRetriever);
+
+        pagedFlux.byPage().ignoreElements().block();
+        assertEquals(DEFAULT_PAGE_COUNT, pageRetriever.getGetCount());
+
+        pagedFlux.byPage().blockFirst();
+
+        Thread.sleep(2000);
+
+        assertEquals(1, pageRetriever.getGetCount() - DEFAULT_PAGE_COUNT);
+    }
 }

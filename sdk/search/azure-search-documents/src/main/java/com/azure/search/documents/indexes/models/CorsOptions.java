@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CorsOptions model. */
+/** Defines options to control Cross-Origin Resource Sharing (CORS) for an index. */
 @Fluent
 public final class CorsOptions {
     /*

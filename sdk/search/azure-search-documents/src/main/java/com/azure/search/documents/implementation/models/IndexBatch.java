@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The IndexBatch model. */
+/** Contains a batch of document write actions to send to the index. */
 @Fluent
 public final class IndexBatch {
     /*

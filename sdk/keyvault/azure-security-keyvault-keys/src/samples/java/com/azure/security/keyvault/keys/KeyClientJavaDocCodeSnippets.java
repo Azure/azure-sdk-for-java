@@ -21,6 +21,7 @@ import com.azure.security.keyvault.keys.models.ImportKeyOptions;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /**
@@ -116,13 +117,29 @@ public final class KeyClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates a code sample for using {@link KeyClient#beginDeleteKey(String)}
-     * @throws InterruptedException when the thread is interrupted in sleep mode.
+     * Generates a code sample for using {@link KeyClient#beginDeleteKey(String)} and
+     * {@link KeyClient#beginDeleteKey(String, Duration)}.
      */
-    public void deleteKeySnippets() throws InterruptedException {
+    public void deleteKeySnippets() {
         KeyClient keyClient = createClient();
-        // BEGIN: com.azure.keyvault.keys.keyclient.deleteKey#string
-        SyncPoller<DeletedKey, Void> deletedKeyPoller = keyClient.beginDeleteKey("keyName");
+        // BEGIN: com.azure.keyvault.keys.keyclient.deleteKey#String
+        SyncPoller<DeletedKey, Void> deleteKeyPoller = keyClient.beginDeleteKey("keyName");
+
+        PollResponse<DeletedKey> deleteKeyPollResponse = deleteKeyPoller.poll();
+
+        // Deleted date only works for SoftDelete Enabled Key Vault.
+        DeletedKey key = deleteKeyPollResponse.getValue();
+        System.out.println("Deleted Date  %s" + key.getDeletedOn().toString());
+        System.out.printf("Deleted Key's Recovery Id %s", key.getRecoveryId());
+
+        // Key is being deleted on server.
+        deleteKeyPoller.waitForCompletion();
+        // Key is deleted
+        // END: com.azure.keyvault.keys.keyclient.deleteKey#String
+
+
+        // BEGIN: com.azure.keyvault.keys.keyclient.deleteKey#String-Duration
+        SyncPoller<DeletedKey, Void> deletedKeyPoller = keyClient.beginDeleteKey("keyName", Duration.ofSeconds(1));
 
         PollResponse<DeletedKey> deletedKeyPollResponse = deletedKeyPoller.poll();
 
@@ -134,7 +151,7 @@ public final class KeyClientJavaDocCodeSnippets {
         // Key is being deleted on server.
         deletedKeyPoller.waitForCompletion();
         // Key is deleted
-        // END: com.azure.keyvault.keys.keyclient.deleteKey#string
+        // END: com.azure.keyvault.keys.keyclient.deleteKey#String-Duration
     }
 
     /**
@@ -279,12 +296,12 @@ public final class KeyClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates a code sample for using {@link KeyClient#beginRecoverDeletedKey(String)}
-     * @throws InterruptedException when the thread is interrupted in sleep mode.
+     * Generates a code sample for using {@link KeyClient#beginRecoverDeletedKey(String)} and
+     * {@link KeyClient#beginRecoverDeletedKey(String, Duration)}.
      */
-    public void recoverDeletedKeySnippets() throws InterruptedException {
+    public void recoverDeletedKeySnippets() {
         KeyClient keyClient = createClient();
-        // BEGIN: com.azure.keyvault.keys.keyclient.recoverDeletedKey#string
+        // BEGIN: com.azure.keyvault.keys.keyclient.recoverDeletedKey#String
         SyncPoller<KeyVaultKey, Void> recoverKeyPoller = keyClient.beginRecoverDeletedKey("deletedKeyName");
 
         PollResponse<KeyVaultKey> recoverKeyPollResponse = recoverKeyPoller.poll();
@@ -296,7 +313,22 @@ public final class KeyClientJavaDocCodeSnippets {
         // Key is being recovered on server.
         recoverKeyPoller.waitForCompletion();
         // Key is recovered
-        // END: com.azure.keyvault.keys.keyclient.recoverDeletedKey#string
+        // END: com.azure.keyvault.keys.keyclient.recoverDeletedKey#String
+
+        // BEGIN: com.azure.keyvault.keys.keyclient.recoverDeletedKey#String-Duration
+        SyncPoller<KeyVaultKey, Void> recoverDeletedKeyPoller = keyClient.beginRecoverDeletedKey("deletedKeyName",
+            Duration.ofSeconds(1));
+
+        PollResponse<KeyVaultKey> recoverDeletedKeyPollResponse = recoverDeletedKeyPoller.poll();
+
+        KeyVaultKey recoveredDeletedKey = recoverDeletedKeyPollResponse.getValue();
+        System.out.println("Recovered Key Name %s" + recoveredDeletedKey.getName());
+        System.out.printf("Recovered Key's Id %s", recoveredDeletedKey.getId());
+
+        // Key is being recovered on server.
+        recoverDeletedKeyPoller.waitForCompletion();
+        // Key is recovered
+        // END: com.azure.keyvault.keys.keyclient.recoverDeletedKey#String-Duration
     }
 
     /**

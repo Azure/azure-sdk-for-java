@@ -3,8 +3,8 @@ package com.azure.digitaltwins.core;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
+import com.azure.digitaltwins.core.models.ListModelsOptions;
 import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
-import com.azure.digitaltwins.core.models.ModelsListOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -45,7 +45,7 @@ public class ModelsAsyncTest extends ModelsTestBase {
         for (final DigitalTwinsModelData expected : createdModels) {
             // Get the model
             getModelRunner(expected.getId(), (modelId) -> {
-                StepVerifier.create(asyncClient.getModelWithResponse(modelId))
+                StepVerifier.create(asyncClient.getModelWithResponse(modelId, null))
                     .assertNext(retrievedModel -> assertModelDataAreEqual(expected, retrievedModel.getValue(), false))
                     .verifyComplete();
                 logger.info("Model {} matched expectations", modelId);
@@ -80,7 +80,7 @@ public class ModelsAsyncTest extends ModelsTestBase {
     @Override
     public void getModelThrowsIfModelDoesNotExist(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
-        final String nonExistentModelId = "urn:doesnotexist:fakemodel:1000";
+        final String nonExistentModelId = "dtmi:doesnotexist:fakemodel;1000";
         StepVerifier.create(asyncClient.getModel(nonExistentModelId))
             .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_NOT_FOUND));
     }
@@ -124,7 +124,7 @@ public class ModelsAsyncTest extends ModelsTestBase {
         AtomicInteger pageCount = new AtomicInteger();
 
         // List models in multiple pages and verify more than one page was viewed.
-        StepVerifier.create(asyncClient.listModels(new ModelsListOptions().setMaxItemCount(2)).byPage())
+        StepVerifier.create(asyncClient.listModels(new ListModelsOptions().setMaxItemsPerPage(2)).byPage())
             .thenConsumeWhile(
                 page -> {
                     pageCount.getAndIncrement();

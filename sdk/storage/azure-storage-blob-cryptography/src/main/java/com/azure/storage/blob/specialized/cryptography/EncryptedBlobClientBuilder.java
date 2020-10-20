@@ -10,6 +10,7 @@ import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -95,7 +96,8 @@ public final class EncryptedBlobClientBuilder {
     private SasTokenCredential sasTokenCredential;
 
     private HttpClient httpClient;
-    private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
     private HttpLogOptions logOptions;
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
     private HttpPipeline httpPipeline;
@@ -194,6 +196,7 @@ public final class EncryptedBlobClientBuilder {
             userAgentConfiguration));
         policies.add(new RequestIdPolicy());
 
+        policies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(new RequestRetryPolicy(retryOptions));
 
@@ -208,7 +211,7 @@ public final class EncryptedBlobClientBuilder {
             policies.add(new SasTokenCredentialPolicy(sasTokenCredential));
         }
 
-        policies.addAll(additionalPolicies);
+        policies.addAll(perRetryPolicies);
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 
@@ -461,7 +464,12 @@ public final class EncryptedBlobClientBuilder {
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
     public EncryptedBlobClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        this.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null"));
+        Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null");
+        if (pipelinePolicy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
+            perCallPolicies.add(pipelinePolicy);
+        } else {
+            perRetryPolicies.add(pipelinePolicy);
+        }
         return this;
     }
 

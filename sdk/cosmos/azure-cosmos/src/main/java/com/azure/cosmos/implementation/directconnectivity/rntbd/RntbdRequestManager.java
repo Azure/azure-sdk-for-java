@@ -52,6 +52,7 @@ import io.netty.util.internal.ThrowableUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.net.ssl.SSLException;
 import java.net.SocketAddress;
 import java.nio.channels.ClosedChannelException;
 import java.util.Map;
@@ -391,10 +392,30 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         final SslHandler sslHandler = context.pipeline().get(SslHandler.class);
 
         if (sslHandler != null) {
-            // Netty 4.1.36.Final: SslHandler.closeOutbound must be called before closing the pipeline
-            // This ensures that all SSL engine and ByteBuf resources are released
-            // This is something that does not occur in the call to ChannelPipeline.close that follows
-            sslHandler.closeOutbound();
+
+            try {
+                // Netty 4.1.36.Final: SslHandler.closeOutbound must be called before closing the pipeline
+                // This ensures that all SSL engine and ByteBuf resources are released
+                // This is something that does not occur in the call to ChannelPipeline.close that follows
+                sslHandler.closeOutbound();
+            } catch (Exception exception) {
+
+                // Netty will throw the following exception here if the outbound SSL connection has been closed already
+                // javax.net.ssl.SSLException: SSLEngine closed already
+                // Reducing the noise level here because multiple concurrent closes can happen due to race conditions
+                // and there is no harm in this case
+                if (exception instanceof SSLException) {
+                    logger.debug(
+                        "SslException when attempting to close the outbound SSL connection: ",
+                        exception);
+                } else {
+                    logger.warn(
+                        "Exception when attempting to close the outbound SSL connection: ",
+                        exception);
+
+                    throw exception;
+                }
+            }
         }
 
         context.close(promise);
@@ -492,6 +513,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
             final RntbdRequestRecord record = (RntbdRequestRecord) message;
             this.timestamps.channelWriteAttempted();
+            record.setSendingRequestHasStarted();
 
             context.write(this.addPendingRequestRecord(context, record), promise).addListener(completed -> {
                 record.stage(RntbdRequestRecord.Stage.SENT);
@@ -671,7 +693,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             final Map<String, String> requestHeaders = record.args().serviceRequest().getHeaders();
             final String requestUri = record.args().physicalAddress().toString();
 
-            final GoneException error = new GoneException(message, cause, (Map<String, String>) null, requestUri);
+            final GoneException error = new GoneException(message, cause, null, requestUri);
             BridgeInternal.setRequestHeaders(error, requestHeaders);
 
             record.completeExceptionally(error);
@@ -799,7 +821,11 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                     break;
 
                 case StatusCodes.REQUEST_TIMEOUT:
-                    cause = new RequestTimeoutException(error, lsn, partitionKeyRangeId, responseHeaders);
+                    Exception inner = new RequestTimeoutException(error, lsn, partitionKeyRangeId, responseHeaders);
+                    String resourceAddress = requestRecord.args().physicalAddress() != null ?
+                        requestRecord.args().physicalAddress().toString() : null;
+
+                    cause = new GoneException(resourceAddress, error, lsn, partitionKeyRangeId, responseHeaders, inner);
                     break;
 
                 case StatusCodes.RETRY_WITH:

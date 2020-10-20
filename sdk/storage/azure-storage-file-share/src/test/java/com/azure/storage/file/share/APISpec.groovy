@@ -4,6 +4,11 @@
 package com.azure.storage.file.share
 
 import com.azure.core.http.HttpClient
+import com.azure.core.http.HttpHeaders
+import com.azure.core.http.HttpPipelineCallContext
+import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpPipelinePosition
+import com.azure.core.http.HttpResponse
 import com.azure.core.http.ProxyOptions
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpLogDetailLevel
@@ -18,11 +23,17 @@ import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RetryPolicyType
+import com.azure.storage.file.share.models.LeaseStateType
 import com.azure.storage.file.share.models.ListSharesOptions
+import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType
+import com.azure.storage.file.share.options.ShareAcquireLeaseOptions
+import com.azure.storage.file.share.options.ShareBreakLeaseOptions
+import com.azure.storage.file.share.options.ShareDeleteOptions
 import com.azure.storage.file.share.specialized.ShareLeaseAsyncClient
 import com.azure.storage.file.share.specialized.ShareLeaseClient
 import com.azure.storage.file.share.specialized.ShareLeaseClientBuilder
 import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 import spock.lang.Specification
 
 import java.nio.ByteBuffer
@@ -116,9 +127,14 @@ class APISpec extends Specification {
                 .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 3, 60, 1000, 1000, null))
                 .connectionString(connectionString)
                 .buildClient()
-            cleanupFileServiceClient.listShares(new ListSharesOptions().setPrefix(methodName.toLowerCase()),
-                null, Context.NONE).each {
-                cleanupFileServiceClient.deleteShare(it.getName())
+            for (def share : cleanupFileServiceClient.listShares(new ListSharesOptions().setPrefix(methodName.toLowerCase()), null, Context.NONE)) {
+                def shareClient = cleanupFileServiceClient.getShareClient(share.getName())
+
+                if (share.getProperties().getLeaseState() == LeaseStateType.LEASED) {
+                    createLeaseClient(shareClient).breakLeaseWithResponse(new ShareBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null)
+                }
+
+                shareClient.deleteWithResponse(new ShareDeleteOptions().setDeleteSnapshotsOptions(ShareSnapshotsDeleteOptionType.INCLUDE), null, null)
             }
         }
     }
@@ -275,6 +291,10 @@ class APISpec extends Specification {
     }
 
     def shareBuilderHelper(final InterceptorManager interceptorManager, final String shareName) {
+        return shareBuilderHelper(interceptorManager, shareName, null)
+    }
+
+    def shareBuilderHelper(final InterceptorManager interceptorManager, final String shareName, final String snapshot) {
         ShareClientBuilder builder = new ShareClientBuilder()
         if (testMode != TestMode.PLAYBACK) {
             if (testMode == TestMode.RECORD) {
@@ -282,11 +302,13 @@ class APISpec extends Specification {
             }
             return builder.connectionString(connectionString)
                 .shareName(shareName)
+                .snapshot(snapshot)
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .httpClient(getHttpClient())
         } else {
             return builder
                 .connectionString(connectionString)
+                .snapshot(snapshot)
                 .shareName(shareName)
                 .httpClient(interceptorManager.getPlaybackClient())
         }
@@ -407,6 +429,28 @@ class APISpec extends Specification {
             .buildAsyncClient()
     }
 
+    static ShareLeaseClient createLeaseClient(ShareClient shareClient) {
+        return createLeaseClient(shareClient, null)
+    }
+
+    static ShareLeaseClient createLeaseClient(ShareClient shareClient, String leaseId) {
+        return new ShareLeaseClientBuilder()
+            .shareClient(shareClient)
+            .leaseId(leaseId)
+            .buildClient()
+    }
+
+    static ShareLeaseAsyncClient createLeaseClient(ShareAsyncClient shareClient) {
+        return createLeaseClient(shareClient, null)
+    }
+
+    static ShareLeaseAsyncClient createLeaseClient(ShareAsyncClient shareClient, String leaseId) {
+        return new ShareLeaseClientBuilder()
+            .shareAsyncClient(shareClient)
+            .leaseId(leaseId)
+            .buildAsyncClient()
+    }
+
     /**
      * This helper method will acquire a lease on a blob to prepare for testing lease Id. We want to test
      * against a valid lease in both the success and failure cases to guarantee that the results actually indicate
@@ -445,7 +489,72 @@ class APISpec extends Specification {
         sleep(milliseconds)
     }
 
+    // Only sleep if test is running in live or record mode
+    def sleepIfRecord(long milliseconds) {
+        if (testMode != TestMode.PLAYBACK) {
+            sleep(milliseconds)
+        }
+    }
+
     def getPollingDuration(long liveTestDurationInMillis) {
         return (testMode == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveTestDurationInMillis)
+    }
+
+    /**
+     * Validates the presence of headers that are present on a large number of responses. These headers are generally
+     * random and can really only be checked as not null.
+     * @param headers
+     *      The object (may be headers object or response object) that has properties which expose these common headers.
+     * @return
+     * Whether or not the header values are appropriate.
+     */
+    def validateBasicHeaders(HttpHeaders headers) {
+        return headers.getValue("etag") != null &&
+            // Quotes should be scrubbed from etag header values
+            !headers.getValue("etag").contains("\"") &&
+            headers.getValue("last-modified") != null &&
+            headers.getValue("x-ms-request-id") != null &&
+            headers.getValue("x-ms-version") != null &&
+            headers.getValue("date") != null
+    }
+
+    def setupShareLeaseCondition(ShareClient sc, String leaseID) {
+        if (leaseID == receivedLeaseID) {
+            return createLeaseClient(sc).acquireLeaseWithResponse(new ShareAcquireLeaseOptions().setDuration(-1), null, null).getValue()
+        } else {
+            return leaseID
+        }
+    }
+
+    static TestMode setupTestMode() {
+        String testMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE)
+
+        if (testMode != null) {
+            try {
+                return TestMode.valueOf(testMode.toUpperCase(Locale.US))
+            } catch (IllegalArgumentException ignore) {
+                return TestMode.PLAYBACK
+            }
+        }
+
+        return TestMode.PLAYBACK
+    }
+
+    static boolean playbackMode() {
+        return setupTestMode() == TestMode.PLAYBACK
+    }
+
+    def getPerCallVersionPolicy() {
+        return new HttpPipelinePolicy() {
+            @Override
+            Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                context.getHttpRequest().setHeader("x-ms-version","2017-11-09")
+                return next.process()
+            }
+            @Override
+            HttpPipelinePosition getPipelinePosition() {
+                return HttpPipelinePosition.PER_CALL
+            }
+        }
     }
 }

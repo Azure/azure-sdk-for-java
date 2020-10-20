@@ -16,6 +16,12 @@ public final class TriggerProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggerProperties.class);
 
     /*
+     * The collection of timer triggers.
+     */
+    @JsonProperty(value = "timerTriggers")
+    private List<TimerTrigger> timerTriggers;
+
+    /*
      * The collection of triggers based on source code repository.
      */
     @JsonProperty(value = "sourceTriggers")
@@ -26,6 +32,26 @@ public final class TriggerProperties {
      */
     @JsonProperty(value = "baseImageTrigger")
     private BaseImageTrigger baseImageTrigger;
+
+    /**
+     * Get the timerTriggers property: The collection of timer triggers.
+     *
+     * @return the timerTriggers value.
+     */
+    public List<TimerTrigger> timerTriggers() {
+        return this.timerTriggers;
+    }
+
+    /**
+     * Set the timerTriggers property: The collection of timer triggers.
+     *
+     * @param timerTriggers the timerTriggers value to set.
+     * @return the TriggerProperties object itself.
+     */
+    public TriggerProperties withTimerTriggers(List<TimerTrigger> timerTriggers) {
+        this.timerTriggers = timerTriggers;
+        return this;
+    }
 
     /**
      * Get the sourceTriggers property: The collection of triggers based on source code repository.
@@ -73,6 +99,9 @@ public final class TriggerProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (timerTriggers() != null) {
+            timerTriggers().forEach(e -> e.validate());
+        }
         if (sourceTriggers() != null) {
             sourceTriggers().forEach(e -> e.validate());
         }

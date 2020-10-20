@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AnalyzeRequest model. */
+/** Specifies some text and analysis components used to break that text into tokens. */
 @Fluent
 public final class AnalyzeRequest {
     /*

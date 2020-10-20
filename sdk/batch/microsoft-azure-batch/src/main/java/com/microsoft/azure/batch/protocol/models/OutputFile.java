@@ -14,6 +14,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * A specification for uploading files from an Azure Batch Compute Node to
  * another location after the Batch service has finished executing the Task
  * process.
+ * On every file uploads, Batch service writes two log files to the compute
+ * node, 'fileuploadout.txt' and 'fileuploaderr.txt'. These log files are used
+ * to learn more about a specific failure.
  */
 public class OutputFile {
     /**

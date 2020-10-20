@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The LuceneStandardAnalyzer model. */
+/** Standard Apache Lucene analyzer; Composed of the standard tokenizer, lowercase filter and stop filter. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.StandardAnalyzer")
 @JsonFlatten

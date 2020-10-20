@@ -10,21 +10,21 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.microsoft.azure</groupId>
-  <artifactId>spring-cloud-starter-azure-servicebus</artifactId>
-  <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-starter-azure-servicebus;current} -->
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-cloud-starter-servicebus</artifactId>
+  <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-servicebus;current} -->
 
   <name>Azure Spring Cloud Starter Service Bus</name>
   <dependencies>
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>spring-cloud-azure-autoconfigure</artifactId>
-      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-autoconfigure;current} -->
+      <groupId>com.azure.spring</groupId>
+      <artifactId>azure-spring-cloud-autoconfigure</artifactId>
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-autoconfigure;current} -->
     </dependency>
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>spring-integration-servicebus</artifactId>
-      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-integration-servicebus;current} -->
+      <groupId>com.azure.spring</groupId>
+      <artifactId>azure-spring-integration-servicebus</artifactId>
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-servicebus;current} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
@@ -42,8 +42,6 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:spring-cloud-azure-autoconfigure:[1.3.0-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-autoconfigure;current} -->
-                <include>com.microsoft.azure:spring-integration-servicebus:[1.3.0-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-integration-servicebus;current} -->
                 <include>com.microsoft.azure:azure-servicebus:[3.4.0]</include> <!-- {x-include-update;com.microsoft.azure:azure-servicebus;external_dependency} -->
               </includes>
             </bannedDependencies>

@@ -44,7 +44,7 @@ public class TestUtils {
 
     static final int USE_CASE_DEFAULT = 0;
     static final int USE_CASE_RECEIVE_MORE_AND_COMPLETE = 1;
-    static final int USE_CASE_RECEIVE_BY_TIME = 2;
+    static final int USE_CASE_SCHEDULE_MESSAGES = 2;
     static final int USE_CASE_RECEIVE_NO_MESSAGES = 3;
     static final int USE_CASE_SEND_RECEIVE_WITH_PROPERTIES = 4;
     static final int USE_CASE_MULTIPLE_RECEIVE_ONE_TIMEOUT = 5;
@@ -61,6 +61,7 @@ public class TestUtils {
     static final int USE_CASE_SEND_VIA_TOPIC_2 = 16;
     static final int USE_CASE_VALIDATE_AMQP_PROPERTIES = 17;
     static final int USE_CASE_EMPTY_ENTITY = 18;
+    static final int USE_CASE_CANCEL_MESSAGES = 19;
 
     // An application property key to identify where in the stream this message was created.
     static final String MESSAGE_POSITION_ID = "message-position";

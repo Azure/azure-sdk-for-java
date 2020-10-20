@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AutocompleteResult model. */
+/** The result of Autocomplete query. */
 @Immutable
 public final class AutocompleteResult {
     /*

@@ -60,13 +60,27 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
             !(exception instanceof RetryWithException) &&
             !(exception instanceof PartitionIsMigratingException) &&
             !(exception instanceof InvalidPartitionException &&
-            (this.request.getPartitionKeyRangeIdentity() == null ||
-            this.request.getPartitionKeyRangeIdentity().getCollectionRid() == null)) &&
+                (this.request.getPartitionKeyRangeIdentity() == null ||
+                this.request.getPartitionKeyRangeIdentity().getCollectionRid() == null)) &&
             !(exception instanceof PartitionKeyRangeIsSplittingException)) {
-            logger.debug("Operation will NOT be retried. Current attempt {}, Exception: ", this.attemptCount,
-                    exception);
+
+            logger.warn("Operation will NOT be retried. Current attempt {}, Exception: ", this.attemptCount,
+                exception);
             stopStopWatch(this.durationTimer);
             return Mono.just(ShouldRetryResult.noRetry());
+        } else if (exception instanceof GoneException &&
+            !request.isReadOnly() &&
+            BridgeInternal.hasSendingRequestStarted((CosmosException)exception)) {
+
+            logger.warn(
+                "Operation will NOT be retried. Write operations can not be retried safely when sending the request " +
+                    "to the service because they aren't idempotent. Current attempt {}, Exception: ",
+                this.attemptCount,
+                exception);
+            stopStopWatch(this.durationTimer);
+
+            return Mono.just(ShouldRetryResult.noRetry(
+                Quadruple.with(true, true, Duration.ofMillis(0), this.attemptCount)));
         } else if (exception instanceof RetryWithException) {
             this.lastRetryWithException = (RetryWithException) exception;
         }
@@ -121,7 +135,7 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
             backoffTime = Duration.ofSeconds(Math.min(Math.min(this.currentBackoffSeconds, remainingSeconds),
                     GoneAndRetryWithRetryPolicy.MAXIMUM_BACKOFF_TIME_IN_SECONDS));
             this.currentBackoffSeconds *= GoneAndRetryWithRetryPolicy.BACK_OFF_MULTIPLIER;
-            logger.info("BackoffTime: {} seconds.", backoffTime.getSeconds());
+            logger.debug("BackoffTime: {} seconds.", backoffTime.getSeconds());
         }
 
         // Calculate the remaining time based after accounting for the backoff that we
@@ -130,7 +144,7 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
         timeout = timeoutInMillSec > 0 ? Duration.ofMillis(timeoutInMillSec)
                 : Duration.ofSeconds(GoneAndRetryWithRetryPolicy.MAXIMUM_BACKOFF_TIME_IN_SECONDS);
         if (exception instanceof GoneException) {
-            logger.info("Received gone exception, will retry, {}", exception.toString());
+            logger.debug("Received gone exception, will retry, {}", exception.toString());
             forceRefreshAddressCache = true; // indicate we are in retry.
         } else if (exception instanceof PartitionIsMigratingException) {
             logger.warn("Received PartitionIsMigratingException, will retry, {}", exception.toString());

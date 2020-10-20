@@ -19,6 +19,9 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Context;
+import com.azure.core.util.tracing.ProcessKind;
+import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
@@ -27,6 +30,7 @@ import com.azure.messaging.servicebus.models.CreateBatchOptions;
 import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
+import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -40,6 +44,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.DirectProcessor;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -48,13 +53,23 @@ import reactor.test.StepVerifier;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_BUILDER_KEY;
 import static com.azure.messaging.servicebus.ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_NAMESPACE_VALUE;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_SERVICE_NAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -107,6 +122,10 @@ class ServiceBusSenderAsyncClientTest {
     private ArgumentCaptor<List<Message>> messagesCaptor;
     @Captor
     private ArgumentCaptor<ServiceBusMessage> singleSBMessageCaptor;
+    @Captor
+    private ArgumentCaptor<List<ServiceBusMessage>> sbMessagesCaptor;
+    @Captor
+    private ArgumentCaptor<Iterable<Long>> sequenceNumberCaptor;
 
     private final MessageSerializer serializer = new ServiceBusMessageSerializer();
     private final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
@@ -136,7 +155,7 @@ class ServiceBusSenderAsyncClientTest {
 
         connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, retryOptions,
-            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS);
+            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER_NAME);
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         endpointSink.next(AmqpEndpointState.ACTIVE);
@@ -278,7 +297,7 @@ class ServiceBusSenderAsyncClientTest {
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(256 * 1024,
-            errorContextProvider, tracerProvider, serializer);
+            errorContextProvider, tracerProvider, serializer, null, null);
 
         IntStream.range(0, count).forEach(index -> {
             final ServiceBusMessage message = new ServiceBusMessage(contents);
@@ -317,7 +336,7 @@ class ServiceBusSenderAsyncClientTest {
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(256 * 1024,
-            errorContextProvider, tracerProvider, serializer);
+            errorContextProvider, tracerProvider, serializer, null, null);
 
         IntStream.range(0, count).forEach(index -> {
             final ServiceBusMessage message = new ServiceBusMessage(contents);
@@ -338,6 +357,70 @@ class ServiceBusSenderAsyncClientTest {
         Assertions.assertEquals(count, messagesSent.size());
 
         messagesSent.forEach(message -> Assertions.assertEquals(Section.SectionType.Data, message.getBody().getType()));
+    }
+
+    /**
+     * Verifies that sending multiple message will result in calling sender.send(MessageBatch).
+     */
+    @Test
+    void sendMultipleMessagesTracerSpans() {
+        // Arrange
+        final int count = 4;
+        final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
+        final Tracer tracer1 = mock(Tracer.class);
+        TracerProvider tracerProvider1 = new TracerProvider(Arrays.asList(tracer1));
+
+        final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(256 * 1024,
+            errorContextProvider, tracerProvider1, serializer, null, null);
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionProcessor,
+            retryOptions, tracerProvider1, serializer, onClientClose, null);
+
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))
+            .thenReturn(Mono.just(sendLink));
+        when(sendLink.send(anyList())).thenReturn(Mono.empty());
+        when(tracer1.start(eq(AZ_TRACING_SERVICE_NAME + "send"), any(Context.class), eq(ProcessKind.SEND)))
+            .thenAnswer(invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                assertEquals(passed.getData(AZ_TRACING_NAMESPACE_KEY).get(), AZ_TRACING_NAMESPACE_VALUE);
+                return passed.addData(PARENT_SPAN_KEY, "value");
+            });
+
+        when(tracer1.start(eq(AZ_TRACING_SERVICE_NAME + "message"), any(Context.class), eq(ProcessKind.MESSAGE)))
+            .thenAnswer(invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                assertEquals(passed.getData(AZ_TRACING_NAMESPACE_KEY).get(), AZ_TRACING_NAMESPACE_VALUE);
+                return passed.addData(PARENT_SPAN_KEY, "value").addData(DIAGNOSTIC_ID_KEY, "value2");
+            });
+
+        when(tracer1.getSharedSpanBuilder(eq(AZ_TRACING_SERVICE_NAME + "send"), any(Context.class))).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(SPAN_BUILDER_KEY, "value");
+            }
+        );
+
+        when(tracer1.getSharedSpanBuilder(eq(AZ_TRACING_SERVICE_NAME + "send"), any(Context.class))).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(SPAN_BUILDER_KEY, "value");
+            }
+        );
+
+        IntStream.range(0, count).forEach(index -> {
+            final ServiceBusMessage message = new ServiceBusMessage(contents);
+            Assertions.assertTrue(batch.tryAdd(message));
+        });
+
+        // Act
+        StepVerifier.create(sender.sendMessages(batch))
+            .verifyComplete();
+
+        // Assert
+        verify(tracer1, times(4))
+            .start(eq(AZ_TRACING_SERVICE_NAME + "message"), any(Context.class), eq(ProcessKind.MESSAGE));
+        verify(tracer1, times(1))
+            .start(eq(AZ_TRACING_SERVICE_NAME + "send"), any(Context.class), eq(ProcessKind.SEND));
+        verify(tracer1, times(5)).end(eq("success"), isNull(), any(Context.class));
     }
 
     /**
@@ -490,15 +573,19 @@ class ServiceBusSenderAsyncClientTest {
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull()))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.getLinkSize()).thenReturn(Mono.just(MAX_MESSAGE_LENGTH_BYTES));
-        when(managementNode.schedule(eq(message), eq(instant), any(Integer.class), any(), isNull()))
-            .thenReturn(just(sequenceNumberReturned));
+        when(managementNode.schedule(anyList(), eq(instant), any(Integer.class), any(), isNull()))
+            .thenReturn(Flux.just(sequenceNumberReturned));
 
         // Act & Assert
         StepVerifier.create(sender.scheduleMessage(message, instant))
             .expectNext(sequenceNumberReturned)
             .verifyComplete();
 
-        verify(managementNode).schedule(message, instant, MAX_MESSAGE_LENGTH_BYTES, LINK_NAME, null);
+        verify(managementNode).schedule(sbMessagesCaptor.capture(), eq(instant), eq(MAX_MESSAGE_LENGTH_BYTES), eq(LINK_NAME), isNull());
+        List<ServiceBusMessage> actualMessages = sbMessagesCaptor.getValue();
+        Assertions.assertNotNull(actualMessages);
+        Assertions.assertEquals(1, actualMessages.size());
+        Assertions.assertEquals(message, actualMessages.get(0));
     }
 
     @Test
@@ -509,27 +596,67 @@ class ServiceBusSenderAsyncClientTest {
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull()))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.getLinkSize()).thenReturn(Mono.just(MAX_MESSAGE_LENGTH_BYTES));
-        when(managementNode.schedule(eq(message), eq(instant), eq(MAX_MESSAGE_LENGTH_BYTES), eq(LINK_NAME), argThat(e -> e.getTransactionId().equals(transactionContext.getTransactionId()))))
-            .thenReturn(just(sequenceNumberReturned));
+        when(managementNode.schedule(anyList(), eq(instant), eq(MAX_MESSAGE_LENGTH_BYTES), eq(LINK_NAME), argThat(e -> e.getTransactionId().equals(transactionContext.getTransactionId()))))
+            .thenReturn(Flux.just(sequenceNumberReturned));
 
         // Act & Assert
         StepVerifier.create(sender.scheduleMessage(message, instant, transactionContext))
             .expectNext(sequenceNumberReturned)
             .verifyComplete();
 
-        verify(managementNode).schedule(eq(message), eq(instant), eq(MAX_MESSAGE_LENGTH_BYTES), eq(LINK_NAME), argThat(e -> e.getTransactionId().equals(transactionContext.getTransactionId())));
+        verify(managementNode).schedule(sbMessagesCaptor.capture(), eq(instant), eq(MAX_MESSAGE_LENGTH_BYTES), eq(LINK_NAME), argThat(e -> e.getTransactionId().equals(transactionContext.getTransactionId())));
+        List<ServiceBusMessage> actualMessages = sbMessagesCaptor.getValue();
+        Assertions.assertNotNull(actualMessages);
+        Assertions.assertEquals(1, actualMessages.size());
+        Assertions.assertEquals(message, actualMessages.get(0));
     }
-
 
     @Test
     void cancelScheduleMessage() {
         // Arrange
-        long sequenceNumberReturned = 10;
-        when(managementNode.cancelScheduledMessage(eq(sequenceNumberReturned), isNull())).thenReturn(Mono.empty());
+        final long sequenceNumberReturned = 10;
+        when(managementNode.cancelScheduledMessages(anyList(), isNull())).thenReturn(Mono.empty());
 
         // Act & Assert
         StepVerifier.create(sender.cancelScheduledMessage(sequenceNumberReturned))
             .verifyComplete();
+
+        verify(managementNode).cancelScheduledMessages(sequenceNumberCaptor.capture(), isNull());
+        Iterable<Long> actualSequenceNumbers = sequenceNumberCaptor.getValue();
+        Assertions.assertNotNull(actualSequenceNumbers);
+
+        AtomicInteger actualTotal = new AtomicInteger();
+        actualSequenceNumbers.forEach(aLong -> {
+            actualTotal.incrementAndGet();
+            Assertions.assertEquals(sequenceNumberReturned, aLong);
+        });
+        Assertions.assertEquals(1, actualTotal.get());
+    }
+
+    @Test
+    void cancelScheduleMessages() {
+        // Arrange
+        final List<Long> sequenceNumbers = new ArrayList<>();
+        sequenceNumbers.add(10L);
+        sequenceNumbers.add(11L);
+        sequenceNumbers.add(12L);
+
+        when(managementNode.cancelScheduledMessages(anyList(), isNull())).thenReturn(Mono.empty());
+
+        // Act & Assert
+        StepVerifier.create(sender.cancelScheduledMessages(sequenceNumbers))
+            .verifyComplete();
+
+        verify(managementNode).cancelScheduledMessages(sequenceNumberCaptor.capture(), isNull());
+        Iterable<Long> actualSequenceNumbers = sequenceNumberCaptor.getValue();
+        Assertions.assertNotNull(actualSequenceNumbers);
+
+        AtomicInteger actualTotal = new AtomicInteger();
+        actualSequenceNumbers.forEach(aLong -> {
+            actualTotal.incrementAndGet();
+            Assertions.assertTrue(sequenceNumbers.contains(aLong));
+        });
+        Assertions.assertEquals(sequenceNumbers.size(), actualTotal.get());
     }
 
     /**

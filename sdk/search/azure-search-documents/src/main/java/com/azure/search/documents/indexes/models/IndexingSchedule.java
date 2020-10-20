@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-/** The IndexingSchedule model. */
+/** Represents a schedule for indexer execution. */
 @Fluent
 public final class IndexingSchedule {
     /*

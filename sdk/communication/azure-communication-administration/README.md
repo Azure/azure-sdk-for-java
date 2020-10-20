@@ -1,6 +1,8 @@
 # Azure Communication Administration client library for Java
 
-Azure Communication Administration is used for managing users and tokens for Azure Communication Services.
+The administration package is used for managing users and tokens for Azure Communication Services. This package also provides capabilities for Phone Number Administration.
+
+Acquired phone numbers can come with many capabilities, depending on the country, number type and phone plan. Examples of capabilities are SMS inbound and outbound usage, PSTN inbound and outbound usage. Phone numbers can also be assigned to a bot via a webhook URL.
 
 [Source code][source] | [Package (Maven)][package] | [API reference documentation][api_documentation]
 | [Product documentation][product_docs]
@@ -20,21 +22,24 @@ Azure Communication Administration is used for managing users and tokens for Azu
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-administration</artifactId>
-  <version>1.0.0-beta.1</version>
+  <version>1.0.0-beta.2</version>
 </dependency>
 ```
 
 ## Key concepts
+
 To use the Admnistration SDK, a resource access key is required for authentication. 
 
-Administration uses HMAC authentication with the resource access key. This is done via the 
-CommunicationClientCredentials. The credentials must be provided to the CommunicationIdentityClientBuilder 
-via the credential() function. Endpoint and httpClient must also be set via the endpoint()
-and httpClient() functions respectively.
+Administration uses HMAC authentication with the resource access key.
+The access key must be provided to the CommunicationIdentityClientBuilder 
+or the PhoneNumberClientBuilder via the accessKey() function. Endpoint and httpClient must also be set
+via the endpoint() and httpClient() functions respectively.
 
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L29-L40 -->
+### Initializing Identity Client
+
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L37-L48 -->
 ```java
-// Your can find your endpoint and access key from your resource in the Azure Portal
+// You can find your endpoint and access key from your resource in the Azure Portal
 String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
 String accessKey = "SECRET";
 
@@ -43,10 +48,54 @@ HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
 
 CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()
     .endpoint(endpoint)
-    .credential(new CommunicationClientCredential(accessKey))
+    .accessKey(accessKey)
     .httpClient(httpClient)
     .buildClient();
 ```
+
+Alternatively, you can provide the entire connection string using the connectionString() function instead of providing the endpoint and access key. 
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L62-L68 -->
+```java
+// Your can find your connection string from your resource in the Azure Portal
+String connectionString = "<connection_string>";
+
+CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()
+    .connectionString(connectionString)
+    .httpClient(httpClient)
+    .buildClient();
+```
+### Initializing Phone Number Client
+
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L128-L139 -->
+```java
+// You can find your endpoint and access token from your resource in the Azure Portal
+String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
+String accessKey = "SECRET";
+
+// Create an HttpClient builder of your choice and customize it
+HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
+
+PhoneNumberClient phoneNumberClient = new PhoneNumberClientBuilder()
+    .endpoint(endpoint)
+    .accessKey(accessKey)
+    .httpClient(httpClient)
+    .buildClient();
+```
+Alternatively, you can provide the entire connection string using the connectionString() function of the PhoneNumberClientBuilder instead of providing the endpoint and access key. 
+
+### Phone plans overview
+
+Phone plans come in two types; Geographic and Toll-Free. Geographic phone plans are phone plans associated with a location, whose phone numbers' area codes are associated with the area code of a geographic location. Toll-Free phone plans are phone plans not associated location. For example, in the US, toll-free numbers can come with area codes such as 800 or 888.
+
+All geographic phone plans within the same country are grouped into a phone plan group with a Geographic phone number type. All Toll-Free phone plans within the same country are grouped into a phone plan group.
+
+### Searching and Acquiring numbers
+
+Phone numbers search can be search through the search creation API by providing a phone plan id, an area code and quantity of phone numbers. The provided quantity of phone numbers will be reserved for ten minutes. This search of phone numbers can either be cancelled or purchased. If the search is cancelled, then the phone numbers will become available to others. If the search is purchased, then the phone numbers are acquired for the Azure resources.
+
+### Configuring / Assigning numbers
+
+Phone numbers can be assigned to a callback URL via the configure number API. As part of the configuration, you will need an acquired phone number, callback URL and application id.
 
 ## Examples
 
@@ -54,7 +103,7 @@ CommunicationIdentityClient communicationIdentityClient = new CommunicationIdent
 Use the `createUser` function to create a new user. `user.getId()` gets the
 unique ID of the user that was created.
 
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L53-L54 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L80-L81 -->
 ```java
 CommunicationUser user = communicationIdentityClient.createUser();
 System.out.println("User id: " + user.getId());
@@ -67,7 +116,7 @@ also takes in a list of communication token scopes. Scope options include:
 - `pstn` (Public switched telephone network)
 - `voip` (Voice over IP)
 
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L71-L74 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L93-L96 -->
 ```java
 List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
 CommunicationUserToken userToken = communicationIdentityClient.issueToken(user, scopes);
@@ -78,7 +127,7 @@ System.out.println("Expires On: " + userToken.getExpiresOn());
 ### Revoking all tokens for an existing user
 Use the `revokeTokens` function to revoke all the issued tokens of a user.
 
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L91-L92 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L108-L109 -->
 ```java
 // revoke tokens issued for the user prior to now
 communicationIdentityClient.revokeTokens(user, OffsetDateTime.now());
@@ -87,12 +136,146 @@ communicationIdentityClient.revokeTokens(user, OffsetDateTime.now());
 ### Deleting a user
 Use the `deleteUser` function to delete a user.
 
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L105-L106 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L118-L119 -->
 ```java
 // delete a previously created user
 communicationIdentityClient.deleteUser(user);
 ```
 
+### Get Countries
+
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L151-L160 -->
+```java
+PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+
+PagedIterable<PhoneNumberCountry> phoneNumberCountries = phoneNumberClient
+    .listAllSupportedCountries(locale);
+
+for (PhoneNumberCountry phoneNumberCountry
+    : phoneNumberCountries) {
+    System.out.println("Phone Number Country Code: " + phoneNumberCountry.getCountryCode());
+    System.out.println("Phone Number Country Name: " + phoneNumberCountry.getLocalizedName());
+}
+```
+
+### Get Phone Plan Groups
+
+Phone plan groups come in two types, Geographic and Toll-Free.
+
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L193-L202 -->
+```java
+PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+
+PagedIterable<PhonePlanGroup> phonePlanGroups = phoneNumberClient
+    .listPhonePlanGroups(countryCode, locale, true);
+
+for (PhonePlanGroup phonePlanGroup
+    : phonePlanGroups) {
+    System.out.println("Phone Plan GroupId: " + phonePlanGroup.getPhonePlanGroupId());
+    System.out.println("Phone Plan NumberType: " + phonePlanGroup.getPhoneNumberType());
+}
+```
+
+### Get Phone Plans
+
+Unlike Toll-Free phone plans, area codes for Geographic Phone Plans are empty. Area codes are found in the Area Codes API.
+
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L216-L227 -->
+```java
+PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+
+PagedIterable<PhonePlan> phonePlans = phoneNumberClient
+    .listPhonePlans(countryCode, phonePlanGroupId, locale);
+
+for (PhonePlan phonePlan
+    : phonePlans) {
+    System.out.println("Phone Plan Id: " + phonePlan.getPhonePlanId());
+    System.out.println("Phone Plan Name: " + phonePlan.getLocalizedName());
+    System.out.println("Phone Plan Capabilities: " + phonePlan.getCapabilities());
+    System.out.println("Phone Plan Area Codes: " + phonePlan.getAreaCodes());
+}
+```
+
+### Get Location Options
+
+For Geographic phone plans, you can query the available geographic locations. The locations options are structured like the geographic hierarchy of a country. For example, the US has states and within each state are cities.
+
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L242-L260 -->
+```java
+PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+
+LocationOptions locationOptions = phoneNumberClient
+    .getPhonePlanLocationOptions(countryCode, phonePlanGroupId, phonePlanId, locale)
+    .getLocationOptions();
+
+System.out.println("Getting LocationOptions for: " + locationOptions.getLabelId());
+for (LocationOptionsDetails locationOptionsDetails
+    : locationOptions.getOptions()) {
+    System.out.println(locationOptionsDetails.getValue());
+    for (LocationOptions locationOptions1
+        : locationOptionsDetails.getLocationOptions()) {
+        System.out.println("Getting LocationOptions for: " + locationOptions1.getLabelId());
+        for (LocationOptionsDetails locationOptionsDetails1
+            : locationOptions1.getOptions()) {
+            System.out.println(locationOptionsDetails1.getValue());
+        }
+    }
+}
+```
+
+### Get Area Codes
+
+Fetching area codes for geographic phone plans will require the the location options queries set. You must include the chain of geographic locations traversing down the location options object returned by the GetLocationOptions API.
+
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L284-L292 -->
+```java
+PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+
+AreaCodes areaCodes = phoneNumberClient
+    .getAllAreaCodes("selection", countryCode, phonePlanId, locationOptions);
+
+for (String areaCode
+    : areaCodes.getPrimaryAreaCodes()) {
+    System.out.println(areaCode);
+}
+```
+
+### Purchase Search
+
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L334-L335 -->
+```java
+PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+phoneNumberClient.purchaseSearch(phoneNumberSearchId);
+```
+
+### Configure Phone Number
+
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L346-L347 -->
+```java
+PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+phoneNumberClient.configureNumber(phoneNumber, pstnConfiguration);
+```
+
+## Long Running Operations
+
+The Phone Number Client supports a variety of long running operations that allow indefinite polling time to the functions listed down below.
+
+### Create Search
+
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L370-L380 -->
+```java
+        SyncPoller<PhoneNumberSearch, PhoneNumberSearch> res = 
+            phoneNumberClient.beginCreateSearch(createSearchOptions, duration);
+        res.waitForCompletion();
+        PhoneNumberSearch result = res.getFinalResult();
+
+        System.out.println("Search Id: " + result.getSearchId());
+        for (String phoneNumber: result.getPhoneNumbers()) {
+            System.out.println("Phone Number: " + phoneNumber);
+        }
+    }
+}
+```
 
 ## Contributing
 

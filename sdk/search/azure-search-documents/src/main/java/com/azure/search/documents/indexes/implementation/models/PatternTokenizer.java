@@ -14,7 +14,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The PatternTokenizer model. */
+/**
+ * Tokenizer that uses regex pattern matching to construct distinct tokens. This tokenizer is implemented using Apache
+ * Lucene.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.PatternTokenizer")
 @JsonFlatten

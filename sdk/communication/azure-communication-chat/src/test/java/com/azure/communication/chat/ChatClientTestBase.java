@@ -9,9 +9,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.azure.communication.administration.CommunicationIdentityClientBuilder;
 import com.azure.communication.chat.models.ErrorException;
 import com.azure.communication.chat.models.*;
-import com.azure.communication.common.CommunicationClientCredential;
 import com.azure.communication.common.CommunicationUserCredential;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.policy.FixedDelay;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.test.TestBase;
@@ -19,8 +20,8 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
+
+import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -44,6 +45,8 @@ public class ChatClientTestBase extends TestBase {
     protected static final String CONNSTRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_SERVICES_CONNECTION_STRING", "pw==");
 
+    protected static final FixedDelay RETRY_STRATEGY = new FixedDelay(3, Duration.ofMillis(500));
+
     protected ChatClientBuilder getChatClientBuilder(String token) {
         ChatClientBuilder builder = new ChatClientBuilder();
 
@@ -59,7 +62,10 @@ public class ChatClientTestBase extends TestBase {
                 .credential(new CommunicationUserCredential(token));
         }
 
-        if (!interceptorManager.isLiveMode()) {
+        if (interceptorManager.isLiveMode()) {
+            builder.addPolicy(new RetryPolicy(RETRY_STRATEGY));
+        }
+        else {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
@@ -67,28 +73,20 @@ public class ChatClientTestBase extends TestBase {
     }
 
     protected CommunicationIdentityClientBuilder getCommunicationIdentityClientBuilder() {
-        try {
-            CommunicationClientCredential credential = new CommunicationClientCredential(CONNSTRING);
-            CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
-            builder.endpoint(ENDPOINT)
-                .credential(credential);
-            if (interceptorManager.isPlaybackMode()) {
-                builder.httpClient(interceptorManager.getPlaybackClient());
-                return builder;
-            } else {
-                HttpClient client = new NettyAsyncHttpClientBuilder().build();
-                builder.httpClient(client);
-            }
-            if (!interceptorManager.isLiveMode()) {
-                builder.addPolicy(interceptorManager.getRecordPolicy());
-            }
+        CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
+        builder.endpoint(ENDPOINT)
+            .accessKey(CONNSTRING);
+        if (interceptorManager.isPlaybackMode()) {
+            builder.httpClient(interceptorManager.getPlaybackClient());
             return builder;
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+        } else {
+            HttpClient client = new NettyAsyncHttpClientBuilder().build();
+            builder.httpClient(client);
         }
-        return null;
+        if (!interceptorManager.isLiveMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+        return builder;
     }
 
     static void assertRestException(Runnable exceptionThrower, int expectedStatusCode) {

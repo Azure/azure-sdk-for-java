@@ -11,7 +11,7 @@ import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
-import com.azure.messaging.servicebus.administration.models.DeadLetterOptions;
+import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
@@ -41,6 +41,7 @@ import reactor.test.StepVerifier;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -292,7 +293,7 @@ class ManagementChannelTests {
 
         // Act & Assert
         StepVerifier.create(managementChannel.renewSessionLock(sessionId, LINK_NAME))
-            .assertNext(expiration -> assertEquals(instant, expiration))
+            .assertNext(expiration -> assertEquals(instant.atOffset(ZoneOffset.UTC), expiration))
             .verifyComplete();
 
         verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());

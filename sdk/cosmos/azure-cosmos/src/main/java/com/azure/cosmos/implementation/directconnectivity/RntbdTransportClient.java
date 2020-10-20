@@ -105,10 +105,6 @@ public final class RntbdTransportClient extends TransportClient {
         this.tag = RntbdTransportClient.tag(this.id);
     }
 
-    RntbdTransportClient(final Configs configs, final ConnectionPolicy connectionPolicy, final UserAgentContainer userAgent) {
-        this(new Options.Builder(connectionPolicy).userAgent(userAgent).build(), configs.getSslContext());
-    }
-
     // endregion
 
     // region Methods
@@ -160,7 +156,7 @@ public final class RntbdTransportClient extends TransportClient {
             record.stage(RntbdRequestRecord.Stage.COMPLETED);
 
             if (request.requestContext.cosmosDiagnostics == null) {
-                request.requestContext.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics();
+                request.requestContext.cosmosDiagnostics = request.createCosmosDiagnostics();
             }
 
             if (response != null) {
@@ -203,7 +199,7 @@ public final class RntbdTransportClient extends TransportClient {
             BridgeInternal.setRequestTimeline(cosmosException, record.takeTimelineSnapshot());
             BridgeInternal.setRntbdPendingRequestQueueSize(cosmosException, record.pendingRequestQueueSize());
             BridgeInternal.setChannelTaskQueueSize(cosmosException, record.channelTaskQueueLength());
-
+            BridgeInternal.setSendingRequestStarted(cosmosException, record.hasSendingRequestStarted());
 
             return cosmosException;
         });
@@ -223,7 +219,7 @@ public final class RntbdTransportClient extends TransportClient {
             // messages due to CompletionException errors. Anecdotal evidence shows that this is more likely to be seen
             // in low latency environments on Azure cloud. To avoid the onErrorDropped events to get logged in the
             // default hook (which logs with level ERROR) we inject a local hook in the Reactor Context to just log it
-            // as DEBUG level fro the lifecycle of this Mono (safe here because we know the onErrorDropped doesn't have
+            // as DEBUG level for the lifecycle of this Mono (safe here because we know the onErrorDropped doesn't have
             // any functional issues.
             //
             // One might be tempted to complete a pending request here, but that is ill advised. Testing and

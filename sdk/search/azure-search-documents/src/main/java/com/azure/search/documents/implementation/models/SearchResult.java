@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** The SearchResult model. */
+/** Contains a document found by a search query, plus associated metadata. */
 @Fluent
 public final class SearchResult {
     /*

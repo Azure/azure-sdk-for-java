@@ -15,7 +15,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The ShaperSkill model. */
+/**
+ * A skill for reshaping the outputs. It creates a complex type to support composite fields (also known as multipart
+ * fields).
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Skills.Util.ShaperSkill")
 @JsonFlatten

@@ -6,16 +6,20 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.BackoffRetryUtility;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.Integers;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RequestChargeTracker;
 import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.SessionTokenHelper;
+import com.azure.cosmos.implementation.SessionTokenMismatchRetryPolicy;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.ComparatorUtils;
@@ -60,6 +64,7 @@ public class ConsistencyWriter {
     private final static int DELAY_BETWEEN_WRITE_BARRIER_CALLS_IN_MS = 30;
     private final static int MAX_SHORT_BARRIER_RETRIES_FOR_MULTI_REGION = 4;
     private final static int SHORT_BARRIER_RETRY_INTERVAL_IN_MS_FOR_MULTI_REGION = 10;
+    private final DiagnosticsClientContext diagnosticsClientContext;
 
     private final Logger logger = LoggerFactory.getLogger(ConsistencyWriter.class);
     private final TransportClient transportClient;
@@ -71,12 +76,14 @@ public class ConsistencyWriter {
     private final StoreReader storeReader;
 
     public ConsistencyWriter(
+        DiagnosticsClientContext diagnosticsClientContext,
         AddressSelector addressSelector,
         ISessionContainer sessionContainer,
         TransportClient transportClient,
         IAuthorizationTokenProvider authorizationTokenProvider,
         GatewayServiceConfigurationReader serviceConfigReader,
         boolean useMultipleWriteLocations) {
+        this.diagnosticsClientContext = diagnosticsClientContext;
         this.transportClient = transportClient;
         this.addressSelector = addressSelector;
         this.sessionContainer = sessionContainer;
@@ -97,7 +104,11 @@ public class ConsistencyWriter {
 
         String sessionToken = entity.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
 
-        return this.writePrivateAsync(entity, timeout, forceRefresh).doOnEach(
+        return  BackoffRetryUtility
+            .executeRetry(
+                () -> this.writePrivateAsync(entity, timeout, forceRefresh),
+                new SessionTokenMismatchRetryPolicy())
+            .doOnEach(
             arg -> {
                 try {
                     SessionTokenHelper.setOriginalSessionToken(entity, sessionToken);
@@ -123,7 +134,7 @@ public class ConsistencyWriter {
         }
 
         if (request.requestContext.cosmosDiagnostics == null) {
-            request.requestContext.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics();
+            request.requestContext.cosmosDiagnostics = request.createCosmosDiagnostics();
         }
 
         request.requestContext.forceRefreshAddressCache = forceRefresh;
@@ -146,10 +157,11 @@ public class ConsistencyWriter {
             }).flatMap(primaryUri -> {
                 try {
                     primaryURI.set(primaryUri);
-                    if (this.useMultipleWriteLocations &&
+                    if ((this.useMultipleWriteLocations || request.getOperationType() == OperationType.Batch) &&
                         RequestHelper.getConsistencyLevelToUse(this.serviceConfigReader, request) == ConsistencyLevel.SESSION) {
                         // Set session token to ensure session consistency for write requests
-                        // when writes can be issued to multiple locations
+                        // 1. when writes can be issued to multiple locations
+                        // 2. When we have Batch requests, since it can have Reads in it.
                         SessionTokenHelper.setPartitionLocalSessionToken(request, this.sessionContainer);
                     } else {
                         // When writes can only go to single location, there is no reason
@@ -198,7 +210,7 @@ public class ConsistencyWriter {
             });
         } else {
 
-            Mono<RxDocumentServiceRequest> barrierRequestObs = BarrierRequestHelper.createAsync(request, this.authorizationTokenProvider, null, request.requestContext.globalCommittedSelectedLSN);
+            Mono<RxDocumentServiceRequest> barrierRequestObs = BarrierRequestHelper.createAsync(this.diagnosticsClientContext, request, this.authorizationTokenProvider, null, request.requestContext.globalCommittedSelectedLSN);
             return barrierRequestObs.flatMap(barrierRequest -> waitForWriteBarrierAsync(barrierRequest, request.requestContext.globalCommittedSelectedLSN)
                 .flatMap(v -> {
 
@@ -215,14 +227,12 @@ public class ConsistencyWriter {
     boolean isGlobalStrongRequest(RxDocumentServiceRequest request, StoreResponse response) {
         if (this.serviceConfigReader.getDefaultConsistencyLevel() == ConsistencyLevel.STRONG) {
             int numberOfReadRegions = -1;
-            String headerValue = null;
+            String headerValue;
             if ((headerValue = response.getHeaderValue(WFConstants.BackendHeaders.NUMBER_OF_READ_REGIONS)) != null) {
                 numberOfReadRegions = Integer.parseInt(headerValue);
             }
 
-            if (numberOfReadRegions > 0 && this.serviceConfigReader.getDefaultConsistencyLevel() == ConsistencyLevel.STRONG) {
-                return true;
-            }
+            return numberOfReadRegions > 0 && this.serviceConfigReader.getDefaultConsistencyLevel() == ConsistencyLevel.STRONG;
         }
 
         return false;
@@ -231,8 +241,8 @@ public class ConsistencyWriter {
     Mono<StoreResponse> barrierForGlobalStrong(RxDocumentServiceRequest request, StoreResponse response) {
         try {
             if (ReplicatedResourceClient.isGlobalStrongEnabled() && this.isGlobalStrongRequest(request, response)) {
-                Utils.ValueHolder<Long> lsn = Utils.ValueHolder.initialize(-1l);
-                Utils.ValueHolder<Long> globalCommittedLsn = Utils.ValueHolder.initialize(-1l);
+                Utils.ValueHolder<Long> lsn = Utils.ValueHolder.initialize(-1L);
+                Utils.ValueHolder<Long> globalCommittedLsn = Utils.ValueHolder.initialize(-1L);
 
                 getLsnAndGlobalCommittedLsn(response, lsn, globalCommittedLsn);
                 if (lsn.v == -1 || globalCommittedLsn.v == -1) {
@@ -251,7 +261,8 @@ public class ConsistencyWriter {
                 //barrier only if necessary, i.e. when write region completes write, but read regions have not.
 
                 if (globalCommittedLsn.v < lsn.v) {
-                    Mono<RxDocumentServiceRequest> barrierRequestObs = BarrierRequestHelper.createAsync(request,
+                    Mono<RxDocumentServiceRequest> barrierRequestObs = BarrierRequestHelper.createAsync(this.diagnosticsClientContext,
+                        request,
                         this.authorizationTokenProvider,
                         null,
                         request.requestContext.globalCommittedSelectedLSN);
@@ -312,15 +323,14 @@ public class ConsistencyWriter {
                     long maxGlobalCommittedLsn = (responses != null) ?
                         responses.stream().map(s -> s.globalCommittedLSN).max(ComparatorUtils.naturalComparator()).orElse(0L) :
                         0L;
-                    maxGlobalCommittedLsnReceived.set(maxGlobalCommittedLsnReceived.get() > maxGlobalCommittedLsn ?
-                        maxGlobalCommittedLsnReceived.get() : maxGlobalCommittedLsn);
+                    maxGlobalCommittedLsnReceived.set(Math.max(maxGlobalCommittedLsnReceived.get(), maxGlobalCommittedLsn));
 
                     //only refresh on first barrier call, set to false for subsequent attempts.
                     barrierRequest.requestContext.forceRefreshAddressCache = false;
 
                     //get max global committed lsn from current batch of responses, then update if greater than max of all batches.
                     if (writeBarrierRetryCount.getAndDecrement() == 0) {
-                        if (logger.isDebugEnabled()) {
+                        if (logger.isDebugEnabled() && responses != null) {
 
                             logger.debug("ConsistencyWriter: WaitForWriteBarrierAsync - Last barrier multi-region strong. Responses: {}",
                                          responses.stream().map(StoreResult::toString).collect(Collectors.joining("; ")));

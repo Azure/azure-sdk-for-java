@@ -19,6 +19,7 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -40,6 +41,7 @@ public final class Utility {
     public static final TypeReference<Map<String, Object>> MAP_STRING_OBJECT_TYPE_REFERENCE =
         new TypeReference<Map<String, Object>>() { };
 
+    private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
     private static final HttpLogOptions DEFAULT_LOG_OPTIONS = Constants.DEFAULT_LOG_OPTIONS_SUPPLIER.get();
     private static final HttpHeaders HTTP_HEADERS = new HttpHeaders().put("return-client-request-id", "true");
 
@@ -65,23 +67,31 @@ public final class Utility {
         return adapter;
     }
 
-    public static HttpPipeline buildHttpPipeline(HttpLogOptions logOptions, Configuration configuration,
-        RetryPolicy retryPolicy, AzureKeyCredential credential, List<HttpPipelinePolicy> policies,
-        HttpClient httpClient) {
+    public static HttpPipeline buildHttpPipeline(ClientOptions clientOptions, HttpLogOptions logOptions,
+        Configuration configuration, RetryPolicy retryPolicy, AzureKeyCredential credential,
+        List<HttpPipelinePolicy> perCallPolicies, List<HttpPipelinePolicy> perRetryPolicies,  HttpClient httpClient) {
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()
             : configuration;
 
+        ClientOptions buildClientOptions = (clientOptions == null) ? DEFAULT_CLIENT_OPTIONS : clientOptions;
         HttpLogOptions buildLogOptions = (logOptions == null) ? DEFAULT_LOG_OPTIONS : logOptions;
+
+        String applicationId = null;
+        if (!CoreUtils.isNullOrEmpty(buildClientOptions.getApplicationId())) {
+            applicationId = buildClientOptions.getApplicationId();
+        } else if (!CoreUtils.isNullOrEmpty(buildLogOptions.getApplicationId())) {
+            applicationId = buildLogOptions.getApplicationId();
+        }
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
         httpPipelinePolicies.add(new AddHeadersPolicy(HTTP_HEADERS));
         httpPipelinePolicies.add(new AddHeadersFromContextPolicy());
-        httpPipelinePolicies.add(new UserAgentPolicy(buildLogOptions.getApplicationId(), CLIENT_NAME, CLIENT_VERSION,
-            buildConfiguration));
+        httpPipelinePolicies.add(new UserAgentPolicy(applicationId, CLIENT_NAME, CLIENT_VERSION, buildConfiguration));
         httpPipelinePolicies.add(new RequestIdPolicy());
 
+        httpPipelinePolicies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(httpPipelinePolicies);
         httpPipelinePolicies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
 
@@ -89,9 +99,14 @@ public final class Utility {
 
         httpPipelinePolicies.add(new AzureKeyCredentialPolicy("api-key", credential));
 
-        httpPipelinePolicies.addAll(policies);
-
+        httpPipelinePolicies.addAll(perRetryPolicies);
         HttpPolicyProviders.addAfterRetryPolicies(httpPipelinePolicies);
+
+        HttpHeaders headers = new HttpHeaders();
+        buildClientOptions.getHeaders().forEach(header -> headers.put(header.getName(), header.getValue()));
+        if (headers.getSize() > 0) {
+            httpPipelinePolicies.add(new AddHeadersPolicy(headers));
+        }
 
         httpPipelinePolicies.add(new HttpLoggingPolicy(buildLogOptions));
 

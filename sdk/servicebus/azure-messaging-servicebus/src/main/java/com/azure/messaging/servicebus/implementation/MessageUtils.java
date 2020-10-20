@@ -19,6 +19,8 @@ import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -87,19 +89,19 @@ public final class MessageUtils {
     }
 
     /**
-     * Gets the {@link Instant} representation of .NET epoch ticks. .NET ticks are measured from 0001/01/01. Java {@link
-     * Instant} is measured from 1970/01/01.
+     * Gets the {@link OffsetDateTime} representation of .NET epoch ticks. .NET ticks are measured from 0001/01/01.
+     * Java {@link OffsetDateTime} is measured from 1970/01/01.
      *
      * @param dotNetTicks long measured from 01/01/0001
      *
      * @return The instant represented by the ticks.
      */
-    static Instant convertDotNetTicksToInstant(long dotNetTicks) {
+    static OffsetDateTime convertDotNetTicksToOffsetDateTime(long dotNetTicks) {
         long ticksFromEpoch = dotNetTicks - EPOCH_IN_DOT_NET_TICKS;
         long millisecondsFromEpoch = Double.valueOf(ticksFromEpoch * 0.0001).longValue();
         long fractionTicks = ticksFromEpoch % 10000;
 
-        return Instant.ofEpochMilli(millisecondsFromEpoch).plusNanos(fractionTicks * 100);
+        return Instant.ofEpochMilli(millisecondsFromEpoch).plusNanos(fractionTicks * 100).atOffset(ZoneOffset.UTC);
     }
 
     /**

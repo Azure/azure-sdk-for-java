@@ -23,13 +23,13 @@ Getting started explained in detail [here][SDK_README_GETTING_STARTED].
 
 Maven dependency for Azure Cognitive Search Client library. Add it to your project's pom file.
 
-[//]: # {x-version-update-start;com.azure:azure-search;current}
+[//]: # {x-version-update-start;com.azure:azure-search-documents;current}
 
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-search</artifactId>
-    <version>1.0.0-preview.2</version>
+    <artifactId>azure-search-documents</artifactId>
+    <version>11.2.0-beta.2</version>
 </dependency>
 ```
 

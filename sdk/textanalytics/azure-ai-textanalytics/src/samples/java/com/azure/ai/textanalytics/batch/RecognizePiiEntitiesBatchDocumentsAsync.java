@@ -71,8 +71,8 @@ public class RecognizePiiEntitiesBatchDocumentsAsync {
                         PiiEntityCollection piiEntityCollection = entitiesResult.getEntities();
                         System.out.printf("Redacted Text: %s%n", piiEntityCollection.getRedactedText());
                         piiEntityCollection.forEach(entity -> System.out.printf(
-                            "Recognized Personally Identifiable Information entity: %s, entity category: %s, entity subcategory: %s, offset: %s, length: %s, confidence score: %f.%n",
-                            entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getOffset(), entity.getLength(), entity.getConfidenceScore()));
+                            "Recognized Personally Identifiable Information entity: %s, entity category: %s, entity subcategory: %s, offset: %s, confidence score: %f.%n",
+                            entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getOffset(), entity.getConfidenceScore()));
                     }
                 }
             },
