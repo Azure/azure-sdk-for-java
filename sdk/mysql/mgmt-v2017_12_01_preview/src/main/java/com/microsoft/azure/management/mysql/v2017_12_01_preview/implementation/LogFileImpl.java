@@ -14,15 +14,15 @@ import rx.Observable;
 import org.joda.time.DateTime;
 
 class LogFileImpl extends WrapperImpl<LogFileInner> implements LogFile {
-    private final MySQLManager manager;
+    private final DBForMySQLManager manager;
 
-    LogFileImpl(LogFileInner inner,  MySQLManager manager) {
+    LogFileImpl(LogFileInner inner,  DBForMySQLManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public MySQLManager manager() {
+    public DBForMySQLManager manager() {
         return this.manager;
     }
 

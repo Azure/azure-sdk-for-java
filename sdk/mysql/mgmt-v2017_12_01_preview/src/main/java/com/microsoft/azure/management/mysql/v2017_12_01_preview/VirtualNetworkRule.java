@@ -16,12 +16,12 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.mysql.v2017_12_01_preview.implementation.MySQLManager;
+import com.microsoft.azure.management.mysql.v2017_12_01_preview.implementation.DBForMySQLManager;
 
 /**
  * Type representing VirtualNetworkRule.
  */
-public interface VirtualNetworkRule extends HasInner<VirtualNetworkRuleInner>, Indexable, Refreshable<VirtualNetworkRule>, Updatable<VirtualNetworkRule.Update>, HasManager<MySQLManager> {
+public interface VirtualNetworkRule extends HasInner<VirtualNetworkRuleInner>, Indexable, Refreshable<VirtualNetworkRule>, Updatable<VirtualNetworkRule.Update>, HasManager<DBForMySQLManager> {
     /**
      * @return the id value.
      */

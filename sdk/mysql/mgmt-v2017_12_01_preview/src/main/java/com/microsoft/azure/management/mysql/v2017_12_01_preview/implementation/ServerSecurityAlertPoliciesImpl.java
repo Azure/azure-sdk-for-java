@@ -16,14 +16,14 @@ import rx.functions.Func1;
 import com.microsoft.azure.management.mysql.v2017_12_01_preview.ServerSecurityAlertPolicy;
 
 class ServerSecurityAlertPoliciesImpl extends WrapperImpl<ServerSecurityAlertPoliciesInner> implements ServerSecurityAlertPolicies {
-    private final MySQLManager manager;
+    private final DBForMySQLManager manager;
 
-    ServerSecurityAlertPoliciesImpl(MySQLManager manager) {
+    ServerSecurityAlertPoliciesImpl(DBForMySQLManager manager) {
         super(manager.inner().serverSecurityAlertPolicies());
         this.manager = manager;
     }
 
-    public MySQLManager manager() {
+    public DBForMySQLManager manager() {
         return this.manager;
     }
 
@@ -44,10 +44,14 @@ class ServerSecurityAlertPoliciesImpl extends WrapperImpl<ServerSecurityAlertPol
     public Observable<ServerSecurityAlertPolicy> getAsync(String resourceGroupName, String serverName) {
         ServerSecurityAlertPoliciesInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName)
-        .map(new Func1<ServerSecurityAlertPolicyInner, ServerSecurityAlertPolicy>() {
+        .flatMap(new Func1<ServerSecurityAlertPolicyInner, Observable<ServerSecurityAlertPolicy>>() {
             @Override
-            public ServerSecurityAlertPolicy call(ServerSecurityAlertPolicyInner inner) {
-                return wrapModel(inner);
+            public Observable<ServerSecurityAlertPolicy> call(ServerSecurityAlertPolicyInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ServerSecurityAlertPolicy)wrapModel(inner));
+                }
             }
        });
     }

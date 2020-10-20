@@ -10,7 +10,7 @@ package com.microsoft.azure.management.mysql.v2017_12_01_preview;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.mysql.v2017_12_01_preview.implementation.MySQLManager;
+import com.microsoft.azure.management.mysql.v2017_12_01_preview.implementation.DBForMySQLManager;
 import com.microsoft.azure.management.mysql.v2017_12_01_preview.implementation.OperationListResultInner;
 import com.microsoft.azure.management.mysql.v2017_12_01_preview.implementation.OperationInner;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Type representing OperationListResult.
  */
-public interface OperationListResult extends HasInner<OperationListResultInner>, HasManager<MySQLManager> {
+public interface OperationListResult extends HasInner<OperationListResultInner>, HasManager<DBForMySQLManager> {
     /**
      * @return the value value.
      */

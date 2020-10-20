@@ -12,6 +12,12 @@ import com.microsoft.azure.management.mysql.v2017_12_01_preview.ServerServer;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import rx.Observable;
 import org.joda.time.DateTime;
+import com.microsoft.azure.management.mysql.v2017_12_01_preview.ResourceIdentity;
+import com.microsoft.azure.management.mysql.v2017_12_01_preview.InfrastructureEncryption;
+import com.microsoft.azure.management.mysql.v2017_12_01_preview.MinimalTlsVersionEnum;
+import java.util.List;
+import com.microsoft.azure.management.mysql.v2017_12_01_preview.ServerPrivateEndpointConnection;
+import com.microsoft.azure.management.mysql.v2017_12_01_preview.PublicNetworkAccessEnum;
 import com.microsoft.azure.management.mysql.v2017_12_01_preview.Sku;
 import com.microsoft.azure.management.mysql.v2017_12_01_preview.SslEnforcementEnum;
 import com.microsoft.azure.management.mysql.v2017_12_01_preview.StorageProfile;
@@ -20,15 +26,15 @@ import com.microsoft.azure.management.mysql.v2017_12_01_preview.ServerState;
 import com.microsoft.azure.management.mysql.v2017_12_01_preview.ServerVersion;
 
 class ServerServerImpl extends WrapperImpl<ServerInner> implements ServerServer {
-    private final MySQLManager manager;
+    private final DBForMySQLManager manager;
 
-    ServerServerImpl(ServerInner inner,  MySQLManager manager) {
+    ServerServerImpl(ServerInner inner,  DBForMySQLManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public MySQLManager manager() {
+    public DBForMySQLManager manager() {
         return this.manager;
     }
 
@@ -37,6 +43,11 @@ class ServerServerImpl extends WrapperImpl<ServerInner> implements ServerServer 
     @Override
     public String administratorLogin() {
         return this.inner().administratorLogin();
+    }
+
+    @Override
+    public String byokEnforcement() {
+        return this.inner().byokEnforcement();
     }
 
     @Override
@@ -55,6 +66,16 @@ class ServerServerImpl extends WrapperImpl<ServerInner> implements ServerServer 
     }
 
     @Override
+    public ResourceIdentity identity() {
+        return this.inner().identity();
+    }
+
+    @Override
+    public InfrastructureEncryption infrastructureEncryption() {
+        return this.inner().infrastructureEncryption();
+    }
+
+    @Override
     public String location() {
         return this.inner().location();
     }
@@ -65,8 +86,23 @@ class ServerServerImpl extends WrapperImpl<ServerInner> implements ServerServer 
     }
 
     @Override
+    public MinimalTlsVersionEnum minimalTlsVersion() {
+        return this.inner().minimalTlsVersion();
+    }
+
+    @Override
     public String name() {
         return this.inner().name();
+    }
+
+    @Override
+    public List<ServerPrivateEndpointConnection> privateEndpointConnections() {
+        return this.inner().privateEndpointConnections();
+    }
+
+    @Override
+    public PublicNetworkAccessEnum publicNetworkAccess() {
+        return this.inner().publicNetworkAccess();
     }
 
     @Override

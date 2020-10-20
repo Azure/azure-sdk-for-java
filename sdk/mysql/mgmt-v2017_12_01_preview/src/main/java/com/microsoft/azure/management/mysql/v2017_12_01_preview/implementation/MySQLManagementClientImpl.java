@@ -224,6 +224,19 @@ public class MySQLManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The ServerAdministratorsInner object to access its operations.
+     */
+    private ServerAdministratorsInner serverAdministrators;
+
+    /**
+     * Gets the ServerAdministratorsInner object to access its operations.
+     * @return the ServerAdministratorsInner object.
+     */
+    public ServerAdministratorsInner serverAdministrators() {
+        return this.serverAdministrators;
+    }
+
+    /**
      * The LocationBasedPerformanceTiersInner object to access its operations.
      */
     private LocationBasedPerformanceTiersInner locationBasedPerformanceTiers;
@@ -317,6 +330,7 @@ public class MySQLManagementClientImpl extends AzureServiceClient {
         this.databases = new DatabasesInner(restClient().retrofit(), this);
         this.configurations = new ConfigurationsInner(restClient().retrofit(), this);
         this.logFiles = new LogFilesInner(restClient().retrofit(), this);
+        this.serverAdministrators = new ServerAdministratorsInner(restClient().retrofit(), this);
         this.locationBasedPerformanceTiers = new LocationBasedPerformanceTiersInner(restClient().retrofit(), this);
         this.checkNameAvailabilitys = new CheckNameAvailabilitysInner(restClient().retrofit(), this);
         this.serverSecurityAlertPolicies = new ServerSecurityAlertPoliciesInner(restClient().retrofit(), this);

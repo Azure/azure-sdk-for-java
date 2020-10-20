@@ -17,14 +17,14 @@ import com.microsoft.azure.management.mysql.v2017_12_01_preview.NameAvailability
 import com.microsoft.azure.management.mysql.v2017_12_01_preview.NameAvailabilityRequest;
 
 class CheckNameAvailabilitysImpl extends WrapperImpl<CheckNameAvailabilitysInner> implements CheckNameAvailabilitys {
-    private final MySQLManager manager;
+    private final DBForMySQLManager manager;
 
-    CheckNameAvailabilitysImpl(MySQLManager manager) {
+    CheckNameAvailabilitysImpl(DBForMySQLManager manager) {
         super(manager.inner().checkNameAvailabilitys());
         this.manager = manager;
     }
 
-    public MySQLManager manager() {
+    public DBForMySQLManager manager() {
         return this.manager;
     }
 

@@ -14,12 +14,12 @@ import rx.Observable;
 import com.microsoft.azure.management.mysql.v2017_12_01_preview.VirtualNetworkRuleState;
 
 class VirtualNetworkRuleImpl extends CreatableUpdatableImpl<VirtualNetworkRule, VirtualNetworkRuleInner, VirtualNetworkRuleImpl> implements VirtualNetworkRule, VirtualNetworkRule.Definition, VirtualNetworkRule.Update {
-    private final MySQLManager manager;
+    private final DBForMySQLManager manager;
     private String resourceGroupName;
     private String serverName;
     private String virtualNetworkRuleName;
 
-    VirtualNetworkRuleImpl(String name, MySQLManager manager) {
+    VirtualNetworkRuleImpl(String name, DBForMySQLManager manager) {
         super(name, new VirtualNetworkRuleInner());
         this.manager = manager;
         // Set resource name
@@ -27,7 +27,7 @@ class VirtualNetworkRuleImpl extends CreatableUpdatableImpl<VirtualNetworkRule, 
         //
     }
 
-    VirtualNetworkRuleImpl(VirtualNetworkRuleInner inner, MySQLManager manager) {
+    VirtualNetworkRuleImpl(VirtualNetworkRuleInner inner, DBForMySQLManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -40,7 +40,7 @@ class VirtualNetworkRuleImpl extends CreatableUpdatableImpl<VirtualNetworkRule, 
     }
 
     @Override
-    public MySQLManager manager() {
+    public DBForMySQLManager manager() {
         return this.manager;
     }
 
