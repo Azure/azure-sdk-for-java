@@ -28,7 +28,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -44,6 +43,7 @@ public class GlobalAddressResolver implements IAddressResolver {
     private final int maxEndpoints;
     private final GatewayServiceConfigurationReader serviceConfigReader;
     final Map<URI, EndpointCache> addressCacheByEndpoint;
+    private final boolean tcpConnectionEndpointRediscoveryEnabled;
 
     private HttpClient httpClient;
 
@@ -67,6 +67,7 @@ public class GlobalAddressResolver implements IAddressResolver {
         this.collectionCache = collectionCache;
         this.routingMapProvider = routingMapProvider;
         this.serviceConfigReader = serviceConfigReader;
+        this.tcpConnectionEndpointRediscoveryEnabled = connectionPolicy.isTcpConnectionEndpointRediscoveryEnabled();
 
         int maxBackupReadEndpoints = (connectionPolicy.isReadRequestsFallbackEnabled()) ? GlobalAddressResolver.MaxBackupReadRegions : 0;
         this.maxEndpoints = maxBackupReadEndpoints + 2; // for write and alternate write getEndpoint (during failover)
@@ -101,23 +102,19 @@ public class GlobalAddressResolver implements IAddressResolver {
     }
 
     @Override
-    public void remove(
-        final RxDocumentServiceRequest request,
-        final Set<PartitionKeyRangeIdentity> partitionKeyRangeIdentitySet) {
+    public void updateAddresses(final RxDocumentServiceRequest request, final URI serverKey) {
 
         Objects.requireNonNull(request, "expected non-null request");
-        Objects.requireNonNull(partitionKeyRangeIdentitySet, "expected non-null partitionKeyRangeIdentitySet");
+        Objects.requireNonNull(serverKey, "expected non-null serverKey");
 
-        if (partitionKeyRangeIdentitySet.size() > 0) {
+        URI serviceEndpoint = this.endpointManager.resolveServiceEndpoint(request);
+        this.addressCacheByEndpoint.computeIfPresent(serviceEndpoint, (ignored, endpointCache) -> {
 
-            URI addressResolverURI = this.endpointManager.resolveServiceEndpoint(request);
+            final GatewayAddressCache addressCache = endpointCache.addressCache;
+            addressCache.updateAddresses(serverKey);
 
-            this.addressCacheByEndpoint.computeIfPresent(addressResolverURI, (ignored, endpointCache) -> {
-                final GatewayAddressCache addressCache = endpointCache.addressCache;
-                partitionKeyRangeIdentitySet.forEach(partitionKeyRangeIdentity -> addressCache.removeAddress(partitionKeyRangeIdentity));
-                return endpointCache;
-            });
-        }
+            return endpointCache;
+        });
     }
 
     @Override
@@ -139,7 +136,14 @@ public class GlobalAddressResolver implements IAddressResolver {
 
     private EndpointCache getOrAddEndpoint(URI endpoint) {
         EndpointCache endpointCache = this.addressCacheByEndpoint.computeIfAbsent(endpoint , key -> {
-            GatewayAddressCache gatewayAddressCache = new GatewayAddressCache(this.diagnosticsClientContext, endpoint, protocol, this.tokenProvider, this.userAgentContainer, this.httpClient);
+            GatewayAddressCache gatewayAddressCache = new GatewayAddressCache(
+                this.diagnosticsClientContext,
+                endpoint,
+                protocol,
+                this.tokenProvider,
+                this.userAgentContainer,
+                this.httpClient,
+                this.tcpConnectionEndpointRediscoveryEnabled);
             AddressResolver addressResolver = new AddressResolver();
             addressResolver.initializeCaches(this.collectionCache, this.routingMapProvider, gatewayAddressCache);
             EndpointCache cache = new EndpointCache();
