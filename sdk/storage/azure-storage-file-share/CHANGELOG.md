@@ -6,6 +6,7 @@
 - Added support for getting access tier on a share through ShareClient.getProperties, ShareServiceClient.listShares
 - Renamed setAccessTier to setProperties and deprecated setQuotaInGb in favor of setProperties.
 - Renamed DeleteSnapshotsOptionType to ShareSnapshotsDeleteOptionType in ShareClient.delete
+- Removed ability to create a ShareLeaseClient for a Share or Share Snapshot.  Unfortunately, this feature was pulled due to a service bug, and will be re-enabled in the future.
 
 ## 12.7.0-beta.1 (2020-10-01)
 - Added support for the 2020-02-10 service version. 
