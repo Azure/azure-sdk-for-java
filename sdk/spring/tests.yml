@@ -22,9 +22,9 @@ jobs:
           - name: azure-spring-boot-test-aad
             groupId: com.azure.spring
             safeName: azurespringboottestaad
-#          - name: azure-spring-boot-test-keyvault
-#            groupId: com.azure.spring
-#            safeName: azurespringboottestkeyvault
+          - name: azure-spring-boot-test-keyvault
+            groupId: com.azure.spring
+            safeName: azurespringboottestkeyvault
           - name: azure-spring-boot-test-servicebus-jms
             groupId: com.azure.spring
             safeName: azurespringboottestservicebusjms
