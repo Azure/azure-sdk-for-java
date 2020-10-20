@@ -77,8 +77,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                     assertEquals(chatThread.getTopic(), threadRequest.getTopic());
                 })
                 .verifyComplete();
-            })
-            .verifyComplete();
+            });
     }
 
     @Test
@@ -116,7 +115,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                 // process the iterableByPage
                 List<ChatThreadMember> returnedMembers = new ArrayList<ChatThreadMember>();
                 membersResponse.iterableByPage().forEach(resp -> {
-					assertEquals(resp.getStatusCode(), 200);
+                    assertEquals(resp.getStatusCode(), 200);
                     resp.getItems().forEach(item -> returnedMembers.add(item));
                 });
         
@@ -144,7 +143,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         // Action & Assert
         StepVerifier.create(chatThreadClient.addMembersWithResponse(options))
             .assertNext(addMembersResponse -> {
-                assertEquals(addMembersResponse.getStatusCode(), 204);
+                assertEquals(addMembersResponse.getStatusCode(), 207);
                 PagedIterable<ChatThreadMember> membersResponse = new PagedIterable<>(chatThreadClient.listMembers());
 
                 // process the iterableByPage
