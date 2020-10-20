@@ -13,7 +13,7 @@ import com.azure.communication.administration.models.NumberConfigurationResponse
 import com.azure.communication.administration.models.NumberUpdateCapabilities;
 import com.azure.communication.administration.models.PhoneNumberCountry;
 import com.azure.communication.administration.models.PhoneNumberEntity;
-import com.azure.communication.administration.models.PhoneNumberSearch;
+import com.azure.communication.administration.models.PhoneNumberReservation;
 import com.azure.communication.administration.models.PhonePlan;
 import com.azure.communication.administration.models.PhonePlanGroup;
 import com.azure.communication.administration.models.PstnConfiguration;
@@ -59,7 +59,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
             })
             .verifyComplete();
     }
-    
+
     @Test()
     public void listAllPhoneNumbers() {
         PagedFlux<AcquiredPhoneNumber> pagedFlux = this.getClient().listAllPhoneNumbers(LOCALE);
@@ -302,7 +302,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
     @Test()
     public void getSearchById() {
-        Mono<PhoneNumberSearch> mono = this.getClient().getSearchById(SEARCH_ID);
+        Mono<PhoneNumberReservation> mono = this.getClient().getSearchById(SEARCH_ID);
 
         StepVerifier.create(mono)
             .assertNext(item -> {
@@ -313,7 +313,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
     @Test()
     public void getSearchByIdWithResponse() {
-        Mono<Response<PhoneNumberSearch>> mono = this.getClient().getSearchByIdWithResponse(SEARCH_ID, Context.NONE);
+        Mono<Response<PhoneNumberReservation>> mono = this.getClient().getSearchByIdWithResponse(SEARCH_ID, Context.NONE);
 
         StepVerifier.create(mono)
             .assertNext(item -> {
@@ -482,12 +482,12 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
         Duration duration = Duration.ofSeconds(1);
         PhoneNumberAsyncClient client = this.getClient();
-        PollerFlux<PhoneNumberSearch, PhoneNumberSearch> poller = 
+        PollerFlux<PhoneNumberReservation, PhoneNumberReservation> poller =
             client.beginCreateSearch(createSearchOptions, duration);
-        AsyncPollResponse<PhoneNumberSearch, PhoneNumberSearch> asyncRes = 
+        AsyncPollResponse<PhoneNumberReservation, PhoneNumberReservation> asyncRes =
             poller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
             .blockLast();
-        PhoneNumberSearch testResult = asyncRes.getValue();
+        PhoneNumberReservation testResult = asyncRes.getValue();
         assertEquals(testResult.getPhoneNumbers().size(), 2);
         assertNotNull(testResult.getSearchId());
     }

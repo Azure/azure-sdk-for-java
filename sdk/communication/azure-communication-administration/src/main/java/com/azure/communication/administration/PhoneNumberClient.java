@@ -18,7 +18,7 @@ import com.azure.communication.administration.models.PhonePlanGroup;
 import com.azure.communication.administration.models.PstnConfiguration;
 import com.azure.communication.administration.models.ReleaseResponse;
 import com.azure.communication.administration.models.UpdateNumberCapabilitiesResponse;
-import com.azure.communication.administration.models.PhoneNumberSearch;
+import com.azure.communication.administration.models.PhoneNumberReservation;
 import com.azure.communication.administration.models.UpdatePhoneNumberCapabilitiesResponse;
 import com.azure.communication.common.PhoneNumber;
 import com.azure.core.annotation.ReturnType;
@@ -416,10 +416,10 @@ public final class PhoneNumberClient {
      * Gets a search by ID.
      *
      * @param searchId ID of the search
-     * @return A {@link PhoneNumberSearch} representing the search.
+     * @return A {@link PhoneNumberReservation} representing the search.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumberSearch getSearchById(String searchId) {
+    public PhoneNumberReservation getSearchById(String searchId) {
         return phoneNumberAsyncClient.getSearchById(searchId).block();
     }
 
@@ -429,10 +429,10 @@ public final class PhoneNumberClient {
      * @param searchId ID of the search
      * @param context A {@link Context} representing the request context.
      * @return A {@link Response} whose {@link Response#getValue()} value returns
-     * a {@link PhoneNumberSearch} representing the search.
+     * a {@link PhoneNumberReservation} representing the search.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PhoneNumberSearch> getSearchByIdWithResponse(String searchId, Context context) {
+    public Response<PhoneNumberReservation> getSearchByIdWithResponse(String searchId, Context context) {
         return phoneNumberAsyncClient.getSearchByIdWithResponse(searchId, context).block();
     }
 
@@ -526,16 +526,16 @@ public final class PhoneNumberClient {
     }
 
     /**
-     * Initiates a search and returns a {@link PhoneNumberSearch} usable by other functions
+     * Initiates a search and returns a {@link PhoneNumberReservation} usable by other functions
      * This function returns a Long Running Operation poller.
-     * 
+     *
      * @param options A {@link CreateSearchOptions} with the search options
-     * @param pollInterval The time our long running operation will keep on polling 
+     * @param pollInterval The time our long running operation will keep on polling
      * until it gets a result from the server
      * @return A {@link SyncPoller} object with the search result
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<PhoneNumberSearch, PhoneNumberSearch> beginCreateSearch(
+    public SyncPoller<PhoneNumberReservation, PhoneNumberReservation> beginCreateSearch(
         CreateSearchOptions options, Duration pollInterval) {
         return phoneNumberAsyncClient.beginCreateSearch(options, pollInterval).getSyncPoller();
     }

@@ -15,7 +15,7 @@ import com.azure.communication.administration.models.LocationOptions;
 import com.azure.communication.administration.models.LocationOptionsDetails;
 import com.azure.communication.administration.models.LocationOptionsQuery;
 import com.azure.communication.administration.models.PhoneNumberCountry;
-import com.azure.communication.administration.models.PhoneNumberSearch;
+import com.azure.communication.administration.models.PhoneNumberReservation;
 import com.azure.communication.administration.models.PhonePlan;
 import com.azure.communication.administration.models.PhonePlanGroup;
 import com.azure.communication.administration.models.PstnConfiguration;
@@ -297,9 +297,9 @@ public class ReadmeSamples {
     /**
      * Sample code to create a phone number search
      *
-     * @return PhoneNumberSearch for the phone plan
+     * @return PhoneNumberReservation for the phone plan
      */
-    public PhoneNumberSearch createPhoneNumberSearch() {
+    public PhoneNumberReservation createPhoneNumberReservation() {
         String phonePlanId = "PHONE_PLAN_ID";
 
         List<String> phonePlanIds = new ArrayList<>();
@@ -316,23 +316,23 @@ public class ReadmeSamples {
         CreateSearchResponse createSearchResponse = phoneNumberClient.createSearch(createSearchOptions);
 
         System.out.println("SearchId: " + createSearchResponse.getSearchId());
-        PhoneNumberSearch phoneNumberSearch = phoneNumberClient.getSearchById(createSearchResponse.getSearchId());
+        PhoneNumberReservation phoneNumberReservation = phoneNumberClient.getSearchById(createSearchResponse.getSearchId());
 
         for (String phoneNumber
-            : phoneNumberSearch.getPhoneNumbers()) {
+            : phoneNumberReservation.getPhoneNumbers()) {
             System.out.println("Phone Number: " + phoneNumber);
         }
 
-        return phoneNumberSearch;
+        return phoneNumberReservation;
     }
 
     /**
      * Sample code to purchase a phone number search
      */
-    public void purchasePhoneNumberSearch() {
-        String phoneNumberSearchId = "SEARCH_ID_TO_PURCHASE";
+    public void purchasePhoneNumberReservation() {
+        String phoneNumberReservationId = "SEARCH_ID_TO_PURCHASE";
         PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
-        phoneNumberClient.purchaseSearch(phoneNumberSearchId);
+        phoneNumberClient.purchaseSearch(phoneNumberReservationId);
     }
 
     /**

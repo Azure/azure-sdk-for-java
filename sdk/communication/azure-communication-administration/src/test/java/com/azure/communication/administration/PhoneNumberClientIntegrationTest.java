@@ -13,7 +13,7 @@ import com.azure.communication.administration.models.NumberConfigurationResponse
 import com.azure.communication.administration.models.NumberUpdateCapabilities;
 import com.azure.communication.administration.models.PhoneNumberCountry;
 import com.azure.communication.administration.models.PhoneNumberEntity;
-import com.azure.communication.administration.models.PhoneNumberSearch;
+import com.azure.communication.administration.models.PhoneNumberReservation;
 import com.azure.communication.administration.models.PhonePlan;
 import com.azure.communication.administration.models.PhonePlanGroup;
 import com.azure.communication.administration.models.PstnConfiguration;
@@ -222,14 +222,14 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
 
     @Test()
     public void getSearchById() {
-        PhoneNumberSearch search = this.getClient().getSearchById(SEARCH_ID);
+        PhoneNumberReservation search = this.getClient().getSearchById(SEARCH_ID);
 
         assertEquals(SEARCH_ID, search.getSearchId());
     }
 
     @Test()
     public void getSearchByIdWithResponse() {
-        Response<PhoneNumberSearch> response = this.getClient().getSearchByIdWithResponse(SEARCH_ID, Context.NONE);
+        Response<PhoneNumberReservation> response = this.getClient().getSearchByIdWithResponse(SEARCH_ID, Context.NONE);
 
         assertEquals(200, response.getStatusCode());
         assertEquals(SEARCH_ID, response.getValue().getSearchId());
