@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.managedapplications.v2019_07_01.implementation;
 
-import com.microsoft.azure.arm.collection.InnerSupportsGet;
 import com.microsoft.azure.arm.collection.InnerSupportsDelete;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
@@ -41,7 +40,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in ApplicationDefinitions.
  */
-public class ApplicationDefinitionsInner implements InnerSupportsGet<ApplicationDefinitionInner>, InnerSupportsDelete<Void> {
+public class ApplicationDefinitionsInner implements InnerSupportsDelete<Void> {
     /** The Retrofit service to perform REST calls. */
     private ApplicationDefinitionsService service;
     /** The service client containing this operation class. */
@@ -63,9 +62,9 @@ public class ApplicationDefinitionsInner implements InnerSupportsGet<Application
      * used by Retrofit to perform actually REST calls.
      */
     interface ApplicationDefinitionsService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.managedapplications.v2019_07_01.ApplicationDefinitions getByResourceGroup" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.managedapplications.v2019_07_01.ApplicationDefinitions get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applicationDefinitions/{applicationDefinitionName}")
-        Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("applicationDefinitionName") String applicationDefinitionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("applicationDefinitionName") String applicationDefinitionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.managedapplications.v2019_07_01.ApplicationDefinitions delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applicationDefinitions/{applicationDefinitionName}", method = "DELETE", hasBody = true)
@@ -88,24 +87,24 @@ public class ApplicationDefinitionsInner implements InnerSupportsGet<Application
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.managedapplications.v2019_07_01.ApplicationDefinitions getById" })
-        @GET("{applicationDefinitionId}")
-        Observable<Response<ResponseBody>> getById(@Path(value = "applicationDefinitionId", encoded = true) String applicationDefinitionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applicationDefinitions/{applicationDefinitionName}")
+        Observable<Response<ResponseBody>> getById(@Path("resourceGroupName") String resourceGroupName, @Path("applicationDefinitionName") String applicationDefinitionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.managedapplications.v2019_07_01.ApplicationDefinitions deleteById" })
-        @HTTP(path = "{applicationDefinitionId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteById(@Path(value = "applicationDefinitionId", encoded = true) String applicationDefinitionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applicationDefinitions/{applicationDefinitionName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteById(@Path("resourceGroupName") String resourceGroupName, @Path("applicationDefinitionName") String applicationDefinitionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.managedapplications.v2019_07_01.ApplicationDefinitions beginDeleteById" })
-        @HTTP(path = "{applicationDefinitionId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> beginDeleteById(@Path(value = "applicationDefinitionId", encoded = true) String applicationDefinitionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applicationDefinitions/{applicationDefinitionName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> beginDeleteById(@Path("resourceGroupName") String resourceGroupName, @Path("applicationDefinitionName") String applicationDefinitionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.managedapplications.v2019_07_01.ApplicationDefinitions createOrUpdateById" })
-        @PUT("{applicationDefinitionId}")
-        Observable<Response<ResponseBody>> createOrUpdateById(@Path(value = "applicationDefinitionId", encoded = true) String applicationDefinitionId, @Body ApplicationDefinitionInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applicationDefinitions/{applicationDefinitionName}")
+        Observable<Response<ResponseBody>> createOrUpdateById(@Path("resourceGroupName") String resourceGroupName, @Path("applicationDefinitionName") String applicationDefinitionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Body ApplicationDefinitionInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.managedapplications.v2019_07_01.ApplicationDefinitions beginCreateOrUpdateById" })
-        @PUT("{applicationDefinitionId}")
-        Observable<Response<ResponseBody>> beginCreateOrUpdateById(@Path(value = "applicationDefinitionId", encoded = true) String applicationDefinitionId, @Body ApplicationDefinitionInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applicationDefinitions/{applicationDefinitionName}")
+        Observable<Response<ResponseBody>> beginCreateOrUpdateById(@Path("resourceGroupName") String resourceGroupName, @Path("applicationDefinitionName") String applicationDefinitionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Body ApplicationDefinitionInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.managedapplications.v2019_07_01.ApplicationDefinitions listByResourceGroupNext" })
         @GET
@@ -123,8 +122,8 @@ public class ApplicationDefinitionsInner implements InnerSupportsGet<Application
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ApplicationDefinitionInner object if successful.
      */
-    public ApplicationDefinitionInner getByResourceGroup(String resourceGroupName, String applicationDefinitionName) {
-        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, applicationDefinitionName).toBlocking().single().body();
+    public ApplicationDefinitionInner get(String resourceGroupName, String applicationDefinitionName) {
+        return getWithServiceResponseAsync(resourceGroupName, applicationDefinitionName).toBlocking().single().body();
     }
 
     /**
@@ -136,8 +135,8 @@ public class ApplicationDefinitionsInner implements InnerSupportsGet<Application
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ApplicationDefinitionInner> getByResourceGroupAsync(String resourceGroupName, String applicationDefinitionName, final ServiceCallback<ApplicationDefinitionInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, applicationDefinitionName), serviceCallback);
+    public ServiceFuture<ApplicationDefinitionInner> getAsync(String resourceGroupName, String applicationDefinitionName, final ServiceCallback<ApplicationDefinitionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, applicationDefinitionName), serviceCallback);
     }
 
     /**
@@ -148,8 +147,8 @@ public class ApplicationDefinitionsInner implements InnerSupportsGet<Application
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationDefinitionInner object
      */
-    public Observable<ApplicationDefinitionInner> getByResourceGroupAsync(String resourceGroupName, String applicationDefinitionName) {
-        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, applicationDefinitionName).map(new Func1<ServiceResponse<ApplicationDefinitionInner>, ApplicationDefinitionInner>() {
+    public Observable<ApplicationDefinitionInner> getAsync(String resourceGroupName, String applicationDefinitionName) {
+        return getWithServiceResponseAsync(resourceGroupName, applicationDefinitionName).map(new Func1<ServiceResponse<ApplicationDefinitionInner>, ApplicationDefinitionInner>() {
             @Override
             public ApplicationDefinitionInner call(ServiceResponse<ApplicationDefinitionInner> response) {
                 return response.body();
@@ -165,7 +164,7 @@ public class ApplicationDefinitionsInner implements InnerSupportsGet<Application
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationDefinitionInner object
      */
-    public Observable<ServiceResponse<ApplicationDefinitionInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String applicationDefinitionName) {
+    public Observable<ServiceResponse<ApplicationDefinitionInner>> getWithServiceResponseAsync(String resourceGroupName, String applicationDefinitionName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -178,12 +177,12 @@ public class ApplicationDefinitionsInner implements InnerSupportsGet<Application
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.getByResourceGroup(resourceGroupName, applicationDefinitionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.get(resourceGroupName, applicationDefinitionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ApplicationDefinitionInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ApplicationDefinitionInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ApplicationDefinitionInner> clientResponse = getByResourceGroupDelegate(response);
+                        ServiceResponse<ApplicationDefinitionInner> clientResponse = getDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -192,7 +191,7 @@ public class ApplicationDefinitionsInner implements InnerSupportsGet<Application
             });
     }
 
-    private ServiceResponse<ApplicationDefinitionInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+    private ServiceResponse<ApplicationDefinitionInner> getDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<ApplicationDefinitionInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ApplicationDefinitionInner>() { }.getType())
                 .registerError(ErrorResponseException.class)
@@ -644,37 +643,40 @@ public class ApplicationDefinitionsInner implements InnerSupportsGet<Application
     /**
      * Gets the managed application definition.
      *
-     * @param applicationDefinitionId The fully qualified ID of the managed application definition, including the managed application name and the managed application definition resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applicationDefinitions/{applicationDefinition-name}
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationDefinitionName The name of the managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ApplicationDefinitionInner object if successful.
      */
-    public ApplicationDefinitionInner getById(String applicationDefinitionId) {
-        return getByIdWithServiceResponseAsync(applicationDefinitionId).toBlocking().single().body();
+    public ApplicationDefinitionInner getById(String resourceGroupName, String applicationDefinitionName) {
+        return getByIdWithServiceResponseAsync(resourceGroupName, applicationDefinitionName).toBlocking().single().body();
     }
 
     /**
      * Gets the managed application definition.
      *
-     * @param applicationDefinitionId The fully qualified ID of the managed application definition, including the managed application name and the managed application definition resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applicationDefinitions/{applicationDefinition-name}
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationDefinitionName The name of the managed application definition.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ApplicationDefinitionInner> getByIdAsync(String applicationDefinitionId, final ServiceCallback<ApplicationDefinitionInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getByIdWithServiceResponseAsync(applicationDefinitionId), serviceCallback);
+    public ServiceFuture<ApplicationDefinitionInner> getByIdAsync(String resourceGroupName, String applicationDefinitionName, final ServiceCallback<ApplicationDefinitionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByIdWithServiceResponseAsync(resourceGroupName, applicationDefinitionName), serviceCallback);
     }
 
     /**
      * Gets the managed application definition.
      *
-     * @param applicationDefinitionId The fully qualified ID of the managed application definition, including the managed application name and the managed application definition resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applicationDefinitions/{applicationDefinition-name}
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationDefinitionName The name of the managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationDefinitionInner object
      */
-    public Observable<ApplicationDefinitionInner> getByIdAsync(String applicationDefinitionId) {
-        return getByIdWithServiceResponseAsync(applicationDefinitionId).map(new Func1<ServiceResponse<ApplicationDefinitionInner>, ApplicationDefinitionInner>() {
+    public Observable<ApplicationDefinitionInner> getByIdAsync(String resourceGroupName, String applicationDefinitionName) {
+        return getByIdWithServiceResponseAsync(resourceGroupName, applicationDefinitionName).map(new Func1<ServiceResponse<ApplicationDefinitionInner>, ApplicationDefinitionInner>() {
             @Override
             public ApplicationDefinitionInner call(ServiceResponse<ApplicationDefinitionInner> response) {
                 return response.body();
@@ -685,18 +687,25 @@ public class ApplicationDefinitionsInner implements InnerSupportsGet<Application
     /**
      * Gets the managed application definition.
      *
-     * @param applicationDefinitionId The fully qualified ID of the managed application definition, including the managed application name and the managed application definition resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applicationDefinitions/{applicationDefinition-name}
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationDefinitionName The name of the managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationDefinitionInner object
      */
-    public Observable<ServiceResponse<ApplicationDefinitionInner>> getByIdWithServiceResponseAsync(String applicationDefinitionId) {
-        if (applicationDefinitionId == null) {
-            throw new IllegalArgumentException("Parameter applicationDefinitionId is required and cannot be null.");
+    public Observable<ServiceResponse<ApplicationDefinitionInner>> getByIdWithServiceResponseAsync(String resourceGroupName, String applicationDefinitionName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (applicationDefinitionName == null) {
+            throw new IllegalArgumentException("Parameter applicationDefinitionName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.getById(applicationDefinitionId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.getById(resourceGroupName, applicationDefinitionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ApplicationDefinitionInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ApplicationDefinitionInner>> call(Response<ResponseBody> response) {
@@ -720,36 +729,39 @@ public class ApplicationDefinitionsInner implements InnerSupportsGet<Application
     /**
      * Deletes the managed application definition.
      *
-     * @param applicationDefinitionId The fully qualified ID of the managed application definition, including the managed application name and the managed application definition resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applicationDefinitions/{applicationDefinition-name}
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationDefinitionName The name of the managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void deleteById(String applicationDefinitionId) {
-        deleteByIdWithServiceResponseAsync(applicationDefinitionId).toBlocking().last().body();
+    public void deleteById(String resourceGroupName, String applicationDefinitionName) {
+        deleteByIdWithServiceResponseAsync(resourceGroupName, applicationDefinitionName).toBlocking().last().body();
     }
 
     /**
      * Deletes the managed application definition.
      *
-     * @param applicationDefinitionId The fully qualified ID of the managed application definition, including the managed application name and the managed application definition resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applicationDefinitions/{applicationDefinition-name}
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationDefinitionName The name of the managed application definition.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> deleteByIdAsync(String applicationDefinitionId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteByIdWithServiceResponseAsync(applicationDefinitionId), serviceCallback);
+    public ServiceFuture<Void> deleteByIdAsync(String resourceGroupName, String applicationDefinitionName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteByIdWithServiceResponseAsync(resourceGroupName, applicationDefinitionName), serviceCallback);
     }
 
     /**
      * Deletes the managed application definition.
      *
-     * @param applicationDefinitionId The fully qualified ID of the managed application definition, including the managed application name and the managed application definition resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applicationDefinitions/{applicationDefinition-name}
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationDefinitionName The name of the managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<Void> deleteByIdAsync(String applicationDefinitionId) {
-        return deleteByIdWithServiceResponseAsync(applicationDefinitionId).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> deleteByIdAsync(String resourceGroupName, String applicationDefinitionName) {
+        return deleteByIdWithServiceResponseAsync(resourceGroupName, applicationDefinitionName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -760,54 +772,64 @@ public class ApplicationDefinitionsInner implements InnerSupportsGet<Application
     /**
      * Deletes the managed application definition.
      *
-     * @param applicationDefinitionId The fully qualified ID of the managed application definition, including the managed application name and the managed application definition resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applicationDefinitions/{applicationDefinition-name}
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationDefinitionName The name of the managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Void>> deleteByIdWithServiceResponseAsync(String applicationDefinitionId) {
-        if (applicationDefinitionId == null) {
-            throw new IllegalArgumentException("Parameter applicationDefinitionId is required and cannot be null.");
+    public Observable<ServiceResponse<Void>> deleteByIdWithServiceResponseAsync(String resourceGroupName, String applicationDefinitionName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (applicationDefinitionName == null) {
+            throw new IllegalArgumentException("Parameter applicationDefinitionName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Observable<Response<ResponseBody>> observable = service.deleteById(applicationDefinitionId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        Observable<Response<ResponseBody>> observable = service.deleteById(resourceGroupName, applicationDefinitionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
 
     /**
      * Deletes the managed application definition.
      *
-     * @param applicationDefinitionId The fully qualified ID of the managed application definition, including the managed application name and the managed application definition resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applicationDefinitions/{applicationDefinition-name}
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationDefinitionName The name of the managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void beginDeleteById(String applicationDefinitionId) {
-        beginDeleteByIdWithServiceResponseAsync(applicationDefinitionId).toBlocking().single().body();
+    public void beginDeleteById(String resourceGroupName, String applicationDefinitionName) {
+        beginDeleteByIdWithServiceResponseAsync(resourceGroupName, applicationDefinitionName).toBlocking().single().body();
     }
 
     /**
      * Deletes the managed application definition.
      *
-     * @param applicationDefinitionId The fully qualified ID of the managed application definition, including the managed application name and the managed application definition resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applicationDefinitions/{applicationDefinition-name}
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationDefinitionName The name of the managed application definition.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> beginDeleteByIdAsync(String applicationDefinitionId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(beginDeleteByIdWithServiceResponseAsync(applicationDefinitionId), serviceCallback);
+    public ServiceFuture<Void> beginDeleteByIdAsync(String resourceGroupName, String applicationDefinitionName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteByIdWithServiceResponseAsync(resourceGroupName, applicationDefinitionName), serviceCallback);
     }
 
     /**
      * Deletes the managed application definition.
      *
-     * @param applicationDefinitionId The fully qualified ID of the managed application definition, including the managed application name and the managed application definition resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applicationDefinitions/{applicationDefinition-name}
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationDefinitionName The name of the managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> beginDeleteByIdAsync(String applicationDefinitionId) {
-        return beginDeleteByIdWithServiceResponseAsync(applicationDefinitionId).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> beginDeleteByIdAsync(String resourceGroupName, String applicationDefinitionName) {
+        return beginDeleteByIdWithServiceResponseAsync(resourceGroupName, applicationDefinitionName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -818,18 +840,25 @@ public class ApplicationDefinitionsInner implements InnerSupportsGet<Application
     /**
      * Deletes the managed application definition.
      *
-     * @param applicationDefinitionId The fully qualified ID of the managed application definition, including the managed application name and the managed application definition resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applicationDefinitions/{applicationDefinition-name}
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationDefinitionName The name of the managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> beginDeleteByIdWithServiceResponseAsync(String applicationDefinitionId) {
-        if (applicationDefinitionId == null) {
-            throw new IllegalArgumentException("Parameter applicationDefinitionId is required and cannot be null.");
+    public Observable<ServiceResponse<Void>> beginDeleteByIdWithServiceResponseAsync(String resourceGroupName, String applicationDefinitionName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (applicationDefinitionName == null) {
+            throw new IllegalArgumentException("Parameter applicationDefinitionName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.beginDeleteById(applicationDefinitionId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.beginDeleteById(resourceGroupName, applicationDefinitionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -855,40 +884,43 @@ public class ApplicationDefinitionsInner implements InnerSupportsGet<Application
     /**
      * Creates a new managed application definition.
      *
-     * @param applicationDefinitionId The fully qualified ID of the managed application definition, including the managed application name and the managed application definition resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applicationDefinitions/{applicationDefinition-name}
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationDefinitionName The name of the managed application definition.
      * @param parameters Parameters supplied to the create or update a managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ApplicationDefinitionInner object if successful.
      */
-    public ApplicationDefinitionInner createOrUpdateById(String applicationDefinitionId, ApplicationDefinitionInner parameters) {
-        return createOrUpdateByIdWithServiceResponseAsync(applicationDefinitionId, parameters).toBlocking().last().body();
+    public ApplicationDefinitionInner createOrUpdateById(String resourceGroupName, String applicationDefinitionName, ApplicationDefinitionInner parameters) {
+        return createOrUpdateByIdWithServiceResponseAsync(resourceGroupName, applicationDefinitionName, parameters).toBlocking().last().body();
     }
 
     /**
      * Creates a new managed application definition.
      *
-     * @param applicationDefinitionId The fully qualified ID of the managed application definition, including the managed application name and the managed application definition resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applicationDefinitions/{applicationDefinition-name}
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationDefinitionName The name of the managed application definition.
      * @param parameters Parameters supplied to the create or update a managed application definition.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ApplicationDefinitionInner> createOrUpdateByIdAsync(String applicationDefinitionId, ApplicationDefinitionInner parameters, final ServiceCallback<ApplicationDefinitionInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createOrUpdateByIdWithServiceResponseAsync(applicationDefinitionId, parameters), serviceCallback);
+    public ServiceFuture<ApplicationDefinitionInner> createOrUpdateByIdAsync(String resourceGroupName, String applicationDefinitionName, ApplicationDefinitionInner parameters, final ServiceCallback<ApplicationDefinitionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateByIdWithServiceResponseAsync(resourceGroupName, applicationDefinitionName, parameters), serviceCallback);
     }
 
     /**
      * Creates a new managed application definition.
      *
-     * @param applicationDefinitionId The fully qualified ID of the managed application definition, including the managed application name and the managed application definition resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applicationDefinitions/{applicationDefinition-name}
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationDefinitionName The name of the managed application definition.
      * @param parameters Parameters supplied to the create or update a managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ApplicationDefinitionInner> createOrUpdateByIdAsync(String applicationDefinitionId, ApplicationDefinitionInner parameters) {
-        return createOrUpdateByIdWithServiceResponseAsync(applicationDefinitionId, parameters).map(new Func1<ServiceResponse<ApplicationDefinitionInner>, ApplicationDefinitionInner>() {
+    public Observable<ApplicationDefinitionInner> createOrUpdateByIdAsync(String resourceGroupName, String applicationDefinitionName, ApplicationDefinitionInner parameters) {
+        return createOrUpdateByIdWithServiceResponseAsync(resourceGroupName, applicationDefinitionName, parameters).map(new Func1<ServiceResponse<ApplicationDefinitionInner>, ApplicationDefinitionInner>() {
             @Override
             public ApplicationDefinitionInner call(ServiceResponse<ApplicationDefinitionInner> response) {
                 return response.body();
@@ -899,63 +931,73 @@ public class ApplicationDefinitionsInner implements InnerSupportsGet<Application
     /**
      * Creates a new managed application definition.
      *
-     * @param applicationDefinitionId The fully qualified ID of the managed application definition, including the managed application name and the managed application definition resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applicationDefinitions/{applicationDefinition-name}
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationDefinitionName The name of the managed application definition.
      * @param parameters Parameters supplied to the create or update a managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<ApplicationDefinitionInner>> createOrUpdateByIdWithServiceResponseAsync(String applicationDefinitionId, ApplicationDefinitionInner parameters) {
-        if (applicationDefinitionId == null) {
-            throw new IllegalArgumentException("Parameter applicationDefinitionId is required and cannot be null.");
+    public Observable<ServiceResponse<ApplicationDefinitionInner>> createOrUpdateByIdWithServiceResponseAsync(String resourceGroupName, String applicationDefinitionName, ApplicationDefinitionInner parameters) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        if (applicationDefinitionName == null) {
+            throw new IllegalArgumentException("Parameter applicationDefinitionName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
         Validator.validate(parameters);
-        Observable<Response<ResponseBody>> observable = service.createOrUpdateById(applicationDefinitionId, parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        Observable<Response<ResponseBody>> observable = service.createOrUpdateById(resourceGroupName, applicationDefinitionName, this.client.subscriptionId(), this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ApplicationDefinitionInner>() { }.getType());
     }
 
     /**
      * Creates a new managed application definition.
      *
-     * @param applicationDefinitionId The fully qualified ID of the managed application definition, including the managed application name and the managed application definition resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applicationDefinitions/{applicationDefinition-name}
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationDefinitionName The name of the managed application definition.
      * @param parameters Parameters supplied to the create or update a managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ApplicationDefinitionInner object if successful.
      */
-    public ApplicationDefinitionInner beginCreateOrUpdateById(String applicationDefinitionId, ApplicationDefinitionInner parameters) {
-        return beginCreateOrUpdateByIdWithServiceResponseAsync(applicationDefinitionId, parameters).toBlocking().single().body();
+    public ApplicationDefinitionInner beginCreateOrUpdateById(String resourceGroupName, String applicationDefinitionName, ApplicationDefinitionInner parameters) {
+        return beginCreateOrUpdateByIdWithServiceResponseAsync(resourceGroupName, applicationDefinitionName, parameters).toBlocking().single().body();
     }
 
     /**
      * Creates a new managed application definition.
      *
-     * @param applicationDefinitionId The fully qualified ID of the managed application definition, including the managed application name and the managed application definition resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applicationDefinitions/{applicationDefinition-name}
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationDefinitionName The name of the managed application definition.
      * @param parameters Parameters supplied to the create or update a managed application definition.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ApplicationDefinitionInner> beginCreateOrUpdateByIdAsync(String applicationDefinitionId, ApplicationDefinitionInner parameters, final ServiceCallback<ApplicationDefinitionInner> serviceCallback) {
-        return ServiceFuture.fromResponse(beginCreateOrUpdateByIdWithServiceResponseAsync(applicationDefinitionId, parameters), serviceCallback);
+    public ServiceFuture<ApplicationDefinitionInner> beginCreateOrUpdateByIdAsync(String resourceGroupName, String applicationDefinitionName, ApplicationDefinitionInner parameters, final ServiceCallback<ApplicationDefinitionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateByIdWithServiceResponseAsync(resourceGroupName, applicationDefinitionName, parameters), serviceCallback);
     }
 
     /**
      * Creates a new managed application definition.
      *
-     * @param applicationDefinitionId The fully qualified ID of the managed application definition, including the managed application name and the managed application definition resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applicationDefinitions/{applicationDefinition-name}
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationDefinitionName The name of the managed application definition.
      * @param parameters Parameters supplied to the create or update a managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationDefinitionInner object
      */
-    public Observable<ApplicationDefinitionInner> beginCreateOrUpdateByIdAsync(String applicationDefinitionId, ApplicationDefinitionInner parameters) {
-        return beginCreateOrUpdateByIdWithServiceResponseAsync(applicationDefinitionId, parameters).map(new Func1<ServiceResponse<ApplicationDefinitionInner>, ApplicationDefinitionInner>() {
+    public Observable<ApplicationDefinitionInner> beginCreateOrUpdateByIdAsync(String resourceGroupName, String applicationDefinitionName, ApplicationDefinitionInner parameters) {
+        return beginCreateOrUpdateByIdWithServiceResponseAsync(resourceGroupName, applicationDefinitionName, parameters).map(new Func1<ServiceResponse<ApplicationDefinitionInner>, ApplicationDefinitionInner>() {
             @Override
             public ApplicationDefinitionInner call(ServiceResponse<ApplicationDefinitionInner> response) {
                 return response.body();
@@ -966,23 +1008,30 @@ public class ApplicationDefinitionsInner implements InnerSupportsGet<Application
     /**
      * Creates a new managed application definition.
      *
-     * @param applicationDefinitionId The fully qualified ID of the managed application definition, including the managed application name and the managed application definition resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applicationDefinitions/{applicationDefinition-name}
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationDefinitionName The name of the managed application definition.
      * @param parameters Parameters supplied to the create or update a managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationDefinitionInner object
      */
-    public Observable<ServiceResponse<ApplicationDefinitionInner>> beginCreateOrUpdateByIdWithServiceResponseAsync(String applicationDefinitionId, ApplicationDefinitionInner parameters) {
-        if (applicationDefinitionId == null) {
-            throw new IllegalArgumentException("Parameter applicationDefinitionId is required and cannot be null.");
+    public Observable<ServiceResponse<ApplicationDefinitionInner>> beginCreateOrUpdateByIdWithServiceResponseAsync(String resourceGroupName, String applicationDefinitionName, ApplicationDefinitionInner parameters) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        if (applicationDefinitionName == null) {
+            throw new IllegalArgumentException("Parameter applicationDefinitionName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
         Validator.validate(parameters);
-        return service.beginCreateOrUpdateById(applicationDefinitionId, parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.beginCreateOrUpdateById(resourceGroupName, applicationDefinitionName, this.client.subscriptionId(), this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ApplicationDefinitionInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ApplicationDefinitionInner>> call(Response<ResponseBody> response) {
