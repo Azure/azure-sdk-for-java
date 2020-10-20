@@ -25,15 +25,22 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * This class is an abstraction over many different ways that binary data can be represented. The {@link BinaryData}
- * can be created from {@link InputStream}, {@link Flux} of {@link ByteBuffer}, {@link String}, {@link Object} and byte
- * array. The data is collected from provided sources and stored into a byte array.
+ * This class is an abstraction over many different ways that binary data can be represented. The data representated by
+ * {@link BinaryData} is immutable. The {@link BinaryData} can be created from {@link InputStream}, {@link Flux} of
+ * {@link ByteBuffer}, {@link String}, {@link Object} and byte array. This type internally store given data in byte
+ * array.
  * <p>
- * It also provides a way to serialize and deserialize an {@link Object} into {@link BinaryData} given an
+ * It provides a way to serialize {@link Object} into {@link BinaryData} using API
+ * {@link BinaryData#fromObject(Object, ObjectSerializer)} where you can provide your {@link ObjectSerializer}.
+ * <p>
+ * It provides a way to de-serialize {@link BinaryData} into specified {@link Object} using API
+ * {@link BinaryData#toObject(Class, ObjectSerializer)} where you can provide object type and your
  * {@link ObjectSerializer}.
  * <p>
  * It provides API to use default json serializer which is available in classpath. The serializer must implement
- * {@link JsonSerializer} interface.Code samples are explained below.
+ * {@link JsonSerializer} interface.
+ * <p>
+ * Code samples are explained below.
  *
  * <p><strong>Create an instance from Bytes</strong></p>
  * {@codesnippet com.azure.core.experimental.util.BinaryDocument.from#bytes}
@@ -47,23 +54,29 @@ import java.util.Objects;
  * <p><strong>Get an Object from {@link BinaryData}</strong></p>
  * {@codesnippet com.azure.core.experimental.util.BinaryDocument.to#ObjectAsync}
  *
+ * <p><strong>Create an instance from Object</strong></p>
+ * {@codesnippet com.azure.core.experimental.util.BinaryDocument.from#Object}
+ *
  * @see ObjectSerializer
  */
 public final class  BinaryData {
     private static final ClientLogger LOGGER = new ClientLogger(BinaryData.class);
-    private static final byte[] EMPTY_DATA = new byte[0];
+    private static final byte[] EMPTY_BYTES = new byte[0];
+    private static final BinaryData EMPTY_DATA = new BinaryData(new byte[0]);
 
     private static JsonSerializer defaultJsonSerializer;
+
     private final byte[] data;
 
     /**
-     * Create instance of {@link BinaryData} given the data. If {@code null} value is provided , it will be converted
-     * into empty byte array.
+     * Create an instance of {@link BinaryData} from  the given data. If {@code null} value is provided , it will be
+     * converted into empty byte array.
+     *
      * @param data to represent as bytes.
      */
     BinaryData(byte[] data) {
         if (Objects.isNull(data) || data.length == 0) {
-            data = EMPTY_DATA;
+            data = EMPTY_BYTES;
         }
         this.data = Arrays.copyOf(data, data.length);
     }
@@ -154,7 +167,7 @@ public final class  BinaryData {
      */
     public static BinaryData fromString(String data) {
         if (Objects.isNull(data) || data.length() == 0) {
-            return new BinaryData(EMPTY_DATA);
+            return EMPTY_DATA;
         } else {
             return new BinaryData(data.getBytes(StandardCharsets.UTF_8));
         }
@@ -185,7 +198,7 @@ public final class  BinaryData {
      */
     public static BinaryData fromObject(Object data) {
         if (Objects.isNull(data)) {
-            return new BinaryData(EMPTY_DATA);
+            return EMPTY_DATA;
         }
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         getDefaultSerializer().serialize(outputStream, data);
@@ -197,6 +210,9 @@ public final class  BinaryData {
      * Serialize the given {@link Object} into {@link BinaryData} using the provided {@link ObjectSerializer}.
      * If {@code null} data is provided , it will be converted into empty byte array.
      *
+     * <p><strong>Create an instance from Object</strong></p>
+     * {@codesnippet com.azure.core.experimental.util.BinaryDocument.from#Object}
+     *
      * @param data The {@link Object} which needs to be serialized into bytes.
      * @param serializer to use for serializing the object.
      * @throws NullPointerException If {@code serializer} is null.
@@ -204,7 +220,7 @@ public final class  BinaryData {
      */
     public static BinaryData fromObject(Object data, ObjectSerializer serializer) {
         if (Objects.isNull(data)) {
-            return new BinaryData(EMPTY_DATA);
+            return EMPTY_DATA;
         }
 
         Objects.requireNonNull(serializer, "'serializer' cannot be null.");

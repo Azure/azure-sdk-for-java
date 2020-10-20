@@ -89,6 +89,41 @@ public class BinaryDateJavaDocCodeSnippet {
     }
 
     /**
+     * Codesnippets for {@link BinaryData#fromObject(Object, ObjectSerializer)}.
+     */
+    public void createFromObject() {
+        // BEGIN: com.azure.core.experimental.util.BinaryDocument.from#Object
+        // Lets say we have Person object which could be serialized into json.
+        class Person {
+            @JsonProperty
+            private String name;
+
+            @JsonSetter
+            public Person setName(String name) {
+                this.name = name;
+                return this;
+            }
+
+            @JsonGetter
+            public String getName() {
+                return name;
+            }
+        }
+        final Person data = new Person().setName("John");
+
+        // Ensure your classpath have the Serializer to use to serialize object. For example you can use one of
+        // following library.
+        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson or
+        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson
+
+        final ObjectSerializer serializer =
+            new MyJsonSerializer(); // Replace this with your Serializer or from above libraries.
+        BinaryData binaryData = BinaryData.fromObject(data, serializer);
+        System.out.println(binaryData.toString());
+        // END: com.azure.core.experimental.util.BinaryDocument.from#Object
+    }
+
+    /**
      * Codesnippets for {@link BinaryData#toStream()}.
      */
     public void toStream() throws IOException {
@@ -190,5 +225,11 @@ public class BinaryDateJavaDocCodeSnippet {
         public Mono<Void> serializeAsync(OutputStream stream, Object value) {
             return Mono.fromRunnable(() -> serialize(stream, value));
         }
+    }
+
+    public static void main(String[] args) {
+
+        BinaryDateJavaDocCodeSnippet s = new BinaryDateJavaDocCodeSnippet();
+        s.createFromObject();
     }
 }
