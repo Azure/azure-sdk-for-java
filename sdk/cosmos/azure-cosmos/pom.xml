@@ -121,6 +121,20 @@ Licensed under the MIT License.
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
       <version>1.9.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <exclusions>
+        <exclusion>
+          <groupId>io.netty</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>io.projectreactor</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>io.projectreactor.netty</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
