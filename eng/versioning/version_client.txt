@@ -132,7 +132,7 @@ com.azure.resourcemanager:azure-resourcemanager-sql;2.0.0-beta.4;2.0.0-beta.5
 com.azure.resourcemanager:azure-resourcemanager-storage;2.0.0-beta.4;2.0.0
 com.azure.resourcemanager:azure-resourcemanager-trafficmanager;2.0.0-beta.4;2.0.0-beta.5
 com.azure.resourcemanager:azure-resourcemanager-test;2.0.0-beta.1;2.0.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-resource-generated;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-resource-generated;1.0.0-beta.1;1.0.0-beta.1
 
 
 # Unreleased dependencies: Copy the entry from above, prepend "unreleased_" and remove the current
