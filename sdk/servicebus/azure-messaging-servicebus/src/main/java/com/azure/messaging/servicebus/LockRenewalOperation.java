@@ -17,15 +17,12 @@ import java.time.OffsetDateTime;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
  * Represents a renewal session or message lock renewal operation that.
  */
-final class LockRenewalOperation implements AutoCloseable {
-    private static final Consumer<OffsetDateTime> NO_OP = (ignore) -> { };
-
+class LockRenewalOperation implements AutoCloseable {
     private final ClientLogger logger = new ClientLogger(LockRenewalOperation.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicReference<OffsetDateTime> lockedUntil = new AtomicReference<>();
@@ -37,7 +34,6 @@ final class LockRenewalOperation implements AutoCloseable {
     private final String lockToken;
     private final boolean isSession;
     private final Function<String, Mono<OffsetDateTime>> renewalOperation;
-    private final Consumer<OffsetDateTime> updateLockUntilOperation;
     private final Disposable subscription;
 
     /**
@@ -54,34 +50,6 @@ final class LockRenewalOperation implements AutoCloseable {
     }
 
     /**
-     * Creates a new lock renewal operation. The lock is initially renewed.
-     *
-     * @param lockToken Message lock or session id to renew.
-     * @param maxLockRenewalDuration The maximum duration this lock should be renewed.
-     * @param isSession Whether the lock represents a session lock or message lock.
-     * @param renewalOperation The renewal operation to call.
-     * @param updateLockUntilOperation The operation to call to update lockUntil time on the message.
-     */
-    LockRenewalOperation(String lockToken, Duration maxLockRenewalDuration, boolean isSession,
-        Function<String, Mono<OffsetDateTime>> renewalOperation, Consumer<OffsetDateTime> updateLockUntilOperation) {
-        this(lockToken, maxLockRenewalDuration, isSession, renewalOperation, OffsetDateTime.now(),
-            updateLockUntilOperation);
-    }
-
-    /**
-     * Creates a new lock renewal operation. The lock is initially renewed.
-     *
-     * @param lockToken Message lock or session id to renew.
-     * @param maxLockRenewalDuration The maximum duration this lock should be renewed.
-     * @param isSession Whether the lock represents a session lock or message lock.
-     * @param renewalOperation The renewal operation to call.
-     * @param tokenLockedUntil The initial period the message or session is locked until.
-     */
-    LockRenewalOperation(String lockToken, Duration maxLockRenewalDuration, boolean isSession,
-        Function<String, Mono<OffsetDateTime>> renewalOperation, OffsetDateTime tokenLockedUntil) {
-        this(lockToken, maxLockRenewalDuration, isSession, renewalOperation, tokenLockedUntil, NO_OP);
-    }
-    /**
      * Creates a new lock renewal operation.
      *
      * @param lockToken Lock or session id to renew.
@@ -89,19 +57,15 @@ final class LockRenewalOperation implements AutoCloseable {
      * @param maxLockRenewalDuration The maximum duration this lock should be renewed.
      * @param isSession Whether the lock represents a session lock or message lock.
      * @param renewalOperation The renewal operation to call.
-     * @param updateLockUntilOperation The operation to call to update lockUntil time on the message.
      */
     LockRenewalOperation(String lockToken, Duration maxLockRenewalDuration, boolean isSession,
-        Function<String, Mono<OffsetDateTime>> renewalOperation, OffsetDateTime tokenLockedUntil,
-        Consumer<OffsetDateTime> updateLockUntilOperation) {
+        Function<String, Mono<OffsetDateTime>> renewalOperation, OffsetDateTime tokenLockedUntil) {
         this.lockToken = Objects.requireNonNull(lockToken, "'lockToken' cannot be null.");
         this.renewalOperation = Objects.requireNonNull(renewalOperation, "'renewalOperation' cannot be null.");
         this.isSession = isSession;
 
         Objects.requireNonNull(tokenLockedUntil, "'lockedUntil cannot be null.'");
         Objects.requireNonNull(maxLockRenewalDuration, "'maxLockRenewalDuration' cannot be null.");
-        this.updateLockUntilOperation = Objects.requireNonNull(updateLockUntilOperation,
-            "'updateLockUntilOperation' cannot be null.");
 
         if (maxLockRenewalDuration.isNegative()) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
@@ -116,7 +80,7 @@ final class LockRenewalOperation implements AutoCloseable {
             .cache(Duration.ofMinutes(2));
 
         this.completionMono = renewLockOperation.then();
-        this.subscription = renewLockOperation.subscribe(this::updateLockedUntil,
+        this.subscription = renewLockOperation.subscribe(until -> this.lockedUntil.set(until),
             error -> {
                 logger.error("token[{}]. Error occurred while renewing lock token.", error);
                 status.set(LockRenewalStatus.FAILED);
@@ -129,11 +93,6 @@ final class LockRenewalOperation implements AutoCloseable {
 
                 cancellationProcessor.onComplete();
             });
-    }
-
-    void updateLockedUntil(OffsetDateTime newLockedUntil) {
-        this.lockedUntil.set(newLockedUntil);
-        this.updateLockUntilOperation.accept(newLockedUntil);
     }
 
     /**

@@ -13,7 +13,6 @@ import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -44,13 +43,8 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
             .publish(receiverOptions.getPrefetchCount())
             .autoConnect(1);
 
-        final Duration maxAutoLockRenewDuration = receiverOptions.getMaxLockRenewDuration();
-
-        final boolean isAutoLockRenewal = maxAutoLockRenewDuration != null
-            && !maxAutoLockRenewDuration.isZero() && !maxAutoLockRenewDuration.isNegative();
-
-        if (isAutoLockRenewal) {
-            this.messageSource = new ServiceBusMessageRenewOperator(source, maxAutoLockRenewDuration,
+        if (receiverOptions.isAutoRenewEnabled()) {
+            this.messageSource = new FluxAutoRenew(source, receiverOptions.getMaxLockRenewDuration(),
                 messageLockContainer, onRenewLock);
         } else {
             this.messageSource = source;

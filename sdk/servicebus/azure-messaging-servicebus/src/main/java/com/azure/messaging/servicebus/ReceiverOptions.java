@@ -76,6 +76,15 @@ class ReceiverOptions {
     }
 
     /**
+     * Determine if client have enabled auto renew of message or session lock.
+     *
+     * @return true if  autoRenew is enabled; false otherwise.
+     */
+    boolean isAutoRenewEnabled() {
+        return maxLockRenewDuration != null && !maxLockRenewDuration.isZero() && !maxLockRenewDuration.isNegative();
+    }
+
+    /**
      * Gets whether or not the receiver is a session-aware receiver.
      *
      * @return true if it is a session-aware receiver; false otherwise.
