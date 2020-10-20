@@ -38,7 +38,7 @@ public class AzureTests extends TestBase {
 
     @Test
     public void firstTest() throws Exception {
-        List<Subscription> subscriptions = authenticated.subscriptions().list();
+        List<Subscription> subscriptions = authenticated.subscriptionsManager().subscriptions().list();
 
         if (subscriptions == null || subscriptions.size() == 0) {
             Assert.fail("Credential isn't assigned to any subscription");
@@ -48,14 +48,14 @@ public class AzureTests extends TestBase {
 
         rgName = SdkContext.randomResourceName("rg", 20);
         String saName = SdkContext.randomResourceName("sa", 20);
-        ResourceGroup group = azure.resourceGroups()
+        ResourceGroup group = azure.resourceManager().resourceGroups()
                 .define(rgName)
                 .withExistingSubscription()
                 .withLocation(Region.US_WEST.toString())
                 .create();
         Assert.assertNotNull(group);
 
-        StorageAccount storageAccount = azure.storageAccounts()
+        StorageAccount storageAccount = azure.storageManager().storageAccounts()
                 .define(saName)
                 .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(rgName)
