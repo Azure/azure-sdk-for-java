@@ -56,7 +56,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         DigitalTwinsClient digitalTwinsClient = createDigitalTwinsClient();
 
         // BEGIN: com.azure.digitaltwins.core.syncClient.createDigitalTwins#String-Object-Class#BasicDigitalTwin
-        String modelId = "dtmi:samples:Building;1";
+        String modelId = "dtmi:com:samples:Building;1";
 
         BasicDigitalTwin basicTwin = new BasicDigitalTwin("myDigitalTwinId")
             .setMetadata(
@@ -92,7 +92,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         DigitalTwinsClient digitalTwinsClient = createDigitalTwinsClient();
 
         // BEGIN: com.azure.digitaltwins.core.syncClient.createDigitalTwinsWithResponse#String-Object-Class-Options-Context#BasicDigitalTwin
-        String modelId = "dtmi:samples:Building;1";
+        String modelId = "dtmi:com:samples:Building;1";
 
         BasicDigitalTwin basicDigitalTwin = new BasicDigitalTwin("myDigitalTwinId")
             .setMetadata(
@@ -628,7 +628,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     @Override
     public void getModel() {
         // BEGIN: com.azure.digitaltwins.core.syncClient.getModel#String
-        DigitalTwinsModelData model = digitalTwinsSyncClient.getModel("dtmi:samples:Building;1");
+        DigitalTwinsModelData model = digitalTwinsSyncClient.getModel("dtmi:com:samples:Building;1");
 
         System.out.println("Retrieved model with Id: " + model.getId());
         // END: com.azure.digitaltwins.core.syncClient.getModel#String
@@ -642,7 +642,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     public void getModelWithResponse() {
         // BEGIN: com.azure.digitaltwins.core.syncClient.getModelWithResponse#String
         Response<DigitalTwinsModelData> modelWithResponse = digitalTwinsSyncClient.getModelWithResponse(
-            "dtmi:samples:Building;1",
+            "dtmi:com:samples:Building;1",
             new GetModelOptions(),
             new Context("key", "value"));
 
@@ -681,7 +681,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     @Override
     public void decommissionModel() {
         // BEGIN: com.azure.digitaltwins.core.syncClient.decommissionModel#String
-        digitalTwinsSyncClient.decommissionModel("dtmi:samples:Building;1");
+        digitalTwinsSyncClient.decommissionModel("dtmi:com:samples:Building;1");
         // END: com.azure.digitaltwins.core.syncClient.decommissionModel#String
     }
 
@@ -693,7 +693,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     public void decommissionModelWithResponse() {
         // BEGIN: com.azure.digitaltwins.core.syncClient.decommissionModelWithResponse#String
         Response<Void> response = digitalTwinsSyncClient.decommissionModelWithResponse(
-            "dtmi:samples:Building;1",
+            "dtmi:com:samples:Building;1",
             new UpdateModelOptions(),
             new Context("key", "value"));
 
@@ -707,7 +707,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     @Override
     public void deleteModel() {
         // BEGIN: com.azure.digitaltwins.core.syncClient.deleteModel#String
-        digitalTwinsSyncClient.deleteModel("dtmi:samples:Building;1");
+        digitalTwinsSyncClient.deleteModel("dtmi:com:samples:Building;1");
         // END: com.azure.digitaltwins.core.syncClient.deleteModel#String
     }
 
@@ -719,7 +719,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     public void deleteModelWithResponse() {
         // BEGIN: com.azure.digitaltwins.core.syncClient.deleteModelWithResponse#String
         Response<Void> response = digitalTwinsSyncClient.deleteModelWithResponse(
-            "dtmi:samples:Building;1",
+            "dtmi:com:samples:Building;1",
             new DeleteModelOptions(),
             new Context("key", "value"));
 

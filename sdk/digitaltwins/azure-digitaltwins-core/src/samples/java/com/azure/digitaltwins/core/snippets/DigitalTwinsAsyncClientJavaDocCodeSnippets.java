@@ -51,7 +51,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     public void createDigitalTwin() {
         DigitalTwinsAsyncClient digitalTwinsAsyncClient = createDigitalTwinsAsyncClient();
         // BEGIN: com.azure.digitaltwins.core.asyncClient.createDigitalTwins#String-Object-Class#BasicDigitalTwin
-        String modelId = "dtmi:samples:Building;1";
+        String modelId = "dtmi:com:samples:Building;1";
 
         BasicDigitalTwin basicTwin = new BasicDigitalTwin("myDigitalTwinId")
             .setMetadata(
@@ -80,7 +80,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
         DigitalTwinsAsyncClient digitalTwinsAsyncClient = createDigitalTwinsAsyncClient();
 
         // BEGIN: com.azure.digitaltwins.core.asyncClient.createDigitalTwinsWithResponse#String-Object-Class-Options#BasicDigitalTwin
-        String modelId = "dtmi:samples:Building;1";
+        String modelId = "dtmi:com:samples:Building;1";
 
         BasicDigitalTwin basicDigitalTwin = new BasicDigitalTwin("myDigitalTwinId")
             .setMetadata(
@@ -571,7 +571,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     @Override
     public void getModel() {
         // BEGIN: com.azure.digitaltwins.core.asyncClient.getModel#String
-        digitalTwinsAsyncClient.getModel("dtmi:samples:Building;1")
+        digitalTwinsAsyncClient.getModel("dtmi:com:samples:Building;1")
             .subscribe(model -> System.out.println("Retrieved model with Id: " + model.getId()));
         // END: com.azure.digitaltwins.core.asyncClient.getModel#String
     }
@@ -584,7 +584,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     public void getModelWithResponse() {
         // BEGIN: com.azure.digitaltwins.core.asyncClient.getModelWithResponse#String-Options
         digitalTwinsAsyncClient.getModelWithResponse(
-            "dtmi:samples:Building;1",
+            "dtmi:com:samples:Building;1",
             new GetModelOptions())
             .subscribe(modelWithResponse -> {
                 System.out.println("Received HTTP response with status code: " + modelWithResponse.getStatusCode());
@@ -622,7 +622,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     @Override
     public void decommissionModel() {
         // BEGIN: com.azure.digitaltwins.core.asyncClient.decommissionModel#String
-        digitalTwinsAsyncClient.decommissionModel("dtmi:samples:Building;1")
+        digitalTwinsAsyncClient.decommissionModel("dtmi:com:samples:Building;1")
             .subscribe();
         // END: com.azure.digitaltwins.core.asyncClient.decommissionModel#String
     }
@@ -635,7 +635,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     public void decommissionModelWithResponse() {
         // BEGIN: com.azure.digitaltwins.core.asyncClient.decommissionModelWithResponse#String-Options
         digitalTwinsAsyncClient.decommissionModelWithResponse(
-            "dtmi:samples:Building;1", new UpdateModelOptions())
+            "dtmi:com:samples:Building;1", new UpdateModelOptions())
         .subscribe(response ->
             System.out.println(
                 "Received decommission model HTTP response with status:" +
@@ -649,7 +649,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     @Override
     public void deleteModel() {
         // BEGIN: com.azure.digitaltwins.core.asyncClient.deleteModel#String
-        digitalTwinsAsyncClient.deleteModel("dtmi:samples:Building;1")
+        digitalTwinsAsyncClient.deleteModel("dtmi:com:samples:Building;1")
             .subscribe();
         // END: com.azure.digitaltwins.core.asyncClient.deleteModel#String
     }
@@ -662,7 +662,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     public void deleteModelWithResponse() {
         // BEGIN: com.azure.digitaltwins.core.asyncClient.deleteModelWithResponse#String-Options
         digitalTwinsAsyncClient.deleteModelWithResponse(
-            "dtmi:samples:Building;1",
+            "dtmi:com:samples:Building;1",
             new DeleteModelOptions())
         .subscribe(response ->
             System.out.println(

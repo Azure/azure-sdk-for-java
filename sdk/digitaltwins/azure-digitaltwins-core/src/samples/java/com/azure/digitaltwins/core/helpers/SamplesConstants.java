@@ -11,7 +11,7 @@ public class SamplesConstants {
     public static final String HVAC_MODEL_ID = "dtmi:com:samples:HVAC;1";
 
     public static final String TEMPORARY_COMPONENT_MODEL_PREFIX = "dtmi:com:samples:ComponentModel;";
-    public static final String TEMPORARY_MODEL_PREFIX = "dtmi:samples:TempModel;";
+    public static final String TEMPORARY_MODEL_PREFIX = "dtmi:com:samples:TempModel;";
 
     public static final String TEMPORARY_TWIN_PREFIX = "sampleTwin";
 
