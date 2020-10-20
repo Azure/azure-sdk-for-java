@@ -3,9 +3,9 @@
 
 package com.azure.resourcemanager.perf.core;
 
+import com.azure.core.management.Region;
 import com.azure.core.test.utils.ResourceNamer;
 import com.azure.perf.test.core.PerfStressOptions;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
