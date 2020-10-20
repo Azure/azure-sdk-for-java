@@ -299,31 +299,47 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void receiveTwoMessagesAutoComplete(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType, 0, isSessionEnabled);
+        final int entityIndex = 0;
+        final boolean shareConnection = false;
+        final boolean useCredentials = false;
+
+        this.sender = getSenderBuilder(useCredentials, entityType, entityIndex, isSessionEnabled, shareConnection)
+            .buildAsyncClient();
+
+        if (isSessionEnabled) {
+            assertNotNull(sessionId, "'sessionId' should have been set.");
+            this.receiver = getSessionReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
+                .enableAutoComplete(true)
+                .sessionId(sessionId)
+                .buildAsyncClient();
+            this.receiveAndDeleteReceiver = getSessionReceiverBuilder(useCredentials, entityType, entityIndex,
+                shareConnection)
+                .enableAutoComplete(true)
+                .sessionId(sessionId)
+                .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+                .buildAsyncClient();
+        } else {
+            this.receiver = getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
+                .buildAsyncClient();
+            this.receiveAndDeleteReceiver = getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
+                .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+                .buildAsyncClient();
+        }
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
-        final List<ServiceBusReceivedMessage> receivedMessages = new ArrayList<>();
-
         Mono.when(sendMessage(message), sendMessage(message)).block(TIMEOUT);
 
         // Assert & Act
-        try {
-            StepVerifier.create(receiver.receiveMessages())
-                .assertNext(receivedMessage -> {
-                    receivedMessages.add(receivedMessage.getMessage());
-                    assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-                })
-                .assertNext(receivedMessage -> {
-                    receivedMessages.add(receivedMessage.getMessage());
-                    assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-                })
-                .thenCancel()
-                .verify();
-        } finally {
-            int numberCompleted = completeMessages(receiver, receivedMessages);
-            messagesPending.addAndGet(-numberCompleted);
-        }
+        StepVerifier.create(receiver.receiveMessages())
+            .assertNext(receivedMessage -> {
+                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+            })
+            .assertNext(receivedMessage -> {
+                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+            })
+            .thenCancel()
+            .verify();
     }
 
     /**
@@ -333,27 +349,48 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void receiveMessageAutoComplete(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType, 0, isSessionEnabled);
+        final int entityIndex = 0;
+        final boolean shareConnection = false;
+        final boolean useCredentials = false;
+
+        this.sender = getSenderBuilder(useCredentials, entityType, entityIndex, isSessionEnabled, shareConnection)
+            .buildAsyncClient();
+
+        if (isSessionEnabled) {
+            assertNotNull(sessionId, "'sessionId' should have been set.");
+            this.receiver = getSessionReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
+                .enableAutoComplete(true)
+                .sessionId(sessionId)
+                .buildAsyncClient();
+            this.receiveAndDeleteReceiver = getSessionReceiverBuilder(useCredentials, entityType, entityIndex,
+                shareConnection)
+                .enableAutoComplete(true)
+                .sessionId(sessionId)
+                .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+                .buildAsyncClient();
+        } else {
+            this.receiver = getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
+                .buildAsyncClient();
+            this.receiveAndDeleteReceiver = getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
+                .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+                .buildAsyncClient();
+        }
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
-        final List<ServiceBusReceivedMessage> receivedMessages = new ArrayList<>();
 
         sendMessage(message).block(TIMEOUT);
 
-        // Assert & Act
-        try {
-            StepVerifier.create(receiver.receiveMessages())
-                .assertNext(receivedMessage -> {
-                    receivedMessages.add(receivedMessage.getMessage());
-                    assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-                })
-                .thenCancel()
-                .verify();
-        } finally {
-            int numberCompleted = completeMessages(receiver, receivedMessages);
-            messagesPending.addAndGet(-numberCompleted);
-        }
+        // Assert
+        StepVerifier.create(receiver.receiveMessages())
+            .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, messageId, isSessionEnabled))
+            .thenCancel()
+            .verify();
+
+        StepVerifier.create(receiver.receiveMessages())
+            .thenAwait(Duration.ofSeconds(35))
+            .thenCancel()
+            .verify();
     }
 
     /**
@@ -1166,6 +1203,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled) {
         final boolean shareConnection = false;
         final boolean useCredentials = false;
+        this.sender = getSenderBuilder(useCredentials, entityType, entityIndex, isSessionEnabled, shareConnection)
+            .buildAsyncClient();
 
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
