@@ -4,9 +4,10 @@
 package com.azure.aad.controller;
 
 import com.azure.aad.model.TodoItem;
-import com.microsoft.azure.spring.autoconfigure.aad.Constants;
-import com.microsoft.azure.spring.autoconfigure.aad.UserGroup;
-import com.microsoft.azure.spring.autoconfigure.aad.UserPrincipal;
+import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
+import com.azure.spring.autoconfigure.aad.MemberShip;
+import com.azure.spring.autoconfigure.aad.UserPrincipal;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,9 @@ import java.util.stream.Collectors;
 
 @RestController
 public class TodoListController {
+    @Autowired
+    private AADAuthenticationProperties aadAuthenticationProperties;
+
     private final List<TodoItem> todoList = new ArrayList<>();
 
     public TodoListController() {
@@ -92,11 +96,11 @@ public class TodoListController {
     public ResponseEntity<String> deleteTodoItem(@PathVariable("id") int id,
                                                  PreAuthenticatedAuthenticationToken authToken) {
         final UserPrincipal current = (UserPrincipal) authToken.getPrincipal();
-        UserGroup userGroup = new UserGroup(
+        MemberShip memberShip = new MemberShip(
             "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-            Constants.OBJECT_TYPE_GROUP,
+            MemberShip.OBJECT_TYPE_GROUP,
             "group1");
-        if (current.isMemberOf(userGroup)) {
+        if (current.isMemberOf(aadAuthenticationProperties, memberShip.getDisplayName())) {
             return todoList.stream()
                            .filter(i -> i.getID() == id)
                            .findFirst()

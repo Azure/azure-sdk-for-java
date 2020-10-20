@@ -34,8 +34,9 @@ pr:
       - sdk/authorization/mgmt-v2018_09_01_preview
 
 extends:
-  template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
+    SDKType: data
     ServiceDirectory: authorization
     Artifacts:
       - name: azure-authentication-msi-token-provider

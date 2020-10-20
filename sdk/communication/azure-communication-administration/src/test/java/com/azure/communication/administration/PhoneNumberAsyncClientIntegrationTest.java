@@ -23,12 +23,16 @@ import com.azure.communication.administration.models.UpdatePhoneNumberCapabiliti
 import com.azure.communication.common.PhoneNumber;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -461,6 +465,31 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
                 assertNotNull(item.getValue().getReleaseId());
             })
             .verifyComplete();
+    }
+
+    @Test()
+    public void beginCreateSearch() {
+        List<String> phonePlanIds = new ArrayList<>();
+        phonePlanIds.add(PHONE_PLAN_ID);
+
+        CreateSearchOptions createSearchOptions = new CreateSearchOptions();
+        createSearchOptions
+            .setAreaCode(AREA_CODE_FOR_SEARCH)
+            .setDescription(SEARCH_OPTIONS_DESCRIPTION)
+            .setDisplayName(SEARCH_OPTIONS_NAME)
+            .setPhonePlanIds(phonePlanIds)
+            .setQuantity(2);
+
+        Duration duration = Duration.ofSeconds(1);
+        PhoneNumberAsyncClient client = this.getClient();
+        PollerFlux<PhoneNumberSearch, PhoneNumberSearch> poller = 
+            client.beginCreateSearch(createSearchOptions, duration);
+        AsyncPollResponse<PhoneNumberSearch, PhoneNumberSearch> asyncRes = 
+            poller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+            .blockLast();
+        PhoneNumberSearch testResult = asyncRes.getValue();
+        assertEquals(testResult.getPhoneNumbers().size(), 2);
+        assertNotNull(testResult.getSearchId());
     }
 
     private PhoneNumberAsyncClient getClient() {

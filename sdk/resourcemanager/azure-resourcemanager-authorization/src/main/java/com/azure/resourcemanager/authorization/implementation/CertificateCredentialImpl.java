@@ -33,7 +33,7 @@ class CertificateCredentialImpl<T extends HasCredential<T>>
     CertificateCredentialImpl(KeyCredentialInner keyCredential) {
         super(keyCredential);
         if (keyCredential.customKeyIdentifier() != null && !keyCredential.customKeyIdentifier().isEmpty()) {
-            this.name = new String(Base64.getDecoder().decode(keyCredential.customKeyIdentifier()),
+            this.name = new String(Base64.getMimeDecoder().decode(keyCredential.customKeyIdentifier()),
                 StandardCharsets.UTF_8);
         } else {
             this.name = keyCredential.keyId();

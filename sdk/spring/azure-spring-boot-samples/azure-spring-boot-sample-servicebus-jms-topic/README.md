@@ -38,6 +38,7 @@ Running this sample will be charged by Azure. You can check the usage and bill a
 2. Specify your topic name and subscription name. Update `TOPIC_NAME` in [TopicSendController](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-topic/src/main/java/com/azure/jms/topic/TopicSendController.java) and [TopicReceiveController](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-topic/src/main/java/com/azure/jms/topic/TopicReceiveController.java), and `SUBSCRIPTION_NAME` in [TopicReceiveController](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-topic/src/main/java/com/azure/jms/topic/TopicReceiveController.java).
 
 ### How to run
+First, we need to ensure that this [instruction] is completed before run.
 
 1. Run with Maven:
     ```
@@ -74,3 +75,4 @@ Type | Reference Link
 
 <!-- LINKS -->
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[instruction]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source

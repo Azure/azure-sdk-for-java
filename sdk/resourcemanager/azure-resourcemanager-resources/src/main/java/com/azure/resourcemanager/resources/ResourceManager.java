@@ -78,7 +78,7 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
      * @param profile the profile used in resource management
      * @return the interface exposing resource management API entry points that work across subscriptions
      */
-    public static ResourceManager.Authenticated authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    private static ResourceManager.Authenticated authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new AuthenticatedImpl(httpPipeline, profile);
     }
 

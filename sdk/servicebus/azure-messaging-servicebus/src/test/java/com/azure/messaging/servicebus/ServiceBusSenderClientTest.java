@@ -89,7 +89,7 @@ public class ServiceBusSenderClientTest {
     void createBatchDefault() {
         // Arrange
         ServiceBusMessageBatch batch =  new ServiceBusMessageBatch(MAX_MESSAGE_LENGTH_BYTES, null, null,
-            null);
+            null, null, null);
         when(asyncSender.createBatch()).thenReturn(Mono.just(batch));
 
         //Act
@@ -129,7 +129,7 @@ public class ServiceBusSenderClientTest {
 
         final CreateBatchOptions options = new CreateBatchOptions().setMaximumSizeInBytes(batchSize);
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(batchSize, null, null,
-            null);
+            null, null, null);
         when(asyncSender.createBatch(options)).thenReturn(Mono.just(batch));
 
         // Act

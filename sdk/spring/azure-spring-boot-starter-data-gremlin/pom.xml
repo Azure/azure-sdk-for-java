@@ -10,9 +10,9 @@
     <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
 
-  <groupId>com.azure</groupId>
+  <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-starter-data-gremlin</artifactId>
-  <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-boot-starter-data-gremlin;current} -->
+  <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-data-gremlin;current} -->
 
   <name>Spring Data Gremlin Boot Starter</name>
   <description>Spring Boot Starter for Spring Data Gremlin</description>
@@ -30,9 +30,9 @@
       <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
     </dependency>
     <dependency>
-      <groupId>com.azure</groupId>
+      <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot</artifactId>
-      <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-boot;current} -->
+      <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot;current} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.spring.data.gremlin</groupId>

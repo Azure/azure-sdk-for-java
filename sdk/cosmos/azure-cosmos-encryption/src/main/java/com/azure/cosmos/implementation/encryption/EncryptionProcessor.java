@@ -3,12 +3,16 @@
 
 package com.azure.cosmos.implementation.encryption;
 
+import com.azure.cosmos.encryption.DecryptionContext;
+import com.azure.cosmos.encryption.DecryptionInfo;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.encryption.Encryptor;
 import com.azure.cosmos.encryption.EncryptionOptions;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.guava27.Strings;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -19,7 +23,9 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 public class EncryptionProcessor {
@@ -91,7 +97,7 @@ public class EncryptionProcessor {
                              );
     }
 
-    public static Mono<byte[]> decrypt(byte[] input, Encryptor encryptor) {
+    public static Mono<Pair<byte[], DecryptionContext>> decrypt(byte[] input, Encryptor encryptor) {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Decrypting byte[] of size [{}] on thread [{}]",
                 input == null ? null : input.length,
@@ -100,18 +106,18 @@ public class EncryptionProcessor {
 
         JsonNode itemJObj = Utils.parse(input, JsonNode.class);
         if (itemJObj instanceof ObjectNode) {
-            Mono<ObjectNode> itemJObjMono = decrypt((ObjectNode) itemJObj, encryptor);
+            Mono<Pair<ObjectNode, DecryptionContext>> itemJObjMono = decrypt((ObjectNode) itemJObj, encryptor);
             return itemJObjMono.flatMap(
-                decryptedItem -> {
-                    return Mono.just(EncryptionUtils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(), itemJObj));
+                decryptedItemWithContext -> {
+                    return Mono.just(Pair.of(EncryptionUtils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(), decryptedItemWithContext.getLeft()), decryptedItemWithContext.getRight()));
                 }
             );
         } else {
-            return Mono.just(input);
+            return Mono.just(Pair.of(input, null));
         }
     }
 
-    public static Mono<ObjectNode> decrypt(ObjectNode itemJObj, Encryptor encryptor) {
+    public static Mono<Pair<ObjectNode, DecryptionContext>> decrypt(ObjectNode itemJObj, Encryptor encryptor) {
         try {
             return decryptInternal(itemJObj, encryptor);
         } catch (Exception e) {
@@ -119,7 +125,7 @@ public class EncryptionProcessor {
         }
     }
 
-    private static Mono<ObjectNode> decryptInternal(ObjectNode itemJObj, Encryptor encryptor) {
+    private static Mono<Pair<ObjectNode, DecryptionContext>> decryptInternal(ObjectNode itemJObj, Encryptor encryptor) {
         assert (itemJObj != null);
         assert (encryptor != null);
 
@@ -130,7 +136,7 @@ public class EncryptionProcessor {
         }
 
         if (encryptionPropertiesJProp == null) {
-            return Mono.just(itemJObj);
+            return Mono.just(Pair.of(itemJObj, null));
         }
 
         EncryptionProperties encryptionProperties = null;
@@ -144,6 +150,8 @@ public class EncryptionProcessor {
                 "Unknown encryption format version: %s. Please upgrade your SDK to the latest version.", encryptionProperties.getEncryptionFormatVersion()));
         }
 
+        final EncryptionProperties encryptionPropertiesFinal = encryptionProperties;
+
         Mono<byte[]> plainTextMono = encryptor.decrypt(encryptionProperties.getEncryptedData(), encryptionProperties.getDataEncryptionKeyId(), encryptionProperties.getEncryptionAlgorithm());
 
         return plainTextMono.flatMap(
@@ -152,14 +160,19 @@ public class EncryptionProcessor {
                 SensitiveDataTransformer parser = new SensitiveDataTransformer();
                 ObjectNode plainTextJObj = parser.toObjectNode(plainText);
 
+                List<String> pathsDecrypted = new ArrayList<>();
                 Iterator<Map.Entry<String, JsonNode>> it = plainTextJObj.fields();
                 while (it.hasNext()) {
                     Map.Entry<String, JsonNode> entry = it.next();
                     itemJObj.set(entry.getKey(), entry.getValue());
+                    pathsDecrypted.add("/" + entry.getKey());
                 }
 
+                DecryptionInfo decryptionInfo = new DecryptionInfo(pathsDecrypted, encryptionPropertiesFinal.getDataEncryptionKeyId());
+                DecryptionContext decryptionContext = new DecryptionContext(ImmutableList.of(decryptionInfo));
+
                 itemJObj.remove(Constants.Properties.EncryptedInfo);
-                return Mono.just(itemJObj);
+                return Mono.just(Pair.of(itemJObj, decryptionContext));
             }
         );
     }

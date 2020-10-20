@@ -37,7 +37,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -234,7 +233,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         int concurrentRequestSnapshot = this.concurrentRequests.incrementAndGet();
 
         RntbdEndpointStatistics stat = endpointMetricsSnapshot(concurrentRequestSnapshot);
-        
+
         if (concurrentRequestSnapshot > this.maxConcurrentRequests) {
             try {
                 FailFastRntbdRequestRecord requestRecord = FailFastRntbdRequestRecord.createAndFailFast(
@@ -306,7 +305,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     // endregion
 
     // region Privates
-    
+
     private void ensureSuccessWhenReleasedToPool(Channel channel, Future<Void> released) {
         if (released.isSuccess()) {
             logger.debug("\n  [{}]\n  {}\n  release succeeded", this, channel);
@@ -336,6 +335,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     private RntbdRequestRecord write(final RntbdRequestArgs requestArgs) {
 
         final RntbdRequestRecord requestRecord = new AsyncRntbdRequestRecord(requestArgs, this.requestTimer);
+        requestRecord.stage(RntbdRequestRecord.Stage.CHANNEL_ACQUISITION_STARTED);
         final Future<Channel> connectedChannel = this.channelPool.acquire();
 
         logger.debug("\n  [{}]\n  {}\n  WRITE WHEN CONNECTED {}", this, requestArgs, connectedChannel);
@@ -543,7 +543,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         RntbdEndpointMonitoringProvider(Provider provider) {
             this.provider = provider;
         }
-        
+
         synchronized void init() {
             logger.info("Starting RntbdClientChannelPoolMonitoringProvider ...");
             this.future = RntbdEndpointMonitoringProvider.monitoringRntbdChannelPool.scheduleAtFixedRate(() -> {

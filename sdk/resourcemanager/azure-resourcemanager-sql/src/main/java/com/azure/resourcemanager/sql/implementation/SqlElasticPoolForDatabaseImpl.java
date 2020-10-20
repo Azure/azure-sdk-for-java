@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.sql.implementation;
 
-import com.azure.resourcemanager.sql.models.ElasticPoolEdition;
+import com.azure.resourcemanager.sql.models.ElasticPoolSku;
 import com.azure.resourcemanager.sql.models.Sku;
 import com.azure.resourcemanager.sql.models.SqlDatabaseOperations;
 import com.azure.resourcemanager.sql.models.SqlElasticPool;
@@ -38,13 +38,15 @@ public class SqlElasticPoolForDatabaseImpl
         return this.sqlDatabase;
     }
 
-    public SqlElasticPoolForDatabaseImpl withEdition(ElasticPoolEdition edition) {
-        this.sqlElasticPool.withEdition(edition);
+    @Override
+    public SqlElasticPoolForDatabaseImpl withSku(ElasticPoolSku sku) {
+        this.sqlElasticPool.withSku(sku);
         return this;
     }
 
-    public SqlElasticPoolForDatabaseImpl withCustomEdition(Sku sku) {
-        this.sqlElasticPool.withCustomEdition(sku);
+    @Override
+    public SqlElasticPoolForDatabaseImpl withSku(Sku sku) {
+        this.sqlElasticPool.withSku(sku);
         return this;
     }
 
@@ -133,20 +135,14 @@ public class SqlElasticPoolForDatabaseImpl
     }
 
     @Override
-    public SqlElasticPoolForDatabaseImpl withDatabaseDtuMin(double databaseDtuMin) {
-        this.sqlElasticPool.withDatabaseDtuMin(databaseDtuMin);
+    public SqlElasticPoolForDatabaseImpl withDatabaseMinCapacity(double minCapacity) {
+        this.sqlElasticPool.withDatabaseMinCapacity(minCapacity);
         return this;
     }
 
     @Override
-    public SqlElasticPoolForDatabaseImpl withDatabaseDtuMax(double databaseDtuMax) {
-        this.sqlElasticPool.withDatabaseDtuMax(databaseDtuMax);
-        return this;
-    }
-
-    @Override
-    public SqlElasticPoolForDatabaseImpl withDtu(int dtu) {
-        this.sqlElasticPool.withDtu(dtu);
+    public SqlElasticPoolForDatabaseImpl withDatabaseMaxCapacity(double maxCapacity) {
+        this.sqlElasticPool.withDatabaseMaxCapacity(maxCapacity);
         return this;
     }
 

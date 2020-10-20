@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
+import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
@@ -168,4 +169,22 @@ public class ReflectionUtils {
     public static List<WeakReference<CpuListener>> getListeners() {
         return getStaticField(CpuMonitor.class, "cpuListeners");
     }
+
+    public static RxStoreModel getGatewayProxy(RxDocumentClientImpl rxDocumentClient){
+        return get(RxStoreModel.class, rxDocumentClient, "gatewayProxy");
+    }
+
+    public static RxStoreModel getRxServerStoreModel(RxDocumentClientImpl rxDocumentClient){
+        return get(RxStoreModel.class, rxDocumentClient, "storeModel");
+    }
+
+
+    public static void setGatewayProxy(RxDocumentClientImpl client, RxStoreModel storeModel) {
+        set(client, storeModel, "gatewayProxy");
+    }
+
+    public static void setServerStoreModel (RxDocumentClientImpl client, RxStoreModel storeModel) {
+        set(client, storeModel, "storeModel");
+    }
+
 }

@@ -11,9 +11,9 @@
     <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
 
-  <groupId>com.azure</groupId>
+  <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-data-gremlin</artifactId>
-  <version>2.3.1-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-gremlin;current} -->
+  <version>2.3.1-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-data-gremlin;current} -->
 
   <name>Spring Data Gremlin</name>
   <description>Gremlin support for Spring Data</description>
@@ -155,7 +155,7 @@
         <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <configuration>
           <sourceFileExcludes>
-            <sourceFileExclude>com/microsoft/spring/data/gremlin/mapping/BasicGremlinPersistentProperty.java</sourceFileExclude>
+            <sourceFileExclude>com/azure/spring/data/gremlin/mapping/BasicGremlinPersistentProperty.java</sourceFileExclude>
           </sourceFileExcludes>
           <additionalDependencies>
             <additionalDependency>

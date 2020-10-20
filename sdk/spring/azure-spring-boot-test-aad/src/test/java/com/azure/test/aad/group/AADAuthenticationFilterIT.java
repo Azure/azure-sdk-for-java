@@ -3,7 +3,7 @@
 
 package com.azure.test.aad.group;
 
-import com.microsoft.azure.spring.autoconfigure.aad.AADAuthenticationFilter;
+import com.azure.spring.autoconfigure.aad.AADAuthenticationFilter;
 import com.azure.test.utils.AppRunner;
 import com.azure.test.oauth.OAuthResponse;
 import com.azure.test.oauth.OAuthUtils;
