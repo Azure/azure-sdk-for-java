@@ -53,11 +53,11 @@ config = {
                 VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.9.RELEASE'),
             )
         },
-        'sdk/spring/azure-spring-boot-test-keyvault/pom.xml': {
-            VERSION_UPDATE_ITEMS: (
-                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.9.RELEASE'),
-            )
-        },
+        # 'sdk/spring/azure-spring-boot-test-keyvault/pom.xml': {
+        #     VERSION_UPDATE_ITEMS: (
+        #         VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.9.RELEASE'),
+        #     )
+        # },
         'sdk/spring/azure-spring-boot-test-servicebus-jms/pom.xml': {
             VERSION_UPDATE_ITEMS: (
                 VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.9.RELEASE'),
