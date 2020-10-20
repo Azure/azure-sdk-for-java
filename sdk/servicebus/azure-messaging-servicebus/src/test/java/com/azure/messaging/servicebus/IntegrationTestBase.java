@@ -6,7 +6,6 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
@@ -57,7 +56,6 @@ public abstract class IntegrationTestBase extends TestBase {
 
     private static final String PROXY_AUTHENTICATION_TYPE = "PROXY_AUTHENTICATION_TYPE";
 
-    private ConnectionStringProperties properties;
     private String testName;
     private final Scheduler scheduler = Schedulers.parallel();
 
@@ -77,10 +75,7 @@ public abstract class IntegrationTestBase extends TestBase {
         testName = testInfo.getDisplayName();
         assumeTrue(getTestMode() == TestMode.RECORD);
 
-        properties = new ConnectionStringProperties(getConnectionString());
-
         StepVerifier.setDefaultTimeout(TIMEOUT);
-
         beforeTest();
     }
 
@@ -190,10 +185,6 @@ public abstract class IntegrationTestBase extends TestBase {
         return new ProxyOptions(authenticationType, proxy, username, password);
     }
 
-    public ConnectionStringProperties getConnectionStringProperties() {
-        return properties;
-    }
-
     /**
      * Creates a new instance of {@link ServiceBusClientBuilder} with the default integration test settings and uses a
      * connection string to authenticate.
@@ -237,7 +228,6 @@ public abstract class IntegrationTestBase extends TestBase {
         int entityIndex, boolean isSessionAware, boolean sharedConnection) {
 
         ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
-
         switch (entityType) {
             case QUEUE:
                 final String queueName = isSessionAware ? getSessionQueueName(entityIndex) : getQueueName(entityIndex);
@@ -252,7 +242,6 @@ public abstract class IntegrationTestBase extends TestBase {
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
         }
-
     }
 
     protected ServiceBusReceiverClientBuilder getReceiverBuilder(boolean useCredentials, MessagingEntityType entityType,
@@ -319,46 +308,6 @@ public abstract class IntegrationTestBase extends TestBase {
         );
     }
 
-    protected static Stream<Arguments> messagingEntityAndDisposition() {
-        return Stream.of(
-            // The data corresponds to :entityType, dispositionStatus
-            Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.COMPLETED),
-            Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.ABANDONED),
-            Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.SUSPENDED),
-            Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.DEFERRED),
-
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.COMPLETED),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.ABANDONED),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.SUSPENDED),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.DEFERRED)
-        );
-    }
-
-    protected static Stream<Arguments> messagingEntityTransactionAndDisposition() {
-        return Stream.of(
-            // The data corresponds to :entityType, commit, dispositionStatus
-            Arguments.of(MessagingEntityType.QUEUE, true, DispositionStatus.COMPLETED),
-            Arguments.of(MessagingEntityType.QUEUE, true, DispositionStatus.ABANDONED),
-            Arguments.of(MessagingEntityType.QUEUE, true, DispositionStatus.SUSPENDED),
-            Arguments.of(MessagingEntityType.QUEUE, true, DispositionStatus.DEFERRED),
-
-            Arguments.of(MessagingEntityType.QUEUE, false, DispositionStatus.COMPLETED),
-            Arguments.of(MessagingEntityType.QUEUE, false, DispositionStatus.ABANDONED),
-            Arguments.of(MessagingEntityType.QUEUE, false, DispositionStatus.SUSPENDED),
-            Arguments.of(MessagingEntityType.QUEUE, false, DispositionStatus.DEFERRED),
-
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, true, DispositionStatus.COMPLETED),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, true, DispositionStatus.ABANDONED),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, true, DispositionStatus.SUSPENDED),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, true, DispositionStatus.DEFERRED),
-
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, false, DispositionStatus.COMPLETED),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, false, DispositionStatus.ABANDONED),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, false, DispositionStatus.SUSPENDED),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, false, DispositionStatus.DEFERRED)
-        );
-    }
-
     protected static Stream<Arguments> receiveDeferredMessageBySequenceNumber() {
         return Stream.of(
             Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.COMPLETED),
@@ -396,7 +345,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
     protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled) {
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
-        logger.verbose("Message id {}.", messageId);
+        logger.verbose("Message id '{}'.", messageId);
         return isSessionEnabled ? message.setSessionId(sessionId) : message;
     }
 
@@ -427,7 +376,7 @@ public abstract class IntegrationTestBase extends TestBase {
         if (sharedConnection && sharedBuilder == null) {
             sharedBuilder = getBuilder(useCredentials);
             builder = sharedBuilder;
-        } else if (sharedConnection && sharedBuilder != null) {
+        } else if (sharedConnection) {
             builder = sharedBuilder;
         } else {
             builder = getBuilder(useCredentials);
