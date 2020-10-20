@@ -36,7 +36,7 @@ public class DeploymentPropertiesExtended {
     private DateTime timestamp;
 
     /**
-     * Key/value pairs that represent deploymentoutput.
+     * Key/value pairs that represent deployment output.
      */
     @JsonProperty(value = "outputs")
     private Object outputs;
@@ -120,7 +120,7 @@ public class DeploymentPropertiesExtended {
     }
 
     /**
-     * Get key/value pairs that represent deploymentoutput.
+     * Get key/value pairs that represent deployment output.
      *
      * @return the outputs value
      */
@@ -129,7 +129,7 @@ public class DeploymentPropertiesExtended {
     }
 
     /**
-     * Set key/value pairs that represent deploymentoutput.
+     * Set key/value pairs that represent deployment output.
      *
      * @param outputs the outputs value to set
      * @return the DeploymentPropertiesExtended object itself.
