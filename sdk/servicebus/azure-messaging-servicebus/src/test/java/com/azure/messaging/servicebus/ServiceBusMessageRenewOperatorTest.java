@@ -367,15 +367,8 @@ public class ServiceBusMessageRenewOperatorTest {
     }
 
     @Test
-    public void contextTest() {
+    public void contextPropagationTest() {
         // Arrange
-        final Long expectedEnqueuedSequenceNumber = 2L;
-        final ServiceBusReceivedMessage message2 = new ServiceBusReceivedMessage("data".getBytes());
-        message2.setEnqueuedSequenceNumber(1);
-
-        final ServiceBusReceivedMessage message3 = new ServiceBusReceivedMessage("data".getBytes());
-        message2.setEnqueuedSequenceNumber(expectedEnqueuedSequenceNumber);
-
         final ServiceBusMessageRenewOperator renewOperator = new ServiceBusMessageRenewOperator(messageSource,
             MAX_AUTO_LOCK_RENEW_DURATION, messageLockContainer, renewalFunction);
 
@@ -386,14 +379,14 @@ public class ServiceBusMessageRenewOperatorTest {
             }))
             .thenRequest(1)
             .expectAccessibleContext()
-            .hasSize(2)
+            .contains("A", "B")
+            .hasSize(1)
             .then()
             .then(() -> {
-                messagesPublisher.next(message2);
+                messagesPublisher.next(message);
             })
-            .expectNext(message2)
+            .expectNext(message)
             .thenCancel()
             .verify();
-
     }
 }

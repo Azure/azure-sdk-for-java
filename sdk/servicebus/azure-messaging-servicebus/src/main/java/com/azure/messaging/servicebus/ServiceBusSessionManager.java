@@ -59,7 +59,6 @@ class ServiceBusSessionManager implements AutoCloseable {
     private final Duration operationTimeout;
     private final TracerProvider tracerProvider;
     private final MessageSerializer messageSerializer;
-    private final String userProvidedSessionId;
 
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicBoolean isStarted = new AtomicBoolean();
@@ -86,7 +85,6 @@ class ServiceBusSessionManager implements AutoCloseable {
         this.operationTimeout = connectionProcessor.getRetryOptions().getTryTimeout();
         this.tracerProvider = tracerProvider;
         this.messageSerializer = messageSerializer;
-        this.userProvidedSessionId = receiverOptions.getSessionId();
         this.maxSessionLockRenewDuration = receiverOptions.getMaxLockRenewDuration();
 
         // According to the documentation, if a sequence is not finite, it should be published on their own scheduler.
@@ -226,18 +224,20 @@ class ServiceBusSessionManager implements AutoCloseable {
     }
 
     /**
-     * Creates an unnamed session receive link.
+     * Creates an session receive link.
      *
-     * @return A Mono that completes with an unnamed session receive link.
+     * @return A Mono that completes with an session receive link.
      */
     private Mono<ServiceBusReceiveLink> createSessionReceiveLink() {
-        final String linkName = (userProvidedSessionId != null)
-            ? userProvidedSessionId
+        final String sessionId = receiverOptions.getSessionId();
+
+        final String linkName = (sessionId != null)
+            ? sessionId
             : StringUtil.getRandomString("session-");
         return connectionProcessor
             .flatMap(connection -> {
                 return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
-                null, entityType, userProvidedSessionId);
+                null, entityType, sessionId);
             });
     }
 
