@@ -314,12 +314,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 .buildAsyncClient();
             this.receiveAndDeleteReceiver = getSessionReceiverBuilder(useCredentials, entityType, entityIndex,
                 shareConnection)
-                .enableAutoComplete(true)
                 .sessionId(sessionId)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildAsyncClient();
         } else {
             this.receiver = getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
+                .enableAutoComplete(true)
                 .buildAsyncClient();
             this.receiveAndDeleteReceiver = getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
@@ -364,14 +364,15 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 .buildAsyncClient();
             this.receiveAndDeleteReceiver = getSessionReceiverBuilder(useCredentials, entityType, entityIndex,
                 shareConnection)
-                .enableAutoComplete(true)
                 .sessionId(sessionId)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildAsyncClient();
         } else {
             this.receiver = getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
+                .enableAutoComplete(true)
                 .buildAsyncClient();
             this.receiveAndDeleteReceiver = getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
+                .enableAutoComplete(true)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildAsyncClient();
         }

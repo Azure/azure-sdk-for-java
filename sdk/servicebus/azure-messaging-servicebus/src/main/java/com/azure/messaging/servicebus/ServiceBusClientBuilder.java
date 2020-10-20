@@ -759,12 +759,41 @@ public final class ServiceBusClientBuilder {
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusReceiverAsyncClient buildAsyncClient() {
+            return buildAsyncClient(true);
+        }
+
+        /**
+         * Creates a <b>synchronous</b>, <b>session-aware</b> Service Bus receiver responsible for reading
+         * {@link ServiceBusMessage messages} from a specific queue or topic.
+         *
+         * @return An new {@link ServiceBusReceiverClient} that receives messages from a queue or topic.
+         * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
+         *     topicName} are not set or, both of these fields are set. It is also thrown if the Service Bus {@link
+         *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
+         *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}. Lastly, if a {@link
+         *     #topicName(String) topicName} is set, but {@link #subscriptionName(String) subscriptionName} is not.
+         * @throws IllegalArgumentException Queue or topic name are not set via {@link #queueName(String)
+         *     queueName()} or {@link #topicName(String) topicName()}, respectively.
+         */
+        public ServiceBusReceiverClient buildClient() {
+            return new ServiceBusReceiverClient(buildAsyncClient(false), retryOptions.getTryTimeout());
+        }
+
+        private ServiceBusReceiverAsyncClient buildAsyncClient(boolean isAutoCompleteAllowed) {
             final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
                 queueName);
             final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName,
                 SubQueue.NONE);
 
             validateAndThrow(prefetchCount);
+
+            if (!isAutoCompleteAllowed && enableAutoComplete) {
+                throw logger.logExceptionAsError(new IllegalStateException(
+                    "'enableAutoComplete' is not supported in synchronous client."));
+            } else if (isAutoCompleteAllowed && receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
+                throw logger.logExceptionAsError(new IllegalStateException(
+                    "'enableAutoComplete' is not valid for RECEIVE_AND_DELETE mode."));
+            }
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount, enableAutoComplete,
@@ -783,23 +812,6 @@ public final class ServiceBusClientBuilder {
                     entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
                     tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose);
             }
-        }
-
-        /**
-         * Creates a <b>synchronous</b>, <b>session-aware</b> Service Bus receiver responsible for reading
-         * {@link ServiceBusMessage messages} from a specific queue or topic.
-         *
-         * @return An new {@link ServiceBusReceiverClient} that receives messages from a queue or topic.
-         * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
-         *     topicName} are not set or, both of these fields are set. It is also thrown if the Service Bus {@link
-         *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
-         *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}. Lastly, if a {@link
-         *     #topicName(String) topicName} is set, but {@link #subscriptionName(String) subscriptionName} is not.
-         * @throws IllegalArgumentException Queue or topic name are not set via {@link #queueName(String)
-         *     queueName()} or {@link #topicName(String) topicName()}, respectively.
-         */
-        public ServiceBusReceiverClient buildClient() {
-            return new ServiceBusReceiverClient(buildAsyncClient(), retryOptions.getTryTimeout());
         }
 
         /**
@@ -979,7 +991,11 @@ public final class ServiceBusClientBuilder {
             validateAndThrow(prefetchCount);
 
             if (!isAutoCompleteAllowed && enableAutoComplete) {
-                throw new IllegalStateException("'enableAutoComplete' is not support in synchronous client.");
+                throw logger.logExceptionAsError(new IllegalStateException(
+                    "'enableAutoComplete' is not supported in synchronous client."));
+            } else if (isAutoCompleteAllowed && receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
+                throw logger.logExceptionAsError(new IllegalStateException(
+                    "'enableAutoComplete' is not valid for RECEIVE_AND_DELETE mode."));
             }
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
