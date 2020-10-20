@@ -952,18 +952,7 @@ public final class ServiceBusClientBuilder {
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusReceiverAsyncClient buildAsyncClient() {
-            final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
-                queueName);
-            final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName,
-                subQueue);
-            validateAndThrow(prefetchCount);
-
-            final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
-            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount, enableAutoComplete);
-
-            return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
-                entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
-                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose);
+            return buildAsyncClient(true);
         }
 
         /**
@@ -979,7 +968,26 @@ public final class ServiceBusClientBuilder {
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusReceiverClient buildClient() {
-            return new ServiceBusReceiverClient(buildAsyncClient(), retryOptions.getTryTimeout());
+            return new ServiceBusReceiverClient(buildAsyncClient(false), retryOptions.getTryTimeout());
+        }
+
+        ServiceBusReceiverAsyncClient buildAsyncClient(boolean isAutoCompleteAllowed) {
+            final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
+                queueName);
+            final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName,
+                subQueue);
+            validateAndThrow(prefetchCount);
+
+            if (!isAutoCompleteAllowed && enableAutoComplete) {
+                throw new IllegalStateException("'enableAutoComplete' is not support in synchronous client.");
+            }
+
+            final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
+            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount, enableAutoComplete);
+
+            return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
+                entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
+                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose);
         }
     }
 
