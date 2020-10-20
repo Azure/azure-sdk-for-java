@@ -3,6 +3,9 @@
 
 package com.azure.messaging.servicebus;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -12,6 +15,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 
+import java.time.Duration;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -33,6 +37,16 @@ class FluxAutoCompleteTest {
     private Function<ServiceBusReceivedMessageContext, Mono<Void>> onAbandon;
     @Mock
     private CoreSubscriber<ServiceBusReceivedMessageContext> downstreamSubscriber;
+
+    @BeforeAll
+    static void beforeAll() {
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+    }
+
+    @AfterAll
+    static void afterAll() {
+        StepVerifier.resetDefaultTimeout();
+    }
 
     @BeforeEach
     void beforeEach() {
@@ -189,10 +203,6 @@ class FluxAutoCompleteTest {
         final ServiceBusReceivedMessageContext context = new ServiceBusReceivedMessageContext(message);
         final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceivedMessageContext context2 = new ServiceBusReceivedMessageContext(message2);
-        final ServiceBusReceivedMessage message3 = mock(ServiceBusReceivedMessage.class);
-        final ServiceBusReceivedMessageContext context3 = new ServiceBusReceivedMessageContext(message3);
-        final ServiceBusReceivedMessage message4 = mock(ServiceBusReceivedMessage.class);
-        final ServiceBusReceivedMessageContext context4 = new ServiceBusReceivedMessageContext(message4);
 
         final FluxAutoComplete<ServiceBusReceivedMessageContext> autoComplete = new FluxAutoComplete<>(testPublisher.flux(),
             onComplete, onAbandon);
@@ -203,16 +213,14 @@ class FluxAutoCompleteTest {
 
         // Act
         StepVerifier.create(autoComplete)
-            .then(() -> testPublisher.next(context, context2, context3, context4))
-            .expectNext(context, context2, context3, context4)
-            .then(() -> testPublisher.complete())
-            .verifyComplete();
+            .then(() -> testPublisher.next(context, context2))
+            .expectNext(context, context2)
+            .expectErrorSatisfies(e -> Assertions.assertEquals(testError, e))
+            .verify();
 
         // Assert
         verify(onComplete).apply(context);
         verify(onComplete).apply(context2);
-        verify(onComplete).apply(context3);
-        verify(onComplete).apply(context4);
         verifyNoInteractions(onAbandon);
     }
 }
