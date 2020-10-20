@@ -16,12 +16,14 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.AccountKind;
 import com.azure.storage.blob.models.SkuName;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.microsoft.azure.spring.cloud.autoconfigure.context.AzureEnvironmentAutoConfiguration;
+import com.microsoft.azure.spring.cloud.autoconfigure.context.AzureResourceManager20AutoConfiguration;
 import com.microsoft.azure.spring.cloud.autoconfigure.storage.AzureStorageAutoConfiguration;
 
 import reactor.core.publisher.Mono;
@@ -31,10 +33,9 @@ public class BlobStorageHealthIndicatorTest {
 
     @Test(expected = IllegalStateException.class)
     public void testWithNoStorageConfiguration() {
-        ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-            .withAllowBeanDefinitionOverriding(true)
-            .withBean(BlobServiceClientBuilder.class)
-            .withConfiguration(AutoConfigurations.of(AzureStorageActuatorAutoConfiguration.class));
+        ApplicationContextRunner contextRunner = new ApplicationContextRunner().withAllowBeanDefinitionOverriding(true)
+                .withBean(BlobServiceClientBuilder.class)
+                .withConfiguration(AutoConfigurations.of(AzureStorageActuatorAutoConfiguration.class));
 
         contextRunner.run(context -> {
             context.getBean(BlobStorageHealthIndicator.class).getHealth(true);
@@ -43,15 +44,16 @@ public class BlobStorageHealthIndicatorTest {
 
     @Test
     public void testWithStorageConfigurationWithConnectionUp() {
-        ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-            .withAllowBeanDefinitionOverriding(true)
-            .withConfiguration(AutoConfigurations.of(AzureEnvironmentAutoConfiguration.class,
-                AzureStorageAutoConfiguration.class, AzureStorageActuatorAutoConfiguration.class))
-            .withUserConfiguration(TestConfigurationConnectionUp.class)
-            .withPropertyValues("spring.cloud.azure.storage.account=acc1")
-            .withBean(BlobStorageHealthIndicator.class);
+        ApplicationContextRunner contextRunner = new ApplicationContextRunner().withAllowBeanDefinitionOverriding(true)
+                .withConfiguration(AutoConfigurations.of(AzureEnvironmentAutoConfiguration.class, MockTokenCredentialConfiguration.class,
+                        AzureStorageAutoConfiguration.class, AzureStorageActuatorAutoConfiguration.class))
+                .withUserConfiguration(TestConfigurationConnectionUp.class)
+                .withPropertyValues("spring.cloud.azure.storage.account=acc1")
+                .withPropertyValues("spring.cloud.azure.resource-group=myrg")
+                .withBean(BlobStorageHealthIndicator.class);
         contextRunner.run(context -> {
-            Health health = context.getBean("blobStorageHealthIndicator", BlobStorageHealthIndicator.class).getHealth(true);
+            Health health = context.getBean("blobStorageHealthIndicator", BlobStorageHealthIndicator.class)
+                    .getHealth(true);
             Assert.assertEquals(Status.UP, health.getStatus());
             Assert.assertEquals(MOCK_URL, health.getDetails().get(AzureStorageActuatorConstants.URL_FIELD));
         });
@@ -59,15 +61,16 @@ public class BlobStorageHealthIndicatorTest {
 
     @Test
     public void testWithStorageConfigurationWithConnectionDown() {
-        ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-            .withAllowBeanDefinitionOverriding(true)
-            .withConfiguration(AutoConfigurations.of(AzureEnvironmentAutoConfiguration.class,
-                AzureStorageAutoConfiguration.class, AzureStorageActuatorAutoConfiguration.class))
-            .withUserConfiguration(TestConfigurationConnectionDown.class)
-            .withPropertyValues("spring.cloud.azure.storage.account=acc1")
-            .withBean(BlobStorageHealthIndicator.class);
+        ApplicationContextRunner contextRunner = new ApplicationContextRunner().withAllowBeanDefinitionOverriding(true)
+                .withConfiguration(AutoConfigurations.of(AzureEnvironmentAutoConfiguration.class,
+                        MockTokenCredentialConfiguration.class, AzureResourceManager20AutoConfiguration.class,
+                        AzureStorageAutoConfiguration.class, AzureStorageActuatorAutoConfiguration.class))
+                .withUserConfiguration(TestConfigurationConnectionDown.class)
+                .withPropertyValues("spring.cloud.azure.storage.account=acc1")
+                .withBean(BlobStorageHealthIndicator.class);
         contextRunner.run(context -> {
-            Health health = context.getBean("blobStorageHealthIndicator", BlobStorageHealthIndicator.class).getHealth(true);
+            Health health = context.getBean("blobStorageHealthIndicator", BlobStorageHealthIndicator.class)
+                    .getHealth(true);
             Assert.assertEquals(Status.DOWN, health.getStatus());
             Assert.assertEquals(MOCK_URL, health.getDetails().get(AzureStorageActuatorConstants.URL_FIELD));
         });
@@ -102,6 +105,15 @@ public class BlobStorageHealthIndicatorTest {
             when(mockClientBuilder.buildAsyncClient()).thenReturn(mockAsyncClient);
 
             return mockClientBuilder;
+        }
+    }
+
+    @Configuration
+    static class MockTokenCredentialConfiguration {
+
+        @Bean
+        TokenCredential tokenCredential() {
+            return mock(TokenCredential.class);
         }
     }
 }
