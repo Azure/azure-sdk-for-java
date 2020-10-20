@@ -214,6 +214,7 @@
                 --add-opens com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.util.jsonpatch=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util.logging=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util.polling=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util.serializer=ALL-UNNAMED
