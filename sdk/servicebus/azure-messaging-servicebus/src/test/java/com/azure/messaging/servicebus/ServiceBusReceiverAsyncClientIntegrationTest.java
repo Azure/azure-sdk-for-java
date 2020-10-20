@@ -8,11 +8,11 @@ import com.azure.core.amqp.models.AmqpDataBody;
 import com.azure.core.amqp.models.AmqpMessageHeader;
 import com.azure.core.amqp.models.AmqpMessageProperties;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.DispositionStatus;
+import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
-import com.azure.messaging.servicebus.implementation.DispositionStatus;
-import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.DeferOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
@@ -254,7 +254,16 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @Disabled
     void transactionReceiveCompleteCommitMixClient(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType, 0, isSessionEnabled, true);
+        final boolean shareConnection = true;
+        final boolean useCredentials = false;
+        final int entityIndex = 0;
+        this.sender = getSenderBuilder(useCredentials, entityType, entityIndex, isSessionEnabled, shareConnection)
+            .buildAsyncClient();
+        this.receiver = getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
+            .buildAsyncClient();
+        this.receiveAndDeleteReceiver = getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
+            .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+            .buildAsyncClient();
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
@@ -962,7 +971,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     @ParameterizedTest
-    void renewMessageLock(MessagingEntityType entityType) throws InterruptedException {
+    void renewMessageLock(MessagingEntityType entityType) {
         // Arrange
         final boolean isSessionEnabled = false;
         setSenderAndReceiver(entityType, 0, isSessionEnabled);
@@ -1010,9 +1019,9 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         footer.put("footer-key-1", "footer-value-1");
         footer.put("footer-key-2", "footer-value-2");
 
-        final Map<String, Object> aplicaitonProperties = new HashMap<>();
-        aplicaitonProperties.put("ap-key-1", "ap-value-1");
-        aplicaitonProperties.put("ap-key-2", "ap-value-2");
+        final Map<String, Object> applicationProperties = new HashMap<>();
+        applicationProperties.put("ap-key-1", "ap-value-1");
+        applicationProperties.put("ap-key-2", "ap-value-2");
 
         final Map<String, Object> deliveryAnnotation = new HashMap<>();
         deliveryAnnotation.put("delivery-annotations-key-1", "delivery-annotations-value-1");
@@ -1021,26 +1030,27 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         setSenderAndReceiver(entityType, TestUtils.USE_CASE_VALIDATE_AMQP_PROPERTIES, isSessionEnabled);
 
         final String messageId = UUID.randomUUID().toString();
-        final AmqpAnnotatedMessage expectedAmqpProperties = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(CONTENTS_BYTES)));
+        final AmqpAnnotatedMessage expectedAmqpProperties = new AmqpAnnotatedMessage(
+            new AmqpDataBody(Collections.singletonList(CONTENTS_BYTES)));
         expectedAmqpProperties.getProperties().setSubject(subject);
         expectedAmqpProperties.getProperties().setReplyToGroupId("r-gid");
-        expectedAmqpProperties.getProperties().setReplyTo("replyto");
+        expectedAmqpProperties.getProperties().setReplyTo("reply-to");
         expectedAmqpProperties.getProperties().setContentType("content-type");
-        expectedAmqpProperties.getProperties().setCorrelationId("corelation-id");
+        expectedAmqpProperties.getProperties().setCorrelationId("correlation-id");
         expectedAmqpProperties.getProperties().setTo("to");
         expectedAmqpProperties.getProperties().setAbsoluteExpiryTime(OffsetDateTime.now().plusSeconds(60));
         expectedAmqpProperties.getProperties().setUserId("user-id-1".getBytes());
         expectedAmqpProperties.getProperties().setContentEncoding("string");
-        expectedAmqpProperties.getProperties().setGroupSequence(Long.valueOf(2));
+        expectedAmqpProperties.getProperties().setGroupSequence(2L);
         expectedAmqpProperties.getProperties().setCreationTime(OffsetDateTime.now().plusSeconds(30));
 
-        expectedAmqpProperties.getHeader().setPriority(Short.valueOf((short) 2));
+        expectedAmqpProperties.getHeader().setPriority((short) 2);
         expectedAmqpProperties.getHeader().setFirstAcquirer(true);
         expectedAmqpProperties.getHeader().setDurable(true);
 
         expectedAmqpProperties.getFooter().putAll(footer);
         expectedAmqpProperties.getDeliveryAnnotations().putAll(deliveryAnnotation);
-        expectedAmqpProperties.getApplicationProperties().putAll(aplicaitonProperties);
+        expectedAmqpProperties.getApplicationProperties().putAll(applicationProperties);
 
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
 
@@ -1127,36 +1137,23 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
      */
     private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled) {
-        setSenderAndReceiver(entityType, entityIndex, isSessionEnabled, false);
-    }
-
-    /**
-     * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created with shared
-     * connection as needed.
-     */
-    private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled,
-        boolean shareConnection) {
-        this.sender = getSenderBuilder(false, entityType, entityIndex, isSessionEnabled, shareConnection)
-            .buildAsyncClient();
+        final boolean shareConnection = false;
+        final boolean useCredentials = false;
 
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
-            this.receiver = getSessionReceiverBuilder(false, entityType, entityIndex, Function.identity(),
-                shareConnection)
+            this.receiver = getSessionReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
                 .sessionId(sessionId)
                 .buildAsyncClient();
-            this.receiveAndDeleteReceiver = getSessionReceiverBuilder(false, entityType, entityIndex,
-                Function.identity(), shareConnection)
-
+            this.receiveAndDeleteReceiver = getSessionReceiverBuilder(useCredentials, entityType, entityIndex,
+                shareConnection)
                 .sessionId(sessionId)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildAsyncClient();
         } else {
-            this.receiver = getReceiverBuilder(false, entityType, entityIndex, Function.identity(),
-                shareConnection)
+            this.receiver = getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
                 .buildAsyncClient();
-            this.receiveAndDeleteReceiver = getReceiverBuilder(false, entityType, entityIndex,
-                Function.identity(), shareConnection)
+            this.receiveAndDeleteReceiver = getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildAsyncClient();
         }

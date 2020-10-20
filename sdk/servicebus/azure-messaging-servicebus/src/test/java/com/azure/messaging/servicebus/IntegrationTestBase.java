@@ -36,7 +36,6 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static com.azure.core.amqp.ProxyOptions.PROXY_PASSWORD;
@@ -257,11 +256,9 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     protected ServiceBusReceiverClientBuilder getReceiverBuilder(boolean useCredentials, MessagingEntityType entityType,
-        int entityIndex, Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate, boolean sharedConnection) {
+        int entityIndex, boolean sharedConnection) {
 
         ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
-
-        builder = onBuilderCreate.apply(builder);
         switch (entityType) {
             case QUEUE:
                 final String queueName = getQueueName(entityIndex);
@@ -281,7 +278,7 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     protected ServiceBusSessionReceiverClientBuilder getSessionReceiverBuilder(boolean useCredentials,
-        MessagingEntityType entityType, int entityIndex, Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate,
+        MessagingEntityType entityType, int entityIndex,
         boolean sharedConnection) {
 
         ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
@@ -290,7 +287,7 @@ public abstract class IntegrationTestBase extends TestBase {
             case QUEUE:
                 final String queueName = getSessionQueueName(entityIndex);
                 assertNotNull(queueName, "'queueName' cannot be null.");
-                return onBuilderCreate.apply(builder)
+                return builder
                     .sessionReceiver()
                     .queueName(queueName);
 
@@ -299,34 +296,11 @@ public abstract class IntegrationTestBase extends TestBase {
                 final String subscriptionName = getSessionSubscriptionBaseName();
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
-                return onBuilderCreate.apply(builder)
-                    .sessionReceiver()
+                return builder.sessionReceiver()
                     .topicName(topicName).subscriptionName(subscriptionName);
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
         }
-    }
-
-    protected static Stream<Arguments> messagingEntityProviderWithTransaction() {
-        return Stream.of(
-            Arguments.of(MessagingEntityType.QUEUE, true),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, true),
-            Arguments.of(MessagingEntityType.QUEUE, false),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, false)
-        );
-    }
-
-    protected static Stream<Arguments> messagingEntityWithSessionsWithTransaction() {
-        return Stream.of(
-            Arguments.of(MessagingEntityType.QUEUE, false, true),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, false, true),
-            Arguments.of(MessagingEntityType.QUEUE, true, true),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, true, true),
-            Arguments.of(MessagingEntityType.QUEUE, false, false),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, false, false),
-            Arguments.of(MessagingEntityType.QUEUE, true, false),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, true, false)
-        );
     }
 
     protected static Stream<Arguments> messagingEntityProvider() {
