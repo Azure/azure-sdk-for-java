@@ -7,8 +7,6 @@ import java.io.Serializable;
 
 /**
  * The CertificateItem REST model.
- *
- * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 public class CertificateItem implements Serializable {
 

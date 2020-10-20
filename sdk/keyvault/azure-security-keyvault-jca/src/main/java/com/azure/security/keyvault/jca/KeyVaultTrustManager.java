@@ -18,8 +18,6 @@ import javax.net.ssl.X509ExtendedTrustManager;
 
 /**
  * The KeyVault variant of the X509TrustManager.
- *
- * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 public class KeyVaultTrustManager extends X509ExtendedTrustManager implements X509TrustManager {
 

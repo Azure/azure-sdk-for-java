@@ -5,8 +5,6 @@ package com.azure.security.keyvault.jca;
 
 /**
  * The JSON converter API.
- *
- * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 interface JsonConverter {
 

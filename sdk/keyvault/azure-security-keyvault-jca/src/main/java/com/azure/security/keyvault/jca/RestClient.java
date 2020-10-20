@@ -7,8 +7,6 @@ import java.util.Map;
 
 /**
  * The REST client API.
- *
- * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 interface RestClient {
 

@@ -12,8 +12,6 @@ import static java.util.logging.Level.FINER;
 
 /**
  * The REST client specific to getting an access token for Azure REST APIs.
- *
- * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 class AuthClient extends DelegateRestClient {
 

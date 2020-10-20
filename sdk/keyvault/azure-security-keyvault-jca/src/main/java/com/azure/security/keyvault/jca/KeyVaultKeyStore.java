@@ -33,8 +33,6 @@ import static java.util.logging.Level.WARNING;
 
 /**
  * The Azure KeyVault implementation of the KeyStoreSpi.
- *
- * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 public class KeyVaultKeyStore extends KeyStoreSpi {
 

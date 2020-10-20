@@ -7,8 +7,6 @@ import java.io.Serializable;
 
 /**
  * The SecretBundle REST model.
- *
- * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 public class SecretBundle implements Serializable {
 

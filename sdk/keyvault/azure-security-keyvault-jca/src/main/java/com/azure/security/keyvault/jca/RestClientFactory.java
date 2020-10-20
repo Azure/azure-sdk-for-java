@@ -5,8 +5,6 @@ package com.azure.security.keyvault.jca;
 
 /**
  * The RestClientFactory.
- *
- * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 class RestClientFactory {
 

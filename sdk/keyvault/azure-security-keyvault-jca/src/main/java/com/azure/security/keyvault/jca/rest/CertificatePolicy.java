@@ -7,8 +7,6 @@ import java.io.Serializable;
 
 /**
  * The CertificatePolicy REST model.
- *
- * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 public class CertificatePolicy implements Serializable {
 

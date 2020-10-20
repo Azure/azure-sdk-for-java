@@ -23,8 +23,6 @@ import static java.util.logging.Level.WARNING;
 
 /**
  * The KeyVault variant of the X509ExtendedKeyManager.
- *
- * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 public class KeyVaultKeyManager extends X509ExtendedKeyManager {
 

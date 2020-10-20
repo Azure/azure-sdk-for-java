@@ -13,8 +13,6 @@ import static java.util.logging.Level.WARNING;
 
 /**
  * The Jackson JsonConverter.
- *
- * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 class JacksonJsonConverter implements JsonConverter {
 

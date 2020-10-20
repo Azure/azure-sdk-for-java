@@ -35,8 +35,6 @@ import static java.util.logging.Level.WARNING;
 
 /**
  * The REST client specific to Azure KeyVault.
- *
- * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 class KeyVaultClient extends DelegateRestClient {
 

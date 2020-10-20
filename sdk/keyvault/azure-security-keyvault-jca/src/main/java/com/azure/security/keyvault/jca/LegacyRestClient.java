@@ -18,8 +18,6 @@ import java.util.Map;
 
 /**
  * The RestClient that uses the Apache HttpClient class.
- *
- * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 class LegacyRestClient implements RestClient {
 

@@ -11,8 +11,6 @@ import java.util.Collections;
 
 /**
  * The Azure KeyVault security provider.
- *
- * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 public class KeyVaultJcaProvider extends Provider {
 

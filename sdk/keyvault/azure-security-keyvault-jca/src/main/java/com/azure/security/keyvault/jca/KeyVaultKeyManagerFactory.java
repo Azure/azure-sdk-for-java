@@ -6,7 +6,6 @@ package com.azure.security.keyvault.jca;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactorySpi;
 import javax.net.ssl.ManagerFactoryParameters;
-import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +13,6 @@ import java.util.logging.Logger;
 
 /**
  * The KeyVault variant of the KeyManagerFactory.
- *
- * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 public class KeyVaultKeyManagerFactory extends KeyManagerFactorySpi {
 

@@ -7,8 +7,6 @@ import java.util.Map;
 
 /**
  * A RestClient that delegates to another RestClient.
- *
- * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 class DelegateRestClient implements RestClient {
 

@@ -20,8 +20,6 @@ import java.util.Set;
 
 /**
  * The KeyVault certificate.
- *
- * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 class KeyVaultCertificate extends X509Certificate {
 

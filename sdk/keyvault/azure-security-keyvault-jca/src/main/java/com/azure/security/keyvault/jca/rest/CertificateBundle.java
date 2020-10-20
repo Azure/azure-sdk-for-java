@@ -7,8 +7,6 @@ import java.io.Serializable;
 
 /**
  * The CertificateBundle REST model.
- *
- * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 public class CertificateBundle implements Serializable {
 

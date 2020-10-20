@@ -5,8 +5,6 @@ package com.azure.security.keyvault.jca;
 
 /**
  * The JsonConverterFactory.
- *
- * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 final class JsonConverterFactory {
 

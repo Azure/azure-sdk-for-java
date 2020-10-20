@@ -13,8 +13,6 @@ import java.util.logging.Logger;
 
 /**
  * The KeyVault variant of the TrustManagerFactory.
- *
- * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 public class KeyVaultTrustManagerFactory extends TrustManagerFactorySpi {
 

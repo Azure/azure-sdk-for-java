@@ -6,8 +6,6 @@ import java.io.Serializable;
 
 /**
  * An OAuth2 token.
- *
- * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 public class OAuthToken implements Serializable {
 
