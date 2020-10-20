@@ -12,21 +12,21 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @JsonSerialize(using = ClientTelemetrySerializer.class)
 public class ClientTelemetryInfo {
-    private String timeStamp;//strict contract
-    private String clientId;//strict contract
-    private String processId;//strict contract
-    private String userAgent;//strict contract
-    private ConnectionMode connectionMode;//strict contract
-    private String globalDatabaseAccountName;//strict contract
-    private String applicationRegion;//strict contract
-    private String hostEnvInfo;//strict contract
-    private Boolean acceleratedNetworking;//strict contract
-    private Set<ReportPayload> systemInfo;//strict contract
-    private Set<ReportPayload> cacheRefreshInfo;//strict contract
-    private Set<ReportPayload> operationInfo;//strict contract
-    private Map<ReportPayload, DoubleHistogram> systemInfoMap;//strict contract
-    private Map<ReportPayload, DoubleHistogram> cacheRefreshInfoMap;//strict contract
-    private Map<ReportPayload, DoubleHistogram> operationInfoMap;//strict contract
+    private String timeStamp;
+    private String clientId;
+    private String processId;
+    private String userAgent;
+    private ConnectionMode connectionMode;
+    private String globalDatabaseAccountName;
+    private String applicationRegion;
+    private String hostEnvInfo;
+    private Boolean acceleratedNetworking;
+    private Set<ReportPayload> systemInfo;
+    private Set<ReportPayload> cacheRefreshInfo;
+    private Set<ReportPayload> operationInfo;
+    private Map<ReportPayload, DoubleHistogram> systemInfoMap;
+    private Map<ReportPayload, DoubleHistogram> cacheRefreshInfoMap;
+    private Map<ReportPayload, DoubleHistogram> operationInfoMap;
 
     public ClientTelemetryInfo(String clientId,
                                String processId,

@@ -5,11 +5,15 @@ package com.azure.cosmos.implementation.clientTelemetry;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.http.HttpClient;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.azure.cosmos.implementation.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpRequest;
+import com.azure.cosmos.implementation.http.HttpResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.netty.handler.codec.http.HttpMethod;
 import org.HdrHistogram.DoubleHistogram;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +21,8 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
@@ -55,6 +61,7 @@ public class ClientTelemetry {
     private static final Logger logger = LoggerFactory.getLogger(GlobalEndpointManager.class);
     private volatile boolean isClosed;
     private volatile boolean isClientTelemetryEnabled;
+    private static String AZURE_VM_METADATA = "http://169.254.169.254:80/metadata/instance?api-version=2020-06-01";
 
     private static final double PERCENTILE_50 = 50.0;
     private static final double PERCENTILE_90 = 90.0;
@@ -81,7 +88,7 @@ public class ClientTelemetry {
         ReportPayload memoryReportPayload = new ReportPayload(MEMORY_NAME, MEMORY_UNIT);
         clientTelemetryInfo.getSystemInfoMap().put(memoryReportPayload, CpuMemoryMonitor.getRemainingForClientTelemetry());
         this.isClosed = false;
-
+        this.httpClient = httpClient;
         this.isClientTelemetryEnabled = isClientTelemetryEnabled;
     }
 
@@ -107,6 +114,7 @@ public class ClientTelemetry {
 
     public void init() {
         System.out.println("ClientTelemetry.init");
+        loadAzureVmMetaData();
         sendClientTelemetry().subscribe();
     }
 
@@ -143,6 +151,29 @@ public class ClientTelemetry {
                 clearDataForNextRun();
                 return this.sendClientTelemetry();
             }).subscribeOn(scheduler);
+    }
+
+    private void loadAzureVmMetaData() {
+        URI targetEndpoint = null;
+        try {
+            targetEndpoint = new URI(AZURE_VM_METADATA);
+        } catch (URISyntaxException ex) {
+            logger.info("Unable to parse azure vm metadata url");
+            return;
+        }
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Metadata", "true");
+        HttpHeaders httpHeaders = new HttpHeaders(headers);
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(),
+            httpHeaders);
+        Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
+        httpResponseMono.flatMap(response -> response.bodyAsString()).map(metadataJson -> Utils.parse(metadataJson,
+            AzureVMMetadata.class)).doOnSuccess(azureVMMetadata -> {
+            this.clientTelemetryInfo.setApplicationRegion(azureVMMetadata.getLocation());
+        }).onErrorResume(throwable -> {
+            logger.info("Unable to get azure vm metadata");
+            return Mono.empty();
+        }).subscribe();
     }
 
     private void clearDataForNextRun() {
