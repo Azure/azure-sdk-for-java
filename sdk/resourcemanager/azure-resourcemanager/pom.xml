@@ -15,7 +15,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager</artifactId>
-  <version>2.0.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;current} -->
+  <version>2.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Management</name>
@@ -82,11 +82,6 @@
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
-      <artifactId>azure-resourcemanager-sql</artifactId>
-      <version>2.0.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-sql;current} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-authorization</artifactId>
       <version>2.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-authorization;current} -->
     </dependency>
@@ -112,53 +107,8 @@
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
-      <artifactId>azure-resourcemanager-containerregistry</artifactId>
-      <version>2.0.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerregistry;current} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-dns</artifactId>
-      <version>2.0.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-dns;current} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure.resourcemanager</groupId>
-      <artifactId>azure-resourcemanager-appplatform</artifactId>
-      <version>2.0.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appplatform;current} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure.resourcemanager</groupId>
-      <artifactId>azure-resourcemanager-containerinstance</artifactId>
-      <version>2.0.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerinstance;current} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure.resourcemanager</groupId>
-      <artifactId>azure-resourcemanager-privatedns</artifactId>
-      <version>2.0.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-privatedns;current} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure.resourcemanager</groupId>
-      <artifactId>azure-resourcemanager-redis</artifactId>
-      <version>2.0.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-redis;current} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure.resourcemanager</groupId>
-      <artifactId>azure-resourcemanager-eventhubs</artifactId>
-      <version>2.0.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-eventhubs;current} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure.resourcemanager</groupId>
-      <artifactId>azure-resourcemanager-trafficmanager</artifactId>
-      <version>2.0.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-trafficmanager;current} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure.resourcemanager</groupId>
-      <artifactId>azure-resourcemanager-servicebus</artifactId>
-      <version>2.0.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-servicebus;current} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure.resourcemanager</groupId>
-      <artifactId>azure-resourcemanager-cdn</artifactId>
-      <version>2.0.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cdn;current} -->
+      <version>2.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-dns;current} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>

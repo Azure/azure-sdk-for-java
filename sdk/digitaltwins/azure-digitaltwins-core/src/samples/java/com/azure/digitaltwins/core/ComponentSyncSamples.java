@@ -83,8 +83,7 @@ public class ComponentSyncSamples {
 
         ConsoleLogger.printHeader("Create digital twin with components");
         // Create digital twin with component payload using the BasicDigitalTwin serialization helper.
-        BasicDigitalTwin basicTwin = new BasicDigitalTwin()
-            .setId(basicDigitalTwinId)
+        BasicDigitalTwin basicTwin = new BasicDigitalTwin(basicDigitalTwinId)
             .setMetadata(
                 new DigitalTwinMetadata()
                     .setModelId(modelId)
