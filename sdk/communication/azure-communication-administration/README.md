@@ -240,12 +240,28 @@ for (String areaCode
 }
 ```
 
+### Create Search
+
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L315-L324 -->
+```java
+PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+CreateSearchResponse createSearchResponse = phoneNumberClient.createSearch(createSearchOptions);
+
+System.out.println("SearchId: " + createSearchResponse.getSearchId());
+PhoneNumberReservation phoneNumberReservation = phoneNumberClient.getSearchById(createSearchResponse.getSearchId());
+
+for (String phoneNumber
+    : phoneNumberReservation.getPhoneNumbers()) {
+    System.out.println("Phone Number: " + phoneNumber);
+}
+```
+
 ### Purchase Search
 
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L334-L335 -->
 ```java
 PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
-phoneNumberClient.purchaseSearch(phoneNumberSearchId);
+phoneNumberClient.purchaseSearch(phoneNumberReservationId);
 ```
 
 ### Configure Phone Number
