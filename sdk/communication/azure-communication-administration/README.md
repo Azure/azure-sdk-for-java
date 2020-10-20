@@ -280,10 +280,10 @@ The Phone Number Client supports a variety of long running operations that allow
 
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L370-L380 -->
 ```java
-        SyncPoller<PhoneNumberSearch, PhoneNumberSearch> res = 
+        SyncPoller<PhoneNumberReservation, PhoneNumberReservation> res =
             phoneNumberClient.beginCreateSearch(createSearchOptions, duration);
         res.waitForCompletion();
-        PhoneNumberSearch result = res.getFinalResult();
+        PhoneNumberReservation result = res.getFinalResult();
 
         System.out.println("Search Id: " + result.getSearchId());
         for (String phoneNumber: result.getPhoneNumbers()) {

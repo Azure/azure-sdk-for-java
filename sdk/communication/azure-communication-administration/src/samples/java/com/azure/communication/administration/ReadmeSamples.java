@@ -27,7 +27,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.polling.SyncPoller;
 
 public class ReadmeSamples {
-    
+
     /**
      * Sample code for creating a sync Communication Identity Client.
      *
@@ -363,14 +363,14 @@ public class ReadmeSamples {
             .setDisplayName("NAME_FOR_SEARCH")
             .setPhonePlanIds(phonePlanIds)
             .setQuantity(2);
-        
+
         Duration duration = Duration.ofSeconds(1);
         PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
-        SyncPoller<PhoneNumberSearch, PhoneNumberSearch> res = 
+        SyncPoller<PhoneNumberReservation, PhoneNumberReservation> res =
             phoneNumberClient.beginCreateSearch(createSearchOptions, duration);
         res.waitForCompletion();
-        PhoneNumberSearch result = res.getFinalResult();
+        PhoneNumberReservation result = res.getFinalResult();
 
         System.out.println("Search Id: " + result.getSearchId());
         for (String phoneNumber: result.getPhoneNumbers()) {
