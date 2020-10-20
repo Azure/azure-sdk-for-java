@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.sample.feature.management.web;
+package com.azure.spring.sample.featuremanagement.web;
 
 import com.microsoft.azure.spring.cloud.feature.manager.feature.filters.TargetingFilter;
 import com.microsoft.azure.spring.cloud.feature.manager.targeting.ITargetingContextAccessor;
