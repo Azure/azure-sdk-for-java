@@ -9,6 +9,7 @@
     azure.activedirectory.client-secret=xxxxxx-your-client-secret-xxxxxx
     azure.activedirectory.user-group.allowed-groups=group1, group2
     azure.activedirectory.scope = your-customized-scope1, your-customized-scope2
+    azure.activedirectory.redirect-uri-template=xxxxxx-your-redirect-uri-xxxxxx
     ```
 - Check scope parameter for AAD authorization requests before configuration. Necessary permissions would be automatically added if needed.
 - Update `com.azure` group id to `com.azure.spring`.

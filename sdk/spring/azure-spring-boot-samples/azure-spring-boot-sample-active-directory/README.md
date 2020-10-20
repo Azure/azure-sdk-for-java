@@ -107,6 +107,12 @@ azure.activedirectory.client-secret=xxxxxx-your-client-secret-xxxxxx
 # groups that you created in your Azure AD tenant
 azure.activedirectory.user-group.allowed-groups=group1,group2
 ```
+
+4. (Optional) If you want to configure oauth2 redirect uri, please configure by :
+```properties
+azure.activedirectory.redirect-uri-template=xxxxxx-your-redirect-uri-xxxxxx
+```
+
  ---
  ### Step 4: Change Role_group1 to your group
 1. You can use `@PreAuthorize` annotation or `UserPrincipal` to manage access to web API based on user's group membership. You will need to change `ROLE_group1` to groups you want to allow to access the API in `TodoListController.java` or you will get "Access is denied".

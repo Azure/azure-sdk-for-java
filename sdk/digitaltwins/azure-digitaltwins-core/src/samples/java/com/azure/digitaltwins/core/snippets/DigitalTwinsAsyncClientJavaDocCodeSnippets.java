@@ -53,8 +53,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
         // BEGIN: com.azure.digitaltwins.core.asyncClient.createDigitalTwins#String-Object-Class#BasicDigitalTwin
         String modelId = "dtmi:samples:Building;1";
 
-        BasicDigitalTwin basicTwin = new BasicDigitalTwin()
-            .setId("myDigitalTwinId")
+        BasicDigitalTwin basicTwin = new BasicDigitalTwin("myDigitalTwinId")
             .setMetadata(
                 new DigitalTwinMetadata()
                     .setModelId(modelId)
@@ -83,8 +82,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
         // BEGIN: com.azure.digitaltwins.core.asyncClient.createDigitalTwinsWithResponse#String-Object-Class-Options#BasicDigitalTwin
         String modelId = "dtmi:samples:Building;1";
 
-        BasicDigitalTwin basicDigitalTwin = new BasicDigitalTwin()
-            .setId("myDigitalTwinId")
+        BasicDigitalTwin basicDigitalTwin = new BasicDigitalTwin("myDigitalTwinId")
             .setMetadata(
                 new DigitalTwinMetadata()
                     .setModelId(modelId)
@@ -249,11 +247,11 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     @Override
     public void createRelationship() {
         // BEGIN: com.azure.digitaltwins.core.asyncClient.createRelationship#String-String-Object-Class#BasicRelationship
-        BasicRelationship buildingToFloorBasicRelationship = new BasicRelationship()
-            .setId("myRelationshipId")
-            .setSourceId("mySourceDigitalTwinId")
-            .setTargetId("myTargetDigitalTwinId")
-            .setName("contains")
+        BasicRelationship buildingToFloorBasicRelationship = new BasicRelationship(
+                "myRelationshipId",
+                "mySourceDigitalTwinId",
+                "myTargetDigitalTwinId",
+                "contains")
             .addCustomProperty("Prop1", "Prop1 value")
             .addCustomProperty("Prop2", 6);
 
@@ -289,11 +287,11 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     @Override
     public void createRelationshipWithResponse() {
         // BEGIN: com.azure.digitaltwins.core.asyncClient.createRelationshipWithResponse#String-String-Object-Class-Options#BasicRelationship
-        BasicRelationship buildingToFloorBasicRelationship = new BasicRelationship()
-            .setId("myRelationshipId")
-            .setSourceId("mySourceDigitalTwinId")
-            .setTargetId("myTargetDigitalTwinId")
-            .setName("contains")
+        BasicRelationship buildingToFloorBasicRelationship = new BasicRelationship(
+                "myRelationshipId",
+                "mySourceDigitalTwinId",
+                "myTargetDigitalTwinId",
+                "contains")
             .addCustomProperty("Prop1", "Prop1 value")
             .addCustomProperty("Prop2", 6);
 

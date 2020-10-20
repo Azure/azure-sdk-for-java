@@ -17,10 +17,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MutablePropertySources;
@@ -130,6 +131,7 @@ public class KeyVaultIT {
     }
 
     @Test
+    @Ignore("Block live test, ignore temporarily")
     public void keyVaultWithVirtualMachineMSI() {
         LOGGER.info("keyVaultWithVirtualMachineMSI begin.");
         final VirtualMachine vm = AZURE.virtualMachines().getByResourceGroup(SPRING_RESOURCE_GROUP, VM_NAME);
