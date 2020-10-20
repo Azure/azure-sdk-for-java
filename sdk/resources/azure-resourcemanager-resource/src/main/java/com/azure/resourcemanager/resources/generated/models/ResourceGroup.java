@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.resources.generated.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.resources.generated.fluent.models.ResourceGroupInner;
 import java.util.Map;
@@ -79,12 +80,20 @@ public interface ResourceGroup {
         /** The stage of the ResourceGroup definition allowing to specify location. */
         interface WithLocation {
             /**
-             * Specifies the location property: The geo-location where the resource lives..
+             * Specifies the region for the resource.
              *
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
-            WithCreate withLocation(String location);
+            WithCreate withRegion(Region location);
+
+            /**
+             * Specifies the region for the resource.
+             *
+             * @param location The geo-location where the resource lives.
+             * @return the next definition stage.
+             */
+            WithCreate withRegion(String location);
         }
         /**
          * The stage of the ResourceGroup definition which contains all the minimum required properties for the resource

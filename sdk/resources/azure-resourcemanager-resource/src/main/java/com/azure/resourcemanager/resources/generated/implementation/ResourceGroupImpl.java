@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.resources.generated.implementation;
 
+import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.resources.generated.ResourceManager;
 import com.azure.resourcemanager.resources.generated.fluent.models.ResourceGroupInner;
@@ -136,6 +137,11 @@ public final class ResourceGroupImpl implements ResourceGroup, ResourceGroup.Def
         return this;
     }
 
+    public ResourceGroupImpl withRegion(String location) {
+        this.innerModel().withLocation(location);
+        return this;
+    }
+
     public ResourceGroupImpl withProperties(ResourceGroupProperties properties) {
         if (isInCreateMode()) {
             this.innerModel().withProperties(properties);
@@ -146,8 +152,8 @@ public final class ResourceGroupImpl implements ResourceGroup, ResourceGroup.Def
         }
     }
 
-    public ResourceGroupImpl withLocation(String location) {
-        this.innerModel().withLocation(location);
+    public ResourceGroupImpl withRegion(Region location) {
+        this.innerModel().withLocation(location.toString());
         return this;
     }
 

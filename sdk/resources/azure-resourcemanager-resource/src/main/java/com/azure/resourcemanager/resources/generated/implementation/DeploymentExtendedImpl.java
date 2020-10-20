@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.resources.generated.implementation;
 
+import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.resources.generated.ResourceManager;
 import com.azure.resourcemanager.resources.generated.fluent.models.DeploymentExtendedInner;
@@ -145,14 +146,9 @@ public final class DeploymentExtendedImpl
         return this;
     }
 
-    public DeploymentExtendedImpl withLocation(String location) {
-        if (isInCreateMode()) {
-            this.createParameters.withLocation(location);
-            return this;
-        } else {
-            this.updateParameters.withLocation(location);
-            return this;
-        }
+    public DeploymentExtendedImpl withRegion(Region location) {
+        this.createParameters.withLocation(location.toString());
+        return this;
     }
 
     public DeploymentExtendedImpl withProperties(DeploymentProperties properties) {
@@ -163,6 +159,11 @@ public final class DeploymentExtendedImpl
             this.updateParameters.withProperties(properties);
             return this;
         }
+    }
+
+    public DeploymentExtendedImpl withRegion(String location) {
+        this.createParameters.withLocation(location);
+        return this;
     }
 
     public DeploymentExtendedImpl withTags(Map<String, String> tags) {

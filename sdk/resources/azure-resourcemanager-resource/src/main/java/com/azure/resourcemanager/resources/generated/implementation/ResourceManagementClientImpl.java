@@ -5,7 +5,9 @@
 package com.azure.resourcemanager.resources.generated.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
@@ -30,6 +32,8 @@ import com.azure.resourcemanager.resources.generated.fluent.TagOperationsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Map;
 import reactor.core.publisher.Flux;
@@ -291,10 +295,17 @@ public final class ResourceManagementClientImpl implements ResourceManagementCli
         if (response.getStatus() != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
             String errorMessage;
             ManagementError managementError = null;
-            if (response.getValue().getError() != null) {
+            HttpResponse errorResponse = null;
+            PollResult.Error lroError = response.getValue().getError();
+            if (lroError != null) {
+                errorResponse =
+                    new HttpResponseImpl(
+                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
+                    // try to deserialize error body to ManagementError
                     try {
                         managementError =
                             this
@@ -308,14 +319,59 @@ public final class ResourceManagementClientImpl implements ResourceManagementCli
                     }
                 }
             } else {
+                // fallback to default error message
                 errorMessage = "Long running operation failed.";
             }
-            if (response.getValue().getError() != null) {
+            if (managementError == null) {
+                // fallback to default ManagementError
                 managementError = new ManagementError(response.getStatus().toString(), errorMessage);
             }
-            return Mono.error(new ManagementException(errorMessage, null, managementError));
+            return Mono.error(new ManagementException(errorMessage, errorResponse, managementError));
         } else {
             return response.getFinalResult();
+        }
+    }
+
+    private static final class HttpResponseImpl extends HttpResponse {
+        private final int statusCode;
+
+        private final byte[] responseBody;
+
+        private final HttpHeaders httpHeaders;
+
+        HttpResponseImpl(int statusCode, HttpHeaders httpHeaders, String responseBody) {
+            super(null);
+            this.statusCode = statusCode;
+            this.httpHeaders = httpHeaders;
+            this.responseBody = responseBody.getBytes(StandardCharsets.UTF_8);
+        }
+
+        public int getStatusCode() {
+            return statusCode;
+        }
+
+        public String getHeaderValue(String s) {
+            return httpHeaders.getValue(s);
+        }
+
+        public HttpHeaders getHeaders() {
+            return httpHeaders;
+        }
+
+        public Flux<ByteBuffer> getBody() {
+            return Flux.just(ByteBuffer.wrap(responseBody));
+        }
+
+        public Mono<byte[]> getBodyAsByteArray() {
+            return Mono.just(responseBody);
+        }
+
+        public Mono<String> getBodyAsString() {
+            return Mono.just(new String(responseBody, StandardCharsets.UTF_8));
+        }
+
+        public Mono<String> getBodyAsString(Charset charset) {
+            return Mono.just(new String(responseBody, charset));
         }
     }
 }

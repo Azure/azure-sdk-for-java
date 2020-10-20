@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.resources.generated.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.resources.generated.fluent.models.DeploymentExtendedInner;
 import java.util.Map;
@@ -117,12 +118,20 @@ public interface DeploymentExtended {
         /** The stage of the DeploymentExtended definition allowing to specify location. */
         interface WithLocation {
             /**
-             * Specifies the location property: The location to store the deployment data..
+             * Specifies the region for the resource.
              *
              * @param location The location to store the deployment data.
              * @return the next definition stage.
              */
-            WithCreate withLocation(String location);
+            WithCreate withRegion(Region location);
+
+            /**
+             * Specifies the region for the resource.
+             *
+             * @param location The location to store the deployment data.
+             * @return the next definition stage.
+             */
+            WithCreate withRegion(String location);
         }
         /** The stage of the DeploymentExtended definition allowing to specify tags. */
         interface WithTags {
@@ -143,7 +152,7 @@ public interface DeploymentExtended {
     DeploymentExtended.Update update();
 
     /** The template for DeploymentExtended update. */
-    interface Update extends UpdateStages.WithLocation, UpdateStages.WithTags, UpdateStages.WithProperties {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties {
         /**
          * Executes the update request.
          *
@@ -161,16 +170,6 @@ public interface DeploymentExtended {
     }
     /** The DeploymentExtended update stages. */
     interface UpdateStages {
-        /** The stage of the DeploymentExtended update allowing to specify location. */
-        interface WithLocation {
-            /**
-             * Specifies the location property: The location to store the deployment data..
-             *
-             * @param location The location to store the deployment data.
-             * @return the next definition stage.
-             */
-            Update withLocation(String location);
-        }
         /** The stage of the DeploymentExtended update allowing to specify tags. */
         interface WithTags {
             /**
