@@ -5,7 +5,9 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.patch.PatchOperationCore;
 import com.azure.cosmos.implementation.patch.PatchOperationType;
+import com.azure.cosmos.util.Beta;
 
+@Beta(Beta.SinceVersion.V4_7_0)
 public abstract class PatchOperation {
 
     private PatchOperationType operationType;

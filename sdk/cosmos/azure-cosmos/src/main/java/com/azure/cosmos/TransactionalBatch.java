@@ -323,6 +323,55 @@ public final class TransactionalBatch {
     }
 
     /**
+     * Adds an operation to patch an item into the batch.
+     *
+     * @param id  the item id.
+     * @param patchOperations Represents a list of operations to be sequentially applied to the referred Cosmos item.
+     *
+     * @return The added operation.
+     */
+    public CosmosItemOperation patchItemOperation(String id, List<PatchOperation> patchOperations) {
+        checkNotNull(id, "expected non-null id");
+        checkNotNull(patchOperations, "expected non-null item");
+
+        return this.patchItemOperation(id, patchOperations, new TransactionalBatchItemRequestOptions());
+    }
+
+    /**
+     * Adds an operation to patch an item into the batch.
+     *
+     * @param id  the item id.
+     * @param patchOperations Represents a list of operations to be sequentially applied to the referred Cosmos item.
+     * @param requestOptions The options for the item request.
+     *
+     * @return The added operation.
+     */
+    public CosmosItemOperation patchItemOperation(
+        String id,
+        List<PatchOperation> patchOperations,
+        TransactionalBatchItemRequestOptions requestOptions) {
+
+        checkNotNull(id, "expected non-null id");
+        checkNotNull(patchOperations, "expected non-null item");
+
+        if (requestOptions == null) {
+            requestOptions = new TransactionalBatchItemRequestOptions();
+        }
+
+        ItemBatchOperation<?> operation = new ItemBatchOperation<>(
+            CosmosItemOperationType.PATCH,
+            id,
+            this.getPartitionKeyValue(),
+            requestOptions.toRequestOptions(),
+            patchOperations
+        );
+
+        this.operations.add(operation);
+
+        return operation;
+    }
+
+    /**
      * Return the list of operation in an unmodifiable instance  so no one can change it in the down path.
      *
      * @return The list of operations which are to be executed.

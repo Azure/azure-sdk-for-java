@@ -35,7 +35,7 @@ public class PatchTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void before_PatchTest() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().contentResponseOnWriteEnabled(true).buildClient();
@@ -43,13 +43,13 @@ public class PatchTest extends TestSuiteBase {
         container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
     }
 
-    @AfterClass(groups = {"emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         assertThat(this.client).isNotNull();
         this.client.close();
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple" }, timeOut = TIMEOUT * 100)
     public void itemPatchSuccessTest() {
         ToDoActivity testItem = ToDoActivity.createRandomItem(this.container);
 
@@ -90,7 +90,7 @@ public class PatchTest extends TestSuiteBase {
         assertEquals(patchedItem, response.getItem());
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void itemPatchFailureTest() {
         // Create an item
         ToDoActivity testItem = ToDoActivity.createRandomItem(this.container);
@@ -106,8 +106,7 @@ public class PatchTest extends TestSuiteBase {
                 patchOperations,
                 ToDoActivity.class);
             Assert.fail("Update operation should fail if the item doesn't exist.");
-        }
-        catch (CosmosException ex) {
+        } catch (CosmosException ex) {
             assertEquals(HttpResponseStatus.NOT_FOUND.code(), ex.getStatusCode());
             assertTrue(ex.getMessage().contains("Resource Not Found"), ex.getMessage());
         }
@@ -121,8 +120,7 @@ public class PatchTest extends TestSuiteBase {
                 ToDoActivity.class);
 
             Assert.fail("Update operation should fail for malformed PatchSpecification.");
-        }
-        catch (CosmosException ex) {
+        } catch (CosmosException ex) {
             assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ex.getStatusCode());
             assertTrue(ex.getMessage().contains(
                 "Add Operation only support adding a leaf node of an existing node(array or object), no path found beyond: 'nonExistentParent'"), ex.getMessage());

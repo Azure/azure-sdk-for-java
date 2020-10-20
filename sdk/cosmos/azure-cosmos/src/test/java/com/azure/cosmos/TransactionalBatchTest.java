@@ -14,6 +14,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -445,6 +446,28 @@ public class TransactionalBatchTest extends BatchTestBase {
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void BatchCreateAndPatchAsync() {
+        BatchTestBase.TestDoc testDoc = this.populateTestDoc(this.partitionKey1);
+        List<PatchOperation> patchOperations = new ArrayList<>();
+        patchOperations.add(PatchOperation.replace("/cost", testDoc.getCost() + 1));
+
+        TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
+        batch.createItemOperation(testDoc);
+        batch.patchItemOperation(testDoc.getId(), patchOperations);
+
+        TransactionalBatchResponse batchResponse = batchContainer.executeTransactionalBatch(batch);
+
+        this.verifyBatchProcessed(batchResponse, 2);
+
+        assertThat(batchResponse.getResults().get(0).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+        assertThat(batchResponse.getResults().get(1).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+
+        testDoc.setCost(testDoc.getCost() + 1);
+
+        this.verifyByRead(batchContainer, testDoc);
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void batchWithInvalidCreateTest() {
         // partition key mismatch between doc and and value passed in to the operation
         this.runWithError(
@@ -504,7 +527,6 @@ public class TransactionalBatchTest extends BatchTestBase {
         // make sure the conflicted doc hasn't changed
         this.verifyByRead(batchContainer, this.TestDocPk1ExistingA);
     }
-
 
     private void runWithError(
         CosmosContainer container,

@@ -775,8 +775,9 @@ public class CosmosAsyncContainer {
      * @param <T> the type parameter.
      * @param itemId the item id.
      * @param partitionKey the partition key.
-     * @param patchOperations patchOperations.
+     * @param patchOperations Represents a list of operations to be sequentially applied to the referred Cosmos item.
      * @param itemType the item type.
+     *
      * @return an {@link Mono} containing the Cosmos item resource response with the replaced item or an error.
      */
     public <T> Mono<CosmosItemResponse<T>> patchItem(
@@ -796,9 +797,10 @@ public class CosmosAsyncContainer {
      * @param <T> the type parameter.
      * @param itemId the item id.
      * @param partitionKey the partition key.
-     * @param patchOperations patchOperations.
+     * @param patchOperations Represents a list of operations to be sequentially applied to the referred Cosmos item.
      * @param options the request options.
      * @param itemType the item type.
+     *
      * @return an {@link Mono} containing the Cosmos item resource response with the replaced item or an error.
      */
     public <T> Mono<CosmosItemResponse<T>> patchItem(

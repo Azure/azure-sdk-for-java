@@ -69,7 +69,7 @@ public class PatchUnitTest {
         }
 
         if(!operationType.equals(PatchOperationType.REMOVE)) {
-            assertEquals(patchOperation.getResource(), value);
+            assertEquals(((PatchOperationCore) patchOperation).getResource(), value);
         }
     }
 }

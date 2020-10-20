@@ -19,7 +19,6 @@ public class PatchOperationCore<T> extends PatchOperation {
     /**
      * Initializes a new instance of the {@link PatchOperationCore} class.
      *
-     *
      * @param operationType Specifies the type of Update operation
      * @param path          Specifies the path to target location.
      * @param value         Specifies the value to be used
