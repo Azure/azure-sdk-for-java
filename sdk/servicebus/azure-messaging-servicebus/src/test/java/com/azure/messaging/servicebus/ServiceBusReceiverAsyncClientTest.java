@@ -618,6 +618,36 @@ class ServiceBusReceiverAsyncClientTest {
     }
 
     /**
+     * Verifies that client can call multiple receiveMessages on same receiver instance.
+     */
+    @Test
+    void canPerformMultipleReceive() {
+        // Arrange
+        final int numberOfEvents = 1;
+        final List<Message> messages = getMessages();
+
+        ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
+        when(receivedMessage.getLockedUntil()).thenReturn(OffsetDateTime.now());
+        when(receivedMessage.getLockToken()).thenReturn(UUID.randomUUID().toString());
+        when(messageSerializer.deserialize(any(Message.class), eq(ServiceBusReceivedMessage.class)))
+            .thenReturn(receivedMessage);
+
+        // Act & Assert
+
+        StepVerifier.create(receiver.receiveMessages().take(numberOfEvents))
+            .then(() -> messages.forEach(m -> messageSink.next(m)))
+            .expectNextCount(numberOfEvents)
+            .verifyComplete();
+
+        StepVerifier.create(receiver.receiveMessages().take(numberOfEvents))
+            .then(() -> messages.forEach(m -> messageSink.next(m)))
+            .expectNextCount(numberOfEvents)
+            .verifyComplete();
+
+        verify(amqpReceiveLink).addCredits(PREFETCH);
+    }
+
+    /**
      * Cannot get session state for non-session receiver.
      */
     @Test

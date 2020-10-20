@@ -190,6 +190,7 @@ public class FluxAutoRenewTest {
         assertTrue(actualTokenRenewCalledTimes.get() >= renewedForAtLeast);
     }
 
+
     /**
      * Test if we have error in
      */
@@ -269,6 +270,38 @@ public class FluxAutoRenewTest {
 
         // Act & Assert
         assertThrows(NullPointerException.class, () -> renewOperator.map(null));
+    }
+
+    /**
+     * Test that the function to renew Renew Operator can be subscribed multiple times.
+     */
+    @Test
+    void renewCanBeSubscribedMultipleTimes() {
+        // Arrange
+        final FluxAutoRenew renewOperator = new FluxAutoRenew(messageSource,
+            MAX_AUTO_LOCK_RENEW_DURATION, messageLockContainer, renewalFunction);
+
+        // Act & Assert
+        StepVerifier.create(renewOperator.take(1))
+            .then(() -> {
+                messagesPublisher.next(message);
+            })
+            .assertNext(actual -> {
+                Assertions.assertEquals(LOCK_TOKEN_STRING, actual.getLockToken());
+            })
+            .verifyComplete();
+
+        StepVerifier.create(renewOperator.take(1))
+            .then(() -> {
+                messagesPublisher.next(message);
+            })
+            .assertNext(actual -> {
+                Assertions.assertEquals(LOCK_TOKEN_STRING, actual.getLockToken());
+
+            })
+            .verifyComplete();
+
+        verify(messageLockContainer, times(2)).addOrUpdate(eq(LOCK_TOKEN_STRING), any(OffsetDateTime.class), any(LockRenewalOperation.class));
     }
 
     /***

@@ -60,7 +60,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private final AtomicInteger messagesPending = new AtomicInteger();
     private final List<Long> messagesDeferredPending = new ArrayList<>();
     private final boolean isSessionEnabled = false;
-    private final Duration maxLockRenewDuration = Duration.ofSeconds(30);
 
     private ServiceBusReceiverAsyncClient receiver;
     private ServiceBusSenderAsyncClient sender;
@@ -669,7 +668,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that the lock can be automatically renewed.
      */
-    //@Disabled("Auto-lock renewal is not enabled.")
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
     @ParameterizedTest
     void autoRenewLockOnReceiveMessage(MessagingEntityType entityType, boolean isSessionEnabled) {

@@ -63,12 +63,9 @@ final class FluxAutoRenew extends FluxOperator<ServiceBusReceivedMessage, Servic
     public void subscribe(CoreSubscriber<? super ServiceBusReceivedMessage> actual) {
         LockRenewSubscriber newLockRenewSubscriber = new LockRenewSubscriber(actual, maxAutoLockRenewal,
             messageLockContainer, onRenewLock);
-        if (!lockRenewSubscriber.compareAndSet(null, newLockRenewSubscriber)) {
-            newLockRenewSubscriber.dispose();
-            logger.error("Already subscribed once.");
-            return;
-        }
-        source.subscribe(lockRenewSubscriber.get());
+
+        source.subscribe(newLockRenewSubscriber);
+
     }
 
     /**
