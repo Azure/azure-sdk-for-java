@@ -282,9 +282,7 @@ WebApp webApp = azure.webApps()
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/appservice/samples/ManageWebAppSourceControl.java">Configure deployment sources for Web apps</a></li>
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/appservice/samples/ManageWebAppSourceControlAsync.java">Configure deployment sources for Web apps asynchronously</a></li>
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/appservice/samples/ManageWebAppSlots.java">Manage staging and production slots for Web apps</a></li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/appservice/samples/ManageWebAppWithTrafficManager.java">Scale Web apps</a></li>
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/appservice/samples/ManageWebAppStorageAccountConnection.java">Manage storage connections for Web apps</a></li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/appservice/samples/ManageWebAppSqlConnection.java">Manage data connections (such as SQL database and Redis cache) for Web apps</a></li>
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/appservice/samples/ManageWebAppWithAuthentication.java">Manage authentication for Web apps</a></li>
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/appservice/samples/ManageWebAppCosmosDbThroughKeyVault.java">Safegaurd Web app secrets in Key Vault</a></li>
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/appservice/samples/ManageWebAppCosmosDbByMsi.java">Safegaurd Web app secrets in Key Vault using convenience API</a></li>
@@ -296,13 +294,9 @@ WebApp webApp = azure.webApps()
     <td>Web Apps on <b>Linux</b></td>
     <td><ul style="list-style-type:circle">
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/appservice/samples/ManageLinuxWebAppBasic.java">Manage Web apps</a></li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/appservice/samples/ManageLinuxWebAppWithContainerRegistry.java">Deploy a container image from Azure Container Registry to Linux containers</a></li>
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/appservice/samples/ManageLinuxWebAppWithDomainSsl.java">Manage Web apps with custom domains</a></li>
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/appservice/samples/ManageLinuxWebAppSourceControl.java">Configure deployment sources for Web apps</a></li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/appservice/samples/ManageLinuxWebAppWithTrafficManager.java">Scale Web apps</a></li>
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/appservice/samples/ManageLinuxWebAppStorageAccountConnection.java">Manage storage connections for Web apps</a></li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/appservice/samples/ManageLinuxWebAppSqlConnection.java">Manage data connections (such as SQL database and Redis cache) for Web apps</a></li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/appservice/samples/ManageLinuxWebAppCosmosDbByMsi.java">Safegaurd Web app secrets in Key Vault on Linux</a></li>
 </ul></td>
   </tr>
 
@@ -316,14 +310,7 @@ WebApp webApp = azure.webApps()
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/appservice/samples/ManageFunctionAppLogs.java">Get function logs</a></li>
 </ul></td>
   </tr>
-  
-  <tr>
-    <td>Traffic Manager</td>
-    <td><ul style="list-style-type:circle">
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/trafficmanager/samples/ManageTrafficManager.java">Manage traffic manager profiles</a></li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/trafficmanager/samples/ManageSimpleTrafficManager.java">Manage simple traffic manager profiles</a></li>
-</ul></td>
-  </tr>
+
 
 </table>
 
@@ -385,24 +372,6 @@ SqlDatabase database = azure.sqlServers().databases().define("myNewDatabase")
   </tr>
 
   <tr>
-    <td>SQL Database</td>
-    <td><ul style="list-style-type:circle">
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager//sql/samples/ManageSqlDatabase.java">Manage SQL databases</a></li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager//sql/samples/ManageSqlDatabaseInElasticPool.java">Manage SQL databases in elastic pools</a></li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager//sql/samples/ManageSqlFirewallRules.java">Manage firewalls for SQL databases</a></li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager//sql/samples/ManageSqlDatabasesAcrossDifferentDataCenters.java">Manage SQL databases across regions</a></li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager//sql/samples/ManageSqlImportExportDatabase.java">Import and export SQL databases</a></li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager//sql/samples/ManageSqlWithRecoveredOrRestoredDatabase.java">Restore and recover SQL databases</a></li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager//sql/samples/GettingSqlServerMetrics.java">Get SQL Database metrics</a></li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager//sql/samples/ManageSqlFailoverGroups.java">Manage SQL Database Failover Groups</a></li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager//sql/samples/ManageSqlServerDnsAliases.java">Manage SQL Server DNS aliases</a></li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager//sql/samples/ManageSqlServerKeysWithAzureKeyVaultKey.java">Manage SQL secrets (Server Keys) in Azure Key Vault</a></li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager//sql/samples/ManageSqlVirtualNetworkRules.java">Manage SQL Virtual Network Rules</a></li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager//sql/samples/ManageSqlServerSecurityAlertPolicy.java">Manage SQL Server Security Alert Policy</a></li>
-</ul></td>
-  </tr>
-
-  <tr>
     <td>Cosmos DB</td>
     <td><ul style="list-style-type:circle">
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager//cosmos/samples/ManageHACosmosDB.java">Create a CosmosDB and configure it for high availability</a></li>
@@ -436,16 +405,9 @@ SqlDatabase database = azure.sqlServers().databases().define("myNewDatabase")
 <tr>
     <td>Container Service<br>Container Registry and <br>Container Instances</td>
     <td><ul style="list-style-type:circle">
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager//containerregistry/samples/ManageContainerRegistry.java">Manage container registry</a></li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager//containerregistry/samples/ManageContainerRegistryWithWebhooks.java">Manage container registry with Web hooks</a></li>
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager//kubernetescluster/samples/ManageKubernetesCluster.java">Manage Kubernetes cluster (AKS)</a></li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager//kubernetescluster/samples/DeployImageFromContainerRegistryToKubernetes.java">Deploy an image from container registry to Kubernetes cluster (AKS)</a></li>
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager//kubernetescluster/samples/ManagedKubernetesClusterWithAdvancedNetworking.java">Manage Kubernetes clusters with advanced networking</a></li>
 
-<!--li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager//containerinstance/samples/ManageContainerInstanceWithAzureFileShareMount.java">Manage Azure Container Instances with new Azure File Share</li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager//containerinstance/samples/ManageContainerInstanceWithManualAzureFileShareMountCreation.java">Manage Azure Container Instances with an existing Azure File Share</li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager//containerinstance/samples/ManageContainerInstanceWithMultipleContainerImages.java">Create Container Group with multiple instances and container images</li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager//containerinstance/samples/ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOrchestrator.java">Create Container Group and scale up containers using Kubernetes in ACS</li-->
 </ul></td>
   </tr>
   <tr>
