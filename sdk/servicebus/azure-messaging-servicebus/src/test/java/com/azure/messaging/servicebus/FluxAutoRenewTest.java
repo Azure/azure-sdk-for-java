@@ -50,7 +50,6 @@ public class FluxAutoRenewTest {
     private final ClientLogger logger = new ClientLogger(FluxAutoRenewTest.class);
 
     private final ServiceBusReceivedMessage message = new ServiceBusReceivedMessage("Some Data".getBytes());
-    private final int durationToRenewLockForSeconds = 1;
     private final TestPublisher<ServiceBusReceivedMessage> messagesPublisher = TestPublisher.create();
     private final Flux<? extends ServiceBusReceivedMessage> messageSource = messagesPublisher.flux();
     private Function<String, Mono<OffsetDateTime>> renewalFunction;
@@ -77,10 +76,6 @@ public class FluxAutoRenewTest {
         message.setLockToken(LOCK_TOKEN_UUID);
         message.setLockedUntil(lockedUntil);
         renewalFunction = (lockToken) -> Mono.just(OffsetDateTime.now().plusSeconds(1));
-        /*when(renewalFunction.apply(LOCK_TOKEN_STRING))
-            .thenReturn(Mono.fromCallable(() -> message.getLockedUntil().plusSeconds(durationToRenewLockForSeconds)));
-
-         */
     }
 
     @AfterEach
@@ -390,9 +385,9 @@ public class FluxAutoRenewTest {
         message2.setEnqueuedSequenceNumber(1);
 
         final ServiceBusReceivedMessage message3 = new ServiceBusReceivedMessage("data".getBytes());
-        message2.setLockToken(UUID.randomUUID());
+        message3.setLockToken(UUID.randomUUID());
         message3.setLockedUntil(lockedUntil);
-        message2.setEnqueuedSequenceNumber(expectedEnqueuedSequenceNumber);
+        message3.setEnqueuedSequenceNumber(expectedEnqueuedSequenceNumber);
 
         final FluxAutoRenew renewOperator = new FluxAutoRenew(messageSource,
             MAX_AUTO_LOCK_RENEW_DURATION, messageLockContainer, renewalFunction);

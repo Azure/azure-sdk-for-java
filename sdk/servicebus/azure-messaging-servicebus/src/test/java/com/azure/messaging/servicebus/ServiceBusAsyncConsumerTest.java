@@ -55,6 +55,7 @@ class ServiceBusAsyncConsumerTest {
     private final ClientLogger logger = new ClientLogger(ServiceBusAsyncConsumer.class);
 
     private ServiceBusReceiveLinkProcessor linkProcessor;
+    private Function<String, Mono<OffsetDateTime>> onRenewLock;
 
     @Mock
     private ServiceBusAmqpConnection connection;
@@ -66,8 +67,6 @@ class ServiceBusAsyncConsumerTest {
     private MessageSerializer serializer;
     @Mock
     LockContainer<LockRenewalOperation> messageLockContainer;
-    @Mock
-    Function<String, Mono<OffsetDateTime>> onRenewLock;
 
     @BeforeAll
     static void beforeAll() {
@@ -92,6 +91,7 @@ class ServiceBusAsyncConsumerTest {
 
         when(connection.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link.updateDisposition(anyString(), any(DeliveryState.class))).thenReturn(Mono.empty());
+        onRenewLock = (lockToken) -> Mono.just(OffsetDateTime.now().plusSeconds(1));
     }
 
     @AfterEach
