@@ -135,8 +135,8 @@ public final class Utility {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
 
         // Service Version
-        final FormRecognizerServiceVersion serviceVersion =
-            version != null ? version : FormRecognizerServiceVersion.getLatest();
+        // final FormRecognizerServiceVersion serviceVersion =
+        //     version != null ? version : FormRecognizerServiceVersion.getLatest();
 
         HttpPipeline pipeline = httpPipeline;
 
