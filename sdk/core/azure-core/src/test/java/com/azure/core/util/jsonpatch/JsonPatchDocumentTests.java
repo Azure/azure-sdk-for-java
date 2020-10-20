@@ -1,10 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.experimental.jsonpatch;
+package com.azure.core.util.jsonpatch;
 
+import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -20,10 +23,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Tests {@link JsonPatchDocument}.
  */
 public class JsonPatchDocumentTests {
-    private static final ObjectMapper MAPPER = ((JacksonAdapter) JacksonAdapter.createDefaultSerializerAdapter())
-        .serializer()
-        .registerModule(JsonPatchDocumentSerializer.getModule())
-        .registerModule(JsonPatchOperationSerializer.getModule());
+    private static final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
+
+    private static final JsonSerializer JSON_SERIALIZER = new JacksonJsonSerializerBuilder()
+        .serializer(new JacksonAdapter().serializer())
+        .build();
 
     @ParameterizedTest
     @MethodSource("formattingSupplier")
@@ -34,17 +38,11 @@ public class JsonPatchDocumentTests {
     @ParameterizedTest
     @MethodSource("formattingSupplier")
     public void jsonifyDocument(JsonPatchDocument document, String expected) throws IOException {
-        assertEquals(expected, MAPPER.writeValueAsString(document).replace(" ", ""));
-    }
-
-    @ParameterizedTest
-    @MethodSource("formattingSupplier")
-    public void jsonifyOperationList(JsonPatchDocument document, String expected) throws IOException {
-        assertEquals(expected, MAPPER.writeValueAsString(document.getJsonPatchOperations()).replace(" ", ""));
+        assertEquals(expected, SERIALIZER.serialize(document, SerializerEncoding.JSON).replace(" ", ""));
     }
 
     private static Stream<Arguments> formattingSupplier() {
-        JsonPatchDocument complexDocument = new JsonPatchDocument()
+        JsonPatchDocument complexDocument = newDocument()
             .appendTest("/a/b/c", "foo")
             .appendRemove("/a/b/c")
             .appendAdd("/a/b/c", new String[] {"foo", "bar"})
@@ -52,7 +50,7 @@ public class JsonPatchDocumentTests {
             .appendMove("/a/b/c", "/a/b/d")
             .appendCopy("/a/b/d", "/a/b/e");
 
-        JsonPatchDocument complexDocumentRaw = new JsonPatchDocument()
+        JsonPatchDocument complexDocumentRaw = newDocument()
             .appendTestRaw("/a/b/c", "\"foo\"")
             .appendRemove("/a/b/c")
             .appendAddRaw("/a/b/c", "[\"foo\",\"bar\"]")
@@ -70,95 +68,95 @@ public class JsonPatchDocumentTests {
             + "]";
 
         return Stream.of(
-            Arguments.of(new JsonPatchDocument().appendAdd("/baz", "qux"),
+            Arguments.of(newDocument().appendAdd("/baz", "qux"),
                 constructExpectedOperation("add", null, "/baz", "qux")),
 
-            Arguments.of(new JsonPatchDocument().appendAdd("/foo/1", "qux"),
+            Arguments.of(newDocument().appendAdd("/foo/1", "qux"),
                 constructExpectedOperation("add", null, "/foo/1", "qux")),
 
-            Arguments.of(new JsonPatchDocument().appendAdd("/child",
+            Arguments.of(newDocument().appendAdd("/child",
                 Collections.singletonMap("grandchild", Collections.emptyMap())),
                 constructExpectedOperation("add", null, "/child", "{\"grandchild\":{}}", false)),
 
-            Arguments.of(new JsonPatchDocument().appendAdd("/foo/-", new String[] {"abc", "def"}),
+            Arguments.of(newDocument().appendAdd("/foo/-", new String[] {"abc", "def"}),
                 constructExpectedOperation("add", null, "/foo/-", "[\"abc\",\"def\"]", false)),
 
-            Arguments.of(new JsonPatchDocument().appendAddRaw("/baz", "\"qux\""),
+            Arguments.of(newDocument().appendAddRaw("/baz", "\"qux\""),
                 constructExpectedOperation("add", null, "/baz", "qux")),
 
-            Arguments.of(new JsonPatchDocument().appendAddRaw("/foo/1", "\"qux\""),
+            Arguments.of(newDocument().appendAddRaw("/foo/1", "\"qux\""),
                 constructExpectedOperation("add", null, "/foo/1", "qux")),
 
-            Arguments.of(new JsonPatchDocument().appendAddRaw("/child", "{\"grandchild\":{}}"),
+            Arguments.of(newDocument().appendAddRaw("/child", "{\"grandchild\":{}}"),
                 constructExpectedOperation("add", null, "/child", "{\"grandchild\":{}}", false)),
 
-            Arguments.of(new JsonPatchDocument().appendAddRaw("/foo/-", "[\"abc\",\"def\"]"),
+            Arguments.of(newDocument().appendAddRaw("/foo/-", "[\"abc\",\"def\"]"),
                 constructExpectedOperation("add", null, "/foo/-", "[\"abc\",\"def\"]", false)),
 
-            Arguments.of(new JsonPatchDocument().appendReplace("/bar", "foo"),
+            Arguments.of(newDocument().appendReplace("/bar", "foo"),
                 constructExpectedOperation("replace", null, "/bar", "foo")),
 
-            Arguments.of(new JsonPatchDocument().appendReplace("/foo", new String[] {"fizz", "buzz", "fizzbuzz"}),
+            Arguments.of(newDocument().appendReplace("/foo", new String[] {"fizz", "buzz", "fizzbuzz"}),
                 constructExpectedOperation("replace", null, "/foo", "[\"fizz\",\"buzz\",\"fizzbuzz\"]", false)),
 
-            Arguments.of(new JsonPatchDocument().appendReplace("/baz", "foo"),
+            Arguments.of(newDocument().appendReplace("/baz", "foo"),
                 constructExpectedOperation("replace", null, "/baz", "foo")),
 
-            Arguments.of(new JsonPatchDocument().appendReplaceRaw("/bar", "\"foo\""),
+            Arguments.of(newDocument().appendReplaceRaw("/bar", "\"foo\""),
                 constructExpectedOperation("replace", null, "/bar", "foo")),
 
-            Arguments.of(new JsonPatchDocument().appendReplaceRaw("/foo", "[\"fizz\",\"buzz\",\"fizzbuzz\"]"),
+            Arguments.of(newDocument().appendReplaceRaw("/foo", "[\"fizz\",\"buzz\",\"fizzbuzz\"]"),
                 constructExpectedOperation("replace", null, "/foo", "[\"fizz\",\"buzz\",\"fizzbuzz\"]", false)),
 
-            Arguments.of(new JsonPatchDocument().appendReplaceRaw("/baz", "\"foo\""),
+            Arguments.of(newDocument().appendReplaceRaw("/baz", "\"foo\""),
                 constructExpectedOperation("replace", null, "/baz", "foo")),
 
-            Arguments.of(new JsonPatchDocument().appendCopy("/foo", "/copy"),
+            Arguments.of(newDocument().appendCopy("/foo", "/copy"),
                 constructExpectedOperation("copy", "/foo", "/copy", null)),
 
-            Arguments.of(new JsonPatchDocument().appendCopy("/foo/bar", "/bar"),
+            Arguments.of(newDocument().appendCopy("/foo/bar", "/bar"),
                 constructExpectedOperation("copy", "/foo/bar", "/bar", null)),
 
-            Arguments.of(new JsonPatchDocument().appendCopy("/baz", "/fizz"),
+            Arguments.of(newDocument().appendCopy("/baz", "/fizz"),
                 constructExpectedOperation("copy", "/baz", "/fizz", null)),
 
-            Arguments.of(new JsonPatchDocument().appendMove("/foo", "/bar"),
+            Arguments.of(newDocument().appendMove("/foo", "/bar"),
                 constructExpectedOperation("move", "/foo", "/bar", null)),
 
-            Arguments.of(new JsonPatchDocument().appendMove("/foo/bar", "/foo"),
+            Arguments.of(newDocument().appendMove("/foo/bar", "/foo"),
                 constructExpectedOperation("move", "/foo/bar", "/foo", null)),
 
-            Arguments.of(new JsonPatchDocument().appendMove("/foo", "/foo/bar"),
+            Arguments.of(newDocument().appendMove("/foo", "/foo/bar"),
                 constructExpectedOperation("move", "/foo", "/foo/bar", null)),
 
-            Arguments.of(new JsonPatchDocument().appendMove("/baz", "/fizz"),
+            Arguments.of(newDocument().appendMove("/baz", "/fizz"),
                 constructExpectedOperation("move", "/baz", "/fizz", null)),
 
-            Arguments.of(new JsonPatchDocument().appendRemove("/bar"),
+            Arguments.of(newDocument().appendRemove("/bar"),
                 constructExpectedOperation("remove", null, "/bar", null)),
 
-            Arguments.of(new JsonPatchDocument().appendRemove("/foo/bar"),
+            Arguments.of(newDocument().appendRemove("/foo/bar"),
                 constructExpectedOperation("remove", null, "/foo/bar", null)),
 
-            Arguments.of(new JsonPatchDocument().appendRemove("/baz"),
+            Arguments.of(newDocument().appendRemove("/baz"),
                 constructExpectedOperation("remove", null, "/baz", null)),
 
-            Arguments.of(new JsonPatchDocument().appendTest("/foo", "bar"),
+            Arguments.of(newDocument().appendTest("/foo", "bar"),
                 constructExpectedOperation("test", null, "/foo", "bar")),
 
-            Arguments.of(new JsonPatchDocument().appendTest("/foo", 42),
+            Arguments.of(newDocument().appendTest("/foo", 42),
                 constructExpectedOperation("test", null, "/foo", "42", false)),
 
-            Arguments.of(new JsonPatchDocument().appendTest("/baz", "bar"),
+            Arguments.of(newDocument().appendTest("/baz", "bar"),
                 constructExpectedOperation("test", null, "/baz", "bar")),
 
-            Arguments.of(new JsonPatchDocument().appendTestRaw("/foo", "\"bar\""),
+            Arguments.of(newDocument().appendTestRaw("/foo", "\"bar\""),
                 constructExpectedOperation("test", null, "/foo", "bar")),
 
-            Arguments.of(new JsonPatchDocument().appendTestRaw("/foo", "42"),
+            Arguments.of(newDocument().appendTestRaw("/foo", "42"),
                 constructExpectedOperation("test", null, "/foo", "42", false)),
 
-            Arguments.of(new JsonPatchDocument().appendTestRaw("/baz", "\"bar\""),
+            Arguments.of(newDocument().appendTestRaw("/baz", "\"bar\""),
                 constructExpectedOperation("test", null, "/baz", "bar")),
 
             Arguments.of(complexDocument, complexExpected),
@@ -198,7 +196,7 @@ public class JsonPatchDocumentTests {
     }
 
     private static Stream<Arguments> invalidArgumentSupplier() {
-        JsonPatchDocument document = new JsonPatchDocument();
+        JsonPatchDocument document = newDocument();
         return Stream.of(
             Arguments.of((Runnable) () -> document.appendAdd(null, "\"bar\"")),
 
@@ -214,5 +212,9 @@ public class JsonPatchDocumentTests {
 
             Arguments.of((Runnable) () -> document.appendTest(null, "\"bar\""))
         );
+    }
+
+    private static JsonPatchDocument newDocument() {
+        return new JsonPatchDocument(JSON_SERIALIZER);
     }
 }

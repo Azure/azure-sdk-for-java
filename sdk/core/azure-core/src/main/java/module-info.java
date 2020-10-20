@@ -31,6 +31,7 @@ module com.azure.core {
     // exporting some packages specifically for Jackson
     opens com.azure.core.http to com.fasterxml.jackson.databind;
     opens com.azure.core.util to com.fasterxml.jackson.databind;
+    opens com.azure.core.util.jsonpatch to com.fasterxml.jackson.databind;
     opens com.azure.core.util.logging to com.fasterxml.jackson.databind;
     opens com.azure.core.util.serializer to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation to com.fasterxml.jackson.databind;

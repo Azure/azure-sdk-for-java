@@ -98,6 +98,12 @@
       <version>2.0.31.Final</version> <!-- {x-version-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
     </dependency>
     <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-serializer-json-jackson</artifactId>
+      <version>1.1.0-beta.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <version>5.6.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
@@ -144,6 +150,12 @@
       <artifactId>jmh-generator-annprocess</artifactId>
       <version>1.22</version> <!-- {x-version-update;org.openjdk.jmh:jmh-generator-annprocess;external_dependency} -->
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure.resourcemanager</groupId>
+      <artifactId>azure-resourcemanager-resources</artifactId>
+      <version>2.0.0</version>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
 
@@ -214,6 +226,7 @@
                 --add-opens com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.util.jsonpatch=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util.logging=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util.polling=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util.serializer=ALL-UNNAMED
