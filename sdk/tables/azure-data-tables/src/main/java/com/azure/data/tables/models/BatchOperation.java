@@ -1,7 +1,6 @@
-package com.azure.data.tables.implementation;
-
-import com.azure.data.tables.models.TableEntity;
-import com.azure.data.tables.models.UpdateMode;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+package com.azure.data.tables.models;
 
 public interface BatchOperation {
     class CreateEntity implements BatchOperation {

@@ -4,10 +4,10 @@ package com.azure.data.tables;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.Response;
-import com.azure.data.tables.implementation.BatchOperation;
-import com.azure.data.tables.models.TableBatchResult;
-import reactor.core.publisher.Flux;
+import com.azure.data.tables.models.BatchOperation;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @Fluent
 public final class TableAsyncBatch extends TableBatchBase<TableAsyncBatch> {
@@ -17,7 +17,7 @@ public final class TableAsyncBatch extends TableBatchBase<TableAsyncBatch> {
     }
 
     @Override
-    public synchronized Flux<TableBatchResult> submitTransaction() {
+    public synchronized Mono<Void> submitTransaction() {
         freeze();
 
         for (BatchOperation operation : getOperations()) {
@@ -27,7 +27,7 @@ public final class TableAsyncBatch extends TableBatchBase<TableAsyncBatch> {
     }
 
     @Override
-    public synchronized Mono<Response<Flux<Response<TableBatchResult>>>> submitTransactionWithResponse() {
+    public synchronized Mono<Response<List<Response<Void>>>> submitTransactionWithResponse() {
         freeze();
 
         for (BatchOperation operation : getOperations()) {

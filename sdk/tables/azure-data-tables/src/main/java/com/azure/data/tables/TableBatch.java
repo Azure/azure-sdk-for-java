@@ -4,8 +4,7 @@ package com.azure.data.tables;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.Response;
-import com.azure.data.tables.implementation.BatchOperation;
-import com.azure.data.tables.models.TableBatchResult;
+import com.azure.data.tables.models.BatchOperation;
 
 import java.util.List;
 
@@ -17,7 +16,7 @@ public final class TableBatch extends TableBatchBase<TableBatch> {
     }
 
     @Override
-    public synchronized List<TableBatchResult> submitTransaction() {
+    public synchronized Void submitTransaction() {
         freeze();
 
         for (BatchOperation operation : getOperations()) {
@@ -27,7 +26,7 @@ public final class TableBatch extends TableBatchBase<TableBatch> {
     }
 
     @Override
-    public synchronized Response<List<Response<TableBatchResult>>> submitTransactionWithResponse() {
+    public synchronized Response<List<Response<Void>>> submitTransactionWithResponse() {
         freeze();
 
         for (BatchOperation operation : getOperations()) {
