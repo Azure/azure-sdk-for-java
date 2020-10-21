@@ -210,21 +210,21 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
             firstThreadMember.getId(), secondThreadMember.getId());
         
         StepVerifier.create(
-            client.createChatThread(threadRequest)
-                .concatWith(client.createChatThread(threadRequest)))
-        .assertNext(chatThreadClient -> {
-            // Act & Assert
-            PagedIterable<ChatThreadInfo> threadsResponse = new PagedIterable<>(client.listChatThreads());
+                client.createChatThread(threadRequest)
+                    .concatWith(client.createChatThread(threadRequest)))
+            .assertNext(chatThreadClient -> {
+                // Act & Assert
+                PagedIterable<ChatThreadInfo> threadsResponse = new PagedIterable<>(client.listChatThreads());
 
-            // process the iterableByPage
-            List<ChatThreadInfo> returnedThreads = new ArrayList<ChatThreadInfo>();
-            threadsResponse.iterableByPage().forEach(resp -> {
-                assertEquals(resp.getStatusCode(), 200);
-                resp.getItems().forEach(item -> returnedThreads.add(item));
+                // process the iterableByPage
+                List<ChatThreadInfo> returnedThreads = new ArrayList<ChatThreadInfo>();
+                threadsResponse.iterableByPage().forEach(resp -> {
+                    assertEquals(resp.getStatusCode(), 200);
+                    resp.getItems().forEach(item -> returnedThreads.add(item));
+                });
+
+                assertTrue(returnedThreads.size() == 2);
             });
-
-            assertTrue(returnedThreads.size() == 2);
-        });
     }
 
     @Test
@@ -251,6 +251,6 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
                 });
 
                 assertTrue(returnedThreads.size() == 2);
-        });
+            });
     }
 }

@@ -75,7 +75,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         // Act & Assert
         StepVerifier.create(
                 chatThreadClient.updateChatThread(threadRequest)
-                    .flatMap((noResp) -> {
+                    .flatMap(noResp -> {
                         return client.getChatThread(threadId);
                     })
             )
@@ -92,7 +92,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         // Act & Assert
         StepVerifier.create(
                 chatThreadClient.updateChatThreadWithResponse(threadRequest)
-                    .flatMap((updateThreadResponse) -> {
+                    .flatMap(updateThreadResponse -> {
                         assertEquals(updateThreadResponse.getStatusCode(), 200);
                         return client.getChatThread(threadId);
                     })
@@ -184,7 +184,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         // Action & Assert
         StepVerifier
             .create(chatThreadClient.sendMessage(messageRequest)
-                .flatMap((response) -> {
+                .flatMap(response -> {
                     return chatThreadClient.getMessage(response.getId());
                 })
             )
@@ -204,7 +204,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         // Action & Assert
         StepVerifier
             .create(chatThreadClient.sendMessageWithResponse(messageRequest)
-                .flatMap((sendResponse) -> {
+                .flatMap(sendResponse -> {
                     assertEquals(sendResponse.getStatusCode(), 201);
                     return chatThreadClient.getMessageWithResponse(sendResponse.getValue().getId());
                 })
@@ -226,7 +226,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         // Action & Assert
         StepVerifier.create(
             chatThreadClient.sendMessage(messageRequest)
-                .flatMap((response) -> {
+                .flatMap(response -> {
                     return chatThreadClient.deleteMessage(response.getId());
                 })
             )
@@ -241,7 +241,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         // Action & Assert
         StepVerifier.create(
             chatThreadClient.sendMessage(messageRequest)
-                .flatMap((response) -> {
+                .flatMap(response -> {
                     return chatThreadClient.deleteMessageWithResponse(response.getId());
                 })
             )
@@ -261,7 +261,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         AtomicReference<SendChatMessageResult> messageResponseRef = new AtomicReference<>();
         StepVerifier.create(
             chatThreadClient.sendMessage(messageRequest)
-                .flatMap((response) -> {
+                .flatMap(response -> {
                     messageResponseRef.set(response);
                     return chatThreadClient.updateMessage(response.getId(), updateMessageRequest);
                 })
@@ -383,7 +383,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         // Action & Assert
         StepVerifier.create(
             chatThreadClient.sendMessage(messageRequest)
-                .flatMap((response) -> {
+                .flatMap(response -> {
                     messageResponseRef.set(response);
                     return chatThreadClient.sendReadReceipt(response.getId());
                 })
@@ -414,7 +414,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         // Action & Assert
         StepVerifier.create(
             chatThreadClient.sendMessage(messageRequest)
-                .flatMap((response) -> {
+                .flatMap(response -> {
                     messageResponseRef.set(response);
                     return chatThreadClient.sendReadReceiptWithResponse(response.getId());
                 })
