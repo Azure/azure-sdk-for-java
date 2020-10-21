@@ -6,7 +6,6 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.RequestOptions;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -21,6 +20,7 @@ public class CosmosItemRequestOptions {
     private PartitionKey partitionKey;
     private String ifMatchETag;
     private String ifNoneMatchETag;
+    private Boolean contentResponseOnWriteEnabled;
 
 
     /**
@@ -35,6 +35,7 @@ public class CosmosItemRequestOptions {
         partitionKey = options.partitionKey;
         ifMatchETag = options.ifMatchETag;
         ifNoneMatchETag = options.ifNoneMatchETag;
+        contentResponseOnWriteEnabled = options.contentResponseOnWriteEnabled;
     }
 
 
@@ -204,6 +205,51 @@ public class CosmosItemRequestOptions {
     }
 
     /**
+     * Gets the boolean to only return the headers and status code in Cosmos DB response
+     * in case of Create, Update and Delete operations on CosmosItem.
+     *
+     * If set to false, this removes the resource from response. It reduces networking
+     * and CPU load by not sending the resource back over the network and serializing it on the client.
+     *
+     * This feature does not impact RU usage for read or write operations.
+     *
+     * NOTE: This flag is also present on {@link com.azure.cosmos.CosmosClientBuilder},
+     * however if specified on {@link CosmosItemRequestOptions},
+     * it will override the value specified in {@link com.azure.cosmos.CosmosClientBuilder} for this request.
+     *
+     * By-default, this is null.
+     *
+     * @return a boolean indicating whether resource will be included in the response or not for this request.
+     */
+    public Boolean isContentResponseOnWriteEnabled() {
+        return contentResponseOnWriteEnabled;
+    }
+
+    /**
+     * Sets the boolean to only return the headers and status code in Cosmos DB response
+     * in case of Create, Update and Delete operations on CosmosItem.
+     *
+     * If set to false, this removes the resource from response. It reduces networking
+     * and CPU load by not sending the resource back over the network and serializing it on the client.
+     *
+     * This feature does not impact RU usage for read or write operations.
+     *
+     * By-default, this is null.
+     *
+     * NOTE: This flag is also present on {@link com.azure.cosmos.CosmosClientBuilder},
+     * however if specified on {@link CosmosItemRequestOptions},
+     * it will override the value specified in {@link com.azure.cosmos.CosmosClientBuilder} for this request.
+     *
+     * @param contentResponseOnWriteEnabled a boolean indicating whether resource will be included
+     * in the response or not for this request
+     * @return the CosmosItemRequestOptions.
+     */
+    public CosmosItemRequestOptions setContentResponseOnWriteEnabled(Boolean contentResponseOnWriteEnabled) {
+        this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
+        return this;
+    }
+
+    /**
      * Gets the partition key
      *
      * @return the partition key
@@ -234,6 +280,7 @@ public class CosmosItemRequestOptions {
         requestOptions.setPostTriggerInclude(postTriggerInclude);
         requestOptions.setSessionToken(sessionToken);
         requestOptions.setPartitionKey(partitionKey);
+        requestOptions.setContentResponseOnWriteEnabled(contentResponseOnWriteEnabled);
         return requestOptions;
     }
 }
