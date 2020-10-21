@@ -124,7 +124,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         LogLevel logLevel = responseLogger.getLogLevel(defaultLogLevel, httpResponse, httpResponseDuration);
 
         return (logLevel == LogLevel.NOT_SET || !clientLogger.canLogAtLevel(logLevel))
-            ? Mono.empty()
+            ? Mono.just(httpResponse)
             : responseLogger.logResponse(clientLogger, logLevel, httpResponse, httpResponseDuration);
     }
 
