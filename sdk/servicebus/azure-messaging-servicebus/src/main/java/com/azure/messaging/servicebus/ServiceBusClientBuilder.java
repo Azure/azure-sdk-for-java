@@ -788,8 +788,9 @@ public final class ServiceBusClientBuilder {
             validateAndThrow(prefetchCount);
 
             if (!isAutoCompleteAllowed && enableAutoComplete) {
-                throw logger.logExceptionAsError(new IllegalStateException(
-                    "'enableAutoComplete' is not supported in synchronous client."));
+                logger.warning(
+                    "'enableAutoComplete' is not supported in synchronous client except through callback receive.");
+                enableAutoComplete = false;
             } else if (isAutoCompleteAllowed && receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
                 throw logger.logExceptionAsError(new IllegalStateException(
                     "'enableAutoComplete' is not valid for RECEIVE_AND_DELETE mode."));
@@ -991,8 +992,9 @@ public final class ServiceBusClientBuilder {
             validateAndThrow(prefetchCount);
 
             if (!isAutoCompleteAllowed && enableAutoComplete) {
-                throw logger.logExceptionAsError(new IllegalStateException(
-                    "'enableAutoComplete' is not supported in synchronous client."));
+                logger.warning(
+                    "'enableAutoComplete' is not supported in synchronous client except through callback receive.");
+                enableAutoComplete = false;
             } else if (isAutoCompleteAllowed && receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
                 throw logger.logExceptionAsError(new IllegalStateException(
                     "'enableAutoComplete' is not valid for RECEIVE_AND_DELETE mode."));

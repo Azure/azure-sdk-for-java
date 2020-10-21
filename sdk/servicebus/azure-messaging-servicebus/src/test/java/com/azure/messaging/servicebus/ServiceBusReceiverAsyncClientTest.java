@@ -863,6 +863,21 @@ class ServiceBusReceiverAsyncClientTest {
         verify(managementNode, never()).renewSessionLock(anyString(), isNull());
     }
 
+    @Test
+    void autoCompleteMessage() {
+        final ServiceBusReceiverAsyncClient receiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
+            MessagingEntityType.QUEUE, new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, false),
+            connectionProcessor, CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
+    }
+
+    @Test
+    void autoCompleteMessageSessionReceiver() {
+        final ServiceBusReceiverAsyncClient sessionReceiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
+            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, false, "Some-Session",
+                false, null, true),
+            connectionProcessor, CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
+    }
+
     private List<Message> getMessages() {
         final Map<String, String> map = Collections.singletonMap("SAMPLE_HEADER", "foo");
 
