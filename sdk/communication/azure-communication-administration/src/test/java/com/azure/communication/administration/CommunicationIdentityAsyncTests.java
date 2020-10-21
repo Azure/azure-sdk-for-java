@@ -83,21 +83,22 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
     @Test
     public void deleteUser() {
-        //Arrange
-        CommunicationUser communicationUser = asyncClient.createUser().block();
-
-        //Act & Assert
-        StepVerifier.create(asyncClient.deleteUser(communicationUser))
+        StepVerifier.create(
+            asyncClient.createUser()
+                .flatMap(communicationUser -> {
+                    return asyncClient.deleteUser(communicationUser);
+                }))
             .verifyComplete();
     }
 
     @Test
     public void deleteUserWithResponse() {
         //Arrange
-        CommunicationUser communicationUser = asyncClient.createUser().block();
-
-        //Act & Assert
-        StepVerifier.create(asyncClient.deleteUserWithResponse(communicationUser))
+        StepVerifier.create(
+            asyncClient.createUser()
+                .flatMap(communicationUser -> {
+                    return asyncClient.deleteUserWithResponse(communicationUser);
+                }))
             .assertNext(item -> {
                 assertEquals(204, item.getStatusCode(), "Expect status code to be 204");
             })
@@ -106,68 +107,67 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
     @Test
     public void revokeToken() {
-        //Arrange
-        Mono<CommunicationUser> createUserReponse = asyncClient.createUser();
-        CommunicationUser communicationUser = createUserReponse.block();
-        List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
-        CommunicationUserToken communicationUserWithToken = asyncClient.issueToken(communicationUser, scopes).block();
-
-        //Act & Assert
-        StepVerifier.create(asyncClient.revokeTokens(communicationUserWithToken.getUser(), null))
+        StepVerifier.create(
+            asyncClient.createUser()
+                .flatMap(communicationUser -> {
+                    List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
+                    return asyncClient.issueToken(communicationUser, scopes)
+                        .flatMap(communicationUserToken -> {
+                            return asyncClient.revokeTokens(communicationUserToken.getUser(), null);
+                        });
+                }))
             .verifyComplete();
     }
 
     @Test
     public void revokeTokenWithResponse() {
-        //Arrange
-        Mono<CommunicationUser> createUserReponse = asyncClient.createUser();
-        CommunicationUser communicationUser = createUserReponse.block();
-        List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
-        CommunicationUserToken communicationUserWithToken = asyncClient.issueToken(communicationUser, scopes).block();
-
-        //Act & Assert
-        StepVerifier.create(asyncClient.revokeTokensWithResponse(communicationUserWithToken.getUser(), null))
+        StepVerifier.create(
+            asyncClient.createUser()
+                .flatMap(communicationUser -> {
+                    List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
+                    return asyncClient.issueToken(communicationUser, scopes)
+                        .flatMap(communicationUserToken -> {
+                            return asyncClient.revokeTokensWithResponse(communicationUserToken.getUser(), null);
+                        });
+                }))
             .assertNext(item -> {
-                assertEquals(204, item.getStatusCode(), "Expect status code to be 204");        
+                assertEquals(204, item.getStatusCode(), "Expect status code to be 204");    
             })
             .verifyComplete();
     }
 
     @Test
     public void issueToken() {
-        //Arrange
-        CommunicationUser communicationUser = asyncClient.createUser().block();
-        List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
-        Mono<CommunicationUserToken> response = asyncClient.issueToken(communicationUser, scopes);
-
-        //Act & Assert
-        StepVerifier.create(response)
-            .assertNext(item -> {
-                assertNotNull(item.getToken());
-                assertFalse(item.getToken().isEmpty());
-                assertNotNull(item.getExpiresOn());
-                assertFalse(item.getExpiresOn().toString().isEmpty());
-                assertNotNull(item.getUser());
+        StepVerifier.create(
+            asyncClient.createUser()
+                .flatMap(communicationUser -> {
+                    List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
+                    return asyncClient.issueToken(communicationUser, scopes);
+                }))
+            .assertNext(issuedToken -> {
+                assertNotNull(issuedToken.getToken());
+                assertFalse(issuedToken.getToken().isEmpty());
+                assertNotNull(issuedToken.getExpiresOn());
+                assertFalse(issuedToken.getExpiresOn().toString().isEmpty());
+                assertNotNull(issuedToken.getUser());
             })
             .verifyComplete();
     }
 
     @Test
     public void issueTokenWithResponse() {
-        //Arrange
-        CommunicationUser communicationUser = asyncClient.createUser().block();
-        List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
-        Mono<Response<CommunicationUserToken>> response = asyncClient.issueTokenWithResponse(communicationUser, scopes);
-
-        //Act & Assert
-        StepVerifier.create(response)
-            .assertNext(item -> {
-                assertNotNull(item.getValue().getToken());
-                assertFalse(item.getValue().getToken().isEmpty());
-                assertNotNull(item.getValue().getExpiresOn());
-                assertFalse(item.getValue().getExpiresOn().toString().isEmpty());
-                assertNotNull(item.getValue().getUser());
-                assertEquals(200, item.getStatusCode(), "Expect response status code to be 200");
+        StepVerifier.create(
+            asyncClient.createUser()
+                .flatMap(communicationUser -> {
+                    List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
+                    return asyncClient.issueTokenWithResponse(communicationUser, scopes);
+                }))
+            .assertNext(issuedToken -> {
+                assertNotNull(issuedToken.getValue().getToken());
+                assertFalse(issuedToken.getValue().getToken().isEmpty());
+                assertNotNull(issuedToken.getValue().getExpiresOn());
+                assertFalse(issuedToken.getValue().getExpiresOn().toString().isEmpty());
+                assertNotNull(issuedToken.getValue().getUser());
             })
             .verifyComplete();
     }
