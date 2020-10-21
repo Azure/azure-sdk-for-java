@@ -911,8 +911,8 @@ public final class DigitalTwinsAsyncClient {
         if (options != null) {
             protocolLayerOptions = new com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions()
                 .setMaxItemsPerPage(options.getMaxItemsPerPage())
-                .setTraceparent(options.getTraceparent())
-                .setTracestate(options.getTracestate());
+                .setTraceparent(options.getTraceParent())
+                .setTracestate(options.getTraceState());
         }
 
         return protocolLayer.getDigitalTwinModels().listNextSinglePageAsync(
@@ -998,11 +998,11 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link Response} with no parsed payload object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> decommissionModelWithResponse(String modelId, UpdateModelOptions options) {
+    public Mono<Response<Void>> decommissionModelWithResponse(String modelId, DecommissionModelOptions options) {
         return withContext(context -> decommissionModelWithResponse(modelId, options, context));
     }
 
-    Mono<Response<Void>> decommissionModelWithResponse(String modelId, UpdateModelOptions options, Context context) {
+    Mono<Response<Void>> decommissionModelWithResponse(String modelId, DecommissionModelOptions options, Context context) {
         List<Object> updateOperation = new UpdateOperationUtility()
             .appendReplaceOperation("/decommissioned", true)
             .getUpdateOperations();
@@ -1494,8 +1494,8 @@ public final class DigitalTwinsAsyncClient {
         }
         else {
             protocolLayerOptions = new com.azure.digitaltwins.core.implementation.models.DigitalTwinsSendTelemetryOptions()
-                .setTraceparent(options.getTraceparent())
-                .setTracestate(options.getTracestate());
+                .setTraceparent(options.getTraceParent())
+                .setTracestate(options.getTraceState());
         }
 
         return protocolLayer.getDigitalTwins().sendTelemetryWithResponseAsync(
@@ -1573,8 +1573,8 @@ public final class DigitalTwinsAsyncClient {
         }
         else {
             protocolLayerOptions = new com.azure.digitaltwins.core.implementation.models.DigitalTwinsSendComponentTelemetryOptions()
-                .setTraceparent(options.getTraceparent())
-                .setTracestate(options.getTracestate());
+                .setTraceparent(options.getTraceParent())
+                .setTracestate(options.getTraceState());
         }
 
         return protocolLayer.getDigitalTwins().sendComponentTelemetryWithResponseAsync(
