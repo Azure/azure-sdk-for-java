@@ -32,7 +32,8 @@ public class SqlServerManager extends Manager<SqlManagementClient> {
                 .subscriptionId(profile.getSubscriptionId())
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .buildClient());
-        this.storageManager = StorageManager.authenticate(httpPipeline, profile);
+        this.storageManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, StorageManager.configure())
+            .authenticate(null, profile);
         this.tenantId = profile.getTenantId();
     }
 
@@ -68,7 +69,7 @@ public class SqlServerManager extends Manager<SqlManagementClient> {
      * @param profile the profile to use
      * @return the SqlServer
      */
-    public static SqlServerManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    private static SqlServerManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new SqlServerManager(httpPipeline, profile);
     }
 

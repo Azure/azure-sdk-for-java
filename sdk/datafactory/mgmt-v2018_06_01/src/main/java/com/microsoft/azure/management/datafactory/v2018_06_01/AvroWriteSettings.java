@@ -31,6 +31,22 @@ public class AvroWriteSettings extends FormatWriteSettings {
     private String recordNamespace;
 
     /**
+     * Limit the written file's row count to be smaller than or equal to the
+     * specified count. Type: integer (or Expression with resultType integer).
+     */
+    @JsonProperty(value = "maxRowsPerFile")
+    private Object maxRowsPerFile;
+
+    /**
+     * Specifies the file name pattern
+     * &lt;fileNamePrefix&gt;_&lt;fileIndex&gt;.&lt;fileExtension&gt; when copy
+     * from non-file based store without partitionOptions. Type: string (or
+     * Expression with resultType string).
+     */
+    @JsonProperty(value = "fileNamePrefix")
+    private Object fileNamePrefix;
+
+    /**
      * Get top level record name in write result, which is required in AVRO spec.
      *
      * @return the recordName value
@@ -67,6 +83,46 @@ public class AvroWriteSettings extends FormatWriteSettings {
      */
     public AvroWriteSettings withRecordNamespace(String recordNamespace) {
         this.recordNamespace = recordNamespace;
+        return this;
+    }
+
+    /**
+     * Get limit the written file's row count to be smaller than or equal to the specified count. Type: integer (or Expression with resultType integer).
+     *
+     * @return the maxRowsPerFile value
+     */
+    public Object maxRowsPerFile() {
+        return this.maxRowsPerFile;
+    }
+
+    /**
+     * Set limit the written file's row count to be smaller than or equal to the specified count. Type: integer (or Expression with resultType integer).
+     *
+     * @param maxRowsPerFile the maxRowsPerFile value to set
+     * @return the AvroWriteSettings object itself.
+     */
+    public AvroWriteSettings withMaxRowsPerFile(Object maxRowsPerFile) {
+        this.maxRowsPerFile = maxRowsPerFile;
+        return this;
+    }
+
+    /**
+     * Get specifies the file name pattern &lt;fileNamePrefix&gt;_&lt;fileIndex&gt;.&lt;fileExtension&gt; when copy from non-file based store without partitionOptions. Type: string (or Expression with resultType string).
+     *
+     * @return the fileNamePrefix value
+     */
+    public Object fileNamePrefix() {
+        return this.fileNamePrefix;
+    }
+
+    /**
+     * Set specifies the file name pattern &lt;fileNamePrefix&gt;_&lt;fileIndex&gt;.&lt;fileExtension&gt; when copy from non-file based store without partitionOptions. Type: string (or Expression with resultType string).
+     *
+     * @param fileNamePrefix the fileNamePrefix value to set
+     * @return the AvroWriteSettings object itself.
+     */
+    public AvroWriteSettings withFileNamePrefix(Object fileNamePrefix) {
+        this.fileNamePrefix = fileNamePrefix;
         return this;
     }
 

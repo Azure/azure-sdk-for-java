@@ -3,7 +3,7 @@
 
 package com.azure.spring.data.gremlin;
 
-import com.microsoft.spring.data.gremlin.repository.GremlinRepository;
+import com.azure.spring.data.gremlin.repository.GremlinRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

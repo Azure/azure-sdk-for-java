@@ -27,8 +27,7 @@ import java.util.Objects;
 /**
  * This class is an abstraction over many different ways that binary data can be represented. The data represented by
  * {@link BinaryData} is immutable. The {@link BinaryData} can be created from {@link InputStream}, {@link Flux} of
- * {@link ByteBuffer}, {@link String}, {@link Object} and byte array. This type internally store given data in byte
- * array.
+ * {@link ByteBuffer}, {@link String}, {@link Object}, or byte array.
  * <p>
  * It provides a way to serialize {@link Object} into {@link BinaryData} using API
  * {@link BinaryData#fromObject(Object, ObjectSerializer)} where you can provide your {@link ObjectSerializer}.
@@ -160,9 +159,9 @@ public final class  BinaryData {
     }
 
     /**
-     * Create {@link BinaryData} instance with given data. The {@link String} is converted into bytes  using
-     * {@link StandardCharsets#UTF_8} character set. If {@code null} data is provided , it will be converted into
-     * empty byte array.
+     * Create {@link BinaryData} instance with given data. The {@link String} is converted into bytes using
+     * {@link StandardCharsets#UTF_8} character set. If the String is {@code null}, an empty {@link BinaryData} will be
+     * returned.
      *
      * @param data to use.
      * @return {@link BinaryData} representing binary data.
@@ -177,8 +176,8 @@ public final class  BinaryData {
     }
 
     /**
-     * Create {@link BinaryData} instance with given byte array data. If {@code null} value is provided , it will be
-     * converted into empty byte array.
+     * Create {@link BinaryData} instance with given byte array data. If the byte array is {@code null}, an empty
+     * {@link BinaryData} will be returned.
      *
      * @param data to use.
      * @return {@link BinaryData} representing the binary data.
@@ -189,12 +188,12 @@ public final class  BinaryData {
 
     /**
      * Serialize the given {@link Object} into {@link BinaryData} using json serializer which is available in classpath.
-     * The serializer must implement {@link JsonSerializer} interface. A singleton instance of {@link JsonSerializer}
-     * is kept for this class to use. If {@code null} data is provided , it will be converted into empty byte array.
+     * The serializer on classpath must implement {@link JsonSerializer} interface. If the Object is {@code null}, an
+     * empty {@link BinaryData} will be returned.
      *
      * @param data The {@link Object} which needs to be serialized into bytes.
      * @throws IllegalStateException If a {@link JsonSerializer} cannot be found on the classpath.
-     * @return {@link BinaryData} representing binary data.
+     * @return {@link BinaryData} representing the JSON serialized object.
      *
      * @see JsonSerializer
      */
@@ -210,7 +209,7 @@ public final class  BinaryData {
 
     /**
      * Serialize the given {@link Object} into {@link BinaryData} using the provided {@link ObjectSerializer}.
-     * If {@code null} data is provided , it will be converted into empty byte array.
+     * If the Object is {@code null}, an empty {@link BinaryData} will be returned.
      *
      * <p><strong>Create an instance from Object</strong></p>
      * {@codesnippet com.azure.core.experimental.util.BinaryDocument.from#Object}
@@ -234,7 +233,7 @@ public final class  BinaryData {
 
     /**
      * Serialize the given {@link Object} into {@link Mono} {@link BinaryData} using the provided
-     * {@link ObjectSerializer}. If {@code null} data is provided , it will be converted into empty byte array.
+     * {@link ObjectSerializer}. If the Object is {@code null}, an empty {@link BinaryData} will be returned.
      *
      * @param data The {@link Object} which needs to be serialized into bytes.
      * @param serializer to use for serializing the object.
@@ -257,7 +256,7 @@ public final class  BinaryData {
 
     /**
      * Provides {@link String} representation of this {@link BinaryData} object. The bytes are converted into
-     * {@link String} using {@link StandardCharsets#UTF_8} character set.
+     * {@link String} using the UTF-8 character set.
      *
      * @return {@link String} representation of the data.
      */

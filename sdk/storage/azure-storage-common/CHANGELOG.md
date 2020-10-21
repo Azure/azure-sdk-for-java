@@ -1,7 +1,10 @@
 # Release History
 
-## 12.9.0-beta.2 (Unreleased)
+## 12.9.0-beta.3 (Unreleased)
 
+
+## 12.9.0-beta.2 (2020-10-08)
+- Updated `azure-core` version to `1.9.0` to pick up fixes related to listBlobs.
 
 ## 12.9.0-beta.1 (2020-10-01)
 - Added a Constant that represented the default storage scope for TokenCredentials.

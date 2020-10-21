@@ -60,6 +60,10 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
         Configuration.getGlobalConfiguration().get("LOCATION_OPTION_STATE", "CA");
     protected static final String LOCATION_OPTION_CITY =
         Configuration.getGlobalConfiguration().get("LOCATION_OPTION_CITY", "NOAM-US-CA-LA");
+    protected static final String SEARCH_OPTIONS_DESCRIPTION =
+        Configuration.getGlobalConfiguration().get("SEARCH_OPTIONS_DESCRIPTION", "testsearch20200014");
+    protected static final String SEARCH_OPTIONS_NAME =
+        Configuration.getGlobalConfiguration().get("SEARCH_OPTIONS_NAME", "testsearch20200014");
 
     protected PhoneNumberClientBuilder getClientBuilder() {
         HttpClient httpClient;

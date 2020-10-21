@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.azure</groupId>
+  <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-bom</artifactId>
   <version>3.0.0-beta.1</version>
   <packaging>pom</packaging>
@@ -57,49 +57,44 @@
 
       <!-- Azure Dependencies Bom -->
       <dependency>
-        <groupId>com.azure</groupId>
+        <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot</artifactId>
         <version>${azure.spring.boot.integration.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.azure</groupId>
+        <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter</artifactId>
         <version>${azure.spring.boot.integration.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.azure</groupId>
+        <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-active-directory</artifactId>
         <version>${azure.spring.boot.integration.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.azure</groupId>
+        <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
         <version>${azure.spring.boot.integration.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.azure</groupId>
+        <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-cosmos</artifactId>
         <version>${azure.spring.boot.integration.version}</version>
       </dependency>
 
       <dependency>
-        <groupId>com.azure</groupId>
+        <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
         <version>${azure.spring.boot.integration.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-spring-boot-starter-metrics</artifactId>
-        <version>${azure.spring.boot.integration.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.azure</groupId>
+        <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-servicebus-jms</artifactId>
         <version>${azure.spring.boot.integration.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>spring-starter-azure-storage</artifactId>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>azure-spring-starter-storage</artifactId>
         <version>${azure.spring.boot.storage.integration.version}</version>
       </dependency>
     </dependencies>

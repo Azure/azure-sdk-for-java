@@ -46,6 +46,10 @@
     "source": "specification/azurestack/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "azurestackhci/resource-manager": {
+    "source": "specification/azurestackhci/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },  
   "batchai/resource-manager": {
     "source": "specification/batchai/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -58,6 +62,10 @@
     "source": "specification/cognitiveservices/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "commerce/resource-manager": {
+    "source": "specification/commerce/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },  
   "compute/resource-manager": {
     "source": "specification/compute/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -94,6 +102,10 @@
     "source": "specification/databox/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "databoxedge/resource-manager": {
+    "source": "specification/databoxedge/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },  
   "datafactory/resource-manager": {
     "source": "specification/datafactory/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -146,6 +158,10 @@
     "source": "specification/hanaonazure/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "healthcareapis/resource-manager": {
+    "source": "specification/healthcareapis/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },  
   "hdinsight/resource-manager": {
     "source": "specification/hdinsight/resource-manager/readme.md",
     "args": "--multiapi --fluent"
