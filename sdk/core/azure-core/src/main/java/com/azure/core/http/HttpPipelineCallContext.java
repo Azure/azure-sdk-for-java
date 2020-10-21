@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * Type representing context local to a single http request and it's response.
+ * Represents the information used to make a single HTTP request.
  */
 public final class HttpPipelineCallContext {
     private HttpRequest httpRequest;

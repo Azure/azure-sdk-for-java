@@ -13,23 +13,25 @@ import reactor.core.publisher.Mono;
  */
 public interface HttpRequestLogger {
     /**
-     * Retrieves the {@link LogLevel} used to log the current request.
+     * Gets the {@link LogLevel} used to log the HTTP request.
      * <p>
      * By default this will return {@link LogLevel#INFORMATIONAL}.
      *
-     * @param callContext The contextual information about the request, including headers, body, and metadata.
-     * @return The {@link LogLevel} used to log the current request.
+     * @param callContext The information used to send the HTTP request.
+     * @return The {@link LogLevel} used to log the HTTP request.
      */
     default LogLevel getLogLevel(HttpPipelineCallContext callContext) {
         return LogLevel.INFORMATIONAL;
     }
 
     /**
-     * Logs the request.
+     * Logs the HTTP request.
+     * <p>
+     * To get the {@link LogLevel} used to log the HTTP request use {@link #getLogLevel(HttpPipelineCallContext)}.
      *
-     * @param logger The {@link ClientLogger} used to log the request.
-     * @param callContext The contextual information about the request, including headers, body, and metadata.
-     * @return A reactive response that will indicate that the request has been logged.
+     * @param logger The {@link ClientLogger} used to log the HTTP request.
+     * @param callContext The information used to send the HTTP request.
+     * @return A reactive response that indicates that the HTTP request has been logged.
      */
     Mono<Void> logRequest(ClientLogger logger, HttpPipelineCallContext callContext);
 }

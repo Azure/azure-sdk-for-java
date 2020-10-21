@@ -15,25 +15,27 @@ import java.time.Duration;
  */
 public interface HttpResponseLogger {
     /**
-     * Retrieves the {@link LogLevel} used to log the current response.
+     * Gets the {@link LogLevel} used to log the HTTP response.
      * <p>
      * By default this will return {@link LogLevel#INFORMATIONAL}.
      *
      * @param response The HTTP response.
      * @param responseDuration The duration between sending the request and receiving the response.
-     * @return The {@link LogLevel} used to log the current response.
+     * @return The {@link LogLevel} used to log the HTTP response.
      */
     default LogLevel getLogLevel(HttpResponse response, Duration responseDuration) {
         return LogLevel.INFORMATIONAL;
     }
 
     /**
-     * Logs the response.
+     * Logs the HTTP response.
+     * <p>
+     * To get the {@link LogLevel} used to log the HTTP response use {@link #getLogLevel(HttpResponse, Duration)}.
      *
      * @param logger The {@link ClientLogger} used to log the response.
      * @param response The HTTP response.
      * @param responseDuration The duration between sending the request and receiving the response.
-     * @return A reactive response that returns the response that was logged.
+     * @return A reactive response that returns the HTTP response that was logged.
      */
     Mono<HttpResponse> logResponse(ClientLogger logger, HttpResponse response, Duration responseDuration);
 }

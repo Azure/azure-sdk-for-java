@@ -217,22 +217,22 @@ public class HttpLogOptions {
     }
 
     /**
-     * Gets the {@link HttpRequestLogger} that will be used to log requests.
+     * Gets the {@link HttpRequestLogger} that will be used to log HTTP requests.
      * <p>
-     * A default logger will be used if one isn't supplied.
+     * A default {@link HttpRequestLogger} will be used if one isn't supplied.
      *
-     * @return The {@link HttpRequestLogger} that will be used to log requests.
+     * @return The {@link HttpRequestLogger} that will be used to log HTTP requests.
      */
     public HttpRequestLogger getRequestLogger() {
         return requestLogger;
     }
 
     /**
-     * Sets the {@link HttpRequestLogger} that will be used to log requests.
+     * Sets the {@link HttpRequestLogger} that will be used to log HTTP requests.
      * <p>
-     * A default logger will be used if one isn't supplied.
+     * A default {@link HttpRequestLogger} will be used if one isn't supplied.
      *
-     * @param requestLogger The {@link HttpRequestLogger} that will be used to log requests.
+     * @param requestLogger The {@link HttpRequestLogger} that will be used to log HTTP requests.
      * @return The updated HttpLogOptions object.
      */
     public HttpLogOptions setRequestLogger(HttpRequestLogger requestLogger) {
@@ -241,22 +241,22 @@ public class HttpLogOptions {
     }
 
     /**
-     * Gets the {@link HttpResponseLogger} that will be used to log responses.
+     * Gets the {@link HttpResponseLogger} that will be used to log HTTP responses.
      * <p>
-     * A default logger will be used if one isn't supplied.
+     * A default {@link HttpResponseLogger} will be used if one isn't supplied.
      *
-     * @return The {@link HttpResponseLogger} that will be used to log responses.
+     * @return The {@link HttpResponseLogger} that will be used to log HTTP responses.
      */
     public HttpResponseLogger getResponseLogger() {
         return responseLogger;
     }
 
     /**
-     * Sets the {@link HttpResponseLogger} that will be used to log responses.
+     * Sets the {@link HttpResponseLogger} that will be used to log HTTP responses.
      * <p>
-     * A default logger will be sued if one isn't supplied.
+     * A default {@link HttpResponseLogger} will be used if one isn't supplied.
      *
-     * @param responseLogger The {@link HttpResponseLogger} that will be used to log responses.
+     * @param responseLogger The {@link HttpResponseLogger} that will be used to log HTTP responses.
      * @return The updated HttpLogOptions object.
      */
     public HttpLogOptions setResponseLogger(HttpResponseLogger responseLogger) {
