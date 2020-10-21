@@ -172,6 +172,18 @@ public class GatewayAddressCache implements IAddressCache {
     }
 
     @Override
+    public void removeAddress(final PartitionKeyRangeIdentity partitionKeyRangeIdentity) {
+
+        Objects.requireNonNull(partitionKeyRangeIdentity, "expected non-null partitionKeyRangeIdentity");
+
+        if (partitionKeyRangeIdentity.getPartitionKeyRangeId().equals(PartitionKeyRange.MASTER_PARTITION_KEY_RANGE_ID)) {
+            this.masterPartitionAddressCache = null;
+        } else {
+            this.serverPartitionAddressCache.remove(partitionKeyRangeIdentity);
+        }
+    }
+
+    @Override
     public Mono<Utils.ValueHolder<AddressInformation[]>> tryGetAddresses(RxDocumentServiceRequest request,
                                                                         PartitionKeyRangeIdentity partitionKeyRangeIdentity,
                                                                         boolean forceRefreshPartitionAddresses) {

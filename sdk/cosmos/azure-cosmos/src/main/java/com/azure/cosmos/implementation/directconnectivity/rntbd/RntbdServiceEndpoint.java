@@ -275,6 +275,10 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             }
         }
 
+        if (this.connectionStateListener != null) {
+            this.connectionStateListener.updateConnectionState(args.serviceRequest());
+        }
+
         this.lastRequestNanoTime.set(args.nanoTimeCreated());
 
         final RntbdRequestRecord record = this.write(args);
