@@ -6,13 +6,15 @@ package com.azure.communication.chat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.azure.communication.administration.CommunicationIdentityClient;
 import com.azure.communication.administration.CommunicationUserToken;
 import com.azure.communication.common.CommunicationUser;
 import com.azure.communication.chat.implementation.ChatOptionsProvider;
 import com.azure.communication.chat.models.*;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -37,8 +39,15 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
+    }
 
-        communicationClient = getCommunicationIdentityClientBuilder().buildClient();
+    @Override
+    protected void afterTest() {
+        super.afterTest();
+    }
+
+    private void setupTest(HttpClient httpClient) {
+        communicationClient = getCommunicationIdentityClientBuilder(httpClient).buildClient();
         assertNotNull(communicationClient);
 
         firstThreadMember = communicationClient.createUser();
@@ -47,16 +56,13 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
         List<String> scopes = new ArrayList<String>(Arrays.asList("chat"));
         CommunicationUserToken response = communicationClient.issueToken(firstThreadMember, scopes);
 
-        client = getChatClientBuilder(response.getToken()).buildAsyncClient();
+        client = getChatClientBuilder(response.getToken(), httpClient).buildAsyncClient();
     }
 
-    @Override
-    protected void afterTest() {
-        super.afterTest();
-    }
-
-    @Test
-    public void canCreateThread() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canCreateThread(HttpClient httpClient) {
+        setupTest(httpClient);
         CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
 
@@ -65,8 +71,10 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
         assertNotNull(chatThreadClient.getChatThreadId());
     }
 
-    @Test
-    public void canCreateThreadWithResponse() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canCreateThreadWithResponse(HttpClient httpClient) {
+        setupTest(httpClient);
         CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
 
@@ -75,8 +83,10 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
         assertNotNull(chatThreadClient.getChatThreadId());
     }
 
-    @Test
-    public void canGetChatThreadClient() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canGetChatThreadClient(HttpClient httpClient) {
+        setupTest(httpClient);
         String threadId = "19:fe0a2f65a7834185b29164a7de57699c@thread.v2";
 
         ChatThreadAsyncClient chatThreadClient = client.getChatThreadClient(threadId);
@@ -84,8 +94,10 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
         assertEquals(chatThreadClient.getChatThreadId(), threadId);
     }
 
-    @Test
-    public void canGetExistingChatThread() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canGetExistingChatThread(HttpClient httpClient) {
+        setupTest(httpClient);
         CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
         ChatThreadAsyncClient chatThreadClient = client.createChatThread(threadRequest).block();
@@ -94,8 +106,10 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
         assertEquals(chatThreadClient.getChatThreadId(), chatThread.getId());
     }
 
-    @Test
-    public void canGetExistingChatThreadWithResponse() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canGetExistingChatThreadWithResponse(HttpClient httpClient) {
+        setupTest(httpClient);
         CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
         ChatThreadAsyncClient chatThreadClient = client.createChatThread(threadRequest).block();
@@ -104,20 +118,26 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
         assertEquals(chatThreadClient.getChatThreadId(), chatThread.getId());
     }
 
-    @Test
-    public void getNotFoundOnNonExistingChatThread() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getNotFoundOnNonExistingChatThread(HttpClient httpClient) {
+        setupTest(httpClient);
         assertRestException(
             () -> client.getChatThread("19:020082a8df7b44dd8c722bea8fe7167f@thread.v2").block(), 404);
     }
 
-    @Test
-    public void getNotFoundOnNonExistingChatThreadWithResponse() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getNotFoundOnNonExistingChatThreadWithResponse(HttpClient httpClient) {
+        setupTest(httpClient);
         assertRestException(
             () -> client.getChatThreadWithResponse("19:020082a8df7b44dd8c722bea8fe7167f@thread.v2").block(), 404);
     }
 
-    @Test
-    public void canDeleteChatThread() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canDeleteChatThread(HttpClient httpClient) {
+        setupTest(httpClient);
         CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
         ChatThreadAsyncClient chatThreadClient = client.createChatThread(threadRequest).block();
@@ -125,8 +145,10 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
         client.deleteChatThread(chatThreadClient.getChatThreadId()).block();
     }
 
-    @Test
-    public void canDeleteChatThreadWithResponse() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canDeleteChatThreadWithResponse(HttpClient httpClient) {
+        setupTest(httpClient);
         CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
         ChatThreadAsyncClient chatThreadClient = client.createChatThread(threadRequest).block();
@@ -134,8 +156,10 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
         client.deleteChatThreadWithResponse(chatThreadClient.getChatThreadId()).block();
     }
 
-    @Test
-    public void canListChatThreads() throws InterruptedException {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canListChatThreads(HttpClient httpClient) throws InterruptedException {
+        setupTest(httpClient);
         CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
         client.createChatThread(threadRequest).block();
@@ -155,8 +179,10 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
         assertTrue(returnedThreads.size() == 2);
     }
 
-    @Test
-    public void canListChatThreadsWithMaxPageSize() throws InterruptedException {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canListChatThreadsWithMaxPageSize(HttpClient httpClient) throws InterruptedException {
+        setupTest(httpClient);
         CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
         client.createChatThread(threadRequest).block();

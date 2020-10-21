@@ -26,7 +26,7 @@ public class CommunicationIdentityClientTestBase extends TestBase {
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=" + ACCESSKEYENCODED);
     
-    protected CommunicationIdentityClientBuilder getCommunicationIdentityClient() {
+    protected CommunicationIdentityClientBuilder getCommunicationIdentityClient(HttpClient client) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder.endpoint(ENDPOINT)
             .accessKey(ACCESSKEY);
@@ -35,7 +35,6 @@ public class CommunicationIdentityClientTestBase extends TestBase {
             builder.httpClient(interceptorManager.getPlaybackClient());
             return builder;
         } else {
-            HttpClient client = new NettyAsyncHttpClientBuilder().build();
             builder.httpClient(client);
         }
 
@@ -46,7 +45,7 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         return builder;
     }
 
-    protected CommunicationIdentityClientBuilder getCommunicationIdentityClientUsingConnectionString() {
+    protected CommunicationIdentityClientBuilder getCommunicationIdentityClientUsingConnectionString(HttpClient client) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder.connectionString(CONNECTION_STRING);
 
@@ -54,7 +53,6 @@ public class CommunicationIdentityClientTestBase extends TestBase {
             builder.httpClient(interceptorManager.getPlaybackClient());
             return builder;
         } else {
-            HttpClient client = new NettyAsyncHttpClientBuilder().build();
             builder.httpClient(client);
         }
 

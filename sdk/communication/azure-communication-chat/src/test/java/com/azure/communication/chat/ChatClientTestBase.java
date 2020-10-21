@@ -14,7 +14,6 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
@@ -47,7 +46,7 @@ public class ChatClientTestBase extends TestBase {
 
     protected static final FixedDelay RETRY_STRATEGY = new FixedDelay(3, Duration.ofMillis(500));
 
-    protected ChatClientBuilder getChatClientBuilder(String token) {
+    protected ChatClientBuilder getChatClientBuilder(String token, HttpClient client) {
         ChatClientBuilder builder = new ChatClientBuilder();
 
         builder.endpoint(ENDPOINT);
@@ -57,7 +56,6 @@ public class ChatClientTestBase extends TestBase {
                 .credential(new CommunicationUserCredential(generateRawToken()));
             return builder;
         } else {
-            HttpClient client = new NettyAsyncHttpClientBuilder().build();
             builder.httpClient(client)
                 .credential(new CommunicationUserCredential(token));
         }
@@ -72,7 +70,7 @@ public class ChatClientTestBase extends TestBase {
         return builder;
     }
 
-    protected CommunicationIdentityClientBuilder getCommunicationIdentityClientBuilder() {
+    protected CommunicationIdentityClientBuilder getCommunicationIdentityClientBuilder(HttpClient client) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder.endpoint(ENDPOINT)
             .accessKey(CONNSTRING);
@@ -80,7 +78,6 @@ public class ChatClientTestBase extends TestBase {
             builder.httpClient(interceptorManager.getPlaybackClient());
             return builder;
         } else {
-            HttpClient client = new NettyAsyncHttpClientBuilder().build();
             builder.httpClient(client);
         }
         if (!interceptorManager.isLiveMode()) {

@@ -6,7 +6,6 @@ package com.azure.communication.sms;
 import com.azure.communication.sms.models.SendSmsResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
@@ -33,7 +32,7 @@ public class SmsLiveTestBase extends TestBase {
     static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=VGhpcyBpcyBhIHRlc3Q=");
 
-    protected SmsClientBuilder getSmsClientBuilder() {
+    protected SmsClientBuilder getSmsClientBuilder(HttpClient httpClient) {
         SmsClientBuilder builder = new SmsClientBuilder();
 
         builder.endpoint(ENDPOINT)
@@ -43,8 +42,7 @@ public class SmsLiveTestBase extends TestBase {
             builder.httpClient(interceptorManager.getPlaybackClient());
             return builder;
         } else {
-            HttpClient client = new NettyAsyncHttpClientBuilder().build();
-            builder.httpClient(client);
+            builder.httpClient(httpClient);
         }
 
         if (!interceptorManager.isLiveMode()) {
@@ -54,7 +52,7 @@ public class SmsLiveTestBase extends TestBase {
         return builder;
     }
 
-    protected SmsClientBuilder getSmsClientBuilderWithConnectionString() {
+    protected SmsClientBuilder getSmsClientBuilderWithConnectionString(HttpClient client) {
         SmsClientBuilder builder = new SmsClientBuilder();
 
         builder.connectionString(CONNECTION_STRING);
@@ -63,7 +61,6 @@ public class SmsLiveTestBase extends TestBase {
             builder.httpClient(interceptorManager.getPlaybackClient());
             return builder;
         } else {
-            HttpClient client = new NettyAsyncHttpClientBuilder().build();
             builder.httpClient(client);
         }
 
