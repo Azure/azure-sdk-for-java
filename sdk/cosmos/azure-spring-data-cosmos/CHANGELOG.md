@@ -4,7 +4,7 @@
 #### New Features
 * Added support for `ARRAY_CONTAINS` `CriteriaType`.
 #### Key Bug Fixes
-* Fixed an issue where annotated queries does not pick the annotated container name.
+* Fixed an issue where annotated queries do not pick the annotated container name.
 
 ### 3.0.0 (2020-09-30)
 #### New Features
