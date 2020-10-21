@@ -300,7 +300,9 @@ public final class  BinaryData {
      */
     public  <T> Mono<T> toObjectAsync(Class<T> clazz, ObjectSerializer serializer) {
 
-        if (Objects.isNull(serializer)) {
+        if (Objects.isNull(clazz)) {
+            return monoError(LOGGER, new NullPointerException("'clazz' cannot be null."));
+        } else if (Objects.isNull(serializer)) {
             return monoError(LOGGER, new NullPointerException("'serializer' cannot be null."));
         }
         return Mono.fromCallable(() -> toObject(clazz, serializer));

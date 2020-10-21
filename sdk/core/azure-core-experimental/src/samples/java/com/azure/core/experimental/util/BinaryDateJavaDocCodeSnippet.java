@@ -226,10 +226,4 @@ public class BinaryDateJavaDocCodeSnippet {
             return Mono.fromRunnable(() -> serialize(stream, value));
         }
     }
-
-    public static void main(String[] args) {
-
-        BinaryDateJavaDocCodeSnippet s = new BinaryDateJavaDocCodeSnippet();
-        s.createFromObject();
-    }
 }
