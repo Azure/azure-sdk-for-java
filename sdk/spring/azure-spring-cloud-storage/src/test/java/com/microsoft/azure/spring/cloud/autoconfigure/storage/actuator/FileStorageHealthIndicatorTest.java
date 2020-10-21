@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.rest.Response;
 import com.azure.storage.file.share.ShareServiceAsyncClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
@@ -31,10 +32,9 @@ public class FileStorageHealthIndicatorTest {
 
     @Test(expected = IllegalStateException.class)
     public void testWithNoStorageConfiguration() {
-        ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-            .withAllowBeanDefinitionOverriding(true)
-            .withBean(ShareServiceClientBuilder.class)
-            .withConfiguration(AutoConfigurations.of(AzureStorageActuatorAutoConfiguration.class));
+        ApplicationContextRunner contextRunner = new ApplicationContextRunner().withAllowBeanDefinitionOverriding(true)
+                .withBean(ShareServiceClientBuilder.class)
+                .withConfiguration(AutoConfigurations.of(AzureStorageActuatorAutoConfiguration.class));
 
         contextRunner.withBean(FileStorageHealthIndicator.class).run(context -> {
             context.getBean(FileStorageHealthIndicator.class).getHealth(true);
@@ -43,13 +43,13 @@ public class FileStorageHealthIndicatorTest {
 
     @Test
     public void testWithStorageConfigurationWithConnectionUp() {
-        ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-            .withAllowBeanDefinitionOverriding(true)
-            .withConfiguration(AutoConfigurations.of(AzureEnvironmentAutoConfiguration.class,
-                AzureStorageAutoConfiguration.class, AzureStorageActuatorAutoConfiguration.class))
-            .withUserConfiguration(TestConfigurationConnectionUp.class)
-            .withPropertyValues("spring.cloud.azure.storage.account=acc1")
-            .withBean(FileStorageHealthIndicator.class);
+        ApplicationContextRunner contextRunner = new ApplicationContextRunner().withAllowBeanDefinitionOverriding(true)
+                .withConfiguration(AutoConfigurations.of(AzureEnvironmentAutoConfiguration.class,
+                        MockTokenCredentialConfiguration.class, AzureStorageAutoConfiguration.class,
+                        AzureStorageActuatorAutoConfiguration.class))
+                .withUserConfiguration(TestConfigurationConnectionUp.class)
+                .withPropertyValues("spring.cloud.azure.storage.account=acc1")
+                .withBean(FileStorageHealthIndicator.class);
         contextRunner.run(context -> {
             Health health = context.getBean(FileStorageHealthIndicator.class).getHealth(true);
             Assert.assertEquals(Status.UP, health.getStatus());
@@ -59,13 +59,13 @@ public class FileStorageHealthIndicatorTest {
 
     @Test
     public void testWithStorageConfigurationWithConnectionDown() {
-        ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-            .withAllowBeanDefinitionOverriding(true)
-            .withConfiguration(AutoConfigurations.of(AzureEnvironmentAutoConfiguration.class,
-                AzureStorageAutoConfiguration.class, AzureStorageActuatorAutoConfiguration.class))
-            .withUserConfiguration(TestConfigurationConnectionDown.class)
-            .withPropertyValues("spring.cloud.azure.storage.account=acc1")
-            .withBean(BlobStorageHealthIndicator.class);
+        ApplicationContextRunner contextRunner = new ApplicationContextRunner().withAllowBeanDefinitionOverriding(true)
+                .withConfiguration(AutoConfigurations.of(AzureEnvironmentAutoConfiguration.class,
+                        MockTokenCredentialConfiguration.class, AzureStorageAutoConfiguration.class,
+                        AzureStorageActuatorAutoConfiguration.class))
+                .withUserConfiguration(TestConfigurationConnectionDown.class)
+                .withPropertyValues("spring.cloud.azure.storage.account=acc1")
+                .withBean(BlobStorageHealthIndicator.class);
         contextRunner.run(context -> {
             Health health = context.getBean(FileStorageHealthIndicator.class).getHealth(true);
             Assert.assertEquals(Status.DOWN, health.getStatus());
@@ -80,8 +80,8 @@ public class FileStorageHealthIndicatorTest {
         ShareServiceClientBuilder shareServiceClientBuilder() {
             ShareServiceClientBuilder mockClientBuilder = mock(ShareServiceClientBuilder.class);
             ShareServiceAsyncClient mockAsyncClient = mock(ShareServiceAsyncClient.class);
-
             @SuppressWarnings("unchecked")
+
             Response<ShareServiceProperties> mockResponse = (Response<ShareServiceProperties>) Mockito
                     .mock(Response.class);
 
@@ -108,5 +108,14 @@ public class FileStorageHealthIndicatorTest {
             return mockClientBuilder;
         }
 
+    }
+
+    @Configuration
+    static class MockTokenCredentialConfiguration {
+
+        @Bean
+        TokenCredential tokenCredential() {
+            return mock(TokenCredential.class);
+        }
     }
 }
