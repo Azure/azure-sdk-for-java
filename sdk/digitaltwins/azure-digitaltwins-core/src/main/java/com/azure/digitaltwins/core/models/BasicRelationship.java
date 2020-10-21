@@ -35,21 +35,33 @@ public final class BasicRelationship {
     private final Map<String, Object> customProperties = new HashMap<>();
 
     /**
+     * Construct a basic digital twin relationship.
+     * @param relationshipId The unique Id of this relationship.
+     * @param sourceDigitalTwinId The digital twin that this relationship comes from.
+     * @param targetDigitalTwinId The digital twin that this relationship points to.
+     * @param relationshipName The user defined name of this relationship, for instance "Contains" or "isAdjacentTo"
+     */
+    public BasicRelationship(
+        String relationshipId,
+        String sourceDigitalTwinId,
+        String targetDigitalTwinId,
+        String relationshipName) {
+        this.id = relationshipId;
+        this.sourceId = sourceDigitalTwinId;
+        this.targetId = targetDigitalTwinId;
+        this.name = relationshipName;
+    }
+
+    // Empty constructor for json deserialization purposes
+    private BasicRelationship() {
+    }
+
+    /**
      * Gets the unique Id of the relationship. This field is present on every relationship.
      * @return The unique Id of the relationship. This field is present on every relationship.
      */
     public String getId() {
         return id;
-    }
-
-    /**
-     * Sets the unique Id of the relationship. This field is present on every relationship.
-     * @param id The unique Id of the relationship. This field is present on every relationship.
-     * @return The BasicRelationship object itself.
-     */
-    public BasicRelationship setId(String id) {
-        this.id = id;
-        return this;
     }
 
     /**
@@ -61,16 +73,6 @@ public final class BasicRelationship {
     }
 
     /**
-     * Sets the unique Id of the source digital twin. This field is present on every relationship.
-     * @param sourceId The unique Id of the source digital twin. This field is present on every relationship.
-     * @return The BasicRelationship object itself.
-     */
-    public BasicRelationship setSourceId(String sourceId) {
-        this.sourceId = sourceId;
-        return this;
-    }
-
-    /**
      * Gets the unique Id of the target digital twin. This field is present on every relationship.
      * @return The unique Id of the target digital twin. This field is present on every relationship.
      */
@@ -79,31 +81,11 @@ public final class BasicRelationship {
     }
 
     /**
-     * Sets the unique Id of the target digital twin. This field is present on every relationship.
-     * @param targetId The unique Id of the target digital twin. This field is present on every relationship.
-     * @return The BasicRelationship object itself.
-     */
-    public BasicRelationship setTargetId(String targetId) {
-        this.targetId = targetId;
-        return this;
-    }
-
-    /**
      * Gets the name of the relationship, which defines the type of link (e.g. Contains). This field is present on every relationship.
      * @return The name of the relationship, which defines the type of link (e.g. Contains). This field is present on every relationship.
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * Sets the name of the relationship, which defines the type of link (e.g. Contains). This field is present on every relationship.
-     * @param name The name of the relationship, which defines the type of link (e.g. Contains). This field is present on every relationship.
-     * @return The BasicRelationship object itself.
-     */
-    public BasicRelationship setName(String name) {
-        this.name = name;
-        return this;
     }
 
     /**

@@ -223,7 +223,7 @@ public class GoneAndRetryWithRetryPolicyTest {
         assertThat(request.requestContext.globalCommittedSelectedLSN).isEqualTo(-1);
         assertThat(shouldRetryResult.policyArg.getValue0()).isFalse();
 
-        goneAndRetryWithRetryPolicy.shouldRetry(new InvalidPartitionException());
+        goneAndRetryWithRetryPolicy.shouldRetry(new InvalidPartitionException()).block();
         // It will retry max till 3 attempts
         shouldRetryResult = goneAndRetryWithRetryPolicy.shouldRetry(new InvalidPartitionException()).block();
         assertThat(shouldRetryResult.shouldRetry).isFalse();

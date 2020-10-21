@@ -1279,6 +1279,61 @@
     <Bug pattern="SE_BAD_FIELD" />
   </Match>
 
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModel" />
+    <Field name="modelName" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModel" />
+    <Field name="customFormModelProperties" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModelInfo" />
+    <Field name="modelName" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModelInfo" />
+    <Field name="customFormModelProperties" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormSubmodel" />
+    <Field name="modelId" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModelProperties" />
+    <Field name="isComposed" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.training.models.TrainingDocumentInfo" />
+    <Field name="modelId" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.models.RecognizedForm" />
+    <Field name="formTypeConfidence" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.models.RecognizedForm" />
+    <Field name="modelId" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+
   <!-- Exception is required to catch, ref: code comment in the OrderbyRowComparer::compare() method  -->
   <Match>
     <Class name="com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer"/>
@@ -2199,15 +2254,15 @@
 
   <Match>
     <Or>
-      <Class name="com.microsoft.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate$QueueMessageHandler"/> <!-- false positive -->
-      <Class name="com.microsoft.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate$TopicMessageHandler"/> <!-- false positive -->
+      <Class name="com.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate$QueueMessageHandler"/> <!-- false positive -->
+      <Class name="com.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate$TopicMessageHandler"/> <!-- false positive -->
     </Or>
     <Method name="OnCloseSessionAsync"/>
     <Bug pattern="NM_METHOD_NAMING_CONVENTION"/>
   </Match>
 
   <Match>
-    <Class name="com.microsoft.azure.spring.messaging.config.AzureListenerEndpointRegistrar" />
+    <Class name="com.azure.spring.messaging.config.AzureListenerEndpointRegistrar" />
     <Bug pattern="NP_NULL_ON_SOME_PATH"/>
   </Match>
 

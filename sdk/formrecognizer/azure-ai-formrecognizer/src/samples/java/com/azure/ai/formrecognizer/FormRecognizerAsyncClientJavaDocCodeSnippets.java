@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.models.RecognizeBusinessCardsOptions;
 import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.FieldValueType;
@@ -355,6 +356,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         formRecognizerAsyncClient.beginRecognizeReceiptsFromUrl(receiptUrl,
             new RecognizeReceiptsOptions()
                 .setFieldElementsIncluded(includeFieldElements)
+                .setLocale("en-US")
                 .setPollInterval(Duration.ofSeconds(5)))
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(recognizedReceipts -> {
@@ -498,6 +500,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
             new RecognizeReceiptsOptions()
                 .setContentType(FormContentType.IMAGE_JPEG)
                 .setFieldElementsIncluded(includeFieldElements)
+                .setLocale("en-US")
                 .setPollInterval(Duration.ofSeconds(5)))
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(recognizedReceipts -> {
@@ -554,5 +557,264 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                 }
             });
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long-RecognizeReceiptsOptions
+    }
+
+    /**
+     * Code snippet for {@link FormRecognizerAsyncClient#beginRecognizeBusinessCardsFromUrl(String)}
+     */
+    public void beginRecognizeBusinessCardsFromUrl() {
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeBusinessCardsFromUrl#string
+        String businessCardUrl = "{business_card_url}";
+        // if training polling operation completed, retrieve the final result.
+        formRecognizerAsyncClient.beginRecognizeBusinessCardsFromUrl(businessCardUrl)
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .subscribe(recognizedBusinessCards -> {
+                for (int i = 0; i < recognizedBusinessCards.size(); i++) {
+                    RecognizedForm recognizedForm = recognizedBusinessCards.get(i);
+                    Map<String, FormField> recognizedFields = recognizedForm.getFields();
+                    System.out.printf("----------- Recognized Business Card page %d -----------%n", i);
+                    FormField contactNamesFormField = recognizedFields.get("ContactNames");
+                    if (contactNamesFormField != null) {
+                        if (FieldValueType.LIST == contactNamesFormField.getValue().getValueType()) {
+                            List<FormField> contactNamesList = contactNamesFormField.getValue().asList();
+                            contactNamesList.stream()
+                                .filter(contactName -> FieldValueType.MAP == contactName.getValue().getValueType())
+                                .map(contactName -> {
+                                    System.out.printf("Contact name: %s%n", contactName.getValueData().getText());
+                                    return contactName.getValue().asMap();
+                                })
+                                .forEach(contactNamesMap -> contactNamesMap.forEach((key, contactName) -> {
+                                    if ("FirstName".equals(key)) {
+                                        if (FieldValueType.STRING == contactName.getValue().getValueType()) {
+                                            String firstName = contactName.getValue().asString();
+                                            System.out.printf("\tFirst Name: %s, confidence: %.2f%n",
+                                                firstName, contactName.getConfidence());
+                                        }
+                                    }
+                                    if ("LastName".equals(key)) {
+                                        if (FieldValueType.STRING == contactName.getValue().getValueType()) {
+                                            String lastName = contactName.getValue().asString();
+                                            System.out.printf("\tLast Name: %s, confidence: %.2f%n",
+                                                lastName, contactName.getConfidence());
+                                        }
+                                    }
+                                }));
+                        }
+                    }
+                    FormField jobTitles = recognizedFields.get("JobTitles");
+                    if (jobTitles != null) {
+                        if (FieldValueType.LIST == jobTitles.getValue().getValueType()) {
+                            List<FormField> jobTitlesItems = jobTitles.getValue().asList();
+                            jobTitlesItems.stream().forEach(jobTitlesItem -> {
+                                if (FieldValueType.STRING == jobTitlesItem.getValue().getValueType()) {
+                                    String jobTitle = jobTitlesItem.getValue().asString();
+                                    System.out.printf("Job Title: %s, confidence: %.2f%n",
+                                        jobTitle, jobTitlesItem.getConfidence());
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeBusinessCardsFromUrl#string
+    }
+
+    /**
+     * Code snippet for
+     * {@link FormRecognizerAsyncClient#beginRecognizeBusinessCardsFromUrl(String, RecognizeBusinessCardsOptions)}
+     */
+    public void beginRecognizeBusinessCardsFromUrlWithOptions() {
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeBusinessCardsFromUrl#string-RecognizeBusinessCardsOptions
+        String businessCardUrl = "{business_card_url}";
+        boolean includeFieldElements = true;
+        // if training polling operation completed, retrieve the final result.
+        formRecognizerAsyncClient.beginRecognizeBusinessCardsFromUrl(businessCardUrl,
+            new RecognizeBusinessCardsOptions()
+                .setFieldElementsIncluded(includeFieldElements)
+                .setPollInterval(Duration.ofSeconds(5)))
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .subscribe(recognizedBusinessCards -> {
+                for (int i = 0; i < recognizedBusinessCards.size(); i++) {
+                    RecognizedForm recognizedBusinessCard = recognizedBusinessCards.get(i);
+                    Map<String, FormField> recognizedFields = recognizedBusinessCard.getFields();
+                    System.out.printf("----------- Recognized Business Card page %d -----------%n", i);
+                    FormField contactNamesFormField = recognizedFields.get("ContactNames");
+                    if (contactNamesFormField != null) {
+                        if (FieldValueType.LIST == contactNamesFormField.getValue().getValueType()) {
+                            List<FormField> contactNamesList = contactNamesFormField.getValue().asList();
+                            contactNamesList.stream()
+                                .filter(contactName -> FieldValueType.MAP == contactName.getValue().getValueType())
+                                .map(contactName -> {
+                                    System.out.printf("Contact name: %s%n", contactName.getValueData().getText());
+                                    return contactName.getValue().asMap();
+                                })
+                                .forEach(contactNamesMap -> contactNamesMap.forEach((key, contactName) -> {
+                                    if ("FirstName".equals(key)) {
+                                        if (FieldValueType.STRING == contactName.getValue().getValueType()) {
+                                            String firstName = contactName.getValue().asString();
+                                            System.out.printf("\tFirst Name: %s, confidence: %.2f%n",
+                                                firstName, contactName.getConfidence());
+                                        }
+                                    }
+                                    if ("LastName".equals(key)) {
+                                        if (FieldValueType.STRING == contactName.getValue().getValueType()) {
+                                            String lastName = contactName.getValue().asString();
+                                            System.out.printf("\tLast Name: %s, confidence: %.2f%n",
+                                                lastName, contactName.getConfidence());
+                                        }
+                                    }
+                                }));
+                        }
+                    }
+                    FormField jobTitles = recognizedFields.get("JobTitles");
+                    if (jobTitles != null) {
+                        if (FieldValueType.LIST == jobTitles.getValue().getValueType()) {
+                            List<FormField> jobTitlesItems = jobTitles.getValue().asList();
+                            jobTitlesItems.stream().forEach(jobTitlesItem -> {
+                                if (FieldValueType.STRING == jobTitlesItem.getValue().getValueType()) {
+                                    String jobTitle = jobTitlesItem.getValue().asString();
+                                    System.out.printf("Job Title: %s, confidence: %.2f%n",
+                                        jobTitle, jobTitlesItem.getConfidence());
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeBusinessCardsFromUrl#string-RecognizeBusinessCardsOptions
+    }
+
+    /**
+     * Code snippet for {@link FormRecognizerAsyncClient#beginRecognizeBusinessCards(Flux, long)}
+     *
+     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
+     */
+    public void beginRecognizeBusinessCards() throws IOException {
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeBusinessCards#Flux-long
+        File businessCard = new File("{local/file_path/fileName.jpg}");
+        Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(businessCard.toPath())));
+        // if training polling operation completed, retrieve the final result.
+        formRecognizerAsyncClient.beginRecognizeBusinessCards(buffer, businessCard.length())
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .subscribe(recognizedBusinessCards -> {
+                for (int i = 0; i < recognizedBusinessCards.size(); i++) {
+                    RecognizedForm recognizedForm = recognizedBusinessCards.get(i);
+                    Map<String, FormField> recognizedFields = recognizedForm.getFields();
+                    System.out.printf("----------- Recognized Business Card page %d -----------%n", i);
+                    FormField contactNamesFormField = recognizedFields.get("ContactNames");
+                    if (contactNamesFormField != null) {
+                        if (FieldValueType.LIST == contactNamesFormField.getValue().getValueType()) {
+                            List<FormField> contactNamesList = contactNamesFormField.getValue().asList();
+                            contactNamesList.stream()
+                                .filter(contactName -> FieldValueType.MAP == contactName.getValue().getValueType())
+                                .map(contactName -> {
+                                    System.out.printf("Contact name: %s%n", contactName.getValueData().getText());
+                                    return contactName.getValue().asMap();
+                                })
+                                .forEach(contactNamesMap -> contactNamesMap.forEach((key, contactName) -> {
+                                    if ("FirstName".equals(key)) {
+                                        if (FieldValueType.STRING == contactName.getValue().getValueType()) {
+                                            String firstName = contactName.getValue().asString();
+                                            System.out.printf("\tFirst Name: %s, confidence: %.2f%n",
+                                                firstName, contactName.getConfidence());
+                                        }
+                                    }
+                                    if ("LastName".equals(key)) {
+                                        if (FieldValueType.STRING == contactName.getValue().getValueType()) {
+                                            String lastName = contactName.getValue().asString();
+                                            System.out.printf("\tLast Name: %s, confidence: %.2f%n",
+                                                lastName, contactName.getConfidence());
+                                        }
+                                    }
+                                }));
+                        }
+                    }
+                    FormField jobTitles = recognizedFields.get("JobTitles");
+                    if (jobTitles != null) {
+                        if (FieldValueType.LIST == jobTitles.getValue().getValueType()) {
+                            List<FormField> jobTitlesItems = jobTitles.getValue().asList();
+                            jobTitlesItems.stream().forEach(jobTitlesItem -> {
+                                if (FieldValueType.STRING == jobTitlesItem.getValue().getValueType()) {
+                                    String jobTitle = jobTitlesItem.getValue().asString();
+                                    System.out.printf("Job Title: %s, confidence: %.2f%n",
+                                        jobTitle, jobTitlesItem.getConfidence());
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeBusinessCards#Flux-long
+    }
+
+    /**
+     * Code snippet for
+     * {@link FormRecognizerAsyncClient#beginRecognizeBusinessCards(Flux, long, RecognizeBusinessCardsOptions)} with
+     * options
+     *
+     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
+     */
+    public void beginRecognizeBusinessCardsWithOptions() throws IOException {
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeBusinessCards#Flux-long-RecognizeBusinessCardsOptions
+        File businessCard = new File("{local/file_path/fileName.jpg}");
+        boolean includeFieldElements = true;
+        // Utility method to convert input stream to Byte buffer
+        Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(businessCard.toPath())));
+        // if training polling operation completed, retrieve the final result.
+        formRecognizerAsyncClient.beginRecognizeBusinessCards(buffer, businessCard.length(),
+            new RecognizeBusinessCardsOptions()
+                .setContentType(FormContentType.IMAGE_JPEG)
+                .setFieldElementsIncluded(includeFieldElements)
+                .setPollInterval(Duration.ofSeconds(5)))
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .subscribe(recognizedBusinessCards -> {
+                for (int i = 0; i < recognizedBusinessCards.size(); i++) {
+                    RecognizedForm recognizedForm = recognizedBusinessCards.get(i);
+                    Map<String, FormField> recognizedFields = recognizedForm.getFields();
+                    System.out.printf("----------- Recognized Business Card page %d -----------%n", i);
+                    FormField contactNamesFormField = recognizedFields.get("ContactNames");
+                    if (contactNamesFormField != null) {
+                        if (FieldValueType.LIST == contactNamesFormField.getValue().getValueType()) {
+                            List<FormField> contactNamesList = contactNamesFormField.getValue().asList();
+                            contactNamesList.stream()
+                                .filter(contactName -> FieldValueType.MAP == contactName.getValue().getValueType())
+                                .map(contactName -> {
+                                    System.out.printf("Contact name: %s%n", contactName.getValueData().getText());
+                                    return contactName.getValue().asMap();
+                                })
+                                .forEach(contactNamesMap -> contactNamesMap.forEach((key, contactName) -> {
+                                    if ("FirstName".equals(key)) {
+                                        if (FieldValueType.STRING == contactName.getValue().getValueType()) {
+                                            String firstName = contactName.getValue().asString();
+                                            System.out.printf("\tFirst Name: %s, confidence: %.2f%n",
+                                                firstName, contactName.getConfidence());
+                                        }
+                                    }
+                                    if ("LastName".equals(key)) {
+                                        if (FieldValueType.STRING == contactName.getValue().getValueType()) {
+                                            String lastName = contactName.getValue().asString();
+                                            System.out.printf("\tLast Name: %s, confidence: %.2f%n",
+                                                lastName, contactName.getConfidence());
+                                        }
+                                    }
+                                }));
+                        }
+                    }
+                    FormField jobTitles = recognizedFields.get("JobTitles");
+                    if (jobTitles != null) {
+                        if (FieldValueType.LIST == jobTitles.getValue().getValueType()) {
+                            List<FormField> jobTitlesItems = jobTitles.getValue().asList();
+                            jobTitlesItems.stream().forEach(jobTitlesItem -> {
+                                if (FieldValueType.STRING == jobTitlesItem.getValue().getValueType()) {
+                                    String jobTitle = jobTitlesItem.getValue().asString();
+                                    System.out.printf("Job Title: %s, confidence: %.2f%n",
+                                        jobTitle, jobTitlesItem.getConfidence());
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeBusinessCards#Flux-long-RecognizeBusinessCardsOptions
     }
 }

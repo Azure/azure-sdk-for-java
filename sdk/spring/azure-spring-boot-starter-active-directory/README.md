@@ -16,10 +16,10 @@ With Spring Starter for Azure Active Directory, now you can get started quickly 
 * **Create a client secret key for the application**: Go to API ACCESS - Keys to create a secret key (`client-secret`).
 
 ### Include the package
-[//]: # "{x-version-update-start;com.azure:azure-spring-boot-starter-active-directory;current}"
+[//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory;current}"
 ```xml
 <dependency>
-    <groupId>com.azure</groupId>
+    <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-active-directory</artifactId>
     <version>3.0.0-beta.1</version>
 </dependency>

@@ -1,7 +1,7 @@
 # OAuth 2.0 Sample for Azure AD Spring Boot Starter client library for Java
 
 ## Key concepts
-This sample illustrates how to use `azure-active-directory-spring-boot-starter` package to work with OAuth 2.0 and OpenID Connect protocols on Auzre. This sample will use default Azure Active Directory Graph API to query user info.
+This sample illustrates how to use `azure-spring-boot-starter-active-directory` package to work with OAuth 2.0 and OpenID Connect protocols on Auzre. This sample will use default Azure Active Directory Graph API to query user info.
 
 ## Getting started
 
@@ -38,6 +38,7 @@ If `azure.activedirectory.tenant-id` is **NOT** configured, `NoLoginSecurityConf
 
 
 ### Run with Maven
+First, we need to ensure that this [instruction] is completed before run.
 ```shell
 # Under sdk/spring project root directory
 mvn clean install -DskipTests
@@ -66,3 +67,5 @@ In Azure portal, app registration manifest page, configure `oauth2AllowImplicitF
 
 ## Next steps
 ## Contributing
+<!-- LINKS -->
+[instruction]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source

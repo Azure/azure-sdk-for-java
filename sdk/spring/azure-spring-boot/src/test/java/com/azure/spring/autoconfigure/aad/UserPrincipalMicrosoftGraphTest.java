@@ -116,10 +116,12 @@ public class UserPrincipalMicrosoftGraphTest {
                 .withBody(userGroupsJson)));
 
         final Collection<? extends GrantedAuthority> authorities = graphClientMock
-                .getGrantedAuthorities(MicrosoftGraphConstants.BEARER_TOKEN);
+            .getGrantedAuthorities(MicrosoftGraphConstants.BEARER_TOKEN);
 
-        assertThat(authorities).isNotEmpty().extracting(GrantedAuthority::getAuthority)
-                .containsExactly("ROLE_group1", "ROLE_group2", "ROLE_group3");
+        assertThat(authorities)
+            .isNotEmpty()
+            .extracting(GrantedAuthority::getAuthority)
+            .containsExactlyInAnyOrder("ROLE_group1", "ROLE_group2", "ROLE_group3");
 
         verify(getRequestedFor(urlMatching("/memberOf"))
             .withHeader(AUTHORIZATION, equalTo(String.format("Bearer %s", accessToken)))

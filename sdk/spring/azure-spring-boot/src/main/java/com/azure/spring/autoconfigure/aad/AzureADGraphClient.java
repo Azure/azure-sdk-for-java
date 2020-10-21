@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.naming.ServiceUnavailableException;
@@ -28,15 +27,17 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
+
+import static com.azure.spring.autoconfigure.aad.Constants.DEFAULT_AUTHORITY_SET;
+import static com.azure.spring.autoconfigure.aad.Constants.ROLE_PREFIX;
+
 
 /**
  * Microsoft Graph client encapsulation.
@@ -44,8 +45,6 @@ import java.util.stream.Collectors;
 public class AzureADGraphClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureADGraphClient.class);
-    private static final SimpleGrantedAuthority DEFAULT_AUTHORITY = new SimpleGrantedAuthority("ROLE_USER");
-    private static final String DEFAULT_ROLE_PREFIX = "ROLE_";
     private static final String MICROSOFT_GRAPH_SCOPE = "https://graph.microsoft.com/user.read";
     private static final String AAD_GRAPH_API_SCOPE = "https://graph.windows.net/user.read";
     // We use "aadfeed5" as suffix when client library is ADAL, upgrade to "aadfeed6" for MSAL
@@ -102,7 +101,7 @@ public class AzureADGraphClient {
 
     private static String getResponseString(HttpURLConnection connection) throws IOException {
         try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+            new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
             final StringBuilder stringBuffer = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
@@ -113,88 +112,52 @@ public class AzureADGraphClient {
     }
 
     /**
-     * Retrieve groups from the Graph service.
-     *
-     * @param graphApiToken The access token used to call Graph service API.
-     * @return The groups user belongs to. And if allowed-groups property is configured, only groups fall in the allowed
-     *         ones will be returned.
-     * @throws IOException If I/O exception has occurred.
+     * @param graphApiToken token used to access graph api.
+     * @return groups in graph api.
+     * @throws IOException throw exception if get groups failed by IOException.
      */
-    public List<UserGroup> getGroups(String graphApiToken) throws IOException {
-        final List<UserGroup> userGroupList = new ArrayList<>();
+    public Set<String> getGroups(String graphApiToken) throws IOException {
+        final Set<String> groups = new LinkedHashSet<>();
         final ObjectMapper objectMapper = JacksonObjectMapperFactory.getInstance();
-        String urlString = serviceEndpoints.getAadMembershipRestUri();
-        while (urlString != null) {
-            String responseInJson = getUserMemberships(graphApiToken, urlString);
-            UserGroups userGroups = objectMapper.readValue(responseInJson, UserGroups.class);
-            userGroups.getValue()
-                      .stream()
-                      .filter(this::isMatchingUserGroupKey)
-                      .forEach(userGroupList::add);
-            urlString = Optional.of(userGroups)
-                                .map(UserGroups::getOdataNextLink)
-                                .map(this::getUrlStringFromODataNextLink)
-                                .orElse(null);
+        String aadMembershipRestUri = serviceEndpoints.getAadMembershipRestUri();
+        while (aadMembershipRestUri != null) {
+            String membershipsJson = getUserMemberships(graphApiToken, aadMembershipRestUri);
+            MemberShips memberShips = objectMapper.readValue(membershipsJson, MemberShips.class);
+            memberShips.getValue()
+                       .stream()
+                       .filter(this::isGroupObject)
+                       .map(MemberShip::getDisplayName)
+                       .forEach(groups::add);
+            aadMembershipRestUri = Optional.of(memberShips)
+                                           .map(MemberShips::getOdataNextLink)
+                                           .map(this::getUrlStringFromODataNextLink)
+                                           .orElse(null);
         }
-        return userGroupList;
+        return groups;
+    }
+
+    private boolean isGroupObject(final MemberShip memberShip) {
+        return memberShip.getObjectType().equals(aadAuthenticationProperties.getUserGroup().getValue());
     }
 
     /**
-     * Checks that the UserGroup has a Group object type.
-     *
-     * @param userGroup - userGroup
-     * @return true if the json node contains the correct key, and expected value to identify a user group.
+     * @param graphApiToken token of graph api.
+     * @return set of SimpleGrantedAuthority
+     * @throws IOException throw exception if get groups failed by IOException.
      */
-    private boolean isMatchingUserGroupKey(final UserGroup userGroup) {
-        return userGroup.getObjectType().equals(aadAuthenticationProperties.getUserGroup().getValue());
+    public Set<SimpleGrantedAuthority> getGrantedAuthorities(String graphApiToken) throws IOException {
+        return toGrantedAuthoritySet(getGroups(graphApiToken));
     }
 
-    /**
-     * Convert Graph groups to {@link GrantedAuthority}.
-     *
-     * @param graphApiToken The access token used to call the Graph API.
-     * @return A set of mapped {@link GrantedAuthority} from Graph groups.
-     * @throws IOException If I/O exception has occurred.
-     */
-    public Set<GrantedAuthority> getGrantedAuthorities(String graphApiToken) throws IOException {
-        // Fetch the authority information from the protected resource using accessToken
-        final List<UserGroup> groups = getGroups(graphApiToken);
-        // Map the authority information to one or more GrantedAuthority's and add it to mappedAuthorities
-        return convertGroupsToGrantedAuthorities(groups);
-    }
-
-
-    /**
-     * Converts UserGroup list to Set of GrantedAuthorities
-     *
-     * @param groups user groups
-     * @return granted authorities
-     */
-    public Set<GrantedAuthority> convertGroupsToGrantedAuthorities(final List<UserGroup> groups) {
-        // Map the authority information to one or more GrantedAuthority's and add it to mappedAuthorities
-        final Set<GrantedAuthority> mappedAuthorities =
+    public Set<SimpleGrantedAuthority> toGrantedAuthoritySet(final Set<String> groups) {
+        Set<SimpleGrantedAuthority> grantedAuthoritySet =
             groups.stream()
-                  .filter(this::isValidUserGroupToGrantAuthority)
-                  .map(userGroup -> new SimpleGrantedAuthority(DEFAULT_ROLE_PREFIX + userGroup.getDisplayName()))
-                  .collect(Collectors.toCollection(LinkedHashSet::new));
-        if (mappedAuthorities.isEmpty()) {
-            mappedAuthorities.add(DEFAULT_AUTHORITY);
-        }
-        return mappedAuthorities;
-    }
-
-    /**
-     * Determines if this is a valid {@link UserGroup} to build to a GrantedAuthority.
-     * <p>
-     * If the {@link AADAuthenticationProperties.UserGroupProperties#getAllowedGroups()}
-     *  contains the {@link UserGroup#getDisplayName()} return
-     * true.
-     *
-     * @param group - User Group to check if valid to grant an authority to.
-     * @return true if allowed-groups contains the UserGroup display name
-     */
-    private boolean isValidUserGroupToGrantAuthority(final UserGroup group) {
-        return aadAuthenticationProperties.getUserGroup().getAllowedGroups().contains(group.getDisplayName());
+                  .filter(aadAuthenticationProperties::isAllowedGroup)
+                  .map(group -> new SimpleGrantedAuthority(ROLE_PREFIX + group))
+                  .collect(Collectors.toSet());
+        return Optional.of(grantedAuthoritySet)
+                       .filter(g -> !g.isEmpty())
+                       .orElse(DEFAULT_AUTHORITY_SET);
     }
 
     /**

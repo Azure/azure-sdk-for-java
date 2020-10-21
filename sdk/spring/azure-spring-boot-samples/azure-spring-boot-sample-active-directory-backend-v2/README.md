@@ -1,7 +1,7 @@
 # OAuth 2.0 Sample for Azure AD Spring Boot Starter client library for Java
 
 ## Key concepts
-This sample illustrates how to use `azure-active-directory-spring-boot-starter` package to work with OAuth 2.0 and OpenID Connect protocols on Auzre. This sample will use Microsoft Graph API to retrieve user info. This is the key difference from [azure-spring-boot-sample-active-directory-backend](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend/README.md). It's reflected by these configurations in `appication.properties`:
+This sample illustrates how to use `azure-spring-boot-starter-active-directory` package to work with OAuth 2.0 and OpenID Connect protocols on Auzre. This sample will use Microsoft Graph API to retrieve user info. This is the key difference from [azure-spring-boot-sample-active-directory-backend](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend/README.md). It's reflected by these configurations in `appication.properties`:
 ```properties
 azure.activedirectory.environment=global-v2-graph
 azure.activedirectory.user-group.key=@odata.type
@@ -42,7 +42,7 @@ azure.activedirectory.user-group.allowed-groups=group1, group2
 ```
 
 ### Run with Maven
-
+First, we need to ensure that this [instruction] is completed before run.
 ```shell
 # Under sdk/spring project root directory
 mvn clean install -DskipTests
@@ -70,3 +70,5 @@ In Azure portal, app registration manifest page, configure `oauth2AllowImplicitF
 
 ## Next steps
 ## Contributing
+<!-- LINKS -->
+[instruction]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source

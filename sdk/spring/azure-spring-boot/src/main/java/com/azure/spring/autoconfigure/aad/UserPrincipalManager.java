@@ -21,15 +21,19 @@ import com.nimbusds.jwt.proc.BadJWTException;
 import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
 import com.nimbusds.jwt.proc.DefaultJWTClaimsVerifier;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
+import net.minidev.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * A user principal manager to load user info from JWT.
@@ -42,7 +46,7 @@ public class UserPrincipalManager {
     private static final String STS_CHINA_CLOUD_API_ISSUER = "https://sts.chinacloudapi.cn/";
 
     private final JWKSource<SecurityContext> keySource;
-    private final AADAuthenticationProperties aadAuthProps;
+    private final AADAuthenticationProperties aadAuthenticationProperties;
     private final Boolean explicitAudienceCheck;
     private final Set<String> validAudiences = new HashSet<>();
 
@@ -56,30 +60,30 @@ public class UserPrincipalManager {
     public UserPrincipalManager(JWKSource<SecurityContext> keySource) {
         this.keySource = keySource;
         this.explicitAudienceCheck = false;
-        this.aadAuthProps = null;
+        this.aadAuthenticationProperties = null;
     }
 
     /**
      * Create a new {@link UserPrincipalManager} based of the {@link ServiceEndpoints#getAadKeyDiscoveryUri()} and
      * {@link AADAuthenticationProperties#getEnvironment()}.
      *
-     * @param serviceEndpointsProps Used to retrieve the JWKS URL
-     * @param aadAuthProps Used to retrieve the environment.
-     * @param resourceRetriever Configures the {@link RemoteJWKSet} call.
+     * @param serviceEndpointsProps - used to retrieve the JWKS URL
+     * @param aadAuthenticationProperties - used to retrieve the environment.
+     * @param resourceRetriever - configures the {@link RemoteJWKSet} call.
      * @param explicitAudienceCheck Whether explicitly check the audience.
      * @throws IllegalArgumentException If AAD key discovery URI is malformed.
      */
     public UserPrincipalManager(ServiceEndpointsProperties serviceEndpointsProps,
-                                AADAuthenticationProperties aadAuthProps,
+                                AADAuthenticationProperties aadAuthenticationProperties,
                                 ResourceRetriever resourceRetriever,
                                 boolean explicitAudienceCheck) {
-        this.aadAuthProps = aadAuthProps;
+        this.aadAuthenticationProperties = aadAuthenticationProperties;
         this.explicitAudienceCheck = explicitAudienceCheck;
         if (explicitAudienceCheck) {
             // client-id for "normal" check
-            this.validAudiences.add(this.aadAuthProps.getClientId());
+            this.validAudiences.add(this.aadAuthenticationProperties.getClientId());
             // app id uri for client credentials flow (server to server communication)
-            this.validAudiences.add(this.aadAuthProps.getAppIdUri());
+            this.validAudiences.add(this.aadAuthenticationProperties.getAppIdUri());
         }
         try {
             String aadKeyDiscoveryUri = getAadKeyDiscoveryUri(serviceEndpointsProps);
@@ -91,7 +95,7 @@ public class UserPrincipalManager {
     }
 
     private String getAadKeyDiscoveryUri(ServiceEndpointsProperties serviceEndpointsProps) {
-        return Optional.of(aadAuthProps)
+        return Optional.of(aadAuthenticationProperties)
                        .map(AADAuthenticationProperties::getEnvironment)
                        .map(serviceEndpointsProps::getServiceEndpoints)
                        .map(ServiceEndpoints::getAadKeyDiscoveryUri)
@@ -102,26 +106,26 @@ public class UserPrincipalManager {
      * Create a new {@link UserPrincipalManager} based of the {@link ServiceEndpoints#getAadKeyDiscoveryUri()} and
      * {@link AADAuthenticationProperties#getEnvironment()}.
      *
-     * @param serviceEndpointsProps Used to retrieve the JWKS URL
-     * @param aadAuthProps Used to retrieve the environment.
-     * @param resourceRetriever Configures the {@link RemoteJWKSet} call.
-     * @param jwkSetCache Used to cache the JWK set for a finite time, default set to 5 minutes
-     *                    which matches constructor above if no jwkSetCache is passed in
+     * @param serviceEndpointsProps - used to retrieve the JWKS URL
+     * @param aadAuthenticationProperties - used to retrieve the environment.
+     * @param resourceRetriever - configures the {@link RemoteJWKSet} call.
+     * @param jwkSetCache - used to cache the JWK set for a finite time, default set to 5 minutes which matches
+     * constructor above if no jwkSetCache is passed in
      * @param explicitAudienceCheck Whether explicitly check the audience.
      * @throws IllegalArgumentException If AAD key discovery URI is malformed.
      */
     public UserPrincipalManager(ServiceEndpointsProperties serviceEndpointsProps,
-                                AADAuthenticationProperties aadAuthProps,
+                                AADAuthenticationProperties aadAuthenticationProperties,
                                 ResourceRetriever resourceRetriever,
                                 boolean explicitAudienceCheck,
                                 JWKSetCache jwkSetCache) {
-        this.aadAuthProps = aadAuthProps;
+        this.aadAuthenticationProperties = aadAuthenticationProperties;
         this.explicitAudienceCheck = explicitAudienceCheck;
         if (explicitAudienceCheck) {
             // client-id for "normal" check
-            this.validAudiences.add(this.aadAuthProps.getClientId());
+            this.validAudiences.add(this.aadAuthenticationProperties.getClientId());
             // app id uri for client credentials flow (server to server communication)
-            this.validAudiences.add(this.aadAuthProps.getAppIdUri());
+            this.validAudiences.add(this.aadAuthenticationProperties.getAppIdUri());
         }
         try {
             String aadKeyDiscoveryUri = getAadKeyDiscoveryUri(serviceEndpointsProps);
@@ -146,7 +150,16 @@ public class UserPrincipalManager {
         final ConfigurableJWTProcessor<SecurityContext> validator = getValidator(jwsObject.getHeader().getAlgorithm());
         final JWTClaimsSet jwtClaimsSet = validator.process(aadIssuedBearerToken, null);
         validator.getJWTClaimsSetVerifier().verify(jwtClaimsSet, null);
-        return new UserPrincipal(aadIssuedBearerToken, jwsObject, jwtClaimsSet);
+        UserPrincipal userPrincipal = new UserPrincipal(aadIssuedBearerToken, jwsObject, jwtClaimsSet);
+        Set<String> roles = Optional.of(userPrincipal)
+                                    .map(p -> p.getClaim(AADTokenClaim.ROLES))
+                                    .map(r -> (JSONArray) r)
+                                    .map(Collection<Object>::stream)
+                                    .orElseGet(Stream::empty)
+                                    .map(Object::toString)
+                                    .collect(Collectors.toSet());
+        userPrincipal.setRoles(roles);
+        return userPrincipal;
     }
 
     public boolean isTokenIssuedByAAD(String token) {

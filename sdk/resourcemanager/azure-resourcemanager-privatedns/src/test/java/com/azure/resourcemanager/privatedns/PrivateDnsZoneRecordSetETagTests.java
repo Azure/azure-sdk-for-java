@@ -56,9 +56,8 @@ public class PrivateDnsZoneRecordSetETagTests extends ResourceManagerTestBase {
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
-        resourceManager =
-            ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
-        privateZoneManager = PrivateDnsZoneManager.authenticate(httpPipeline, profile);
+        privateZoneManager = buildManager(PrivateDnsZoneManager.class, httpPipeline, profile);
+        resourceManager = privateZoneManager.resourceManager();
         rgName = generateRandomResourceName("prdnsrstest", 15);
     }
 

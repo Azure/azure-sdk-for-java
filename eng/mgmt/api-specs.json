@@ -62,6 +62,10 @@
     "source": "specification/cognitiveservices/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "commerce/resource-manager": {
+    "source": "specification/commerce/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },  
   "compute/resource-manager": {
     "source": "specification/compute/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -98,6 +102,10 @@
     "source": "specification/databox/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "databoxedge/resource-manager": {
+    "source": "specification/databoxedge/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },  
   "datafactory/resource-manager": {
     "source": "specification/datafactory/resource-manager/readme.md",
     "args": "--multiapi --fluent"

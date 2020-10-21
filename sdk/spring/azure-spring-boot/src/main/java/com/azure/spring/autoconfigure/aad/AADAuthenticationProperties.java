@@ -14,8 +14,10 @@ import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -50,6 +52,12 @@ public class AADAuthenticationProperties {
      * Must be configured when OAuth2 authentication is done in front end
      */
     private String clientSecret;
+
+    /**
+     * Redirection Endpoint: Used by the authorization server
+     * to return responses containing authorization credentials to the client via the resource owner user-agent.
+     */
+    private String redirectUriTemplate;
 
     /**
      * Optional. scope doc:
@@ -128,7 +136,7 @@ public class AADAuthenticationProperties {
          * Node is a UserGroup.
          */
         @NotEmpty
-        private String value = Constants.OBJECT_TYPE_GROUP;
+        private String value = MemberShip.OBJECT_TYPE_GROUP;
 
         /**
          * Key of the JSON Node containing the Azure Object ID for the {@code UserGroup}.
@@ -199,6 +207,13 @@ public class AADAuthenticationProperties {
         }
     }
 
+    public boolean allowedGroupsConfigured() {
+        return Optional.of(this)
+                       .map(AADAuthenticationProperties::getUserGroup)
+                       .map(AADAuthenticationProperties.UserGroupProperties::getAllowedGroups)
+                       .map(allowedGroups -> !allowedGroups.isEmpty())
+                       .orElse(false);
+    }
 
     /**
      * Validates at least one of the user group properties are populated.
@@ -208,10 +223,10 @@ public class AADAuthenticationProperties {
     @PostConstruct
     public void validateUserGroupProperties() {
         if (this.sessionStateless) {
-            if (!this.getUserGroup().getAllowedGroups().isEmpty()) {
+            if (allowedGroupsConfigured()) {
                 LOGGER.warn("Group names are not supported if you set 'sessionSateless' to 'true'.");
             }
-        } else if (this.getUserGroup().getAllowedGroups().isEmpty()) {
+        } else if (!allowedGroupsConfigured()) {
             throw new IllegalArgumentException("One of the User Group Properties must be populated. "
                 + "Please populate azure.activedirectory.user-group.allowed-groups");
         }
@@ -247,6 +262,14 @@ public class AADAuthenticationProperties {
 
     public void setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
+    }
+
+    public String getRedirectUriTemplate() {
+        return redirectUriTemplate;
+    }
+
+    public void setRedirectUriTemplate(String redirectUriTemplate) {
+        this.redirectUriTemplate = redirectUriTemplate;
     }
 
     public void setScope(List<String> scope) {
@@ -324,5 +347,12 @@ public class AADAuthenticationProperties {
 
     public void setSessionStateless(Boolean sessionStateless) {
         this.sessionStateless = sessionStateless;
+    }
+
+    public boolean isAllowedGroup(String group) {
+        return Optional.ofNullable(getUserGroup())
+                       .map(UserGroupProperties::getAllowedGroups)
+                       .orElseGet(Collections::emptyList)
+                       .contains(group);
     }
 }

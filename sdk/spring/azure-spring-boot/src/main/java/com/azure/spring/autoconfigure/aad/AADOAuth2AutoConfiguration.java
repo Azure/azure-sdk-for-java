@@ -37,7 +37,12 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Azure Active Authentication OAuth 2.0.
  * <p>
- * The configuration will not be activated if no {@literal azure.activedirectory.tenant-id} property provided.
+ * The configuration will be activated when configured:
+ * 1. {@literal azure.activedirectory.client-id}
+ * 2. {@literal azure.activedirectory.client-secret}
+ * 3. {@literal azure.activedirectory.tenant-id}
+ * client-id, client-secret, tenant-id used in ClientRegistration.
+ * client-id, client-secret also used to get graphApiToken, then get groups.
  * <p>
  * A OAuth2 user service {@link AADOAuth2UserService} will be auto-configured by specifying {@literal
  * azure.activedirectory.user-group.allowed-groups} property.
@@ -45,7 +50,7 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
 @Configuration
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-@ConditionalOnProperty(prefix = "azure.activedirectory", value = "tenant-id")
+@ConditionalOnProperty(prefix = "azure.activedirectory", value = {"client-id", "client-secret", "tenant-id"})
 @PropertySource(value = "classpath:service-endpoints.properties")
 @EnableConfigurationProperties({ AADAuthenticationProperties.class, ServiceEndpointsProperties.class })
 public class AADOAuth2AutoConfiguration {
@@ -77,24 +82,26 @@ public class AADOAuth2AutoConfiguration {
         Assert.doesNotContain(tenantId, " ", "azure.activedirectory.tenant-id should not contain ' '.");
         Assert.doesNotContain(tenantId, "/", "azure.activedirectory.tenant-id should not contain '/'.");
 
+        String redirectUriTemplate = Optional.of(aadAuthenticationProperties)
+                                             .map(AADAuthenticationProperties::getRedirectUriTemplate)
+                                             .orElse("{baseUrl}/login/oauth2/code/{registrationId}");
+
         List<String> scope = aadAuthenticationProperties.getScope();
-        boolean allowedGroupsConfigured =
-            Optional.of(aadAuthenticationProperties)
-                    .map(AADAuthenticationProperties::getUserGroup)
-                    .map(AADAuthenticationProperties.UserGroupProperties::getAllowedGroups)
-                    .map(allowedGroups -> !allowedGroups.isEmpty())
-                    .orElse(false);
-        if (allowedGroupsConfigured && !scope.contains("https://graph.microsoft.com/user.read")) {
-            scope.add("https://graph.microsoft.com/user.read");
-            LOGGER.warn("scope 'https://graph.microsoft.com/user.read' has been added.");
-        }
-        if (!scope.contains("openid")) {
-            scope.add("openid");
-            LOGGER.warn("scope 'openid' has been added.");
-        }
-        if (!scope.contains("profile")) {
-            scope.add("profile");
-            LOGGER.warn("scope 'profile' has been added.");
+        if (!scope.toString().contains(".default")) {
+            if (aadAuthenticationProperties.allowedGroupsConfigured()
+                && !scope.contains("https://graph.microsoft.com/user.read")
+            ) {
+                scope.add("https://graph.microsoft.com/user.read");
+                LOGGER.warn("scope 'https://graph.microsoft.com/user.read' has been added.");
+            }
+            if (!scope.contains("openid")) {
+                scope.add("openid");
+                LOGGER.warn("scope 'openid' has been added.");
+            }
+            if (!scope.contains("profile")) {
+                scope.add("profile");
+                LOGGER.warn("scope 'profile' has been added.");
+            }
         }
 
         return ClientRegistration.withRegistrationId("azure")
@@ -102,7 +109,7 @@ public class AADOAuth2AutoConfiguration {
                                  .clientSecret(aadAuthenticationProperties.getClientSecret())
                                  .clientAuthenticationMethod(ClientAuthenticationMethod.POST)
                                  .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                                 .redirectUriTemplate("{baseUrl}/login/oauth2/code/{registrationId}")
+                                 .redirectUriTemplate(redirectUriTemplate)
                                  .scope(scope)
                                  .authorizationUri(
                                      String.format(

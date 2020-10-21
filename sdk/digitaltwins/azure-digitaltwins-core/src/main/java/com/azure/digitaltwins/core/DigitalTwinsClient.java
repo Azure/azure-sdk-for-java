@@ -49,7 +49,8 @@ public final class DigitalTwinsClient {
     //region Digital twin APIs
 
     /**
-     * Creates a digital twin.
+     * Creates a digital twin. If the provided digital twin Id is already in use, then this will attempt
+     * to replace the existing digital twin with the provided digital twin.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -61,7 +62,7 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.createDigitalTwins#String-Object-Class#String}
      *
-     * @param digitalTwinId The Id of the digital twin.
+     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param clazz The model class to serialize the request with and deserialize the response with.
      * @param <T> The generic type to serialize the request with and deserialize the response with.
      * @param digitalTwin The application/json object representing the digital twin to create.
@@ -74,7 +75,8 @@ public final class DigitalTwinsClient {
     }
 
     /**
-     * Creates a digital twin.
+     * Creates a digital twin. If the provided digital twin Id is already in use, then this will attempt
+     * to replace the existing digital twin with the provided digital twin.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -86,7 +88,7 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.createDigitalTwins#String-Object-Class#String}
      *
-     * @param digitalTwinId The Id of the digital twin.
+     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param digitalTwin The application/json object representing the digital twin to create.
      * @param clazz The model class to serialize the request with and deserialize the response with.
      * @param <T> The generic type to serialize the request with and deserialize the response with.
@@ -95,7 +97,7 @@ public final class DigitalTwinsClient {
      * @return A {@link DigitalTwinsResponse} containing the deserialized application/json object representing the digital twin created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Response<T> createDigitalTwinWithResponse(String digitalTwinId, T digitalTwin, Class<T> clazz, DigitalTwinsAddOptions options, Context context)
+    public <T> Response<T> createDigitalTwinWithResponse(String digitalTwinId, T digitalTwin, Class<T> clazz, CreateDigitalTwinOptions options, Context context)
     {
         return digitalTwinsAsyncClient.createDigitalTwinWithResponse(digitalTwinId, digitalTwin, clazz, options, context).block();
     }
@@ -151,7 +153,7 @@ public final class DigitalTwinsClient {
      * @return A {@link DigitalTwinsResponse} containing the deserialized application/json object representing the digital twin.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> DigitalTwinsResponse<T> getDigitalTwinWithResponse(String digitalTwinId, Class<T> clazz, DigitalTwinsGetByIdOptions options, Context context)
+    public <T> DigitalTwinsResponse<T> getDigitalTwinWithResponse(String digitalTwinId, Class<T> clazz, GetDigitalTwinOptions options, Context context)
     {
         return digitalTwinsAsyncClient.getDigitalTwinWithResponse(digitalTwinId, clazz, options, context).block();
     }
@@ -165,7 +167,7 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.updateDigitalTwin#String-List}
      *
-     * @param digitalTwinId The Id of the digital twin.
+     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param jsonPatch The JSON patch to apply to the specified digital twin.
      *                                    This argument can be created using {@link UpdateOperationUtility}.
      */
@@ -184,7 +186,7 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.updateDigitalTwinWithResponse#String-List-Options-Context}
      *
-     * @param digitalTwinId The Id of the digital twin.
+     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param jsonPatch The JSON patch to apply to the specified digital twin.
      *                                    This argument can be created using {@link UpdateOperationUtility}.
      * @param options The optional parameters for this request. If null, the default option values will be used.
@@ -192,7 +194,7 @@ public final class DigitalTwinsClient {
      * @return A {@link DigitalTwinsResponse}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DigitalTwinsResponse<Void> updateDigitalTwinWithResponse(String digitalTwinId, List<Object> jsonPatch, DigitalTwinsUpdateOptions options, Context context)
+    public DigitalTwinsResponse<Void> updateDigitalTwinWithResponse(String digitalTwinId, List<Object> jsonPatch, UpdateDigitalTwinOptions options, Context context)
     {
         return digitalTwinsAsyncClient.updateDigitalTwinWithResponse(digitalTwinId, jsonPatch, options, context).block();
     }
@@ -225,7 +227,7 @@ public final class DigitalTwinsClient {
      * @return The Http response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteDigitalTwinWithResponse(String digitalTwinId, DigitalTwinsDeleteOptions options, Context context)
+    public Response<Void> deleteDigitalTwinWithResponse(String digitalTwinId, DeleteDigitalTwinOptions options, Context context)
     {
         return digitalTwinsAsyncClient.deleteDigitalTwinWithResponse(digitalTwinId, options, context).block();
     }
@@ -235,7 +237,8 @@ public final class DigitalTwinsClient {
     //region Relationship APIs
 
     /**
-     * Creates a relationship on a digital twin.
+     * Creates a relationship on a digital twin. If the provided relationship Id is already in use, then this will
+     * attempt to replace the existing relationship with the provided relationship.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -260,7 +263,8 @@ public final class DigitalTwinsClient {
     }
 
     /**
-     * Creates a relationship on a digital twin.
+     * Creates a relationship on a digital twin. If the provided relationship Id is already in use, then this will
+     * attempt to replace the existing relationship with the provided relationship.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -282,7 +286,7 @@ public final class DigitalTwinsClient {
      * @return A {@link DigitalTwinsResponse} containing the relationship created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> DigitalTwinsResponse<T> createRelationshipWithResponse(String digitalTwinId, String relationshipId, T relationship, Class<T> clazz, DigitalTwinsAddRelationshipOptions options, Context context) {
+    public <T> DigitalTwinsResponse<T> createRelationshipWithResponse(String digitalTwinId, String relationshipId, T relationship, Class<T> clazz, CreateRelationshipOptions options, Context context) {
         return digitalTwinsAsyncClient.createRelationshipWithResponse(digitalTwinId, relationshipId, relationship, clazz, options, context).block();
     }
 
@@ -332,7 +336,7 @@ public final class DigitalTwinsClient {
      * @return A {@link DigitalTwinsResponse} containing the deserialized relationship.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> DigitalTwinsResponse<T> getRelationshipWithResponse(String digitalTwinId, String relationshipId, Class<T> clazz, DigitalTwinsGetRelationshipByIdOptions options, Context context) {
+    public <T> DigitalTwinsResponse<T> getRelationshipWithResponse(String digitalTwinId, String relationshipId, Class<T> clazz, GetRelationshipOptions options, Context context) {
         return digitalTwinsAsyncClient.getRelationshipWithResponse(digitalTwinId, relationshipId, clazz, options, context).block();
     }
 
@@ -369,7 +373,7 @@ public final class DigitalTwinsClient {
      * @return A {@link DigitalTwinsResponse} containing no parsed payload object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DigitalTwinsResponse<Void> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, List<Object> jsonPatch, DigitalTwinsUpdateRelationshipOptions options, Context context) {
+    public DigitalTwinsResponse<Void> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, List<Object> jsonPatch, UpdateRelationshipOptions options, Context context) {
         return digitalTwinsAsyncClient.updateRelationshipWithResponse(digitalTwinId, relationshipId, jsonPatch, options, context).block();
     }
 
@@ -402,7 +406,7 @@ public final class DigitalTwinsClient {
      * @return A {@link Response} containing no parsed payload object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteRelationshipWithResponse(String digitalTwinId, String relationshipId, DigitalTwinsDeleteRelationshipOptions options, Context context) {
+    public Response<Void> deleteRelationshipWithResponse(String digitalTwinId, String relationshipId, DeleteRelationshipOptions options, Context context) {
         return digitalTwinsAsyncClient.deleteRelationshipWithResponse(digitalTwinId, relationshipId, options, context).block();
     }
 
@@ -453,7 +457,7 @@ public final class DigitalTwinsClient {
      * @return A {@link PagedIterable} of relationships belonging to the specified digital twin.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public <T> PagedIterable<T> listRelationships(String digitalTwinId, String relationshipName, Class<T> clazz, DigitalTwinsListRelationshipsOptions options, Context context) {
+    public <T> PagedIterable<T> listRelationships(String digitalTwinId, String relationshipName, Class<T> clazz, ListRelationshipsOptions options, Context context) {
         return new PagedIterable<>(digitalTwinsAsyncClient.listRelationships(digitalTwinId, relationshipName, clazz, options, context));
     }
 
@@ -487,7 +491,7 @@ public final class DigitalTwinsClient {
      * specified digital twin.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IncomingRelationship> listIncomingRelationships(String digitalTwinId, DigitalTwinsListIncomingRelationshipsOptions options, Context context) {
+    public PagedIterable<IncomingRelationship> listIncomingRelationships(String digitalTwinId, ListIncomingRelationshipsOptions options, Context context) {
         return new PagedIterable<>(digitalTwinsAsyncClient.listIncomingRelationships(digitalTwinId, options, context));
     }
 
@@ -525,7 +529,7 @@ public final class DigitalTwinsClient {
      * will contain metadata about the created model, but will not contain the model itself.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Response<Iterable<DigitalTwinsModelData>> createModelsWithResponse(Iterable<String> models, DigitalTwinModelsAddOptions options, Context context) {
+    public Response<Iterable<DigitalTwinsModelData>> createModelsWithResponse(Iterable<String> models, CreateModelsOptions options, Context context) {
         return digitalTwinsAsyncClient.createModelsWithResponse(models, options, context).block();
     }
 
@@ -557,7 +561,7 @@ public final class DigitalTwinsClient {
      * @return A {@link Response} containing a {@link DigitalTwinsModelData} instance that contains the model and its metadata.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DigitalTwinsModelData> getModelWithResponse(String modelId, DigitalTwinModelsGetByIdOptions options, Context context) {
+    public Response<DigitalTwinsModelData> getModelWithResponse(String modelId, GetModelOptions options, Context context) {
         return digitalTwinsAsyncClient.getModelWithResponse(modelId, options, context).block();
     }
 
@@ -587,7 +591,7 @@ public final class DigitalTwinsClient {
      * @return A {@link PagedIterable} containing the retrieved {@link DigitalTwinsModelData} instances.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DigitalTwinsModelData> listModels(DigitalTwinModelsListOptions options, Context context) {
+    public PagedIterable<DigitalTwinsModelData> listModels(ListModelsOptions options, Context context) {
         return new PagedIterable<>(
             digitalTwinsAsyncClient.listModels(options, context));
     }
@@ -619,7 +623,7 @@ public final class DigitalTwinsClient {
      * @return A {@link Response} with no parsed payload object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteModelWithResponse(String modelId, DigitalTwinModelsDeleteOptions options, Context context) {
+    public Response<Void> deleteModelWithResponse(String modelId, DeleteModelOptions options, Context context) {
         return digitalTwinsAsyncClient.deleteModelWithResponse(modelId, options, context).block();
     }
 
@@ -650,7 +654,7 @@ public final class DigitalTwinsClient {
      * @return A {@link Response} with no parsed payload object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> decommissionModelWithResponse(String modelId, DigitalTwinModelsUpdateOptions options, Context context) {
+    public Response<Void> decommissionModelWithResponse(String modelId, UpdateModelOptions options, Context context) {
         return digitalTwinsAsyncClient.decommissionModelWithResponse(modelId, options, context).block();
     }
 
@@ -666,14 +670,14 @@ public final class DigitalTwinsClient {
      * {@codesnippet com.azure.digitaltwins.core.syncClient.getComponent#String-String-Class}
      *
      * @param digitalTwinId The Id of the digital twin to get the component from.
-     * @param componentPath The path of the component on the digital twin to retrieve.
+     * @param componentName The name of the component on the digital twin to retrieve.
      * @param clazz The class to deserialize the application/json component into.
      * @param <T> The generic type to deserialize the application/json component into.
      * @return The deserialized application/json object representing the component of the digital twin.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> T getComponent(String digitalTwinId, String componentPath, Class<T> clazz) {
-        return getComponentWithResponse(digitalTwinId, componentPath, clazz, null, Context.NONE).getValue();
+    public <T> T getComponent(String digitalTwinId, String componentName, Class<T> clazz) {
+        return getComponentWithResponse(digitalTwinId, componentName, clazz, null, Context.NONE).getValue();
     }
 
     /**
@@ -684,7 +688,7 @@ public final class DigitalTwinsClient {
      * {@codesnippet com.azure.digitaltwins.core.syncClient.getComponentWithResponse#String-String-Class-Options-Context}
      *
      * @param digitalTwinId The Id of the digital twin to get the component from.
-     * @param componentPath The path of the component on the digital twin to retrieve.
+     * @param componentName The name of the component on the digital twin to retrieve.
      * @param clazz The class to deserialize the application/json component into.
      * @param <T> The generic type to deserialize the application/json component into.
      * @param options The optional parameters for this request. If null, the default option values will be used.
@@ -692,8 +696,8 @@ public final class DigitalTwinsClient {
      * @return A {@link DigitalTwinsResponse} containing the deserialized application/json object representing the component of the digital twin.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> DigitalTwinsResponse<T> getComponentWithResponse(String digitalTwinId, String componentPath, Class<T> clazz, DigitalTwinsGetComponentOptions options, Context context) {
-        return digitalTwinsAsyncClient.getComponentWithResponse(digitalTwinId, componentPath, clazz, options, context).block();
+    public <T> DigitalTwinsResponse<T> getComponentWithResponse(String digitalTwinId, String componentName, Class<T> clazz, GetComponentOptions options, Context context) {
+        return digitalTwinsAsyncClient.getComponentWithResponse(digitalTwinId, componentName, clazz, options, context).block();
     }
 
     /**
@@ -704,13 +708,13 @@ public final class DigitalTwinsClient {
      * {@codesnippet com.azure.digitaltwins.core.syncClient.updateComponent#String-String-List}
      *
      * @param digitalTwinId The Id of the digital twin that has the component to patch.
-     * @param componentPath The path of the component on the digital twin.
+     * @param componentName The name of the component on the digital twin.
      * @param jsonPatch The JSON patch to apply to the specified digital twin's relationship.
      *                                  This argument can be created using {@link UpdateOperationUtility}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateComponent(String digitalTwinId, String componentPath, List<Object> jsonPatch) {
-        updateComponentWithResponse(digitalTwinId, componentPath, jsonPatch, null, Context.NONE);
+    public void updateComponent(String digitalTwinId, String componentName, List<Object> jsonPatch) {
+        updateComponentWithResponse(digitalTwinId, componentName, jsonPatch, null, Context.NONE);
     }
 
     /**
@@ -721,7 +725,7 @@ public final class DigitalTwinsClient {
      * {@codesnippet com.azure.digitaltwins.core.syncClient.updateComponentWithResponse#String-String-List-Options-Context}
      *
      * @param digitalTwinId The Id of the digital twin that has the component to patch.
-     * @param componentPath The path of the component on the digital twin.
+     * @param componentName The name of the component on the digital twin.
      * @param jsonPatch The JSON patch to apply to the specified digital twin's relationship.
      *                                  This argument can be created using {@link UpdateOperationUtility}.
      * @param options The optional parameters for this request. If null, the default option values will be used.
@@ -729,8 +733,8 @@ public final class DigitalTwinsClient {
      * @return A {@link DigitalTwinsResponse} containing no parsed payload object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DigitalTwinsResponse<Void> updateComponentWithResponse(String digitalTwinId, String componentPath, List<Object> jsonPatch, DigitalTwinsUpdateComponentOptions options, Context context) {
-        return digitalTwinsAsyncClient.updateComponentWithResponse(digitalTwinId, componentPath, jsonPatch, options, context).block();
+    public DigitalTwinsResponse<Void> updateComponentWithResponse(String digitalTwinId, String componentName, List<Object> jsonPatch, UpdateComponentOptions options, Context context) {
+        return digitalTwinsAsyncClient.updateComponentWithResponse(digitalTwinId, componentName, jsonPatch, options, context).block();
     }
 
     //endregion Component APIs
@@ -783,7 +787,7 @@ public final class DigitalTwinsClient {
      * @return A {@link PagedIterable} of deserialized digital twins.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public <T> PagedIterable<T> query(String query, Class<T> clazz, QueryTwinsOptions options, Context context) {
+    public <T> PagedIterable<T> query(String query, Class<T> clazz, QueryOptions options, Context context) {
         return new PagedIterable<>(digitalTwinsAsyncClient.query(query, clazz, options, context));
     }
 
@@ -791,7 +795,8 @@ public final class DigitalTwinsClient {
 
     //region Event Route APIs
     /**
-     * Create an event route.
+     * Create an event route. If the provided eventRouteId is already in use, then this will attempt to replace the
+     * existing event route with the provided event route.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -806,7 +811,8 @@ public final class DigitalTwinsClient {
     }
 
     /**
-     * Create an event route.
+     * Create an event route. If the provided eventRouteId is already in use, then this will attempt to replace the
+     * existing event route with the provided event route.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -819,7 +825,7 @@ public final class DigitalTwinsClient {
      * @return A {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createEventRouteWithResponse(String eventRouteId, EventRoute eventRoute, EventRoutesAddOptions options, Context context) {
+    public Response<Void> createEventRouteWithResponse(String eventRouteId, EventRoute eventRoute, CreateEventRouteOptions options, Context context) {
         return this.digitalTwinsAsyncClient.createEventRouteWithResponse(eventRouteId, eventRoute, options, context).block();
     }
 
@@ -851,7 +857,7 @@ public final class DigitalTwinsClient {
      * @return A {@link Response} containing the retrieved event route.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EventRoute> getEventRouteWithResponse(String eventRouteId, EventRoutesGetByIdOptions options, Context context) {
+    public Response<EventRoute> getEventRouteWithResponse(String eventRouteId, GetEventRouteOptions options, Context context) {
         return this.digitalTwinsAsyncClient.getEventRouteWithResponse(eventRouteId, options, context).block();
     }
 
@@ -883,7 +889,7 @@ public final class DigitalTwinsClient {
      * @return A {@link Response} containing no parsed value.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteEventRouteWithResponse(String eventRouteId, EventRoutesDeleteOptions options, Context context)
+    public Response<Void> deleteEventRouteWithResponse(String eventRouteId, DeleteEventRouteOptions options, Context context)
     {
         return this.digitalTwinsAsyncClient.deleteEventRouteWithResponse(eventRouteId, options, context).block();
     }
@@ -916,7 +922,7 @@ public final class DigitalTwinsClient {
      * This PagedIterable may take multiple service requests to iterate over all event routes.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventRoute> listEventRoutes(EventRoutesListOptions options, Context context) {
+    public PagedIterable<EventRoute> listEventRoutes(ListEventRoutesOptions options, Context context) {
         return new PagedIterable<>(this.digitalTwinsAsyncClient.listEventRoutes(options, context));
     }
 
@@ -971,7 +977,7 @@ public final class DigitalTwinsClient {
      * @return A {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> publishTelemetryWithResponse(String digitalTwinId, String messageId, Object payload, DigitalTwinsSendTelemetryOptions options, Context context) {
+    public Response<Void> publishTelemetryWithResponse(String digitalTwinId, String messageId, Object payload, PublishTelemetryOptions options, Context context) {
         return digitalTwinsAsyncClient.publishTelemetryWithResponse(digitalTwinId, messageId, payload, options, context).block();
     }
 
@@ -1024,7 +1030,7 @@ public final class DigitalTwinsClient {
      * @return A {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName, String messageId, Object payload, DigitalTwinsSendComponentTelemetryOptions options, Context context) {
+    public Response<Void> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName, String messageId, Object payload, PublishComponentTelemetryOptions options, Context context) {
         return digitalTwinsAsyncClient.publishComponentTelemetryWithResponse(digitalTwinId, componentName, messageId, payload, options, context).block();
     }
 

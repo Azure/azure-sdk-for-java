@@ -22,9 +22,9 @@ import com.azure.storage.file.share.options.ShareGetAccessPolicyOptions
 import com.azure.storage.file.share.options.ShareGetPropertiesOptions
 import com.azure.storage.file.share.options.ShareGetStatisticsOptions
 import com.azure.storage.file.share.options.ShareSetAccessPolicyOptions
-import com.azure.storage.file.share.options.ShareSetAccessTierOptions
+import com.azure.storage.file.share.options.ShareSetPropertiesOptions
 import com.azure.storage.file.share.options.ShareSetMetadataOptions
-import com.azure.storage.file.share.options.ShareSetQuotaOptions
+
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
@@ -467,7 +467,7 @@ class ShareAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND)
     }
 
-    def "Set quota"() {
+    def "Set properties quota"() {
         given:
         primaryShareClient.createWithResponse(null, 1, null, null)
 
@@ -482,48 +482,14 @@ class ShareAPITests extends APISpec {
         getQuotaAfterResponse.getQuota() == 2
     }
 
-    def "Set quota lease"() {
-        given:
-        primaryShareClient.createWithResponse(null, 1, null, null)
-        def leaseID = setupShareLeaseCondition(primaryShareClient, receivedLeaseID)
-
-        when:
-        def setQuotaResponse = primaryShareClient.setQuotaWithResponse(
-            new ShareSetQuotaOptions(2).setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null)
-
-        then:
-        FileTestHelper.assertResponseStatusCode(setQuotaResponse, 200)
-    }
-
-    def "Set quota lease error"() {
-        given:
-        primaryShareClient.createWithResponse(null, 1, null, null)
-        def leaseID = setupShareLeaseCondition(primaryShareClient, garbageLeaseID)
-
-        when:
-        def setQuotaResponse = primaryShareClient.setQuotaWithResponse(
-            new ShareSetQuotaOptions(2).setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null)
-
-        then:
-        thrown(ShareStorageException)
-    }
-
-    def "Set quota error"() {
-        when:
-        primaryShareClient.setQuota(2)
-        then:
-        def e = thrown(ShareStorageException)
-        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND)
-    }
-
-    def "Set access tier"() {
+    def "Set properties access tier"() {
         given:
         primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null)
         def time = getUTCNow().truncatedTo(ChronoUnit.SECONDS)
 
         when:
         def getAccessTierBeforeResponse = primaryShareClient.getProperties()
-        def setAccessTierResponse = primaryShareClient.setAccessTierWithResponse(new ShareSetAccessTierOptions(ShareAccessTier.TRANSACTION_OPTIMIZED), null, null)
+        def setAccessTierResponse = primaryShareClient.setPropertiesWithResponse(new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.TRANSACTION_OPTIMIZED), null, null)
         def getAccessTierAfterResponse = primaryShareClient.getProperties()
 
         then:
@@ -535,35 +501,35 @@ class ShareAPITests extends APISpec {
         getAccessTierAfterResponse.getAccessTierTransitionState() == "pending-from-hot"
     }
 
-    def "Set access tier lease"() {
+    def "Set properties lease"() {
         given:
         primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null)
         def leaseID = setupShareLeaseCondition(primaryShareClient, receivedLeaseID)
 
         when:
-        def setAccessTierResponse = primaryShareClient.setAccessTierWithResponse(
-            new ShareSetAccessTierOptions(ShareAccessTier.COOL).setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null)
+        def setAccessTierResponse = primaryShareClient.setPropertiesWithResponse(
+            new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.COOL).setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null)
 
         then:
         FileTestHelper.assertResponseStatusCode(setAccessTierResponse, 200)
     }
 
-    def "Set access tier lease error"() {
+    def "Set properties lease error"() {
         given:
         primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null)
         def leaseID = setupShareLeaseCondition(primaryShareClient, garbageLeaseID)
 
         when:
-        def setAccessTierResponse = primaryShareClient.setAccessTierWithResponse(
-            new ShareSetAccessTierOptions(ShareAccessTier.TRANSACTION_OPTIMIZED).setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null)
+        def setAccessTierResponse = primaryShareClient.setPropertiesWithResponse(
+            new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.COOL).setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null)
 
         then:
         thrown(ShareStorageException)
     }
 
-    def "Set access tier error"() {
+    def "Set properties error"() {
         when:
-        primaryShareClient.setAccessTier(ShareAccessTier.HOT)
+        primaryShareClient.setProperties(new ShareSetPropertiesOptions())
         then:
         def e = thrown(ShareStorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND)

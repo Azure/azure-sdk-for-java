@@ -6,7 +6,6 @@ package com.azure.spring.autoconfigure.aad;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.proc.BadJOSEException;
 import com.nimbusds.jwt.proc.BadJWTException;
-import net.minidev.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -16,6 +15,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -24,10 +24,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.Objects;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static com.azure.spring.autoconfigure.aad.Constants.DEFAULT_AUTHORITY_SET;
+import static com.azure.spring.autoconfigure.aad.Constants.ROLE_PREFIX;
 
 /**
  * A stateless authentication filter which uses app roles feature of Azure Active Directory. Since it's a stateless
@@ -37,8 +41,6 @@ import java.util.stream.Collectors;
 public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAppRoleStatelessAuthenticationFilter.class);
-    private static final JSONArray DEFAULT_ROLE_CLAIM = new JSONArray().appendElement("USER");
-    private static final String ROLE_PREFIX = "ROLE_";
 
     private final UserPrincipalManager principalManager;
 
@@ -62,16 +64,11 @@ public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
             return;
         }
         try {
-            final UserPrincipal principal = principalManager.buildUserPrincipal(aadIssuedBearerToken);
-            final JSONArray roles = Optional.of(principal)
-                                            .map(UserPrincipal::getClaims)
-                                            .map(claims -> (JSONArray) claims.get("roles"))
-                                            .filter(r -> !r.isEmpty())
-                                            .orElse(DEFAULT_ROLE_CLAIM);
+            final UserPrincipal userPrincipal = principalManager.buildUserPrincipal(aadIssuedBearerToken);
             final Authentication authentication = new PreAuthenticatedAuthenticationToken(
-                principal,
+                userPrincipal,
                 null,
-                rolesToGrantedAuthorities(roles)
+                toSimpleGrantedAuthoritySet(userPrincipal)
             );
             LOGGER.info("Request token verification success. {}", authentication);
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -97,10 +94,17 @@ public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
                        .orElse(false);
     }
 
-    protected Set<SimpleGrantedAuthority> rolesToGrantedAuthorities(JSONArray roles) {
-        return roles.stream()
-                    .filter(Objects::nonNull)
+    protected Set<SimpleGrantedAuthority> toSimpleGrantedAuthoritySet(UserPrincipal userPrincipal) {
+        Set<SimpleGrantedAuthority> simpleGrantedAuthoritySet =
+            Optional.of(userPrincipal)
+                    .map(UserPrincipal::getRoles)
+                    .map(Collection::stream)
+                    .orElseGet(Stream::empty)
+                    .filter(StringUtils::hasText)
                     .map(s -> new SimpleGrantedAuthority(ROLE_PREFIX + s))
                     .collect(Collectors.toSet());
+        return Optional.of(simpleGrantedAuthoritySet)
+                       .filter(r -> !r.isEmpty())
+                       .orElse(DEFAULT_AUTHORITY_SET);
     }
 }
