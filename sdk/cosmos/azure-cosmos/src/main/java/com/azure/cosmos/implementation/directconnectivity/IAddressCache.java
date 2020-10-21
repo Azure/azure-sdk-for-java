@@ -13,7 +13,7 @@ import java.net.URI;
 public interface IAddressCache {
 
     /**
-     * Removes the physical address associated with the given {@link PartitionKeyRangeIdentity partition key range identity}
+     * Update the physical address of the {@link PartitionKeyRangeIdentity partition key range identity} associated to the serverKey.
      *
      *
      */

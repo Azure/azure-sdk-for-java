@@ -157,30 +157,23 @@ public class GatewayAddressCache implements IAddressCache {
 
         Objects.requireNonNull(serverKey, "expected non-null serverKey");
 
-        this.serverPartitionAddressToPkRangeIdMap.computeIfPresent(serverKey, (uri, partitionKeyRangeIdentitySet) -> {
+        if (this.tcpConnectionEndpointRediscoveryEnabled) {
+            this.serverPartitionAddressToPkRangeIdMap.computeIfPresent(serverKey, (uri, partitionKeyRangeIdentitySet) -> {
 
-            for (PartitionKeyRangeIdentity partitionKeyRangeIdentity : partitionKeyRangeIdentitySet) {
-                if (partitionKeyRangeIdentity.getPartitionKeyRangeId().equals(PartitionKeyRange.MASTER_PARTITION_KEY_RANGE_ID)) {
-                    this.masterPartitionAddressCache = null;
-                } else {
-                    this.serverPartitionAddressCache.remove(partitionKeyRangeIdentity);
+                for (PartitionKeyRangeIdentity partitionKeyRangeIdentity : partitionKeyRangeIdentitySet) {
+                    if (partitionKeyRangeIdentity.getPartitionKeyRangeId().equals(PartitionKeyRange.MASTER_PARTITION_KEY_RANGE_ID)) {
+                        this.masterPartitionAddressCache = null;
+                    } else {
+                        this.serverPartitionAddressCache.remove(partitionKeyRangeIdentity);
+                    }
                 }
-            }
 
-            return null;
-        });
-    }
-
-    @Override
-    public void removeAddress(final PartitionKeyRangeIdentity partitionKeyRangeIdentity) {
-
-        Objects.requireNonNull(partitionKeyRangeIdentity, "expected non-null partitionKeyRangeIdentity");
-
-        if (partitionKeyRangeIdentity.getPartitionKeyRangeId().equals(PartitionKeyRange.MASTER_PARTITION_KEY_RANGE_ID)) {
-            this.masterPartitionAddressCache = null;
+                return null;
+            });
         } else {
-            this.serverPartitionAddressCache.remove(partitionKeyRangeIdentity);
+            logger.warn("tcpConnectionEndpointRediscoveryE is not enabled, should not reach here.");
         }
+
     }
 
     @Override

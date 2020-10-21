@@ -83,6 +83,7 @@ public class RntbdConnectionStateListener {
 
         if (event == RntbdConnectionEvent.READ_EOF) {
             if (!this.endpoint.isClosed()) {
+
                 if (logger.isDebugEnabled()) {
                     logger.debug("onConnectionEvent({\"event\":{},\"time\":{},\"endpoint\":{},\"cause\":{})",
                         event,
