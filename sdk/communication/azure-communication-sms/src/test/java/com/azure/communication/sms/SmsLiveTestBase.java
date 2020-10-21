@@ -36,14 +36,8 @@ public class SmsLiveTestBase extends TestBase {
         SmsClientBuilder builder = new SmsClientBuilder();
 
         builder.endpoint(ENDPOINT)
-               .accessKey(ACCESSKEY);
-
-        if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(interceptorManager.getPlaybackClient());
-            return builder;
-        } else {
-            builder.httpClient(httpClient);
-        }
+               .accessKey(ACCESSKEY)
+               .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (!interceptorManager.isLiveMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -52,17 +46,12 @@ public class SmsLiveTestBase extends TestBase {
         return builder;
     }
 
-    protected SmsClientBuilder getSmsClientBuilderWithConnectionString(HttpClient client) {
+    protected SmsClientBuilder getSmsClientBuilderWithConnectionString(HttpClient httpClient) {
         SmsClientBuilder builder = new SmsClientBuilder();
 
-        builder.connectionString(CONNECTION_STRING);
-
-        if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(interceptorManager.getPlaybackClient());
-            return builder;
-        } else {
-            builder.httpClient(client);
-        }
+        builder
+            .connectionString(CONNECTION_STRING)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (!interceptorManager.isLiveMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());

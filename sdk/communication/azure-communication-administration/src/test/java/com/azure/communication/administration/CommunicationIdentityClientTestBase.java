@@ -4,7 +4,6 @@
 package com.azure.communication.administration;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.logging.ClientLogger;
@@ -26,17 +25,11 @@ public class CommunicationIdentityClientTestBase extends TestBase {
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=" + ACCESSKEYENCODED);
     
-    protected CommunicationIdentityClientBuilder getCommunicationIdentityClient(HttpClient client) {
+    protected CommunicationIdentityClientBuilder getCommunicationIdentityClient(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder.endpoint(ENDPOINT)
-            .accessKey(ACCESSKEY);
-
-        if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(interceptorManager.getPlaybackClient());
-            return builder;
-        } else {
-            builder.httpClient(client);
-        }
+            .accessKey(ACCESSKEY)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (!interceptorManager.isLiveMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -45,16 +38,11 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         return builder;
     }
 
-    protected CommunicationIdentityClientBuilder getCommunicationIdentityClientUsingConnectionString(HttpClient client) {
+    protected CommunicationIdentityClientBuilder getCommunicationIdentityClientUsingConnectionString(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
-        builder.connectionString(CONNECTION_STRING);
-
-        if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(interceptorManager.getPlaybackClient());
-            return builder;
-        } else {
-            builder.httpClient(client);
-        }
+        builder
+            .connectionString(CONNECTION_STRING)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (!interceptorManager.isLiveMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());

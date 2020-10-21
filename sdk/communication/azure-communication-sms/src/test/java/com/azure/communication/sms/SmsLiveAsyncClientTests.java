@@ -33,8 +33,8 @@ public class SmsLiveAsyncClientTests extends SmsLiveTestBase {
     
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createAsyncClientUsingConnectionString(HttpClient client) {
-        SmsAsyncClient smsClient = getSmsClientBuilderWithConnectionString(client).buildAsyncClient();
+    public void createAsyncClientUsingConnectionString(HttpClient httpClient) {
+        SmsAsyncClient smsClient = getSmsClientBuilderWithConnectionString(httpClient).buildAsyncClient();
         assertNotNull(smsClient);
         // Smoke test sms client by sending message
         StepVerifier.create(smsClient.sendMessage(from, to, body, null))
@@ -44,10 +44,10 @@ public class SmsLiveAsyncClientTests extends SmsLiveTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void sendSmsRequestAsync(HttpClient client) {
+    public void sendSmsRequestAsync(HttpClient httpClient) {
         SendSmsOptions smsOptions = new SendSmsOptions();
         smsOptions.setEnableDeliveryReport(true);
-        SmsAsyncClient smsClient = getTestSmsClient(client);
+        SmsAsyncClient smsClient = getTestSmsClient(httpClient);
         StepVerifier.create(smsClient.sendMessage(from, to, body, smsOptions))
             .assertNext(response -> verifyResponse(response))
             .verifyComplete();
@@ -55,10 +55,10 @@ public class SmsLiveAsyncClientTests extends SmsLiveTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void sendSmsRequestAsyncNoDeliveryReport(HttpClient client) {
+    public void sendSmsRequestAsyncNoDeliveryReport(HttpClient httpClient) {
         SendSmsOptions smsOptions = new SendSmsOptions();
         smsOptions.setEnableDeliveryReport(false);        
-        SmsAsyncClient smsClient = getTestSmsClient(client);
+        SmsAsyncClient smsClient = getTestSmsClient(httpClient);
         StepVerifier.create(smsClient.sendMessage(from, to, body))
             .assertNext(response -> verifyResponse(response))
             .verifyComplete();
@@ -66,17 +66,17 @@ public class SmsLiveAsyncClientTests extends SmsLiveTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void sendSmsRequestAsyncSingleNumberNoDeliveryReport(HttpClient client) {
+    public void sendSmsRequestAsyncSingleNumberNoDeliveryReport(HttpClient httpClient) {
         SendSmsOptions smsOptions = new SendSmsOptions();
         smsOptions.setEnableDeliveryReport(false);        
-        SmsAsyncClient smsClient = getTestSmsClient(client);
+        SmsAsyncClient smsClient = getTestSmsClient(httpClient);
         StepVerifier.create(smsClient.sendMessage(from, to.get(0), body))
             .assertNext(response -> verifyResponse(response))
             .verifyComplete();
     }    
 
-    private SmsAsyncClient getTestSmsClient(HttpClient client) {
-        return getSmsClientBuilder(client)
+    private SmsAsyncClient getTestSmsClient(HttpClient httpClient) {
+        return getSmsClientBuilder(httpClient)
             .buildAsyncClient();
     }  
 }

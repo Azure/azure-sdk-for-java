@@ -124,9 +124,9 @@ public class SmsLiveClientTests extends SmsLiveTestBase {
         assertTrue(http400ExceptionThrown);
     }
 
-    private SmsClient getTestSmsClient(HttpClient client) {
+    private SmsClient getTestSmsClient(HttpClient httpClient) {
   
-        return getSmsClientBuilder(client)
+        return getSmsClientBuilder(httpClient)
             .buildClient();
     }    
 }

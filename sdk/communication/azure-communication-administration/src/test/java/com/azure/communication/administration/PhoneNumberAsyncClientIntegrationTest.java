@@ -52,7 +52,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
    
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createAsyncPhoneNumberClientWithConnectionString(HttpClient client) {
+    public void createAsyncPhoneNumberClientWithConnectionString(HttpClient httpClient) {
         PhoneNumberAsyncClient phoneNumberAsyncClient = getClientBuilderWithConnectionString(client).buildAsyncClient();
         assertNotNull(phoneNumberAsyncClient);
 
@@ -527,7 +527,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
         assertNotNull(testResult.getSearchId());
     }
 
-    private PhoneNumberAsyncClient getClient(HttpClient client) {
-        return super.getClientBuilder(client).buildAsyncClient();
+    private PhoneNumberAsyncClient getClient(HttpClient httpClient) {
+        return super.getClientBuilder(httpClient).buildAsyncClient();
     }
 }

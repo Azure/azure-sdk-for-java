@@ -46,18 +46,18 @@ public class ChatClientTestBase extends TestBase {
 
     protected static final FixedDelay RETRY_STRATEGY = new FixedDelay(3, Duration.ofMillis(1000));
 
-    protected ChatClientBuilder getChatClientBuilder(String token, HttpClient client) {
+    protected ChatClientBuilder getChatClientBuilder(String token, HttpClient httpClient) {
         ChatClientBuilder builder = new ChatClientBuilder();
 
-        builder.endpoint(ENDPOINT);
+        builder
+            .endpoint(ENDPOINT)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(interceptorManager.getPlaybackClient())
-                .credential(new CommunicationUserCredential(generateRawToken()));
+            builder.credential(new CommunicationUserCredential(generateRawToken()));
             return builder;
         } else {
-            builder.httpClient(client)
-                .credential(new CommunicationUserCredential(token));
+            builder.credential(new CommunicationUserCredential(token));
         }
 
         if (interceptorManager.isLiveMode()) {
@@ -70,16 +70,12 @@ public class ChatClientTestBase extends TestBase {
         return builder;
     }
 
-    protected CommunicationIdentityClientBuilder getCommunicationIdentityClientBuilder(HttpClient client) {
+    protected CommunicationIdentityClientBuilder getCommunicationIdentityClientBuilder(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder.endpoint(ENDPOINT)
-            .accessKey(CONNSTRING);
-        if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(interceptorManager.getPlaybackClient());
-            return builder;
-        } else {
-            builder.httpClient(client);
-        }
+            .accessKey(CONNSTRING)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+
         if (!interceptorManager.isLiveMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
