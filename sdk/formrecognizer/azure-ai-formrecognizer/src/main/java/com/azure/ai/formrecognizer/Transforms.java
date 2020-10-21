@@ -20,12 +20,14 @@ import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.FormLine;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormPageRange;
+import com.azure.ai.formrecognizer.models.FormSelectionMark;
 import com.azure.ai.formrecognizer.models.FormTable;
 import com.azure.ai.formrecognizer.models.FormTableCell;
 import com.azure.ai.formrecognizer.models.FormWord;
 import com.azure.ai.formrecognizer.models.LengthUnit;
 import com.azure.ai.formrecognizer.models.Point;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
+import com.azure.ai.formrecognizer.models.SelectionMarkState;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -141,6 +143,7 @@ final class Transforms {
         forEachWithIndex(readResults, ((index, readResultItem) -> {
             List<FormTable> perPageTableList = new ArrayList<>();
 
+            // add form tables
             if (!pageResultsIsNullOrEmpty) {
                 PageResult pageResultItem = pageResults.get(index);
                 perPageTableList = getPageTables(pageResultItem, readResults, pageResultItem.getPage());
@@ -152,11 +155,40 @@ final class Transforms {
                 perPageFormLineList = getReadResultFormLines(readResultItem);
             }
 
-            // get form tables
-            formPages.add(getFormPage(readResultItem, perPageTableList, perPageFormLineList));
+            // add selection marks
+            List<FormSelectionMark> perPageFormSelectionMarkList = new ArrayList<>();
+            if (includeFieldElements && !CoreUtils.isNullOrEmpty(readResultItem.getSelectionMarks())) {
+                PageResult pageResultItem = pageResults.get(index);
+                perPageFormSelectionMarkList = getReadResultFormSelectionMarks(readResultItem,
+                    pageResultItem.getPage());
+            }
+
+            formPages.add(getFormPage(readResultItem, perPageTableList, perPageFormLineList,
+                perPageFormSelectionMarkList));
         }));
 
         return formPages;
+    }
+
+    /**
+     * Helper method to convert the per page {@link ReadResult} item to {@link FormSelectionMark}.
+     *
+     * @param readResultItem The per page text extraction item result returned by the service.
+     * @param pageNumber The page number.
+     *
+     * @return A list of {@code FormSelectionMark}.
+     */
+    static List<FormSelectionMark> getReadResultFormSelectionMarks(ReadResult readResultItem, int pageNumber) {
+        return readResultItem.getSelectionMarks().stream()
+            .map(selectionMark -> {
+                final FormSelectionMark formSelectionMark = new FormSelectionMark(
+                    null, toBoundingBox(selectionMark.getBoundingBox()), pageNumber);
+                PrivateFieldAccessHelper.set(formSelectionMark, "confidence", selectionMark.getConfidence());
+                PrivateFieldAccessHelper.set(formSelectionMark, "state",
+                    toSelectionMarkState(selectionMark.getState()));
+                return formSelectionMark;
+            })
+            .collect(Collectors.toList());
     }
 
     /**
@@ -292,6 +324,10 @@ final class Transforms {
                 value = new com.azure.ai.formrecognizer.models.FieldValue(
                     toFieldValueObject(fieldValue.getValueObject(), readResults), FieldValueType.MAP);
                 break;
+            case SELECTION_MARK:
+                value = new com.azure.ai.formrecognizer.models.FieldValue(
+                    toFieldValueSelectionMarkState(fieldValue.getValueSelectionMark()), FieldValueType.SELECTION_MARK_STATE);
+                break;
             default:
                 throw LOGGER.logExceptionAsError(new RuntimeException("FieldValue Type not supported"));
         }
@@ -361,17 +397,38 @@ final class Transforms {
     }
 
     /**
+     * Helper method to convert the service level field value selection marks to SDK level model.
+     *
+     * @param fieldValueSelectionMark The field value selection mark state, i.e., SELECTED and UNSELECTED.
+     *
+     * @return The selection mark state in the SDK level model.
+     */
+    private static SelectionMarkState toFieldValueSelectionMarkState(
+        com.azure.ai.formrecognizer.implementation.models.FieldValueSelectionMark fieldValueSelectionMark) {
+        SelectionMarkState result = null;
+        if (com.azure.ai.formrecognizer.implementation.models.FieldValueSelectionMark.SELECTED.equals(
+            fieldValueSelectionMark)) {
+            result = SelectionMarkState.SELECTED;
+        } else if (com.azure.ai.formrecognizer.implementation.models.FieldValueSelectionMark.UNSELECTED.equals(
+            fieldValueSelectionMark)) {
+            result = SelectionMarkState.UNSELECTED;
+        }
+        return result;
+    }
+
+    /**
      * Helper method to convert the page results to {@code FormPage form pages}.
      *
      * @param readResultItem The per page text extraction item result returned by the service.
      * @param perPageTableList The per page tables list.
      * @param perPageLineList The per page form lines.
+     * @param perPageSelectionMarkList The per page selection marks.
      *
      * @return The per page {@code FormPage}.
      */
     private static FormPage getFormPage(ReadResult readResultItem, List<FormTable> perPageTableList,
-        List<FormLine> perPageLineList) {
-        return new FormPage(
+        List<FormLine> perPageLineList, List<FormSelectionMark> perPageSelectionMarkList) {
+        FormPage formPage = new FormPage(
             readResultItem.getHeight(),
             readResultItem.getAngle(),
             LengthUnit.fromString(readResultItem.getUnit().toString()),
@@ -379,6 +436,8 @@ final class Transforms {
             perPageLineList,
             perPageTableList,
             readResultItem.getPage());
+        PrivateFieldAccessHelper.set(formPage, "selectionMarks", perPageSelectionMarkList);
+        return formPage;
     }
 
     /**
@@ -496,5 +555,25 @@ final class Transforms {
             pointList.add(new Point(serviceBoundingBox.get(i), serviceBoundingBox.get(++i)));
         }
         return new FieldBoundingBox(pointList);
+    }
+
+    /**
+     * Helper method to convert the service level selection marks state to SDK level model.
+     *
+     * @param selectionMarkState The selection mark state, i.e., SELECTED and UNSELECTED.
+     *
+     * @return The selection mark state in the SDK level model.
+     */
+    private static SelectionMarkState toSelectionMarkState(
+        com.azure.ai.formrecognizer.implementation.models.SelectionMarkState selectionMarkState) {
+        SelectionMarkState result = null;
+        if (com.azure.ai.formrecognizer.implementation.models.SelectionMarkState.SELECTED.equals(
+            selectionMarkState)) {
+            result = SelectionMarkState.SELECTED;
+        } else if (com.azure.ai.formrecognizer.implementation.models.SelectionMarkState.UNSELECTED.equals(
+            selectionMarkState)) {
+            result = SelectionMarkState.UNSELECTED;
+        }
+        return result;
     }
 }

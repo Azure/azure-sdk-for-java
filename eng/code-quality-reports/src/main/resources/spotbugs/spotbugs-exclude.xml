@@ -1333,6 +1333,23 @@
     <Bug pattern="UWF_UNWRITTEN_FIELD" />
   </Match>
 
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.models.FormSelectionMark" />
+    <Field name="confidence" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.models.FormSelectionMark" />
+    <Field name="state" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.models.FormPage" />
+    <Field name="selectionMarks" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
 
   <!-- Exception is required to catch, ref: code comment in the OrderbyRowComparer::compare() method  -->
   <Match>
