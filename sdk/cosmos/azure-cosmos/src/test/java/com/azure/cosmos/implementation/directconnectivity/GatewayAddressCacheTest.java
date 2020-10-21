@@ -204,6 +204,58 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         assertSameAs(addressInfosFromCache, expectedAddresses);
     }
 
+    @Test(groups = { "direct" }, dataProvider = "targetPartitionsKeyRangeAndCollectionLinkParams", timeOut = TIMEOUT)
+    public void tryGetAddress_OnConnectionEvent_Refresh(String partitionKeyRangeId, String collectionLink, Protocol protocol) throws Exception {
+
+        Configs configs = ConfigsBuilder.instance().withProtocol(protocol).build();
+        URI serviceEndpoint = new URI(TestConfigurations.HOST);
+        IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
+        HttpClientUnderTestWrapper httpClientWrapper = getHttpClientUnderTestWrapper(configs);
+
+        GatewayAddressCache cache = new GatewayAddressCache(
+            mockDiagnosticsClientContext(),
+            serviceEndpoint,
+            protocol,
+            authorizationTokenProvider,
+            null,
+            httpClientWrapper.getSpyHttpClient(),
+            true);
+
+        RxDocumentServiceRequest req =
+            RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document,
+                collectionLink,
+                new Database(), new HashMap<>());
+
+        PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(createdCollection.getResourceId(), partitionKeyRangeId);
+        boolean forceRefreshPartitionAddresses = false;
+
+        Mono<Utils.ValueHolder<AddressInformation[]>> addressesInfosFromCacheObs =
+            cache.tryGetAddresses(req, partitionKeyRangeIdentity, forceRefreshPartitionAddresses);
+
+        ArrayList<AddressInformation> addressInfosFromCache =
+            Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT).v);
+
+        assertThat(httpClientWrapper.capturedRequests)
+            .describedAs("getAddress will read addresses from gateway")
+            .asList().hasSize(1);
+
+        httpClientWrapper.capturedRequests.clear();
+
+        // for the second request with the same partitionkeyRangeIdentity, the address result should be fetched from the cache
+        getSuccessResult(addressesInfosFromCacheObs, TIMEOUT);
+        assertThat(httpClientWrapper.capturedRequests)
+            .describedAs("getAddress should read from cache")
+            .asList().hasSize(0);
+
+        httpClientWrapper.capturedRequests.clear();
+        // Now emulate onConnectionEvent happened, and the address should be removed from the cache
+        cache.updateAddresses(addressInfosFromCache.get(0).getServerKey());
+        getSuccessResult(addressesInfosFromCacheObs, TIMEOUT);
+        assertThat(httpClientWrapper.capturedRequests)
+            .describedAs("getAddress will read addresses from gateway after onConnectionEvent")
+            .asList().hasSize(1);
+    }
+
     @DataProvider(name = "openAsyncTargetAndTargetPartitionsKeyRangeAndCollectionLinkParams")
     public Object[][] openAsyncTargetAndPartitionsKeyRangeTargetAndCollectionLinkParams() {
         return new Object[][] {
