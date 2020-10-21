@@ -45,7 +45,6 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private final Set<String> allowedQueryParameterNames;
     private final boolean prettyPrintBody;
 
-    private final LogLevel defaultLogLevel;
     private final HttpRequestLogger requestLogger;
     private final HttpResponseLogger responseLogger;
 
@@ -66,7 +65,6 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             this.allowedQueryParameterNames = Collections.emptySet();
             this.prettyPrintBody = false;
 
-            this.defaultLogLevel = LogLevel.INFORMATIONAL;
             this.requestLogger = new DefaultHttpRequestLogger();
             this.responseLogger = new DefaultHttpResponseLogger();
         } else {
@@ -81,9 +79,6 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 .collect(Collectors.toSet());
             this.prettyPrintBody = httpLogOptions.isPrettyPrintBody();
 
-            this.defaultLogLevel = (httpLogOptions.getDefaultLogLevel() == null)
-                ? LogLevel.INFORMATIONAL
-                : httpLogOptions.getDefaultLogLevel();
             this.requestLogger = (httpLogOptions.getRequestLogger() == null)
                 ? new DefaultHttpRequestLogger()
                 : httpLogOptions.getRequestLogger();
@@ -103,39 +98,22 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         final ClientLogger logger = new ClientLogger((String) context.getData("caller-method").orElse(""));
         final long startNs = System.nanoTime();
 
-        return logRequest(logger, defaultLogLevel, requestLogger, context)
+        return requestLogger.logRequest(logger, context)
             .then(next.process())
-            .flatMap(response -> logResponse(logger, defaultLogLevel, responseLogger, response,
+            .flatMap(response -> responseLogger.logResponse(logger, response,
                 Duration.ofNanos(System.nanoTime() - startNs)))
             .doOnError(throwable -> logger.warning("<-- HTTP FAILED: ", throwable));
     }
 
-    private static Mono<Void> logRequest(ClientLogger clientLogger, LogLevel defaultLogLevel,
-        HttpRequestLogger requestLogger, HttpPipelineCallContext callContext) {
-        LogLevel logLevel = requestLogger.getLogLevel(defaultLogLevel, callContext);
-
-        return (logLevel == LogLevel.NOT_SET || !clientLogger.canLogAtLevel(logLevel))
-            ? Mono.empty()
-            : requestLogger.logRequest(clientLogger, logLevel, callContext);
-    }
-
-    private static Mono<HttpResponse> logResponse(ClientLogger clientLogger, LogLevel defaultLogLevel,
-        HttpResponseLogger responseLogger, HttpResponse httpResponse, Duration httpResponseDuration) {
-        LogLevel logLevel = responseLogger.getLogLevel(defaultLogLevel, httpResponse, httpResponseDuration);
-
-        return (logLevel == LogLevel.NOT_SET || !clientLogger.canLogAtLevel(logLevel))
-            ? Mono.just(httpResponse)
-            : responseLogger.logResponse(clientLogger, logLevel, httpResponse, httpResponseDuration);
-    }
-
     private final class DefaultHttpRequestLogger implements HttpRequestLogger {
         @Override
-        public LogLevel getLogLevel(LogLevel defaultLogLevel, HttpPipelineCallContext callContext) {
-            return (defaultLogLevel == null) ? LogLevel.INFORMATIONAL : defaultLogLevel;
-        }
+        public Mono<Void> logRequest(ClientLogger logger, HttpPipelineCallContext callContext) {
+            final LogLevel logLevel = getLogLevel(callContext);
 
-        @Override
-        public Mono<Void> logRequest(ClientLogger logger, LogLevel logLevel, HttpPipelineCallContext callContext) {
+            if (!logger.canLogAtLevel(logLevel)) {
+                return Mono.empty();
+            }
+
             final HttpRequest request = callContext.getHttpRequest();
 
             StringBuilder requestLogMessage = new StringBuilder();
@@ -213,13 +191,13 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
     private final class DefaultHttpResponseLogger implements HttpResponseLogger {
         @Override
-        public LogLevel getLogLevel(LogLevel defaultLogLevel, HttpResponse response, Duration responseDuration) {
-            return (defaultLogLevel == null) ? LogLevel.INFORMATIONAL : defaultLogLevel;
-        }
+        public Mono<HttpResponse> logResponse(ClientLogger logger, HttpResponse response, Duration responseDuration) {
+            final LogLevel logLevel = getLogLevel(response, responseDuration);
 
-        @Override
-        public Mono<HttpResponse> logResponse(ClientLogger logger, LogLevel logLevel, HttpResponse response,
-            Duration responseDuration) {
+            if (!logger.canLogAtLevel(logLevel)) {
+                return Mono.just(response);
+            }
+
             String contentLengthString = response.getHeaderValue("Content-Length");
             String bodySize = (CoreUtils.isNullOrEmpty(contentLengthString))
                 ? "unknown-length body"

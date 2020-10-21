@@ -3,14 +3,11 @@
 
 package com.azure.core.http.policy;
 
-import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -216,38 +213,6 @@ public class HttpLogOptions {
      */
     public HttpLogOptions setPrettyPrintBody(boolean prettyPrintBody) {
         this.prettyPrintBody = prettyPrintBody;
-        return this;
-    }
-
-    /**
-     * Gets the {@link LogLevel} used by default when logging requests and responses.
-     * <p>
-     * {@link HttpRequestLogger#getLogLevel(LogLevel, HttpPipelineCallContext)} and {@link
-     * HttpResponseLogger#getLogLevel(LogLevel, HttpResponse, Duration)} can be used to set the {@link LogLevel} for
-     * each request and response being logged.
-     * <p>
-     * By default {@link LogLevel#INFORMATIONAL} is used.
-     *
-     * @return The {@link LogLevel} used by default when logging requests and responses.
-     */
-    public LogLevel getDefaultLogLevel() {
-        return defaultLogLevel;
-    }
-
-    /**
-     * Sets the {@link LogLevel} used by default when logging requests and responses.
-     * <p>
-     * {@link HttpRequestLogger#getLogLevel(LogLevel, HttpPipelineCallContext)} and {@link
-     * HttpResponseLogger#getLogLevel(LogLevel, HttpResponse, Duration)} can be used to set the {@link LogLevel} for
-     * each request and response being logged.
-     * <p>
-     * By default {@link LogLevel#INFORMATIONAL} is used.
-     *
-     * @param defaultLogLevel The default log level.
-     * @return The updated HttpLogOptions object.
-     */
-    public HttpLogOptions setDefaultLogLevel(LogLevel defaultLogLevel) {
-        this.defaultLogLevel = defaultLogLevel;
         return this;
     }
 
