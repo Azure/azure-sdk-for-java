@@ -645,7 +645,8 @@ public final class ServiceBusClientBuilder {
 
         /**
          * Sets the amount of time to continue auto-renewing the session lock. Setting {@link Duration#ZERO} or
-         * {@code null} disables auto-renewal.
+         * {@code null} disables auto-renewal. For {@link ReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} mode,
+         * auto-renewal is disabled.
          *
          * @param maxAutoLockRenewDuration the amount of time to continue auto-renewing the session lock.
          * {@link Duration#ZERO} or {@code null} indicates that auto-renewal is disabled.
@@ -779,6 +780,11 @@ public final class ServiceBusClientBuilder {
                 SubQueue.NONE);
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
+
+            if (receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
+                maxAutoLockRenewDuration = Duration.ZERO;
+            }
+
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
                 sessionId, isRollingSessionReceiver(), maxConcurrentSessions, maxAutoLockRenewDuration);
 
@@ -849,7 +855,8 @@ public final class ServiceBusClientBuilder {
 
         /**
          * Sets the amount of time to continue auto-renewing the lock. Setting {@link Duration#ZERO} or {@code null}
-         * disables auto-renewal.
+         * disables auto-renewal. For {@link ReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} mode, auto-renewal is
+         * disabled.
          *
          * @param maxAutoLockRenewDuration the amount of time to continue auto-renewing the lock. {@link Duration#ZERO}
          * or {@code null} indicates that auto-renewal is disabled.
@@ -966,6 +973,11 @@ public final class ServiceBusClientBuilder {
                 subQueue);
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
+
+            if (receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
+                maxAutoLockRenewDuration = Duration.ZERO;
+            }
+
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration);
 
