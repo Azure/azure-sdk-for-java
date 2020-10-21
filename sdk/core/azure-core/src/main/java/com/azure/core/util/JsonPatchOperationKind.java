@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.util.jsonpatch;
+package com.azure.core.util;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
