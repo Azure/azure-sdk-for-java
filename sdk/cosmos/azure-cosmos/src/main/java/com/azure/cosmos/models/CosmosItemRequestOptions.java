@@ -208,8 +208,8 @@ public class CosmosItemRequestOptions {
      * Gets the boolean to only return the headers and status code in Cosmos DB response
      * in case of Create, Update and Delete operations on CosmosItem.
      *
-     * If set to false, this removes the resource from response. It reduces networking
-     * and CPU load by not sending the resource back over the network and serializing it on the client.
+     * If set to false, service doesn't returns payload in the response. It reduces networking
+     * and CPU load by not sending the payload back over the network and serializing it on the client.
      *
      * This feature does not impact RU usage for read or write operations.
      *
@@ -219,7 +219,7 @@ public class CosmosItemRequestOptions {
      *
      * By-default, this is null.
      *
-     * @return a boolean indicating whether resource will be included in the response or not for this request.
+     * @return a boolean indicating whether payload will be included in the response or not for this request.
      */
     public Boolean isContentResponseOnWriteEnabled() {
         return contentResponseOnWriteEnabled;
@@ -229,8 +229,8 @@ public class CosmosItemRequestOptions {
      * Sets the boolean to only return the headers and status code in Cosmos DB response
      * in case of Create, Update and Delete operations on CosmosItem.
      *
-     * If set to false, this removes the resource from response. It reduces networking
-     * and CPU load by not sending the resource back over the network and serializing it on the client.
+     * If set to false, service doesn't return payload in the response. It reduces networking
+     * and CPU load by not sending the payload back over the network and serializing it on the client.
      *
      * This feature does not impact RU usage for read or write operations.
      *
@@ -240,7 +240,7 @@ public class CosmosItemRequestOptions {
      * however if specified on {@link CosmosItemRequestOptions},
      * it will override the value specified in {@link com.azure.cosmos.CosmosClientBuilder} for this request.
      *
-     * @param contentResponseOnWriteEnabled a boolean indicating whether resource will be included
+     * @param contentResponseOnWriteEnabled a boolean indicating whether payload will be included
      * in the response or not for this request
      * @return the CosmosItemRequestOptions.
      */
