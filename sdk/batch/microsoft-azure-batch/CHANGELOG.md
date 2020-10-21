@@ -1,7 +1,12 @@
 # Release History
 
-## 8.1.0-beta.1 (Unreleased)
+## 8.1.0 (Unreleased)
+### Features
+- Adds support for task slots
+    - `JobOperations.getTaskSlotCounts()` returns task slot counts
+    - `JobOperations.getTaskResult()` returns a `TaskCountsResult` object containing both task and slot counts
 
+## 8.1.0-beta.1 (Unreleased)
 
 ## 8.0.0 (2020-04-27)
 ### Features
