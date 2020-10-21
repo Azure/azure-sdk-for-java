@@ -63,6 +63,7 @@ org.apache.avro:avro-maven-plugin;1.9.2
 org.apache.commons:commons-compress;1.20
 org.apache.commons:commons-lang3;3.10
 org.apache.httpcomponents:httpclient;4.5.12
+org.apache.httpcomponents.client5:httpclient5;5.0.1
 org.apache.logging.log4j:log4j-api;2.13.3
 org.apache.logging.log4j:log4j-core;2.13.3
 org.apache.logging.log4j:log4j-slf4j-impl;2.13.3
@@ -79,6 +80,7 @@ org.powermock:powermock-api-mockito2;2.0.2
 org.powermock:powermock-module-junit4;2.0.2
 org.postgresql:postgresql;42.2.14
 org.slf4j:slf4j-api;1.7.30
+org.slf4j:slf4j-nop;1.7.30
 org.slf4j:slf4j-simple;1.7.30
 
 ## Spring boot dependency versions
@@ -232,6 +234,7 @@ org.apache.maven.plugins:maven-jxr-plugin;3.0.0
 org.apache.maven.plugins:maven-project-info-reports-plugin;3.0.0
 org.apache.maven.plugins:maven-release-plugin;2.5.3
 org.apache.maven.plugins:maven-resources-plugin;2.4.3
+org.apache.maven.plugins:maven-shade-plugin;3.2.4
 org.apache.maven.plugins:maven-site-plugin;3.7.1
 org.apache.maven.plugins:maven-source-plugin;3.0.1
 org.apache.maven.plugins:maven-surefire-plugin;3.0.0-M3
