@@ -1085,7 +1085,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             new ServiceBusReceiveLinkProcessor(receiverOptions.getPrefetchCount(), retryPolicy,
                 receiverOptions.getReceiveMode()));
 
-        ServiceBusAsyncConsumer newConsumer = new ServiceBusAsyncConsumer(linkName, linkMessageProcessor,
+        final ServiceBusAsyncConsumer newConsumer = new ServiceBusAsyncConsumer(linkName, linkMessageProcessor,
             messageSerializer, receiverOptions, renewalContainer, this::renewMessageLock);
 
         // There could have been multiple threads trying to create this async consumer when the result was null.

@@ -651,7 +651,7 @@ public final class ServiceBusClientBuilder {
          * {@link Duration#ZERO} or {@code null} indicates that auto-renewal is disabled.
          *
          * @return The updated {@link ServiceBusSessionReceiverClientBuilder} object.
-         * @throws IllegalArgumentException If {#code maxAutoLockRenewDuration} is negative.
+         * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
          */
         public ServiceBusSessionReceiverClientBuilder maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
             validateAndThrow(maxAutoLockRenewDuration);
@@ -688,7 +688,7 @@ public final class ServiceBusClientBuilder {
          * @param prefetchCount The prefetch count.
          *
          * @return The modified {@link ServiceBusSessionReceiverClientBuilder} object.
-         * @throws IllegalArgumentException If {#code prefetchCount} is negative.
+         * @throws IllegalArgumentException If {code prefetchCount} is negative.
          */
         public ServiceBusSessionReceiverClientBuilder prefetchCount(int prefetchCount) {
             validateAndThrow(prefetchCount);
@@ -855,7 +855,7 @@ public final class ServiceBusClientBuilder {
          * or {@code null} indicates that auto-renewal is disabled.
          *
          * @return The updated {@link ServiceBusReceiverClientBuilder} object.
-         * @throws IllegalArgumentException If {#code maxAutoLockRenewDuration} is negative.
+         * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
          */
         public ServiceBusReceiverClientBuilder maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
             validateAndThrow(maxAutoLockRenewDuration);
@@ -874,7 +874,7 @@ public final class ServiceBusClientBuilder {
          * @param prefetchCount The prefetch count.
          *
          * @return The modified {@link ServiceBusReceiverClientBuilder} object.
-         * @throws IllegalArgumentException If {#code prefetchCount} is negative.
+         * @throws IllegalArgumentException If {code prefetchCount} is negative.
          */
         public ServiceBusReceiverClientBuilder prefetchCount(int prefetchCount) {
             validateAndThrow(prefetchCount);

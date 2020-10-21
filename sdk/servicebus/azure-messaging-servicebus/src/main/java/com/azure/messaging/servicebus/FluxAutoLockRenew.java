@@ -23,9 +23,9 @@ import java.util.function.Function;
 /**
  * Receives messages from to upstream, subscribe lock renewal subscriber.
  */
-final class FluxAutoRenew extends FluxOperator<ServiceBusReceivedMessage, ServiceBusReceivedMessage> {
+final class FluxAutoLockRenew extends FluxOperator<ServiceBusReceivedMessage, ServiceBusReceivedMessage> {
 
-    private final ClientLogger logger = new ClientLogger(FluxAutoRenew.class);
+    private final ClientLogger logger = new ClientLogger(FluxAutoLockRenew.class);
 
     private final Function<String, Mono<OffsetDateTime>> onRenewLock;
     private final Duration maxAutoLockRenewal;
@@ -41,7 +41,7 @@ final class FluxAutoRenew extends FluxOperator<ServiceBusReceivedMessage, Servic
      *
      * @throws IllegalArgumentException If maxLockRenewalDuration is zero or negative.
      */
-    FluxAutoRenew(
+    FluxAutoLockRenew(
         Flux<? extends ServiceBusReceivedMessage> source, Duration maxAutoLockRenewDuration,
         LockContainer<LockRenewalOperation> messageLockContainer, Function<String, Mono<OffsetDateTime>> onRenewLock) {
         super(source);
@@ -61,7 +61,9 @@ final class FluxAutoRenew extends FluxOperator<ServiceBusReceivedMessage, Servic
 
     @Override
     public void subscribe(CoreSubscriber<? super ServiceBusReceivedMessage> actual) {
-        LockRenewSubscriber newLockRenewSubscriber = new LockRenewSubscriber(actual, maxAutoLockRenewal,
+        Objects.requireNonNull(actual, "'coreSubscriber' cannot be null.");
+
+        final LockRenewSubscriber newLockRenewSubscriber = new LockRenewSubscriber(actual, maxAutoLockRenewal,
             messageLockContainer, onRenewLock);
 
         source.subscribe(newLockRenewSubscriber);
@@ -71,7 +73,7 @@ final class FluxAutoRenew extends FluxOperator<ServiceBusReceivedMessage, Servic
     /**
      * Receives messages from to upstream, pushes them downstream and start lock renewal.
      */
-    final class LockRenewSubscriber extends BaseSubscriber<ServiceBusReceivedMessage> {
+    static final class LockRenewSubscriber extends BaseSubscriber<ServiceBusReceivedMessage> {
         private final ClientLogger logger = new ClientLogger(LockRenewSubscriber.class);
 
         private final Function<String, Mono<OffsetDateTime>> onRenewLock;
@@ -83,11 +85,11 @@ final class FluxAutoRenew extends FluxOperator<ServiceBusReceivedMessage, Servic
             LockContainer<LockRenewalOperation> messageLockContainer,
             Function<String, Mono<OffsetDateTime>> onRenewLock) {
             this.onRenewLock = Objects.requireNonNull(onRenewLock, "'onRenewLock' cannot be null.");
-            this.actual = actual;
+            this.actual = Objects.requireNonNull(actual, "'downstream' cannot be null.");
             this.messageLockContainer = Objects.requireNonNull(messageLockContainer,
                 "'messageLockContainer' cannot be null.");
-            Objects.requireNonNull(maxAutoLockRenewDuration, "'maxAutoLockRenewDuration' cannot be null.");
-            this.maxAutoLockRenewal = maxAutoLockRenewDuration;
+            this.maxAutoLockRenewal = Objects.requireNonNull(maxAutoLockRenewDuration,
+                "'maxAutoLockRenewDuration' cannot be null.");
         }
         /**
          * On an initial subscription, will take the first work item, and request that amount of work for it.
@@ -104,15 +106,14 @@ final class FluxAutoRenew extends FluxOperator<ServiceBusReceivedMessage, Servic
          */
         @Override
         public void hookOnComplete() {
-            logger.info("Upstream has completed.");
+            logger.verbose("Upstream has completed.");
             actual.onComplete();
         }
 
         @Override
         protected void hookOnError(Throwable throwable) {
-            logger.info("Errors occurred upstream.", throwable);
+            logger.error("Errors occurred upstream.", throwable);
             actual.onError(throwable);
-            dispose();
         }
 
         @Override
@@ -122,10 +123,12 @@ final class FluxAutoRenew extends FluxOperator<ServiceBusReceivedMessage, Servic
             final LockRenewalOperation renewOperation;
 
             if (Objects.isNull(lockToken)) {
-                logger.info("Unexpected, LockToken is not present in message [{}].", message.getSequenceNumber());
+                logger.warning("Unexpected, LockToken is not present in message. sequenceNumber[{}].",
+                    message.getSequenceNumber());
                 return;
             } else if (Objects.isNull(lockedUntil)) {
-                logger.info("Unexpected, lockedUntil is not present in message [{}].", message.getSequenceNumber());
+                logger.warning("Unexpected, lockedUntil is not present in message. sequenceNumber[{}].",
+                    message.getSequenceNumber());
                 return;
             }
 
@@ -142,14 +145,13 @@ final class FluxAutoRenew extends FluxOperator<ServiceBusReceivedMessage, Servic
                 messageLockContainer.addOrUpdate(lockToken, OffsetDateTime.now().plus(maxAutoLockRenewal),
                     renewOperation);
             } catch (Exception e) {
-                logger.error("Exception occurred while updating lockContainer for token [{}].", lockToken, e);
+                logger.info("Exception occurred while updating lockContainer for token [{}].", lockToken, e);
             }
 
             try {
                 actual.onNext(message);
             } catch (Exception e) {
-                logger.error("Exception occurred while handling downstream onNext operation.", e);
-                onError(e);
+                logger.info("Exception occurred while handling downstream onNext operation.", e);
             } finally {
                 renewOperation.close();
                 messageLockContainer.remove(lockToken);

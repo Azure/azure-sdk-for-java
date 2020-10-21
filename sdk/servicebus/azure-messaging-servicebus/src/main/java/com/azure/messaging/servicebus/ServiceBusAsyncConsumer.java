@@ -43,8 +43,8 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
             .publish(receiverOptions.getPrefetchCount())
             .autoConnect(1);
 
-        if (receiverOptions.isAutoRenewEnabled()) {
-            this.messageSource = new FluxAutoRenew(source, receiverOptions.getMaxLockRenewDuration(),
+        if (receiverOptions.isAutoLockRenewEnabled()) {
+            this.messageSource = new FluxAutoLockRenew(source, receiverOptions.getMaxLockRenewDuration(),
                 messageLockContainer, onRenewLock);
         } else {
             this.messageSource = source;

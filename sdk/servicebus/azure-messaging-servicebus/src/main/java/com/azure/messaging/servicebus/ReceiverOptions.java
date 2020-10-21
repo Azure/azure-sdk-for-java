@@ -80,7 +80,7 @@ class ReceiverOptions {
      *
      * @return true if  autoRenew is enabled; false otherwise.
      */
-    boolean isAutoRenewEnabled() {
+    boolean isAutoLockRenewEnabled() {
         return maxLockRenewDuration != null && !maxLockRenewDuration.isZero() && !maxLockRenewDuration.isNegative();
     }
 
