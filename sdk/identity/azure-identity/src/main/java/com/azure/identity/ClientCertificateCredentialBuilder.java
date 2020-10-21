@@ -38,7 +38,7 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      * @param certificate the input stream containing the PEM certificate
      * @return An updated instance of this builder.
      */
-    public ClientCertificateCredentialBuilder pemCertificate(InputStream certificate) {
+    ClientCertificateCredentialBuilder pemCertificate(InputStream certificate) {
         this.clientCertificate = certificate;
         return this;
     }
@@ -65,7 +65,7 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      * @param clientCertificatePassword the password protecting the PFX file
      * @return An updated instance of this builder.
      */
-    public ClientCertificateCredentialBuilder pfxCertificate(InputStream certificate,
+    ClientCertificateCredentialBuilder pfxCertificate(InputStream certificate,
                                                              String clientCertificatePassword) {
         this.clientCertificate = certificate;
         this.clientCertificatePassword = clientCertificatePassword;
