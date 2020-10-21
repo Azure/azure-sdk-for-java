@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -124,7 +125,8 @@ public class HmacAuthenticationPolicyTests {
                 .build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("https://localhost?id=b93a5ef4-f622-44d8-a80b-ff983122554e"));
-        pipeline.send(request).block();
+        StepVerifier.create(pipeline.send(request))
+            .verifyComplete();
     }
 
     @Test
@@ -138,7 +140,8 @@ public class HmacAuthenticationPolicyTests {
 
         HttpRequest request = new HttpRequest(HttpMethod.POST, new URL("https://localhost?id=b93a5ef4-f622-44d8-a80b-ff983122554e"));
         request.setBody("{\"propName\":\"name\", \"propValue\": \"value\"}");
-        pipeline.send(request).block();
+        StepVerifier.create(pipeline.send(request))
+            .verifyComplete();
     }
 
     @Test
@@ -152,7 +155,8 @@ public class HmacAuthenticationPolicyTests {
 
         HttpRequest request = new HttpRequest(HttpMethod.POST, new URL("https://localhost:443?id=b93a5ef4-f622-44d8-a80b-ff983122554e"));
         request.setBody("{\"propName\":\"name\", \"propValue\": \"value\"}");
-        pipeline.send(request).block();
+        StepVerifier.create(pipeline.send(request))
+            .verifyComplete();
     }
 
     @Test
@@ -166,7 +170,8 @@ public class HmacAuthenticationPolicyTests {
 
         HttpRequest request = new HttpRequest(HttpMethod.POST, new URL("https://localhost?id=b93a5ef4-f622-44d8-a80b-ff983122554e"));
         request.setBody("banana");
-        pipeline.send(request).block();
+        StepVerifier.create(pipeline.send(request))
+            .verifyComplete();
     }
 
     @Test
@@ -180,7 +185,8 @@ public class HmacAuthenticationPolicyTests {
 
         HttpRequest request = new HttpRequest(HttpMethod.POST, new URL("https://localhost?id=b93a5ef4-f622-44d8-a80b-ff983122554e"));
         request.setBody("😀");
-        pipeline.send(request).block();
+        StepVerifier.create(pipeline.send(request))
+            .verifyComplete();
     }
 
     @Test
@@ -194,7 +200,8 @@ public class HmacAuthenticationPolicyTests {
 
         HttpRequest request = new HttpRequest(HttpMethod.PATCH, new URL("https://localhost?id=b93a5ef4-f622-44d8-a80b-ff983122554e"));
         request.setBody("{\"propName\":\"name1\", \"propValue\": \"value1\"}");
-        pipeline.send(request).block();
+        StepVerifier.create(pipeline.send(request))
+            .verifyComplete();
     }
 
     @Test
@@ -208,7 +215,8 @@ public class HmacAuthenticationPolicyTests {
 
         HttpRequest request = new HttpRequest(HttpMethod.PUT, new URL("https://localhost?id=b93a5ef4-f622-44d8-a80b-ff983122554e"));
         request.setBody("{\"propName\":\"name2\", \"propValue\": \"value2\"}");
-        pipeline.send(request).block();
+        StepVerifier.create(pipeline.send(request))
+            .verifyComplete();
     }
 
     @Test
@@ -221,7 +229,8 @@ public class HmacAuthenticationPolicyTests {
                 .build();
 
         HttpRequest request = new HttpRequest(HttpMethod.DELETE, new URL("https://localhost?id=b93a5ef4-f622-44d8-a80b-ff983122554e"));
-        pipeline.send(request).block();
+        StepVerifier.create(pipeline.send(request))
+            .verifyComplete();
     }
 
     @Test
@@ -234,9 +243,8 @@ public class HmacAuthenticationPolicyTests {
                 .build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://localhost?id=b93a5ef4-f622-44d8-a80b-ff983122554e"));
-        assertThrows(RuntimeException.class, () -> {
-            pipeline.send(request).block();
-        });        
+        StepVerifier.create(pipeline.send(request))
+            .expectError(RuntimeException.class);       
     }
     
 }
