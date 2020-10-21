@@ -95,8 +95,8 @@ public final class  BinaryData {
     }
 
     /**
-     * Create {@link BinaryData} instance with given {@link InputStream} as source of data. The {@link InputStream} is
-     * not closed by this function.
+     * Creates a {@link BinaryData} instance with given {@link InputStream} as source of data. The {@link InputStream}
+     * is not closed by this function.
      *
      * <p><strong>Create an instance from InputStream</strong></p>
      * {@codesnippet com.azure.core.experimental.util.BinaryDocument.from#Stream}
@@ -125,7 +125,7 @@ public final class  BinaryData {
     }
 
     /**
-     * Asynchronously create {@link BinaryData} instance with given {@link InputStream} as source of data. The
+     * Asynchronously create a {@link BinaryData} instance with given {@link InputStream} as source of data. The
      * {@link InputStream} is not closed by this function.
      *
      * @param inputStream to read bytes from.
@@ -139,14 +139,14 @@ public final class  BinaryData {
     }
 
     /**
-     * Create {@link BinaryData} instance with given {@link Flux} of {@link ByteBuffer} as source of data. It will
+     * Creates a {@link BinaryData} instance with given {@link Flux} of {@link ByteBuffer} as source of data. It will
      * collect all the bytes from {@link ByteBuffer} into {@link BinaryData}.
      *
      * <p><strong>Create an instance from String</strong></p>
      * {@codesnippet com.azure.core.experimental.util.BinaryDocument.from#Flux}
      *
      * @param data to use.
-     * @throws NullPointerException If {@code inputStream} is null.
+     * @throws NullPointerException If {@code data} is null.
      * @return {@link Mono} of {@link BinaryData} representing binary data.
      */
     public static Mono<BinaryData> fromFlux(Flux<ByteBuffer> data) {
@@ -159,9 +159,8 @@ public final class  BinaryData {
     }
 
     /**
-     * Create {@link BinaryData} instance with given data. The {@link String} is converted into bytes using
-     * {@link StandardCharsets#UTF_8} character set. If the String is {@code null}, an empty {@link BinaryData} will be
-     * returned.
+     * Creates a {@link BinaryData} instance with given data. The {@link String} is converted into bytes using UTF_8
+     * character set. If the String is {@code null}, an empty {@link BinaryData} will be returned.
      *
      * @param data to use.
      * @return {@link BinaryData} representing binary data.
@@ -176,7 +175,7 @@ public final class  BinaryData {
     }
 
     /**
-     * Create {@link BinaryData} instance with given byte array data. If the byte array is {@code null}, an empty
+     * Creates a {@link BinaryData} instance with given byte array data. If the byte array is {@code null}, an empty
      * {@link BinaryData} will be returned.
      *
      * @param data to use.
@@ -187,9 +186,9 @@ public final class  BinaryData {
     }
 
     /**
-     * Serialize the given {@link Object} into {@link BinaryData} using json serializer which is available in classpath.
-     * The serializer on classpath must implement {@link JsonSerializer} interface. If the Object is {@code null}, an
-     * empty {@link BinaryData} will be returned.
+     * Serialize the given {@link Object} into {@link BinaryData} using json serializer which is available on classpath.
+     * The serializer on classpath must implement {@link JsonSerializer} interface. If the given Object is {@code null},
+     * an empty {@link BinaryData} will be returned.
      *
      * @param data The {@link Object} which needs to be serialized into bytes.
      * @throws IllegalStateException If a {@link JsonSerializer} cannot be found on the classpath.
@@ -242,6 +241,9 @@ public final class  BinaryData {
      */
     public static Mono<BinaryData> fromObjectAsync(Object data, ObjectSerializer serializer) {
 
+        if (Objects.isNull(serializer)) {
+            return monoError(LOGGER, new NullPointerException("'serializer' cannot be null."));
+        }
         return Mono.fromCallable(() -> fromObject(data, serializer));
     }
 
@@ -271,6 +273,7 @@ public final class  BinaryData {
      * @param clazz representing the type of the Object.
      * @param serializer to use deserialize data into type.
      * @param <T> Generic type that the data is deserialized into.
+     * @throws NullPointerException If {@code serializer} or {@code clazz} is null.
      * @return The {@link Object} of given type after deserializing the bytes.
      */
     public <T> T toObject(Class<T> clazz, ObjectSerializer serializer) {
@@ -296,6 +299,10 @@ public final class  BinaryData {
      * @return The {@link Object} of given type after deserializing the bytes.
      */
     public  <T> Mono<T> toObjectAsync(Class<T> clazz, ObjectSerializer serializer) {
+
+        if (Objects.isNull(serializer)) {
+            return monoError(LOGGER, new NullPointerException("'serializer' cannot be null."));
+        }
         return Mono.fromCallable(() -> toObject(clazz, serializer));
     }
 
@@ -306,6 +313,7 @@ public final class  BinaryData {
      *
      * @param clazz representing the type of the Object.
      * @param <T> Generic type that the data is deserialized into.
+     * @throws NullPointerException If {@code clazz} is null.
      * @return The {@link Object} of given type after deserializing the bytes.
      */
     public <T> T toObject(Class<T> clazz) {
@@ -325,10 +333,13 @@ public final class  BinaryData {
      *
      * @param clazz representing the type of the Object.
      * @param <T> Generic type that the data is deserialized into.
-     * @throws NullPointerException If {@code clazz} or {@code serializer} is null.
+     * @throws NullPointerException If {@code clazz} is null.
      * @return The {@link Object} of given type after deserializing the bytes.
      */
     public  <T> Mono<T> toObjectAsync(Class<T> clazz) {
+        if (Objects.isNull(clazz)) {
+            return monoError(LOGGER, new NullPointerException("'clazz' cannot be null."));
+        }
         return Mono.fromCallable(() -> toObject(clazz));
     }
 
