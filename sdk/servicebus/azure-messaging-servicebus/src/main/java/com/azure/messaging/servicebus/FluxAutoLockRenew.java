@@ -30,7 +30,6 @@ final class FluxAutoLockRenew extends FluxOperator<ServiceBusReceivedMessage, Se
     private final Function<String, Mono<OffsetDateTime>> onRenewLock;
     private final Duration maxAutoLockRenewal;
     private final LockContainer<LockRenewalOperation> messageLockContainer;
-    private final AtomicReference<LockRenewSubscriber> lockRenewSubscriber = new AtomicReference<>();
 
     /**
      * Build a {@link FluxOperator} wrapper around the passed parent {@link Publisher}
@@ -60,14 +59,13 @@ final class FluxAutoLockRenew extends FluxOperator<ServiceBusReceivedMessage, Se
     }
 
     @Override
-    public void subscribe(CoreSubscriber<? super ServiceBusReceivedMessage> actual) {
-        Objects.requireNonNull(actual, "'coreSubscriber' cannot be null.");
+    public void subscribe(CoreSubscriber<? super ServiceBusReceivedMessage> coreSubscriber) {
+        Objects.requireNonNull(coreSubscriber, "'coreSubscriber' cannot be null.");
 
-        final LockRenewSubscriber newLockRenewSubscriber = new LockRenewSubscriber(actual, maxAutoLockRenewal,
+        final LockRenewSubscriber newLockRenewSubscriber = new LockRenewSubscriber(coreSubscriber, maxAutoLockRenewal,
             messageLockContainer, onRenewLock);
 
         source.subscribe(newLockRenewSubscriber);
-
     }
 
     /**
@@ -91,6 +89,7 @@ final class FluxAutoLockRenew extends FluxOperator<ServiceBusReceivedMessage, Se
             this.maxAutoLockRenewal = Objects.requireNonNull(maxAutoLockRenewDuration,
                 "'maxAutoLockRenewDuration' cannot be null.");
         }
+
         /**
          * On an initial subscription, will take the first work item, and request that amount of work for it.
          * @param subscription Subscription for upstream.
