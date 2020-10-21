@@ -73,7 +73,7 @@ public class TableClient {
     }
 
     public TableBatch createBatch(String partitionKey) {
-        return new TableBatch(partitionKey, client);
+        return new TableBatch(this.client.createBatch(partitionKey));
     }
 
     /**

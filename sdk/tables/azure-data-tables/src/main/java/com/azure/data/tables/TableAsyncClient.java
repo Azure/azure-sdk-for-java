@@ -19,6 +19,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.AzureTableImpl;
 import com.azure.data.tables.implementation.AzureTableImplBuilder;
+import com.azure.data.tables.implementation.BatchImpl;
 import com.azure.data.tables.implementation.ModelHelper;
 import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
@@ -57,10 +58,12 @@ public final class TableAsyncClient {
     private final ClientLogger logger = new ClientLogger(TableAsyncClient.class);
     private final String tableName;
     private final AzureTableImpl implementation;
+    private final SerializerAdapter serializerAdapter;
     private final String accountName;
     private final String tableUrl;
 
-    private TableAsyncClient(String tableName, AzureTableImpl implementation) {
+    private TableAsyncClient(String tableName, AzureTableImpl implementation, SerializerAdapter serializerAdapter) {
+        this.serializerAdapter = serializerAdapter;
         try {
             if (tableName == null || tableName.isEmpty()) {
                 throw new IllegalArgumentException("'tableName' must be provided to create a TableClient");
@@ -84,7 +87,8 @@ public final class TableAsyncClient {
             .serializerAdapter(serializerAdapter)
             .pipeline(pipeline)
             .version(serviceVersion.getVersion())
-            .buildClient()
+            .buildClient(),
+            serializerAdapter
         );
     }
 
@@ -125,7 +129,7 @@ public final class TableAsyncClient {
     }
 
     public TableAsyncBatch createBatch(String partitionKey) {
-        return new TableAsyncBatch(partitionKey, this);
+        return new TableAsyncBatch(partitionKey, new BatchImpl(implementation, serializerAdapter));
     }
 
     /**
