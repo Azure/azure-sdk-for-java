@@ -4,6 +4,7 @@
 package com.azure.core.util;
 
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 /**
  * The Option type to describe tri-state. Every Option instance is in one of
@@ -80,6 +81,53 @@ public final class Option<T> {
         }
         return this.value;
     }
+
+    /**
+     * Indicates whether some other object is "equal to" this Option. The
+     * other object is considered equal if:
+     * <ul>
+     * <li>it is also an {@code Option} and;
+     * <li>both instances are not initialized or;
+     * <li>both instances are initialized and values are "equal to" each other via {@code equals()}.
+     * </ul>
+     *
+     * @param obj an object to be tested for equality
+     * @return {code true} if the other object is "equal to" this object otherwise {@code false}
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Option)) {
+            return false;
+        }
+        Option<?> other = (Option<?>) obj;
+        if (this.isInitialized ^ other.isInitialized) {
+            // one is 'initialized' and the other one is not.
+            return false;
+        }
+        // both are 'initialized' or 'not-initialized'.
+        return Objects.equals(value, other.value);
+    }
+
+    /**
+     * Returns hash code of the value this Option is initialized with or -1 if in
+     * uninitialized state.
+     * <p>
+     * The value 0 will be returned when initialized with {@code null}.
+     * </p>
+     * @return hash code of the value this Option is initialized with or -1 if in
+     * uninitialized state.
+     */
+    @Override
+    public int hashCode() {
+        if (!this.isInitialized) {
+            return -1;
+        }
+        return Objects.hashCode(value);
+    }
+
 
     private Option() {
         this.isInitialized = false;

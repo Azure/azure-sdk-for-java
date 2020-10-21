@@ -9,9 +9,9 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.microsoft.azure</groupId>
-  <artifactId>spring-cloud-azure-feature-management</artifactId>
-  <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-feature-management;current} -->
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-cloud-feature-management</artifactId>
+  <version>1.2.8-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-feature-management;current} -->
   <name>Spring Cloud Feature Management</name>
   <description>Adds Feature Management into Spring</description>
 

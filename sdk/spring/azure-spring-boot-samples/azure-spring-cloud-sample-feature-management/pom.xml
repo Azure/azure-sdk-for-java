@@ -32,9 +32,9 @@
       <artifactId>spring-boot-starter</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>spring-cloud-azure-feature-management</artifactId>
-      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-feature-management;current} -->
+      <groupId>com.azure.spring</groupId>
+      <artifactId>azure-spring-cloud-feature-management</artifactId>
+      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-feature-management;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
