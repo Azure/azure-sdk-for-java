@@ -1,0 +1,12 @@
+trigger: none
+
+jobs:
+  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: testnewservice
+      Artifacts:
+        - name: azure-testnewservice
+          groupId: com.azure
+          safeName: azuretestnewservice
+      EnvVars:
+        AZURE_TEST_MODE: RECORD
