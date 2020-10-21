@@ -99,10 +99,11 @@ public final class ServiceBusClientBuilder {
 
     /**
      * Sets the {@link ClientOptions} to be sent from the client built from this builder, enabling customization of
-     * certain properties, as well as support the addition of custom header information. Refer to the
-     * {@link ClientOptions} documentation for more information.
+     * certain properties, as well as support the addition of custom header information. Refer to the {@link
+     * ClientOptions} documentation for more information.
      *
      * @param clientOptions to be set on the client.
+     *
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
     public ServiceBusClientBuilder clientOptions(ClientOptions clientOptions) {
@@ -151,8 +152,8 @@ public final class ServiceBusClientBuilder {
     /**
      * Sets the configuration store that is used during construction of the service client.
      *
-     * If not specified, the default configuration store is used to configure Service Bus clients. Use
-     * {@link Configuration#NONE} to bypass using configuration settings during construction.
+     * If not specified, the default configuration store is used to configure Service Bus clients. Use {@link
+     * Configuration#NONE} to bypass using configuration settings during construction.
      *
      * @param configuration The configuration store used to configure Service Bus clients.
      *
@@ -459,7 +460,7 @@ public final class ServiceBusClientBuilder {
                     new IllegalArgumentException("Unknown entity type: " + entityType));
         }
 
-        if (subQueue ==  null) {
+        if (subQueue == null) {
             return entityPath;
         }
 
@@ -515,8 +516,8 @@ public final class ServiceBusClientBuilder {
          * @param viaQueueName The initial destination of the message.
          *
          * @return The modified {@link ServiceBusSenderClientBuilder} object.
-         *
-         * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via">Send Via</a>
+         * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via">Send
+         *     Via</a>
          */
         public ServiceBusSenderClientBuilder viaQueueName(String viaQueueName) {
             this.viaQueueName = viaQueueName;
@@ -529,8 +530,8 @@ public final class ServiceBusClientBuilder {
          * @param viaTopicName The initial destination of the message.
          *
          * @return The modified {@link ServiceBusSenderClientBuilder} object.
-         *
-         * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via">Send Via</a>
+         * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via">Send
+         *     Via</a>
          */
         public ServiceBusSenderClientBuilder viaTopicName(String viaTopicName) {
             this.viaTopicName = viaTopicName;
@@ -557,8 +558,8 @@ public final class ServiceBusClientBuilder {
          * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
          *     topicName} are not set or, both of these fields are set. It is also thrown if the Service Bus {@link
          *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
-         *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}. Or the
-         *     {@link #viaQueueName(String) viaQueueName} is specified along with {@link #topicName(String) topicName}.
+         *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}. Or the {@link
+         *     #viaQueueName(String) viaQueueName} is specified along with {@link #topicName(String) topicName}.
          * @throws IllegalArgumentException if the entity type is not a queue or a topic.
          */
         public ServiceBusSenderAsyncClient buildAsyncClient() {
@@ -620,7 +621,7 @@ public final class ServiceBusClientBuilder {
      */
     @ServiceClientBuilder(serviceClients = {ServiceBusReceiverClient.class, ServiceBusReceiverAsyncClient.class})
     public final class ServiceBusSessionReceiverClientBuilder {
-        private boolean enableAutoComplete = false;
+        private boolean enableAutoComplete = true;
         private Integer maxConcurrentSessions = null;
         private int prefetchCount = DEFAULT_PREFETCH_COUNT;
         private String queueName;
@@ -633,17 +634,15 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
-         * Enables auto-complete and auto-abandon of received messages. By default, a successfully processed message is
+         * Disables auto-complete and auto-abandon of received messages. By default, a successfully processed message is
          * {@link ServiceBusReceiverAsyncClient#complete(ServiceBusReceivedMessage) completed}. If an error happens when
-         * the message is processed, it is
-         * {@link ServiceBusReceiverAsyncClient#abandon(ServiceBusReceivedMessage) abandoned}.
-         *
-         * @param enableAutoComplete True to enable auto-complete and false otherwise.
+         * the message is processed, it is {@link ServiceBusReceiverAsyncClient#abandon(ServiceBusReceivedMessage)
+         * abandoned}.
          *
          * @return The modified {@link ServiceBusSessionReceiverClientBuilder} object.
          */
-        public ServiceBusSessionReceiverClientBuilder enableAutoComplete(boolean enableAutoComplete) {
-            this.enableAutoComplete = enableAutoComplete;
+        public ServiceBusSessionReceiverClientBuilder disableAutoComplete() {
+            this.enableAutoComplete = false;
             return this;
         }
 
@@ -671,7 +670,8 @@ public final class ServiceBusClientBuilder {
          *
          * Prefetch speeds up the message flow by aiming to have a message readily available for local retrieval when
          * and before the application asks for one using {@link ServiceBusReceiverAsyncClient#receiveMessages()}.
-         * Setting a non-zero value will prefetch that number of messages. Setting the value to zero turns prefetch off.
+         * Setting a non-zero value will prefetch that number of messages. Setting the value to zero turns prefetch
+         * off.
          *
          * @param prefetchCount The prefetch count.
          *
@@ -746,8 +746,8 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
-         * Creates an <b>asynchronous</b>, <b>session-aware</b> Service Bus receiver responsible for reading
-         * {@link ServiceBusMessage messages} from a specific queue or topic.
+         * Creates an <b>asynchronous</b>, <b>session-aware</b> Service Bus receiver responsible for reading {@link
+         * ServiceBusMessage messages} from a specific queue or topic.
          *
          * @return An new {@link ServiceBusReceiverAsyncClient} that receives messages from a queue or topic.
          * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
@@ -763,8 +763,8 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
-         * Creates a <b>synchronous</b>, <b>session-aware</b> Service Bus receiver responsible for reading
-         * {@link ServiceBusMessage messages} from a specific queue or topic.
+         * Creates a <b>synchronous</b>, <b>session-aware</b> Service Bus receiver responsible for reading {@link
+         * ServiceBusMessage messages} from a specific queue or topic.
          *
          * @return An new {@link ServiceBusReceiverClient} that receives messages from a queue or topic.
          * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
@@ -843,7 +843,7 @@ public final class ServiceBusClientBuilder {
      */
     @ServiceClientBuilder(serviceClients = {ServiceBusReceiverClient.class, ServiceBusReceiverAsyncClient.class})
     public final class ServiceBusReceiverClientBuilder {
-        private boolean enableAutoComplete = false;
+        private boolean enableAutoComplete = true;
         private int prefetchCount = DEFAULT_PREFETCH_COUNT;
         private String queueName;
         private SubQueue subQueue;
@@ -855,17 +855,15 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
-         * Enables auto-complete and auto-abandon of received messages. By default, a successfully processed message is
+         * Disables auto-complete and auto-abandon of received messages. By default, a successfully processed message is
          * {@link ServiceBusReceiverAsyncClient#complete(ServiceBusReceivedMessage) completed}. If an error happens when
-         * the message is processed, it is
-         * {@link ServiceBusReceiverAsyncClient#abandon(ServiceBusReceivedMessage) abandoned}.
-         *
-         * @param enableAutoComplete True to enable auto-complete and false otherwise.
+         * the message is processed, it is {@link ServiceBusReceiverAsyncClient#abandon(ServiceBusReceivedMessage)
+         * abandoned}.
          *
          * @return The modified {@link ServiceBusReceiverClientBuilder} object.
          */
-        public ServiceBusReceiverClientBuilder enableAutoComplete(boolean enableAutoComplete) {
-            this.enableAutoComplete = enableAutoComplete;
+        public ServiceBusReceiverClientBuilder disableAutoComplete() {
+            this.enableAutoComplete = false;
             return this;
         }
 
@@ -875,7 +873,8 @@ public final class ServiceBusClientBuilder {
          *
          * Prefetch speeds up the message flow by aiming to have a message readily available for local retrieval when
          * and before the application asks for one using {@link ServiceBusReceiverAsyncClient#receiveMessages()}.
-         * Setting a non-zero value will prefetch that number of messages. Setting the value to zero turns prefetch off.
+         * Setting a non-zero value will prefetch that number of messages. Setting the value to zero turns prefetch
+         * off.
          *
          * @param prefetchCount The prefetch count.
          *
@@ -970,6 +969,7 @@ public final class ServiceBusClientBuilder {
         /**
          * Creates <b>synchronous</b> Service Bus receiver responsible for reading {@link ServiceBusMessage messages}
          * from a specific queue or topic.
+         *
          * @return An new {@link ServiceBusReceiverClient} that receives messages from a queue or topic.
          * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
          *     topicName} are not set or, both of these fields are set. It is also thrown if the Service Bus {@link

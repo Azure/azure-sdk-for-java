@@ -319,7 +319,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 .buildAsyncClient();
         } else {
             this.receiver = getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
-                .enableAutoComplete(true)
+                .disableAutoComplete(true)
                 .buildAsyncClient();
             this.receiveAndDeleteReceiver = getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
@@ -369,10 +369,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 .buildAsyncClient();
         } else {
             this.receiver = getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
-                .enableAutoComplete(true)
+                .disableAutoComplete(true)
                 .buildAsyncClient();
             this.receiveAndDeleteReceiver = getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
-                .enableAutoComplete(true)
+                .disableAutoComplete(true)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildAsyncClient();
         }
