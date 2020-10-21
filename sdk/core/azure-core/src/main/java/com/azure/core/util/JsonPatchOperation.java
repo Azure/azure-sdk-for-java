@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.experimental.jsonpatch;
+package com.azure.core.util;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -9,11 +11,12 @@ import java.util.Optional;
 /**
  * Represents a JSON Patch operation.
  */
-public final class JsonPatchOperation {
-    private final JsonPatchOperationKind operationKind;
+@JsonSerialize(using = JsonPatchOperationSerializer.class)
+final class JsonPatchOperation {
+    private final JsonPatchOperationKind op;
     private final String from;
     private final String path;
-    private final Optional<String> optionalValue;
+    private final Option<String> value;
 
     /**
      * Creates a JSON Patch operation.
@@ -21,17 +24,16 @@ public final class JsonPatchOperation {
      * When {@code optionalValue} is null the value won't be included in the JSON request, use {@link Optional#empty()}
      * to indicate a JSON null.
      *
-     * @param operationKind The kind of operation.
+     * @param op The kind of operation.
      * @param from Optional from target path.
      * @param path Operation target path.
-     * @param optionalValue Optional value.
+     * @param value Optional value.
      */
-    public JsonPatchOperation(JsonPatchOperationKind operationKind, String from, String path,
-        Optional<String> optionalValue) {
-        this.operationKind = operationKind;
+    JsonPatchOperation(JsonPatchOperationKind op, String from, String path, Option<String> value) {
+        this.op = op;
         this.from = from;
         this.path = path;
-        this.optionalValue = optionalValue;
+        this.value = value;
     }
 
     /**
@@ -39,8 +41,8 @@ public final class JsonPatchOperation {
      *
      * @return The kind of operation.
      */
-    public JsonPatchOperationKind getOperationKind() {
-        return operationKind;
+    JsonPatchOperationKind getOp() {
+        return op;
     }
 
     /**
@@ -48,7 +50,7 @@ public final class JsonPatchOperation {
      *
      * @return The operation from target path.
      */
-    public String getFrom() {
+    String getFrom() {
         return from;
     }
 
@@ -57,7 +59,7 @@ public final class JsonPatchOperation {
      *
      * @return The operation target path.
      */
-    public String getPath() {
+    String getPath() {
         return path;
     }
 
@@ -66,13 +68,14 @@ public final class JsonPatchOperation {
      *
      * @return The operation value.
      */
-    public Optional<String> getOptionalValue() {
-        return optionalValue;
+    Option<String> getValue() {
+        return value;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(operationKind.toString(), from, path, (optionalValue == null) ? null : optionalValue.get());
+        return Objects.hash(op.toString(), from, path,
+            (value == null) ? null : value.getValue());
     }
 
     @Override
@@ -86,10 +89,10 @@ public final class JsonPatchOperation {
         }
 
         JsonPatchOperation other = (JsonPatchOperation) obj;
-        return Objects.equals(operationKind, other.operationKind)
+        return Objects.equals(op, other.op)
             && Objects.equals(from, other.from)
             && Objects.equals(path, other.path)
-            && Objects.equals(optionalValue, other.optionalValue);
+            && Objects.equals(value, other.value);
     }
 
     @Override
@@ -99,7 +102,7 @@ public final class JsonPatchOperation {
 
     StringBuilder buildString(StringBuilder builder) {
         builder.append("{\"op\":\"")
-            .append(operationKind.toString())
+            .append(op.toString())
             .append("\"");
 
         if (from != null) {
@@ -112,13 +115,9 @@ public final class JsonPatchOperation {
             .append(path)
             .append("\"");
 
-        if (optionalValue != null) {
-            builder.append(",\"value\":");
-            if (optionalValue.isPresent()) {
-                builder.append(optionalValue.get());
-            } else {
-                builder.append("null");
-            }
+        if (value.isInitialized()) {
+            builder.append(",\"value\":")
+                .append(value.getValue());
         }
 
         return builder.append("}");
