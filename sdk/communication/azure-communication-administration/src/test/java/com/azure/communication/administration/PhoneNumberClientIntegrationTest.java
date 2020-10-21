@@ -25,7 +25,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -261,7 +260,8 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
         this.getClient(httpClient).purchaseSearch(SEARCH_ID_TO_PURCHASE);
     }
 
-    @Test()
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void purchaseSearchWithResponse(HttpClient httpClient) {
         Response<Void> response = this.getClient(httpClient).purchaseSearchWithResponse(SEARCH_ID_TO_PURCHASE, Context.NONE);
 
