@@ -44,7 +44,7 @@ public class ChatClientTestBase extends TestBase {
     protected static final String CONNSTRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_SERVICES_CONNECTION_STRING", "pw==");
 
-    protected static final FixedDelay RETRY_STRATEGY = new FixedDelay(3, Duration.ofMillis(500));
+    protected static final FixedDelay RETRY_STRATEGY = new FixedDelay(3, Duration.ofMillis(1000));
 
     protected ChatClientBuilder getChatClientBuilder(String token, HttpClient client) {
         ChatClientBuilder builder = new ChatClientBuilder();
