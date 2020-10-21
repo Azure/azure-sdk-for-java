@@ -1,5 +1,8 @@
 ## Release History
 
+## 3.2.0-beta.1 (Unreleased)
+
+
 ### 3.1.0 (2020-10-21)
 #### New Features
 * Added support for `ARRAY_CONTAINS` `CriteriaType`.
