@@ -674,8 +674,6 @@ public class GatewayAddressCache implements IAddressCache {
                     partitionKeyRangeIdentitySet.add(partitionKeyRangeIdentity);
                     return partitionKeyRangeIdentitySet;
                 });
-
-                logger.info("Added address to serverPartitionAddressToPkRangeIdMap");
             }
         }
 
