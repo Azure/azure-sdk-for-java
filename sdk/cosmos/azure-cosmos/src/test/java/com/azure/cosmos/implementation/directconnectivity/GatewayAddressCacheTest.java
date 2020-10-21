@@ -242,15 +242,16 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         httpClientWrapper.capturedRequests.clear();
 
         // for the second request with the same partitionkeyRangeIdentity, the address result should be fetched from the cache
-        getSuccessResult(addressesInfosFromCacheObs, TIMEOUT);
+        getSuccessResult(cache.tryGetAddresses(req, partitionKeyRangeIdentity, forceRefreshPartitionAddresses), TIMEOUT);
         assertThat(httpClientWrapper.capturedRequests)
             .describedAs("getAddress should read from cache")
             .asList().hasSize(0);
 
         httpClientWrapper.capturedRequests.clear();
+
         // Now emulate onConnectionEvent happened, and the address should be removed from the cache
         cache.updateAddresses(addressInfosFromCache.get(0).getServerKey());
-        getSuccessResult(addressesInfosFromCacheObs, TIMEOUT);
+        getSuccessResult(cache.tryGetAddresses(req, partitionKeyRangeIdentity, forceRefreshPartitionAddresses), TIMEOUT);
         assertThat(httpClientWrapper.capturedRequests)
             .describedAs("getAddress will read addresses from gateway after onConnectionEvent")
             .asList().hasSize(1);
