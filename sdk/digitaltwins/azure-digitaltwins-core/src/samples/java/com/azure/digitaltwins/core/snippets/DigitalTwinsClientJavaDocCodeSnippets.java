@@ -964,7 +964,8 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         // BEGIN: com.azure.digitaltwins.core.syncClient.listEventRoutes
         PagedIterable<EventRoute> listResponse =  digitalTwinsSyncClient.listEventRoutes();
 
-        listResponse.forEach(eventRoute -> System.out.println("Retrieved event route with Id: " + eventRoute.getEventRouteId()));
+        listResponse.forEach(
+            eventRoute -> System.out.println("Retrieved event route with Id: " + eventRoute.getEventRouteId()));
         // END: com.azure.digitaltwins.core.syncClient.listEventRoutes
 
         // BEGIN: com.azure.digitaltwins.core.syncClient.listEventRoutes#Options-Context
@@ -973,7 +974,8 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             new Context("key", "value"));
 
         listResponseWithOptions
-            .forEach(eventRoute -> System.out.println("Retrieved event route with Id: " + eventRoute.getEventRouteId()));
+            .forEach(
+                eventRoute -> System.out.println("Retrieved event route with Id: " + eventRoute.getEventRouteId()));
         // END: com.azure.digitaltwins.core.syncClient.listEventRoutes#Options-Context
     }
 
