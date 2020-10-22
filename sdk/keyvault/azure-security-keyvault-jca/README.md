@@ -1,4 +1,8 @@
-# JCA Provider for Azure Key Vault
+# Azure Key Vault JCA client library for Java
+
+# Getting started
+
+# Key concepts
 
 The JCA Provider for Azure Key Vault is a JCA provider for certificates in 
 Azure Key Vault. It is built on four principles:
@@ -8,15 +12,7 @@ Azure Key Vault. It is built on four principles:
 1. Must not introduce any class loader hierarchy conflicts with Java app code dependencies.
 1. Must be ready for "never trust, always verify and credential-free" Zero Trust environments.
 
-## Testing the version under development
-
-If you want to test the current version under development you will have to
-build and install it into your local Maven repository. To do so use the 
-following command line:
-
-```
-  mvn clean install -DskipTests=true
-```
+# Examples
 
 ## Server side SSL
 
@@ -104,6 +100,10 @@ connections, see the Apache HTTP client example below.
 Note if you want to use Azure managed identity, you should set the value
 of `azure.keyvault.uri`, and the rest of the parameters would be `null`.
 
+# Troubleshooting
+
+# Next steps
+
 ## Spring Boot
 
 For Spring Boot applications see our [Spring Boot starter](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/README.md).
@@ -112,16 +112,14 @@ For Spring Boot applications see our [Spring Boot starter](https://github.com/Az
 
 1. [Java Cryptography Architecture (JCA) Reference Guide](https://docs.oracle.com/javase/8/docs/technotes/guides/security/crypto/CryptoSpec.html)
 
-# Azure Key Vault JCA client library for Java
-
-# Getting started
-
-# Key concepts
-
-# Examples
-
-# Troubleshooting
-
-# Next steps
-
 # Contributing
+
+## Testing the version under development
+
+If you want to test the current version under development you will have to
+build and install it into your local Maven repository. To do so use the 
+following command line:
+
+```
+  mvn clean install -DskipTests=true
+```
