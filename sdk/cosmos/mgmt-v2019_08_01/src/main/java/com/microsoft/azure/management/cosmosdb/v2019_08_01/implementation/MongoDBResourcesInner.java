@@ -41,7 +41,7 @@ public class MongoDBResourcesInner {
     /** The Retrofit service to perform REST calls. */
     private MongoDBResourcesService service;
     /** The service client containing this operation class. */
-    private CosmosDBImpl client;
+    private CosmosDBManagementClientImpl client;
 
     /**
      * Initializes an instance of MongoDBResourcesInner.
@@ -49,7 +49,7 @@ public class MongoDBResourcesInner {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public MongoDBResourcesInner(Retrofit retrofit, CosmosDBImpl client) {
+    public MongoDBResourcesInner(Retrofit retrofit, CosmosDBManagementClientImpl client) {
         this.service = retrofit.create(MongoDBResourcesService.class);
         this.client = client;
     }
