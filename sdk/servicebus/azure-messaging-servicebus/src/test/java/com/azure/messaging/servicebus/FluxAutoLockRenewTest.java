@@ -236,7 +236,7 @@ public class FluxAutoLockRenewTest {
             .thenCancel()
             .verify();
 
-        verify(messageLockContainer,never()).addOrUpdate(anyString(), any(OffsetDateTime.class), any(LockRenewalOperation.class));
+        verify(messageLockContainer, never()).addOrUpdate(anyString(), any(OffsetDateTime.class), any(LockRenewalOperation.class));
 
     }
     /**
