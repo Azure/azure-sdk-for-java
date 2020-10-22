@@ -17,6 +17,8 @@ import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.concurrent.Queues;
@@ -32,6 +34,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class GlobalAddressResolver implements IAddressResolver {
+    private static final Logger logger = LoggerFactory.getLogger(GlobalAddressResolver.class);
+
     private final static int MaxBackupReadRegions = 3;
     private final DiagnosticsClientContext diagnosticsClientContext;
     private final GlobalEndpointManager endpointManager;
@@ -107,14 +111,18 @@ public class GlobalAddressResolver implements IAddressResolver {
         Objects.requireNonNull(request, "expected non-null request");
         Objects.requireNonNull(serverKey, "expected non-null serverKey");
 
-        URI serviceEndpoint = this.endpointManager.resolveServiceEndpoint(request);
-        this.addressCacheByEndpoint.computeIfPresent(serviceEndpoint, (ignored, endpointCache) -> {
+        if (this.tcpConnectionEndpointRediscoveryEnabled) {
+            URI serviceEndpoint = this.endpointManager.resolveServiceEndpoint(request);
+            this.addressCacheByEndpoint.computeIfPresent(serviceEndpoint, (ignored, endpointCache) -> {
 
-            final GatewayAddressCache addressCache = endpointCache.addressCache;
-            addressCache.updateAddresses(serverKey);
+                final GatewayAddressCache addressCache = endpointCache.addressCache;
+                addressCache.updateAddresses(serverKey);
 
-            return endpointCache;
-        });
+                return endpointCache;
+            });
+        } else {
+            logger.warn("tcpConnectionEndpointRediscovery is not enabled, should not reach here.");
+        }
     }
 
     @Override

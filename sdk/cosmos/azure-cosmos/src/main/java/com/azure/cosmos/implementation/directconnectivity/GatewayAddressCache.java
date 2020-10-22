@@ -171,7 +171,7 @@ public class GatewayAddressCache implements IAddressCache {
                 return null;
             });
         } else {
-            logger.warn("tcpConnectionEndpointRediscoveryE is not enabled, should not reach here.");
+            logger.warn("tcpConnectionEndpointRediscovery is not enabled, should not reach here.");
         }
 
     }
@@ -656,8 +656,7 @@ public class GatewayAddressCache implements IAddressCache {
                                 GatewayAddressCache.toAddressInformation(addr)
                                       ).collect(Collectors.toList()).toArray(new AddressInformation[addresses.size()]);
 
-        if (this.tcpConnectionEndpointRediscoveryEnabled)
-        {
+        if (this.tcpConnectionEndpointRediscoveryEnabled) {
             for (AddressInformation addressInfo : addressInfos) {
                 if (logger.isDebugEnabled()) {
                     logger.debug(
