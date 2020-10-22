@@ -1143,14 +1143,11 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             assertNotNull(sessionId, "'sessionId' should have been set.");
             this.receiver = getSessionReceiverBuilder(false, entityType, entityIndex, Function.identity(),
                 shareConnection)
-                .sessionId(sessionId)
-                .buildAsyncClient();
+                .buildAsyncClient().acceptSession(sessionId).block();
             this.receiveAndDeleteReceiver = getSessionReceiverBuilder(false, entityType, entityIndex,
                 Function.identity(), shareConnection)
-
-                .sessionId(sessionId)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
-                .buildAsyncClient();
+                .buildAsyncClient().acceptSession(sessionId).block();
         } else {
             this.receiver = getReceiverBuilder(false, entityType, entityIndex, Function.identity(),
                 shareConnection)

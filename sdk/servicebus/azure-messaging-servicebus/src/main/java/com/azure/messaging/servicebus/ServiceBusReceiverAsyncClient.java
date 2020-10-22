@@ -62,21 +62,25 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
  * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receiveWithReceiveAndDeleteMode}
  *
  * <p><strong>Receive messages from a specific session</strong></p>
- * <p>To fetch messages from a specific session, set {@link ServiceBusSessionReceiverClientBuilder#sessionId(String)}.
+ * <p>To fetch messages from a specific session, switch to {@link ServiceBusSessionReceiverClientBuilder} and
+ * build the session receiver client. Use {@link ServiceBusSessionReceiverAsyncClient#acceptSession(String)} to create a
+ * session-bound {@link ServiceBusReceiverAsyncClient}.
  * </p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#sessionId}
  *
- * <p><strong>Process messages from multiple sessions</strong></p>
- * <p>To process messages from multiple sessions, set
- * {@link ServiceBusSessionReceiverClientBuilder#maxConcurrentSessions(int)}. This will process in parallel at most
- * {@code maxConcurrentSessions}. In addition, when all the messages in a session have been consumed, it will find the
- * next available session to process.</p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#multiplesessions}
- *
  * <p><strong>Process messages from the first available session</strong></p>
  * <p>To process messages from the first available session, switch to {@link ServiceBusSessionReceiverClientBuilder} and
- * build the receiver client. It will find the first available session to process messages from.</p>
+ * build the session receiver client. Use {@link ServiceBusSessionReceiverAsyncClient#acceptNextSession()} to
+ * find the first available session to process messages from.</p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#singlesession}
+ *
+ * <p><strong>Process messages from multiple sessions</strong></p>
+ * <p>To process messages from multiple sessions, switch to {@link ServiceBusSessionReceiverClientBuilder} and
+ * build the session receiver client, then use {@link ServiceBusSessionReceiverAsyncClient#getReceiverClient(int)}
+ * to create an receiver client that processes events from multiple sessions in parallel.
+ * In addition, when all the messages in a session have been consumed, it will find the
+ * next available session to process.</p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#multiplesessions}
  *
  * <p><strong>Rate limiting consumption of messages from Service Bus resource</strong></p>
  * <p>For message receivers that need to limit the number of messages they receive at a given time, they can use
@@ -1095,6 +1099,17 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         } else {
             final ServiceBusAsyncConsumer existing = consumer.get();
             return existing != null ? existing.getLinkName() : null;
+        }
+    }
+
+    private Mono<Boolean> validateSession(String sessionId) {
+        String optionSessionId = receiverOptions.getSessionId();
+        if (optionSessionId != null && !optionSessionId.equals(sessionId)) {
+            return monoError(logger, new IllegalArgumentException(String.format(
+                "This receiver client is tied to session %s. It can't be used for another %s.",
+                optionSessionId, sessionId)));
+        } else {
+            return Mono.just(true);
         }
     }
 }

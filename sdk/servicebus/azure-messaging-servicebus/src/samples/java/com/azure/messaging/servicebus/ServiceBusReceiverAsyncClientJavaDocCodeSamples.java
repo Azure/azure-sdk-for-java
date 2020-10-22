@@ -146,15 +146,16 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
      */
     public void sessionReceiverSingleInstantiation() {
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#singlesession
-        ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+        ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
             .connectionString("Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
                 + "SharedAccessKey={key};EntityPath={eh-name}")
             .sessionReceiver()
             .queueName("<< QUEUE NAME >>")
             .buildAsyncClient();
+        Mono<ServiceBusReceiverAsyncClient> receiverMono = sessionReceiver.acceptNextSession();
         // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#singlesession
 
-        receiver.close();
+        sessionReceiver.close();
     }
 
     /**
@@ -162,17 +163,18 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
      */
     public void sessionReceiverNamedInstantiation() {
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#sessionId
-        ServiceBusReceiverAsyncClient consumer = new ServiceBusClientBuilder()
+        ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
             .connectionString("Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
                 + "SharedAccessKey={key};EntityPath={eh-name}")
             .sessionReceiver()
             .topicName("<< TOPIC NAME >>")
             .subscriptionName("<< SUBSCRIPTION NAME >>")
-            .sessionId("<< my-session-id >>")
+            //.sessionId("<< my-session-id >>")
             .buildAsyncClient();
+        Mono<ServiceBusReceiverAsyncClient> receiverMono = sessionReceiver.acceptSession("<< my-session-id >>");
         // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#sessionId
 
-        consumer.close();
+        sessionReceiver.close();
     }
 
     /**
@@ -180,17 +182,17 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
      */
     public void sessionReceiverMultipleInstantiation() {
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#multiplesessions
-        ServiceBusReceiverAsyncClient consumer = new ServiceBusClientBuilder()
+        ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
             .connectionString("Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
                 + "SharedAccessKey={key};EntityPath={eh-name}")
             .sessionReceiver()
             .topicName("<< TOPIC NAME >>")
             .subscriptionName("<< SUBSCRIPTION NAME >>")
-            .maxConcurrentSessions(3)
             .buildAsyncClient();
+        ServiceBusReceiverAsyncClient receiver = sessionReceiver.getReceiverClient(3);
         // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#multiplesessions
 
-        consumer.close();
+        sessionReceiver.close();
     }
 
     public void createTransaction() {

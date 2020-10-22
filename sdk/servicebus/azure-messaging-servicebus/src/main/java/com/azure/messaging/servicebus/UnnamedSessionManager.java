@@ -55,6 +55,7 @@ class UnnamedSessionManager implements AutoCloseable {
     private final String entityPath;
     private final MessagingEntityType entityType;
     private final ReceiverOptions receiverOptions;
+    private final ServiceBusReceiveLink receiveLink;
     private final ServiceBusConnectionProcessor connectionProcessor;
     private final Duration operationTimeout;
     private final TracerProvider tracerProvider;
@@ -76,7 +77,7 @@ class UnnamedSessionManager implements AutoCloseable {
 
     UnnamedSessionManager(String entityPath, MessagingEntityType entityType,
         ServiceBusConnectionProcessor connectionProcessor, Duration operationTimeout, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer, ReceiverOptions receiverOptions) {
+        MessageSerializer messageSerializer, ReceiverOptions receiverOptions, ServiceBusReceiveLink receiveLink) {
         this.entityPath = entityPath;
         this.entityType = entityType;
         this.receiverOptions = receiverOptions;
@@ -101,6 +102,14 @@ class UnnamedSessionManager implements AutoCloseable {
 
         this.processor = EmitterProcessor.create(numberOfSchedulers, false);
         this.sessionReceiveSink = processor.sink();
+        this.receiveLink = receiveLink;
+    }
+
+    UnnamedSessionManager(String entityPath, MessagingEntityType entityType,
+        ServiceBusConnectionProcessor connectionProcessor, Duration operationTimeout, TracerProvider tracerProvider,
+        MessageSerializer messageSerializer, ReceiverOptions receiverOptions) {
+        this(entityPath, entityType, connectionProcessor, operationTimeout, tracerProvider,
+            messageSerializer, receiverOptions, null);
     }
 
     /**
@@ -224,16 +233,20 @@ class UnnamedSessionManager implements AutoCloseable {
     }
 
     /**
-     * Creates an unnamed session receive link.
+     * Creates an session receive link.
      *
      * @return A Mono that completes with an unnamed session receive link.
      */
     private Mono<ServiceBusReceiveLink> createSessionReceiveLink() {
-        final String linkName = StringUtil.getRandomString("session-");
+        final String sessionId = receiverOptions.getSessionId();
+
+        final String linkName = (sessionId != null)
+            ? sessionId
+            : StringUtil.getRandomString("session-");
 
         return connectionProcessor
             .flatMap(connection -> connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
-                null, entityType, null));
+                null, entityType, sessionId));
     }
 
     /**
@@ -242,7 +255,10 @@ class UnnamedSessionManager implements AutoCloseable {
      * @return A Mono that completes when an unnamed session becomes available.
      * @throws AmqpException if the session manager is already disposed.
      */
-    private Mono<ServiceBusReceiveLink> getActiveLink() {
+    Mono<ServiceBusReceiveLink> getActiveLink() {
+        if (this.receiveLink != null) {
+            return Mono.just(this.receiveLink);
+        }
         return Mono.defer(() -> createSessionReceiveLink()
             .flatMap(link -> link.getEndpointStates()
                 .takeUntil(e -> e == AmqpEndpointState.ACTIVE)
@@ -277,7 +293,7 @@ class UnnamedSessionManager implements AutoCloseable {
      */
     private Flux<ServiceBusReceivedMessageContext> getSession(Scheduler scheduler, boolean disposeOnIdle) {
         return getActiveLink().flatMap(link -> link.getSessionId()
-            .map(linkName -> sessionReceivers.compute(linkName, (key, existing) -> {
+            .map(sessionId -> sessionReceivers.compute(sessionId, (key, existing) -> {
                 if (existing != null) {
                     return existing;
                 }
@@ -285,7 +301,7 @@ class UnnamedSessionManager implements AutoCloseable {
                 return new UnnamedSessionReceiver(link, messageSerializer, connectionProcessor.getRetryOptions(),
                     receiverOptions.getPrefetchCount(), disposeOnIdle, scheduler, this::renewSessionLock);
             })))
-            .flatMapMany(session -> session.receive().doFinally(signalType -> {
+            .flatMapMany(sessionReceiver -> sessionReceiver.receive().doFinally(signalType -> {
                 logger.verbose("Adding scheduler back to pool.");
                 availableSchedulers.push(scheduler);
                 if (receiverOptions.isRollingSessionReceiver()) {

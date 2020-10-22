@@ -173,7 +173,7 @@ class ServiceBusReceiverAsyncClientTest {
             tracerProvider, messageSerializer, onClientClose);
 
         sessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, "Some-Session", false, null),
+            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, "Some-Session", null),
             connectionProcessor, CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
     }
 

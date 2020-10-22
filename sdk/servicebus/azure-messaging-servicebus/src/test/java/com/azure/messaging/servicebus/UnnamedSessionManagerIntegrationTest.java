@@ -72,7 +72,8 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
         final int numberToSend = 5;
         final List<ServiceBusReceivedMessage> receivedMessages = new ArrayList<>();
 
-        setSenderAndReceiver(entityType, entityIndex, TIMEOUT, builder -> builder);
+        setSenderAndReceiver(entityType, entityIndex, TIMEOUT,
+            builder -> builder.buildAsyncClient().acceptSession(sessionId).block());
 
         final Disposable subscription = Flux.interval(Duration.ofMillis(500))
             .take(numberToSend)
@@ -129,7 +130,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
         final Set<String> set = new HashSet<>();
 
         setSenderAndReceiver(MessagingEntityType.SUBSCRIPTION, entityIndex, Duration.ofSeconds(20),
-            builder -> builder.maxConcurrentSessions(maxConcurrency));
+            builder -> builder.buildAsyncClient().getReceiverClient(maxConcurrency));
 
         final Disposable subscription = Flux.interval(Duration.ofMillis(500))
             .take(maxMessages)
@@ -187,14 +188,14 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
      */
     private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, Duration operationTimeout,
-        Function<ServiceBusSessionReceiverClientBuilder, ServiceBusSessionReceiverClientBuilder> onBuild) {
+        Function<ServiceBusSessionReceiverClientBuilder, ServiceBusReceiverAsyncClient> onBuild) {
 
         this.sender = getSenderBuilder(false, entityType, entityIndex, true, false)
             .buildAsyncClient();
         ServiceBusSessionReceiverClientBuilder sessionBuilder = getSessionReceiverBuilder(false,
             entityType, entityIndex,
             builder -> builder.retryOptions(new AmqpRetryOptions().setTryTimeout(operationTimeout)), false);
-        this.receiver = onBuild.apply(sessionBuilder).buildAsyncClient();
+        this.receiver = onBuild.apply(sessionBuilder);
     }
 
     private static void assertMessageEquals(String sessionId, String messageId, String contents,

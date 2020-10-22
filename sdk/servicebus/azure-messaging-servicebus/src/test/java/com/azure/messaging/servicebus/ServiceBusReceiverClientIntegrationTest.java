@@ -816,13 +816,11 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
             this.receiver = getSessionReceiverBuilder(false, entityType, entityIndex, Function.identity(), sharedConnection)
-                .sessionId(sessionId)
-                .buildClient();
+                .buildClient().acceptSession(sessionId);
             this.receiveAndDeleteReceiver = getSessionReceiverBuilder(false, entityType, entityIndex,
                 Function.identity(), sharedConnection)
-                .sessionId(sessionId)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
-                .buildClient();
+                .buildClient().acceptSession(sessionId);
         } else {
             this.receiver = getReceiverBuilder(false, entityType, entityIndex, Function.identity(), sharedConnection)
                 .buildClient();
