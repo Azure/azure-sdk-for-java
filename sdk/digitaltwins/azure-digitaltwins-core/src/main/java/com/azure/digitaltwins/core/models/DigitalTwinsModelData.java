@@ -55,6 +55,31 @@ public final class DigitalTwinsModelData {
     private String model;
 
     /**
+     * Construct a new DigitalTwinsModelData instance. This class should only be constructed internally since the
+     * service never takes this as an input.
+     *
+     * @param modelId The Id of the model.
+     * @param model The contents of the model.
+     * @param displayName The language map of the localized display names.
+     * @param description The language map of the localized descriptions.
+     * @param uploadTime The time when this model was uploaded.
+     * @param decommissioned If this model has been decommissioned.
+     */
+    public DigitalTwinsModelData(String modelId,
+                                 String model,
+                                 Map<String, String> displayName,
+                                 Map<String, String> description,
+                                 OffsetDateTime uploadTime,
+                                 boolean decommissioned) {
+        this.displayName = displayName;
+        this.description = description;
+        this.id = modelId;
+        this.uploadTime = uploadTime;
+        this.decommissioned = decommissioned;
+        this.model = model;
+    }
+
+    /**
      * Get the displayName property: A language map that contains the localized display names as specified in the model
      * definition.
      *
@@ -62,18 +87,6 @@ public final class DigitalTwinsModelData {
      */
     public Map<String, String> getDisplayNameLanguageMap() {
         return this.displayName;
-    }
-
-    /**
-     * Set the displayName property: A language map that contains the localized display names as specified in the model
-     * definition.
-     *
-     * @param displayName the displayName value to set.
-     * @return the ModelData object itself.
-     */
-    public DigitalTwinsModelData setDisplayNameLanguageMap(Map<String, String> displayName) {
-        this.displayName = displayName;
-        return this;
     }
 
     /**
@@ -87,18 +100,6 @@ public final class DigitalTwinsModelData {
     }
 
     /**
-     * Set the description property: A language map that contains the localized descriptions as specified in the model
-     * definition.
-     *
-     * @param description the description value to set.
-     * @return the DigitalTwinsModelData object itself.
-     */
-    public DigitalTwinsModelData setDescriptionLanguageMap(Map<String, String> description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
      * Get the id property: The id of the model as specified in the model definition.
      *
      * @return the id value.
@@ -108,34 +109,12 @@ public final class DigitalTwinsModelData {
     }
 
     /**
-     * Set the id property: The id of the model as specified in the model definition.
-     *
-     * @param id the id value to set.
-     * @return the DigitalTwinsModelData object itself.
-     */
-    public DigitalTwinsModelData setModelId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
      * Get the uploadTime property: The time the model was uploaded to the service.
      *
      * @return the uploadTime value.
      */
     public OffsetDateTime getUploadTime() {
         return this.uploadTime;
-    }
-
-    /**
-     * Set the uploadTime property: The time the model was uploaded to the service.
-     *
-     * @param uploadTime the uploadTime value to set.
-     * @return the DigitalTwinsModelData object itself.
-     */
-    public DigitalTwinsModelData setUploadTime(OffsetDateTime uploadTime) {
-        this.uploadTime = uploadTime;
-        return this;
     }
 
     /**
@@ -149,34 +128,11 @@ public final class DigitalTwinsModelData {
     }
 
     /**
-     * Set the decommissioned property: Indicates if the model is decommissioned. Decommissioned models cannot be
-     * referenced by newly created digital twins.
-     *
-     * @param decommissioned the decommissioned value to set.
-     * @return the DigitalTwinsModelData object itself.
-     */
-    public DigitalTwinsModelData setDecommissioned(boolean decommissioned) {
-        this.decommissioned = decommissioned;
-        return this;
-    }
-
-    /**
      * Get the model property: The model definition.
      *
      * @return the model value.
      */
     public String getModel() {
         return this.model;
-    }
-
-    /**
-     * Set the model property: The model definition.
-     *
-     * @param model the model value to set.
-     * @return the DigitalTwinsModelData object itself.
-     */
-    public DigitalTwinsModelData setModel(String model) {
-        this.model = model;
-        return this;
     }
 }
