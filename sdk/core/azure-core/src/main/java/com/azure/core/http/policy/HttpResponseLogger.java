@@ -8,34 +8,31 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
-
 /**
  * Manages logging HTTP responses in {@link HttpLoggingPolicy}.
  */
+@FunctionalInterface
 public interface HttpResponseLogger {
     /**
      * Gets the {@link LogLevel} used to log the HTTP response.
      * <p>
      * By default this will return {@link LogLevel#INFORMATIONAL}.
      *
-     * @param response The HTTP response.
-     * @param responseDuration The duration between sending the request and receiving the response.
+     * @param loggingOptions The information available during response logging.
      * @return The {@link LogLevel} used to log the HTTP response.
      */
-    default LogLevel getLogLevel(HttpResponse response, Duration responseDuration) {
+    default LogLevel getLogLevel(HttpResponseLoggingOptions loggingOptions) {
         return LogLevel.INFORMATIONAL;
     }
 
     /**
      * Logs the HTTP response.
      * <p>
-     * To get the {@link LogLevel} used to log the HTTP response use {@link #getLogLevel(HttpResponse, Duration)}.
+     * To get the {@link LogLevel} used to log the HTTP response use {@link #getLogLevel(HttpResponseLoggingOptions)}.
      *
      * @param logger The {@link ClientLogger} used to log the response.
-     * @param response The HTTP response.
-     * @param responseDuration The duration between sending the request and receiving the response.
+     * @param loggingOptions The information available during response logging.
      * @return A reactive response that returns the HTTP response that was logged.
      */
-    Mono<HttpResponse> logResponse(ClientLogger logger, HttpResponse response, Duration responseDuration);
+    Mono<HttpResponse> logResponse(ClientLogger logger, HttpResponseLoggingOptions loggingOptions);
 }

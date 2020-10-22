@@ -6,7 +6,6 @@ package com.azure.core.http.policy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -24,7 +23,6 @@ public class HttpLogOptions {
     private Set<String> allowedQueryParamNames;
     private boolean prettyPrintBody;
 
-    private LogLevel defaultLogLevel;
     private HttpRequestLogger requestLogger;
     private HttpResponseLogger responseLogger;
 

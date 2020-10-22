@@ -67,6 +67,15 @@ public final class HttpPipelineCallContext {
     }
 
     /**
+     * Gets the context associated to the request.
+     *
+     * @return The context associated to the request.
+     */
+    public Context getContext() {
+        return data;
+    }
+
+    /**
      * Gets the HTTP request.
      *
      * @return The HTTP request.

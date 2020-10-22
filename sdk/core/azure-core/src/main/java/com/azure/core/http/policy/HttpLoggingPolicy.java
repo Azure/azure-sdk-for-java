@@ -40,6 +40,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static final int MAX_BODY_LOG_SIZE = 1024 * 16;
     private static final String REDACTED_PLACEHOLDER = "REDACTED";
 
+    private final ClientLogger logger = new ClientLogger(HttpLoggingPolicy.class);
+
     private final HttpLogDetailLevel httpLogDetailLevel;
     private final Set<String> allowedHeaderNames;
     private final Set<String> allowedQueryParameterNames;
@@ -98,23 +100,34 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         final ClientLogger logger = new ClientLogger((String) context.getData("caller-method").orElse(""));
         final long startNs = System.nanoTime();
 
-        return requestLogger.logRequest(logger, context)
+        return requestLogger.logRequest(logger, getRequestLoggingOptions(context))
             .then(next.process())
-            .flatMap(response -> responseLogger.logResponse(logger, response,
-                Duration.ofNanos(System.nanoTime() - startNs)))
+            .flatMap(response -> responseLogger.logResponse(logger,
+                getResponseLoggingOptions(response, startNs, context)))
             .doOnError(throwable -> logger.warning("<-- HTTP FAILED: ", throwable));
+    }
+
+    private HttpRequestLoggingOptions getRequestLoggingOptions(HttpPipelineCallContext callContext) {
+        return new HttpRequestLoggingOptions(callContext.getHttpRequest(), callContext.getContext(),
+            getRequestRetryCount(callContext.getContext(), getHttpLoggingPolicyLogger()));
+    }
+
+    private HttpResponseLoggingOptions getResponseLoggingOptions(HttpResponse httpResponse, long startNs,
+        HttpPipelineCallContext callContext) {
+        return new HttpResponseLoggingOptions(httpResponse, Duration.ofNanos(System.nanoTime() - startNs),
+            callContext.getContext(), getRequestRetryCount(callContext.getContext(), getHttpLoggingPolicyLogger()));
     }
 
     private final class DefaultHttpRequestLogger implements HttpRequestLogger {
         @Override
-        public Mono<Void> logRequest(ClientLogger logger, HttpPipelineCallContext callContext) {
-            final LogLevel logLevel = getLogLevel(callContext);
+        public Mono<Void> logRequest(ClientLogger logger, HttpRequestLoggingOptions loggingOptions) {
+            final LogLevel logLevel = getLogLevel(loggingOptions);
 
             if (!logger.canLogAtLevel(logLevel)) {
                 return Mono.empty();
             }
 
-            final HttpRequest request = callContext.getHttpRequest();
+            final HttpRequest request = loggingOptions.getHttpRequest();
 
             StringBuilder requestLogMessage = new StringBuilder();
             if (httpLogDetailLevel.shouldLogUrl()) {
@@ -124,7 +137,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                     .append(getRedactedUrl(request.getUrl(), allowedQueryParameterNames))
                     .append(System.lineSeparator());
 
-                Integer retryCount = getRequestRetryCount(callContext, logger);
+                Integer retryCount = loggingOptions.getTryCount();
                 if (retryCount != null) {
                     requestLogMessage.append("Try count: ")
                         .append(retryCount)
@@ -191,8 +204,9 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
     private final class DefaultHttpResponseLogger implements HttpResponseLogger {
         @Override
-        public Mono<HttpResponse> logResponse(ClientLogger logger, HttpResponse response, Duration responseDuration) {
-            final LogLevel logLevel = getLogLevel(response, responseDuration);
+        public Mono<HttpResponse> logResponse(ClientLogger logger, HttpResponseLoggingOptions loggingOptions) {
+            final LogLevel logLevel = getLogLevel(loggingOptions);
+            final HttpResponse response = loggingOptions.getHttpResponse();
 
             if (!logger.canLogAtLevel(logLevel)) {
                 return Mono.just(response);
@@ -210,7 +224,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                     .append(" ")
                     .append(getRedactedUrl(response.getRequest().getUrl(), allowedQueryParameterNames))
                     .append(" (")
-                    .append(responseDuration.toMillis())
+                    .append(loggingOptions.getResponseDuration().toMillis())
                     .append(" ms, ")
                     .append(bodySize)
                     .append(")")
@@ -253,6 +267,10 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 return logAndReturn(logger, logLevel, responseLogMessage, response);
             }
         }
+    }
+
+    private ClientLogger getHttpLoggingPolicyLogger() {
+        return this.logger;
     }
 
     private static <T> Mono<T> logAndReturn(ClientLogger logger, LogLevel logLevel, StringBuilder logMessageBuilder,
@@ -442,8 +460,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * If there is no value set or it isn't a valid number null will be returned indicating that retry count won't be
      * logged.
      */
-    private static Integer getRequestRetryCount(HttpPipelineCallContext callContext, ClientLogger logger) {
-        Object rawRetryCount = callContext.getData(RETRY_COUNT_CONTEXT).orElse(null);
+    private static Integer getRequestRetryCount(Context context, ClientLogger logger) {
+        Object rawRetryCount = context.getData(RETRY_COUNT_CONTEXT).orElse(null);
         if (rawRetryCount == null) {
             return null;
         }
