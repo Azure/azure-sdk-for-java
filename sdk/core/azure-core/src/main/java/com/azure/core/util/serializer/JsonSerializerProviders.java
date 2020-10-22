@@ -14,8 +14,8 @@ public final class JsonSerializerProviders {
         + "serializer provider but one could not be found on the classpath. If you are using a dependency manager, "
         + "consider including a dependency on azure-core-serializer-json-jackson or azure-core-serializer-json-gson. "
         + "Depending on your existing dependencies, you have the choice of Jackson or GSON implementations. "
-        + "Additionally, refer to https://github.com/Azure/azure-sdk-for-java/wiki/Custom-JSON-serializer to learn "
-        + "about writing your own implementation.";
+        + "Additionally, refer to https://aka.ms/azsdk/java/docs/custom-jsonserializer to learn about writing your own "
+        + "implementation.";
 
     private static JsonSerializerProvider defaultProvider;
     private static boolean attemptedLoad;

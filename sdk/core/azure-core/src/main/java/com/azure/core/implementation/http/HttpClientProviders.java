@@ -17,8 +17,7 @@ public final class HttpClientProviders {
         + "but one could not be found on the classpath. If you are using a dependency manager, consider including a "
         + "dependency on azure-core-http-netty or azure-core-http-okhttp. Depending on your existing dependencies, you "
         + "have the choice of Netty or OkHttp implementations. Additionally, refer to "
-        + "https://github.com/Azure/azure-sdk-for-java/wiki/Custom-HTTP-Clients to learn about writing your own "
-        + "implementation.";
+        + "https://aka.ms/azsdk/java/docs/custom-httpclient to learn about writing your own implementation.";
 
     static {
         ServiceLoader<HttpClientProvider> serviceLoader = ServiceLoader.load(HttpClientProvider.class);
