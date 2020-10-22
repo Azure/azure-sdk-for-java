@@ -28,13 +28,13 @@ import java.util.function.Function;
 /**
  * Represents an session that is received when "any" session is accepted from the service.
  */
-class UnnamedSessionReceiver implements AutoCloseable {
+class ServiceBusSessionReceiver implements AutoCloseable {
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final LockContainer<OffsetDateTime> lockContainer;
     private final AtomicReference<OffsetDateTime> sessionLockedUntil = new AtomicReference<>();
     private final AtomicReference<String> sessionId = new AtomicReference<>();
     private final AtomicReference<LockRenewalOperation> renewalOperation = new AtomicReference<>();
-    private final ClientLogger logger = new ClientLogger(UnnamedSessionReceiver.class);
+    private final ClientLogger logger = new ClientLogger(ServiceBusSessionReceiver.class);
     private final ServiceBusReceiveLink receiveLink;
     private final Disposable.Composite subscriptions;
     private final Flux<ServiceBusReceivedMessageContext> receivedMessages;
@@ -53,10 +53,12 @@ class UnnamedSessionReceiver implements AutoCloseable {
      *     idle.
      * @param scheduler The scheduler to publish messages on.
      * @param renewSessionLock Function to renew the session lock.
+     * @param maxSessionLockRenewDuration Maximum time to renew the session lock for. {@code null} or {@link
+     *     Duration#ZERO} to disable session lock renewal.
      */
-    UnnamedSessionReceiver(ServiceBusReceiveLink receiveLink, MessageSerializer messageSerializer,
+    ServiceBusSessionReceiver(ServiceBusReceiveLink receiveLink, MessageSerializer messageSerializer,
         AmqpRetryOptions retryOptions, int prefetch, boolean disposeOnIdle, Scheduler scheduler,
-        Function<String, Mono<OffsetDateTime>> renewSessionLock) {
+        Function<String, Mono<OffsetDateTime>> renewSessionLock, Duration maxSessionLockRenewDuration) {
 
         this.receiveLink = receiveLink;
         this.lockContainer = new LockContainer<>(ServiceBusConstants.OPERATION_TIMEOUT);
@@ -129,9 +131,8 @@ class UnnamedSessionReceiver implements AutoCloseable {
                 logger.info("SessionLockedUntil was already set: {}", sessionLockedUntil);
                 return;
             }
-
             this.renewalOperation.compareAndSet(null, new LockRenewalOperation(sessionId.get(),
-                Duration.ZERO, true, renewSessionLock, lockedUntil));
+                maxSessionLockRenewDuration, true, renewSessionLock, lockedUntil));
         }));
     }
 

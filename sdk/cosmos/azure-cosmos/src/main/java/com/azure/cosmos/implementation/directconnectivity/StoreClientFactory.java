@@ -7,7 +7,6 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
-import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.SessionContainer;
 import com.azure.cosmos.implementation.UserAgentContainer;
 
@@ -29,6 +28,7 @@ public class StoreClientFactory implements AutoCloseable {
     private volatile boolean isClosed;
 
     public StoreClientFactory(
+        IAddressResolver addressResolver,
         DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig,
         Configs configs,
         ConnectionPolicy connectionPolicy,
@@ -37,8 +37,13 @@ public class StoreClientFactory implements AutoCloseable {
         this.configs = configs;
         this.protocol = configs.getProtocol();
         if (enableTransportClientSharing) {
-            this.transportClient = SharedTransportClient.getOrCreateInstance(protocol, configs
-                , connectionPolicy, userAgent, diagnosticsClientConfig);
+            this.transportClient = SharedTransportClient.getOrCreateInstance(
+                protocol,
+                configs,
+                connectionPolicy,
+                userAgent,
+                diagnosticsClientConfig,
+                addressResolver);
         } else {
             if (protocol == Protocol.HTTPS) {
                 this.transportClient = new HttpTransportClient(configs, connectionPolicy, userAgent);
@@ -46,7 +51,7 @@ public class StoreClientFactory implements AutoCloseable {
 
                 RntbdTransportClient.Options rntbdOptions =
                     new RntbdTransportClient.Options.Builder(connectionPolicy).userAgent(userAgent).build();
-                this.transportClient = new RntbdTransportClient(rntbdOptions, configs.getSslContext());
+                this.transportClient = new RntbdTransportClient(rntbdOptions, configs.getSslContext(), addressResolver);
                 diagnosticsClientConfig.withRntbdOptions(rntbdOptions);
 
             } else {

@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.LockContainer;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
@@ -28,7 +29,9 @@ import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.UUID;
+import java.util.function.Function;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -52,6 +55,7 @@ class ServiceBusAsyncConsumerTest {
     private final ClientLogger logger = new ClientLogger(ServiceBusAsyncConsumer.class);
 
     private ServiceBusReceiveLinkProcessor linkProcessor;
+    private Function<String, Mono<OffsetDateTime>> onRenewLock;
 
     @Mock
     private ServiceBusAmqpConnection connection;
@@ -61,6 +65,8 @@ class ServiceBusAsyncConsumerTest {
     private AmqpRetryPolicy retryPolicy;
     @Mock
     private MessageSerializer serializer;
+    @Mock
+    LockContainer<LockRenewalOperation> messageLockContainer;
 
     @BeforeAll
     static void beforeAll() {
@@ -85,6 +91,7 @@ class ServiceBusAsyncConsumerTest {
 
         when(connection.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link.updateDisposition(anyString(), any(DeliveryState.class))).thenReturn(Mono.empty());
+        onRenewLock = (lockToken) -> Mono.just(OffsetDateTime.now().plusSeconds(1));
     }
 
     @AfterEach
@@ -106,8 +113,12 @@ class ServiceBusAsyncConsumerTest {
     void receiveNoAutoComplete() {
         // Arrange
         final int prefetch = 10;
+        final Duration maxAutoLockRenewDuration = Duration.ofSeconds(0);
+        final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(3);
+        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, prefetch, "sessionId", false, 1, maxAutoLockRenewDuration);
+
         final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
-            prefetch);
+            receiverOptions);
 
         final Message message1 = mock(Message.class);
         final Message message2 = mock(Message.class);
@@ -118,6 +129,8 @@ class ServiceBusAsyncConsumerTest {
 
         when(receivedMessage1.getLockToken()).thenReturn(lockToken1);
         when(receivedMessage2.getLockToken()).thenReturn(lockToken2);
+        when(receivedMessage1.getLockedUntil()).thenReturn(lockedUntil);
+        when(receivedMessage2.getLockedUntil()).thenReturn(lockedUntil);
 
         when(serializer.deserialize(message1, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage1);
         when(serializer.deserialize(message2, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage2);
@@ -145,14 +158,19 @@ class ServiceBusAsyncConsumerTest {
     void canDispose() {
         // Arrange
         final int prefetch = 10;
+        final Duration maxAutoLockRenewDuration = Duration.ofSeconds(40);
+        final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(3);
         final String lockToken = UUID.randomUUID().toString();
+        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, prefetch, "sessionId", false, 1, maxAutoLockRenewDuration);
+
         final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
-            prefetch);
+            receiverOptions);
 
         final Message message1 = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);
 
         when(receivedMessage1.getLockToken()).thenReturn(lockToken);
+        when(receivedMessage1.getLockedUntil()).thenReturn(lockedUntil);
         when(serializer.deserialize(message1, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage1);
 
         // Act and Assert
@@ -168,6 +186,45 @@ class ServiceBusAsyncConsumerTest {
                 endpointPublisher.complete();
             })
             .verifyComplete();
+
+        verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class));
+    }
+
+    /**
+     * Verifies that if publisher errors out, it also complete with error.
+     */
+    @Test
+    void onError() {
+        // Arrange
+        final int prefetch = 10;
+        final Duration maxAutoLockRenewDuration = Duration.ofSeconds(40);
+        final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(3);
+        final String lockToken = UUID.randomUUID().toString();
+        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, prefetch, "sessionId", false, 1, maxAutoLockRenewDuration);
+
+        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
+            receiverOptions);
+
+        final Message message1 = mock(Message.class);
+        final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);
+
+        when(receivedMessage1.getLockToken()).thenReturn(lockToken);
+        when(receivedMessage1.getLockedUntil()).thenReturn(lockedUntil);
+        when(serializer.deserialize(message1, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage1);
+
+        // Act and Assert
+        StepVerifier.create(consumer.receive())
+            .then(() -> {
+                linkPublisher.next(link);
+                endpointPublisher.next(AmqpEndpointState.ACTIVE);
+                messagePublisher.next(message1);
+            })
+            .expectNext(receivedMessage1)
+            .then(() -> {
+                linkPublisher.error(new Throwable("fake error"));
+                endpointPublisher.complete();
+            })
+            .verifyError();
 
         verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class));
     }

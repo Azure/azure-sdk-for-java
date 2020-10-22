@@ -78,7 +78,7 @@ public class ComponentSyncSamples {
         Iterable<DigitalTwinsModelData> modelList =  client.createModels(modelsList);
 
         for (DigitalTwinsModelData model : modelList) {
-            ConsoleLogger.print("Created model: " + model.getId());
+            ConsoleLogger.print("Created model: " + model.getModelId());
         }
 
         ConsoleLogger.printHeader("Create digital twin with components");
@@ -124,7 +124,7 @@ public class ComponentSyncSamples {
             HashMap component1 = mapper.readValue(component1RawText, HashMap.class);
 
             ConsoleLogger.print("Retrieved digital twin using generic API to use built in deserialization into a BasicDigitalTwin with Id: " + basicDigitalTwin.getId() + ":\n\t"
-                + "Etag: " + basicDigitalTwin.getTwinETag() + "\n\t"
+                + "Etag: " + basicDigitalTwin.getDigitalTwinEtag() + "\n\t"
                 + "Prop1: " + basicDigitalTwin.getCustomProperties().get("Prop1") + "\n\t"
                 + "Prop2: " + basicDigitalTwin.getCustomProperties().get("Prop2") + "\n\t"
                 + "ComponentProp1: " + component1.get("ComponentProp1") + "\n\t"
