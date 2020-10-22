@@ -39,9 +39,9 @@
       <version>25.0-jre</version> <!-- {x-version-update;cosmos_com.google.guava:guava;external_dependency} -->
     </dependency>
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>spring-cloud-starter-azure-appconfiguration-config</artifactId>
-      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config;current} -->
+      <groupId>com.azure.spring</groupId>
+      <artifactId>azure-spring-cloud-starter-appconfiguration-config</artifactId>
+      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-appconfiguration-config;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

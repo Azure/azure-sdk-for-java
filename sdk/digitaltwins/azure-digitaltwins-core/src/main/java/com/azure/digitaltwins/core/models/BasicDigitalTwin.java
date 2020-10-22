@@ -32,21 +32,23 @@ public final class BasicDigitalTwin {
     private final Map<String, Object> customProperties = new HashMap<>();
 
     /**
+     * Construct a basic digital twin.
+     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
+     */
+    public BasicDigitalTwin(String digitalTwinId) {
+        this.id = digitalTwinId;
+    }
+
+    // Empty constructor for json deserialization purposes
+    private BasicDigitalTwin() {
+    }
+
+    /**
      * Gets the unique Id of the digital twin in a digital twins instance. This field is present on every digital twin.
      * @return The unique Id of the digital twin in a digital twins instance. This field is present on every digital twin.
      */
     public String getId() {
         return id;
-    }
-
-    /**
-     * Sets the unique Id of the digital twin in a digital twins instance. This field is present on every digital twin.
-     * @param id The unique Id of the digital twin in a digital twins instance. This field is present on every digital twin.
-     * @return The BasicDigitalTwin object itself.
-     */
-    public BasicDigitalTwin setId(String id) {
-        this.id =id;
-        return this;
     }
 
     /**

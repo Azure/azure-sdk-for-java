@@ -39,8 +39,9 @@ pr:
       - sdk/eventgrid/azure-messaging-eventgrid
 
 extends:
-  template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
+    SDKType: data
     ServiceDirectory: eventgrid
     Artifacts:
       - name: azure-eventgrid

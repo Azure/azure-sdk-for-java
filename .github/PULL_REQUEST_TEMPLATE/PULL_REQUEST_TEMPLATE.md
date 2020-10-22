@@ -1,5 +1,5 @@
 <!-- DO NOT DELETE THIS TEMPLATE -->
-#Azure SDK for Java Pull Request Template Guide
+# Azure SDK for Java Pull Request Template Guide
 
 Thank you for your interest in contributing to Azure SDK for Java.
 

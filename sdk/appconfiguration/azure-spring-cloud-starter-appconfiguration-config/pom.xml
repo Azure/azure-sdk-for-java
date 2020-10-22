@@ -9,35 +9,17 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.microsoft.azure</groupId>
-  <artifactId>spring-cloud-starter-azure-appconfiguration-config</artifactId>
-  <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config;current} -->
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-cloud-starter-appconfiguration-config</artifactId>
+  <version>1.2.8-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-appconfiguration-config;current} -->
 
   <name>Azure Spring Cloud Appconfiguration Config</name>
 
-    <dependencies>
-        <dependency>
-          <groupId>com.microsoft.azure</groupId>
-          <artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
-          <version>1.2.8-beta.1</version><!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-appconfiguration-config;current} -->
-        </dependency>
-    </dependencies>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
-        <configuration>
-          <rules>
-            <bannedDependencies>
-              <includes>
-                <include>com.microsoft.azure:spring-cloud-azure-appconfiguration-config:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-appconfiguration-config;current} -->
-              </includes>
-            </bannedDependencies>
-          </rules>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+  <dependencies>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>azure-spring-cloud-appconfiguration-config</artifactId>
+      <version>1.2.8-beta.1</version><!-- {x-version-update;com.azure.spring:azure-spring-cloud-appconfiguration-config;current} -->
+    </dependency>
+  </dependencies>
 </project>
