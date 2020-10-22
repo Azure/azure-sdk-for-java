@@ -5,16 +5,15 @@ package com.azure.digitaltwins.core.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Context;
-import com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsUpdateOptions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The optional parameters for
- * {@link com.azure.digitaltwins.core.DigitalTwinsClient#decommissionModelWithResponse(String, UpdateModelOptions, Context)} and
- * {@link com.azure.digitaltwins.core.DigitalTwinsAsyncClient#decommissionModelWithResponse(String, UpdateModelOptions)}
+ * {@link com.azure.digitaltwins.core.DigitalTwinsClient#decommissionModelWithResponse(String, DecommissionModelOptions, Context)} and
+ * {@link com.azure.digitaltwins.core.DigitalTwinsAsyncClient#decommissionModelWithResponse(String, DecommissionModelOptions)}
  */
 @Fluent
-public final class UpdateModelOptions {
+public final class DecommissionModelOptions {
     /*
      * Identifies the request in a distributed tracing system.
      */
@@ -33,7 +32,7 @@ public final class UpdateModelOptions {
      *
      * @return the traceparent value.
      */
-    public String getTraceparent() {
+    public String getTraceParent() {
         return this.traceparent;
     }
 
@@ -41,9 +40,9 @@ public final class UpdateModelOptions {
      * Set the traceparent property: Identifies the request in a distributed tracing system.
      *
      * @param traceparent the traceparent value to set.
-     * @return the UpdateModelOptions object itself.
+     * @return the DecommissionModelOptions object itself.
      */
-    public UpdateModelOptions setTraceparent(String traceparent) {
+    public DecommissionModelOptions setTraceparent(String traceparent) {
         this.traceparent = traceparent;
         return this;
     }
@@ -54,7 +53,7 @@ public final class UpdateModelOptions {
      *
      * @return the tracestate value.
      */
-    public String getTracestate() {
+    public String getTraceState() {
         return this.tracestate;
     }
 
@@ -63,9 +62,9 @@ public final class UpdateModelOptions {
      * traceparent.
      *
      * @param tracestate the tracestate value to set.
-     * @return the UpdateModelOptions object itself.
+     * @return the DecommissionModelOptions object itself.
      */
-    public UpdateModelOptions setTracestate(String tracestate) {
+    public DecommissionModelOptions setTracestate(String tracestate) {
         this.tracestate = tracestate;
         return this;
     }

@@ -45,11 +45,11 @@ public final class EventRoute {
     }
 
     /**
-     * Get the id property: The id of the event route.
+     * Get this event route's id property: The id of the event route.
      *
      * @return the id value.
      */
-    public String getId() {
+    public String getEventRouteId() {
         return this.id;
     }
 
@@ -83,12 +83,12 @@ public final class EventRoute {
     }
 
     /**
-     * Sets the event route's Id.
+     * Sets this event route's Id.
      *
      * @param id The event route's Id to set.
      * @return the EventRoute object itself.
      */
-    public EventRoute setId(String id) {
+    public EventRoute setEventRouteId(String id) {
         this.id = id;
         return this;
     }
