@@ -594,7 +594,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             : getOrCreateConsumer().receive().map(ServiceBusReceivedMessageContext::new);
 
         if (receiverOptions.isEnableAutoComplete()) {
-            return new FluxAutoComplete<>(messageFlux,
+            return new FluxAutoComplete(messageFlux,
                 context -> context.getMessage() != null ? complete(context.getMessage()) : Mono.empty(),
                 context -> context.getMessage() != null ? abandon(context.getMessage()) : Mono.empty());
         } else {

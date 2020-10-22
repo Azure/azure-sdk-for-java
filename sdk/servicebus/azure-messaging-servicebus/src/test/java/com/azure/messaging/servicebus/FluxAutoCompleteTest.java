@@ -61,11 +61,11 @@ class FluxAutoCompleteTest {
         when(onAbandon.apply(any())).thenReturn(Mono.empty());
 
         // Act & Assert
-        assertThrows(NullPointerException.class, () -> new FluxAutoComplete<>(null, onComplete, onAbandon));
+        assertThrows(NullPointerException.class, () -> new FluxAutoComplete(null, onComplete, onAbandon));
         assertThrows(NullPointerException.class,
-            () -> new FluxAutoComplete<>(testPublisher.flux(), null, onAbandon));
+            () -> new FluxAutoComplete(testPublisher.flux(), null, onAbandon));
         assertThrows(NullPointerException.class,
-            () -> new FluxAutoComplete<>(testPublisher.flux(), onComplete, null));
+            () -> new FluxAutoComplete(testPublisher.flux(), onComplete, null));
     }
 
     @Test
@@ -76,8 +76,7 @@ class FluxAutoCompleteTest {
         final ServiceBusReceivedMessageContext context = new ServiceBusReceivedMessageContext(message);
         final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceivedMessageContext context2 = new ServiceBusReceivedMessageContext(message2);
-        final FluxAutoComplete<ServiceBusReceivedMessageContext> autoComplete = new FluxAutoComplete<>(testPublisher.flux(),
-            onComplete, onAbandon);
+        final FluxAutoComplete autoComplete = new FluxAutoComplete(testPublisher.flux(), onComplete, onAbandon);
 
         when(onComplete.apply(any())).thenReturn(Mono.empty());
         when(onAbandon.apply(any())).thenReturn(Mono.empty());
@@ -102,8 +101,7 @@ class FluxAutoCompleteTest {
         final ServiceBusReceivedMessageContext context = new ServiceBusReceivedMessageContext(message);
         final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceivedMessageContext context2 = new ServiceBusReceivedMessageContext(message2);
-        final FluxAutoComplete<ServiceBusReceivedMessageContext> autoComplete = new FluxAutoComplete<>(testPublisher.flux(),
-            onComplete, onAbandon);
+        final FluxAutoComplete autoComplete = new FluxAutoComplete(testPublisher.flux(), onComplete, onAbandon);
 
         when(onComplete.apply(any())).thenReturn(Mono.empty());
         when(onAbandon.apply(any())).thenReturn(Mono.empty());
@@ -133,8 +131,7 @@ class FluxAutoCompleteTest {
         final ServiceBusReceivedMessageContext context = new ServiceBusReceivedMessageContext(message);
         final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceivedMessageContext context2 = new ServiceBusReceivedMessageContext(message2);
-        final FluxAutoComplete<ServiceBusReceivedMessageContext> autoComplete = new FluxAutoComplete<>(testPublisher.flux(),
-            onComplete, onAbandon);
+        final FluxAutoComplete autoComplete = new FluxAutoComplete(testPublisher.flux(), onComplete, onAbandon);
         final Throwable testError = new IllegalArgumentException("Dummy exception");
 
         when(onComplete.apply(any())).thenReturn(Mono.empty());
@@ -167,8 +164,7 @@ class FluxAutoCompleteTest {
         final ServiceBusReceivedMessageContext context3 = new ServiceBusReceivedMessageContext(message3);
         final ServiceBusReceivedMessage message4 = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceivedMessageContext context4 = new ServiceBusReceivedMessageContext(message4);
-        final FluxAutoComplete<ServiceBusReceivedMessageContext> autoComplete = new FluxAutoComplete<>(testPublisher.flux(),
-            onComplete, onAbandon);
+        final FluxAutoComplete autoComplete = new FluxAutoComplete(testPublisher.flux(), onComplete, onAbandon);
 
         when(onComplete.apply(any())).thenReturn(Mono.empty());
         when(onAbandon.apply(any())).thenReturn(Mono.empty());
@@ -204,8 +200,7 @@ class FluxAutoCompleteTest {
         final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceivedMessageContext context2 = new ServiceBusReceivedMessageContext(message2);
 
-        final FluxAutoComplete<ServiceBusReceivedMessageContext> autoComplete = new FluxAutoComplete<>(testPublisher.flux(),
-            onComplete, onAbandon);
+        final FluxAutoComplete autoComplete = new FluxAutoComplete(testPublisher.flux(), onComplete, onAbandon);
         final Throwable testError = new IllegalArgumentException("Dummy error");
 
         when(onComplete.apply(any())).thenReturn(Mono.empty(), Mono.error(testError), Mono.empty(), Mono.empty());

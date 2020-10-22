@@ -18,12 +18,13 @@ import java.util.function.Function;
 /**
  * Flux operator that auto-completes or auto-abandons messages when control is returned successfully.
  */
-class FluxAutoComplete<T extends ServiceBusReceivedMessageContext> extends FluxOperator<T, T> {
+class FluxAutoComplete extends FluxOperator<ServiceBusReceivedMessageContext, ServiceBusReceivedMessageContext> {
     private final Function<ServiceBusReceivedMessageContext, Mono<Void>> onComplete;
     private final Function<ServiceBusReceivedMessageContext, Mono<Void>> onAbandon;
     private final ClientLogger logger = new ClientLogger(FluxAutoComplete.class);
 
-    FluxAutoComplete(Flux<? extends T> upstream, Function<ServiceBusReceivedMessageContext, Mono<Void>> onComplete,
+    FluxAutoComplete(Flux<? extends ServiceBusReceivedMessageContext> upstream,
+        Function<ServiceBusReceivedMessageContext, Mono<Void>> onComplete,
         Function<ServiceBusReceivedMessageContext, Mono<Void>> onAbandon) {
         super(upstream);
         this.onComplete = Objects.requireNonNull(onComplete, "'onComplete' cannot be null.");
@@ -36,22 +37,22 @@ class FluxAutoComplete<T extends ServiceBusReceivedMessageContext> extends FluxO
      * @param coreSubscriber The subscriber interested in the published items.
      */
     @Override
-    public void subscribe(CoreSubscriber<? super T> coreSubscriber) {
+    public void subscribe(CoreSubscriber<? super ServiceBusReceivedMessageContext> coreSubscriber) {
         Objects.requireNonNull(coreSubscriber, "'coreSubscriber' cannot be null.");
 
-        final AutoCompleteSubscriber<T> subscriber =
-            new AutoCompleteSubscriber<T>(coreSubscriber, onComplete, onAbandon, logger);
+        final AutoCompleteSubscriber subscriber =
+            new AutoCompleteSubscriber(coreSubscriber, onComplete, onAbandon, logger);
 
         source.subscribe(subscriber);
     }
 
-    static final class AutoCompleteSubscriber<T extends ServiceBusReceivedMessageContext> extends BaseSubscriber<T> {
-        private final CoreSubscriber<? super T> downstream;
+    static final class AutoCompleteSubscriber extends BaseSubscriber<ServiceBusReceivedMessageContext> {
+        private final CoreSubscriber<? super ServiceBusReceivedMessageContext> downstream;
         private final Function<ServiceBusReceivedMessageContext, Mono<Void>> onComplete;
         private final Function<ServiceBusReceivedMessageContext, Mono<Void>> onAbandon;
         private final ClientLogger logger;
 
-        AutoCompleteSubscriber(CoreSubscriber<? super T> downstream,
+        AutoCompleteSubscriber(CoreSubscriber<? super ServiceBusReceivedMessageContext> downstream,
             Function<ServiceBusReceivedMessageContext, Mono<Void>> onComplete,
             Function<ServiceBusReceivedMessageContext, Mono<Void>> onAbandon, ClientLogger logger) {
             this.downstream = downstream;
@@ -68,7 +69,7 @@ class FluxAutoComplete<T extends ServiceBusReceivedMessageContext> extends FluxO
         }
 
         @Override
-        protected void hookOnNext(T value) {
+        protected void hookOnNext(ServiceBusReceivedMessageContext value) {
             final ServiceBusReceivedMessage message = value.getMessage();
             final String sequenceNumber = message != null ? String.valueOf(message.getSequenceNumber()) : "n/a";
 
@@ -117,9 +118,10 @@ class FluxAutoComplete<T extends ServiceBusReceivedMessageContext> extends FluxO
          * @param message received message to apply function to.
          * @param operation The operation name.
          */
-        private void applyWithCatch(Function<ServiceBusReceivedMessageContext, Mono<Void>> function, T message,
-            String operation) {
+        private void applyWithCatch(Function<ServiceBusReceivedMessageContext, Mono<Void>> function,
+            ServiceBusReceivedMessageContext message, String operation) {
             try {
+                logger.verbose("Applying operation: {}", operation);
                 function.apply(message).block();
             } catch (Exception e) {
                 logger.warning("Unable to '{}' message.", operation, e);
