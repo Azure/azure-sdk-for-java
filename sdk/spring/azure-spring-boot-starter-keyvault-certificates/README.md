@@ -5,8 +5,8 @@
 ### Using a managed identity
 
 To use the starter for server side SSL, you will need to add the following to
-your application.properties (if the application is using Spring Cloud Config 
-Server for its configuration add it to the bootstrap.yml of the application)
+your `application.properties` (if the application is using Spring Cloud Config 
+Server for its configuration add it to the `bootstrap.yml` of the application)
 
 ```
 azure.keyvault.uri=<the URI of the Azure Key Vault to use>
@@ -29,8 +29,8 @@ Add then add the following Maven dependency to your POM file.
 ### Using a client ID and client secret
 
 To use the starter for server side SSL, you will need to add the following to
-your application.properties (if the application is using Spring Cloud Config 
-Server for its configuration add it to the bootstrap.yml of the application)
+your `application.properties` (if the application is using Spring Cloud Config 
+Server for its configuration add it to the `bootstrap.yml` of the application)
 
 ```
 azure.keyvault.uri=<the URI of the Azure Key Vault to use>
@@ -58,8 +58,8 @@ Add then add the following Maven dependency to your POM file.
 ### Using a managed identity
 
 To use the starter for client side SSL, you will need to add the following to
-your application.properties (if the application is using Spring Cloud Config 
-Server for its configuration add it to the bootstrap.yml of the application)
+your `application.properties` (if the application is using Spring Cloud Config 
+Server for its configuration add it to the `bootstrap.yml` of the application)
 
 ```
 azure.keyvault.uri=<the URI of the Azure Key Vault to use>
@@ -104,8 +104,8 @@ If you are using `RestTemplate` use code similar to the example below.
 ### Using a client ID and client secret
 
 To use the starter for client side SSL, you will need to add the following to
-your application.properties (if the application is using Spring Cloud Config 
-Server for its configuration add it to the bootstrap.yml of the application)
+your `application.properties` (if the application is using Spring Cloud Config 
+Server for its configuration add it to the `bootstrap.yml` of the application)
 
 ```
 azure.keyvault.uri=<the URI of the Azure Key Vault to use>

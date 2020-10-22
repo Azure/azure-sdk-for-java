@@ -32,8 +32,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * The unit test validating the ServerSocket is created using a certificate 
  * from Azure Key Vault.
- *
- * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 public class ServerSocketTest {
 

@@ -33,8 +33,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * The JUnit tests for the KeyVaultCertificate class.
- *
- * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 public class KeyVaultCertificateTest {
 
