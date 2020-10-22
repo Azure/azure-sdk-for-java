@@ -2,7 +2,8 @@ $Language = "java"
 $PackageRepository = "Maven"
 $packagePattern = "*.pom"
 $MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/java-packages.csv"
-
+$DefaultGroupId = "com.azure"
+$BlobStorageUrl = "https://azuresdkdocs.blob.core.windows.net/%24web?restype=container&comp=list&prefix=java%2F&delimiter=%2F"
 function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory, $pkgName)
 {
   $projectPath = Join-Path $pkgPath "pom.xml"
@@ -152,4 +153,24 @@ function Publish-java-GithubIODocs ($DocLocation, $PublicArtifactLocation)
       }
     }
   }
+}
+
+function Get-java-CSVMetadata () {
+  $metadata = Get-CSVMetadata -MetadataUri $MetadataUri
+  $clientPackages = $metadata | Where-Object { $_.GroupId -eq 'com.azure' } 
+  $nonClientPackages = $metadata | Where-Object { $_.GroupId -ne 'com.azure' -and !$clientPackages.Package.Contains($_.Package) }
+  $uniquePackages = $clientPackages + $nonClientPackages
+  return $uniquePackages
+}
+
+function Get-java-GithubIOArtifact() {
+  return Get-BlobStorage-Artifacts -blobStorageUrl $BlobStorageUrl -blobDirectoryRegex "^java/(.*)/$"
+}
+
+function Generate-java-DocfxTocContent() {
+  generateDocfxTocContent -tocContent $tocContent -titleRegex "Java"
+}
+
+function Generate-java-TocHomepageContent() {
+  return "- name: Azure SDK for Java APIs`r`n  href: api/`r`n  homepage: api/index.md"
 }

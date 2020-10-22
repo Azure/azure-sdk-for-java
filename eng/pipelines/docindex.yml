@@ -23,7 +23,9 @@ jobs:
         displayName: Download and Extract DocFX
 
       - pwsh: |
-          $(Build.SourcesDirectory)/eng/docgeneration/Generate-DocIndex.ps1 -RepoRoot $(Build.SourcesDirectory) -DocGenDir "$(Build.SourcesDirectory)/eng/docgeneration" -verbose
+          $(Build.SourcesDirectory)/eng/docgeneration/Generate-DocIndex.ps1 
+          -Docfx $(Resolve-Path "$(Build.SourcesDirectory)/docfx/docfx.exe")[0]
+          -RepoRoot $(Build.SourcesDirectory) -DocGenDir "$(Build.SourcesDirectory)/eng/docgeneration" -verbose
         displayName: 'Generate Doc Index'
 
       - task: UsePythonVersion@0

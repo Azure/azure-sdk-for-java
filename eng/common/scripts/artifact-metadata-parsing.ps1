@@ -544,3 +544,52 @@ function CheckArtifactShaAgainstTagsList($priorExistingTagList, $releaseSha, $ap
     exit(1)
   }
 }
+
+function Get-CSVMetadata ([string]$MetadataUri) {
+  $metadataResponse = Invoke-RestMethod -Uri $MetadataUri -method "GET" -MaximumRetryCount 3 -RetryIntervalSec 10 | ConvertFrom-Csv
+  return $metadataResponse
+}
+
+function Get-BlobStorage-Artifacts($blobStorageUrl, $blobDirectoryRegex) {
+  LogDebug "Reading artifact from storage blob ..."
+  $returnedArtifacts = @()
+  $pageToken = ""
+  Do {
+      $resp = ""
+      if (!$pageToken) {
+          # First page call.
+          $resp = Invoke-RestMethod -Method Get -Uri $blobStorageUrl
+      }
+      else {
+          # Next page call
+          $blobStorageUrlPageToken = $blobStorageUrl + "&marker=$pageToken"
+          $resp = Invoke-RestMethod -Method Get -Uri $blobStorageUrlPageToken
+      }
+      # Convert to xml documents. 
+      $xmlDoc = [xml](removeBomFromString $resp)
+      foreach ($elem in $xmlDoc.EnumerationResults.Blobs.BlobPrefix) {
+          # What service return like "dotnet/Azure.AI.Anomalydetector/", needs to fetch out "Azure.AI.Anomalydetector"
+          $artifact = $elem.Name -replace $blobDirectoryRegex, '$1'
+          $returnedArtifacts += $artifact
+      }
+      # Fetch page token
+      $pageToken = $xmlDoc.EnumerationResults.NextMarker
+  } while ($pageToken)
+  return $returnedArtifacts
+}
+
+# The sequence of Bom bytes differs by different encoding. 
+# The helper function here is only to strip the utf-8 encoding system as it is used by blob storage list api.
+# Return the original string if not in BOM utf-8 sequence.
+function removeBomFromString([string]$bomAwareString) {
+  if ($bomAwareString.length -le 3) {
+      return $bomAwareString
+  }
+  $bomPatternByteArray = [byte[]] (0xef, 0xbb, 0xbf)
+  # The default encoding for powershell is ISO-8859-1, so converting bytes with the encoding.
+  $bomAwareBytes = [Text.Encoding]::GetEncoding(28591).GetBytes($bomAwareString.Substring(0, 3))
+  if (@(Compare-Object $bomPatternByteArray $bomAwareBytes -SyncWindow 0).Length -eq 0) {
+      return $bomAwareString.Substring(3)
+  }
+  return $bomAwareString
+}
