@@ -26,6 +26,7 @@ import static com.azure.digitaltwins.core.helpers.UniqueIdHelper.getUniqueModelI
 import static java.net.HttpURLConnection.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBase {
@@ -108,7 +109,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
 
             // LIST incoming relationships
             List<String> incomingRelationshipsSourceIds = new ArrayList<>();
-            PagedIterable<IncomingRelationship> listIncomingRelationships = client.listIncomingRelationships(floorTwinId, new DigitalTwinsListIncomingRelationshipsOptions(), Context.NONE);
+            PagedIterable<IncomingRelationship> listIncomingRelationships = client.listIncomingRelationships(floorTwinId, new ListIncomingRelationshipsOptions(), Context.NONE);
             listIncomingRelationships.forEach(incomingRelationship -> incomingRelationshipsSourceIds.add(incomingRelationship.getSourceId()));
             assertThat(incomingRelationshipsSourceIds)
                 .as("Floor has incoming relationships from room and hvac")
@@ -204,39 +205,69 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
         String roomTwinId = getUniqueDigitalTwinId(ROOM_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
         String hvacTwinId = getUniqueDigitalTwinId(HVAC_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
 
-        List<String> createdRelationshipIds = new ArrayList<>();
+        List<String> createdOutgoingRelationshipIds = new ArrayList<>();
+        List<String> createdIncomingRelationshipIds = new ArrayList<>();
 
         try {
             createModelsAndTwins(client, floorModelId, roomModelId, hvacModelId, floorTwinId, roomTwinId, hvacTwinId);
 
             // Connect the created twins via relationships
             String floorContainsRoomPayload = getRelationshipWithPropertyPayload(roomTwinId, CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
+            String roomContainedInFloorPayload = getRelationshipPayload(floorTwinId, CONTAINED_IN_RELATIONSHIP);
 
             // Create large number of relationships to test paging functionality
             // Relationship list api does not have max item count request option so we have to create a large number of them to trigger paging functionality from the service.
             // Create relationships from Floor -> Room
-            for (int i = 0 ; i< BULK_RELATIONSHIP_COUNT ; i++) {
+            for (int i = 0; i < BULK_RELATIONSHIP_COUNT; i++) {
                 String relationshipId = FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID + this.testResourceNamer.randomUuid();
                 client.createRelationship(floorTwinId, relationshipId, deserializeJsonString(floorContainsRoomPayload, BasicRelationship.class), BasicRelationship.class);
-                createdRelationshipIds.add(relationshipId);
+                createdOutgoingRelationshipIds.add(relationshipId);
+            }
+
+            // Create multiple incoming relationships to the floor. Typically a room would have relationships to multiple
+            // different floors, but for the sake of test simplicity, we'll just add multiple relationships from the same room
+            // to the same floor.
+            for (int i = 0; i < BULK_RELATIONSHIP_COUNT; i++) {
+                String relationshipId = ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID + this.testResourceNamer.randomUuid();
+                client.createRelationship(roomTwinId, relationshipId, deserializeJsonString(roomContainedInFloorPayload, BasicRelationship.class), BasicRelationship.class);
+                createdIncomingRelationshipIds.add(relationshipId);
             }
 
             // LIST relationships
-            List<String> relationshipsTargetIds = new ArrayList<>();
-            PagedIterable<BasicRelationship> listRelationships = client.listRelationships(floorTwinId, BasicRelationship.class);
+            PagedIterable<BasicRelationship> listOutgoingRelationships = client.listRelationships(floorTwinId, BasicRelationship.class);
 
-            AtomicInteger pageCount = new AtomicInteger();
-            listRelationships.iterableByPage().forEach(relationshipsPagedResponse -> {
-                pageCount.getAndIncrement();
-                logger.info("content for this page " + pageCount);
-                for (BasicRelationship data: relationshipsPagedResponse.getValue())
-                {
+            AtomicInteger outgoingRelationshipsPageCount = new AtomicInteger();
+            listOutgoingRelationships.iterableByPage().forEach(relationshipsPagedResponse -> {
+                outgoingRelationshipsPageCount.getAndIncrement();
+                logger.info("content for this page " + outgoingRelationshipsPageCount);
+                for (BasicRelationship data: relationshipsPagedResponse.getValue()) {
                     logger.info(data.getId());
+                }
+
+                if (relationshipsPagedResponse.getContinuationToken() != null) {
+                    assertEquals(RELATIONSHIP_PAGE_SIZE_DEFAULT, relationshipsPagedResponse.getValue().size(), "Unexpected page size for a non-terminal page");
                 }
             });
 
-            assertTrue(pageCount.get() > 1, "Number of pages must be more than one.");
+            assertThat(outgoingRelationshipsPageCount.get()).isGreaterThan(1);
 
+            // LIST incoming relationships
+            PagedIterable<IncomingRelationship> listIncomingRelationships = client.listIncomingRelationships(floorTwinId);
+
+            AtomicInteger incomingRelationshipsPageCount = new AtomicInteger();
+            listIncomingRelationships.iterableByPage().forEach(relationshipsPagedResponse -> {
+                incomingRelationshipsPageCount.getAndIncrement();
+                logger.info("content for this page " + incomingRelationshipsPageCount);
+                for (IncomingRelationship data: relationshipsPagedResponse.getValue()) {
+                    logger.info(data.getRelationshipId());
+                }
+
+                if (relationshipsPagedResponse.getContinuationToken() != null) {
+                    assertEquals(RELATIONSHIP_PAGE_SIZE_DEFAULT, relationshipsPagedResponse.getValue().size(), "Unexpected page size for a non-terminal page");
+                }
+            });
+
+            assertThat(incomingRelationshipsPageCount.get()).isGreaterThan(1);
         } finally {
             // Clean up
             try {
@@ -244,7 +275,8 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
 
                 logger.info("Deleting created relationships.");
                 // Delete the created relationships.
-                createdRelationshipIds.forEach(relationshipId -> client.deleteRelationship(floorTwinId, relationshipId));
+                createdOutgoingRelationshipIds.forEach(relationshipId -> client.deleteRelationship(floorTwinId, relationshipId));
+                createdIncomingRelationshipIds.forEach(relationshipId -> client.deleteRelationship(roomTwinId, relationshipId));
 
                 // Now the twins and models can be deleted.
                 logger.info("Deleting created digital twins.");

@@ -158,7 +158,7 @@ There are scenarios which require the state of a feature to remain consistent du
 
 ### Built-In Feature Filters
 
-There are a few feature filters that come with the `spring-cloud-azure-feature-management` package. These feature filters are not added automatically, but can be referenced and registered as soon as the package is registered.
+There are a few feature filters that come with the `azure-spring-cloud-feature-management` package. These feature filters are not added automatically, but can be referenced and registered as soon as the package is registered.
 
 Each of the built-in feature filters have their own parameters. Here is the list of feature filters along with examples.
 

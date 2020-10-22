@@ -60,7 +60,7 @@ public class MSIIdentityManagementTests extends ResourceManagerTestBase {
         ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         ResourceManagerUtils.InternalRuntimeContext internalContext = new ResourceManagerUtils.InternalRuntimeContext();
         internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
-        this.msiManager = MsiManager.authenticate(httpPipeline, profile);
+        this.msiManager = buildManager(MsiManager.class, httpPipeline, profile);
         this.resourceManager = msiManager.resourceManager();
         setInternalContext(internalContext, msiManager);
     }

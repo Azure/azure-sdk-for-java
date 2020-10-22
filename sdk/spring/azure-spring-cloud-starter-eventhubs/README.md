@@ -13,10 +13,10 @@ For Spring Integration on Event Hubs, please refer to the [source code][source_c
 - [Maven][maven] 3.0 and above
 
 ### Include the package
-[//]: # ({x-version-update-start;com.azure:azure-spring-cloud-starter-eventhubs;current})
+[//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-starter-eventhubs;current})
 ```xml
 <dependency>
-    <groupId>com.azure</groupId>
+    <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-cloud-starter-eventhubs</artifactId>
     <version>2.0.0-beta.1</version>
 </dependency>

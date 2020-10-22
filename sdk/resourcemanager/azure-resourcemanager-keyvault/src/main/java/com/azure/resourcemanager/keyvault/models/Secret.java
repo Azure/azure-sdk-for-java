@@ -4,6 +4,8 @@
 package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
@@ -13,7 +15,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 import java.util.Map;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure Key Vault secret. */
@@ -49,10 +50,10 @@ public interface Secret extends Indexable, HasInnerModel<SecretProperties>, HasI
     boolean enabled();
 
     /** @return a list of individual secret versions with the same secret name */
-    Iterable<Secret> listVersions();
+    PagedIterable<Secret> listVersions();
 
     /** @return a list of individual secret versions with the same secret name */
-    Flux<Secret> listVersionsAsync();
+    PagedFlux<Secret> listVersionsAsync();
 
     /** Container interface for all the definitions. */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithValue, DefinitionStages.WithCreate {

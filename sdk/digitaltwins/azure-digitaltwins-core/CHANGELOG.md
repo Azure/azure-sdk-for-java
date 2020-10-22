@@ -1,7 +1,16 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0 (Unreleased)
 
+### New Features
+
+- Regenerate protocol layer from service API version 2020-10-31
+- Update service API version to use service API version 2020-10-31 by default
+- Add optional parameters for traceparent and tracestate to all service request APIs to support distributed tracing
+
+### Breaking Changes
+
+- Add messageId as mandatory parameter for telemetry APIs. Service API version 2020-10-31 requires this parameter.
 
 ## 1.0.0-beta.3 (2020-10-01)
 

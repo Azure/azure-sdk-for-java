@@ -4,14 +4,14 @@
 package com.azure.digitaltwins.core.helpers;
 
 public class SamplesConstants {
-    public static final String ROOM_MODEL_ID = "dtmi:samples:Room;1";
-    public static final String WIFI_MODEL_ID = "dtmi:samples:Wifi;1";
-    public static final String BUILDING_MODEL_ID = "dtmi:samples:Building;1";
-    public static final String FLOOR_MODEL_ID = "dtmi:samples:Floor;1";
-    public static final String HVAC_MODEL_ID = "dtmi:samples:HVAC;1";
+    public static final String ROOM_MODEL_ID = "dtmi:com:samples:Room;1";
+    public static final String WIFI_MODEL_ID = "dtmi:com:samples:Wifi;1";
+    public static final String BUILDING_MODEL_ID = "dtmi:com:samples:Building;1";
+    public static final String FLOOR_MODEL_ID = "dtmi:com:samples:Floor;1";
+    public static final String HVAC_MODEL_ID = "dtmi:com:samples:HVAC;1";
 
-    public static final String TEMPORARY_COMPONENT_MODEL_PREFIX = "dtmi:samples:ComponentModel;";
-    public static final String TEMPORARY_MODEL_PREFIX = "dtmi:samples:TempModel;";
+    public static final String TEMPORARY_COMPONENT_MODEL_PREFIX = "dtmi:com:samples:ComponentModel;";
+    public static final String TEMPORARY_MODEL_PREFIX = "dtmi:com:samples:TempModel;";
 
     public static final String TEMPORARY_TWIN_PREFIX = "sampleTwin";
 
@@ -49,13 +49,13 @@ public class SamplesConstants {
 
     public static final String TEMPORARY_TWIN_PAYLOAD =
         "{" +
-            "\"$metadata\" {" +
+            "\"$metadata\" :{" +
                 "\"$model\": \""+ MODEL_ID + "\"" +
             "}," +
             "\"Prop1\": \"Value\"," +
             "\"Prop2\": 987," +
             "\"Component1\":{" +
-                "\"$metadata\":{}" +
+                "\"$metadata\":{}," +
                 "\"ComponentProp1\": \"Value\"," +
                 "\"ComponentProp2\": 123" +
             "}" +

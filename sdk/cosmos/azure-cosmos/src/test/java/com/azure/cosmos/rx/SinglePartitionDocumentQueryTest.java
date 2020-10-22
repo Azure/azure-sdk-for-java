@@ -7,8 +7,12 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.RxDocumentClientImpl;
+import com.azure.cosmos.implementation.RxStoreModel;
+import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.guava25.collect.Lists;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -22,6 +26,7 @@ import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import com.azure.cosmos.implementation.TestUtils;
 import io.reactivex.subscribers.TestSubscriber;
+import org.mockito.Mockito;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -81,6 +86,41 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
                 .build();
 
         validateQuerySuccess(queryObservable.byPage(maxItemCount), validator, 10000);
+    }
+
+    @Test(groups = {"simple"})
+    public void querySinglePartitionDocuments() throws Exception {
+        // Test to make sure single partition queries go to DirectMode when DirectMode is set
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setPartitionKey(new PartitionKey("mypk"));
+        CosmosAsyncContainer container = client.getDatabase(createdCollection.getDatabase().getId())
+                                             .getContainer(createdCollection.getId());
+        RxDocumentClientImpl asyncDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(client);
+        RxStoreModel serverStoreModel = ReflectionUtils.getRxServerStoreModel(asyncDocumentClient);
+        RxStoreModel gatewayProxy = ReflectionUtils.getGatewayProxy(asyncDocumentClient);
+
+
+
+        RxStoreModel spyServerStoreModel = Mockito.spy(serverStoreModel);
+        RxStoreModel spyGatewayProxy = Mockito.spy(gatewayProxy);
+
+        ReflectionUtils.setServerStoreModel(asyncDocumentClient, spyServerStoreModel);
+        ReflectionUtils.setGatewayProxy(asyncDocumentClient, spyGatewayProxy);
+
+        CosmosPagedFlux<InternalObjectNode> queryFlux = container
+                                                            .queryItems("select * from root", options,
+                                                                        InternalObjectNode.class);
+
+
+        queryFlux.byPage().blockLast();
+
+        // Validation:
+        // In gateway mode, serverstoremodel is GatewayStoreModel so below passes
+        // In direct mode, serverStoreModel is ServerStoreModel. So queryPlan goes through gatewayProxy and the query
+        // goes through the serverStoreModel
+        Mockito.verify(spyGatewayProxy, Mockito.times(1)).processMessage(Mockito.any());
+        Mockito.verify(spyServerStoreModel, Mockito.times(1)).processMessage(Mockito.any());
+
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)

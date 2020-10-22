@@ -10,8 +10,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>azure-spring-cloud-sample-eventhubs-kafka</artifactId>
-  <groupId>com.azure</groupId>
-  <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-spring-cloud-sample-eventhubs-kafka;current} -->
+  <groupId>com.azure.spring</groupId>
+  <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-sample-eventhubs-kafka;current} -->
   <name>Azure Spring Cloud Event Hub using Kafka Binder Sample</name>
 
   <dependencyManagement>
@@ -32,9 +32,9 @@
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.azure</groupId>
+      <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-starter-eventhubs-kafka</artifactId>
-      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-cloud-starter-eventhubs-kafka;current} -->
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-eventhubs-kafka;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

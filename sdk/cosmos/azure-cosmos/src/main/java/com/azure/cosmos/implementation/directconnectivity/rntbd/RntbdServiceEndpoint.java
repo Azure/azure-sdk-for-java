@@ -7,8 +7,8 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
-import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.TransportException;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.SocketAddress;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
@@ -73,10 +74,13 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     private final Instant createdTime;
     private final RntbdMetrics metrics;
     private final Provider provider;
+    private final URI remoteURI;
     private final SocketAddress remoteAddress;
     private final RntbdRequestTimer requestTimer;
     private final Tag tag;
     private final int maxConcurrentRequests;
+
+    private final RntbdConnectionStateListener connectionStateListener;
 
     // endregion
 
@@ -89,6 +93,21 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         final RntbdRequestTimer timer,
         final URI physicalAddress) {
 
+        try {
+            this.remoteURI = new URI(
+                physicalAddress.getScheme(),
+                null,
+                physicalAddress.getHost(),
+                physicalAddress.getPort(),
+                null,
+                null,
+                null);
+        } catch (URISyntaxException error) {
+            throw new IllegalArgumentException(
+                lenientFormat("physicalAddress %s cannot be parsed as a server-based authority", physicalAddress),
+                error);
+        }
+
         final Bootstrap bootstrap = new Bootstrap()
             .channel(NioSocketChannel.class)
             .group(group)
@@ -97,7 +116,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, config.connectTimeoutInMillis())
             .option(ChannelOption.RCVBUF_ALLOCATOR, receiveBufferAllocator)
             .option(ChannelOption.SO_KEEPALIVE, true)
-            .remoteAddress(physicalAddress.getHost(), physicalAddress.getPort());
+            .remoteAddress(this.remoteURI.getHost(), this.remoteURI.getPort());
 
         this.createdTime = Instant.now();
         this.channelPool = new RntbdClientChannelPool(this, bootstrap, config);
@@ -119,6 +138,10 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
         this.metrics = new RntbdMetrics(provider.transportClient, this);
         this.maxConcurrentRequests = config.maxConcurrentRequestsPerEndpoint();
+
+        this.connectionStateListener = this.provider.addressResolver != null && config.isConnectionEndpointRediscoveryEnabled()
+            ? new RntbdConnectionStateListener(this.provider.addressResolver, this)
+            : null;
     }
 
     // endregion
@@ -195,6 +218,9 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     }
 
     @Override
+    public URI remoteURI() { return this.remoteURI; }
+
+    @Override
     public int requestQueueLength() {
         return this.channelPool.requestQueueLength();
     }
@@ -249,6 +275,10 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             }
         }
 
+        if (this.connectionStateListener != null) {
+            this.connectionStateListener.updateConnectionState(args.serviceRequest());
+        }
+
         this.lastRequestNanoTime.set(args.nanoTimeCreated());
 
         final RntbdRequestRecord record = this.write(args);
@@ -257,16 +287,20 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         record.whenComplete((response, error) -> {
             this.concurrentRequests.decrementAndGet();
             this.metrics.markComplete(record);
-            onResponse(response, error);
+            onResponse(error, record);
         });
 
         return record;
     }
 
-    private void onResponse(StoreResponse storeResponse, Throwable exception) {
+    private void onResponse(Throwable exception, RntbdRequestRecord record) {
         if (exception == null) {
             this.lastSuccessfulRequestNanoTime.set(System.nanoTime());
             return;
+        }
+
+        if (this.connectionStateListener != null) {
+            this.connectionStateListener.onException(record.args().serviceRequest(), exception);
         }
 
         // exception != null
@@ -337,6 +371,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     private RntbdRequestRecord write(final RntbdRequestArgs requestArgs) {
 
         final RntbdRequestRecord requestRecord = new AsyncRntbdRequestRecord(requestArgs, this.requestTimer);
+        requestRecord.stage(RntbdRequestRecord.Stage.CHANNEL_ACQUISITION_STARTED);
         final Future<Channel> connectedChannel = this.channelPool.acquire();
 
         logger.debug("\n  [{}]\n  {}\n  WRITE WHEN CONNECTED {}", this, requestArgs, connectedChannel);
@@ -436,11 +471,13 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         private final RntbdEndpointMonitoringProvider monitoring;
         private final RntbdRequestTimer requestTimer;
         private final RntbdTransportClient transportClient;
+        private final IAddressResolver addressResolver;
 
         public Provider(
             final RntbdTransportClient transportClient,
             final Options options,
-            final SslContext sslContext) {
+            final SslContext sslContext,
+            final IAddressResolver addressResolver) {
 
             checkNotNull(transportClient, "expected non-null provider");
             checkNotNull(options, "expected non-null options");
@@ -455,6 +492,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                 wireLogLevel = null;
             }
 
+            this.addressResolver = addressResolver;
             this.transportClient = transportClient;
             this.config = new Config(options, sslContext, wireLogLevel);
 
@@ -522,6 +560,11 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                 this.eventLoopGroup,
                 this.requestTimer,
                 physicalAddress));
+        }
+
+        @Override
+        public IAddressResolver getAddressResolver() {
+            return this.addressResolver;
         }
 
         @Override

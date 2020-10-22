@@ -4,6 +4,8 @@
 package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.keyvault.models.Key.DefinitionStages.WithKey;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
@@ -22,7 +24,6 @@ import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyType;
 import java.util.List;
 import java.util.Map;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure Key Vault key. */
@@ -47,10 +48,10 @@ public interface Key extends Indexable, HasInnerModel<KeyProperties>, HasId, Has
     boolean managed();
 
     /** @return a list of individual key versions with the same key name */
-    Iterable<Key> listVersions();
+    PagedIterable<Key> listVersions();
 
     /** @return a list of individual key versions with the same key name */
-    Flux<Key> listVersionsAsync();
+    PagedFlux<Key> listVersionsAsync();
 
     /** @return a backup of the specified key be downloaded to the client */
     byte[] backup();

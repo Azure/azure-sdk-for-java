@@ -43,6 +43,8 @@ public final class ConnectionPolicy {
     private int maxConnectionsPerEndpoint;
     private int maxRequestsPerConnection;
 
+    private boolean tcpConnectionEndpointRediscoveryEnabled;
+
     /**
      * Constructor.
      */
@@ -52,6 +54,7 @@ public final class ConnectionPolicy {
         this.maxConnectionPoolSize = gatewayConnectionConfig.getMaxConnectionPoolSize();
         this.requestTimeout = BridgeInternal.getRequestTimeoutFromGatewayConnectionConfig(gatewayConnectionConfig);
         this.proxy = gatewayConnectionConfig.getProxy();
+        this.tcpConnectionEndpointRediscoveryEnabled = false;
     }
 
     public ConnectionPolicy(DirectConnectionConfig directConnectionConfig) {
@@ -62,6 +65,7 @@ public final class ConnectionPolicy {
         this.maxConnectionsPerEndpoint = directConnectionConfig.getMaxConnectionsPerEndpoint();
         this.maxRequestsPerConnection = directConnectionConfig.getMaxRequestsPerConnection();
         this.requestTimeout = BridgeInternal.getRequestTimeoutFromDirectConnectionConfig(directConnectionConfig);
+        this.tcpConnectionEndpointRediscoveryEnabled = directConnectionConfig.isConnectionEndpointRediscoveryEnabled();
     }
 
     private ConnectionPolicy(ConnectionMode connectionMode) {
@@ -74,6 +78,26 @@ public final class ConnectionPolicy {
         this.throttlingRetryOptions = new ThrottlingRetryOptions();
         this.userAgentSuffix = "";
     }
+
+    /**
+     * Gets a value that indicates whether Direct TCP connection endpoint rediscovery is enabled.
+     *
+     * @return {@code true} if Direct TCP connection endpoint rediscovery should is enabled; {@code false} otherwise.
+     */
+    public boolean isTcpConnectionEndpointRediscoveryEnabled() {
+        return this.tcpConnectionEndpointRediscoveryEnabled;
+    }
+
+    /**
+     * Sets a value that indicates whether Direct TCP connection endpoint rediscovery is enabled.
+     *
+     * @return the {@linkplain ConnectionPolicy}.
+     */
+    public ConnectionPolicy setTcpConnectionEndpointRediscoveryEnabled(boolean tcpConnectionEndpointRediscoveryEnabled) {
+        this.tcpConnectionEndpointRediscoveryEnabled = tcpConnectionEndpointRediscoveryEnabled;
+        return this;
+    }
+
 
     /**
      * Gets the default connection policy.
@@ -493,6 +517,7 @@ public final class ConnectionPolicy {
             ", idleTcpEndpointTimeout=" + idleTcpEndpointTimeout +
             ", maxConnectionsPerEndpoint=" + maxConnectionsPerEndpoint +
             ", maxRequestsPerConnection=" + maxRequestsPerConnection +
+            ", tcpConnectionEndpointRediscoveryEnabled=" + tcpConnectionEndpointRediscoveryEnabled +
             '}';
     }
 }

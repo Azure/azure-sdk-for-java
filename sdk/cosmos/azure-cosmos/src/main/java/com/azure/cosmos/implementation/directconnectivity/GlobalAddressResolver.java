@@ -27,6 +27,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -96,6 +98,26 @@ public class GlobalAddressResolver implements IAddressResolver {
             Mono<Void>[] array = new Mono[this.addressCacheByEndpoint.values().size()];
             return Flux.mergeDelayError(Queues.SMALL_BUFFER_SIZE, tasks.toArray(array)).then();
         });
+    }
+
+    @Override
+    public void remove(
+        final RxDocumentServiceRequest request,
+        final Set<PartitionKeyRangeIdentity> partitionKeyRangeIdentitySet) {
+
+        Objects.requireNonNull(request, "expected non-null request");
+        Objects.requireNonNull(partitionKeyRangeIdentitySet, "expected non-null partitionKeyRangeIdentitySet");
+
+        if (partitionKeyRangeIdentitySet.size() > 0) {
+
+            URI addressResolverURI = this.endpointManager.resolveServiceEndpoint(request);
+
+            this.addressCacheByEndpoint.computeIfPresent(addressResolverURI, (ignored, endpointCache) -> {
+                final GatewayAddressCache addressCache = endpointCache.addressCache;
+                partitionKeyRangeIdentitySet.forEach(partitionKeyRangeIdentity -> addressCache.removeAddress(partitionKeyRangeIdentity));
+                return endpointCache;
+            });
+        }
     }
 
     @Override

@@ -68,7 +68,7 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>3.0.0</version>
+    <version>3.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -96,7 +96,7 @@ In addition to setting the flag, implement `ResponseDiagnosticsProcessor` to log
 @EnableCosmosRepositories
 public class AppConfiguration extends AbstractCosmosConfiguration {
 
-    private static final Logger logger = LoggerFactory.getLogger(AppConfiguration.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AppConfiguration.class);
 
     @Value("${azure.cosmos.uri}")
     private String uri;
@@ -147,7 +147,7 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
 
         @Override
         public void processResponseDiagnostics(@Nullable ResponseDiagnostics responseDiagnostics) {
-            logger.info("Response Diagnostics {}", responseDiagnostics);
+            LOGGER.info("Response Diagnostics {}", responseDiagnostics);
         }
     }
 

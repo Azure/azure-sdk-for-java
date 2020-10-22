@@ -14,6 +14,7 @@ import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Objects;
 
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import reactor.core.publisher.Mono;
@@ -46,7 +47,8 @@ class KeysImpl extends CreatableWrappersImpl<Key, KeyImpl, KeyProperties> implem
     @Override
     public Mono<Key> getByIdAsync(String id) {
         String name = nameFromId(id);
-        return inner.getKey(name).map(this::wrapModel);
+        String version = versionFromId(id);
+        return this.getByNameAndVersionAsync(name, version);
     }
 
     @Override
@@ -100,7 +102,8 @@ class KeysImpl extends CreatableWrappersImpl<Key, KeyImpl, KeyProperties> implem
 
     @Override
     public Mono<Key> getByNameAndVersionAsync(final String name, final String version) {
-        return inner.getKey(name, version).map(this::wrapModel);
+        Objects.requireNonNull(name);
+        return (version == null ? inner.getKey(name) : inner.getKey(name, version)).map(this::wrapModel);
     }
 
     @Override
@@ -129,6 +132,18 @@ class KeysImpl extends CreatableWrappersImpl<Key, KeyImpl, KeyProperties> implem
             String[] tokens = url.getPath().split("/");
             String name = (tokens.length >= 3 ? tokens[2] : null);
             return name;
+        } catch (MalformedURLException e) {
+            // Should never come here.
+            throw new IllegalStateException("Received Malformed Id URL from KV Service");
+        }
+    }
+
+    private static String versionFromId(String id) {
+        try {
+            URL url = new URL(id);
+            String[] tokens = url.getPath().split("/");
+            String version = (tokens.length >= 4 ? tokens[3] : null);
+            return version;
         } catch (MalformedURLException e) {
             // Should never come here.
             throw new IllegalStateException("Received Malformed Id URL from KV Service");
