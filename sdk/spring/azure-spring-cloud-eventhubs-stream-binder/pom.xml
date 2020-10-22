@@ -26,7 +26,7 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-stream</artifactId>
-      <version>3.0.7.RELEASE</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-stream;external_dependency} -->
+      <version>3.0.8.RELEASE</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-stream;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -44,7 +44,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-configuration-processor</artifactId>
-      <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+      <version>2.3.4.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -74,8 +74,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-configuration-processor:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
-                <include>org.springframework.cloud:spring-cloud-stream:[3.0.7.RELEASE]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-stream;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-configuration-processor:[2.3.4.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+                <include>org.springframework.cloud:spring-cloud-stream:[3.0.8.RELEASE]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-stream;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

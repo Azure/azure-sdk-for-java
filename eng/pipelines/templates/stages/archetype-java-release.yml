@@ -1,5 +1,6 @@
 parameters:
   Artifacts: []
+  TestPipeline: false
   ArtifactName: 'not-specified'
   TargetDocRepoOwner: ''
   TargetDocRepoName: ''
@@ -61,13 +62,14 @@ stages:
               vmImage: ubuntu-18.04
 
             steps:
-              - task: PowerShell@2
-                displayName: Prep template pipeline for release
-                condition: and(succeeded(),eq(variables['TestPipeline'],'true'))
-                inputs:
-                  pwsh: true
-                  workingDirectory: $(Build.SourcesDirectory)
-                  filePath: eng/scripts/SetTestPipelineVersion.ps1
+              - ${{if eq(parameters.TestPipeline, 'true')}}:
+                - task: PowerShell@2
+                  displayName: Prep template pipeline for release
+                  condition: succeeded()
+                  inputs:
+                    pwsh: true
+                    workingDirectory: $(Build.SourcesDirectory)
+                    filePath: eng/scripts/SetTestPipelineVersion.ps1
 
               - task: UsePythonVersion@0
                 displayName: 'Use Python 3.6'
@@ -185,6 +187,7 @@ stages:
                           DocRepoDestinationPath: 'docs-ref-services/'
                           GHReviewersVariable: 'OwningGHUser'
                           CIConfigs: $(CIConfigs)
+                          CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
 
           - ${{if ne(artifact.skipPublishDocGithubIo, 'true')}}:
             - deployment: PublishDocs

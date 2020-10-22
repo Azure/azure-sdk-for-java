@@ -33,7 +33,7 @@ public final class GetRelationshipOptions {
      *
      * @return the traceparent value.
      */
-    public String getTraceparent() {
+    public String getTraceParent() {
         return this.traceparent;
     }
 
@@ -43,7 +43,7 @@ public final class GetRelationshipOptions {
      * @param traceparent the traceparent value to set.
      * @return the GetRelationshipOptions object itself.
      */
-    public GetRelationshipOptions setTraceparent(String traceparent) {
+    public GetRelationshipOptions setTraceParent(String traceparent) {
         this.traceparent = traceparent;
         return this;
     }
@@ -54,7 +54,7 @@ public final class GetRelationshipOptions {
      *
      * @return the tracestate value.
      */
-    public String getTracestate() {
+    public String getTraceState() {
         return this.tracestate;
     }
 
@@ -65,7 +65,7 @@ public final class GetRelationshipOptions {
      * @param tracestate the tracestate value to set.
      * @return the GetRelationshipOptions object itself.
      */
-    public GetRelationshipOptions setTracestate(String tracestate) {
+    public GetRelationshipOptions setTraceState(String tracestate) {
         this.tracestate = tracestate;
         return this;
     }

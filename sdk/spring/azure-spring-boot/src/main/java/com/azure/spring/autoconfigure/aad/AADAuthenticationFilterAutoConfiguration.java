@@ -108,7 +108,8 @@ public class AADAuthenticationFilterAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(JWKSetCache.class)
     public JWKSetCache getJWKSetCache() {
-        return new DefaultJWKSetCache(aadAuthenticationProperties.getJwkSetCacheLifespan(), TimeUnit.MILLISECONDS);
+        long lifespan = aadAuthenticationProperties.getJwkSetCacheLifespan();
+        return new DefaultJWKSetCache(lifespan, lifespan, TimeUnit.MILLISECONDS);
     }
 
     @PostConstruct

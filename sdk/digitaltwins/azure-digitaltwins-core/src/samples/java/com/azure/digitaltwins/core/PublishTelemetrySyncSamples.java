@@ -73,7 +73,7 @@ public class PublishTelemetrySyncSamples {
         Iterable<DigitalTwinsModelData> modelList =  client.createModels(modelsList);
 
         for (DigitalTwinsModelData model : modelList) {
-            ConsoleLogger.print("Created model: " + model.getId());
+            ConsoleLogger.print("Created model: " + model.getModelId());
         }
 
         ConsoleLogger.printHeader("Create DigitalTwin");
