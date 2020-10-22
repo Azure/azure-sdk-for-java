@@ -28,7 +28,7 @@ import java.util.Objects;
  * This class is an abstraction over many different ways that binary data can be represented. The {@link BinaryData}
  * can be created from {@link InputStream}, {@link Flux} of {@link ByteBuffer}, {@link String}, {@link Object}, or byte
  * array.
- * <p><strong>Immutable data</strong><p/>
+ * <p><strong>Immutable data</strong></p>
  * {@link BinaryData} is constructed by coping the given data. Once {@link BinaryData} is instantiated, it's data can
  * not be changed. It provides various convenient APIs to get data out of {@link BinaryData}, they all starts with the
  * <b>BinaryData.to...()</b>, For example {@link BinaryData#toBytes()}.
