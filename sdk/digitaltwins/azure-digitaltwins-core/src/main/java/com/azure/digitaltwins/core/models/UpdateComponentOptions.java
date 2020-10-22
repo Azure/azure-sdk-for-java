@@ -52,7 +52,7 @@ public final class UpdateComponentOptions {
      * @param traceparent the traceparent value to set.
      * @return the UpdateComponentOptions object itself.
      */
-    public UpdateComponentOptions setTraceparent(String traceparent) {
+    public UpdateComponentOptions setTraceParent(String traceparent) {
         this.traceparent = traceparent;
         return this;
     }
@@ -74,7 +74,7 @@ public final class UpdateComponentOptions {
      * @param tracestate the tracestate value to set.
      * @return the UpdateComponentOptions object itself.
      */
-    public UpdateComponentOptions setTracestate(String tracestate) {
+    public UpdateComponentOptions setTraceState(String tracestate) {
         this.tracestate = tracestate;
         return this;
     }

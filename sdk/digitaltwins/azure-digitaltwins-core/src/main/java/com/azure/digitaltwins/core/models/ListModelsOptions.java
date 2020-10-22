@@ -55,7 +55,7 @@ public final class ListModelsOptions {
      * @param traceparent the traceparent value to set.
      * @return the ListModelsOptions object itself.
      */
-    public ListModelsOptions setTraceparent(String traceparent) {
+    public ListModelsOptions setTraceParent(String traceparent) {
         this.traceparent = traceparent;
         return this;
     }
@@ -77,7 +77,7 @@ public final class ListModelsOptions {
      * @param tracestate the tracestate value to set.
      * @return the ListModelsOptions object itself.
      */
-    public ListModelsOptions setTracestate(String tracestate) {
+    public ListModelsOptions setTraceState(String tracestate) {
         this.tracestate = tracestate;
         return this;
     }
