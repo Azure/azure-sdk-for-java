@@ -905,7 +905,7 @@ directive:
         "import com.fasterxml.jackson.annotation.JsonProperty;",
         "import com.fasterxml.jackson.annotation.JsonProperty;\nimport com.fasterxml.jackson.databind.annotation.JsonDeserialize;").
       replace(
-        "public final class BlobHierarchyListSegment {",
+        "public final class PageList {",
         "@JsonDeserialize(using = CustomPageListingDeserializer.class)\npublic final class PageList {");
 ```
 
