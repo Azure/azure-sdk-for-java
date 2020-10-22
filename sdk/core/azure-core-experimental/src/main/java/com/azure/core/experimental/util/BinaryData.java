@@ -42,6 +42,8 @@ import java.util.Objects;
  * <p>
  * It provides API to use default json serializer which is available in classpath. The serializer on classpath must
  * implement {@link JsonSerializer} interface.
+ * <p>Read more about <a href="http://aka.ms/azsdk/java/wiki/serialization">serialization</a>.
+ *
  * <p>
  * Code samples are explained below.
  *
