@@ -76,7 +76,7 @@ public class ChatClientTestBase extends TestBase {
             .accessKey(CONNSTRING)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
-        if (!interceptorManager.isLiveMode()) {
+        if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
         return builder;

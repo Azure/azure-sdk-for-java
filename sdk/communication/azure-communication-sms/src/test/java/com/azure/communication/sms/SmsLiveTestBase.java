@@ -39,7 +39,7 @@ public class SmsLiveTestBase extends TestBase {
                .accessKey(ACCESSKEY)
                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
-        if (!interceptorManager.isLiveMode()) {
+        if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
@@ -53,7 +53,7 @@ public class SmsLiveTestBase extends TestBase {
             .connectionString(CONNECTION_STRING)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
-        if (!interceptorManager.isLiveMode()) {
+        if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
