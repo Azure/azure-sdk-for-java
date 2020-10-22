@@ -57,7 +57,8 @@ public class AzureContextAutoConfiguration {
             .build();
 
         if (azureProperties.getSubscriptionId() == null) {
-            return Azure.authenticate(restClient, credentials.domain()).withDefaultSubscription();
+            return Azure.authenticate(restClient, credentials.domain())
+                        .withSubscription(credentials.defaultSubscriptionId());
         } else {
             return Azure.authenticate(restClient, credentials.domain())
                 .withSubscription(azureProperties.getSubscriptionId());
