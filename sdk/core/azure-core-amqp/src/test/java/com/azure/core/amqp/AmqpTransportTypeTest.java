@@ -6,6 +6,7 @@ package com.azure.core.amqp;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AmqpTransportTypeTest {
@@ -17,7 +18,7 @@ public class AmqpTransportTypeTest {
     public void createFromString() {
         String socketString = "Amqpwebsockets";
         AmqpTransportType actual = AmqpTransportType.fromString(socketString);
-
+        actual.toString();
         Assertions.assertEquals(AmqpTransportType.AMQP_WEB_SOCKETS, actual);
     }
 
