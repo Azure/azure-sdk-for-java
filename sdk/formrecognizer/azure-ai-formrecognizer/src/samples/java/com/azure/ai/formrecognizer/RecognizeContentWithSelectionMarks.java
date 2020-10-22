@@ -8,7 +8,6 @@ import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.FormSelectionMark;
 import com.azure.ai.formrecognizer.models.FormTable;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
 
 import java.io.ByteArrayInputStream;
@@ -18,6 +17,9 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.List;
 
+/**
+ * Sample for recognizing content information with selection mark from a document given through a file.
+ */
 public class RecognizeContentWithSelectionMarks {
     /**
      * Main method to invoke this demo.
@@ -29,9 +31,9 @@ public class RecognizeContentWithSelectionMarks {
     public static void main(final String[] args) throws IOException {
         // Instantiate a client that will be used to call the service.
         FormRecognizerClient client = new FormRecognizerClientBuilder()
-                                          .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_API_KEY")))
-                                          .endpoint(Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_ENDPOINT"))
-                                          .buildClient();
+            .credential(new AzureKeyCredential("{key}"))
+            .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
+            .buildClient();
 
         File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/"
                                        + "forms/selectionMarkForm.pdf");
@@ -55,32 +57,19 @@ public class RecognizeContentWithSelectionMarks {
                 final FormTable formTable = tables.get(i1);
                 System.out.printf("Table %d has %d rows and %d columns.%n", i1, formTable.getRowCount(),
                     formTable.getColumnCount());
-                formTable.getCells().forEach(formTableCell -> {
-                    final StringBuilder boundingBoxStr = new StringBuilder();
-                    if (formTableCell.getBoundingBox() != null) {
-                        formTableCell.getBoundingBox().getPoints().forEach(
-                            point -> boundingBoxStr.append(String.format("[%.2f, %.2f]", point.getX(), point.getY())));
-                    }
+                formTable.getCells().forEach(formTableCell ->
                     System.out.printf("Cell has text '%s', within bounding box %s.%n", formTableCell.getText(),
-                        boundingBoxStr);
-                });
+                        formTableCell.getBoundingBox().toString()));
                 System.out.println();
             }
             // Selection Mark
-            final List<FormSelectionMark> selectionMarks = formPage.getSelectionMarks();
-            if (selectionMarks != null) {
-                for (int j = 0; j < selectionMarks.size(); j++) {
-                    final FormSelectionMark selectionMark = selectionMarks.get(j);
-                    final StringBuilder boundingBoxStr = new StringBuilder();
-                    selectionMark.getBoundingBox().getPoints().forEach(
-                        point -> boundingBoxStr.append(String.format("[%.2f, %.2f]", point.getX(), point.getY())));
-                    System.out.printf(
-                        "Page: %s, Selection mark is %s within bounding box %s has a confidence score %.2f.%n",
-                        selectionMark.getPageNumber(),
-                        selectionMark.getState(),
-                        boundingBoxStr,
-                        selectionMark.getConfidence());
-                }
+            for (FormSelectionMark selectionMark : formPage.getSelectionMarks()) {
+                System.out.printf(
+                    "Page: %s, Selection mark is %s within bounding box %s has a confidence score %.2f.%n",
+                    selectionMark.getPageNumber(),
+                    selectionMark.getState(),
+                    selectionMark.getBoundingBox().toString(),
+                    selectionMark.getConfidence());
             }
         }
     }

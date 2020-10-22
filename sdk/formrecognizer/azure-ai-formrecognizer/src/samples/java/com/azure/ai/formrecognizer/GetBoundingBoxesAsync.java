@@ -87,17 +87,10 @@ public class GetBoundingBoxesAsync {
                             formTableCell.getFieldElements().stream()
                                 .filter(formContent -> formContent instanceof FormWord)
                                 .map(formContent -> (FormWord) (formContent))
-                                .forEach(formWordElement -> {
-                                    final StringBuilder boundingBoxStr = new StringBuilder();
-                                    if (formWordElement.getBoundingBox() != null) {
-                                        formWordElement.getBoundingBox().getPoints().forEach(point ->
-                                            boundingBoxStr.append(String.format("[%.2f, %.2f]", point.getX(),
-                                                point.getY())));
-                                    }
+                                .forEach(formWordElement ->
                                     System.out.printf("Word '%s' within bounding box %s with a confidence of %.2f.%n",
-                                        formWordElement.getText(), boundingBoxStr,
-                                        formWordElement.getConfidence());
-                                });
+                                        formWordElement.getText(), formWordElement.getBoundingBox().toString(),
+                                        formWordElement.getConfidence()));
                         });
                         System.out.println();
                     }

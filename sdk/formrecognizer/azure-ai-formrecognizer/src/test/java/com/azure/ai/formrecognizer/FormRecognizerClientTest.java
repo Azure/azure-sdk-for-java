@@ -22,7 +22,6 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -464,7 +463,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         }, MULTIPAGE_INVOICE_PDF);
     }
 
-    @Disabled("add this test when the selection mark test file is merged")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void recognizeContentWithSelectionMarksFromUrl(HttpClient httpClient,
@@ -1081,7 +1079,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             }));
     }
 
-    @Disabled("add this test when the selection mark test file is merged")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void recognizeCustomFormUrlLabeledDataWithSelectionMark(HttpClient httpClient,

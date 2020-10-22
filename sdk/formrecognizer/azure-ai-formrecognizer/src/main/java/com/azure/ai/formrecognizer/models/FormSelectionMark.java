@@ -4,14 +4,14 @@
 package com.azure.ai.formrecognizer.models;
 
 /**
- * The SelectionMark model.
+ * The FormSelectionMark model.
  */
 public final class FormSelectionMark extends FormElement {
     private float confidence;
     private SelectionMarkState state;
 
     /**
-     * Creates raw OCR item.
+     * Creates a FormSelectionMark.
      *
      * @param text The text content of the extracted element.
      * @param boundingBox The BoundingBox specifying relative coordinates of the element.

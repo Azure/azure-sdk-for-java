@@ -54,9 +54,9 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.formrecognizer.implementation.Utility.parseModelId;
 import static com.azure.ai.formrecognizer.implementation.Utility.urlActivationOperation;
-import static com.azure.ai.formrecognizer.training.CustomModelTransforms.DEFAULT_DURATION;
 import static com.azure.ai.formrecognizer.training.CustomModelTransforms.toCustomFormModel;
 import static com.azure.ai.formrecognizer.training.CustomModelTransforms.toCustomFormModelInfo;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -423,7 +423,7 @@ public final class FormTrainingAsyncClient {
 
     PollerFlux<FormRecognizerOperationResult, CustomFormModelInfo> beginCopyModel(String modelId,
         CopyAuthorization target, Duration pollInterval, Context context) {
-        final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
+        final Duration interval = pollInterval != null ? pollInterval : DEFAULT_POLL_INTERVAL;
         return new PollerFlux<FormRecognizerOperationResult, CustomFormModelInfo>(
             interval,
             getCopyActivationOperation(modelId, target, context),

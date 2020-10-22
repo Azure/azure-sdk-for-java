@@ -3,11 +3,28 @@
 
 package com.azure.ai.formrecognizer.models;
 
-/** Defines values for SelectionMarkState. i.e., Selected or Unselected */
-public enum SelectionMarkState {
-    /** Enum value selected. */
-    SELECTED,
+import com.azure.core.util.ExpandableStringEnum;
 
-    /** Enum value unselected. */
-    UNSELECTED
+/** Defines values for SelectionMarkState. i.e., Selected or Unselected */
+public final class SelectionMarkState extends ExpandableStringEnum<SelectionMarkState> {
+    /**
+     * Static value SELECTED for SelectionMarkState.
+     */
+    public static final SelectionMarkState SELECTED = fromString("selected");
+
+    /**
+     * Static value UNSELECTED for SelectionMarkState.
+     */
+    public static final SelectionMarkState UNSELECTED = fromString("unselected");
+
+    /**
+     * Creates or finds a SelectionMarkState from its string representation.
+     *
+     * @param value a value to look for.
+     *
+     * @return the corresponding SelectionMarkState.
+     */
+    public static SelectionMarkState fromString(String value) {
+        return fromString(value, SelectionMarkState.class);
+    }
 }

@@ -65,13 +65,13 @@ import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGN
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.deserializeRawResponse;
-import static com.azure.ai.formrecognizer.TestUtils.DEFAULT_DURATION;
 import static com.azure.ai.formrecognizer.TestUtils.FAKE_ENCODED_EMPTY_SPACE_URL;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.ONE_NANO_DURATION;
 import static com.azure.ai.formrecognizer.TestUtils.TEST_DATA_PNG;
 import static com.azure.ai.formrecognizer.TestUtils.URL_TEST_FILE_FORMAT;
 import static com.azure.ai.formrecognizer.TestUtils.getSerializerAdapter;
+import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -122,7 +122,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             durationTestMode = ONE_NANO_DURATION;
         } else {
-            durationTestMode = DEFAULT_DURATION;
+            durationTestMode = DEFAULT_POLL_INTERVAL;
         }
     }
 
@@ -251,7 +251,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         for (int i = 0; i < actualMarks.size(); i++) {
             final SelectionMark expectedMark = expectedMarks.get(i);
             final FormSelectionMark actualMark = actualMarks.get(i);
-            assertTrue(expectedMark.getState().toString().equalsIgnoreCase(actualMark.getState().toString()));
+            assertEquals(expectedMark.getState().toString(), actualMark.getState().toString());
             validateBoundingBoxData(expectedMark.getBoundingBox(), actualMark.getBoundingBox());
             // Currently, service has the null as the text value for layout.
             assertNull(actualMark.getText());

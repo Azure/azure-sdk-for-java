@@ -137,13 +137,10 @@ public class ReadmeSamples {
                     System.out.printf("Cell has text %s.%n", formTableCell.getText()));
             });
             // Selection Mark
-            formPage.getSelectionMarks().forEach(selectionMark -> {
-                StringBuilder boundingBoxStr = new StringBuilder();
-                selectionMark.getBoundingBox().getPoints().forEach(
-                    point -> boundingBoxStr.append(String.format("[%.2f, %.2f]", point.getX(), point.getY())));
-                System.out.printf("Page: %s, Selection mark is %s within bounding box %s has a confidence score %.2f.%n",
-                    selectionMark.getPageNumber(), selectionMark.getState(), boundingBoxStr, selectionMark.getConfidence());
-            });
+            formPage.getSelectionMarks().forEach(selectionMark -> System.out.printf(
+                "Page: %s, Selection mark is %s within bounding box %s has a confidence score %.2f.%n",
+                selectionMark.getPageNumber(), selectionMark.getState(), selectionMark.getBoundingBox().toString(),
+                selectionMark.getConfidence()));
         }
     }
 

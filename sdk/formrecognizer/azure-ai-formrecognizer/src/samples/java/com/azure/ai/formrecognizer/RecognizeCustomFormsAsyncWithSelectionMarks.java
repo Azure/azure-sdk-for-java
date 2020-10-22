@@ -10,7 +10,6 @@ import com.azure.ai.formrecognizer.models.FormTable;
 import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
@@ -24,6 +23,10 @@ import java.util.concurrent.TimeUnit;
 
 import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
 
+/**
+ * Async sample to analyze a form with selection mark from a document with a custom trained model. To learn how to train
+ * your own models, look at TrainModelWithoutLabels.java and TrainModelWithLabels.java.
+ */
 public class RecognizeCustomFormsAsyncWithSelectionMarks {
     /**
      * Main method to invoke this demo.
@@ -35,9 +38,9 @@ public class RecognizeCustomFormsAsyncWithSelectionMarks {
     public static void main(String[] args) throws IOException {
         // Instantiate a client that will be used to call the service.
         FormRecognizerAsyncClient client = new FormRecognizerClientBuilder()
-                                               .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_API_KEY")))
-                                               .endpoint(Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_ENDPOINT"))
-                                               .buildAsyncClient();
+            .credential(new AzureKeyCredential("{key}"))
+            .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
+            .buildAsyncClient();
 
         // The form you are recognizing must be of the same type as the forms the custom model was trained on
         File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/"
@@ -100,20 +103,13 @@ public class RecognizeCustomFormsAsyncWithSelectionMarks {
                                 formTableCell.getFieldElements().stream()
                                     .filter(formContent -> formContent instanceof FormSelectionMark)
                                     .map(formContent -> (FormSelectionMark) (formContent))
-                                    .forEach(selectionMark -> {
-                                        final StringBuilder boundingBoxStr = new StringBuilder();
-                                        selectionMark.getBoundingBox().getPoints().forEach(
-                                            point -> boundingBoxStr.append(
-                                                String.format("[%.2f, %.2f]", point.getX(), point.getY())));
-                                        System.out.printf(
-                                            "Page: %s, Selection mark is %s within bounding box %s has a "
-                                                + "confidence score %.2f.%n",
+                                    .forEach(selectionMark ->
+                                        System.out.printf("Page: %s, Selection mark is %s within bounding box %s has a "
+                                                              + "confidence score %.2f.%n",
                                             selectionMark.getPageNumber(),
                                             selectionMark.getState(),
-                                            boundingBoxStr,
-                                            selectionMark.getConfidence());
-                                    });
-
+                                            selectionMark.getBoundingBox().toString(),
+                                            selectionMark.getConfidence()));
                             });
                         System.out.println();
                     }

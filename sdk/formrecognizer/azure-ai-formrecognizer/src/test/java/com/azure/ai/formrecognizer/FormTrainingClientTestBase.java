@@ -41,13 +41,13 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import static com.azure.ai.formrecognizer.FormRecognizerClientBuilder.DEFAULT_DURATION;
 import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_RECEIPT_URL;
 import static com.azure.ai.formrecognizer.TestUtils.ONE_NANO_DURATION;
 import static com.azure.ai.formrecognizer.TestUtils.TEST_DATA_PNG;
 import static com.azure.ai.formrecognizer.TestUtils.getSerializerAdapter;
+import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.formrecognizer.implementation.models.ModelStatus.READY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -84,7 +84,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             durationTestMode = ONE_NANO_DURATION;
         } else {
-            durationTestMode = DEFAULT_DURATION;
+            durationTestMode = DEFAULT_POLL_INTERVAL;
         }
     }
 

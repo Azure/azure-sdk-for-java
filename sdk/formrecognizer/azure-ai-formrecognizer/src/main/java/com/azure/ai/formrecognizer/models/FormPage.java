@@ -149,7 +149,7 @@ public final class FormPage {
      * @return the selection marks.
      */
     public List<FormSelectionMark> getSelectionMarks() {
-        return this.selectionMarks;
+        return Collections.unmodifiableList(this.selectionMarks);
     }
 }
 
