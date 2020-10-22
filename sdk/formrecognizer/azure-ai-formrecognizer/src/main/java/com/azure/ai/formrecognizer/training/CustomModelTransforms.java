@@ -100,8 +100,9 @@ final class CustomModelTransforms {
             modelErrors,
             trainingDocumentInfoList);
 
+        CustomFormModelProperties customFormModelProperties = new CustomFormModelProperties();
+
         if (modelInfo.getAttributes() != null) {
-            CustomFormModelProperties customFormModelProperties = new CustomFormModelProperties();
             PrivateFieldAccessHelper.set(customFormModelProperties, "isComposed",
                 modelInfo.getAttributes().isComposed());
             PrivateFieldAccessHelper.set(customFormModel, "customFormModelProperties",
@@ -110,7 +111,13 @@ final class CustomModelTransforms {
                 PrivateFieldAccessHelper.set(customFormModel, "trainingDocuments",
                     trainingDocumentInfoList);
             }
+        } else {
+            // default to false
+            PrivateFieldAccessHelper.set(customFormModelProperties, "isComposed", false);
+            PrivateFieldAccessHelper.set(customFormModel, "customFormModelProperties",
+                customFormModelProperties);
         }
+
         if (modelInfo.getModelName() != null) {
             PrivateFieldAccessHelper.set(customFormModel, "modelName", modelInfo.getModelName());
         }
