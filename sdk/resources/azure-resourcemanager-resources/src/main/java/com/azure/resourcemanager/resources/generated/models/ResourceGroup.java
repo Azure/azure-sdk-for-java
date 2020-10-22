@@ -63,6 +63,20 @@ public interface ResourceGroup {
     String managedBy();
 
     /**
+     * Gets the region of the resource.
+     *
+     * @return the region of the resource.
+     */
+    Region region();
+
+    /**
+     * Gets the name of the resource region.
+     *
+     * @return the name of the resource region.
+     */
+    String regionName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.resources.generated.fluent.models.ResourceGroupInner object.
      *
      * @return the inner object.

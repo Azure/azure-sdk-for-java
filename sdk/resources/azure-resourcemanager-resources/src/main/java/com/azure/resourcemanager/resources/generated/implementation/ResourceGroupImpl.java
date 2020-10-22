@@ -52,6 +52,14 @@ public final class ResourceGroupImpl implements ResourceGroup, ResourceGroup.Def
         return this.innerModel().managedBy();
     }
 
+    public Region region() {
+        return Region.fromName(this.regionName());
+    }
+
+    public String regionName() {
+        return this.location();
+    }
+
     public ResourceGroupInner innerModel() {
         return this.innerObject;
     }

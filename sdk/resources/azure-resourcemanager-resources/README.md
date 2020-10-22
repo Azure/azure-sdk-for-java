@@ -15,7 +15,7 @@ This package contains Microsoft Azure SDK for Resource Management SDK. Provides 
 ```xml
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
-    <artifactId>azure-resourcemanager-resource-generated</artifactId>
+    <artifactId>azure-resourcemanager-resources-generated</artifactId>
     <version>1.0.0-beta.1</version>
 </dependency>
 ```

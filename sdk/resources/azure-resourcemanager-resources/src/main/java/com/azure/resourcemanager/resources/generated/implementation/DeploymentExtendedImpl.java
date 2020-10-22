@@ -50,6 +50,14 @@ public final class DeploymentExtendedImpl
         return this.innerModel().properties();
     }
 
+    public Region region() {
+        return Region.fromName(this.regionName());
+    }
+
+    public String regionName() {
+        return this.location();
+    }
+
     public DeploymentExtendedInner innerModel() {
         return this.innerObject;
     }

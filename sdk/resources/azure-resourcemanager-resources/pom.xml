@@ -8,8 +8,8 @@
     </parent>
 
     <groupId>com.azure.resourcemanager</groupId>
-    <artifactId>azure-resourcemanager-resource-generated</artifactId>
-    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resource-generated;current} -->
+    <artifactId>azure-resourcemanager-resources-generated</artifactId>
+    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources-generated;current} -->
     <packaging>jar</packaging>
 
     <name>Microsoft Azure SDK for Resource Management</name>

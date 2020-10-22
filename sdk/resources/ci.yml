@@ -27,6 +27,6 @@ extends:
   parameters:
     ServiceDirectory: resource
     Artifacts:
-        - name: azure-resourcemanager-resource-generated
-          groupId: com.azure.resourcemanager.resource
-          safeName: azureresourcemanagerresourcegenerated
+        - name: azure-resourcemanager-resources-generated
+          groupId: com.azure.resourcemanager
+          safeName: azureresourcemanagerresourcesgenerated
