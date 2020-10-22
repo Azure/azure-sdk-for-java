@@ -166,10 +166,6 @@ function Get-java-GithubIOArtifact() {
   return Get-BlobStorage-Artifacts -blobStorageUrl $BlobStorageUrl -blobDirectoryRegex "^java/(.*)/$"
 }
 
-function Generate-java-DocfxTocContent() {
-  generateDocfxTocContent -tocContent $tocContent -titleRegex "Java"
-}
-
 function Generate-java-TocHomepageContent() {
   return "- name: Azure SDK for Java APIs`r`n  href: api/`r`n  homepage: api/index.md"
 }
