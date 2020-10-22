@@ -113,7 +113,6 @@ final class CustomModelTransforms {
             }
         } else {
             // default to false
-            PrivateFieldAccessHelper.set(customFormModelProperties, "isComposed", false);
             PrivateFieldAccessHelper.set(customFormModel, "customFormModelProperties",
                 customFormModelProperties);
         }
