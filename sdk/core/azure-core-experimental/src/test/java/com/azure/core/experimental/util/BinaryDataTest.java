@@ -97,9 +97,63 @@ public class BinaryDataTest {
     }
 
     @Test
+    public void createFromNullStream() throws IOException {
+        // Arrange
+        final byte[] expected = new byte[0];
+
+        // Act
+        BinaryData data = BinaryData.fromStream(null);
+        final byte[] actual = new byte[0];
+        (data.toStream()).read(actual, 0, expected.length);
+
+        // Assert
+        assertArrayEquals(expected, data.toBytes());
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void createFromNullByteArray() {
+        // Arrange
+        final byte[] expected = new byte[0];
+
+        // Act
+        BinaryData actual = BinaryData.fromBytes(null);
+
+        // Assert
+        assertArrayEquals(expected, actual.toBytes());
+    }
+
+    @Test
+    public void createFromNullObject() {
+        // Arrange
+        final byte[] expected = new byte[0];
+
+        // Act
+        BinaryData actual = BinaryData.fromObject(null);
+
+        // Assert
+        assertArrayEquals(expected, actual.toBytes());
+    }
+
+    @Test
     public void createFromStream() throws IOException {
         // Arrange
         final byte[] expected = "Doe".getBytes(StandardCharsets.UTF_8);
+
+        // Act
+        BinaryData data = BinaryData.fromStream(new ByteArrayInputStream(expected));
+        final byte[] actual = new byte[expected.length];
+        (data.toStream()).read(actual, 0, expected.length);
+
+        // Assert
+        assertArrayEquals(expected, data.toBytes());
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void createFromEmptyStream() throws IOException {
+        // Arrange
+        final byte[] expected = "".getBytes();
         final byte[] actual = new byte[expected.length];
 
         // Act
@@ -127,7 +181,7 @@ public class BinaryDataTest {
     }
 
     @Test
-    public void createFromStreamAsync() throws IOException {
+    public void createFromStreamAsync() {
         // Arrange
         final byte[] expected = "Doe".getBytes(StandardCharsets.UTF_8);
 

@@ -25,9 +25,12 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * This class is an abstraction over many different ways that binary data can be represented. The data represented by
- * {@link BinaryData} is immutable. The {@link BinaryData} can be created from {@link InputStream}, {@link Flux} of
- * {@link ByteBuffer}, {@link String}, {@link Object}, or byte array.
+ * This class is an abstraction over many different ways that binary data can be represented. The {@link BinaryData}
+ * can be created from {@link InputStream}, {@link Flux} of {@link ByteBuffer}, {@link String}, {@link Object}, or byte
+ * array.
+ * <p><strong>Immutable data</strong><p/>
+ * {@link BinaryData} is constructed by coping the give data. Once {@link BinaryData} is instantiated, It's data can not
+ * be updated.
  * <p>
  * It provides a way to serialize {@link Object} into {@link BinaryData} using API
  * {@link BinaryData#fromObject(Object, ObjectSerializer)} where you can provide your {@link ObjectSerializer}.
@@ -70,28 +73,12 @@ public final class  BinaryData {
     private static volatile JsonSerializer defaultJsonSerializer;
 
     /**
-     * Create an instance of {@link BinaryData} from  the given data. If {@code null} value is provided , it will be
-     * converted into empty byte array.
+     * Create an instance of {@link BinaryData} from the given data.
      *
      * @param data to represent as bytes.
      */
     BinaryData(byte[] data) {
-        if (Objects.isNull(data) || data.length == 0) {
-            data = EMPTY_BYTES;
-        }
-        this.data = Arrays.copyOf(data, data.length);
-    }
-
-    /**
-     * Provides {@link InputStream} for the data represented by this {@link BinaryData} object.
-     *
-     * <p><strong>Get InputStream from BinaryData</strong></p>
-     * {@codesnippet com.azure.core.experimental.util.BinaryDocument.to#Stream}
-     *
-     * @return {@link InputStream} representing the binary data.
-     */
-    public InputStream toStream() {
-        return new ByteArrayInputStream(this.data);
+        this.data = data;
     }
 
     /**
@@ -107,7 +94,9 @@ public final class  BinaryData {
      * @return {@link BinaryData} representing the binary data.
      */
     public static BinaryData fromStream(InputStream inputStream) {
-        Objects.requireNonNull(inputStream, "'inputStream' cannot be null.");
+        if (Objects.isNull(inputStream)) {
+            return EMPTY_DATA;
+        }
 
         final int bufferSize = 1024;
         try {
@@ -117,45 +106,45 @@ public final class  BinaryData {
             while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
                 dataOutputBuffer.write(data, 0, nRead);
             }
+            dataOutputBuffer.flush();
 
-            return fromBytes(dataOutputBuffer.toByteArray());
+            return new BinaryData(dataOutputBuffer.toByteArray());
+
         } catch (IOException ex) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
     }
 
     /**
-     * Asynchronously create a {@link BinaryData} instance with given {@link InputStream} as source of data. The
-     * {@link InputStream} is not closed by this function.
+     * Asynchronously creates a {@link BinaryData} instance with the given {@link InputStream} as source of data. The
+     * {@link InputStream} is not closed by this function. If the {@link InputStream} is {@code null}, an empty
+     * {@link BinaryData} will be returned.
      *
      * @param inputStream to read bytes from.
-     * @throws NullPointerException If {@code inputStream} is null.
      * @return {@link Mono} of {@link BinaryData} representing the binary data.
      */
     public static Mono<BinaryData> fromStreamAsync(InputStream inputStream) {
-        Objects.requireNonNull(inputStream, "'inputStream' cannot be null.");
-
         return Mono.fromCallable(() -> fromStream(inputStream));
     }
 
     /**
      * Creates a {@link BinaryData} instance with given {@link Flux} of {@link ByteBuffer} as source of data. It will
-     * collect all the bytes from {@link ByteBuffer} into {@link BinaryData}.
+     * collect all the bytes from {@link ByteBuffer} into {@link BinaryData}. If the {@link Flux} is {@code null}, an
+     * empty {@link BinaryData} will be returned.
      *
      * <p><strong>Create an instance from String</strong></p>
      * {@codesnippet com.azure.core.experimental.util.BinaryDocument.from#Flux}
      *
      * @param data to use.
-     * @throws NullPointerException If {@code data} is null.
      * @return {@link Mono} of {@link BinaryData} representing binary data.
      */
     public static Mono<BinaryData> fromFlux(Flux<ByteBuffer> data) {
         if (Objects.isNull(data)) {
-            return monoError(LOGGER, new NullPointerException("'data' cannot be null."));
+            return Mono.just(EMPTY_DATA);
         }
 
         return FluxUtil.collectBytesInByteBufferStream(data)
-            .flatMap(bytes -> Mono.just(fromBytes(bytes)));
+            .flatMap(bytes -> Mono.just(new BinaryData(bytes)));
     }
 
     /**
@@ -168,10 +157,9 @@ public final class  BinaryData {
     public static BinaryData fromString(String data) {
         if (Objects.isNull(data) || data.length() == 0) {
             return EMPTY_DATA;
-        } else {
-            return new BinaryData(data.getBytes(StandardCharsets.UTF_8));
         }
 
+        return new BinaryData(data.getBytes(StandardCharsets.UTF_8));
     }
 
     /**
@@ -182,7 +170,11 @@ public final class  BinaryData {
      * @return {@link BinaryData} representing the binary data.
      */
     public static BinaryData fromBytes(byte[] data) {
-        return new BinaryData(data);
+        if (Objects.isNull(data) || data.length == 0) {
+            return EMPTY_DATA;
+        }
+
+        return new BinaryData(Arrays.copyOf(data, data.length));
     }
 
     /**
@@ -240,7 +232,6 @@ public final class  BinaryData {
      * @return {@link Mono} of {@link BinaryData} representing the binary data.
      */
     public static Mono<BinaryData> fromObjectAsync(Object data, ObjectSerializer serializer) {
-
         if (Objects.isNull(serializer)) {
             return monoError(LOGGER, new NullPointerException("'serializer' cannot be null."));
         }
@@ -343,6 +334,18 @@ public final class  BinaryData {
             return monoError(LOGGER, new NullPointerException("'clazz' cannot be null."));
         }
         return Mono.fromCallable(() -> toObject(clazz));
+    }
+
+    /**
+     * Provides {@link InputStream} for the data represented by this {@link BinaryData} object.
+     *
+     * <p><strong>Get InputStream from BinaryData</strong></p>
+     * {@codesnippet com.azure.core.experimental.util.BinaryDocument.to#Stream}
+     *
+     * @return {@link InputStream} representing the binary data.
+     */
+    public InputStream toStream() {
+        return new ByteArrayInputStream(this.data);
     }
 
     /* This will ensure lazy instantiation to avoid hard dependency on Json Serializer. */
