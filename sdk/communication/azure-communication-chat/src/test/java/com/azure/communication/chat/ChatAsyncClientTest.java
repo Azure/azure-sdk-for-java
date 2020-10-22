@@ -6,7 +6,8 @@ package com.azure.communication.chat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import reactor.test.StepVerifier;
 
@@ -16,6 +17,7 @@ import com.azure.communication.common.CommunicationUser;
 import com.azure.communication.chat.implementation.ChatOptionsProvider;
 import com.azure.communication.chat.models.*;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -41,8 +43,15 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
+    }
 
-        communicationClient = getCommunicationIdentityClientBuilder().buildClient();
+    @Override
+    protected void afterTest() {
+        super.afterTest();
+    }
+
+    private void setupTest(HttpClient httpClient) {
+        communicationClient = getCommunicationIdentityClientBuilder(httpClient).buildClient();
         assertNotNull(communicationClient);
 
         firstThreadMember = communicationClient.createUser();
@@ -51,17 +60,14 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
         List<String> scopes = new ArrayList<String>(Arrays.asList("chat"));
         CommunicationUserToken response = communicationClient.issueToken(firstThreadMember, scopes);
 
-        client = getChatClientBuilder(response.getToken()).buildAsyncClient();
+        client = getChatClientBuilder(response.getToken(), httpClient).buildAsyncClient();
     }
 
-    @Override
-    protected void afterTest() {
-        super.afterTest();
-    }
-
-    @Test
-    public void canCreateThread() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canCreateThread(HttpClient httpClient) {
         // Arrange
+        setupTest(httpClient);
         CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
 
@@ -74,9 +80,11 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
             .verifyComplete();
     }
 
-    @Test
-    public void canCreateThreadWithResponse() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canCreateThreadWithResponse(HttpClient httpClient) {
         // Arrange
+        setupTest(httpClient);
         CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
 
@@ -90,9 +98,11 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
             .verifyComplete();
     }
 
-    @Test
-    public void canGetChatThreadClient() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canGetChatThreadClient(HttpClient httpClient) {
         // Arrange
+        setupTest(httpClient);
         String threadId = "19:fe0a2f65a7834185b29164a7de57699c@thread.v2";
 
         // Act
@@ -103,9 +113,11 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
         assertEquals(chatThreadClient.getChatThreadId(), threadId);
     }
 
-    @Test
-    public void canGetExistingChatThread() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canGetExistingChatThread(HttpClient httpClient) {
         // Arrange
+        setupTest(httpClient);
         CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
 
@@ -123,9 +135,11 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
             .verifyComplete();
     }
 
-    @Test
-    public void canGetExistingChatThreadWithResponse() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canGetExistingChatThreadWithResponse(HttpClient httpClient) {
         // Arrange
+        setupTest(httpClient);
         CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
 
@@ -144,9 +158,11 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
             .verifyComplete();
     }
 
-    @Test
-    public void getNotFoundOnNonExistingChatThread() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getNotFoundOnNonExistingChatThread(HttpClient httpClient) {
         // Act & Assert
+        setupTest(httpClient);
         StepVerifier.create(client.getChatThread("19:020082a8df7b44dd8c722bea8fe7167f@thread.v2"))
             .expectErrorMatches(exception ->
                 ((HttpResponseException) exception).getResponse().getStatusCode() == 404
@@ -154,9 +170,11 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
             .verify();
     }
 
-    @Test
-    public void getNotFoundOnNonExistingChatThreadWithResponse() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getNotFoundOnNonExistingChatThreadWithResponse(HttpClient httpClient) {
         // Act & Assert
+        setupTest(httpClient);
         StepVerifier.create(client.getChatThreadWithResponse("19:020082a8df7b44dd8c722bea8fe7167f@thread.v2"))
             .expectErrorMatches(exception ->
                 ((HttpResponseException) exception).getResponse().getStatusCode() == 404
@@ -164,9 +182,11 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
             .verify();
     }
 
-    @Test
-    public void canDeleteChatThread() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canDeleteChatThread(HttpClient httpClient) {
         // Arrange
+        setupTest(httpClient);
         CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
 
@@ -182,9 +202,11 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
             .verifyComplete();
     }
 
-    @Test
-    public void canDeleteChatThreadWithResponse() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canDeleteChatThreadWithResponse(HttpClient httpClient) {
         // Arrange
+        setupTest(httpClient);
         CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
         
@@ -203,9 +225,11 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
             .verifyComplete();
     }
 
-    @Test
-    public void canListChatThreads() throws InterruptedException {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canListChatThreads(HttpClient httpClient) throws InterruptedException {
         // Arrange
+        setupTest(httpClient);
         CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
         
@@ -227,9 +251,11 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
             });
     }
 
-    @Test
-    public void canListChatThreadsWithMaxPageSize() throws InterruptedException {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canListChatThreadsWithMaxPageSize(HttpClient httpClient) throws InterruptedException {
         // Arrange
+        setupTest(httpClient);
         CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
         

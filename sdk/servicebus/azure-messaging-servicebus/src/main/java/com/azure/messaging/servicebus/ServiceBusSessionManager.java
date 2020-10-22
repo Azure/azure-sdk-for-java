@@ -47,11 +47,11 @@ import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE;
 /**
  * Package-private class that manages session aware message receiving.
  */
-class UnnamedSessionManager implements AutoCloseable {
+class ServiceBusSessionManager implements AutoCloseable {
     // Time to delay before trying to accept another session.
     private static final Duration SLEEP_DURATION_ON_ACCEPT_SESSION_EXCEPTION = Duration.ofMinutes(1);
 
-    private final ClientLogger logger = new ClientLogger(UnnamedSessionManager.class);
+    private final ClientLogger logger = new ClientLogger(ServiceBusSessionManager.class);
     private final String entityPath;
     private final MessagingEntityType entityType;
     private final ReceiverOptions receiverOptions;
@@ -64,26 +64,28 @@ class UnnamedSessionManager implements AutoCloseable {
     private final AtomicBoolean isStarted = new AtomicBoolean();
     private final List<Scheduler> schedulers;
     private final Deque<Scheduler> availableSchedulers = new ConcurrentLinkedDeque<>();
+    private final Duration maxSessionLockRenewDuration;
 
     /**
      * SessionId to receiver mapping.
      */
-    private final ConcurrentHashMap<String, UnnamedSessionReceiver> sessionReceivers = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, ServiceBusSessionReceiver> sessionReceivers = new ConcurrentHashMap<>();
     private final EmitterProcessor<Flux<ServiceBusReceivedMessageContext>> processor;
     private final FluxSink<Flux<ServiceBusReceivedMessageContext>> sessionReceiveSink;
 
     private volatile Flux<ServiceBusReceivedMessageContext> receiveFlux;
 
-    UnnamedSessionManager(String entityPath, MessagingEntityType entityType,
-        ServiceBusConnectionProcessor connectionProcessor, Duration operationTimeout, TracerProvider tracerProvider,
+    ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
+        ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
         MessageSerializer messageSerializer, ReceiverOptions receiverOptions) {
         this.entityPath = entityPath;
         this.entityType = entityType;
         this.receiverOptions = receiverOptions;
         this.connectionProcessor = connectionProcessor;
-        this.operationTimeout = operationTimeout;
+        this.operationTimeout = connectionProcessor.getRetryOptions().getTryTimeout();
         this.tracerProvider = tracerProvider;
         this.messageSerializer = messageSerializer;
+        this.maxSessionLockRenewDuration = receiverOptions.getMaxLockRenewDuration();
 
         // According to the documentation, if a sequence is not finite, it should be published on their own scheduler.
         // It's possible that some of these sessions have a lot of messages.
@@ -111,7 +113,7 @@ class UnnamedSessionManager implements AutoCloseable {
      * @return The name of the link, or {@code null} if there is no open link with that {@code sessionId}.
      */
     String getLinkName(String sessionId) {
-        final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
+        final ServiceBusSessionReceiver receiver = sessionReceivers.get(sessionId);
         return receiver != null ? receiver.getLinkName() : null;
     }
 
@@ -126,7 +128,7 @@ class UnnamedSessionManager implements AutoCloseable {
     Mono<byte[]> getSessionState(String sessionId) {
         return validateParameter(sessionId, "sessionId", "getSessionState").then(
             getManagementNode().flatMap(channel -> {
-                final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
+                final ServiceBusSessionReceiver receiver = sessionReceivers.get(sessionId);
                 final String associatedLinkName = receiver != null ? receiver.getLinkName() : null;
 
                 return channel.getSessionState(sessionId, associatedLinkName);
@@ -163,14 +165,13 @@ class UnnamedSessionManager implements AutoCloseable {
     Mono<OffsetDateTime> renewSessionLock(String sessionId) {
         return validateParameter(sessionId, "sessionId", "renewSessionLock").then(
             getManagementNode().flatMap(channel -> {
-                final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
+                final ServiceBusSessionReceiver receiver = sessionReceivers.get(sessionId);
                 final String associatedLinkName = receiver != null ? receiver.getLinkName() : null;
 
                 return channel.renewSessionLock(sessionId, associatedLinkName).handle((offsetDateTime, sink) -> {
                     if (receiver != null) {
                         receiver.setSessionLockedUntil(offsetDateTime);
                     }
-
                     sink.next(offsetDateTime);
                 });
             }));
@@ -193,14 +194,13 @@ class UnnamedSessionManager implements AutoCloseable {
             validateParameter(sessionId, "'sessionId'", operation)).then(
             Mono.defer(() -> {
                 final String lock = lockToken;
-                final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
+                final ServiceBusSessionReceiver receiver = sessionReceivers.get(sessionId);
                 if (receiver == null || !receiver.containsLockToken(lock)) {
                     return Mono.just(false);
                 }
 
                 final DeliveryState deliveryState = MessageUtils.getDeliveryState(dispositionStatus, deadLetterReason,
                     deadLetterDescription, propertiesToModify, transactionContext);
-
                 return receiver.updateDisposition(lock, deliveryState).thenReturn(true);
             }));
     }
@@ -224,16 +224,21 @@ class UnnamedSessionManager implements AutoCloseable {
     }
 
     /**
-     * Creates an unnamed session receive link.
+     * Creates an session receive link.
      *
-     * @return A Mono that completes with an unnamed session receive link.
+     * @return A Mono that completes with an session receive link.
      */
     private Mono<ServiceBusReceiveLink> createSessionReceiveLink() {
-        final String linkName = StringUtil.getRandomString("session-");
+        final String sessionId = receiverOptions.getSessionId();
 
+        final String linkName = (sessionId != null)
+            ? sessionId
+            : StringUtil.getRandomString("session-");
         return connectionProcessor
-            .flatMap(connection -> connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
-                null, entityType, null));
+            .flatMap(connection -> {
+                return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
+                null, entityType, sessionId);
+            });
     }
 
     /**
@@ -281,9 +286,9 @@ class UnnamedSessionManager implements AutoCloseable {
                 if (existing != null) {
                     return existing;
                 }
-
-                return new UnnamedSessionReceiver(link, messageSerializer, connectionProcessor.getRetryOptions(),
-                    receiverOptions.getPrefetchCount(), disposeOnIdle, scheduler, this::renewSessionLock);
+                return new ServiceBusSessionReceiver(link, messageSerializer, connectionProcessor.getRetryOptions(),
+                    receiverOptions.getPrefetchCount(), disposeOnIdle, scheduler, this::renewSessionLock,
+                    maxSessionLockRenewDuration);
             })))
             .flatMapMany(session -> session.receive().doFinally(signalType -> {
                 logger.verbose("Adding scheduler back to pool.");
@@ -309,7 +314,6 @@ class UnnamedSessionManager implements AutoCloseable {
             logger.info("Session manager is disposed. Not emitting more unnamed sessions.");
             return;
         }
-
         logger.verbose("Requested {} unnamed sessions.", request);
         for (int i = 0; i < request; i++) {
             final Scheduler scheduler = availableSchedulers.poll();
