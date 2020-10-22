@@ -58,7 +58,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
@@ -71,6 +70,8 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_SERVICE_NAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -248,10 +249,8 @@ class ServiceBusSenderAsyncClientTest {
     }
 
     @Test
-    void scheduleMessageSizeTooBig() throws InterruptedException {
+    void scheduleMessageSizeTooBig() {
         // Arrange
-        long sequenceNumberReturned = 10;
-
         int maxLinkSize = 1024;
         int batchSize = maxLinkSize + 10;
 
@@ -264,22 +263,14 @@ class ServiceBusSenderAsyncClientTest {
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull()))
             .thenReturn(Mono.just(link));
         when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
-        when(managementNode.schedule(anyList(), eq(instant), any(Integer.class), any(), isNull()))
-            .thenReturn(Flux.just(sequenceNumberReturned));
 
         // Act & Assert
-        sender.scheduleMessages(messages, instant)
-            .subscribe(aLong -> {
-                System.out.println("!!!! Test Messages Scheduled : " + aLong);
+        StepVerifier.create(sender.scheduleMessages(messages, instant))
+            .verifyErrorMatches(throwable -> {
+                assertTrue(throwable instanceof  AmqpException);
+                assertSame(((AmqpException) throwable).getErrorCondition(), AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED);
+                return true;
             });
-        TimeUnit.SECONDS.sleep(5);
-
-        verify(managementNode).schedule(sbMessagesCaptor.capture(), eq(instant), eq(MAX_MESSAGE_LENGTH_BYTES), eq(LINK_NAME), isNull());
-        List<ServiceBusMessage> actualMessages = sbMessagesCaptor.getValue();
-        Assertions.assertNotNull(actualMessages);
-        System.out.println(" !!!! Test  actualMessages : " + actualMessages.size());
-        //Assertions.assertEquals(1, actualMessages.size());
-        //Assertions.assertEquals(message, actualMessages.get(0));
     }
 
     /**

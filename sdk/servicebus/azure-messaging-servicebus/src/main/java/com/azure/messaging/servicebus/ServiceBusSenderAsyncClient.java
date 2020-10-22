@@ -372,66 +372,37 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             return fluxError(logger, new NullPointerException("'scheduledEnqueueTime' cannot be null."));
         }
 
-       return createBatch().flatMapMany(messageBatch -> {
-            AtomicInteger index = new AtomicInteger();
-            messages.forEach(message -> {
-                index.incrementAndGet();
-                    boolean added = messageBatch.tryAdd(message);
-                     if (!added) {
-                         System.out.println(getClass().getName() + " !!!! ERROR  could not add index =" + index);
-                         throw new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, "Could not fit in one batch message",
-                             null);
-                     }
-                }
-            );
-            return getSendLink().flatMapMany(link -> connectionProcessor
-                .flatMap(connection -> connection.getManagementNode(entityName, entityType))
-                .flatMapMany(managementNode -> managementNode.schedule(messageBatch.getMessages(), scheduledEnqueueTime,
-                    messageBatch.getMaxSizeInBytes(), link.getLinkName(), transactionContext)));
-        });
+        return getSendLink().flatMapMany(link -> link.getLinkSize()
+            .flatMapMany(size -> {
+                int maxSize =  size > 0
+                    ? size
+                    : MAX_MESSAGE_LENGTH_BYTES;
+                final CreateBatchOptions batchOptions =  new CreateBatchOptions();
+                batchOptions.setMaximumSizeInBytes(maxSize);
 
-        return getSendLink()
-            .flatMap(link -> link.getLinkSize()
-                .flatMap(size -> {
-                    final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
-                    return createBatch().map(messageBatch ->  {
-                        //AtomicInteger index = new AtomicInteger();
-                        messages.forEach(message -> {
-                                //index.incrementAndGet();
-                                boolean added = messageBatch.tryAdd(message);
-                                if (!added) {
-                                    System.out.println(getClass().getName() + " !!!! ERROR  could not add index =" );
-                                    throw new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, "Could not fit in one batch message",
-                                        null);
-                                }
-                            }
-                        );
-                        return connectionProcessor
-                            .flatMap(connection -> connection.getManagementNode(entityName, entityType))
-                            .flatMapMany(managementNode -> managementNode.schedule(messageBatch.getMessages(), scheduledEnqueueTime,
-                                messageBatch.getMaxSizeInBytes(), link.getLinkName(), transactionContext));
-                    }));
+                return createBatch(batchOptions).flatMapMany(messageBatch ->  {
+                    AtomicInteger index = new AtomicInteger();
+                    messages.forEach(message -> {
+                        index.incrementAndGet();
+                        boolean added = messageBatch.tryAdd(message);
+                        if (!added) {
+                            final String error = String.format(Locale.US,
+                                "Messages exceed max allowed size. Failed to add message at index '%s'.",
+                                index.get());
+                            throw new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, error,
+                                link.getErrorContext());
+                        }
+                    });
 
-
-                   /* final CreateBatchOptions batchOptions = new CreateBatchOptions()
-                        .setMaximumSizeInBytes(batchSize);
-                    return messages.collect(new AmqpMessageCollector(batchOptions, 1,
-                        link::getErrorContext, tracerProvider, messageSerializer, entityName,
-                        link.getHostname()));*/
-                }));
-
+                    return connectionProcessor
+                        .flatMap(connection -> connection.getManagementNode(entityName, entityType))
+                        .flatMapMany(managementNode -> managementNode.schedule(messageBatch.getMessages(),
+                            scheduledEnqueueTime, messageBatch.getMaxSizeInBytes(), link.getLinkName(),
+                            transactionContext));
+                });
+            }));
     }
 
-    /*{
-                if (!messageBatch.tryAdd(message)) {
-
-                        final String errorMessage = String.format(Locale.US,
-                            "EventData does not fit into maximum number of batches. '%s'", maxNumberOfBatches);
-
-                        throw new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, errorMessage,
-                            contextProvider.getErrorContext());
-
-                };*/
     /**
      * Cancels the enqueuing of an already scheduled message, if it was not already enqueued.
      *
