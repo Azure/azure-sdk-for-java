@@ -102,7 +102,6 @@ final class FluxAutoComplete extends FluxOperator<ServiceBusReceivedMessageConte
          */
         @Override
         protected void hookOnComplete() {
-            logger.info("Completed. Passing downstream.");
             downstream.onComplete();
         }
 
@@ -121,7 +120,6 @@ final class FluxAutoComplete extends FluxOperator<ServiceBusReceivedMessageConte
         private void applyWithCatch(Function<ServiceBusReceivedMessageContext, Mono<Void>> function,
             ServiceBusReceivedMessageContext message, String operation) {
             try {
-                logger.verbose("Applying operation: {}", operation);
                 function.apply(message).block();
             } catch (Exception e) {
                 logger.warning("Unable to '{}' message.", operation, e);

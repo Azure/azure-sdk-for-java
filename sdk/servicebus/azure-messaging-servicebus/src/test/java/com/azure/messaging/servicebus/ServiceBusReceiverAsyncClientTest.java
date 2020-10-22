@@ -902,7 +902,7 @@ class ServiceBusReceiverAsyncClientTest {
         final List<Message> messages = getMessages();
         final String lockToken = UUID.randomUUID().toString();
         final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, true,
-            "Some-Session",false, null, true);
+            "Some-Session", false, null, true);
         final ServiceBusReceiverAsyncClient sessionReceiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
             messageSerializer, onClientClose);
