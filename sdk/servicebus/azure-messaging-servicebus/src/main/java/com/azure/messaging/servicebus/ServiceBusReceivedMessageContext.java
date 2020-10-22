@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.messaging.servicebus;
 
-import com.azure.messaging.servicebus.models.ServiceBusErrorSource;
-
 import java.util.Objects;
 
 /**
@@ -51,6 +49,19 @@ public class ServiceBusReceivedMessageContext {
     }
 
     /**
+     * Creates an instance where an error occurred such as session-lock-lost.
+     *
+     * @param error AMQP exception that occurred in session.
+     * @param errorSource the source of the error.
+     */
+    ServiceBusReceivedMessageContext(Throwable error, ServiceBusErrorSource errorSource) {
+        this.error = Objects.requireNonNull(error, "'error' cannot be null.");
+        this.errorSource = Objects.requireNonNull(errorSource, "'errorSource' cannot be null.");
+        this.message = null;
+        this.sessionId = null;
+    }
+
+    /**
      * Gets the session id of the message or that the error occurred in.
      *
      * @return The session id associated with the error or message. {@code null} if there is no session.
@@ -84,7 +95,7 @@ public class ServiceBusReceivedMessageContext {
      *
      * @return The updated {@link ServiceBusReceivedMessageContext} of the error.
      */
-    public ServiceBusReceivedMessageContext setErrorSource(ServiceBusErrorSource errorSource) {
+    ServiceBusReceivedMessageContext setErrorSource(ServiceBusErrorSource errorSource) {
         this.errorSource = errorSource;
         return this;
     }
