@@ -115,7 +115,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static final List<String> BUSINESS_CARD_FIELDS = Arrays.asList("ContactNames", "JobTitles", "Departments",
         "Emails", "Websites", "MobilePhones", "OtherPhones", "Faxes", "Addresses", "CompanyNames");
 
-    // Business Card fields
+    // Receipt fields
     static final List<String> RECEIPT_FIELDS = Arrays.asList("MerchantName", "MerchantPhoneNumber", "MerchantAddress",
         "Total", "Subtotal", "Tax", "TransactionDate", "TransactionDate", "TransactionTime", "Items");
 
@@ -794,6 +794,11 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         assertEquals("+14257793479", phoneNumberList.get(0).getValue().asPhoneNumber());
         assertNotNull(businessCard1.getPages());
 
+        // assert contact name page number
+        FormField contactNameField = businessCard1Fields.get("ContactNames").getValue().asList().get(0);
+        assertEquals(contactNameField.getValueData().getPageNumber(), 1);
+        assertEquals(contactNameField.getValueData().getText(), "JOHN SINGER");
+
         assertEquals(2, businessCard2.getPageRange().getFirstPageNumber());
         assertEquals(2, businessCard2.getPageRange().getLastPageNumber());
         Map<String, FormField> businessCard2Fields = businessCard2.getFields();
@@ -802,6 +807,11 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         List<FormField> phoneNumber2List = businessCard2Fields.get("OtherPhones").getValue().asList();
         assertEquals("+44 (0) 20 9876 5432", phoneNumber2List.get(0).getValueData().getText());
         assertNotNull(businessCard2.getPages());
+
+        // assert contact name page number
+        FormField contactName2Field = businessCard2Fields.get("ContactNames").getValue().asList().get(0);
+        assertEquals(contactName2Field.getValueData().getPageNumber(), 2);
+        assertEquals(contactName2Field.getValueData().getText(), "Dr. Avery Smith");
     }
 
     static void validateMultipageReceiptData(List<RecognizedForm> recognizedReceipts) {
