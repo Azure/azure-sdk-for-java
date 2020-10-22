@@ -50,7 +50,7 @@ public class EventRoutesAsyncTest extends EventRoutesTestBase {
                         // There may be other event routes in place, so ignore them if they aren't the event route
                         // that was just created. We only need to see that the newly created event route is present in the
                         // list of all event routes.
-                        if (retrievedEventRoute.getId().equals(eventRouteToCreate.getId())) {
+                        if (retrievedEventRoute.getEventRouteId().equals(eventRouteToCreate.getEventRouteId())) {
                             assertEventRoutesEqual(eventRouteToCreate, eventRouteId, retrievedEventRoute);
                         }
                     })

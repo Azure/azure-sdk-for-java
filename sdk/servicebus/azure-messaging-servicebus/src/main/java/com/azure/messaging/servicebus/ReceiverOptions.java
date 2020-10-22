@@ -5,6 +5,8 @@ package com.azure.messaging.servicebus;
 
 import com.azure.messaging.servicebus.models.ReceiveMode;
 
+import java.time.Duration;
+
 /**
  * Options set when creating a service bus receiver.
  */
@@ -14,24 +16,35 @@ class ReceiverOptions {
     private final String sessionId;
     private final Integer maxConcurrentSessions;
     private final boolean isSessionReceiver;
+    private final Duration maxLockRenewDuration;
 
-    ReceiverOptions(ReceiveMode receiveMode, int prefetchCount) {
+    ReceiverOptions(ReceiveMode receiveMode, int prefetchCount, Duration maxLockRenewDuration) {
         this.receiveMode = receiveMode;
         this.prefetchCount = prefetchCount;
+        this.maxLockRenewDuration = maxLockRenewDuration;
         this.sessionId = null;
         this.maxConcurrentSessions = null;
         this.isSessionReceiver = false;
     }
 
-    ReceiverOptions(ReceiveMode receiveMode, int prefetchCount,
-        String sessionId, Integer maxConcurrentSessions) {
+    ReceiverOptions(ReceiveMode receiveMode, int prefetchCount, String sessionId,
+        Integer maxConcurrentSessions, Duration maxLockRenewDuration) {
         this.receiveMode = receiveMode;
         this.prefetchCount = prefetchCount;
         this.sessionId = sessionId;
         this.maxConcurrentSessions = maxConcurrentSessions;
+        this.maxLockRenewDuration = maxLockRenewDuration;
         this.isSessionReceiver = true;
     }
 
+    /**
+     * Gets the {@code maxLockRenewDuration} for the message lock or session lock.
+     *
+     * @return the max lock duration for the message lock or session lock.
+     */
+    Duration getMaxLockRenewDuration() {
+        return maxLockRenewDuration;
+    }
     /**
      * Gets the receive mode for the message.
      *
@@ -57,6 +70,15 @@ class ReceiverOptions {
      */
     int getPrefetchCount() {
         return prefetchCount;
+    }
+
+    /**
+     * Determine if client have enabled auto renew of message or session lock.
+     *
+     * @return true if  autoRenew is enabled; false otherwise.
+     */
+    boolean isAutoLockRenewEnabled() {
+        return maxLockRenewDuration != null && !maxLockRenewDuration.isZero() && !maxLockRenewDuration.isNegative();
     }
 
     /**
