@@ -35,7 +35,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -213,6 +215,30 @@ public class FluxAutoLockRenewTest {
 
     }
 
+    /**
+     * Test if we have ServiceBusReceivedMessageContex with null ServiceBusReceivedMessage, it will never not try to renew lock.
+     */
+    @Test
+    void messageWithError() {
+        // Arrange
+        final String expectedSessionId = "1";
+        final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource,
+            MAX_AUTO_LOCK_RENEW_DURATION, messageLockContainer, renewalFunction);
+        final ServiceBusReceivedMessageContext errorContext =  new ServiceBusReceivedMessageContext(expectedSessionId, new RuntimeException("fake error"));
+
+        when(messageLockContainer.addOrUpdate(eq(LOCK_TOKEN_STRING), any(OffsetDateTime.class), any(LockRenewalOperation.class)))
+            .thenThrow(new RuntimeException("contained closed."));
+
+        // Act & Assert
+        StepVerifier.create(renewOperator.take(1))
+            .then(() -> messagesPublisher.next(errorContext))
+            .assertNext(actual -> Assertions.assertEquals(expectedSessionId, actual.getSessionId()))
+            .thenCancel()
+            .verify();
+
+        verify(messageLockContainer,never()).addOrUpdate(anyString(), any(OffsetDateTime.class), any(LockRenewalOperation.class));
+
+    }
     /**
      * Test when user code throw Exception, onError handler is called.
      */
