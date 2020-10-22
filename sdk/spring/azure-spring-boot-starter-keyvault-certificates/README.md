@@ -76,7 +76,7 @@ Add then add the following Maven dependency to your POM file.
     </dependency>
 ```
 
-If you are using RestTemplate use code similar to the example below.
+If you are using `RestTemplate` use code similar to the example below.
 
 ```java
     @Bean
@@ -126,7 +126,7 @@ Add then add the following Maven dependency to your POM file.
     </dependency>
 ```
 
-Then if you are using RestTemplate use the code below as a starting
+Then if you are using `RestTemplate` use the code below as a starting
 point:
 
 ```java
