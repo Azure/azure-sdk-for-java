@@ -45,8 +45,6 @@ public class AzureServiceBusQueueAutoConfiguration {
     @Autowired(required = false)
     private ServiceBusQueueManager serviceBusQueueManager;
 
-    @Autowired(required = false)
-    private ServiceBusTopicManager serviceBusTopicManager;
 
     @PostConstruct
     public void collectTelemetry() {
@@ -60,7 +58,7 @@ public class AzureServiceBusQueueAutoConfiguration {
         DefaultServiceBusQueueClientFactory clientFactory = new DefaultServiceBusQueueClientFactory(
                 serviceBusProperties.getConnectionString());
 
-        if (serviceBusNamespaceManager != null && serviceBusQueueManager != null && serviceBusTopicManager != null) {
+        if (serviceBusNamespaceManager != null && serviceBusQueueManager != null) {
             clientFactory.setServiceBusNamespaceManager(serviceBusNamespaceManager);
             clientFactory.setServiceBusQueueManager(serviceBusQueueManager);
             clientFactory.setNamespace(serviceBusProperties.getNamespace());
