@@ -28,11 +28,11 @@ public class ApplicationInsightsManagementClientImpl extends AzureServiceClient 
         return this.azureClient;
     }
 
-    /** Client Api Version. */
+    /** The API version to use for this operation. */
     private String apiVersion;
 
     /**
-     * Gets Client Api Version.
+     * Gets The API version to use for this operation.
      *
      * @return the apiVersion value.
      */
@@ -40,11 +40,11 @@ public class ApplicationInsightsManagementClientImpl extends AzureServiceClient 
         return this.apiVersion;
     }
 
-    /** The Azure subscription ID. */
+    /** The ID of the target subscription. */
     private String subscriptionId;
 
     /**
-     * Gets The Azure subscription ID.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -53,7 +53,7 @@ public class ApplicationInsightsManagementClientImpl extends AzureServiceClient 
     }
 
     /**
-     * Sets The Azure subscription ID.
+     * Sets The ID of the target subscription.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the service client itself
@@ -341,6 +341,19 @@ public class ApplicationInsightsManagementClientImpl extends AzureServiceClient 
     }
 
     /**
+     * The MyWorkbooksInner object to access its operations.
+     */
+    private MyWorkbooksInner myWorkbooks;
+
+    /**
+     * Gets the MyWorkbooksInner object to access its operations.
+     * @return the MyWorkbooksInner object.
+     */
+    public MyWorkbooksInner myWorkbooks() {
+        return this.myWorkbooks;
+    }
+
+    /**
      * Initializes an instance of ApplicationInsightsManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -391,6 +404,7 @@ public class ApplicationInsightsManagementClientImpl extends AzureServiceClient 
         this.webTests = new WebTestsInner(restClient().retrofit(), this);
         this.analyticsItems = new AnalyticsItemsInner(restClient().retrofit(), this);
         this.workbooks = new WorkbooksInner(restClient().retrofit(), this);
+        this.myWorkbooks = new MyWorkbooksInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 
@@ -401,6 +415,6 @@ public class ApplicationInsightsManagementClientImpl extends AzureServiceClient 
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "ApplicationInsightsManagementClient", "2015-05-01");
+        return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "ApplicationInsightsManagementClient", "2015-05-01");
     }
 }

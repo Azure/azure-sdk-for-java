@@ -12,6 +12,9 @@ import com.microsoft.azure.management.applicationinsights.v2015_05_01.Applicatio
 import com.microsoft.azure.management.applicationinsights.v2015_05_01.FlowType;
 import com.microsoft.azure.management.applicationinsights.v2015_05_01.RequestSource;
 import org.joda.time.DateTime;
+import java.util.List;
+import com.microsoft.azure.management.applicationinsights.v2015_05_01.PrivateLinkScopedResource;
+import com.microsoft.azure.management.applicationinsights.v2015_05_01.IngestionMode;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.management.applicationinsights.v2015_05_01.ComponentsResource;
@@ -117,6 +120,44 @@ public class ApplicationInsightsComponentInner extends ComponentsResource {
      */
     @JsonProperty(value = "properties.SamplingPercentage")
     private Double samplingPercentage;
+
+    /**
+     * Application Insights component connection string.
+     */
+    @JsonProperty(value = "properties.ConnectionString", access = JsonProperty.Access.WRITE_ONLY)
+    private String connectionString;
+
+    /**
+     * Retention period in days.
+     */
+    @JsonProperty(value = "properties.RetentionInDays")
+    private Integer retentionInDays;
+
+    /**
+     * Disable IP masking.
+     */
+    @JsonProperty(value = "properties.DisableIpMasking")
+    private Boolean disableIpMasking;
+
+    /**
+     * Purge data immediately after 30 days.
+     */
+    @JsonProperty(value = "properties.ImmediatePurgeDataOn30Days")
+    private Boolean immediatePurgeDataOn30Days;
+
+    /**
+     * List of linked private link scope resources.
+     */
+    @JsonProperty(value = "properties.PrivateLinkScopedResources", access = JsonProperty.Access.WRITE_ONLY)
+    private List<PrivateLinkScopedResource> privateLinkScopedResources;
+
+    /**
+     * Indicates the flow of the ingestion. Possible values include:
+     * 'ApplicationInsights', 'ApplicationInsightsWithDiagnosticSettings',
+     * 'LogAnalytics'.
+     */
+    @JsonProperty(value = "properties.IngestionMode")
+    private IngestionMode ingestionMode;
 
     /**
      * Get the kind of application that this component refers to, used to customize UI. This value is a freeform string, values should typically be one of the following: web, ios, other, store, java, phone.
@@ -298,6 +339,104 @@ public class ApplicationInsightsComponentInner extends ComponentsResource {
      */
     public ApplicationInsightsComponentInner withSamplingPercentage(Double samplingPercentage) {
         this.samplingPercentage = samplingPercentage;
+        return this;
+    }
+
+    /**
+     * Get application Insights component connection string.
+     *
+     * @return the connectionString value
+     */
+    public String connectionString() {
+        return this.connectionString;
+    }
+
+    /**
+     * Get retention period in days.
+     *
+     * @return the retentionInDays value
+     */
+    public Integer retentionInDays() {
+        return this.retentionInDays;
+    }
+
+    /**
+     * Set retention period in days.
+     *
+     * @param retentionInDays the retentionInDays value to set
+     * @return the ApplicationInsightsComponentInner object itself.
+     */
+    public ApplicationInsightsComponentInner withRetentionInDays(Integer retentionInDays) {
+        this.retentionInDays = retentionInDays;
+        return this;
+    }
+
+    /**
+     * Get disable IP masking.
+     *
+     * @return the disableIpMasking value
+     */
+    public Boolean disableIpMasking() {
+        return this.disableIpMasking;
+    }
+
+    /**
+     * Set disable IP masking.
+     *
+     * @param disableIpMasking the disableIpMasking value to set
+     * @return the ApplicationInsightsComponentInner object itself.
+     */
+    public ApplicationInsightsComponentInner withDisableIpMasking(Boolean disableIpMasking) {
+        this.disableIpMasking = disableIpMasking;
+        return this;
+    }
+
+    /**
+     * Get purge data immediately after 30 days.
+     *
+     * @return the immediatePurgeDataOn30Days value
+     */
+    public Boolean immediatePurgeDataOn30Days() {
+        return this.immediatePurgeDataOn30Days;
+    }
+
+    /**
+     * Set purge data immediately after 30 days.
+     *
+     * @param immediatePurgeDataOn30Days the immediatePurgeDataOn30Days value to set
+     * @return the ApplicationInsightsComponentInner object itself.
+     */
+    public ApplicationInsightsComponentInner withImmediatePurgeDataOn30Days(Boolean immediatePurgeDataOn30Days) {
+        this.immediatePurgeDataOn30Days = immediatePurgeDataOn30Days;
+        return this;
+    }
+
+    /**
+     * Get list of linked private link scope resources.
+     *
+     * @return the privateLinkScopedResources value
+     */
+    public List<PrivateLinkScopedResource> privateLinkScopedResources() {
+        return this.privateLinkScopedResources;
+    }
+
+    /**
+     * Get indicates the flow of the ingestion. Possible values include: 'ApplicationInsights', 'ApplicationInsightsWithDiagnosticSettings', 'LogAnalytics'.
+     *
+     * @return the ingestionMode value
+     */
+    public IngestionMode ingestionMode() {
+        return this.ingestionMode;
+    }
+
+    /**
+     * Set indicates the flow of the ingestion. Possible values include: 'ApplicationInsights', 'ApplicationInsightsWithDiagnosticSettings', 'LogAnalytics'.
+     *
+     * @param ingestionMode the ingestionMode value to set
+     * @return the ApplicationInsightsComponentInner object itself.
+     */
+    public ApplicationInsightsComponentInner withIngestionMode(IngestionMode ingestionMode) {
+        this.ingestionMode = ingestionMode;
         return this;
     }
 

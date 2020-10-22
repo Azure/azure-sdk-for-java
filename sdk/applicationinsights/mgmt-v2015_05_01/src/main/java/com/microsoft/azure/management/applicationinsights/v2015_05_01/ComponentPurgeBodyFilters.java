@@ -22,6 +22,8 @@ public class ComponentPurgeBodyFilters {
 
     /**
      * A query operator to evaluate over the provided column and value(s).
+     * Supported operators are ==, =~, in, in~, &gt;, &gt;=, &lt;, &lt;=,
+     * between, and have the same behavior as they would in a KQL query.
      */
     @JsonProperty(value = "operator")
     private String operator;
@@ -32,6 +34,13 @@ public class ComponentPurgeBodyFilters {
      */
     @JsonProperty(value = "value")
     private Object value;
+
+    /**
+     * When filtering over custom dimensions, this key will be used as the name
+     * of the custom dimension.
+     */
+    @JsonProperty(value = "key")
+    private String key;
 
     /**
      * Get the column of the table over which the given query should run.
@@ -54,7 +63,7 @@ public class ComponentPurgeBodyFilters {
     }
 
     /**
-     * Get a query operator to evaluate over the provided column and value(s).
+     * Get a query operator to evaluate over the provided column and value(s). Supported operators are ==, =~, in, in~, &gt;, &gt;=, &lt;, &lt;=, between, and have the same behavior as they would in a KQL query.
      *
      * @return the operator value
      */
@@ -63,7 +72,7 @@ public class ComponentPurgeBodyFilters {
     }
 
     /**
-     * Set a query operator to evaluate over the provided column and value(s).
+     * Set a query operator to evaluate over the provided column and value(s). Supported operators are ==, =~, in, in~, &gt;, &gt;=, &lt;, &lt;=, between, and have the same behavior as they would in a KQL query.
      *
      * @param operator the operator value to set
      * @return the ComponentPurgeBodyFilters object itself.
@@ -90,6 +99,26 @@ public class ComponentPurgeBodyFilters {
      */
     public ComponentPurgeBodyFilters withValue(Object value) {
         this.value = value;
+        return this;
+    }
+
+    /**
+     * Get when filtering over custom dimensions, this key will be used as the name of the custom dimension.
+     *
+     * @return the key value
+     */
+    public String key() {
+        return this.key;
+    }
+
+    /**
+     * Set when filtering over custom dimensions, this key will be used as the name of the custom dimension.
+     *
+     * @param key the key value to set
+     * @return the ComponentPurgeBodyFilters object itself.
+     */
+    public ComponentPurgeBodyFilters withKey(String key) {
+        this.key = key;
         return this;
     }
 
