@@ -59,6 +59,8 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
+import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PREBUILT_TYPE.BUSINESS_CARD;
+import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PREBUILT_TYPE.RECEIPT;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_API_KEY;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL;
@@ -91,6 +93,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static final String MULTIPAGE_INVOICE_PDF = "multipage_invoice1.pdf";
     static final String BUSINESS_CARD_JPG = "businessCard.jpg";
     static final String BUSINESS_CARD_PNG = "businessCard.png";
+    static final String MULTIPAGE_BUSINESS_CARD_PDF = "business-card-multipage.pdf";
+
     // Error code
     static final String BAD_ARGUMENT_CODE = "BadArgument";
     static final String INVALID_IMAGE_ERROR_CODE = "InvalidImage";
@@ -98,6 +102,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static final String MODEL_ID_NOT_FOUND_ERROR_CODE = "1022";
     static final String URL_BADLY_FORMATTED_ERROR_CODE = "2001";
     static final String UNABLE_TO_READ_FILE_ERROR_CODE = "2005";
+
     // Error Message
     static final String HTTPS_EXCEPTION_MESSAGE =
         "Max retries 3 times exceeded. Error Details: Key credentials require HTTPS to prevent leaking the key.";
@@ -111,6 +116,14 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     // Business Card fields
     static final List<String> BUSINESS_CARD_FIELDS = Arrays.asList("ContactNames", "JobTitles", "Departments",
         "Emails", "Websites", "MobilePhones", "OtherPhones", "Faxes", "Addresses", "CompanyNames");
+
+    // Business Card fields
+    static final List<String> RECEIPT_FIELDS = Arrays.asList("MerchantName", "MerchantPhoneNumber", "MerchantAddress",
+        "Total", "Subtotal", "Tax", "TransactionDate", "TransactionDate", "TransactionTime", "Items");
+
+    enum PREBUILT_TYPE {
+        RECEIPT, BUSINESS_CARD
+    }
 
     Duration durationTestMode;
 
@@ -598,37 +611,6 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     abstract void recognizeBusinessCardSourceUrlWithPngFile(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
 
-    // Receipt
-    void validateReceiptDataFields(Map<String, FormField> actualRecognizedReceiptFields, boolean includeFieldElements) {
-        final AnalyzeResult analyzeResult = getAnalyzeRawResponse().getAnalyzeResult();
-        List<ReadResult> readResults = analyzeResult.getReadResults();
-        DocumentResult documentResult = analyzeResult.getDocumentResults().get(0);
-        Map<String, FieldValue> expectedReceiptFields = documentResult.getFields();
-
-        assertEquals(expectedReceiptFields.get("ReceiptType").getValueString(),
-            actualRecognizedReceiptFields.get("ReceiptType").getValue().asString());
-        assertEquals(expectedReceiptFields.get("ReceiptType").getConfidence(),
-            actualRecognizedReceiptFields.get("ReceiptType").getConfidence());
-        validateFieldValueTransforms(expectedReceiptFields.get("MerchantName"),
-            actualRecognizedReceiptFields.get("MerchantName"), readResults, includeFieldElements);
-        validateFieldValueTransforms(expectedReceiptFields.get("MerchantPhoneNumber"),
-            actualRecognizedReceiptFields.get("MerchantPhoneNumber"), readResults, includeFieldElements);
-        validateFieldValueTransforms(expectedReceiptFields.get("MerchantAddress"),
-            actualRecognizedReceiptFields.get("MerchantAddress"), readResults, includeFieldElements);
-        validateFieldValueTransforms(expectedReceiptFields.get("Total"), actualRecognizedReceiptFields.get("Total"),
-            readResults, includeFieldElements);
-        validateFieldValueTransforms(expectedReceiptFields.get("Subtotal"),
-            actualRecognizedReceiptFields.get("Subtotal"), readResults, includeFieldElements);
-        validateFieldValueTransforms(expectedReceiptFields.get("Tax"), actualRecognizedReceiptFields.get("Tax"),
-            readResults, includeFieldElements);
-        validateFieldValueTransforms(expectedReceiptFields.get("TransactionDate"),
-            actualRecognizedReceiptFields.get("TransactionDate"), readResults, includeFieldElements);
-        validateFieldValueTransforms(expectedReceiptFields.get("TransactionTime"),
-            actualRecognizedReceiptFields.get("TransactionTime"), readResults, includeFieldElements);
-        validateFieldValueTransforms(expectedReceiptFields.get("Items"), actualRecognizedReceiptFields.get("Items"),
-            readResults, includeFieldElements);
-    }
-
     void validateContentResultData(List<FormPage> actualFormPageList, boolean includeFieldElements) {
         AnalyzeResult analyzeResult = getAnalyzeRawResponse().getAnalyzeResult();
         final List<PageResult> pageResults = analyzeResult.getPageResults();
@@ -658,16 +640,6 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         }
     }
 
-    void validateReceiptResultData(List<RecognizedForm> actualReceiptList, boolean includeFieldElements) {
-        final AnalyzeResult rawResponse = getAnalyzeRawResponse().getAnalyzeResult();
-        for (int i = 0; i < actualReceiptList.size(); i++) {
-            final RecognizedForm actualReceipt = actualReceiptList.get(i);
-            validateLabeledData(actualReceipt, includeFieldElements, rawResponse.getReadResults(),
-                rawResponse.getDocumentResults().get(i));
-            validateReceiptDataFields(actualReceipt.getFields(), includeFieldElements);
-        }
-    }
-
     void validateBlankPdfResultData(List<RecognizedForm> actualReceiptList) {
         assertEquals(1, actualReceiptList.size());
         final RecognizedForm actualReceipt = actualReceiptList.get(0);
@@ -691,28 +663,34 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         }
     }
 
-    // Business cards
-    void validateBusinessCardDataFields(Map<String, FormField> actualRecognizedBusinessCardFields, boolean includeFieldElements) {
-        final AnalyzeResult analyzeResult = getAnalyzeRawResponse().getAnalyzeResult();
-        List<ReadResult> readResults = analyzeResult.getReadResults();
-        DocumentResult documentResult = analyzeResult.getDocumentResults().get(0);
-        Map<String, FieldValue> expectedReceiptFields = documentResult.getFields();
-
-        BUSINESS_CARD_FIELDS.forEach(businessCardField ->
-            validateFieldValueTransforms(expectedReceiptFields.get(businessCardField),
-                actualRecognizedBusinessCardFields.get(businessCardField), readResults, includeFieldElements));
-
-    }
-
-    void validateBusinessCardResultData(List<RecognizedForm> actualBusinessCardList, boolean includeFieldElements) {
+    void validatePrebuiltResultData(List<RecognizedForm> actualPrebuiltRecognizedForms, boolean includeFieldElements,
+        PREBUILT_TYPE prebuiltType) {
         final AnalyzeResult rawResponse = getAnalyzeRawResponse().getAnalyzeResult();
-        for (int i = 0; i < actualBusinessCardList.size(); i++) {
-            final RecognizedForm actualBusinessCard = actualBusinessCardList.get(i);
-            validateLabeledData(actualBusinessCard, includeFieldElements, rawResponse.getReadResults(),
-                rawResponse.getDocumentResults().get(i));
-            validateBusinessCardDataFields(actualBusinessCard.getFields(), includeFieldElements);
+        final List<ReadResult> rawReadResults = rawResponse.getReadResults();
+        for (int i = 0; i < actualPrebuiltRecognizedForms.size(); i++) {
+            final RecognizedForm actualForm = actualPrebuiltRecognizedForms.get(i);
+            final DocumentResult rawDocumentResult = rawResponse.getDocumentResults().get(i);
+
+            validateLabeledData(actualForm, includeFieldElements, rawReadResults, rawDocumentResult);
+            if (BUSINESS_CARD.equals(prebuiltType)) {
+                BUSINESS_CARD_FIELDS.forEach(businessCardField ->
+                    validateFieldValueTransforms(rawDocumentResult.getFields().get(businessCardField),
+                        actualForm.getFields().get(businessCardField), rawReadResults, includeFieldElements));
+            } else {
+                RECEIPT_FIELDS.forEach(receiptField -> {
+                    final Map<String, FormField> actualRecognizedReceiptFields = actualForm.getFields();
+                    Map<String, FieldValue> expectedReceiptFields = rawDocumentResult.getFields();
+                    assertEquals(expectedReceiptFields.get("ReceiptType").getValueString(),
+                        actualRecognizedReceiptFields.get("ReceiptType").getValue().asString());
+                    assertEquals(expectedReceiptFields.get("ReceiptType").getConfidence(),
+                        actualRecognizedReceiptFields.get("ReceiptType").getConfidence());
+                    validateFieldValueTransforms(rawDocumentResult.getFields().get(receiptField),
+                        actualRecognizedReceiptFields.get(receiptField), rawReadResults, includeFieldElements);
+                });
+            }
         }
     }
+
 
     // Others
 
@@ -839,9 +817,31 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                 assertNotNull(formField.getValue());
                 assertNotNull(formField.getValueData().getText());
                 assertNotNull(formField.getLabelData().getText());
-
             });
         });
+    }
+    static void validateMultipageBusinessData(List<RecognizedForm> recognizedBusinessCards) {
+        assertEquals(2, recognizedBusinessCards.size());
+        RecognizedForm businessCard1 = recognizedBusinessCards.get(0);
+        RecognizedForm businessCard2 = recognizedBusinessCards.get(1);
+
+        assertEquals(1, businessCard1.getPageRange().getFirstPageNumber());
+        assertEquals(1, businessCard1.getPageRange().getLastPageNumber());
+        Map<String, FormField> businessCard1Fields = businessCard1.getFields();
+        List<FormField> emailList = businessCard1Fields.get("Emails").getValue().asList();
+        assertEquals("johnsinger@contoso.com", emailList.get(0).getValue().asString());
+        List<FormField> phoneNumberList = businessCard1Fields.get("OtherPhones").getValue().asList();
+        assertEquals("+14257793479", phoneNumberList.get(0).getValue().asPhoneNumber());
+        assertNotNull(businessCard1.getPages());
+
+        assertEquals(2, businessCard2.getPageRange().getFirstPageNumber());
+        assertEquals(2, businessCard2.getPageRange().getLastPageNumber());
+        Map<String, FormField> businessCard2Fields = businessCard2.getFields();
+        List<FormField> email2List = businessCard2Fields.get("Emails").getValue().asList();
+        assertEquals("avery.smith@contoso.com", email2List.get(0).getValue().asString());
+        List<FormField> phoneNumber2List = businessCard2Fields.get("OtherPhones").getValue().asList();
+        assertEquals("+44 (0) 20 9876 5432", phoneNumber2List.get(0).getValueData().getText());
+        assertNotNull(businessCard2.getPages());
     }
 
     static void validateMultipageReceiptData(List<RecognizedForm> recognizedReceipts) {

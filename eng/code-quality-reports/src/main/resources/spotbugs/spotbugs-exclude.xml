@@ -2250,6 +2250,14 @@
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
 
+  <!-- Exclude for Fluent Lite generated code -->
+  <Match>
+    <Or>
+      <Package name="~com\.azure\.resourcemanager(\.[^.]+)*\.generated(\.[^.]+)*"/>
+    </Or>
+    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE,SIC_INNER_SHOULD_BE_STATIC_ANON,SKIPPED_CLASS_TOO_BIG,UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
   <!-- Exclude from spring related classes -->
   <Match>
     <Or>

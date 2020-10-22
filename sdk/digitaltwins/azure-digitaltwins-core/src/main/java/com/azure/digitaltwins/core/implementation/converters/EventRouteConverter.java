@@ -22,7 +22,7 @@ public final class EventRouteConverter {
 
         EventRoute mappedEventRoute = new EventRoute(input.getEndpointName());
         mappedEventRoute.setFilter(input.getFilter());
-        mappedEventRoute.setId(input.getId());
+        mappedEventRoute.setEventRouteId(input.getId());
         return mappedEventRoute;
     }
 

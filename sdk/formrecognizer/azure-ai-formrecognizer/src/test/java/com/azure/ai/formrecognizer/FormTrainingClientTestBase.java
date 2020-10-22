@@ -50,6 +50,7 @@ import static com.azure.ai.formrecognizer.TestUtils.getSerializerAdapter;
 import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.formrecognizer.implementation.models.ModelStatus.READY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -181,6 +182,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
             }
             assertEquals(modelRawResponse.getTrainResult().getAverageModelAccuracy(),
                 subModelList.get(0).getAccuracy());
+            assertFalse(actualCustomModel.getCustomModelProperties().isComposed());
             validateTrainingDocumentsData(modelRawResponse.getTrainResult().getTrainingDocuments(),
                 actualCustomModel.getTrainingDocuments());
             validateErrorData(modelRawResponse.getTrainResult().getErrors(), actualCustomModel.getModelError());
@@ -200,6 +202,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
                         .collect(Collectors.toList());
 
                 assertEquals(expectedSubmodel.getTrainingDocuments().size(), submodelTrainingDocuments.size());
+                assertTrue(actualCustomModel.getCustomModelProperties().isComposed());
                 validateTrainingDocumentsData(expectedSubmodel.getTrainingDocuments(), submodelTrainingDocuments);
 
                 for (final FormFieldsReport expectedField : expectedSubmodel.getFields()) {
@@ -222,6 +225,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
                         .forEach(customFormModelField ->
                             assertTrue(fields.contains(customFormModelField.getLabel())));
                 });
+            assertFalse(actualCustomModel.getCustomModelProperties().isComposed());
             validateTrainingDocumentsData(modelRawResponse.getTrainResult().getTrainingDocuments(),
                 actualCustomModel.getTrainingDocuments());
             validateErrorData(modelRawResponse.getTrainResult().getErrors(), actualCustomModel.getModelError());

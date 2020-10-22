@@ -79,7 +79,7 @@ public class RelationshipsSyncSamples {
         Iterable<DigitalTwinsModelData> createdModels = client.createModels(new ArrayList<>(Arrays.asList(buildingModelPayload, floorModelPayload)));
 
         for (DigitalTwinsModelData model : createdModels) {
-            ConsoleLogger.print("Created model " + model.getId());
+            ConsoleLogger.print("Created model " + model.getModelId());
         }
 
         // Create a building digital twin
@@ -119,7 +119,7 @@ public class RelationshipsSyncSamples {
 
         if (getRelationshipResponse.getStatusCode() == HttpURLConnection.HTTP_OK) {
             BasicRelationship retrievedRelationship = getRelationshipResponse.getValue();
-            ConsoleLogger.printSuccess("Retrieved relationship: " + retrievedRelationship.getId() + " from twin: " + retrievedRelationship.getSourceId() + "\n\t" +
+            ConsoleLogger.printSuccess("Retrieved relationship: " + retrievedRelationship.getRelationshipId() + " from twin: " + retrievedRelationship.getSourceDigitalTwinId() + "\n\t" +
                 "Prop1: " + retrievedRelationship.getCustomProperties().get("Prop1") + "\n\t" +
                 "Prop2: " + retrievedRelationship.getCustomProperties().get("Prop2"));
         }
@@ -129,7 +129,7 @@ public class RelationshipsSyncSamples {
         PagedIterable<BasicRelationship> relationshipPages = client.listRelationships(buildingTwinId, BasicRelationship.class);
 
         for (BasicRelationship relationship : relationshipPages) {
-            ConsoleLogger.printSuccess("Retrieved relationship: " + relationship.getId() + " with source: " + relationship.getSourceId() + " and target: " + relationship.getTargetId());
+            ConsoleLogger.printSuccess("Retrieved relationship: " + relationship.getRelationshipId() + " with source: " + relationship.getSourceDigitalTwinId() + " and target: " + relationship.getTargetDigitalTwinId());
         }
 
         ConsoleLogger.printHeader("List incoming relationships");
@@ -138,7 +138,7 @@ public class RelationshipsSyncSamples {
         PagedIterable<IncomingRelationship> incomingRelationships = client.listIncomingRelationships(floorTwinId, null, Context.NONE);
 
         for (IncomingRelationship incomingRelationship : incomingRelationships) {
-            ConsoleLogger.printSuccess("Found an incoming relationship: " + incomingRelationship.getRelationshipId() + " from: " + incomingRelationship.getSourceId());
+            ConsoleLogger.printSuccess("Found an incoming relationship: " + incomingRelationship.getRelationshipId() + " from: " + incomingRelationship.getSourceDigitalTwinId());
         }
 
         // Delete the contains relationship, created earlier in the sample code, from building to floor.

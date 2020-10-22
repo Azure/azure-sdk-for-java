@@ -28,6 +28,8 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.util.List;
 
+import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PREBUILT_TYPE.BUSINESS_CARD;
+import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PREBUILT_TYPE.RECEIPT;
 import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.formrecognizer.TestUtils.FORM_JPG;
@@ -83,7 +85,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode))
                     .getSyncPoller();
             syncPoller.waitForCompletion();
-            validateReceiptResultData(syncPoller.getFinalResult(), false);
+            validatePrebuiltResultData(syncPoller.getFinalResult(), false, RECEIPT);
         }, RECEIPT_CONTOSO_JPG);
     }
 
@@ -112,7 +114,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 = client.beginRecognizeReceipts(toFluxByteBuffer(getContentDetectionFileData(filePath)), dataLength,
                 new RecognizeReceiptsOptions().setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller.waitForCompletion();
-            validateReceiptResultData(syncPoller.getFinalResult(), false);
+            validatePrebuiltResultData(syncPoller.getFinalResult(), false, RECEIPT);
         }, RECEIPT_CONTOSO_JPG);
     }
 
@@ -129,7 +131,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                     .setContentType(FormContentType.IMAGE_JPEG).setFieldElementsIncluded(true)
                     .setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller.waitForCompletion();
-            validateReceiptResultData(syncPoller.getFinalResult(), true);
+            validatePrebuiltResultData(syncPoller.getFinalResult(), true, RECEIPT);
         }, RECEIPT_CONTOSO_JPG);
     }
 
@@ -147,7 +149,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                     .setContentType(FormContentType.IMAGE_PNG).setFieldElementsIncluded(true)
                     .setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller.waitForCompletion();
-            validateReceiptResultData(syncPoller.getFinalResult(), true);
+            validatePrebuiltResultData(syncPoller.getFinalResult(), true, RECEIPT);
         }, RECEIPT_CONTOSO_PNG);
     }
 
@@ -213,7 +215,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
                 client.beginRecognizeReceiptsFromUrl(sourceUrl).getSyncPoller();
             syncPoller.waitForCompletion();
-            validateReceiptResultData(syncPoller.getFinalResult(), false);
+            validatePrebuiltResultData(syncPoller.getFinalResult(), false, RECEIPT);
         }, RECEIPT_CONTOSO_JPG);
     }
 
@@ -263,7 +265,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 sourceUrl, new RecognizeReceiptsOptions().setFieldElementsIncluded(true)
                     .setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller.waitForCompletion();
-            validateReceiptResultData(syncPoller.getFinalResult(), true);
+            validatePrebuiltResultData(syncPoller.getFinalResult(), true, RECEIPT);
         }, RECEIPT_CONTOSO_JPG);
     }
 
@@ -283,7 +285,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                         .setPollInterval(durationTestMode))
                     .getSyncPoller();
             syncPoller.waitForCompletion();
-            validateReceiptResultData(syncPoller.getFinalResult(), true);
+            validatePrebuiltResultData(syncPoller.getFinalResult(), true, RECEIPT);
         }, RECEIPT_CONTOSO_PNG);
     }
 
@@ -1200,7 +1202,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                         .setPollInterval(durationTestMode))
                     .getSyncPoller();
             syncPoller.waitForCompletion();
-            validateBusinessCardResultData(syncPoller.getFinalResult(), false);
+            validatePrebuiltResultData(syncPoller.getFinalResult(), false, BUSINESS_CARD);
         }, BUSINESS_CARD_JPG);
     }
 
@@ -1230,7 +1232,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                     new RecognizeBusinessCardsOptions().setPollInterval(durationTestMode))
                     .getSyncPoller();
             syncPoller.waitForCompletion();
-            validateBusinessCardResultData(syncPoller.getFinalResult(), false);
+            validatePrebuiltResultData(syncPoller.getFinalResult(), false, BUSINESS_CARD);
         }, BUSINESS_CARD_JPG);
     }
 
@@ -1249,7 +1251,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                         .setFieldElementsIncluded(true).setPollInterval(durationTestMode))
                     .getSyncPoller();
             syncPoller.waitForCompletion();
-            validateBusinessCardResultData(syncPoller.getFinalResult(), true);
+            validatePrebuiltResultData(syncPoller.getFinalResult(), true, BUSINESS_CARD);
         }, BUSINESS_CARD_JPG);
     }
 
@@ -1268,7 +1270,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                         .setFieldElementsIncluded(true).setPollInterval(durationTestMode))
                     .getSyncPoller();
             syncPoller.waitForCompletion();
-            validateBusinessCardResultData(syncPoller.getFinalResult(), true);
+            validatePrebuiltResultData(syncPoller.getFinalResult(), true, BUSINESS_CARD);
         }, BUSINESS_CARD_PNG);
     }
 
@@ -1310,6 +1312,27 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         });
     }
 
+    /**
+     * Verify business card recognition with multipage pdf.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeMultipageBusinessCard(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        dataRunner((data, dataLength) -> {
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
+                client.beginRecognizeBusinessCards(toFluxByteBuffer(data),
+                    dataLength,
+                    new RecognizeBusinessCardsOptions()
+                        .setContentType(FormContentType.APPLICATION_PDF)
+                        .setFieldElementsIncluded(true)
+                        .setPollInterval(durationTestMode))
+                    .getSyncPoller();
+            syncPoller.waitForCompletion();
+            validateMultipageBusinessData(syncPoller.getFinalResult());
+        }, MULTIPAGE_BUSINESS_CARD_PDF);
+    }
+
     // Business Card - URL
 
     /**
@@ -1323,7 +1346,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
                 client.beginRecognizeBusinessCardsFromUrl(sourceUrl).getSyncPoller();
             syncPoller.waitForCompletion();
-            validateBusinessCardResultData(syncPoller.getFinalResult(), false);
+            validatePrebuiltResultData(syncPoller.getFinalResult(), false, BUSINESS_CARD);
         }, BUSINESS_CARD_JPG);
     }
 
@@ -1380,7 +1403,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                         .setPollInterval(durationTestMode))
                     .getSyncPoller();
             syncPoller.waitForCompletion();
-            validateBusinessCardResultData(syncPoller.getFinalResult(), true);
+            validatePrebuiltResultData(syncPoller.getFinalResult(), true, BUSINESS_CARD);
         }, BUSINESS_CARD_JPG);
     }
 
@@ -1400,8 +1423,27 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                         .setPollInterval(durationTestMode))
                     .getSyncPoller();
             syncPoller.waitForCompletion();
-            validateBusinessCardResultData(syncPoller.getFinalResult(), true);
+            validatePrebuiltResultData(syncPoller.getFinalResult(), true, BUSINESS_CARD);
         }, BUSINESS_CARD_PNG);
+    }
+
+    /**
+     * Verify business card recognition with multipage pdf url.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeMultipageBusinessCardUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        urlRunner(sourceUrl -> {
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
+                client.beginRecognizeBusinessCardsFromUrl(sourceUrl,
+                    new RecognizeBusinessCardsOptions()
+                        .setFieldElementsIncluded(true)
+                        .setPollInterval(durationTestMode))
+                    .getSyncPoller();
+            syncPoller.waitForCompletion();
+            validateMultipageBusinessData(syncPoller.getFinalResult());
+        }, MULTIPAGE_BUSINESS_CARD_PDF);
     }
 
     /**
