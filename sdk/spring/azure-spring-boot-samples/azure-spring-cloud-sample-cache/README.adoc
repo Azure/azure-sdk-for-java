@@ -15,8 +15,8 @@ Maven coordinates:
 [source,xml]
 ----
 <dependency>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>spring-starter-azure-cache</artifactId>
+    <groupId>com.azure.spring</groupId>
+    <artifactId>azure-spring-cloud-starter-cache</artifactId>
 </dependency>
 ----
 
@@ -25,7 +25,7 @@ Gradle coordinates:
 [source]
 ----
 dependencies {
-    compile group: 'com.microsoft.azure', name: 'spring-starter-azure-cache'
+    compile group: 'com.azure.spring', name: 'azure-spring-cloud-starter-cache'
 }
 ----
 

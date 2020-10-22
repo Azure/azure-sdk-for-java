@@ -262,9 +262,9 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
             BasicRelationship.class)
         .subscribe(createdRelationship -> System.out.println(
             "Created relationship with Id: " +
-                createdRelationship.getId() +
-                " from: " + createdRelationship.getSourceId() +
-                " to: " + createdRelationship.getTargetId()));
+                createdRelationship.getRelationshipId() +
+                " from: " + createdRelationship.getSourceDigitalTwinId() +
+                " to: " + createdRelationship.getTargetDigitalTwinId()));
         // END: com.azure.digitaltwins.core.asyncClient.createRelationship#String-String-Object-Class#BasicRelationship
 
         // BEGIN: com.azure.digitaltwins.core.asyncClient.createRelationship#String-String-Object-Class#String
@@ -303,9 +303,9 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
             new CreateRelationshipOptions())
         .subscribe(createdRelationshipWithResponse -> System.out.println(
             "Created relationship with Id: " +
-                createdRelationshipWithResponse.getValue().getId() +
-                " from: " + createdRelationshipWithResponse.getValue().getSourceId() +
-                " to: " + createdRelationshipWithResponse.getValue().getTargetId() +
+                createdRelationshipWithResponse.getValue().getRelationshipId() +
+                " from: " + createdRelationshipWithResponse.getValue().getSourceDigitalTwinId() +
+                " to: " + createdRelationshipWithResponse.getValue().getTargetDigitalTwinId() +
                 " Http status code: " +
                 createdRelationshipWithResponse.getStatusCode()));
         // END: com.azure.digitaltwins.core.asyncClient.createRelationshipWithResponse#String-String-Object-Class-Options#BasicRelationship
@@ -339,10 +339,10 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
             BasicRelationship.class)
             .subscribe(retrievedRelationship -> System.out.println(
                 "Retrieved relationship with Id: "
-                    + retrievedRelationship.getId() +
+                    + retrievedRelationship.getRelationshipId() +
                     " from: " +
-                    retrievedRelationship.getSourceId() +
-                    " to: " + retrievedRelationship.getTargetId()));
+                    retrievedRelationship.getSourceDigitalTwinId() +
+                    " to: " + retrievedRelationship.getTargetDigitalTwinId()));
         // END: com.azure.digitaltwins.core.asyncClient.getRelationship#String#BasicRelationship
 
         // BEGIN: com.azure.digitaltwins.core.asyncClient.getRelationship#String#String
@@ -369,10 +369,10 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
             new GetRelationshipOptions())
         .subscribe(retrievedRelationshipWithResponse -> System.out.println(
             "Retrieved relationship with Id: "
-                + retrievedRelationshipWithResponse.getValue().getId() +
+                + retrievedRelationshipWithResponse.getValue().getRelationshipId() +
                 " from: " +
-                retrievedRelationshipWithResponse.getValue().getSourceId() +
-                " to: " + retrievedRelationshipWithResponse.getValue().getTargetId() +
+                retrievedRelationshipWithResponse.getValue().getSourceDigitalTwinId() +
+                " to: " + retrievedRelationshipWithResponse.getValue().getTargetDigitalTwinId() +
                 "HTTP status code: " + retrievedRelationshipWithResponse.getStatusCode()));
         // END: com.azure.digitaltwins.core.asyncClient.getRelationshipWithResponse#String-String-Class-Options#BasicRelationship
 
@@ -466,7 +466,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     public void listRelationships() {
         // BEGIN: com.azure.digitaltwins.core.asyncClient.listRelationships#String-Class-Options#BasicRelationship#IterateByItem
         digitalTwinsAsyncClient.listRelationships("myDigitalTwinId", BasicRelationship.class)
-            .doOnNext(basicRel -> System.out.println("Retrieved relationship with Id: " + basicRel.getId()));
+            .doOnNext(basicRel -> System.out.println("Retrieved relationship with Id: " + basicRel.getRelationshipId()));
         // END: com.azure.digitaltwins.core.asyncClient.listRelationships#String-Class-Options#BasicRelationship#IterateByItem
 
         // BEGIN: com.azure.digitaltwins.core.asyncClient.listRelationships#String-Class-Options#String#IterateByItem
@@ -480,7 +480,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
             "myRelationshipName",
             BasicRelationship.class,
             new ListRelationshipsOptions())
-            .doOnNext(rel -> System.out.println("Retrieved relationship with Id: " + rel.getId()));
+            .doOnNext(rel -> System.out.println("Retrieved relationship with Id: " + rel.getRelationshipId()));
         // END: com.azure.digitaltwins.core.asyncClient.listRelationships#String-String-Class-Options#BasicRelationship#IterateByItem
 
         // BEGIN: com.azure.digitaltwins.core.asyncClient.listRelationships#String-String-Class-Options#String#IterateByItem
@@ -539,7 +539,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
         // BEGIN: com.azure.digitaltwins.core.asyncClient.createModels#Iterable
         digitalTwinsAsyncClient.createModels(Arrays.asList(model1, model2, model3))
             .subscribe(createdModels -> createdModels.forEach(model ->
-                System.out.println("Retrieved model with Id: " + model.getId())));
+                System.out.println("Retrieved model with Id: " + model.getModelId())));
         // END: com.azure.digitaltwins.core.asyncClient.createModels#Iterable
     }
 
@@ -560,7 +560,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
             .subscribe(createdModels -> {
                 System.out.println("Received a response with HTTP status code: " + createdModels.getStatusCode());
                 createdModels.getValue().forEach(
-                    model -> System.out.println("Retrieved model with Id: " + model.getId()));
+                    model -> System.out.println("Retrieved model with Id: " + model.getModelId()));
             });
         // END: com.azure.digitaltwins.core.asyncClient.createModelsWithResponse#Iterable-Options
     }
@@ -572,7 +572,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     public void getModel() {
         // BEGIN: com.azure.digitaltwins.core.asyncClient.getModel#String
         digitalTwinsAsyncClient.getModel("dtmi:com:samples:Building;1")
-            .subscribe(model -> System.out.println("Retrieved model with Id: " + model.getId()));
+            .subscribe(model -> System.out.println("Retrieved model with Id: " + model.getModelId()));
         // END: com.azure.digitaltwins.core.asyncClient.getModel#String
     }
 
@@ -588,7 +588,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
             new GetModelOptions())
             .subscribe(modelWithResponse -> {
                 System.out.println("Received HTTP response with status code: " + modelWithResponse.getStatusCode());
-                System.out.println("Retrieved model with Id: " + modelWithResponse.getValue().getId());
+                System.out.println("Retrieved model with Id: " + modelWithResponse.getValue().getModelId());
             });
         // END: com.azure.digitaltwins.core.asyncClient.getModelWithResponse#String-Options
     }
@@ -602,7 +602,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     public void listModels() {
         // BEGIN: com.azure.digitaltwins.core.asyncClient.listModels
         digitalTwinsAsyncClient.listModels()
-            .doOnNext(model -> System.out.println("Retrieved model with Id: " + model.getId()))
+            .doOnNext(model -> System.out.println("Retrieved model with Id: " + model.getModelId()))
             .subscribe();
         // END: com.azure.digitaltwins.core.asyncClient.listModels
 
@@ -611,7 +611,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
             new ListModelsOptions()
                 .setMaxItemsPerPage(5)
                 .setIncludeModelDefinition(true))
-            .doOnNext(model -> System.out.println("Retrieved model with Id: " + model.getId()))
+            .doOnNext(model -> System.out.println("Retrieved model with Id: " + model.getModelId()))
             .subscribe();
         // END: com.azure.digitaltwins.core.asyncClient.listModels#Options
     }
@@ -629,13 +629,13 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsAsyncClient#decommissionModelWithResponse(String, UpdateModelOptions)}
+     * {@link DigitalTwinsAsyncClient#decommissionModelWithResponse(String, DecommissionModelOptions)}
      */
     @Override
     public void decommissionModelWithResponse() {
         // BEGIN: com.azure.digitaltwins.core.asyncClient.decommissionModelWithResponse#String-Options
         digitalTwinsAsyncClient.decommissionModelWithResponse(
-            "dtmi:com:samples:Building;1", new UpdateModelOptions())
+            "dtmi:com:samples:Building;1", new DecommissionModelOptions())
         .subscribe(response ->
             System.out.println(
                 "Received decommission model HTTP response with status:" +
@@ -839,7 +839,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     public void getEventRoute() {
         // BEGIN: com.azure.digitaltwins.core.asyncClient.getEventRoute#String
         digitalTwinsAsyncClient.getEventRoute("myEventRouteId")
-            .subscribe(eventRoute -> System.out.println("Retrieved event route with Id: " + eventRoute.getId()));
+            .subscribe(eventRoute -> System.out.println("Retrieved event route with Id: " + eventRoute.getEventRouteId()));
         // END: com.azure.digitaltwins.core.asyncClient.getEventRoute#String
     }
 
@@ -859,7 +859,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
                 eventRouteWithResponse.getStatusCode() );
             System.out.println(
                 "Retrieved event route with Id: " +
-                eventRouteWithResponse.getValue().getId());
+                eventRouteWithResponse.getValue().getEventRouteId());
         } );
         // END: com.azure.digitaltwins.core.asyncClient.getEventRouteWithResponse#String-Options
     }
@@ -901,13 +901,13 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     public void listEventRoutes() {
         // BEGIN: com.azure.digitaltwins.core.asyncClient.listEventRoutes
         digitalTwinsAsyncClient.listEventRoutes()
-            .doOnNext(eventRoute -> System.out.println("Retrieved event route with Id: " + eventRoute.getId()))
+            .doOnNext(eventRoute -> System.out.println("Retrieved event route with Id: " + eventRoute.getEventRouteId()))
             .subscribe();
         // END: com.azure.digitaltwins.core.asyncClient.listEventRoutes
 
         // BEGIN: com.azure.digitaltwins.core.asyncClient.listEventRoutes#Options
         digitalTwinsAsyncClient.listEventRoutes(new ListEventRoutesOptions().setMaxItemsPerPage(5))
-            .doOnNext(eventRoute -> System.out.println("Retrieved event route with Id: " + eventRoute.getId()))
+            .doOnNext(eventRoute -> System.out.println("Retrieved event route with Id: " + eventRoute.getEventRouteId()))
             .subscribe();
         // END: com.azure.digitaltwins.core.asyncClient.listEventRoutes#Options
     }

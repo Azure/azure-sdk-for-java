@@ -654,7 +654,7 @@ public final class DigitalTwinsClient {
      * @return A {@link Response} with no parsed payload object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> decommissionModelWithResponse(String modelId, UpdateModelOptions options, Context context) {
+    public Response<Void> decommissionModelWithResponse(String modelId, DecommissionModelOptions options, Context context) {
         return digitalTwinsAsyncClient.decommissionModelWithResponse(modelId, options, context).block();
     }
 

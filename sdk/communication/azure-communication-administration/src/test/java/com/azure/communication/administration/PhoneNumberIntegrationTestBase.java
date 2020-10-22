@@ -3,7 +3,6 @@
 package com.azure.communication.administration;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
@@ -65,13 +64,9 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
     protected static final String SEARCH_OPTIONS_NAME =
         Configuration.getGlobalConfiguration().get("SEARCH_OPTIONS_NAME", "testsearch20200014");
 
-    protected PhoneNumberClientBuilder getClientBuilder() {
-        HttpClient httpClient;
-
+    protected PhoneNumberClientBuilder getClientBuilder(HttpClient httpClient) {
         if (getTestMode() == TestMode.PLAYBACK) {
             httpClient = interceptorManager.getPlaybackClient();
-        } else {
-            httpClient = new NettyAsyncHttpClientBuilder().build();
         }
 
         PhoneNumberClientBuilder builder = new PhoneNumberClientBuilder();
@@ -87,13 +82,10 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
         return builder;
     }
 
-    protected PhoneNumberClientBuilder getClientBuilderWithConnectionString() {
-        HttpClient httpClient;
+    protected PhoneNumberClientBuilder getClientBuilderWithConnectionString(HttpClient httpClient) {
 
         if (getTestMode() == TestMode.PLAYBACK) {
             httpClient = interceptorManager.getPlaybackClient();
-        } else {
-            httpClient = new NettyAsyncHttpClientBuilder().build();
         }
 
         PhoneNumberClientBuilder builder = new PhoneNumberClientBuilder();

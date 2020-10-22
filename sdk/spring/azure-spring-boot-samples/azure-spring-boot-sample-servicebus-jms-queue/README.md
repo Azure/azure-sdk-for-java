@@ -2,7 +2,7 @@
 
 ## Key concepts
 
-This sample project demonstrates how to use Spring JMS for Azure Service Bus Queue via Spring Boot Starter `azure-servicebus-jms-spring-boot-starter`. 
+This sample project demonstrates how to use Spring JMS for Azure Service Bus Queue via Spring Boot Starter `azure-spring-boot-starter-servicebus-jms`. 
 
 Running this sample will be charged by Azure. You can check the usage and bill at this [link](https://azure.microsoft.com/account/).
 
