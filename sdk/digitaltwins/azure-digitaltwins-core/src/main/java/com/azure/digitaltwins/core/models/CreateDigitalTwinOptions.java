@@ -43,7 +43,7 @@ public final class CreateDigitalTwinOptions {
      * @param traceparent the traceparent value to set.
      * @return the CreateDigitalTwinOptions object itself.
      */
-    public CreateDigitalTwinOptions setTraceparent(String traceparent) {
+    public CreateDigitalTwinOptions setTraceParent(String traceparent) {
         this.traceparent = traceparent;
         return this;
     }
@@ -65,7 +65,7 @@ public final class CreateDigitalTwinOptions {
      * @param tracestate the tracestate value to set.
      * @return the CreateDigitalTwinOptions object itself.
      */
-    public CreateDigitalTwinOptions setTracestate(String tracestate) {
+    public CreateDigitalTwinOptions setTraceState(String tracestate) {
         this.tracestate = tracestate;
         return this;
     }
