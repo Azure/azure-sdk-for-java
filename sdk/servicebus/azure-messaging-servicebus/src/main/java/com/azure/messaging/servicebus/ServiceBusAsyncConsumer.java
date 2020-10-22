@@ -6,17 +6,14 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
-import com.azure.messaging.servicebus.implementation.LockContainer;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
@@ -29,26 +26,17 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
     private final String linkName;
     private final ServiceBusReceiveLinkProcessor linkProcessor;
     private final MessageSerializer messageSerializer;
-    private final Flux<ServiceBusReceivedMessage> messageSource;
+    private final Flux<ServiceBusReceivedMessage> processor;
 
     ServiceBusAsyncConsumer(String linkName, ServiceBusReceiveLinkProcessor linkProcessor,
-        MessageSerializer messageSerializer, ReceiverOptions receiverOptions,
-        LockContainer<LockRenewalOperation> messageLockContainer, Function<String, Mono<OffsetDateTime>> onRenewLock) {
+        MessageSerializer messageSerializer, ReceiverOptions receiverOptions) {
         this.linkName = linkName;
         this.linkProcessor = linkProcessor;
         this.messageSerializer = messageSerializer;
-
-        Flux<ServiceBusReceivedMessage> source = linkProcessor
+        this.processor = linkProcessor
             .map(message -> this.messageSerializer.deserialize(message, ServiceBusReceivedMessage.class))
             .publish(receiverOptions.getPrefetchCount())
             .autoConnect(1);
-
-        if (receiverOptions.isAutoLockRenewEnabled()) {
-            this.messageSource = new FluxAutoLockRenew(source, receiverOptions.getMaxLockRenewDuration(),
-                messageLockContainer, onRenewLock);
-        } else {
-            this.messageSource = source;
-        }
 
     }
 
@@ -67,7 +55,7 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
      * @return A stream of events received from the partition.
      */
     Flux<ServiceBusReceivedMessage> receive() {
-        return messageSource;
+        return processor;
     }
 
     Mono<Void> updateDisposition(String lockToken, DispositionStatus dispositionStatus, String deadLetterReason,

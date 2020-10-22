@@ -52,9 +52,10 @@ public class FluxAutoLockRenewTest {
 
     private final ClientLogger logger = new ClientLogger(FluxAutoLockRenewTest.class);
 
-    private final ServiceBusReceivedMessage message = new ServiceBusReceivedMessage("Some Data".getBytes());
-    private final TestPublisher<ServiceBusReceivedMessage> messagesPublisher = TestPublisher.create();
-    private final Flux<? extends ServiceBusReceivedMessage> messageSource = messagesPublisher.flux();
+    private final ServiceBusReceivedMessage receivedMessage = new ServiceBusReceivedMessage("Some Data".getBytes());
+    private final ServiceBusReceivedMessageContext message = new ServiceBusReceivedMessageContext(receivedMessage);
+    private final TestPublisher<ServiceBusReceivedMessageContext> messagesPublisher = TestPublisher.create();
+    private final Flux<? extends ServiceBusReceivedMessageContext> messageSource = messagesPublisher.flux();
 
     private Function<String, Mono<OffsetDateTime>> renewalFunction;
 
@@ -83,8 +84,8 @@ public class FluxAutoLockRenewTest {
     void setup() {
         MockitoAnnotations.initMocks(this);
         lockedUntil = OffsetDateTime.now().plusSeconds(2);
-        message.setLockToken(LOCK_TOKEN_UUID);
-        message.setLockedUntil(lockedUntil);
+        receivedMessage.setLockToken(LOCK_TOKEN_UUID);
+        receivedMessage.setLockedUntil(lockedUntil);
         renewalFunction = (lockToken) -> Mono.just(OffsetDateTime.now().plusSeconds(1));
 
     }
@@ -100,9 +101,10 @@ public class FluxAutoLockRenewTest {
     @Test
     void canCancel() {
         // Arrange
-        final ServiceBusReceivedMessage message2 = new ServiceBusReceivedMessage("data".getBytes());
-        message2.setLockToken(UUID.randomUUID());
-        message2.setLockedUntil(OffsetDateTime.now().plusSeconds(2));
+        final ServiceBusReceivedMessage receivedMessage2 = new ServiceBusReceivedMessage("data".getBytes());
+        final ServiceBusReceivedMessageContext message2 = new ServiceBusReceivedMessageContext(receivedMessage2);
+        receivedMessage2.setLockToken(UUID.randomUUID());
+        receivedMessage2.setLockedUntil(OffsetDateTime.now().plusSeconds(2));
 
         final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource,
             MAX_AUTO_LOCK_RENEW_DURATION, messageLockContainer, renewalFunction);
@@ -113,7 +115,7 @@ public class FluxAutoLockRenewTest {
                 messagesPublisher.next(message);
                 messagesPublisher.next(message2);
             })
-            .assertNext(actual -> Assertions.assertEquals(LOCK_TOKEN_STRING, actual.getLockToken()))
+            .assertNext(actual -> Assertions.assertEquals(LOCK_TOKEN_STRING, actual.getMessage().getLockToken()))
             .thenCancel()
             .verify();
 
@@ -171,14 +173,15 @@ public class FluxAutoLockRenewTest {
                 messagesPublisher.next(message);
             })
             .assertNext(actual -> {
-                OffsetDateTime previousLockedUntil = actual.getLockedUntil();
+                OffsetDateTime previousLockedUntil = actual.getMessage().getLockedUntil();
                 try {
                     TimeUnit.SECONDS.sleep(totalProcessingTimeSeconds);
                 } catch (InterruptedException e) {
                     logger.warning("Exception while wait. ", e);
                 }
-                Assertions.assertEquals(LOCK_TOKEN_STRING, actual.getLockToken());
-                Assertions.assertTrue(actual.getLockedUntil().isAfter(previousLockedUntil));
+                Assertions.assertNotNull(actual);
+                Assertions.assertEquals(LOCK_TOKEN_STRING, actual.getMessage().getLockToken());
+                Assertions.assertTrue(actual.getMessage().getLockedUntil().isAfter(previousLockedUntil));
             })
             .verifyComplete();
 
@@ -202,7 +205,7 @@ public class FluxAutoLockRenewTest {
         // Act & Assert
         StepVerifier.create(renewOperator.take(1))
             .then(() -> messagesPublisher.next(message))
-            .assertNext(actual -> Assertions.assertEquals(LOCK_TOKEN_STRING, actual.getLockToken()))
+            .assertNext(actual -> Assertions.assertEquals(LOCK_TOKEN_STRING, actual.getMessage().getLockToken()))
             .thenCancel()
             .verify();
 
@@ -281,13 +284,13 @@ public class FluxAutoLockRenewTest {
                 messagesPublisher.next(message);
             })
             .assertNext(actual -> {
-                Assertions.assertEquals(LOCK_TOKEN_STRING, actual.getLockToken());
+                Assertions.assertEquals(LOCK_TOKEN_STRING, actual.getMessage().getLockToken());
             })
             .verifyComplete();
 
         StepVerifier.create(renewOperator.take(1))
             .then(() -> messagesPublisher.next(message))
-            .assertNext(actual -> Assertions.assertEquals(LOCK_TOKEN_STRING, actual.getLockToken()))
+            .assertNext(actual -> Assertions.assertEquals(LOCK_TOKEN_STRING, actual.getMessage().getLockToken()))
             .verifyComplete();
 
         verify(messageLockContainer, times(2)).addOrUpdate(eq(LOCK_TOKEN_STRING), any(OffsetDateTime.class), any(LockRenewalOperation.class));
@@ -299,22 +302,25 @@ public class FluxAutoLockRenewTest {
     @Test
     public void simpleFilterAndBackpressured() {
         // Arrange
-        final ServiceBusReceivedMessage message2 = new ServiceBusReceivedMessage("data".getBytes());
-        message2.setEnqueuedSequenceNumber(2);
-        message2.setLockToken(UUID.randomUUID());
-        message2.setLockedUntil(OffsetDateTime.now().plusSeconds(2));
+        final ServiceBusReceivedMessage receivedMessage2 = new ServiceBusReceivedMessage("data".getBytes());
+        receivedMessage2.setEnqueuedSequenceNumber(2);
+        receivedMessage2.setLockToken(UUID.randomUUID());
+        receivedMessage2.setLockedUntil(OffsetDateTime.now().plusSeconds(2));
+        final ServiceBusReceivedMessageContext message2 = new ServiceBusReceivedMessageContext(receivedMessage2);
 
-        final ServiceBusReceivedMessage message3 = new ServiceBusReceivedMessage("data".getBytes());
-        message3.setEnqueuedSequenceNumber(3);
-        message3.setLockToken(UUID.randomUUID());
-        message3.setLockedUntil(OffsetDateTime.now().plusSeconds(2));
+        final ServiceBusReceivedMessage receivedMessage3 = new ServiceBusReceivedMessage("data".getBytes());
+        receivedMessage3.setEnqueuedSequenceNumber(3);
+        receivedMessage3.setLockToken(UUID.randomUUID());
+        receivedMessage3.setLockedUntil(OffsetDateTime.now().plusSeconds(2));
+        final ServiceBusReceivedMessageContext message3 = new ServiceBusReceivedMessageContext(receivedMessage3);
+
 
         final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource,
             MAX_AUTO_LOCK_RENEW_DURATION, messageLockContainer, renewalFunction);
 
         final Flux<Long> renewOperatorSource = renewOperator
-            .filter(actual -> actual.getEnqueuedSequenceNumber() > 1)
-            .map(ServiceBusReceivedMessage::getEnqueuedSequenceNumber);
+            .filter(actual -> actual.getMessage().getEnqueuedSequenceNumber() > 1)
+            .map(messageContext -> messageContext.getMessage().getEnqueuedSequenceNumber());
 
         // Act & Assert
         StepVerifier.create(renewOperatorSource)
@@ -323,9 +329,9 @@ public class FluxAutoLockRenewTest {
             .then(() -> {
                 messagesPublisher.next(message, message2, message3);
             })
-            .assertNext(actual -> assertEquals(message2.getEnqueuedSequenceNumber(), actual))
+            .assertNext(actual -> assertEquals(message2.getMessage().getEnqueuedSequenceNumber(), actual))
             .thenRequest(1)
-            .assertNext(actual -> assertEquals(message3.getEnqueuedSequenceNumber(), actual))
+            .assertNext(actual -> assertEquals(message3.getMessage().getEnqueuedSequenceNumber(), actual))
             .thenCancel()
             .verify();
     }
@@ -336,13 +342,15 @@ public class FluxAutoLockRenewTest {
     @Test
     public void simpleMappingBackpressured() {
         // Arrange
-        final ServiceBusReceivedMessage message2 = new ServiceBusReceivedMessage("data".getBytes());
-        message2.setLockToken(UUID.randomUUID());
-        message2.setLockedUntil(OffsetDateTime.now().plusSeconds(2));
+        final ServiceBusReceivedMessage receivedMessage2 = new ServiceBusReceivedMessage("data".getBytes());
+        receivedMessage2.setLockToken(UUID.randomUUID());
+        receivedMessage2.setLockedUntil(OffsetDateTime.now().plusSeconds(2));
+        final ServiceBusReceivedMessageContext message2 = new ServiceBusReceivedMessageContext(receivedMessage2);
 
-        final ServiceBusReceivedMessage message3 = new ServiceBusReceivedMessage("data".getBytes());
-        message3.setLockToken(UUID.randomUUID());
-        message3.setLockedUntil(OffsetDateTime.now().plusSeconds(2));
+        final ServiceBusReceivedMessage receivedMessage3 = new ServiceBusReceivedMessage("data".getBytes());
+        receivedMessage3.setLockToken(UUID.randomUUID());
+        receivedMessage3.setLockedUntil(OffsetDateTime.now().plusSeconds(2));
+        final ServiceBusReceivedMessageContext message3 = new ServiceBusReceivedMessageContext(receivedMessage3);
 
 
         final String expectedMappedValue = "New Expected Mapped Value";
@@ -371,23 +379,25 @@ public class FluxAutoLockRenewTest {
         // Arrange
         final Long expectedEnqueuedSequenceNumber = 2L;
         final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(1);
-        final ServiceBusReceivedMessage message2 = new ServiceBusReceivedMessage("data".getBytes());
-        message2.setLockToken(UUID.randomUUID());
-        message2.setLockedUntil(lockedUntil);
-        message2.setEnqueuedSequenceNumber(1);
+        final ServiceBusReceivedMessage receivedMessage2 = new ServiceBusReceivedMessage("data".getBytes());
+        final ServiceBusReceivedMessageContext message2 = new ServiceBusReceivedMessageContext(receivedMessage2);
+        receivedMessage2.setLockToken(UUID.randomUUID());
+        receivedMessage2.setLockedUntil(lockedUntil);
+        receivedMessage2.setEnqueuedSequenceNumber(1);
 
-        final ServiceBusReceivedMessage message3 = new ServiceBusReceivedMessage("data".getBytes());
-        message3.setLockToken(UUID.randomUUID());
-        message3.setLockedUntil(lockedUntil);
-        message3.setEnqueuedSequenceNumber(expectedEnqueuedSequenceNumber);
+        final ServiceBusReceivedMessage receivedMessage3 = new ServiceBusReceivedMessage("data".getBytes());
+        final ServiceBusReceivedMessageContext message3 = new ServiceBusReceivedMessageContext(receivedMessage3);
+        receivedMessage2.setLockToken(UUID.randomUUID());
+        receivedMessage2.setLockedUntil(lockedUntil);
+        receivedMessage2.setEnqueuedSequenceNumber(expectedEnqueuedSequenceNumber);
 
         final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource,
             MAX_AUTO_LOCK_RENEW_DURATION, messageLockContainer, renewalFunction);
 
         // Act & Assert
         StepVerifier.create(renewOperator
-            .filter(actual -> actual.getEnqueuedSequenceNumber() > 1)
-            .map(ServiceBusReceivedMessage::getEnqueuedSequenceNumber))
+            .filter(actual -> actual.getMessage().getEnqueuedSequenceNumber() > 1)
+            .map(messageContext -> messageContext.getMessage().getEnqueuedSequenceNumber()))
             .thenRequest(1)
             .then(() -> messagesPublisher.next(message, message2, message3))
             .assertNext(actualEnqueuedSequenceNumber -> assertEquals(expectedEnqueuedSequenceNumber, actualEnqueuedSequenceNumber))

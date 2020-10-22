@@ -17,12 +17,13 @@ import reactor.util.context.Context;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
  * Receives messages from to upstream, subscribe lock renewal subscriber.
  */
-final class FluxAutoLockRenew extends FluxOperator<ServiceBusReceivedMessage, ServiceBusReceivedMessage> {
+final class FluxAutoLockRenew extends FluxOperator<ServiceBusReceivedMessageContext, ServiceBusReceivedMessageContext> {
 
     private final ClientLogger logger = new ClientLogger(FluxAutoLockRenew.class);
 
@@ -40,7 +41,7 @@ final class FluxAutoLockRenew extends FluxOperator<ServiceBusReceivedMessage, Se
      * @throws IllegalArgumentException If maxLockRenewalDuration is zero or negative.
      */
     FluxAutoLockRenew(
-        Flux<? extends ServiceBusReceivedMessage> source, Duration maxAutoLockRenewDuration,
+        Flux<? extends ServiceBusReceivedMessageContext> source, Duration maxAutoLockRenewDuration,
         LockContainer<LockRenewalOperation> messageLockContainer, Function<String, Mono<OffsetDateTime>> onRenewLock) {
         super(source);
 
@@ -58,7 +59,7 @@ final class FluxAutoLockRenew extends FluxOperator<ServiceBusReceivedMessage, Se
     }
 
     @Override
-    public void subscribe(CoreSubscriber<? super ServiceBusReceivedMessage> coreSubscriber) {
+    public void subscribe(CoreSubscriber<? super ServiceBusReceivedMessageContext> coreSubscriber) {
         Objects.requireNonNull(coreSubscriber, "'coreSubscriber' cannot be null.");
 
         final LockRenewSubscriber newLockRenewSubscriber = new LockRenewSubscriber(coreSubscriber, maxAutoLockRenewal,
@@ -70,16 +71,18 @@ final class FluxAutoLockRenew extends FluxOperator<ServiceBusReceivedMessage, Se
     /**
      * Receives messages from to upstream, pushes them downstream and start lock renewal.
      */
-    static final class LockRenewSubscriber extends BaseSubscriber<ServiceBusReceivedMessage> {
+    static final class LockRenewSubscriber extends BaseSubscriber<ServiceBusReceivedMessageContext> {
+        private static final Consumer<ServiceBusReceivedMessageContext> LOCK_RENEW_NO_OP = messageContext -> { };
+
         private final ClientLogger logger = new ClientLogger(LockRenewSubscriber.class);
 
         private final Function<String, Mono<OffsetDateTime>> onRenewLock;
         private final Duration maxAutoLockRenewal;
         private final LockContainer<LockRenewalOperation> messageLockContainer;
-        private final CoreSubscriber<? super ServiceBusReceivedMessage> actual;
+        private final CoreSubscriber<? super ServiceBusReceivedMessageContext> actual;
 
-        LockRenewSubscriber(CoreSubscriber<? super ServiceBusReceivedMessage> actual, Duration maxAutoLockRenewDuration,
-            LockContainer<LockRenewalOperation> messageLockContainer,
+        LockRenewSubscriber(CoreSubscriber<? super ServiceBusReceivedMessageContext> actual,
+            Duration maxAutoLockRenewDuration, LockContainer<LockRenewalOperation> messageLockContainer,
             Function<String, Mono<OffsetDateTime>> onRenewLock) {
             this.onRenewLock = Objects.requireNonNull(onRenewLock, "'onRenewLock' cannot be null.");
             this.actual = Objects.requireNonNull(actual, "'downstream' cannot be null.");
@@ -115,44 +118,57 @@ final class FluxAutoLockRenew extends FluxOperator<ServiceBusReceivedMessage, Se
         }
 
         @Override
-        protected void hookOnNext(ServiceBusReceivedMessage message) {
-            final String lockToken = message.getLockToken();
-            final OffsetDateTime lockedUntil = message.getLockedUntil();
-            final LockRenewalOperation renewOperation;
+        protected void hookOnNext(ServiceBusReceivedMessageContext messageContext) {
+            final ServiceBusReceivedMessage message = messageContext.getMessage();
 
-            if (Objects.isNull(lockToken)) {
-                logger.warning("Unexpected, LockToken is not present in message. sequenceNumber[{}].",
-                    message.getSequenceNumber());
-                return;
-            } else if (Objects.isNull(lockedUntil)) {
-                logger.warning("Unexpected, lockedUntil is not present in message. sequenceNumber[{}].",
-                    message.getSequenceNumber());
-                return;
+            final Consumer<ServiceBusReceivedMessageContext> lockCleanup;
+
+            if (message != null) {
+                final String lockToken = message.getLockToken();
+                final OffsetDateTime lockedUntil = message.getLockedUntil();
+                final LockRenewalOperation renewOperation;
+
+                if (Objects.isNull(lockToken)) {
+                    logger.warning("Unexpected, LockToken is not present in message. sequenceNumber[{}].",
+                        message.getSequenceNumber());
+                    return;
+                } else if (Objects.isNull(lockedUntil)) {
+                    logger.warning("Unexpected, lockedUntil is not present in message. sequenceNumber[{}].",
+                        message.getSequenceNumber());
+                    return;
+                }
+
+                final Function<String, Mono<OffsetDateTime>> onRenewLockUpdateMessage = onRenewLock.andThen(updated ->
+                    updated.map(newLockedUntil -> {
+                        message.setLockedUntil(newLockedUntil);
+                        return newLockedUntil;
+                    }));
+
+                renewOperation = new LockRenewalOperation(lockToken, maxAutoLockRenewal, false,
+                    onRenewLockUpdateMessage, lockedUntil);
+
+                try {
+                    messageLockContainer.addOrUpdate(lockToken, OffsetDateTime.now().plus(maxAutoLockRenewal),
+                        renewOperation);
+                } catch (Exception e) {
+                    logger.info("Exception occurred while updating lockContainer for token [{}].", lockToken, e);
+                }
+
+                lockCleanup = (ctx) -> {
+                    renewOperation.close();
+                    messageLockContainer.remove(ctx.getMessage().getLockToken());
+                };
+
+            } else {
+                lockCleanup = LOCK_RENEW_NO_OP;
             }
 
-            final Function<String, Mono<OffsetDateTime>> onRenewLockUpdateMessage = onRenewLock.andThen(updated ->
-                updated.map(newLockedUntil -> {
-                    message.setLockedUntil(newLockedUntil);
-                    return newLockedUntil;
-                }));
-
-            renewOperation = new LockRenewalOperation(lockToken, maxAutoLockRenewal, false,
-                onRenewLockUpdateMessage, lockedUntil);
-
             try {
-                messageLockContainer.addOrUpdate(lockToken, OffsetDateTime.now().plus(maxAutoLockRenewal),
-                    renewOperation);
-            } catch (Exception e) {
-                logger.info("Exception occurred while updating lockContainer for token [{}].", lockToken, e);
-            }
-
-            try {
-                actual.onNext(message);
+                actual.onNext(messageContext);
             } catch (Exception e) {
                 logger.info("Exception occurred while handling downstream onNext operation.", e);
             } finally {
-                renewOperation.close();
-                messageLockContainer.remove(lockToken);
+                lockCleanup.accept(messageContext);
             }
         }
 

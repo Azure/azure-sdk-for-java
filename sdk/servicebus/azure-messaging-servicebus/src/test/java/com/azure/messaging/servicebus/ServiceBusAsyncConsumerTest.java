@@ -118,7 +118,7 @@ class ServiceBusAsyncConsumerTest {
         final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, prefetch, "sessionId", false, 1, maxAutoLockRenewDuration);
 
         final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
-            receiverOptions, messageLockContainer, onRenewLock);
+            receiverOptions);
 
         final Message message1 = mock(Message.class);
         final Message message2 = mock(Message.class);
@@ -164,7 +164,7 @@ class ServiceBusAsyncConsumerTest {
         final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, prefetch, "sessionId", false, 1, maxAutoLockRenewDuration);
 
         final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
-            receiverOptions, messageLockContainer, onRenewLock);
+            receiverOptions);
 
         final Message message1 = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);
@@ -203,7 +203,7 @@ class ServiceBusAsyncConsumerTest {
         final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, prefetch, "sessionId", false, 1, maxAutoLockRenewDuration);
 
         final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
-            receiverOptions, messageLockContainer, onRenewLock);
+            receiverOptions);
 
         final Message message1 = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);

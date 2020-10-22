@@ -592,7 +592,15 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         if (sessionManager != null) {
             return sessionManager.receive();
         } else {
-            return getOrCreateConsumer().receive().map(ServiceBusReceivedMessageContext::new);
+            final Flux<ServiceBusReceivedMessageContext> messageFlux = getOrCreateConsumer().receive()
+                .map(ServiceBusReceivedMessageContext::new);
+
+            if (receiverOptions.isAutoLockRenewEnabled()) {
+                return new FluxAutoLockRenew(messageFlux, receiverOptions.getMaxLockRenewDuration(), renewalContainer,
+                    this::renewMessageLock);
+            } else {
+                return messageFlux;
+            }
         }
     }
 
@@ -1083,7 +1091,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 receiverOptions.getReceiveMode()));
 
         final ServiceBusAsyncConsumer newConsumer = new ServiceBusAsyncConsumer(linkName, linkMessageProcessor,
-            messageSerializer, receiverOptions, renewalContainer, this::renewMessageLock);
+            messageSerializer, receiverOptions);
 
         // There could have been multiple threads trying to create this async consumer when the result was null.
         // If another one had set the value while we were creating this resource, dispose of newConsumer.
