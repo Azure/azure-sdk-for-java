@@ -18,25 +18,15 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.CertificateIssuer;
-import com.azure.security.keyvault.certificates.models.CertificateContact;
-import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
-import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
-import com.azure.security.keyvault.certificates.models.CertificateKeyUsage;
-import com.azure.security.keyvault.certificates.models.CertificateContentType;
-import com.azure.security.keyvault.certificates.models.AdministratorContact;
-import com.azure.security.keyvault.certificates.models.CertificateKeyType;
-import com.azure.security.keyvault.certificates.models.CertificateKeyCurveName;
-import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
-import com.azure.security.keyvault.certificates.models.LifetimeAction;
-import com.azure.security.keyvault.certificates.models.CertificatePolicyAction;
-import com.azure.security.keyvault.certificates.models.WellKnownIssuerNames;
+import com.azure.security.keyvault.certificates.models.*;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.time.Duration;
@@ -241,7 +231,15 @@ public abstract class CertificateClientTestBase extends TestBase {
     @Test
     public abstract void cancelCertificateOperation(HttpClient httpClient, CertificateServiceVersion serviceVersion);
 
+
     void cancelCertificateOperationRunner(Consumer<String> testRunner) {
+        testRunner.accept(generateResourceId("testCertificate11"));
+    }
+
+    @Test
+    public abstract void cancelCertificateCreationOperation(HttpClient httpClient, CertificateServiceVersion serviceVersion);
+
+    void cancelCertificateCreationOperationRunner(Consumer<String> testRunner) {
         testRunner.accept(generateResourceId("testCertificate11"));
     }
 
@@ -266,7 +264,6 @@ public abstract class CertificateClientTestBase extends TestBase {
         testRunner.accept(generateResourceId("testCertificate14"));
     }
 
-
     @Test
     public abstract void restoreCertificateFromMalformedBackup(HttpClient httpClient, CertificateServiceVersion serviceVersion);
 
@@ -274,6 +271,19 @@ public abstract class CertificateClientTestBase extends TestBase {
     public abstract void listCertificates(HttpClient httpClient, CertificateServiceVersion serviceVersion);
 
     void listCertificatesRunner(Consumer<List<String>> testRunner) {
+        List<String> certificates = new ArrayList<>();
+        String certificateName;
+        for (int i = 0; i < 2; i++) {
+            certificateName = generateResourceId("listCertKey" + i);
+            certificates.add(certificateName);
+        }
+        testRunner.accept(certificates);
+    }
+
+    @Test
+    public abstract void listPropertyOfCertificates(HttpClient httpClient, CertificateServiceVersion serviceVersion);
+
+    void listPropertyOfCertificatesRunner(Consumer<List<String>> testRunner){
         List<String> certificates = new ArrayList<>();
         String certificateName;
         for (int i = 0; i < 2; i++) {
