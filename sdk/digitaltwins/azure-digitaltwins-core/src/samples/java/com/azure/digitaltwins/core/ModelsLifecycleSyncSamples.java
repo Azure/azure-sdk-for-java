@@ -85,7 +85,7 @@ public class ModelsLifecycleSyncSamples {
 
         try {
             DigitalTwinsModelData sampleModelResponse = client.getModel(sampleModelId);
-            ConsoleLogger.print("Retrieved model " + sampleModelResponse.getId());
+            ConsoleLogger.print("Retrieved model " + sampleModelResponse.getModelId());
         }
         catch (Exception ex) {
             ConsoleLogger.printFatal("Failed to get the model due to:\n" + ex);

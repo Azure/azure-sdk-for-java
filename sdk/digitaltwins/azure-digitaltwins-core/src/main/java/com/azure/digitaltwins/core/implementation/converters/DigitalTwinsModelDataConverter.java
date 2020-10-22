@@ -33,10 +33,10 @@ public final class DigitalTwinsModelDataConverter {
         }
 
         return new DigitalTwinsModelData()
-            .setId(input.getId())
+            .setModelId(input.getId())
             .setUploadTime(input.getUploadTime())
-            .setDisplayName(input.getDisplayName())
-            .setDescription(input.getDescription())
+            .setDisplayNameLanguageMap(input.getDisplayName())
+            .setDescriptionLanguageMap(input.getDescription())
             .setDecommissioned(input.isDecommissioned())
             .setModel(modelStringValue);
     }

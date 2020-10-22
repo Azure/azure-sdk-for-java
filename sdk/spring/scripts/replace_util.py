@@ -19,7 +19,7 @@ VERSION_UPDATE_ITEMS = 'version_update_items'
 
 config = {
     'appconfiguration': {
-        'sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config-test/pom.xml': {
+        'sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config/pom.xml': {
             VERSION_UPDATE_ITEMS: (
                 VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.9.RELEASE'),
             )

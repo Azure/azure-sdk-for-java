@@ -260,11 +260,10 @@ class ServiceBusClientBuilderTest {
             .connectionString(NAMESPACE_CONNECTION_STRING)
             .receiver()
             .topicName("baz").subscriptionName("bar")
-            .receiveMode(ReceiveMode.PEEK_LOCK)
-            .prefetchCount(0);
+            .receiveMode(ReceiveMode.PEEK_LOCK);
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, receiverBuilder::buildAsyncClient);
+        assertThrows(IllegalArgumentException.class, () -> receiverBuilder.prefetchCount(0));
     }
 
     @MethodSource("getProxyConfigurations")

@@ -59,31 +59,31 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
 
             // Create relationship from Floor -> Room
             BasicRelationship floorRoomRelationship = client.createRelationship(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, deserializeJsonString(floorContainsRoomPayload, BasicRelationship.class), BasicRelationship.class);
-            assertThat(floorRoomRelationship.getId())
+            assertThat(floorRoomRelationship.getRelationshipId())
                 .isEqualTo(FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID)
                 .as("Created relationship from floor -> room");
-            logger.info("Created {} relationship between source = {} and target = {}", floorRoomRelationship.getId(), floorRoomRelationship.getSourceId(), floorRoomRelationship.getTargetId());
+            logger.info("Created {} relationship between source = {} and target = {}", floorRoomRelationship.getRelationshipId(), floorRoomRelationship.getSourceDigitalTwinId(), floorRoomRelationship.getTargetDigitalTwinId());
 
             // Create relationship from Floor -> Hvac
             BasicRelationship floorHvacRelationship = client.createRelationship(floorTwinId, FLOOR_COOLED_BY_HVAC_RELATIONSHIP_ID, deserializeJsonString(floorCooledByHvacPayload, BasicRelationship.class), BasicRelationship.class);
-            assertThat(floorHvacRelationship.getId())
+            assertThat(floorHvacRelationship.getRelationshipId())
                 .isEqualTo(FLOOR_COOLED_BY_HVAC_RELATIONSHIP_ID)
                 .as("Created relationship from floor -> hvac");
-            logger.info("Created {} relationship between source = {} and target = {}", floorHvacRelationship.getId(), floorHvacRelationship.getSourceId(), floorHvacRelationship.getTargetId());
+            logger.info("Created {} relationship between source = {} and target = {}", floorHvacRelationship.getRelationshipId(), floorHvacRelationship.getSourceDigitalTwinId(), floorHvacRelationship.getTargetDigitalTwinId());
 
             // Create relationship from Hvac -> Floor
             BasicRelationship hvacFloorRelationship = client.createRelationship(hvacTwinId, HVAC_COOLS_FLOOR_RELATIONSHIP_ID, deserializeJsonString(floorTwinCoolsRelationshipPayload, BasicRelationship.class), BasicRelationship.class);
-            assertThat(hvacFloorRelationship.getId())
+            assertThat(hvacFloorRelationship.getRelationshipId())
                 .isEqualTo(HVAC_COOLS_FLOOR_RELATIONSHIP_ID)
                 .as("Created relationship from hvac -> floor");
-            logger.info("Created {} relationship between source = {} and target = {}", hvacFloorRelationship.getId(), hvacFloorRelationship.getSourceId(), hvacFloorRelationship.getTargetId());
+            logger.info("Created {} relationship between source = {} and target = {}", hvacFloorRelationship.getRelationshipId(), hvacFloorRelationship.getSourceDigitalTwinId(), hvacFloorRelationship.getTargetDigitalTwinId());
 
             // Create relationship from Room -> Floor
             BasicRelationship roomFloorRelationship = client.createRelationship(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID, deserializeJsonString(floorTwinContainedInRelationshipPayload, BasicRelationship.class), BasicRelationship.class);
-            assertThat(roomFloorRelationship.getId())
+            assertThat(roomFloorRelationship.getRelationshipId())
                 .isEqualTo(ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID)
                 .as("Created relationship from room -> floor");
-            logger.info("Created {} relationship between source = {} and target = {}", roomFloorRelationship.getId(), roomFloorRelationship.getSourceId(), roomFloorRelationship.getTargetId());
+            logger.info("Created {} relationship between source = {} and target = {}", roomFloorRelationship.getRelationshipId(), roomFloorRelationship.getSourceDigitalTwinId(), roomFloorRelationship.getTargetDigitalTwinId());
 
             // Create a relation which already exists - should return status code 409 (Conflict).
             assertRestException(
@@ -102,10 +102,10 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
 
             // GET relationship
             BasicRelationship floorContainsRoomRelationship = client.getRelationship(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, BasicRelationship.class);
-            assertThat(floorContainsRoomRelationship.getId())
+            assertThat(floorContainsRoomRelationship.getRelationshipId())
                 .isEqualTo(FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID)
                 .as("Retrieved floor -> room relationship");
-            logger.info("Retrieved {} relationship under source {}", floorContainsRoomRelationship.getId(), floorContainsRoomRelationship.getSourceId());
+            logger.info("Retrieved {} relationship under source {}", floorContainsRoomRelationship.getRelationshipId(), floorContainsRoomRelationship.getSourceDigitalTwinId());
 
             // LIST incoming relationships
             List<String> incomingRelationshipsSourceIds = new ArrayList<>();
@@ -119,7 +119,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
             // LIST relationships
             List<String> relationshipsTargetIds = new ArrayList<>();
             PagedIterable<BasicRelationship> listRelationships = client.listRelationships(floorTwinId, BasicRelationship.class);
-            listRelationships.forEach(basicRelationship -> relationshipsTargetIds.add(basicRelationship.getTargetId()));
+            listRelationships.forEach(basicRelationship -> relationshipsTargetIds.add(basicRelationship.getTargetDigitalTwinId()));
             assertThat(relationshipsTargetIds)
                 .as("Floor has a relationship to room and hvac")
                 .containsExactlyInAnyOrder(roomTwinId, hvacTwinId);
@@ -129,8 +129,8 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
             List<String> containedInRelationshipsTargetIds = new ArrayList<>();
             PagedIterable<BasicRelationship> listContainedInRelationship = client.listRelationships(roomTwinId, CONTAINED_IN_RELATIONSHIP, BasicRelationship.class, null, Context.NONE);
             listContainedInRelationship.forEach(basicRelationship -> {
-                containedInRelationshipsTargetIds.add(basicRelationship.getTargetId());
-                logger.info("Retrieved relationship {} for twin {}", basicRelationship.getId(), roomTwinId);
+                containedInRelationshipsTargetIds.add(basicRelationship.getTargetDigitalTwinId());
+                logger.info("Retrieved relationship {} for twin {}", basicRelationship.getRelationshipId(), roomTwinId);
             });
             assertThat(containedInRelationshipsTargetIds.size())
                 .as("Room has only one containedIn relationship to floor")
@@ -172,7 +172,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
                 client.listRelationships(hvacTwinId, BasicRelationship.class)
                     .iterableByPage()
                     .forEach(basicRelationshipPagedResponse -> relationships.addAll(basicRelationshipPagedResponse.getValue()));
-                relationships.forEach(basicRelationship -> client.deleteRelationship(basicRelationship.getSourceId(), basicRelationship.getId()));
+                relationships.forEach(basicRelationship -> client.deleteRelationship(basicRelationship.getSourceDigitalTwinId(), basicRelationship.getRelationshipId()));
 
                 // Now the twins and models can be deleted.
                 logger.info("Deleting created digital twins.");
@@ -241,7 +241,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
                 outgoingRelationshipsPageCount.getAndIncrement();
                 logger.info("content for this page " + outgoingRelationshipsPageCount);
                 for (BasicRelationship data: relationshipsPagedResponse.getValue()) {
-                    logger.info(data.getId());
+                    logger.info(data.getRelationshipId());
                 }
 
                 if (relationshipsPagedResponse.getContinuationToken() != null) {

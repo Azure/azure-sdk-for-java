@@ -60,7 +60,7 @@ public final class DigitalTwinsModelData {
      *
      * @return the displayName value.
      */
-    public Map<String, String> getDisplayName() {
+    public Map<String, String> getDisplayNameLanguageMap() {
         return this.displayName;
     }
 
@@ -71,7 +71,7 @@ public final class DigitalTwinsModelData {
      * @param displayName the displayName value to set.
      * @return the ModelData object itself.
      */
-    public DigitalTwinsModelData setDisplayName(Map<String, String> displayName) {
+    public DigitalTwinsModelData setDisplayNameLanguageMap(Map<String, String> displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -82,7 +82,7 @@ public final class DigitalTwinsModelData {
      *
      * @return the description value.
      */
-    public Map<String, String> getDescription() {
+    public Map<String, String> getDescriptionLanguageMap() {
         return this.description;
     }
 
@@ -93,7 +93,7 @@ public final class DigitalTwinsModelData {
      * @param description the description value to set.
      * @return the DigitalTwinsModelData object itself.
      */
-    public DigitalTwinsModelData setDescription(Map<String, String> description) {
+    public DigitalTwinsModelData setDescriptionLanguageMap(Map<String, String> description) {
         this.description = description;
         return this;
     }
@@ -103,7 +103,7 @@ public final class DigitalTwinsModelData {
      *
      * @return the id value.
      */
-    public String getId() {
+    public String getModelId() {
         return this.id;
     }
 
@@ -113,7 +113,7 @@ public final class DigitalTwinsModelData {
      * @param id the id value to set.
      * @return the DigitalTwinsModelData object itself.
      */
-    public DigitalTwinsModelData setId(String id) {
+    public DigitalTwinsModelData setModelId(String id) {
         this.id = id;
         return this;
     }
