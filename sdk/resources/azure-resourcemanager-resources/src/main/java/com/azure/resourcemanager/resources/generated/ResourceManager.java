@@ -95,7 +95,7 @@ public final class ResourceManager {
     }
 
     /** The Configurable allowing configurations to be set. */
-    public static class Configurable {
+    public static final class Configurable {
         private final ClientLogger logger = new ClientLogger(Configurable.class);
 
         private HttpClient httpClient;
@@ -103,6 +103,9 @@ public final class ResourceManager {
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
         private RetryPolicy retryPolicy;
         private Duration defaultPollInterval;
+
+        private Configurable() {
+        }
 
         /**
          * Sets the http client.
