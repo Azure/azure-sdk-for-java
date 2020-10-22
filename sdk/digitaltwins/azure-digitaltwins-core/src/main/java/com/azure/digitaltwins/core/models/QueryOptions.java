@@ -45,7 +45,7 @@ public final class QueryOptions {
      * @param traceparent the traceparent value to set.
      * @return the QueryOptions object itself.
      */
-    public QueryOptions setTraceParent(String traceparent) {
+    public QueryOptions setTraceParent(String traceParent) {
         this.traceparent = traceparent;
         return this;
     }
@@ -67,7 +67,7 @@ public final class QueryOptions {
      * @param tracestate the tracestate value to set.
      * @return the QueryOptions object itself.
      */
-    public QueryOptions setTraceState(String tracestate) {
+    public QueryOptions setTraceState(String traceState) {
         this.tracestate = tracestate;
         return this;
     }

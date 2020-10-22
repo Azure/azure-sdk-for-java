@@ -42,7 +42,7 @@ public final class DecommissionModelOptions {
      * @param traceparent the traceparent value to set.
      * @return the DecommissionModelOptions object itself.
      */
-    public DecommissionModelOptions setTraceParent(String traceparent) {
+    public DecommissionModelOptions setTraceParent(String traceParent) {
         this.traceparent = traceparent;
         return this;
     }
@@ -64,7 +64,7 @@ public final class DecommissionModelOptions {
      * @param tracestate the tracestate value to set.
      * @return the DecommissionModelOptions object itself.
      */
-    public DecommissionModelOptions setTraceState(String tracestate) {
+    public DecommissionModelOptions setTraceState(String traceState) {
         this.tracestate = tracestate;
         return this;
     }

@@ -50,7 +50,7 @@ public final class DeleteRelationshipOptions {
      * @param traceparent the traceparent value to set.
      * @return the DeleteRelationshipOptions object itself.
      */
-    public DeleteRelationshipOptions setTraceParent(String traceparent) {
+    public DeleteRelationshipOptions setTraceParent(String traceParent) {
         this.traceparent = traceparent;
         return this;
     }
@@ -72,7 +72,7 @@ public final class DeleteRelationshipOptions {
      * @param tracestate the tracestate value to set.
      * @return the DeleteRelationshipOptions object itself.
      */
-    public DeleteRelationshipOptions setTraceState(String tracestate) {
+    public DeleteRelationshipOptions setTraceState(String traceState) {
         this.tracestate = tracestate;
         return this;
     }

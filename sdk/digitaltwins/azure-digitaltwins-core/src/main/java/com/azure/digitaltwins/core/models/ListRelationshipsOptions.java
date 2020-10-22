@@ -43,7 +43,7 @@ public final class ListRelationshipsOptions {
      * @param traceparent the traceparent value to set.
      * @return the ListRelationshipsOptions object itself.
      */
-    public ListRelationshipsOptions setTraceParent(String traceparent) {
+    public ListRelationshipsOptions setTraceParent(String traceParent) {
         this.traceparent = traceparent;
         return this;
     }
@@ -65,7 +65,7 @@ public final class ListRelationshipsOptions {
      * @param tracestate the tracestate value to set.
      * @return the ListRelationshipsOptions object itself.
      */
-    public ListRelationshipsOptions setTraceState(String tracestate) {
+    public ListRelationshipsOptions setTraceState(String traceState) {
         this.tracestate = tracestate;
         return this;
     }

@@ -43,7 +43,7 @@ public final class CreateEventRouteOptions {
      * @param traceparent the traceparent value to set.
      * @return the CreateEventRouteOptions object itself.
      */
-    public CreateEventRouteOptions setTraceParent(String traceparent) {
+    public CreateEventRouteOptions setTraceParent(String traceParent) {
         this.traceparent = traceparent;
         return this;
     }
@@ -65,7 +65,7 @@ public final class CreateEventRouteOptions {
      * @param tracestate the tracestate value to set.
      * @return the CreateEventRouteOptions object itself.
      */
-    public CreateEventRouteOptions setTraceState(String tracestate) {
+    public CreateEventRouteOptions setTraceState(String traceState) {
         this.tracestate = tracestate;
         return this;
     }

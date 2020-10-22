@@ -50,7 +50,7 @@ public final class DeleteDigitalTwinOptions {
      * @param traceparent the traceparent value to set.
      * @return the DeleteDigitalTwinOptions object itself.
      */
-    public DeleteDigitalTwinOptions setTraceParent(String traceparent) {
+    public DeleteDigitalTwinOptions setTraceParent(String traceParent) {
         this.traceparent = traceparent;
         return this;
     }
@@ -72,7 +72,7 @@ public final class DeleteDigitalTwinOptions {
      * @param tracestate the tracestate value to set.
      * @return the DeleteDigitalTwinOptions object itself.
      */
-    public DeleteDigitalTwinOptions setTraceState(String tracestate) {
+    public DeleteDigitalTwinOptions setTraceState(String traceState) {
         this.tracestate = tracestate;
         return this;
     }

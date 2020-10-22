@@ -43,7 +43,7 @@ public final class GetComponentOptions {
      * @param traceparent the traceparent value to set.
      * @return the GetComponentOptions object itself.
      */
-    public GetComponentOptions setTraceParent(String traceparent) {
+    public GetComponentOptions setTraceParent(String traceParent) {
         this.traceparent = traceparent;
         return this;
     }
@@ -65,7 +65,7 @@ public final class GetComponentOptions {
      * @param tracestate the tracestate value to set.
      * @return the GetComponentOptions object itself.
      */
-    public GetComponentOptions setTraceState(String tracestate) {
+    public GetComponentOptions setTraceState(String traceState) {
         this.tracestate = tracestate;
         return this;
     }

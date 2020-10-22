@@ -50,7 +50,7 @@ public final class ListEventRoutesOptions {
      * @param traceparent the traceparent value to set.
      * @return the ListEventRoutesOptions object itself.
      */
-    public ListEventRoutesOptions setTraceParent(String traceparent) {
+    public ListEventRoutesOptions setTraceParent(String traceParent) {
         this.traceparent = traceparent;
         return this;
     }
@@ -72,7 +72,7 @@ public final class ListEventRoutesOptions {
      * @param tracestate the tracestate value to set.
      * @return the ListEventRoutesOptions object itself.
      */
-    public ListEventRoutesOptions setTraceState(String tracestate) {
+    public ListEventRoutesOptions setTraceState(String traceState) {
         this.tracestate = tracestate;
         return this;
     }

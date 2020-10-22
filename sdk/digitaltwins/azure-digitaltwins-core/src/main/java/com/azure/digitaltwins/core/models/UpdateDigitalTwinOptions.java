@@ -52,7 +52,7 @@ public final class UpdateDigitalTwinOptions {
      * @param traceparent the traceparent value to set.
      * @return the UpdateDigitalTwinOptions object itself.
      */
-    public UpdateDigitalTwinOptions setTraceParent(String traceparent) {
+    public UpdateDigitalTwinOptions setTraceParent(String traceParent) {
         this.traceparent = traceparent;
         return this;
     }
@@ -74,7 +74,7 @@ public final class UpdateDigitalTwinOptions {
      * @param tracestate the tracestate value to set.
      * @return the UpdateDigitalTwinOptions object itself.
      */
-    public UpdateDigitalTwinOptions setTraceState(String tracestate) {
+    public UpdateDigitalTwinOptions setTraceState(String traceState) {
         this.tracestate = tracestate;
         return this;
     }
