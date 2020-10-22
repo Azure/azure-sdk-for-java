@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.messaging.servicebus;
 
+import com.azure.messaging.servicebus.models.ServiceBusErrorSource;
+
 import java.util.Objects;
 
 /**
@@ -11,6 +13,7 @@ public class ServiceBusReceivedMessageContext {
     private final ServiceBusReceivedMessage message;
     private final String sessionId;
     private final Throwable error;
+    private ServiceBusErrorSource errorSource;
 
     /**
      * Creates an instance where a message was successfully received.
@@ -36,6 +39,18 @@ public class ServiceBusReceivedMessageContext {
     }
 
     /**
+     * Creates an instance where an error occurred such as session-lock-lost.
+     *
+     * @param sessionId Session id that the error occurred in.
+     * @param error AMQP exception that occurred in session.
+     * @param errorSource the source of the error.
+     */
+    ServiceBusReceivedMessageContext(String sessionId, Throwable error, ServiceBusErrorSource errorSource) {
+        this(sessionId,error);
+        this.errorSource = Objects.requireNonNull(errorSource, "'errorSource' cannot be null.");
+    }
+
+    /**
      * Gets the session id of the message or that the error occurred in.
      *
      * @return The session id associated with the error or message. {@code null} if there is no session.
@@ -51,6 +66,27 @@ public class ServiceBusReceivedMessageContext {
      */
     public Throwable getThrowable() {
         return error;
+    }
+
+    /**
+     * Gets the {@link ServiceBusErrorSource} of the error where it occurred.
+     *
+     * @return The {@link ServiceBusErrorSource} of the error or message.
+     */
+    public ServiceBusErrorSource getErrorSource() {
+        return errorSource;
+    }
+
+    /**
+     * Gets the {@link ServiceBusErrorSource} of the error where it occurred.
+     *
+     * @param errorSource {@link ServiceBusErrorSource} where error occurred.
+     *
+     * @return The updated {@link ServiceBusReceivedMessageContext} of the error.
+     */
+    public ServiceBusReceivedMessageContext setErrorSource(ServiceBusErrorSource errorSource) {
+        this.errorSource = errorSource;
+        return this;
     }
 
     /**
