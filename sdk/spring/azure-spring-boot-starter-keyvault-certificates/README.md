@@ -180,8 +180,8 @@ azure:
 ```
 
 If you are developing you can completely disable the certificate and hostname
-validation altogether by using the configuration below. Note this is NOT 
-recommended for production!
+validation altogether by using the configuration below. **Note this is NOT 
+recommended for production!**
 
 ```yaml
 spring:
