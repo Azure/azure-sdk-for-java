@@ -80,6 +80,6 @@ class PizzaImpl
 
     @Override
     protected Mono<PizzaInner> getInnerAsync() {
-        return Mono.just(this.inner());
+        return Mono.just(this.innerModel());
     }
 }

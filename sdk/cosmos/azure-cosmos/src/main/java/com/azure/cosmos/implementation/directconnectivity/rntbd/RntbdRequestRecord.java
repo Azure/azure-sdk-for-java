@@ -4,8 +4,8 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.RequestTimeline;
-import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -48,16 +48,21 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
             "stage");
 
     private final RntbdRequestArgs args;
+    private volatile int channelTaskQueueLength;
+    private volatile int pendingRequestsQueueSize;
+    private volatile RntbdEndpointStatistics serviceEndpointStatistics;
 
     private volatile int requestLength;
     private volatile int responseLength;
     private volatile Stage stage;
 
+    private volatile Instant timeChannelAcquisitionStarted;
     private volatile Instant timeCompleted;
     private volatile Instant timePipelined;
     private final Instant timeQueued;
     private volatile Instant timeSent;
     private volatile Instant timeReceived;
+    private volatile boolean sendingRequestHasStarted;
 
     protected RntbdRequestRecord(final RntbdRequestArgs args) {
 
@@ -113,9 +118,16 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
         STAGE.updateAndGet(this, current -> {
 
             switch (value) {
-                case PIPELINED:
+                case CHANNEL_ACQUISITION_STARTED:
                     if (current != Stage.QUEUED) {
-                        logger.debug("Expected transition from QUEUED to PIPELINED, not {} to PIPELINED", current);
+                        logger.debug("Expected transition from QUEUED to CHANNEL_ACQUISITION_STARTED, not {} to CHANNEL_ACQUISITION_STARTED", current);
+                        break;
+                    }
+                    this.timeChannelAcquisitionStarted = time;
+                    break;
+                case PIPELINED:
+                    if (current != Stage.CHANNEL_ACQUISITION_STARTED) {
+                        logger.debug("Expected transition from CHANNEL_ACQUISITION_STARTED to PIPELINED, not {} to PIPELINED", current);
                         break;
                     }
                     this.timePipelined = time;
@@ -153,6 +165,10 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
         return this;
     }
 
+    public Instant timeChannelAcquisitionStarted() {
+        return this.timeChannelAcquisitionStarted;
+    }
+
     public Instant timeCompleted() {
         return this.timeCompleted;
     }
@@ -177,6 +193,30 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
         return this.timeSent;
     }
 
+    public void serviceEndpointStatistics(RntbdEndpointStatistics endpointMetrics) {
+        this.serviceEndpointStatistics = endpointMetrics;
+    }
+
+    public int pendingRequestQueueSize() {
+        return this.pendingRequestsQueueSize;
+    }
+
+    public void pendingRequestQueueSize(int pendingRequestsQueueSize) {
+        this.pendingRequestsQueueSize = pendingRequestsQueueSize;
+    }
+
+    public int channelTaskQueueLength() {
+        return channelTaskQueueLength;
+    }
+
+    void channelTaskQueueLength(int value) {
+        this.channelTaskQueueLength = value;
+    }
+
+    public RntbdEndpointStatistics serviceEndpointStatistics() {
+        return this.serviceEndpointStatistics;
+    }
+
     public long transportRequestId() {
         return this.args.transportRequestId();
     }
@@ -186,12 +226,25 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
     // region Methods
 
     public boolean expire() {
-        final RequestTimeoutException error = new RequestTimeoutException(this.toString(), this.args.physicalAddress());
+        final GoneException error = new GoneException(this.toString(), null, this.args.physicalAddress());
         BridgeInternal.setRequestHeaders(error, this.args.serviceRequest().getHeaders());
+
         return this.completeExceptionally(error);
     }
 
     public abstract Timeout newTimeout(final TimerTask task);
+
+    /**
+     * Provides information whether the request could have been sent to the service
+     * @return false if it is possible to guarantee that the request never arrived at the service - true otherwise
+     */
+    public boolean hasSendingRequestStarted() {
+        return this.sendingRequestHasStarted;
+    }
+
+    void setSendingRequestHasStarted() {
+        this.sendingRequestHasStarted = true;
+    }
 
     public RequestTimeline takeTimelineSnapshot() {
 
@@ -199,6 +252,7 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
 
         Instant timeCreated = this.timeCreated();
         Instant timeQueued = this.timeQueued();
+        Instant timeChannelAcquisitionStarted = this.timeChannelAcquisitionStarted();
         Instant timePipelined = this.timePipelined();
         Instant timeSent = this.timeSent();
         Instant timeReceived = this.timeReceived();
@@ -209,7 +263,9 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
             new RequestTimeline.Event("created",
                 timeCreated, timeQueued == null ? timeCompletedOrNow : timeQueued),
             new RequestTimeline.Event("queued",
-                timeQueued, timePipelined == null ? timeCompletedOrNow : timePipelined),
+                timeQueued, timeChannelAcquisitionStarted == null ? timeCompletedOrNow : timeChannelAcquisitionStarted),
+            new RequestTimeline.Event("channelAcquisitionStarted",
+                timeChannelAcquisitionStarted, timePipelined == null ? timeCompletedOrNow : timePipelined),
             new RequestTimeline.Event("pipelined",
                 timePipelined, timeSent == null ? timeCompletedOrNow : timeSent),
             new RequestTimeline.Event("transitTime",
@@ -234,7 +290,7 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
     // region Types
 
     public enum Stage {
-        QUEUED, PIPELINED, SENT, RECEIVED, COMPLETED
+        QUEUED, CHANNEL_ACQUISITION_STARTED, PIPELINED, SENT, RECEIVED, COMPLETED
     }
 
     static final class JsonSerializer extends StdSerializer<RntbdRequestRecord> {

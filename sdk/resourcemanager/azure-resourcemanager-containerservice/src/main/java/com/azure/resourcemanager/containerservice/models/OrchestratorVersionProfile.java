@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The OrchestratorVersionProfile model. */
+/** The profile of an orchestrator and its available versions. */
 @Fluent
 public final class OrchestratorVersionProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OrchestratorVersionProfile.class);

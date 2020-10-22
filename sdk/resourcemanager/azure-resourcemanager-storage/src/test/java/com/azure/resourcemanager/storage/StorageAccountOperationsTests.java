@@ -6,7 +6,7 @@ package com.azure.resourcemanager.storage;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.storage.models.SkuName;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountEncryptionKeySource;
@@ -110,7 +110,8 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
         Assertions.assertTrue(fileServiceEncryptionStatus.isEnabled()); // Service will enable this by default
 
         // Update
-        storageAccount = storageAccount.update().withSku(SkuName.STANDARD_LRS).withTag("tag2", "value2").apply();
+        storageAccount = storageAccount.update()
+            .withSku(StorageAccountSkuType.STANDARD_LRS).withTag("tag2", "value2").apply();
         Assertions.assertEquals(SkuName.STANDARD_LRS, storageAccount.skuType().name());
         Assertions.assertEquals(2, storageAccount.tags().size());
     }

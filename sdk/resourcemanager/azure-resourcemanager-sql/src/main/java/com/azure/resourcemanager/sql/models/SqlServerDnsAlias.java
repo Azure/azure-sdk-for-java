@@ -6,16 +6,21 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
-import com.azure.resourcemanager.sql.fluent.inner.ServerDnsAliasInner;
+import com.azure.resourcemanager.sql.fluent.models.ServerDnsAliasInner;
 import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure SQL Server DNS alias. */
 @Fluent
 public interface SqlServerDnsAlias
-    extends HasId, HasInner<ServerDnsAliasInner>, HasName, HasResourceGroup, Indexable, Refreshable<SqlServerDnsAlias> {
+    extends HasId,
+        HasInnerModel<ServerDnsAliasInner>,
+        HasName,
+        HasResourceGroup,
+        Indexable,
+        Refreshable<SqlServerDnsAlias> {
     /** @return name of the SQL Server to which this DNS alias belongs */
     String sqlServerName();
 

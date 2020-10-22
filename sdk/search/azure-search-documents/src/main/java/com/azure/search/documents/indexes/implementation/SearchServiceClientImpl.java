@@ -145,7 +145,11 @@ public final class SearchServiceClientImpl {
         return this.indexes;
     }
 
-    /** Initializes an instance of SearchServiceClient client. */
+    /**
+     * Initializes an instance of SearchServiceClient client.
+     *
+     * @param endpoint The endpoint URL of the search service.
+     */
     SearchServiceClientImpl(String endpoint) {
         this(
                 new HttpPipelineBuilder()
@@ -159,6 +163,7 @@ public final class SearchServiceClientImpl {
      * Initializes an instance of SearchServiceClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param endpoint The endpoint URL of the search service.
      */
     SearchServiceClientImpl(HttpPipeline httpPipeline, String endpoint) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
@@ -169,6 +174,7 @@ public final class SearchServiceClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param endpoint The endpoint URL of the search service.
      */
     SearchServiceClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
         this.httpPipeline = httpPipeline;

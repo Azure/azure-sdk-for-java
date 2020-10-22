@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The DeletedVaultProperties model. */
+/** Properties of the deleted vault. */
 @Immutable
 public final class DeletedVaultProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DeletedVaultProperties.class);

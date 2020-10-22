@@ -76,15 +76,14 @@ public class RelationshipsSyncSamples {
             .replace(SamplesConstants.RELATIONSHIP_NAME, "containedIn")
             .replace(SamplesConstants.RELATIONSHIP_TARGET_MODEL_ID, sampleBuildingModelId);
 
-        List<ModelData> createdModels = client.createModels(new ArrayList<>(Arrays.asList(buildingModelPayload, floorModelPayload)));
+        Iterable<DigitalTwinsModelData> createdModels = client.createModels(new ArrayList<>(Arrays.asList(buildingModelPayload, floorModelPayload)));
 
-        for (ModelData model : createdModels) {
-            ConsoleLogger.print("Created model " + model.getId());
+        for (DigitalTwinsModelData model : createdModels) {
+            ConsoleLogger.print("Created model " + model.getModelId());
         }
 
         // Create a building digital twin
-        BasicDigitalTwin buildingDigitalTwin = new BasicDigitalTwin()
-            .setId(buildingTwinId)
+        BasicDigitalTwin buildingDigitalTwin = new BasicDigitalTwin(buildingTwinId)
             .setMetadata(new DigitalTwinMetadata()
                 .setModelId(sampleBuildingModelId));
 
@@ -92,22 +91,17 @@ public class RelationshipsSyncSamples {
 
         ConsoleLogger.print("Created twin" + buildingDigitalTwin.getId());
 
-        BasicDigitalTwin floorDigitalTwin = new BasicDigitalTwin()
-            .setId(floorTwinId)
+        BasicDigitalTwin floorDigitalTwin = new BasicDigitalTwin(floorTwinId)
             .setMetadata(new DigitalTwinMetadata()
                 .setModelId(sampleFloorModelId));
 
-        client.createDigitalTwin(floorTwinId, mapper.writeValueAsString(floorDigitalTwin));
+        BasicDigitalTwin createdTwin = client.createDigitalTwin(floorTwinId, floorDigitalTwin, BasicDigitalTwin.class);
 
-        ConsoleLogger.print("Created twin" + floorDigitalTwin.getId());
+        ConsoleLogger.print("Created twin with Id:" + createdTwin.getId());
 
         ConsoleLogger.printHeader("Create relationships");
 
-        BasicRelationship buildingFloorRelationshipPayload = new BasicRelationship()
-            .setId(buildingFloorRelationshipId)
-            .setSourceId(buildingTwinId)
-            .setTargetId(floorTwinId)
-            .setName("contains")
+        BasicRelationship buildingFloorRelationshipPayload = new BasicRelationship(buildingFloorRelationshipId, buildingTwinId, floorTwinId, "contains")
             .addCustomProperty("Prop1", "Prop1 value")
             .addCustomProperty("Prop2", 6);
 
@@ -120,11 +114,12 @@ public class RelationshipsSyncSamples {
             buildingTwinId,
             buildingFloorRelationshipId,
             BasicRelationship.class,
+            null,
             Context.NONE);
 
         if (getRelationshipResponse.getStatusCode() == HttpURLConnection.HTTP_OK) {
             BasicRelationship retrievedRelationship = getRelationshipResponse.getValue();
-            ConsoleLogger.printSuccess("Retrieved relationship: " + retrievedRelationship.getId() + " from twin: " + retrievedRelationship.getSourceId() + "\n\t" +
+            ConsoleLogger.printSuccess("Retrieved relationship: " + retrievedRelationship.getRelationshipId() + " from twin: " + retrievedRelationship.getSourceDigitalTwinId() + "\n\t" +
                 "Prop1: " + retrievedRelationship.getCustomProperties().get("Prop1") + "\n\t" +
                 "Prop2: " + retrievedRelationship.getCustomProperties().get("Prop2"));
         }
@@ -134,13 +129,13 @@ public class RelationshipsSyncSamples {
         PagedIterable<BasicRelationship> relationshipPages = client.listRelationships(buildingTwinId, BasicRelationship.class);
 
         for (BasicRelationship relationship : relationshipPages) {
-            ConsoleLogger.printSuccess("Retrieved relationship: " + relationship.getId() + " with source: " + relationship.getSourceId() + " and target: " + relationship.getTargetId());
+            ConsoleLogger.printSuccess("Retrieved relationship: " + relationship.getRelationshipId() + " with source: " + relationship.getSourceDigitalTwinId() + " and target: " + relationship.getTargetDigitalTwinId());
         }
 
         ConsoleLogger.printHeader("List incoming relationships");
         // Get all incoming relationships in the graph where floorTwinId is the target of the relationship.
 
-        PagedIterable<IncomingRelationship> incomingRelationships = client.listIncomingRelationships(floorTwinId);
+        PagedIterable<IncomingRelationship> incomingRelationships = client.listIncomingRelationships(floorTwinId, null, Context.NONE);
 
         for (IncomingRelationship incomingRelationship : incomingRelationships) {
             ConsoleLogger.printSuccess("Found an incoming relationship: " + incomingRelationship.getRelationshipId() + " from: " + incomingRelationship.getSourceId());

@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The EffectiveNetworkSecurityGroup model. */
+/** Effective network security group. */
 @Fluent
 public final class EffectiveNetworkSecurityGroup {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EffectiveNetworkSecurityGroup.class);

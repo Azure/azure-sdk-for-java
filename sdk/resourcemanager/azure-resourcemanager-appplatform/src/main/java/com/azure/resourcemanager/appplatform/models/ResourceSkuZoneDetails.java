@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ResourceSkuZoneDetails model. */
+/** Details of capabilities available to a SKU in specific zones. */
 @Fluent
 public final class ResourceSkuZoneDetails {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuZoneDetails.class);

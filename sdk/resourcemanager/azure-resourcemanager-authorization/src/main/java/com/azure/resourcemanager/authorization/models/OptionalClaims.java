@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The OptionalClaims model. */
+/** Specifying the claims to be included in the token. */
 @Fluent
 public final class OptionalClaims {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OptionalClaims.class);

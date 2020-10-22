@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The SqlTriggerCreateUpdateParameters model. */
+/** Parameters to create and update Cosmos DB trigger. */
 @JsonFlatten
 @Fluent
 public class SqlTriggerCreateUpdateParameters extends ArmResourceProperties {

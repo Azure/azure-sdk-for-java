@@ -11,7 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The P2SConnectionConfiguration model. */
+/** P2SConnectionConfiguration Resource. */
 @JsonFlatten
 @Fluent
 public class P2SConnectionConfiguration extends SubResource {

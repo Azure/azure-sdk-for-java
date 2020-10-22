@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ClusterResourceProperties model. */
+/** Service properties payload. */
 @Fluent
 public final class ClusterResourceProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterResourceProperties.class);

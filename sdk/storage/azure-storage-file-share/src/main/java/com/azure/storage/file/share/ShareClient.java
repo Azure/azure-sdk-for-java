@@ -19,6 +19,14 @@ import com.azure.storage.file.share.models.ShareInfo;
 import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareStatistics;
+import com.azure.storage.file.share.options.ShareCreateOptions;
+import com.azure.storage.file.share.options.ShareDeleteOptions;
+import com.azure.storage.file.share.options.ShareGetAccessPolicyOptions;
+import com.azure.storage.file.share.options.ShareGetPropertiesOptions;
+import com.azure.storage.file.share.options.ShareGetStatisticsOptions;
+import com.azure.storage.file.share.options.ShareSetAccessPolicyOptions;
+import com.azure.storage.file.share.options.ShareSetPropertiesOptions;
+import com.azure.storage.file.share.options.ShareSetMetadataOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
@@ -107,6 +115,17 @@ public class ShareClient {
         return new ShareFileClient(client.getFileClient(filePath));
     }
 
+
+    /**
+     * Creates a new {@link ShareAsyncClient} linked to the {@code snapshot} of this share resource.
+     *
+     * @param snapshot the identifier for a specific snapshot of this share
+     * @return a {@link ShareClient} used to interact with the specific snapshot.
+     */
+    public ShareClient getSnapshotClient(String snapshot) {
+        return new ShareClient(client.getSnapshotClient(snapshot));
+    }
+
     /**
      * Determines if the share this client represents exists in the cloud.
      *
@@ -185,7 +204,33 @@ public class ShareClient {
      */
     public Response<ShareInfo> createWithResponse(Map<String, String> metadata, Integer quotaInGB, Duration timeout,
         Context context) {
-        Mono<Response<ShareInfo>> response = client.createWithResponse(metadata, quotaInGB, context);
+        Mono<Response<ShareInfo>> response = client.createWithResponse(new ShareCreateOptions().setQuotaInGb(quotaInGB)
+            .setMetadata(metadata), context);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
+     * Creates the share in the storage account with the specified options.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet ShareClient.createWithResponse#ShareCreateOptions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-share">Azure Docs</a>.</p>
+     *
+     * @param options {@link ShareCreateOptions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the {@link ShareInfo information about the share} and the status its creation.
+     * @throws ShareStorageException If the share already exists with different metadata or {@code quotaInGB} is outside
+     * the allowed range.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     */
+    public Response<ShareInfo> createWithResponse(ShareCreateOptions options, Duration timeout,
+        Context context) {
+        Mono<Response<ShareInfo>> response = client.createWithResponse(options, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -276,7 +321,31 @@ public class ShareClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<Void> deleteWithResponse(Duration timeout, Context context) {
-        Mono<Response<Void>> response = client.deleteWithResponse(context);
+        return deleteWithResponse(new ShareDeleteOptions(), timeout, context);
+    }
+
+    /**
+     * Deletes the share in the storage account
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the share</p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareClient.deleteWithResponse#ShareDeleteOptions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
+     *
+     * @param options {@link ShareDeleteOptions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response that only contains headers and response status code
+     * @throws ShareStorageException If the share doesn't exist
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     */
+    public Response<Void> deleteWithResponse(ShareDeleteOptions options, Duration timeout, Context context) {
+        Mono<Response<Void>> response = client.deleteWithResponse(options, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -321,7 +390,33 @@ public class ShareClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<ShareProperties> getPropertiesWithResponse(Duration timeout, Context context) {
-        Mono<Response<ShareProperties>> response = client.getPropertiesWithResponse(context);
+        return getPropertiesWithResponse(new ShareGetPropertiesOptions(), timeout, context);
+    }
+
+    /**
+     * Retrieves the properties of the share, these include the metadata associated to it and the quota that the share
+     * is restricted to.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Retrieve the share properties</p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareClient.getPropertiesWithResponse#ShareGetPropertiesOptions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
+     *
+     * @param options {@link ShareGetPropertiesOptions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing {@link ShareProperties properties of the share} with response status code
+     * @throws ShareStorageException If the share doesn't exist
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     */
+    public Response<ShareProperties> getPropertiesWithResponse(ShareGetPropertiesOptions options, Duration timeout,
+        Context context) {
+        Mono<Response<ShareProperties>> response = client.getPropertiesWithResponse(options, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -338,9 +433,11 @@ public class ShareClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
      *
      * @param quotaInGB Size in GB to limit the share's growth. The quota in GB must be between 1 and 5120.
-     * @return The {@link ShareProperties properties of the share}
+     * @return The {@link ShareInfo information about the share}
      * @throws ShareStorageException If the share doesn't exist or {@code quotaInGB} is outside the allowed bounds
+     * @deprecated Use {@link ShareClient#setProperties(ShareSetPropertiesOptions)}
      */
+    @Deprecated
     public ShareInfo setQuota(int quotaInGB) {
         return setQuotaWithResponse(quotaInGB, null, Context.NONE).getValue();
     }
@@ -361,12 +458,52 @@ public class ShareClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing {@link ShareProperties properties of the share} with response status code
+     * @return A response containing {@link ShareInfo information about the share} with response status code
      * @throws ShareStorageException If the share doesn't exist or {@code quotaInGB} is outside the allowed bounds
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     * @deprecated Use {@link ShareClient#setPropertiesWithResponse(ShareSetPropertiesOptions, Duration, Context)}
      */
+    @Deprecated
     public Response<ShareInfo> setQuotaWithResponse(int quotaInGB, Duration timeout, Context context) {
-        Mono<Response<ShareInfo>> response = client.setQuotaWithResponse(quotaInGB, context);
+        return setPropertiesWithResponse(new ShareSetPropertiesOptions().setQuotaInGb(quotaInGB), timeout, context);
+    }
+
+    /**
+     * Sets the share's properties.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet ShareClient.setProperties#ShareSetPropertiesOptions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
+     *
+     * @param options {@link ShareSetPropertiesOptions}
+     * @return The {@link ShareInfo information about the share}
+     */
+    public ShareInfo setProperties(ShareSetPropertiesOptions options) {
+        return setPropertiesWithResponse(options, null, Context.NONE).getValue();
+    }
+
+    /**
+     * Sets the share's properties.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareClient.setPropertiesWithResponse#ShareSetPropertiesOptions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
+     *
+     * @param options {@link ShareSetPropertiesOptions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing {@link ShareInfo information about the share} with response status code
+     */
+    public Response<ShareInfo> setPropertiesWithResponse(ShareSetPropertiesOptions options, Duration timeout,
+        Context context) {
+        Mono<Response<ShareInfo>> response = client.setPropertiesWithResponse(options, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -420,7 +557,34 @@ public class ShareClient {
      */
     public Response<ShareInfo> setMetadataWithResponse(Map<String, String> metadata, Duration timeout,
         Context context) {
-        Mono<Response<ShareInfo>> response = client.setMetadataWithResponse(metadata, context);
+        return setMetadataWithResponse(new ShareSetMetadataOptions().setMetadata(metadata), timeout, context);
+    }
+
+    /**
+     * Sets the user-defined metadata to associate to the share.
+     *
+     * <p>If {@code null} is passed for the metadata it will clear the metadata associated to the share.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Set the metadata to "share:updatedMetadata"</p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareClient.setMetadataWithResponse#ShareSetMetadataOptions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-metadata">Azure Docs</a>.</p>
+     *
+     * @param options {@link ShareSetMetadataOptions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing {@link ShareProperties properties of the share} with response status code
+     * @throws ShareStorageException If the share doesn't exist or the metadata contains invalid keys
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     */
+    public Response<ShareInfo> setMetadataWithResponse(ShareSetMetadataOptions options, Duration timeout,
+        Context context) {
+        Mono<Response<ShareInfo>> response = client.setMetadataWithResponse(options, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -440,7 +604,27 @@ public class ShareClient {
      * @throws ShareStorageException If the share doesn't exist
      */
     public PagedIterable<ShareSignedIdentifier> getAccessPolicy() {
-        return new PagedIterable<>(client.getAccessPolicy());
+        return getAccessPolicy(new ShareGetAccessPolicyOptions());
+    }
+
+    /**
+     * Retrieves stored access policies specified for the share.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>List the stored access policies</p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareClient.getAccessPolicy#ShareGetAccessPolicyOptions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-acl">Azure Docs</a>.</p>
+     *
+     * @param options {@link ShareGetAccessPolicyOptions}
+     * @return The stored access policies specified on the queue.
+     * @throws ShareStorageException If the share doesn't exist
+     */
+    public PagedIterable<ShareSignedIdentifier> getAccessPolicy(ShareGetAccessPolicyOptions options) {
+        return new PagedIterable<>(client.getAccessPolicy(options));
     }
 
     /**
@@ -488,7 +672,35 @@ public class ShareClient {
      */
     public Response<ShareInfo> setAccessPolicyWithResponse(List<ShareSignedIdentifier> permissions, Duration timeout,
                                                            Context context) {
-        Mono<Response<ShareInfo>> response = client.setAccessPolicyWithResponse(permissions, context);
+        return setAccessPolicyWithResponse(new ShareSetAccessPolicyOptions().setPermissions(permissions), timeout,
+            context);
+    }
+
+    /**
+     * Sets stored access policies for the share.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Set a read only stored access policy</p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareClient.setAccessPolicyWithResponse#ShareSetAccessPolicyOptions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-acl">Azure Docs</a>.</p>
+     *
+     * @param options {@link ShareSetAccessPolicyOptions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the {@link ShareInfo information of the share} with headers and response status
+     * code
+     * @throws ShareStorageException If the share doesn't exist, a stored access policy doesn't have all fields filled
+     * out, or the share will have more than five policies.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     */
+    public Response<ShareInfo> setAccessPolicyWithResponse(ShareSetAccessPolicyOptions options, Duration timeout,
+        Context context) {
+        Mono<Response<ShareInfo>> response = client.setAccessPolicyWithResponse(options, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -529,7 +741,31 @@ public class ShareClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<ShareStatistics> getStatisticsWithResponse(Duration timeout, Context context) {
-        Mono<Response<ShareStatistics>> response = client.getStatisticsWithResponse(context);
+        return getStatisticsWithResponse(new ShareGetStatisticsOptions(), timeout, context);
+    }
+
+    /**
+     * Retrieves storage statistics about the share.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Retrieve the storage statistics</p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareClient.getStatisticsWithResponse#ShareGetStatisticsOptions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-stats">Azure Docs</a>.</p>
+     *
+     * @param options {@link ShareGetStatisticsOptions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the {@link ShareStatistics statistics of the share}
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     */
+    public Response<ShareStatistics> getStatisticsWithResponse(ShareGetStatisticsOptions options, Duration timeout,
+        Context context) {
+        Mono<Response<ShareStatistics>> response = client.getStatisticsWithResponse(options, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 

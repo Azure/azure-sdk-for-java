@@ -6,12 +6,12 @@ package com.azure.resourcemanager.msi.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.msi.fluent.inner.IdentityInner;
+import com.azure.resourcemanager.msi.fluent.models.IdentityInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The UserAssignedIdentitiesListResult model. */
+/** Values returned by the List operation. */
 @Fluent
 public final class UserAssignedIdentitiesListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UserAssignedIdentitiesListResult.class);

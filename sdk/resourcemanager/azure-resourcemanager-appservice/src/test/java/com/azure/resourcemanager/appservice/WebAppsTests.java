@@ -8,13 +8,14 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.LogLevel;
 import com.azure.resourcemanager.appservice.models.NetFrameworkVersion;
+import com.azure.resourcemanager.appservice.models.OperatingSystem;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.RemoteVisualStudioVersion;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebAppBasic;
 import com.azure.resourcemanager.appservice.models.WebAppRuntimeStack;
 import com.azure.resourcemanager.test.utils.TestUtilities;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -105,7 +106,7 @@ public class WebAppsTests extends AppServiceTest {
                 WebAppRuntimeStack.NETCORE.runtime(),
                 webApp1
                     .manager()
-                    .inner()
+                    .serviceClient()
                     .getWebApps()
                     .listMetadata(webApp1.resourceGroupName(), webApp1.name())
                     .properties()
@@ -125,7 +126,7 @@ public class WebAppsTests extends AppServiceTest {
                 WebAppRuntimeStack.NET.runtime(),
                 webApp3
                     .manager()
-                    .inner()
+                    .serviceClient()
                     .getWebApps()
                     .listMetadata(webApp3.resourceGroupName(), webApp3.name())
                     .properties()
@@ -168,5 +169,28 @@ public class WebAppsTests extends AppServiceTest {
         Assertions.assertEquals(webApp1.remoteDebuggingVersion(), webAppBasic1Refreshed.remoteDebuggingVersion());
         Assertions.assertEquals(webApp1.diagnosticLogsConfig().applicationLoggingStorageBlobLogLevel(),
             webAppBasic1Refreshed.diagnosticLogsConfig().applicationLoggingStorageBlobLogLevel());
+    }
+
+    @Test
+    public void canCRUDWebAppWithContainer() {
+        rgName2 = null;
+
+        AppServicePlan plan1 = appServiceManager.appServicePlans().define(appServicePlanName1)
+            .withRegion(Region.US_EAST)     // many other regions does not have quota for PREMIUM_P1V3
+            .withNewResourceGroup(rgName1)
+            .withPricingTier(PricingTier.PREMIUM_P1V3)
+            .withOperatingSystem(OperatingSystem.WINDOWS)
+            .create();
+
+        final String imageAndTag = "mcr.microsoft.com/azure-app-service/samples/aspnethelloworld:latest";
+
+        WebApp webApp1 = appServiceManager.webApps().define(webappName1)
+            .withExistingWindowsPlan(plan1)
+            .withExistingResourceGroup(rgName1)
+            .withPublicDockerHubImage(imageAndTag)
+            .create();
+
+        Assertions.assertNotNull(webApp1.windowsFxVersion());
+        Assertions.assertTrue(webApp1.windowsFxVersion().contains(imageAndTag));
     }
 }

@@ -8,7 +8,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
 import com.azure.resourcemanager.compute.models.AvailabilitySetSkuTypes;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
@@ -18,7 +18,7 @@ import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.TransportProtocol;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
@@ -71,16 +71,16 @@ public final class ManageInternalLoadBalancer {
     /**
      * Main function which runs the actual sample.
      *
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
-        final String rgName = azure.sdkContext().randomResourceName("rgNEML", 15);
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgNEML", 15);
 
-        final String vnetName = azure.sdkContext().randomResourceName("vnet", 24);
+        final String vnetName = Utils.randomResourceName(azureResourceManager, "vnet", 24);
 
-        final String loadBalancerName3 = azure.sdkContext().randomResourceName("intlb3" + "-", 18);
-        final String loadBalancerName4 = azure.sdkContext().randomResourceName("intlb4" + "-", 18);
+        final String loadBalancerName3 = Utils.randomResourceName(azureResourceManager, "intlb3" + "-", 18);
+        final String loadBalancerName4 = Utils.randomResourceName(azureResourceManager, "intlb4" + "-", 18);
         final String privateFrontEndName = loadBalancerName3 + "-BE";
 
         final String backendPoolName3 = loadBalancerName3 + "-BAP3";
@@ -93,12 +93,12 @@ public final class ManageInternalLoadBalancer {
         final String natRule6002to22forVM4 = "nat6002to22forVM4";
         final String natRule6003to23forVM4 = "nat6003to23forVM4";
 
-        final String networkInterfaceName3 = azure.sdkContext().randomResourceName("nic3", 24);
-        final String networkInterfaceName4 = azure.sdkContext().randomResourceName("nic4", 24);
+        final String networkInterfaceName3 = Utils.randomResourceName(azureResourceManager, "nic3", 24);
+        final String networkInterfaceName4 = Utils.randomResourceName(azureResourceManager, "nic4", 24);
 
-        final String availSetName = azure.sdkContext().randomResourceName("av2", 24);
-        final String vmName3 = azure.sdkContext().randomResourceName("lVM3", 24);
-        final String vmName4 = azure.sdkContext().randomResourceName("lVM4", 24);
+        final String availSetName = Utils.randomResourceName(azureResourceManager, "av2", 24);
+        final String vmName3 = Utils.randomResourceName(azureResourceManager, "lVM3", 24);
+        final String vmName4 = Utils.randomResourceName(azureResourceManager, "lVM4", 24);
         final String userName = "tirekicker";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
         try {
@@ -107,7 +107,7 @@ public final class ManageInternalLoadBalancer {
             // Create a virtual network with a frontend and a backend subnets
             System.out.println("Creating virtual network with a frontend and a backend subnets...");
 
-            Network network = azure.networks().define(vnetName)
+            Network network = azureResourceManager.networks().define(vnetName)
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
                     .withAddressSpace("172.16.0.0/16")
@@ -148,7 +148,7 @@ public final class ManageInternalLoadBalancer {
                     + "  balancer to a port for a specific virtual machine in the backend address pool\n"
                     + "  - this provides direct VM connectivity for SSH to port 22 and TELNET to port 23");
 
-            LoadBalancer loadBalancer3 = azure.loadBalancers().define(loadBalancerName3)
+            LoadBalancer loadBalancer3 = azureResourceManager.loadBalancers().define(loadBalancerName3)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
 
@@ -212,7 +212,7 @@ public final class ManageInternalLoadBalancer {
             // Define two network interfaces in the backend subnet
             // associate network interfaces to NAT rules, backend pools
 
-            Creatable<NetworkInterface> networkInterface3Creatable = azure.networkInterfaces().define(networkInterfaceName3)
+            Creatable<NetworkInterface> networkInterface3Creatable = azureResourceManager.networkInterfaces().define(networkInterfaceName3)
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
                     .withExistingPrimaryNetwork(network)
@@ -222,7 +222,7 @@ public final class ManageInternalLoadBalancer {
                     .withExistingLoadBalancerInboundNatRule(loadBalancer3, natRule6000to22forVM3)
                     .withExistingLoadBalancerInboundNatRule(loadBalancer3, natRule6001to23forVM3);
 
-            Creatable<NetworkInterface> networkInterface4Creatable = azure.networkInterfaces().define(networkInterfaceName4)
+            Creatable<NetworkInterface> networkInterface4Creatable = azureResourceManager.networkInterfaces().define(networkInterfaceName4)
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
                     .withExistingPrimaryNetwork(network)
@@ -235,7 +235,7 @@ public final class ManageInternalLoadBalancer {
             //=============================================================
             // Define an availability set
 
-            Creatable<AvailabilitySet> availSet2Definition = azure.availabilitySets().define(availSetName)
+            Creatable<AvailabilitySet> availSet2Definition = azureResourceManager.availabilitySets().define(availSetName)
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
                     .withFaultDomainCount(2)
@@ -250,7 +250,7 @@ public final class ManageInternalLoadBalancer {
 
             List<Creatable<VirtualMachine>> virtualMachineCreateables2 = new ArrayList<Creatable<VirtualMachine>>();
 
-            Creatable<VirtualMachine> virtualMachine3Creatable = azure.virtualMachines().define(vmName3)
+            Creatable<VirtualMachine> virtualMachine3Creatable = azureResourceManager.virtualMachines().define(vmName3)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetworkInterface(networkInterface3Creatable)
@@ -262,7 +262,7 @@ public final class ManageInternalLoadBalancer {
 
             virtualMachineCreateables2.add(virtualMachine3Creatable);
 
-            Creatable<VirtualMachine> virtualMachine4Creatable = azure.virtualMachines().define(vmName4)
+            Creatable<VirtualMachine> virtualMachine4Creatable = azureResourceManager.virtualMachines().define(vmName4)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetworkInterface(networkInterface4Creatable)
@@ -277,7 +277,7 @@ public final class ManageInternalLoadBalancer {
             StopWatch stopwatch = new StopWatch();
             stopwatch.start();
 
-            Collection<VirtualMachine> virtualMachines = azure.virtualMachines().create(virtualMachineCreateables2).values();
+            Collection<VirtualMachine> virtualMachines = azureResourceManager.virtualMachines().create(virtualMachineCreateables2).values();
 
             stopwatch.stop();
             System.out.println("Created 2 Linux VMs: (took " + (stopwatch.getTime() / 1000) + " seconds) ");
@@ -329,7 +329,7 @@ public final class ManageInternalLoadBalancer {
                     + "  balancer to a port for a specific virtual machine in the backend address pool\n"
                     + "  - this provides direct VM connectivity for SSH to port 22 and TELNET to port 23");
 
-            LoadBalancer loadBalancer4 = azure.loadBalancers().define(loadBalancerName4)
+            LoadBalancer loadBalancer4 = azureResourceManager.loadBalancers().define(loadBalancerName4)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
 
@@ -392,7 +392,7 @@ public final class ManageInternalLoadBalancer {
             //=============================================================
             // List load balancers
 
-            PagedIterable<LoadBalancer> loadBalancers = azure.loadBalancers().list();
+            PagedIterable<LoadBalancer> loadBalancers = azureResourceManager.loadBalancers().list();
 
             System.out.println("Walking through the list of load balancers");
 
@@ -407,14 +407,14 @@ public final class ManageInternalLoadBalancer {
 
             System.out.println("Deleting load balancer " + loadBalancerName4
                     + "(" + loadBalancer4.id() + ")");
-            azure.loadBalancers().deleteById(loadBalancer4.id());
+            azureResourceManager.loadBalancers().deleteById(loadBalancer4.id());
             System.out.println("Deleted load balancer" + loadBalancerName4);
 
             return true;
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             } catch (Exception g) {
@@ -437,18 +437,19 @@ public final class ManageInternalLoadBalancer {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

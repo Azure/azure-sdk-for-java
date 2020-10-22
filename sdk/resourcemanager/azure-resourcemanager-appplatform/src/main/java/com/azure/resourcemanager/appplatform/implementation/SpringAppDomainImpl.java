@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.appplatform.implementation;
 
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
-import com.azure.resourcemanager.appplatform.fluent.inner.CustomDomainResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.CustomDomainResourceInner;
 import com.azure.resourcemanager.appplatform.models.CustomDomainProperties;
 import com.azure.resourcemanager.appplatform.models.SpringApp;
 import com.azure.resourcemanager.appplatform.models.SpringAppDomain;
@@ -20,7 +20,7 @@ public class SpringAppDomainImpl
 
     @Override
     public Mono<SpringAppDomain> createResourceAsync() {
-        return manager().inner().getCustomDomains().createOrUpdateAsync(
+        return manager().serviceClient().getCustomDomains().createOrUpdateAsync(
             parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name(), properties()
         )
             .map(inner -> {
@@ -36,26 +36,26 @@ public class SpringAppDomainImpl
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return manager().inner().getBindings().deleteAsync(
+        return manager().serviceClient().getBindings().deleteAsync(
             parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name()
         );
     }
 
     @Override
     protected Mono<CustomDomainResourceInner> getInnerAsync() {
-        return manager().inner().getCustomDomains().getAsync(
+        return manager().serviceClient().getCustomDomains().getAsync(
             parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name()
         );
     }
 
     @Override
     public String id() {
-        return inner().id();
+        return innerModel().id();
     }
 
     @Override
     public CustomDomainProperties properties() {
-        return inner().properties();
+        return innerModel().properties();
     }
 
     private AppPlatformManager manager() {

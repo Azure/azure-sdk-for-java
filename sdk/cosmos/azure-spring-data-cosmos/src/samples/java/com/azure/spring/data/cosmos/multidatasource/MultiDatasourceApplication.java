@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.multidatasource;
 
-import com.azure.spring.data.cosmos.multidatasource.primarydatasource.first.User;
-import com.azure.spring.data.cosmos.multidatasource.primarydatasource.first.UserRepository;
-import com.azure.spring.data.cosmos.multidatasource.secondarydatasource.first.Book;
-import com.azure.spring.data.cosmos.multidatasource.secondarydatasource.first.BookRepository;
+import com.azure.spring.data.cosmos.multidatasource.primary.database1.User;
+import com.azure.spring.data.cosmos.multidatasource.primary.database1.UserRepository;
+import com.azure.spring.data.cosmos.multidatasource.secondary.database3.Book;
+import com.azure.spring.data.cosmos.multidatasource.secondary.database3.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -29,10 +29,8 @@ public class MultiDatasourceApplication implements CommandLineRunner {
     @Autowired
     private BookRepository bookRepository;
 
-
     private final User user = new User("1024", "1024@geek.com", "1k", "Mars");
     private final Book book = new Book("9780792745488", "Zen and the Art of Motorcycle Maintenance", "Robert M. Pirsig");
-
 
     public static void main(String[] args) {
         SpringApplication.run(MultiDatasourceApplication.class, args);
@@ -50,7 +48,6 @@ public class MultiDatasourceApplication implements CommandLineRunner {
     public void setup() {
         this.userRepository.save(user).block();
         this.bookRepository.save(book).block();
-
     }
 
     @PreDestroy
@@ -59,3 +56,4 @@ public class MultiDatasourceApplication implements CommandLineRunner {
         this.bookRepository.deleteAll().block();
     }
 }
+

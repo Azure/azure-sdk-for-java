@@ -9,7 +9,7 @@ import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.Galleries;
 import com.azure.resourcemanager.compute.models.Gallery;
 import com.azure.resourcemanager.compute.fluent.GalleriesClient;
-import com.azure.resourcemanager.compute.fluent.inner.GalleryInner;
+import com.azure.resourcemanager.compute.fluent.models.GalleryInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.BatchDeletionImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class GalleriesImpl
     extends GroupableResourcesImpl<Gallery, GalleryImpl, GalleryInner, GalleriesClient, ComputeManager>
     implements Galleries {
     public GalleriesImpl(ComputeManager manager) {
-        super(manager.inner().getGalleries(), manager);
+        super(manager.serviceClient().getGalleries(), manager);
     }
 
     @Override

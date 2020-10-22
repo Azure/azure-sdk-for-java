@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ActivityLogAlertLeafCondition model. */
+/** An Activity Log alert condition that is met by comparing an activity log field and value. */
 @Fluent
 public final class ActivityLogAlertLeafCondition {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ActivityLogAlertLeafCondition.class);

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RegionForOnlineOffline model. */
+/** Cosmos DB region to online or offline. */
 @Fluent
 public final class RegionForOnlineOffline {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RegionForOnlineOffline.class);

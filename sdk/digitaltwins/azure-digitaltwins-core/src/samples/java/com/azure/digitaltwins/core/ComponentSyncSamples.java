@@ -8,7 +8,7 @@ import com.azure.digitaltwins.core.helpers.SamplesArguments;
 import com.azure.digitaltwins.core.helpers.SamplesConstants;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
-import com.azure.digitaltwins.core.models.ModelData;
+import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
 import com.azure.digitaltwins.core.models.BasicDigitalTwin;
 import com.azure.digitaltwins.core.models.DigitalTwinMetadata;
 import com.azure.digitaltwins.core.models.ModelProperties;
@@ -75,16 +75,15 @@ public class ComponentSyncSamples {
 
         ConsoleLogger.printHeader("Create Models");
         // We now create all the models (including components)
-        List<ModelData> modelList =  client.createModels(modelsList);
+        Iterable<DigitalTwinsModelData> modelList =  client.createModels(modelsList);
 
-        for (ModelData model : modelList) {
-            ConsoleLogger.print("Created model: " + model.getId());
+        for (DigitalTwinsModelData model : modelList) {
+            ConsoleLogger.print("Created model: " + model.getModelId());
         }
 
         ConsoleLogger.printHeader("Create digital twin with components");
         // Create digital twin with component payload using the BasicDigitalTwin serialization helper.
-        BasicDigitalTwin basicTwin = new BasicDigitalTwin()
-            .setId(basicDigitalTwinId)
+        BasicDigitalTwin basicTwin = new BasicDigitalTwin(basicDigitalTwinId)
             .setMetadata(
                 new DigitalTwinMetadata()
                     .setModelId(modelId)
@@ -94,18 +93,18 @@ public class ComponentSyncSamples {
             .addCustomProperty(
                 "Component1",
                 new ModelProperties()
-                    .setCustomProperties("ComponentProp1", "Component value 1")
-                    .setCustomProperties("ComponentProp2", 123)
+                    .addCustomProperties("ComponentProp1", "Component value 1")
+                    .addCustomProperties("ComponentProp2", 123)
             );
 
         String basicDigitalTwinPayload = mapper.writeValueAsString(basicTwin);
 
-        client.createDigitalTwin(basicDigitalTwinId, basicTwin, BasicDigitalTwin.class);
+        BasicDigitalTwin basicTwinResponse = client.createDigitalTwin(basicDigitalTwinId, basicTwin, BasicDigitalTwin.class);
 
-        ConsoleLogger.print("Created digital twin " + basicDigitalTwinId);
+        ConsoleLogger.print("Created digital twin " + basicTwinResponse.getId());
 
         // You can get a digital twin in json string format and deserialize it on your own
-        Response<String> getStringDigitalTwinResponse = client.getDigitalTwinWithResponse(basicDigitalTwinId, Context.NONE);
+        Response<String> getStringDigitalTwinResponse = client.getDigitalTwinWithResponse(basicDigitalTwinId, String.class, null, Context.NONE);
         ConsoleLogger.print("Successfully retrieved digital twin as a json string \n" + getStringDigitalTwinResponse.getValue());
 
         BasicDigitalTwin deserializedDigitalTwin = mapper.readValue(getStringDigitalTwinResponse.getValue(), BasicDigitalTwin.class);
@@ -114,7 +113,7 @@ public class ComponentSyncSamples {
         // You can also get a digital twin using the built in deserializer into a BasicDigitalTwin.
         // It works well for basic stuff, but as you can see it gets more difficult when delving into
         // more complex properties, like components.
-        Response<BasicDigitalTwin> basicDigitalTwinResponse = client.getDigitalTwinWithResponse(basicDigitalTwinId, BasicDigitalTwin.class, Context.NONE);
+        Response<BasicDigitalTwin> basicDigitalTwinResponse = client.getDigitalTwinWithResponse(basicDigitalTwinId, BasicDigitalTwin.class, null, Context.NONE);
 
         if (basicDigitalTwinResponse.getStatusCode() == HttpsURLConnection.HTTP_OK) {
 
@@ -125,7 +124,7 @@ public class ComponentSyncSamples {
             HashMap component1 = mapper.readValue(component1RawText, HashMap.class);
 
             ConsoleLogger.print("Retrieved digital twin using generic API to use built in deserialization into a BasicDigitalTwin with Id: " + basicDigitalTwin.getId() + ":\n\t"
-                + "Etag: " + basicDigitalTwin.getTwinETag() + "\n\t"
+                + "Etag: " + basicDigitalTwin.getDigitalTwinEtag() + "\n\t"
                 + "Prop1: " + basicDigitalTwin.getCustomProperties().get("Prop1") + "\n\t"
                 + "Prop2: " + basicDigitalTwin.getCustomProperties().get("Prop2") + "\n\t"
                 + "ComponentProp1: " + component1.get("ComponentProp1") + "\n\t"
@@ -146,7 +145,7 @@ public class ComponentSyncSamples {
         ConsoleLogger.print("Updated component for digital twin: " + basicDigitalTwinId);
 
         ConsoleLogger.printHeader("Get Component");
-        String getComponentResponse = client.getComponent(basicDigitalTwinId, "Component1");
+        String getComponentResponse = client.getComponent(basicDigitalTwinId, "Component1", String.class);
         ConsoleLogger.print("Retrieved component for digital twin " + basicDigitalTwinId + " :\n" + getComponentResponse);
 
         // Clean up

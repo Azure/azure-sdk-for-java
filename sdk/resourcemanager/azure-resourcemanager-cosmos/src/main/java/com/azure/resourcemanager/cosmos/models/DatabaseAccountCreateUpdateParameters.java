@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The DatabaseAccountCreateUpdateParameters model. */
+/** Parameters to create and update Cosmos DB database accounts. */
 @JsonFlatten
 @Fluent
 public class DatabaseAccountCreateUpdateParameters extends ArmResourceProperties {

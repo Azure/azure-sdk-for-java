@@ -3,19 +3,22 @@ package com.azure.digitaltwins.core;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
-import com.azure.digitaltwins.core.models.ModelData;
+import com.azure.digitaltwins.core.models.ListModelsOptions;
+import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
+
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 import static com.azure.digitaltwins.core.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.digitaltwins.core.TestHelper.assertRestException;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Async client implementation of the model tests defined in {@link ModelsTestBase}
@@ -31,32 +34,32 @@ public class ModelsAsyncTest extends ModelsTestBase {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
 
         // Create some models to test the lifecycle of
-        List<ModelData> createdModels = new ArrayList<>();
+        List<DigitalTwinsModelData> createdModels = new ArrayList<>();
         createModelsRunner(asyncClient, (modelsList) -> StepVerifier.create(asyncClient.createModels(modelsList))
             .assertNext(createdModelsResponseList -> {
-                createdModels.addAll(createdModelsResponseList);
-                logger.info("Created {} models successfully", createdModelsResponseList.size());
+                createdModelsResponseList.forEach(item -> createdModels.add(item));
+                logger.info("Created {} models successfully");
             })
             .verifyComplete());
 
-        for (final ModelData expected : createdModels) {
+        for (final DigitalTwinsModelData expected : createdModels) {
             // Get the model
-            getModelRunner(expected.getId(), (modelId) -> {
-                StepVerifier.create(asyncClient.getModelWithResponse(modelId))
+            getModelRunner(expected.getModelId(), (modelId) -> {
+                StepVerifier.create(asyncClient.getModelWithResponse(modelId, null))
                     .assertNext(retrievedModel -> assertModelDataAreEqual(expected, retrievedModel.getValue(), false))
                     .verifyComplete();
                 logger.info("Model {} matched expectations", modelId);
             });
 
             // Decommission the model
-            decommissionModelRunner(expected.getId(), (modelId) -> {
+            decommissionModelRunner(expected.getModelId(), (modelId) -> {
                 logger.info("Decommissioning model {}", modelId);
                 StepVerifier.create(asyncClient.decommissionModel(modelId))
                     .verifyComplete();
             });
 
             // Get the model again to see if it was decommissioned as expected
-            getModelRunner(expected.getId(), (modelId) -> {
+            getModelRunner(expected.getModelId(), (modelId) -> {
                 StepVerifier.create(asyncClient.getModel(modelId))
                     .assertNext(retrievedModel -> assertTrue(retrievedModel.isDecommissioned()))
                     .verifyComplete();
@@ -64,7 +67,7 @@ public class ModelsAsyncTest extends ModelsTestBase {
             });
 
             // Delete the model
-            deleteModelRunner(expected.getId(), (modelId) -> {
+            deleteModelRunner(expected.getModelId(), (modelId) -> {
                 logger.info("Deleting model {}", modelId);
                 StepVerifier.create(asyncClient.deleteModel(modelId))
                     .verifyComplete();
@@ -77,7 +80,7 @@ public class ModelsAsyncTest extends ModelsTestBase {
     @Override
     public void getModelThrowsIfModelDoesNotExist(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
-        final String nonExistentModelId = "urn:doesnotexist:fakemodel:1000";
+        final String nonExistentModelId = "dtmi:doesnotexist:fakemodel;1000";
         StepVerifier.create(asyncClient.getModel(nonExistentModelId))
             .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_NOT_FOUND));
     }
@@ -99,6 +102,43 @@ public class ModelsAsyncTest extends ModelsTestBase {
 
         StepVerifier.create(asyncClient.createModels(modelsToCreate))
             .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_CONFLICT));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
+    @Override
+    public void listModelsMultiplePages(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
+        DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
+
+        // Create some models
+        List<DigitalTwinsModelData> createdModels = new ArrayList<>();
+        createModelsRunner(asyncClient, (modelsList) -> StepVerifier.create(asyncClient.createModels(modelsList))
+            .assertNext(createdModelsResponseList -> {
+                createdModelsResponseList.forEach(item -> createdModels.add(item));
+                logger.info("Created models successfully");
+            })
+            .verifyComplete());
+
+        createdModels.forEach(Assertions::assertNotNull);
+
+        AtomicInteger pageCount = new AtomicInteger();
+
+        // List models in multiple pages and verify more than one page was viewed.
+        StepVerifier.create(asyncClient.listModels(new ListModelsOptions().setMaxItemsPerPage(2)).byPage())
+            .thenConsumeWhile(
+                page -> {
+                    pageCount.getAndIncrement();
+                    logger.info("content for this page " + pageCount);
+                    for (DigitalTwinsModelData model : page.getValue()) {
+                        logger.info(model.getModelId());
+                    }
+                    return true;
+                })
+            .verifyComplete();
+
+        int finalPageCount = pageCount.get();
+
+        assertTrue(finalPageCount > 1);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

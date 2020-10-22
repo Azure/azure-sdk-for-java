@@ -5,7 +5,7 @@ package com.microsoft.azure.test.storage;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.microsoft.azure.test.utils.AppRunner;
+import com.azure.test.utils.AppRunner;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

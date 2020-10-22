@@ -22,45 +22,48 @@ class VMSSPatchPayload {
     static VirtualMachineScaleSetUpdate preparePatchPayload(VirtualMachineScaleSet scaleSet) {
         VirtualMachineScaleSetUpdate updateParameter = new VirtualMachineScaleSetUpdate();
         //
-        updateParameter.withIdentity(scaleSet.inner().identity());
-        updateParameter.withOverprovision(scaleSet.inner().overprovision());
-        updateParameter.withPlan(scaleSet.inner().plan());
-        updateParameter.withSinglePlacementGroup(scaleSet.inner().singlePlacementGroup());
-        updateParameter.withSku(scaleSet.inner().sku());
-        updateParameter.withTags(scaleSet.inner().tags());
-        updateParameter.withUpgradePolicy(scaleSet.inner().upgradePolicy());
-        updateParameter.withAdditionalCapabilities(scaleSet.inner().additionalCapabilities());
+        updateParameter.withIdentity(scaleSet.innerModel().identity());
+        updateParameter.withOverprovision(scaleSet.innerModel().overprovision());
+        updateParameter.withPlan(scaleSet.innerModel().plan());
+        updateParameter.withSinglePlacementGroup(scaleSet.innerModel().singlePlacementGroup());
+        updateParameter.withSku(scaleSet.innerModel().sku());
+        updateParameter.withTags(scaleSet.innerModel().tags());
+        updateParameter.withUpgradePolicy(scaleSet.innerModel().upgradePolicy());
+        updateParameter.withAdditionalCapabilities(scaleSet.innerModel().additionalCapabilities());
         //
-        if (scaleSet.inner().virtualMachineProfile() != null) {
+        if (scaleSet.innerModel().virtualMachineProfile() != null) {
             // --
             VirtualMachineScaleSetUpdateVMProfile updateVMProfile = new VirtualMachineScaleSetUpdateVMProfile();
-            updateVMProfile.withDiagnosticsProfile(scaleSet.inner().virtualMachineProfile().diagnosticsProfile());
-            updateVMProfile.withExtensionProfile(scaleSet.inner().virtualMachineProfile().extensionProfile());
-            updateVMProfile.withLicenseType(scaleSet.inner().virtualMachineProfile().licenseType());
-            updateVMProfile.withBillingProfile(scaleSet.inner().virtualMachineProfile().billingProfile());
+            updateVMProfile.withDiagnosticsProfile(scaleSet.innerModel().virtualMachineProfile().diagnosticsProfile());
+            updateVMProfile.withExtensionProfile(scaleSet.innerModel().virtualMachineProfile().extensionProfile());
+            updateVMProfile.withLicenseType(scaleSet.innerModel().virtualMachineProfile().licenseType());
+            updateVMProfile.withBillingProfile(scaleSet.innerModel().virtualMachineProfile().billingProfile());
             //
-            if (scaleSet.inner().virtualMachineProfile().storageProfile() != null) {
+            if (scaleSet.innerModel().virtualMachineProfile().storageProfile() != null) {
                 // -- --
                 VirtualMachineScaleSetUpdateStorageProfile storageProfile =
                     new VirtualMachineScaleSetUpdateStorageProfile();
-                storageProfile.withDataDisks(scaleSet.inner().virtualMachineProfile().storageProfile().dataDisks());
                 storageProfile
-                    .withImageReference(scaleSet.inner().virtualMachineProfile().storageProfile().imageReference());
+                    .withDataDisks(scaleSet.innerModel().virtualMachineProfile().storageProfile().dataDisks());
+                storageProfile
+                    .withImageReference(
+                        scaleSet.innerModel().virtualMachineProfile().storageProfile().imageReference());
 
-                if (scaleSet.inner().virtualMachineProfile().storageProfile().osDisk() != null) {
+                if (scaleSet.innerModel().virtualMachineProfile().storageProfile().osDisk() != null) {
                     VirtualMachineScaleSetUpdateOSDisk osDisk = new VirtualMachineScaleSetUpdateOSDisk();
-                    osDisk.withCaching(scaleSet.inner().virtualMachineProfile().storageProfile().osDisk().caching());
-                    osDisk.withImage(scaleSet.inner().virtualMachineProfile().storageProfile().osDisk().image());
+                    osDisk
+                        .withCaching(scaleSet.innerModel().virtualMachineProfile().storageProfile().osDisk().caching());
+                    osDisk.withImage(scaleSet.innerModel().virtualMachineProfile().storageProfile().osDisk().image());
                     osDisk
                         .withManagedDisk(
-                            scaleSet.inner().virtualMachineProfile().storageProfile().osDisk().managedDisk());
+                            scaleSet.innerModel().virtualMachineProfile().storageProfile().osDisk().managedDisk());
                     osDisk
                         .withVhdContainers(
-                            scaleSet.inner().virtualMachineProfile().storageProfile().osDisk().vhdContainers());
+                            scaleSet.innerModel().virtualMachineProfile().storageProfile().osDisk().vhdContainers());
                     osDisk
                         .withWriteAcceleratorEnabled(
                             scaleSet
-                                .inner()
+                                .innerModel()
                                 .virtualMachineProfile()
                                 .storageProfile()
                                 .osDisk()
@@ -70,31 +73,36 @@ class VMSSPatchPayload {
                 updateVMProfile.withStorageProfile(storageProfile);
                 // -- --
             }
-            if (scaleSet.inner().virtualMachineProfile().osProfile() != null) {
+            if (scaleSet.innerModel().virtualMachineProfile().osProfile() != null) {
                 // -- --
                 VirtualMachineScaleSetUpdateOSProfile osProfile = new VirtualMachineScaleSetUpdateOSProfile();
-                osProfile.withCustomData(scaleSet.inner().virtualMachineProfile().osProfile().customData());
+                osProfile.withCustomData(scaleSet.innerModel().virtualMachineProfile().osProfile().customData());
                 osProfile
-                    .withLinuxConfiguration(scaleSet.inner().virtualMachineProfile().osProfile().linuxConfiguration());
-                osProfile.withSecrets(scaleSet.inner().virtualMachineProfile().osProfile().secrets());
+                    .withLinuxConfiguration(
+                        scaleSet.innerModel().virtualMachineProfile().osProfile().linuxConfiguration());
+                osProfile.withSecrets(scaleSet.innerModel().virtualMachineProfile().osProfile().secrets());
                 osProfile
                     .withWindowsConfiguration(
-                        scaleSet.inner().virtualMachineProfile().osProfile().windowsConfiguration());
+                        scaleSet.innerModel().virtualMachineProfile().osProfile().windowsConfiguration());
                 updateVMProfile.withOsProfile(osProfile);
                 // -- --
             }
-            if (scaleSet.inner().virtualMachineProfile().networkProfile() != null) {
+            if (scaleSet.innerModel().virtualMachineProfile().networkProfile() != null) {
                 // -- --
                 VirtualMachineScaleSetUpdateNetworkProfile networkProfile =
                     new VirtualMachineScaleSetUpdateNetworkProfile();
 
-                if (scaleSet.inner().virtualMachineProfile().networkProfile().networkInterfaceConfigurations()
+                if (scaleSet.innerModel().virtualMachineProfile().networkProfile().networkInterfaceConfigurations()
                     != null) {
                     networkProfile
                         .withNetworkInterfaceConfigurations(
                             new ArrayList<VirtualMachineScaleSetUpdateNetworkConfiguration>());
                     for (VirtualMachineScaleSetNetworkConfiguration nicConfig
-                        : scaleSet.inner().virtualMachineProfile().networkProfile().networkInterfaceConfigurations()) {
+                        : scaleSet
+                            .innerModel()
+                            .virtualMachineProfile()
+                            .networkProfile()
+                            .networkInterfaceConfigurations()) {
                         VirtualMachineScaleSetUpdateNetworkConfiguration nicPatchConfig =
                             new VirtualMachineScaleSetUpdateNetworkConfiguration();
                         nicPatchConfig.withDnsSettings(nicConfig.dnsSettings());

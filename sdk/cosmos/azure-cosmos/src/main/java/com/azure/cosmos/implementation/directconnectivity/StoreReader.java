@@ -95,7 +95,7 @@ public class StoreReader {
         String originalSessionToken = entity.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
 
         if (entity.requestContext.cosmosDiagnostics == null) {
-            entity.requestContext.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics();
+            entity.requestContext.cosmosDiagnostics = entity.createCosmosDiagnostics();
         }
 
         Mono<ReadReplicaResult> readQuorumResultObs = this.readMultipleReplicasInternalAsync(
@@ -447,7 +447,7 @@ public class StoreReader {
 
         String originalSessionToken = entity.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
         if (entity.requestContext.cosmosDiagnostics == null) {
-            entity.requestContext.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics();
+            entity.requestContext.cosmosDiagnostics = entity.createCosmosDiagnostics();
         }
 
         return this.readPrimaryInternalAsync(

@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.CosmosError;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -15,11 +16,11 @@ import reactor.core.publisher.Mono;
 
 public class HttpClientUtils {
 
-    static Mono<RxDocumentServiceResponse> parseResponseAsync(Mono<HttpResponse> httpResponse, HttpRequest httpRequest) {
+    static Mono<RxDocumentServiceResponse> parseResponseAsync(DiagnosticsClientContext diagnosticsClientContext, Mono<HttpResponse> httpResponse, HttpRequest httpRequest) {
         return httpResponse.flatMap(response -> {
             if (response.statusCode() < HttpConstants.StatusCodes.MINIMUM_STATUSCODE_AS_ERROR_GATEWAY) {
 
-                return ResponseUtils.toStoreResponse(response, httpRequest).map(RxDocumentServiceResponse::new);
+                return ResponseUtils.toStoreResponse(response, httpRequest).map(rsp -> new RxDocumentServiceResponse(diagnosticsClientContext, rsp));
 
                 // TODO: to break the dependency between RxDocumentServiceResponse and StoreResponse
                 // we should factor out the  RxDocumentServiceResponse(StoreResponse) constructor to a helper class

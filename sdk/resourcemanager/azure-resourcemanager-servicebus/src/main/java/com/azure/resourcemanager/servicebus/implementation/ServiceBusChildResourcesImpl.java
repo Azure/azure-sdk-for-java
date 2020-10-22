@@ -5,7 +5,7 @@ package com.azure.resourcemanager.servicebus.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.resources.fluentcore.arm.ManagerBase;
+import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.IndependentChildResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGroup;
@@ -35,7 +35,7 @@ abstract class ServiceBusChildResourcesImpl<
         ImplT extends T,
         InnerT,
         InnerCollectionT,
-        ManagerT extends ManagerBase,
+        ManagerT extends Manager<?>,
         ParentT extends Resource & HasResourceGroup>
         extends IndependentChildResourcesImpl<T, ImplT, InnerT, InnerCollectionT, ManagerT, ParentT>
         implements SupportsGettingByName<T>, SupportsListing<T>, SupportsDeletingByName {

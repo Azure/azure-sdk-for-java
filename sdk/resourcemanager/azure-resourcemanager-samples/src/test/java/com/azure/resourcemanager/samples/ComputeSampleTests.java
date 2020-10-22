@@ -38,140 +38,140 @@ public class ComputeSampleTests extends SamplesTestBase {
 
     @Test
     public void testCreateVirtualMachinesInParallel() {
-        Assertions.assertTrue(CreateVirtualMachinesInParallel.runSample(azure));
+        Assertions.assertTrue(CreateVirtualMachinesInParallel.runSample(azureResourceManager));
     }
 
     @Test
     @Disabled("Sample leverages true parallelization, which cannot be recorded, until GenericResources support deleteByIds()")
     public void testCreateVirtualMachinesAsyncTrackingRelatedResources() {
-        Assertions.assertTrue(CreateVirtualMachinesAsyncTrackingRelatedResources.runSample(azure));
+        Assertions.assertTrue(CreateVirtualMachinesAsyncTrackingRelatedResources.runSample(azureResourceManager));
     }
 
     @Test
     public void testCreateVirtualMachinesUsingCustomImageOrSpecializedVHD() {
-        Assertions.assertTrue(CreateVirtualMachinesUsingCustomImageOrSpecializedVHD.runSample(azure));
+        Assertions.assertTrue(CreateVirtualMachinesUsingCustomImageOrSpecializedVHD.runSample(azureResourceManager));
     }
 
     @Test
     public void testCreateVirtualMachineUsingCustomImageFromVHD() {
-        Assertions.assertTrue(CreateVirtualMachineUsingCustomImageFromVHD.runSample(azure));
+        Assertions.assertTrue(CreateVirtualMachineUsingCustomImageFromVHD.runSample(azureResourceManager));
     }
 
     @Test
     @Disabled("Need to investigate - 'Disks or snapshot cannot be resized down.'")
     public void testCreateVirtualMachineUsingCustomImageFromVM() {
-        Assertions.assertTrue(CreateVirtualMachineUsingCustomImageFromVM.runSample(azure));
+        Assertions.assertTrue(CreateVirtualMachineUsingCustomImageFromVM.runSample(azureResourceManager));
     }
 
     @Test
     public void testCreateVirtualMachineUsingSpecializedDiskFromSnapshot() {
-        Assertions.assertTrue(CreateVirtualMachineUsingSpecializedDiskFromSnapshot.runSample(azure));
+        Assertions.assertTrue(CreateVirtualMachineUsingSpecializedDiskFromSnapshot.runSample(azureResourceManager));
     }
 
     @Test
     public void testCreateVirtualMachineUsingSpecializedDiskFromVhd() {
-        Assertions.assertTrue(CreateVirtualMachineUsingSpecializedDiskFromVhd.runSample(azure));
+        Assertions.assertTrue(CreateVirtualMachineUsingSpecializedDiskFromVhd.runSample(azureResourceManager));
     }
 
     @Test
     public void testListVirtualMachineExtensionImages() {
-        Assertions.assertTrue(ListVirtualMachineExtensionImages.runSample(azure));
+        Assertions.assertTrue(ListVirtualMachineExtensionImages.runSample(azureResourceManager));
     }
 
     @Test
     public void testListVirtualMachineImages() {
-        Assertions.assertTrue(ListVirtualMachineImages.runSample(azure));
+        Assertions.assertTrue(ListVirtualMachineImages.runSample(azureResourceManager));
     }
 
     @Test
     public void testListListComputeSkus() {
-        Assertions.assertTrue(ListComputeSkus.runSample(azure));
+        Assertions.assertTrue(ListComputeSkus.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageAvailabilitySet() {
-        Assertions.assertTrue(ManageAvailabilitySet.runSample(azure));
+        Assertions.assertTrue(ManageAvailabilitySet.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageVirtualMachineWithUnmanagedDisks() {
-        Assertions.assertTrue(ManageVirtualMachineWithUnmanagedDisks.runSample(azure));
+        Assertions.assertTrue(ManageVirtualMachineWithUnmanagedDisks.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageVirtualMachine() {
-        Assertions.assertTrue(ManageVirtualMachine.runSample(azure));
+        Assertions.assertTrue(ManageVirtualMachine.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageVirtualMachineAsync() {
-        Assertions.assertTrue(ManageVirtualMachineAsync.runSample(azure));
+        Assertions.assertTrue(ManageVirtualMachineAsync.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageVirtualMachineExtension() {
-        Assertions.assertTrue(ManageVirtualMachineExtension.runSample(azure));
+        Assertions.assertTrue(ManageVirtualMachineExtension.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageVirtualMachineScaleSet() {
-        Assertions.assertTrue(ManageVirtualMachineScaleSet.runSample(azure));
+        Assertions.assertTrue(ManageVirtualMachineScaleSet.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageVirtualMachineScaleSetAsync() {
-        Assertions.assertTrue(ManageVirtualMachineScaleSetAsync.runSample(azure));
+        Assertions.assertTrue(ManageVirtualMachineScaleSetAsync.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageVirtualMachineScaleSetWithUnmanagedDisks() {
-        Assertions.assertTrue(ManageVirtualMachineScaleSetWithUnmanagedDisks.runSample(azure));
+        Assertions.assertTrue(ManageVirtualMachineScaleSetWithUnmanagedDisks.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageVirtualMachinesInParallel() {
-        Assertions.assertTrue(ManageVirtualMachinesInParallel.runSample(azure));
+        Assertions.assertTrue(ManageVirtualMachinesInParallel.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageVirtualMachineWithDisk() {
-        Assertions.assertTrue(ManageVirtualMachineWithDisk.runSample(azure));
+        Assertions.assertTrue(ManageVirtualMachineWithDisk.runSample(azureResourceManager));
     }
 
     @Test
     public void testConvertVirtualMachineToManagedDisks() {
-        Assertions.assertTrue(ConvertVirtualMachineToManagedDisks.runSample(azure));
+        Assertions.assertTrue(ConvertVirtualMachineToManagedDisks.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageManagedDisks() {
-        Assertions.assertTrue(ManageManagedDisks.runSample(azure));
+        Assertions.assertTrue(ManageManagedDisks.runSample(azureResourceManager));
     }
 
     @Test
     @Disabled("Skipping for now - looks like a service side issue")
     public void testManageStorageFromMSIEnabledVirtualMachine() {
-        Assertions.assertTrue(ManageStorageFromMSIEnabledVirtualMachine.runSample(azure));
+        Assertions.assertTrue(ManageStorageFromMSIEnabledVirtualMachine.runSample(azureResourceManager));
     }
 
     @Test
     @Disabled("Skipping for now - looks like a service side issue")
     public void testManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup() {
-        Assertions.assertTrue(ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup.runSample(azure));
+        Assertions.assertTrue(ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageUserAssignedMSIEnabledVirtualMachine() {
-        Assertions.assertTrue(ManageUserAssignedMSIEnabledVirtualMachine.runSample(azure));
+        Assertions.assertTrue(ManageUserAssignedMSIEnabledVirtualMachine.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageZonalVirtualMachine() {
-        Assertions.assertTrue(ManageZonalVirtualMachine.runSample(azure));
+        Assertions.assertTrue(ManageZonalVirtualMachine.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageZonalVirtualMachineScaleSet() {
-        Assertions.assertTrue(ManageZonalVirtualMachineScaleSet.runSample(azure));
+        Assertions.assertTrue(ManageZonalVirtualMachineScaleSet.runSample(azureResourceManager));
     }
 }

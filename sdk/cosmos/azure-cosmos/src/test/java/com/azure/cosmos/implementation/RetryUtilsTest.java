@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.IRetryPolicy.ShouldRetryResult;
+import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseValidator;
 import io.reactivex.subscribers.TestSubscriber;
@@ -19,6 +20,8 @@ import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
+import static com.azure.cosmos.implementation.TestUtils.mockDocumentServiceRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
@@ -27,19 +30,22 @@ public class RetryUtilsTest {
     RxDocumentServiceRequest request;
     Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> callbackMethod;
     Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> inBackoffAlternateCallbackMethod;
+    private final static DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
     private static final Duration minBackoffForInBackoffCallback = Duration.ofMillis(10);
     private static final int TIMEOUT = 30000;
     private static final Duration BACK_OFF_DURATION = Duration.ofMillis(20);
     private StoreResponse storeResponse;
+    private AddressSelector addressSelector;
 
     @BeforeClass(groups = { "unit" })
     @SuppressWarnings({"unchecked", "rawtypes"})
     public void before_RetryUtilsTest() throws Exception {
         retryPolicy = Mockito.mock(IRetryPolicy.class);
-        request = Mockito.mock(RxDocumentServiceRequest.class);
+        request =  mockDocumentServiceRequest(clientContext);
         callbackMethod = Mockito.mock(Function.class);
         inBackoffAlternateCallbackMethod = Mockito.mock(Function.class);
         storeResponse = getStoreResponse();
+        addressSelector = Mockito.mock(AddressSelector.class);
     }
 
     /**
@@ -49,7 +55,7 @@ public class RetryUtilsTest {
     @Test(groups = { "unit" }, timeOut = TIMEOUT)
     public void toRetryWithAlternateFuncWithNoRetry() {
         Function<Throwable, Mono<StoreResponse>> onErrorFunc = RetryUtils.toRetryWithAlternateFunc(callbackMethod,
-                retryPolicy, inBackoffAlternateCallbackMethod, minBackoffForInBackoffCallback, request);
+                retryPolicy, inBackoffAlternateCallbackMethod, minBackoffForInBackoffCallback, request, addressSelector);
         Mockito.when(retryPolicy.shouldRetry(Matchers.any())).thenReturn(Mono.just(ShouldRetryResult.noRetry()));
         Mono<StoreResponse> response = onErrorFunc.apply(new GoneException());
         validateFailure(response, TIMEOUT, GoneException.class);
@@ -63,7 +69,7 @@ public class RetryUtilsTest {
     @Test(groups = { "unit" }, timeOut = TIMEOUT)
     public void toRetryWithAlternateFuncTestingMethodOne() {
         Function<Throwable, Mono<StoreResponse>> onErrorFunc = RetryUtils.toRetryWithAlternateFunc(callbackMethod,
-                retryPolicy, null, minBackoffForInBackoffCallback, request);
+                retryPolicy, null, minBackoffForInBackoffCallback, request, addressSelector);
 
         toggleMockFuncBtwFailureSuccess(callbackMethod);
         Mockito.when(retryPolicy.shouldRetry(Matchers.any()))
@@ -83,7 +89,7 @@ public class RetryUtilsTest {
     @Test(groups = { "unit" }, timeOut = TIMEOUT)
     public void toRetryWithAlternateFuncTestingMethodTwo() {
         Function<Throwable, Mono<StoreResponse>> onErrorFunc = RetryUtils.toRetryWithAlternateFunc(callbackMethod,
-                retryPolicy, inBackoffAlternateCallbackMethod, minBackoffForInBackoffCallback, request);
+                retryPolicy, inBackoffAlternateCallbackMethod, minBackoffForInBackoffCallback, request, addressSelector);
         Mockito.when(callbackMethod.apply(Matchers.any())).thenReturn(Mono.error(new GoneException()));
         toggleMockFuncBtwFailureSuccess(inBackoffAlternateCallbackMethod);
         Mockito.when(retryPolicy.shouldRetry(Matchers.any()))

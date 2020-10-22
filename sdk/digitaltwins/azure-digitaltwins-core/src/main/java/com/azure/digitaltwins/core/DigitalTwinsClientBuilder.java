@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.*;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonSerializer;
 import reactor.util.retry.Retry;
 
 import java.time.temporal.ChronoUnit;
@@ -50,6 +51,7 @@ public final class DigitalTwinsClientBuilder {
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
     private RetryPolicy retryPolicy;
+    private JsonSerializer jsonSerializer;
 
     // Right now, Azure Digital Twins does not send a retry-after header on its throttling messages. If it adds support later, then
     // these values should match the header name (for instance, "x-ms-retry-after-ms" or "Retry-After") and the time unit
@@ -64,6 +66,9 @@ public final class DigitalTwinsClientBuilder {
 
     private Configuration configuration;
 
+    /**
+     * The public constructor for DigitalTwinsClientBuilder
+     */
     public DigitalTwinsClientBuilder()
     {
         additionalPolicies = new ArrayList<>();
@@ -177,7 +182,7 @@ public final class DigitalTwinsClientBuilder {
                 this.properties);
         }
 
-        return new DigitalTwinsAsyncClient(this.httpPipeline, serviceVersion, this.endpoint);
+        return new DigitalTwinsAsyncClient(this.endpoint, this.httpPipeline, serviceVersion, this.jsonSerializer);
     }
 
     /**
@@ -278,7 +283,7 @@ public final class DigitalTwinsClientBuilder {
      * @param httpPipeline HttpPipeline to use for sending service requests and receiving responses.
      * @return the updated DigitalTwinsClientBuilder instance for fluent building.
      */
-    public DigitalTwinsClientBuilder httpPipeline(HttpPipeline httpPipeline) {
+    public DigitalTwinsClientBuilder pipeline(HttpPipeline httpPipeline) {
         this.httpPipeline = httpPipeline;
         return this;
     }
@@ -294,6 +299,17 @@ public final class DigitalTwinsClientBuilder {
      */
     public DigitalTwinsClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
+        return this;
+    }
+
+    /**
+     * Custom JSON serializer that is used to handle model types that are not contained in the Azure Digital Twins library.
+     *
+     * @param jsonSerializer The serializer to deserialize response payloads into user defined models.
+     * @return The updated DigitalTwinsClientBuilder object.
+     */
+    public DigitalTwinsClientBuilder serializer(JsonSerializer jsonSerializer) {
+        this.jsonSerializer = jsonSerializer;
         return this;
     }
 }

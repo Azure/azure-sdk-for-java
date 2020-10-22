@@ -7,11 +7,13 @@ import com.azure.core.credential.AccessToken;
 import com.azure.identity.implementation.MsalToken;
 import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
+import com.microsoft.aad.msal4j.ITenantProfile;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -53,6 +55,11 @@ public final class TestUtils {
                     @Override
                     public String username() {
                         return "testuser";
+                    }
+
+                    @Override
+                    public Map<String, ITenantProfile> getTenantProfiles() {
+                        return null;
                     }
                 };
             }

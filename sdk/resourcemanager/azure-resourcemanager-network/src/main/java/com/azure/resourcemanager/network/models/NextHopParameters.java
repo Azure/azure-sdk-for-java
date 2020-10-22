@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The NextHopParameters model. */
+/** Parameters that define the source and destination endpoint. */
 @Fluent
 public final class NextHopParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NextHopParameters.class);

@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.util.IterableStream;
 import com.azure.messaging.servicebus.models.CreateBatchOptions;
 
 import java.time.Duration;
@@ -51,6 +52,17 @@ public class ServiceBusSenderClient implements AutoCloseable {
      */
     public void cancelScheduledMessage(long sequenceNumber) {
         asyncClient.cancelScheduledMessage(sequenceNumber).block(tryTimeout);
+    }
+
+    /**
+     * Cancels the enqueuing of already scheduled messages, if they were not already enqueued.
+     *
+     * @param sequenceNumbers of the scheduled message to cancel.
+     *
+     * @throws NullPointerException if {@code sequenceNumbers} is null.
+     */
+    public void cancelScheduledMessages(Iterable<Long> sequenceNumbers) {
+        asyncClient.cancelScheduledMessages(sequenceNumbers).block(tryTimeout);
     }
 
     /**
@@ -203,6 +215,42 @@ public class ServiceBusSenderClient implements AutoCloseable {
     public Long scheduleMessage(ServiceBusMessage message, OffsetDateTime scheduledEnqueueTime,
         ServiceBusTransactionContext transactionContext) {
         return asyncClient.scheduleMessage(message, scheduledEnqueueTime, transactionContext).block(tryTimeout);
+    }
+
+
+    /**
+     * Sends a batch of scheduled messages to the Azure Service Bus entity this sender is connected to. A scheduled
+     * message is enqueued and made available to receivers only at the scheduled enqueue time.
+     *
+     * @param messages Message to be sent to the Service Bus Queue or Topic.
+     * @param scheduledEnqueueTime Instant at which the message should appear in the Service Bus queue or topic.
+    *
+     * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
+     *
+     * @throws NullPointerException if {@code messages}, {@code scheduledEnqueueTime}, {@code transactionContext} or
+     * {@code transactionContext.transactionId} is {@code null}.
+     */
+    public Iterable<Long> scheduleMessages(Iterable<ServiceBusMessage> messages, OffsetDateTime scheduledEnqueueTime) {
+        return new IterableStream<>(asyncClient.scheduleMessages(messages, scheduledEnqueueTime));
+    }
+
+
+    /**
+     * Sends a batch of scheduled messages to the Azure Service Bus entity this sender is connected to. A scheduled
+     * message is enqueued and made available to receivers only at the scheduled enqueue time.
+     *
+     * @param messages Messages to be sent to the Service Bus Queue or Topic.
+     * @param scheduledEnqueueTime Instant at which the message should appear in the Service Bus queue or topic.
+     * @param transactionContext to be set on message before sending to Service Bus.
+     *
+     * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
+     *
+     * @throws NullPointerException if {@code messages}, {@code scheduledEnqueueTime}, {@code transactionContext} or
+     * {@code transactionContext.transactionId} is {@code null}.
+     */
+    public Iterable<Long> scheduleMessages(Iterable<ServiceBusMessage> messages, OffsetDateTime scheduledEnqueueTime,
+        ServiceBusTransactionContext transactionContext) {
+        return new IterableStream<>(asyncClient.scheduleMessages(messages, scheduledEnqueueTime, transactionContext));
     }
 
     /**

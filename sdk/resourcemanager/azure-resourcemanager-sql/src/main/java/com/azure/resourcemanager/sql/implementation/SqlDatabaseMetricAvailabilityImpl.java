@@ -15,11 +15,11 @@ public class SqlDatabaseMetricAvailabilityImpl extends WrapperImpl<MetricAvailab
 
     @Override
     public String retention() {
-        return this.inner().retention();
+        return this.innerModel().retention();
     }
 
     @Override
     public String timeGrain() {
-        return this.inner().timeGrain();
+        return this.innerModel().timeGrain();
     }
 }

@@ -7,7 +7,7 @@ import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ApplicationGatewayProbe;
 import com.azure.resourcemanager.network.models.ApplicationGatewayProbeHealthResponseMatch;
 import com.azure.resourcemanager.network.models.ApplicationGatewayProtocol;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayProbeInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayProbeInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,12 +32,12 @@ class ApplicationGatewayProbeImpl
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String healthyHttpResponseBodyContents() {
-        ApplicationGatewayProbeHealthResponseMatch match = this.inner().match();
+        ApplicationGatewayProbeHealthResponseMatch match = this.innerModel().match();
         if (match == null) {
             return null;
         } else {
@@ -47,24 +47,24 @@ class ApplicationGatewayProbeImpl
 
     @Override
     public ApplicationGatewayProtocol protocol() {
-        return this.inner().protocol();
+        return this.innerModel().protocol();
     }
 
     @Override
     public int timeBetweenProbesInSeconds() {
-        return (this.inner().interval() != null) ? this.inner().interval().intValue() : 0;
+        return (this.innerModel().interval() != null) ? this.innerModel().interval().intValue() : 0;
     }
 
     @Override
     public String path() {
-        return this.inner().path();
+        return this.innerModel().path();
     }
 
     @Override
     public Set<String> healthyHttpResponseStatusCodeRanges() {
         Set<String> httpResponseStatusCodeRanges = new TreeSet<>();
-        if (this.inner().match() != null && this.inner().match().statusCodes() != null) {
-            httpResponseStatusCodeRanges.addAll(this.inner().match().statusCodes());
+        if (this.innerModel().match() != null && this.innerModel().match().statusCodes() != null) {
+            httpResponseStatusCodeRanges.addAll(this.innerModel().match().statusCodes());
         }
 
         return Collections.unmodifiableSet(httpResponseStatusCodeRanges);
@@ -72,24 +72,24 @@ class ApplicationGatewayProbeImpl
 
     @Override
     public int timeoutInSeconds() {
-        return (this.inner().timeout() != null) ? this.inner().timeout().intValue() : 0;
+        return (this.innerModel().timeout() != null) ? this.innerModel().timeout().intValue() : 0;
     }
 
     @Override
     public int retriesBeforeUnhealthy() {
-        return (this.inner().unhealthyThreshold() != null) ? this.inner().unhealthyThreshold() : 0;
+        return (this.innerModel().unhealthyThreshold() != null) ? this.innerModel().unhealthyThreshold() : 0;
     }
 
     @Override
     public String host() {
-        return this.inner().host();
+        return this.innerModel().host();
     }
 
     // Fluent setters
 
     @Override
     public ApplicationGatewayProbeImpl withProtocol(ApplicationGatewayProtocol protocol) {
-        this.inner().withProtocol(protocol);
+        this.innerModel().withProtocol(protocol);
         return this;
     }
 
@@ -108,31 +108,31 @@ class ApplicationGatewayProbeImpl
         if (path != null && !path.startsWith("/")) {
             path = "/" + path;
         }
-        this.inner().withPath(path);
+        this.innerModel().withPath(path);
         return this;
     }
 
     @Override
     public ApplicationGatewayProbeImpl withHost(String host) {
-        this.inner().withHost(host);
+        this.innerModel().withHost(host);
         return this;
     }
 
     @Override
     public ApplicationGatewayProbeImpl withTimeoutInSeconds(int seconds) {
-        this.inner().withTimeout(seconds);
+        this.innerModel().withTimeout(seconds);
         return this;
     }
 
     @Override
     public ApplicationGatewayProbeImpl withTimeBetweenProbesInSeconds(int seconds) {
-        this.inner().withInterval(seconds);
+        this.innerModel().withInterval(seconds);
         return this;
     }
 
     @Override
     public ApplicationGatewayProbeImpl withRetriesBeforeUnhealthy(int retryCount) {
-        this.inner().withUnhealthyThreshold(retryCount);
+        this.innerModel().withUnhealthyThreshold(retryCount);
         return this;
     }
 
@@ -149,10 +149,10 @@ class ApplicationGatewayProbeImpl
     @Override
     public ApplicationGatewayProbeImpl withHealthyHttpResponseStatusCodeRange(String range) {
         if (range != null) {
-            ApplicationGatewayProbeHealthResponseMatch match = this.inner().match();
+            ApplicationGatewayProbeHealthResponseMatch match = this.innerModel().match();
             if (match == null) {
                 match = new ApplicationGatewayProbeHealthResponseMatch();
-                this.inner().withMatch(match);
+                this.innerModel().withMatch(match);
             }
 
             List<String> ranges = match.statusCodes();
@@ -172,11 +172,13 @@ class ApplicationGatewayProbeImpl
     @Override
     public ApplicationGatewayProbeImpl withHealthyHttpResponseStatusCodeRange(int from, int to) {
         if (from < 0 || to < 0) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("The start and end of a range cannot be negative numbers."));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("The start and end of a range cannot be negative numbers."));
         } else if (to < from) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("The end of the range cannot be less than the start of the range."));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("The end of the range cannot be less than the start of the range."));
         } else {
             return this.withHealthyHttpResponseStatusCodeRange(String.valueOf(from) + "-" + String.valueOf(to));
         }
@@ -184,11 +186,11 @@ class ApplicationGatewayProbeImpl
 
     @Override
     public ApplicationGatewayProbeImpl withoutHealthyHttpResponseStatusCodeRanges() {
-        ApplicationGatewayProbeHealthResponseMatch match = this.inner().match();
+        ApplicationGatewayProbeHealthResponseMatch match = this.innerModel().match();
         if (match != null) {
             match.withStatusCodes(null);
             if (match.body() == null) {
-                this.inner().withMatch(null);
+                this.innerModel().withMatch(null);
             }
         }
 
@@ -197,18 +199,18 @@ class ApplicationGatewayProbeImpl
 
     @Override
     public ApplicationGatewayProbeImpl withHealthyHttpResponseBodyContents(String text) {
-        ApplicationGatewayProbeHealthResponseMatch match = this.inner().match();
+        ApplicationGatewayProbeHealthResponseMatch match = this.innerModel().match();
         if (text != null) {
             if (match == null) {
                 match = new ApplicationGatewayProbeHealthResponseMatch();
-                this.inner().withMatch(match);
+                this.innerModel().withMatch(match);
             }
             match.withBody(text);
         } else {
             if (match != null) {
                 if (match.statusCodes() == null || match.statusCodes().isEmpty()) {
                     // If match is becoming empty then remove altogether
-                    this.inner().withMatch(null);
+                    this.innerModel().withMatch(null);
                 } else {
                     match.withBody(null);
                 }

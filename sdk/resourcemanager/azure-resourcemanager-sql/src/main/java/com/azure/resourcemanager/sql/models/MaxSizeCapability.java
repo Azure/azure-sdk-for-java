@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The MaxSizeCapability model. */
+/** The maximum size capability. */
 @Immutable
 public final class MaxSizeCapability {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MaxSizeCapability.class);

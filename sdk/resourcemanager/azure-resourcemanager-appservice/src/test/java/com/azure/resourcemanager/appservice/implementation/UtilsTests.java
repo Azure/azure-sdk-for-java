@@ -4,7 +4,15 @@
 package com.azure.resourcemanager.appservice.implementation;
 
 import java.nio.charset.StandardCharsets;
+import java.time.temporal.ChronoUnit;
 import java.util.Base64;
+
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -101,5 +109,19 @@ public class UtilsTests {
         String decoded =
             "{\"nbf\":1582693452,\"exp\":1582693752,\"iat\":1582693452,\"iss\":\"https://wa1-weidxu.scm.azurewebsites.net\",\"aud\":\"https://wa1-weidxu.azurewebsites.net/azurefunctions\"}";
         Assertions.assertEquals(decoded, new String(Base64.getUrlDecoder().decode(encoded), StandardCharsets.UTF_8));
+    }
+
+    @Test
+    public void canDownloadFile() throws Exception {
+        HttpPipeline httpPipeline = new HttpPipelineBuilder()
+            .policies(
+                new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)),
+                new RetryPolicy("Retry-After", ChronoUnit.SECONDS)
+            )
+            .build();
+        byte[] content = Utils.downloadFileAsync("https://www.google.com/humans.txt", httpPipeline).block();
+        String contentString = new String(content);
+        Assertions.assertNotNull(contentString);
+        Assertions.assertTrue(contentString.startsWith("Google is built by a large team of engineers,"));
     }
 }

@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SearchError model. */
+/** Describes an error condition for the Azure Cognitive Search API. */
 @Immutable
 public final class SearchError {
     /*

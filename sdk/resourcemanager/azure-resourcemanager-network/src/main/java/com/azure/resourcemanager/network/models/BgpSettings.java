@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The BgpSettings model. */
+/** BGP settings details. */
 @Fluent
 public final class BgpSettings {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BgpSettings.class);

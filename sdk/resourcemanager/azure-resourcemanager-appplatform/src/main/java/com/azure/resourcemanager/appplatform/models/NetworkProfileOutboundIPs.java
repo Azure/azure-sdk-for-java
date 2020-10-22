@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The NetworkProfileOutboundIPs model. */
+/** Desired outbound IP resources for Azure Spring Cloud instance. */
 @Immutable
 public final class NetworkProfileOutboundIPs {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkProfileOutboundIPs.class);

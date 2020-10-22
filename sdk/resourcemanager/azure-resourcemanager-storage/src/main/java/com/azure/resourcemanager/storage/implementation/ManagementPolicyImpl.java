@@ -15,7 +15,7 @@ import com.azure.resourcemanager.storage.models.ManagementPolicyRule;
 import com.azure.resourcemanager.storage.models.ManagementPolicySchema;
 import com.azure.resourcemanager.storage.models.ManagementPolicySnapShot;
 import com.azure.resourcemanager.storage.models.PolicyRule;
-import com.azure.resourcemanager.storage.fluent.inner.ManagementPolicyInner;
+import com.azure.resourcemanager.storage.fluent.models.ManagementPolicyInner;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,7 +61,7 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
 
     @Override
     public Mono<ManagementPolicy> createResourceAsync() {
-        ManagementPoliciesClient client = this.manager().inner().getManagementPolicies();
+        ManagementPoliciesClient client = this.manager().serviceClient().getManagementPolicies();
         return client
             .createOrUpdateAsync(this.resourceGroupName, this.accountName, ManagementPolicyName.DEFAULT, cpolicy)
             .map(
@@ -74,7 +74,7 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
 
     @Override
     public Mono<ManagementPolicy> updateResourceAsync() {
-        ManagementPoliciesClient client = this.manager().inner().getManagementPolicies();
+        ManagementPoliciesClient client = this.manager().serviceClient().getManagementPolicies();
         return client
             .createOrUpdateAsync(this.resourceGroupName, this.accountName, ManagementPolicyName.DEFAULT, upolicy)
             .map(
@@ -87,13 +87,13 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
 
     @Override
     protected Mono<ManagementPolicyInner> getInnerAsync() {
-        ManagementPoliciesClient client = this.manager().inner().getManagementPolicies();
+        ManagementPoliciesClient client = this.manager().serviceClient().getManagementPolicies();
         return client.getAsync(this.resourceGroupName, this.accountName, ManagementPolicyName.DEFAULT);
     }
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().id() == null;
+        return this.innerModel().id() == null;
     }
 
     private void resetCreateUpdateParameters() {
@@ -103,27 +103,27 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
     public OffsetDateTime lastModifiedTime() {
-        return this.inner().lastModifiedTime();
+        return this.innerModel().lastModifiedTime();
     }
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public ManagementPolicySchema policy() {
-        return this.inner().policy();
+        return this.innerModel().policy();
     }
 
     @Override
     public String type() {
-        return this.inner().type();
+        return this.innerModel().type();
     }
 
     @Override
@@ -208,14 +208,14 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
                 this.cpolicy.withRules(new ArrayList<ManagementPolicyRule>());
             }
             List<ManagementPolicyRule> rules = this.cpolicy.rules();
-            rules.add(policyRuleImpl.inner());
+            rules.add(policyRuleImpl.innerModel());
             this.cpolicy.withRules(rules);
         } else {
             if (this.upolicy.rules() == null) {
                 this.upolicy.withRules(new ArrayList<ManagementPolicyRule>());
             }
             List<ManagementPolicyRule> rules = this.upolicy.rules();
-            rules.add(policyRuleImpl.inner());
+            rules.add(policyRuleImpl.innerModel());
             this.upolicy.withRules(rules);
         }
     }

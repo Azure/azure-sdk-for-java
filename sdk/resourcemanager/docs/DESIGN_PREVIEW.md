@@ -54,4 +54,4 @@ Supported Azure resources:
 - `create` and `delete` for `NetworkInterface`
 - `create` and `delete` for `PublicIpAddress`
 
-[lro]: https://docs.microsoft.com/en-us/azure/architecture/patterns/async-request-reply
+[lro]: https://docs.microsoft.com/azure/architecture/patterns/async-request-reply

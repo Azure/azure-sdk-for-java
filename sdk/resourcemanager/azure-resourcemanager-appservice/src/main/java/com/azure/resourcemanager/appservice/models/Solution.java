@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The Solution model. */
+/** Class Representing Solution for problems detected. */
 @Fluent
 public final class Solution {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Solution.class);

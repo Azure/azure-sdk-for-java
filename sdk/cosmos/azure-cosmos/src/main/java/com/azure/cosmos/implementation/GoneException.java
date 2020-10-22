@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 
+import java.net.SocketAddress;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,6 +52,22 @@ public class GoneException extends CosmosException {
     /**
      * Instantiates a new Gone exception.
      *
+     * @param cosmosError the cosmos error
+     * @param lsn the lsn
+     * @param partitionKeyRangeId the partition key range id
+     * @param responseHeaders the response headers
+     *
+     */
+    public GoneException(String resourceAddress, CosmosError cosmosError, long lsn, String partitionKeyRangeId,
+                         Map<String, String> responseHeaders, Throwable cause) {
+        super(resourceAddress, HttpConstants.StatusCodes.GONE, cosmosError, responseHeaders, cause);
+        BridgeInternal.setLSN(this, lsn);
+        BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
+    }
+
+    /**
+     * Instantiates a new Gone exception.
+     *
      * @param message the message
      * @param requestUri the request uri
      */
@@ -58,15 +75,24 @@ public class GoneException extends CosmosException {
         this(message, null, new HashMap<>(), requestUri);
     }
 
-    GoneException(String message,
-                  Exception innerException,
-                  URI requestUri,
-                  String localIpAddress) {
-        this(message(localIpAddress, message), innerException, null, requestUri);
+    /**
+     * Instantiates a new {@link GoneException Gone exception}.
+     *
+     * @param message    the message
+     * @param requestUri the request uri
+     * @param cause      the cause of this (client-side) {@link GoneException}
+     */
+    public GoneException(String message, URI requestUri, Exception cause) {
+        this(message, cause, null, requestUri);
     }
 
     GoneException(Exception innerException) {
         this(RMResources.Gone, innerException, new HashMap<>(), null);
+    }
+
+    // Used via reflection from unit tests
+    GoneException(String message, HttpHeaders headers, String requestUriString) {
+        super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.GONE, requestUriString);
     }
 
     /**
@@ -82,8 +108,20 @@ public class GoneException extends CosmosException {
                                                                                            : null);
     }
 
-    GoneException(String message, HttpHeaders headers, String requestUriString) {
-        super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.GONE, requestUriString);
+    /**
+     * Instantiates a new Gone exception.
+     *
+     * @param message the message
+     * @param headers the headers
+     * @param remoteAddress the remote address
+     */
+    public GoneException(String message, HttpHeaders headers, SocketAddress remoteAddress) {
+        super(
+            message,
+            null,
+            HttpUtils.asMap(headers),
+            HttpConstants.StatusCodes.GONE,
+            remoteAddress != null ? remoteAddress.toString() : null);
     }
 
     /**
@@ -120,20 +158,5 @@ public class GoneException extends CosmosException {
                          Map<String, String> headers,
                          String requestUriString) {
         super(message, innerException, headers, HttpConstants.StatusCodes.GONE, requestUriString);
-    }
-
-    GoneException(CosmosError cosmosError, Map<String, String> headers) {
-        super(HttpConstants.StatusCodes.GONE, cosmosError, headers);
-    }
-
-    private static String message(String localIP, String baseMessage) {
-        if (!Strings.isNullOrEmpty(localIP)) {
-            return String.format(
-                RMResources.ExceptionMessageAddIpAddress,
-                baseMessage,
-                localIP);
-        }
-
-        return baseMessage;
     }
 }

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CheckNameAvailabilityParameters model. */
+/** Parameters body to pass for resource name availability check. */
 @Fluent
 public final class CheckNameAvailabilityParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityParameters.class);

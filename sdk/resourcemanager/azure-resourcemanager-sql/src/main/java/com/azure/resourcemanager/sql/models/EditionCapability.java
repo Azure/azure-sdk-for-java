@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The EditionCapability model. */
+/** The edition capability. */
 @Fluent
 public final class EditionCapability {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EditionCapability.class);

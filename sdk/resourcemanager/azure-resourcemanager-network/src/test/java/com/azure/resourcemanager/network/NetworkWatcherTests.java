@@ -6,7 +6,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.network.models.AvailableProviders;
 import com.azure.resourcemanager.network.models.AzureReachabilityReport;
 import com.azure.resourcemanager.network.models.NetworkWatcher;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;

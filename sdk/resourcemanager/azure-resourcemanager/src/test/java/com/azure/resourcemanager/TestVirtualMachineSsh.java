@@ -9,7 +9,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachines;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.PublicIpAddresses;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 import org.junit.jupiter.api.Assertions;
@@ -23,7 +23,7 @@ public class TestVirtualMachineSsh extends TestTemplate<VirtualMachine, VirtualM
 
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
-        final String vmName = virtualMachines.manager().sdkContext().randomResourceName("vm", 10);
+        final String vmName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
 
         final String sshKey =
             "ssh-rsa"
@@ -56,6 +56,9 @@ public class TestVirtualMachineSsh extends TestTemplate<VirtualMachine, VirtualM
         pip.refresh();
         Assertions.assertTrue(pip.hasAssignedNetworkInterface());
 
+        Assertions.assertNotNull(vm.innerModel().osProfile().linuxConfiguration().ssh());
+        Assertions.assertTrue(vm.innerModel().osProfile().linuxConfiguration().ssh().publicKeys().size() > 0);
+
         JSch jsch = new JSch();
         Session session = null;
         if (TestUtils.isRecordMode()) {
@@ -68,15 +71,12 @@ public class TestVirtualMachineSsh extends TestTemplate<VirtualMachine, VirtualM
                 session.setConfig(config);
                 session.connect();
             } catch (Exception e) {
-                Assertions.fail("SSH connection failed" + e.getMessage());
+                Assertions.fail("SSH connection failed: " + e.getMessage());
             } finally {
                 if (session != null) {
                     session.disconnect();
                 }
             }
-
-            Assertions.assertNotNull(vm.inner().osProfile().linuxConfiguration().ssh());
-            Assertions.assertTrue(vm.inner().osProfile().linuxConfiguration().ssh().publicKeys().size() > 0);
         }
         return vm;
     }

@@ -8,7 +8,7 @@ import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.SqlDatabase;
 import com.azure.resourcemanager.sql.models.SqlDatabaseOperations;
 import com.azure.resourcemanager.sql.models.SqlServer;
-import com.azure.resourcemanager.sql.fluent.inner.DatabaseInner;
+import com.azure.resourcemanager.sql.fluent.models.DatabaseInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -39,10 +39,9 @@ public class SqlDatabaseOperationsImpl
 
     @Override
     public SqlDatabase getBySqlServer(String resourceGroupName, String sqlServerName, String name) {
-        DatabaseInner inner = this.manager.inner().getDatabases().get(resourceGroupName, sqlServerName, name);
+        DatabaseInner inner = this.manager.serviceClient().getDatabases().get(resourceGroupName, sqlServerName, name);
         return (inner != null)
-            ? new SqlDatabaseImpl(
-                resourceGroupName, sqlServerName, inner.location(), inner.name(), inner, manager)
+            ? new SqlDatabaseImpl(resourceGroupName, sqlServerName, inner.location(), inner.name(), inner, manager)
             : null;
     }
 
@@ -51,7 +50,7 @@ public class SqlDatabaseOperationsImpl
         final String resourceGroupName, final String sqlServerName, final String name) {
         return this
             .manager
-            .inner()
+            .serviceClient()
             .getDatabases()
             .getAsync(resourceGroupName, sqlServerName, name)
             .map(
@@ -66,7 +65,7 @@ public class SqlDatabaseOperationsImpl
             return null;
         }
         DatabaseInner inner =
-            this.manager.inner().getDatabases().get(sqlServer.resourceGroupName(), sqlServer.name(), name);
+            this.manager.serviceClient().getDatabases().get(sqlServer.resourceGroupName(), sqlServer.name(), name);
         return (inner != null) ? new SqlDatabaseImpl(inner.name(), (SqlServerImpl) sqlServer, inner, manager) : null;
     }
 
@@ -75,7 +74,7 @@ public class SqlDatabaseOperationsImpl
         Objects.requireNonNull(sqlServer);
         return sqlServer
             .manager()
-            .inner()
+            .serviceClient()
             .getDatabases()
             .getAsync(sqlServer.resourceGroupName(), sqlServer.name(), name)
             .map(inner -> new SqlDatabaseImpl(inner.name(), (SqlServerImpl) sqlServer, inner, manager));
@@ -119,12 +118,12 @@ public class SqlDatabaseOperationsImpl
 
     @Override
     public void deleteBySqlServer(String resourceGroupName, String sqlServerName, String name) {
-        this.manager.inner().getDatabases().delete(resourceGroupName, sqlServerName, name);
+        this.manager.serviceClient().getDatabases().delete(resourceGroupName, sqlServerName, name);
     }
 
     @Override
     public Mono<Void> deleteBySqlServerAsync(String resourceGroupName, String sqlServerName, String name) {
-        return this.manager.inner().getDatabases().deleteAsync(resourceGroupName, sqlServerName, name);
+        return this.manager.serviceClient().getDatabases().deleteAsync(resourceGroupName, sqlServerName, name);
     }
 
     @Override
@@ -165,7 +164,8 @@ public class SqlDatabaseOperationsImpl
     @Override
     public List<SqlDatabase> listBySqlServer(String resourceGroupName, String sqlServerName) {
         List<SqlDatabase> databasesSet = new ArrayList<>();
-        for (DatabaseInner inner : this.manager.inner().getDatabases().listByServer(resourceGroupName, sqlServerName)) {
+        for (DatabaseInner inner
+            : this.manager.serviceClient().getDatabases().listByServer(resourceGroupName, sqlServerName)) {
             databasesSet
                 .add(
                     new SqlDatabaseImpl(
@@ -178,7 +178,7 @@ public class SqlDatabaseOperationsImpl
     public PagedFlux<SqlDatabase> listBySqlServerAsync(final String resourceGroupName, final String sqlServerName) {
         return this
             .manager
-            .inner()
+            .serviceClient()
             .getDatabases()
             .listByServerAsync(resourceGroupName, sqlServerName)
             .mapPage(
@@ -192,7 +192,11 @@ public class SqlDatabaseOperationsImpl
         List<SqlDatabase> firewallRuleSet = new ArrayList<>();
         if (sqlServer != null) {
             for (DatabaseInner inner
-                : this.manager.inner().getDatabases().listByServer(sqlServer.resourceGroupName(), sqlServer.name())) {
+                : this
+                    .manager
+                    .serviceClient()
+                    .getDatabases()
+                    .listByServer(sqlServer.resourceGroupName(), sqlServer.name())) {
                 firewallRuleSet.add(new SqlDatabaseImpl(inner.name(), (SqlServerImpl) sqlServer, inner, manager));
             }
         }
@@ -203,11 +207,10 @@ public class SqlDatabaseOperationsImpl
     public PagedFlux<SqlDatabase> listBySqlServerAsync(final SqlServer sqlServer) {
         return sqlServer
             .manager()
-            .inner()
+            .serviceClient()
             .getDatabases()
             .listByServerAsync(sqlServer.resourceGroupName(), sqlServer.name())
-            .mapPage(
-                inner -> new SqlDatabaseImpl(inner.name(), (SqlServerImpl) sqlServer, inner, sqlServer.manager()));
+            .mapPage(inner -> new SqlDatabaseImpl(inner.name(), (SqlServerImpl) sqlServer, inner, sqlServer.manager()));
     }
 
     @Override

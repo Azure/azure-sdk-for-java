@@ -3,17 +3,17 @@
 package com.azure.resourcemanager.dns.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
+import com.azure.resourcemanager.dns.fluent.models.RecordSetInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import java.util.List;
 import java.util.Map;
 
 /** An immutable client-side representation of a record set in Azure DNS Zone. */
 @Fluent
-public interface DnsRecordSet extends ExternalChildResource<DnsRecordSet, DnsZone>, HasInner<RecordSetInner> {
+public interface DnsRecordSet extends ExternalChildResource<DnsRecordSet, DnsZone>, HasInnerModel<RecordSetInner> {
 
     /** @return the type of records in this record set */
     RecordType recordType();

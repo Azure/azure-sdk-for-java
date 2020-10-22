@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VirtualMachineScaleSetReimageParameters model. */
+/** Describes a Virtual Machine Scale Set VM Reimage Parameters. */
 @Fluent
 public final class VirtualMachineScaleSetReimageParameters extends VirtualMachineReimageParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetReimageParameters.class);

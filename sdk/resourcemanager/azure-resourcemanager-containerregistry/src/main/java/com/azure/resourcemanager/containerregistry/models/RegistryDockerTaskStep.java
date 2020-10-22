@@ -4,14 +4,14 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import java.util.List;
 import java.util.Map;
 
 /** An immutable client-side representation of an Azure RegistryDockerTaskStep registry task. */
 @Fluent()
-public interface RegistryDockerTaskStep extends HasInner<DockerTaskStep>, RegistryTaskStep {
+public interface RegistryDockerTaskStep extends HasInnerModel<DockerTaskStep>, RegistryTaskStep {
     /** @return the image names of this Docker task step */
     List<String> imageNames();
 

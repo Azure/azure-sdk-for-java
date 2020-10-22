@@ -6,7 +6,7 @@ import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackend;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddress;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddressPool;
-import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceIpConfigurationInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import java.util.ArrayList;
@@ -31,10 +31,10 @@ class ApplicationGatewayBackendImpl
     // Helpers
 
     private List<ApplicationGatewayBackendAddress> ensureAddresses() {
-        List<ApplicationGatewayBackendAddress> addresses = this.inner().backendAddresses();
+        List<ApplicationGatewayBackendAddress> addresses = this.innerModel().backendAddresses();
         if (addresses == null) {
             addresses = new ArrayList<ApplicationGatewayBackendAddress>();
-            this.inner().withBackendAddresses(addresses);
+            this.innerModel().withBackendAddresses(addresses);
         }
         return addresses;
     }
@@ -43,7 +43,7 @@ class ApplicationGatewayBackendImpl
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
@@ -51,8 +51,8 @@ class ApplicationGatewayBackendImpl
         // This assumes a NIC can only have one IP config associated with the backend of an app gateway,
         // which is correct at the time of this implementation and seems unlikely to ever change
         final Map<String, String> ipConfigNames = new TreeMap<>();
-        if (this.inner().backendIpConfigurations() != null) {
-            for (NetworkInterfaceIpConfigurationInner inner : this.inner().backendIpConfigurations()) {
+        if (this.innerModel().backendIpConfigurations() != null) {
+            for (NetworkInterfaceIpConfigurationInner inner : this.innerModel().backendIpConfigurations()) {
                 String nicId = ResourceUtils.parentResourceIdFromResourceId(inner.id());
                 String ipConfigName = ResourceUtils.nameFromResourceId(inner.id());
                 ipConfigNames.put(nicId, ipConfigName);
@@ -65,8 +65,8 @@ class ApplicationGatewayBackendImpl
     @Override
     public Collection<ApplicationGatewayBackendAddress> addresses() {
         Collection<ApplicationGatewayBackendAddress> addresses = new ArrayList<>();
-        if (this.inner().backendAddresses() != null) {
-            for (ApplicationGatewayBackendAddress address : this.inner().backendAddresses()) {
+        if (this.innerModel().backendAddresses() != null) {
+            for (ApplicationGatewayBackendAddress address : this.innerModel().backendAddresses()) {
                 addresses.add(address);
             }
         }
@@ -115,7 +115,7 @@ class ApplicationGatewayBackendImpl
         if (ipAddress == null) {
             return this;
         }
-        if (this.inner().backendAddresses() == null) {
+        if (this.innerModel().backendAddresses() == null) {
             return this;
         }
 
@@ -155,7 +155,7 @@ class ApplicationGatewayBackendImpl
     @Override
     public boolean containsIPAddress(String ipAddress) {
         if (ipAddress != null) {
-            for (ApplicationGatewayBackendAddress address : this.inner().backendAddresses()) {
+            for (ApplicationGatewayBackendAddress address : this.innerModel().backendAddresses()) {
                 if (ipAddress.equalsIgnoreCase(address.ipAddress())) {
                     return true;
                 }
@@ -167,7 +167,7 @@ class ApplicationGatewayBackendImpl
     @Override
     public boolean containsFqdn(String fqdn) {
         if (fqdn != null) {
-            for (ApplicationGatewayBackendAddress address : this.inner().backendAddresses()) {
+            for (ApplicationGatewayBackendAddress address : this.innerModel().backendAddresses()) {
                 if (fqdn.equalsIgnoreCase(address.fqdn())) {
                     return true;
                 }

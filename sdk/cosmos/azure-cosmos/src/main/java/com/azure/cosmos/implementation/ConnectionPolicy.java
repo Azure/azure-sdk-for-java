@@ -22,9 +22,6 @@ public final class ConnectionPolicy {
     private static final int defaultGatewayMaxConnectionPoolSize = GatewayConnectionConfig.getDefaultConfig()
         .getMaxConnectionPoolSize();
 
-    private static final ConnectionPolicy defaultPolicy =
-        new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
-
     private ConnectionMode connectionMode;
     private boolean endpointDiscoveryEnabled;
     private boolean multipleWriteRegionsEnabled;
@@ -45,6 +42,7 @@ public final class ConnectionPolicy {
     private int maxConnectionsPerEndpoint;
     private int maxRequestsPerConnection;
     private Duration idleTcpConnectionTimeout;
+    private boolean tcpConnectionEndpointRediscoveryEnabled;
 
     /**
      * Constructor.
@@ -55,6 +53,7 @@ public final class ConnectionPolicy {
         this.maxConnectionPoolSize = gatewayConnectionConfig.getMaxConnectionPoolSize();
         this.requestTimeout = BridgeInternal.getRequestTimeoutFromGatewayConnectionConfig(gatewayConnectionConfig);
         this.proxy = gatewayConnectionConfig.getProxy();
+        this.tcpConnectionEndpointRediscoveryEnabled = false;
     }
 
     public ConnectionPolicy(DirectConnectionConfig directConnectionConfig) {
@@ -65,6 +64,7 @@ public final class ConnectionPolicy {
         this.maxConnectionsPerEndpoint = directConnectionConfig.getMaxConnectionsPerEndpoint();
         this.maxRequestsPerConnection = directConnectionConfig.getMaxRequestsPerConnection();
         this.requestTimeout = BridgeInternal.getRequestTimeoutFromDirectConnectionConfig(directConnectionConfig);
+        this.tcpConnectionEndpointRediscoveryEnabled = directConnectionConfig.isConnectionEndpointRediscoveryEnabled();
     }
 
     private ConnectionPolicy(ConnectionMode connectionMode) {
@@ -79,12 +79,32 @@ public final class ConnectionPolicy {
     }
 
     /**
+     * Gets a value that indicates whether Direct TCP connection endpoint rediscovery is enabled.
+     *
+     * @return {@code true} if Direct TCP connection endpoint rediscovery should is enabled; {@code false} otherwise.
+     */
+    public boolean isTcpConnectionEndpointRediscoveryEnabled() {
+        return this.tcpConnectionEndpointRediscoveryEnabled;
+    }
+
+    /**
+     * Sets a value that indicates whether Direct TCP connection endpoint rediscovery is enabled.
+     *
+     * @return the {@linkplain ConnectionPolicy}.
+     */
+    public ConnectionPolicy setTcpConnectionEndpointRediscoveryEnabled(boolean tcpConnectionEndpointRediscoveryEnabled) {
+        this.tcpConnectionEndpointRediscoveryEnabled = tcpConnectionEndpointRediscoveryEnabled;
+        return this;
+    }
+
+
+    /**
      * Gets the default connection policy.
      *
      * @return the default connection policy.
      */
     public static ConnectionPolicy getDefaultPolicy() {
-        return ConnectionPolicy.defaultPolicy;
+        return new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
     }
 
     /**
@@ -496,6 +516,7 @@ public final class ConnectionPolicy {
             ", idleEndpointTimeout=" + idleEndpointTimeout +
             ", maxConnectionsPerEndpoint=" + maxConnectionsPerEndpoint +
             ", maxRequestsPerConnection=" + maxRequestsPerConnection +
+            ", tcpConnectionEndpointRediscoveryEnabled=" + tcpConnectionEndpointRediscoveryEnabled +
             '}';
     }
 }

@@ -4,8 +4,8 @@
 package com.azure.resourcemanager.eventhubs.implementation;
 
 import com.azure.resourcemanager.eventhubs.EventHubsManager;
-import com.azure.resourcemanager.eventhubs.fluent.inner.AccessKeysInner;
-import com.azure.resourcemanager.eventhubs.fluent.inner.AuthorizationRuleInner;
+import com.azure.resourcemanager.eventhubs.fluent.models.AccessKeysInner;
+import com.azure.resourcemanager.eventhubs.fluent.models.AuthorizationRuleInner;
 import com.azure.resourcemanager.eventhubs.models.AccessRights;
 import com.azure.resourcemanager.eventhubs.models.AuthorizationRule;
 import com.azure.resourcemanager.eventhubs.models.EventHubAuthorizationKey;
@@ -56,31 +56,31 @@ abstract class AuthorizationRuleBaseImpl<RuleT extends AuthorizationRule<RuleT>,
 
     @Override
     public List<AccessRights> rights() {
-        if (this.inner().rights() == null) {
+        if (this.innerModel().rights() == null) {
             return Collections.unmodifiableList(new ArrayList<>());
         }
-        return Collections.unmodifiableList(this.inner().rights());
+        return Collections.unmodifiableList(this.innerModel().rights());
     }
 
 
     @SuppressWarnings("unchecked")
     public RuleImpl withListenAccess() {
-        if (this.inner().rights() == null) {
-            this.inner().withRights(new ArrayList<>());
+        if (this.innerModel().rights() == null) {
+            this.innerModel().withRights(new ArrayList<>());
         }
-        if (!this.inner().rights().contains(AccessRights.LISTEN)) {
-            this.inner().rights().add(AccessRights.LISTEN);
+        if (!this.innerModel().rights().contains(AccessRights.LISTEN)) {
+            this.innerModel().rights().add(AccessRights.LISTEN);
         }
         return (RuleImpl) this;
     }
 
     @SuppressWarnings("unchecked")
     public RuleImpl withSendAccess() {
-        if (this.inner().rights() == null) {
-            this.inner().withRights(new ArrayList<>());
+        if (this.innerModel().rights() == null) {
+            this.innerModel().withRights(new ArrayList<>());
         }
-        if (!this.inner().rights().contains(AccessRights.SEND)) {
-            this.inner().rights().add(AccessRights.SEND);
+        if (!this.innerModel().rights().contains(AccessRights.SEND)) {
+            this.innerModel().rights().add(AccessRights.SEND);
         }
         return (RuleImpl) this;
     }
@@ -96,8 +96,8 @@ abstract class AuthorizationRuleBaseImpl<RuleT extends AuthorizationRule<RuleT>,
     public RuleImpl withManageAccess() {
         withListenAccess();
         withSendAccess();
-        if (!this.inner().rights().contains(AccessRights.MANAGE)) {
-            this.inner().rights().add(AccessRights.MANAGE);
+        if (!this.innerModel().rights().contains(AccessRights.MANAGE)) {
+            this.innerModel().rights().add(AccessRights.MANAGE);
         }
         return (RuleImpl) this;
     }

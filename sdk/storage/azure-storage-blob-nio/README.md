@@ -309,7 +309,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [rest_docs]: https://docs.microsoft.com/rest/api/storageservices/blob-service-rest-api
 [product_docs]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-overview
 [sas_token]: https://docs.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1
-[shared_key]: https://docs.microsoft.com/en-us/rest/api/storageservices/authorize-with-shared-key
+[shared_key]: https://docs.microsoft.com/rest/api/storageservices/authorize-with-shared-key
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
 [storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal

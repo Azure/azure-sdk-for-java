@@ -81,6 +81,14 @@ public interface IRetryPolicy  {
             return new ShouldRetryResult(null, null, false, null);
         }
 
+        public static ShouldRetryResult noRetry(Quadruple<Boolean, Boolean, Duration, Integer> policyArg) {
+            return new ShouldRetryResult(
+                null,
+                null,
+                false,
+                policyArg);
+        }
+
         public void throwIfDoneTrying(Exception capturedException) throws Exception {
             if (this.shouldRetry) {
                 return;

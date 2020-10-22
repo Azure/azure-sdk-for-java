@@ -86,14 +86,14 @@ and support" menu in the upper right-hand corner of the page.
 
 If you find issues in this library or have suggestions for improvement of code or documentation, you can [file an issue
 in the project's GitHub repository](https://github.com/Azure/azure-sdk-for-java/issues) or send across a pull request -
-see our [Contribution Guidelines](../azure-messaging-eventhubs/CONTRIBUTING.md).
+see our [Contribution Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/azure-messaging-eventhubs/CONTRIBUTING.md).
 
 Issues related to runtime behavior of the service, such as sporadic exceptions or apparent service-side performance or
 reliability issues cannot be handled here.
 
 Generally, if you want to discuss Azure Event Hubs or this client library with the community and the maintainers, you
 can turn to [stackoverflow.com under the #azure-eventhub tag](http://stackoverflow.com/questions/tagged/azure-eventhub)
-or the [MSDN Service Bus Forum](https://social.msdn.microsoft.com/Forums/en-US/home?forum=servbus).
+or the [MSDN Service Bus Forum](https://social.msdn.microsoft.com/Forums/home?forum=servbus).
 
 ## Examples
 

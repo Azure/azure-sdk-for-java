@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RollbackStatusInfo model. */
+/** Information about rollback on failed VM instances after a OS Upgrade operation. */
 @Immutable
 public final class RollbackStatusInfo {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RollbackStatusInfo.class);

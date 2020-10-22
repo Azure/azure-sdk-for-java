@@ -5,13 +5,13 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasParent;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import java.util.List;
 
 /** Client-side representation of packet capture filter. */
 @Fluent
-public interface PCFilter extends Indexable, HasParent<PacketCapture>, HasInner<PacketCaptureFilter> {
+public interface PCFilter extends Indexable, HasParent<PacketCapture>, HasInnerModel<PacketCaptureFilter> {
     /** @return protocol to be filtered on. */
     PcProtocol protocol();
 

@@ -16,8 +16,8 @@ import com.azure.resourcemanager.resources.models.ResourcesMoveInfo;
 import com.azure.resourcemanager.resources.models.Provider;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
-import com.azure.resourcemanager.resources.fluent.inner.GenericResourceInner;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.resources.fluent.models.GenericResourceInner;
 import com.azure.resourcemanager.resources.fluent.ResourcesClient;
 import reactor.core.publisher.Mono;
 
@@ -38,32 +38,30 @@ public final class GenericResourcesImpl
     private final ClientLogger logger = new ClientLogger(getClass());
 
     public GenericResourcesImpl(ResourceManager resourceManager) {
-        super(resourceManager.inner().getResources(), resourceManager);
+        super(resourceManager.serviceClient().getResources(), resourceManager);
     }
 
     @Override
     public PagedIterable<GenericResource> list() {
-        return wrapList(this.manager().inner().getResources().list()
+        return wrapList(this.manager().serviceClient().getResources().list()
                 .mapPage(res -> (GenericResourceInner) res));
     }
 
     @Override
     public PagedIterable<GenericResource> listByResourceGroup(String groupName) {
-        return wrapList(this.manager().inner().getResources().listByResourceGroup(groupName)
+        return wrapList(this.manager().serviceClient().getResources().listByResourceGroup(groupName)
                 .mapPage(res -> (GenericResourceInner) res));
     }
 
     @Override
     public PagedIterable<GenericResource> listByTag(String resourceGroupName, String tagName, String tagValue) {
-        return wrapList(this.manager().inner().getResources().listByResourceGroup(resourceGroupName,
-                Utils.createOdataFilterForTags(tagName, tagValue), null, null)
-                .mapPage(res -> (GenericResourceInner) res));
+        return new PagedIterable<>(this.listByTagAsync(resourceGroupName, tagName, tagValue));
     }
 
     @Override
     public PagedFlux<GenericResource> listByTagAsync(String resourceGroupName, String tagName, String tagValue) {
-        return wrapPageAsync(this.manager().inner().getResources().listByResourceGroupAsync(resourceGroupName,
-                Utils.createOdataFilterForTags(tagName, tagValue), null, null)
+        return wrapPageAsync(this.manager().serviceClient().getResources().listByResourceGroupAsync(resourceGroupName,
+                ResourceManagerUtils.createOdataFilterForTags(tagName, tagValue), null, null)
                 .mapPage(res -> (GenericResourceInner) res));
     }
 
@@ -229,7 +227,8 @@ public final class GenericResourcesImpl
         String apiVersion = getApiVersionFromId(id).block();
 
         return AcceptedImpl.newAccepted(logger,
-            manager().inner(),
+            this.manager().serviceClient().getHttpPipeline(),
+            this.manager().serviceClient().getDefaultPollInterval(),
             () -> this.inner().deleteByIdWithResponseAsync(id, apiVersion).block(),
             Function.identity(),
             Void.class,
@@ -249,7 +248,7 @@ public final class GenericResourcesImpl
 
     @Override
     public PagedFlux<GenericResource> listByResourceGroupAsync(String resourceGroupName) {
-        return wrapPageAsync(this.manager().inner().getResources().listByResourceGroupAsync(resourceGroupName)
+        return wrapPageAsync(this.manager().serviceClient().getResources().listByResourceGroupAsync(resourceGroupName)
                 .mapPage(res -> (GenericResourceInner) res));
     }
 }

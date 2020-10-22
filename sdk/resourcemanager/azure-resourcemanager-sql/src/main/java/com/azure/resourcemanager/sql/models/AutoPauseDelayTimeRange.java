@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AutoPauseDelayTimeRange model. */
+/** Supported auto pause delay time range. */
 @Immutable
 public final class AutoPauseDelayTimeRange {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoPauseDelayTimeRange.class);

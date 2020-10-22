@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PreAuthorizedApplicationPermission model. */
+/** Contains information about the pre-authorized permissions. */
 @Fluent
 public final class PreAuthorizedApplicationPermission {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PreAuthorizedApplicationPermission.class);

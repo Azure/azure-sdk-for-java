@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The MaintenanceRedeployStatus model. */
+/** Maintenance Operation Status. */
 @Fluent
 public final class MaintenanceRedeployStatus {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MaintenanceRedeployStatus.class);

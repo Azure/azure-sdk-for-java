@@ -7,14 +7,14 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.inner.AppServiceCertificateInner;
+import com.azure.resourcemanager.appservice.fluent.models.AppServiceCertificateInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** The AppServiceCertificateOrderPatchResource model. */
+/** ARM resource for a certificate order that is purchased through Azure. */
 @JsonFlatten
 @Fluent
 public class AppServiceCertificateOrderPatchResource extends ProxyOnlyResource {

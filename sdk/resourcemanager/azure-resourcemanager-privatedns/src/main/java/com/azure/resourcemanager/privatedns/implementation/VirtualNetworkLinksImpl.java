@@ -5,7 +5,7 @@ package com.azure.resourcemanager.privatedns.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.privatedns.fluent.VirtualNetworkLinksClient;
-import com.azure.resourcemanager.privatedns.fluent.inner.VirtualNetworkLinkInner;
+import com.azure.resourcemanager.privatedns.fluent.models.VirtualNetworkLinkInner;
 import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
 import com.azure.resourcemanager.privatedns.models.VirtualNetworkLink;
 import com.azure.resourcemanager.privatedns.models.VirtualNetworkLinks;
@@ -33,7 +33,7 @@ class VirtualNetworkLinksImpl
 
     @Override
     public PagedFlux<VirtualNetworkLink> listAsync(int pageSize) {
-        return parent().manager().inner().getVirtualNetworkLinks()
+        return parent().manager().serviceClient().getVirtualNetworkLinks()
             .listAsync(parent().resourceGroupName(), parent().name(), pageSize)
             .mapPage(this::wrapModel);
     }
@@ -78,7 +78,8 @@ class VirtualNetworkLinksImpl
 
     @Override
     public Mono<Void> deleteByResourceGroupNameAsync(String resourceGroupName, String name, String etagValue) {
-        return parent().manager().inner().getVirtualNetworkLinks().deleteAsync(resourceGroupName, name, etagValue);
+        return parent().manager().serviceClient().getVirtualNetworkLinks()
+            .deleteAsync(resourceGroupName, name, etagValue);
     }
 
     @Override
@@ -98,7 +99,7 @@ class VirtualNetworkLinksImpl
 
     @Override
     public Mono<VirtualNetworkLink> getByNameAsync(String name) {
-        return parent().manager().inner().getVirtualNetworkLinks()
+        return parent().manager().serviceClient().getVirtualNetworkLinks()
             .getAsync(parent().resourceGroupName(), parent().name(), name)
             .map(this::wrapModel);
     }
@@ -115,13 +116,13 @@ class VirtualNetworkLinksImpl
 
     @Override
     public PagedFlux<VirtualNetworkLink> listAsync() {
-        return parent().manager().inner().getVirtualNetworkLinks()
+        return parent().manager().serviceClient().getVirtualNetworkLinks()
             .listAsync(parent().resourceGroupName(), parent().name())
             .mapPage(this::wrapModel);
     }
 
     public VirtualNetworkLinksClient inner() {
-        return parent().manager().inner().getVirtualNetworkLinks();
+        return parent().manager().serviceClient().getVirtualNetworkLinks();
     }
 
     private VirtualNetworkLink wrapModel(VirtualNetworkLinkInner inner) {

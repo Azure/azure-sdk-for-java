@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VpnLinkProviderProperties model. */
+/** List of properties of a link provider. */
 @Fluent
 public final class VpnLinkProviderProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnLinkProviderProperties.class);

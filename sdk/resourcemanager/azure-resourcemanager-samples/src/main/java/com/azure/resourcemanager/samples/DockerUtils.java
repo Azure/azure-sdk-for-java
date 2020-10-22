@@ -3,14 +3,14 @@
 
 package com.azure.resourcemanager.samples;
 
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.network.models.NicIpConfiguration;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.core.management.Region;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.exception.DockerClientException;
 import com.github.dockerjava.core.DefaultDockerClientConfig;
@@ -30,6 +30,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.Security;
+import java.time.Duration;
 import java.util.Date;
 
 /**
@@ -82,7 +83,7 @@ public class DockerUtils {
     /**
      * Instantiate a Docker client that will be used for Docker client related operations.
      *
-     * @param azure - instance of Azure
+     * @param azureResourceManager - instance of Azure
      * @param rgName - name of the Azure resource group to be used when creating a virtual machine
      * @param region - region to be used when creating a virtual machine
      * @param registryServerUrl - address of the private container registry
@@ -91,7 +92,7 @@ public class DockerUtils {
      * @return an instance of DockerClient
      * @throws Exception exception thrown
      */
-    public static DockerClient createDockerClient(Azure azure, String rgName, Region region,
+    public static DockerClient createDockerClient(AzureResourceManager azureResourceManager, String rgName, Region region,
                                                   String registryServerUrl, String username, String password) throws IOException {
         final String envDockerHost = System.getenv("DOCKER_HOST");
         final String envDockerCertPath = System.getenv("DOCKER_CERT_PATH");
@@ -101,7 +102,7 @@ public class DockerUtils {
         if (envDockerHost == null || envDockerHost.isEmpty()) {
             // Could not find a Docker environment; presume that there is no local Docker engine running and
             //    attempt to configure a Docker engine running inside a new    Azure virtual machine
-            dockerClient = fromNewDockerVM(azure, rgName, region, registryServerUrl, username, password);
+            dockerClient = fromNewDockerVM(azureResourceManager, rgName, region, registryServerUrl, username, password);
         } else {
             dockerHostUrl = envDockerHost;
             System.out.println("Using local settings to connect to a Docker service: " + dockerHostUrl);
@@ -178,7 +179,7 @@ public class DockerUtils {
     /**
      * It creates a new Azure virtual machine and it instantiate a Java Docker client.
      *
-     * @param azure - instance of Azure
+     * @param azureResourceManager - instance of Azure
      * @param rgName - name of the Azure resource group to be used when creating a virtual machine
      * @param region - region to be used when creating a virtual machine
      * @param registryServerUrl - address of the private container registry
@@ -187,10 +188,10 @@ public class DockerUtils {
      * @return an instance of DockerClient
      * @throws Exception exception thrown
      */
-    public static DockerClient fromNewDockerVM(Azure azure, String rgName, Region region,
+    public static DockerClient fromNewDockerVM(AzureResourceManager azureResourceManager, String rgName, Region region,
                                                String registryServerUrl, String username, String password) {
-        final String dockerVMName = azure.sdkContext().randomResourceName("dockervm", 15);
-        final String publicIPDnsLabel = azure.sdkContext().randomResourceName("pip", 10);
+        final String dockerVMName = Utils.randomResourceName(azureResourceManager, "dockervm", 15);
+        final String publicIPDnsLabel = Utils.randomResourceName(azureResourceManager, "pip", 10);
         final String vmUserName = "dockerUser";
         final String vmPassword = Utils.password();
 
@@ -200,7 +201,7 @@ public class DockerUtils {
 
         Date t1 = new Date();
 
-        VirtualMachine dockerVM = azure.virtualMachines().define(dockerVMName)
+        VirtualMachine dockerVM = azureResourceManager.virtualMachines().define(dockerVMName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
@@ -216,7 +217,7 @@ public class DockerUtils {
         System.out.println("Created Azure Virtual Machine: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + dockerVM.id());
 
         // Wait for a minute for PIP to be available
-        SdkContext.sleep(60 * 1000);
+        ResourceManagerUtils.sleep(Duration.ofMinutes(1));
         // Get the IP of the Docker host
         NicIpConfiguration nicIPConfiguration = dockerVM.getPrimaryNetworkInterface().primaryIPConfiguration();
         PublicIpAddress publicIp = nicIPConfiguration.getPublicIpAddress();

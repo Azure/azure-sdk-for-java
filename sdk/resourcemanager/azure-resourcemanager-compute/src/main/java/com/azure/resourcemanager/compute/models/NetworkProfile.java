@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The NetworkProfile model. */
+/** Specifies the network interfaces of the virtual machine. */
 @Fluent
 public final class NetworkProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkProfile.class);

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The NamespaceUpdateParameters model. */
+/** Parameters supplied to the Patch Namespace operation. */
 @Fluent
 public final class NamespaceUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NamespaceUpdateParameters.class);

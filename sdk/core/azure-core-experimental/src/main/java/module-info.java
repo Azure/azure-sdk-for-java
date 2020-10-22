@@ -6,6 +6,7 @@ module com.azure.core.experimental {
 
     exports com.azure.core.experimental.serializer;
     exports com.azure.core.experimental.spatial;
+    exports com.azure.core.experimental.util;
 
     uses com.azure.core.experimental.serializer.AvroSerializerProvider;
 }

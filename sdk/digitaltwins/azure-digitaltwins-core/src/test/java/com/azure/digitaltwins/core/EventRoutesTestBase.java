@@ -32,6 +32,9 @@ public abstract class EventRoutesTestBase extends DigitalTwinsTestBase {
     @Test
     public abstract void createEventRouteThrowsIfFilterIsMalformed(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
 
+    @Test
+    public abstract void listEventRoutesPaginationWorks(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
+
     // Azure Digital Twins instances have a low cap on the number of event routes allowed, so we need to delete the existing
     // event routes before each test to make sure that we can add an event route in each test.
     @BeforeEach
@@ -41,7 +44,7 @@ public abstract class EventRoutesTestBase extends DigitalTwinsTestBase {
         PagedIterable<EventRoute> listedEventRoutes = client.listEventRoutes();
         List<String> currentEventRouteIds = new ArrayList<>();
         for (EventRoute listedEventRoute : listedEventRoutes) {
-            currentEventRouteIds.add(listedEventRoute.getId());
+            currentEventRouteIds.add(listedEventRoute.getEventRouteId());
         }
 
         for (String eventRouteId : currentEventRouteIds) {
@@ -53,7 +56,7 @@ public abstract class EventRoutesTestBase extends DigitalTwinsTestBase {
     // Note that only service returned eventRoute instances have their Id field set. When a user builds an instance locally,
     // there is no way to assign an Id to it.
     protected static void assertEventRoutesEqual(EventRoute expected, String expectedId, EventRoute actual) {
-        assertEquals(expectedId, actual.getId());
+        assertEquals(expectedId, actual.getEventRouteId());
         assertEquals(expected.getEndpointName(), actual.getEndpointName());
         assertEquals(expected.getFilter(), actual.getFilter());
     }

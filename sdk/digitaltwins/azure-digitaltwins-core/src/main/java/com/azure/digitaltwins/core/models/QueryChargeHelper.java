@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.digitaltwins.core.models;
 
 import com.azure.core.http.rest.PagedResponse;
@@ -11,6 +14,12 @@ import java.util.Objects;
 public final class QueryChargeHelper {
     private static final String queryChargeHeader = "query-charge";
 
+    /**
+     * Extract the query-charge field from a page header.
+     * @param page The page that contains the query-charge header.
+     * @param <T> The generic type of the page.
+     * @return The query charge.
+     */
     public static <T> Float getQueryCharge(PagedResponse<T> page) {
         Objects.requireNonNull(page, "'page' cannot be null");
 

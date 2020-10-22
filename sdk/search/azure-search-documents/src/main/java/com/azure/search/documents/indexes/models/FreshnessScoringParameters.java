@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
-/** The FreshnessScoringParameters model. */
+/** Provides parameter values to a freshness scoring function. */
 @Fluent
 public final class FreshnessScoringParameters {
     /*

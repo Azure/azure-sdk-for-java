@@ -3,9 +3,6 @@
 
 package com.azure.data.tables;
 
-import com.azure.core.credential.AccessToken;
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.net.URL;
@@ -15,22 +12,22 @@ import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import reactor.core.publisher.Mono;
 
 /**
- * A Class which helps generate the shared key credentials for a given storage account to create a Http requests to
- * access Azure Tables
+ * A SharedKey credential that authorizes requests to the Tables service.
  */
-public class TablesSharedKeyCredential implements TokenCredential {
+public class TablesSharedKeyCredential {
     private static final String AUTHORIZATION_HEADER_FORMAT = "SharedKeyLite %s:%s";
     private final String accountName;
     private final String accountKey;
 
     /**
-     * Constructor for TableSharedKeyCredential Class
+     * Initializes a new {@code TablesSharedKeyCredential} that contains an account's name and its primary or secondary
+     * account key.
      *
-     * @param accountName name of the storage account
-     * @param accountKey key to the storage account
+     * @param accountName The account name associated with the request.
+     * @param accountKey The account access key used to authenticate the request.
+     * @throws NullPointerException if {@code accountName} or {@code accountKey} is {@code null}.
      */
     public TablesSharedKeyCredential(String accountName, String accountKey) {
         this.accountName = Objects.requireNonNull(accountName, "'accountName' cannot be null.");
@@ -114,10 +111,5 @@ public class TablesSharedKeyCredential implements TokenCredential {
             }
         }
         return canonicalizedResource.toString();
-    }
-
-    @Override
-    public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
-        return null;
     }
 }

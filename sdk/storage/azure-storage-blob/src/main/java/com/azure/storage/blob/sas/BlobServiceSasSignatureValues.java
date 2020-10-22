@@ -45,7 +45,7 @@ public final class BlobServiceSasSignatureValues {
 
     private final ClientLogger logger = new ClientLogger(BlobServiceSasSignatureValues.class);
 
-    private String version;
+    private final String version = BlobSasServiceVersion.V2019_12_12.getVersion();
 
     private SasProtocol protocol;
 
@@ -149,9 +149,6 @@ public final class BlobServiceSasSignatureValues {
     public BlobServiceSasSignatureValues(String version, SasProtocol sasProtocol, OffsetDateTime startTime,
         OffsetDateTime expiryTime, String permission, SasIpRange sasIpRange, String identifier, String cacheControl,
         String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
-        if (version != null) {
-            this.version = version;
-        }
         this.protocol = sasProtocol;
         this.startTime = startTime;
         this.expiryTime = expiryTime;
@@ -179,9 +176,12 @@ public final class BlobServiceSasSignatureValues {
      *
      * @param version Version to target
      * @return the updated BlobServiceSASSignatureValues object
+     * @deprecated The version is set to the latest version of sas. Users should stop calling this API as it is now
+     * treated as a no-op.
      */
+    @Deprecated
     public BlobServiceSasSignatureValues setVersion(String version) {
-        this.version = version;
+        /* No-op.*/
         return this;
     }
 
@@ -585,7 +585,6 @@ public final class BlobServiceSasSignatureValues {
         String signature = StorageImplUtils.computeHMac256(
             delegationKey.getValue(), stringToSign(delegationKey, canonicalName));
 
-
         return new BlobServiceSasQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime,
             this.sasIpRange, null /* identifier */, this.resource, this.permissions, signature,
             this.cacheControl, this.contentDisposition, this.contentEncoding, this.contentLanguage, this.contentType,
@@ -607,10 +606,6 @@ public final class BlobServiceSasSignatureValues {
      * https://github.com/Azure/azure-sdk-for-net/blob/master/sdk/storage/Azure.Storage.Blobs/src/Sas/BlobSasBuilder.cs
      */
     private void ensureState() {
-        if (version == null) {
-            version = BlobSasServiceVersion.getLatest().getVersion();
-        }
-
         if (CoreUtils.isNullOrEmpty(blobName)) {
             resource = SAS_CONTAINER_CONSTANT;
         } else if (snapshotId != null) {
@@ -656,7 +651,8 @@ public final class BlobServiceSasSignatureValues {
             this.identifier == null ? "" : this.identifier,
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
-            version,
+            version, /* Pin down to version so old string to sign works. This is reflected in the declaration of
+            version */
             resource,
             this.snapshotId == null ? "" : this.snapshotId,
             this.cacheControl == null ? "" : this.cacheControl,
@@ -681,7 +677,8 @@ public final class BlobServiceSasSignatureValues {
             key.getSignedVersion() == null ? "" : key.getSignedVersion(),
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
-            version,
+            version, /* Pin down to version so old string to sign works. This is reflected in the declaration of
+            version */
             resource,
             this.snapshotId == null ? "" : this.snapshotId,
             this.cacheControl == null ? "" : this.cacheControl,

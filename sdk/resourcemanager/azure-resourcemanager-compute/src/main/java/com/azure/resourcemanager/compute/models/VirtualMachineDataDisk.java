@@ -6,11 +6,11 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /** A managed data disk of a virtual machine. */
 @Fluent
-public interface VirtualMachineDataDisk extends HasInner<DataDisk>, HasName, HasId {
+public interface VirtualMachineDataDisk extends HasInnerModel<DataDisk>, HasName, HasId {
     /** @return the size of this data disk in GB */
     int size();
 

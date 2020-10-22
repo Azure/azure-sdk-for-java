@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PolicyDefinitionGroup model. */
+/** The policy definition group. */
 @Fluent
 public final class PolicyDefinitionGroup {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyDefinitionGroup.class);

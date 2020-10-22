@@ -56,7 +56,6 @@ import reactor.core.publisher.Mono;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -162,38 +161,18 @@ public final class SearchAsyncClient {
     }
 
     /**
-     * Creates a {@link SearchBatchAsyncClient} used to index documents for the Search index associated with this {@link
-     * SearchAsyncClient}.
-     * <p>
-     * This will use the default configuration values for {@link SearchBatchAsyncClient}, see {@link
-     * SearchBatchClientBuilder} for more information.
+     * Creates a {@link SearchIndexingBufferedAsyncSender} used to index documents for the Search index associated with
+     * this {@link SearchAsyncClient}.
      *
-     * @return A {@link SearchBatchAsyncClient} used to index documents for the Search index associated with this {@link
-     * SearchAsyncClient}.
+     * @param options Configuration options used during construction of the {@link SearchIndexingBufferedAsyncSender}.
+     * @param <T> The type of the documents that will be added to the buffered sender.
+     * @return A {@link SearchIndexingBufferedAsyncSender} used to index documents for the Search index associated with
+     * this {@link SearchAsyncClient}.
+     * @throws NullPointerException If {@code options} or {@code options.getDocumentKeyRetriever()} is null.
      */
-    public SearchBatchAsyncClient getSearchBatchAsyncClient() {
-        return getSearchBatchAsyncClient(null, null, null, null);
-    }
-
-    /**
-     * Creates a {@link SearchBatchAsyncClient} used to index documents for the Search index associated with this {@link
-     * SearchAsyncClient}.
-     *
-     * @param autoFlush Flag determining whether the batching client will automatically flush its document batch. If
-     * null is passed this will be set to true.
-     * @param flushWindow Duration that the client will wait between documents being added to the batch before sending
-     * the batch to be indexed. If {@code flushWindow} is negative or zero the flush window will be disabled, if {@code
-     * flushWindow} is null a default of 60 seconds will be used.
-     * @param batchSize The number of documents in a batch that will trigger it to be indexed. If automatic batch
-     * sending is disabled this value is ignored. If {@code batchSize} is null a default value of 1000 is used.
-     * @param indexingHook An implementation of {@link IndexingHook} used to handle document callback actions.
-     * @return A {@link SearchBatchAsyncClient} used to index documents for the Search index associated with this {@link
-     * SearchAsyncClient}.
-     * @throws IllegalArgumentException If {@code batchSize} is less than one.
-     */
-    public SearchBatchAsyncClient getSearchBatchAsyncClient(Boolean autoFlush, Duration flushWindow, Integer batchSize,
-        IndexingHook indexingHook) {
-        return new SearchBatchAsyncClient(this, autoFlush, flushWindow, batchSize, indexingHook);
+    public <T> SearchIndexingBufferedAsyncSender<T> getSearchIndexingBufferedAsyncSender(
+        SearchIndexingBufferedSenderOptions<T> options) {
+        return new SearchIndexingBufferedAsyncSender<>(this, options);
     }
 
     /**

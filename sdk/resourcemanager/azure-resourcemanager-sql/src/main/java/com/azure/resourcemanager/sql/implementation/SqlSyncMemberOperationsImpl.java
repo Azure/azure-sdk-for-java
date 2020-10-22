@@ -9,7 +9,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.SqlSyncMember;
 import com.azure.resourcemanager.sql.models.SqlSyncMemberOperations;
-import com.azure.resourcemanager.sql.fluent.inner.SyncMemberInner;
+import com.azure.resourcemanager.sql.fluent.models.SyncMemberInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -41,7 +41,7 @@ public class SqlSyncMemberOperationsImpl
         SyncMemberInner syncMemberInner =
             this
                 .sqlServerManager
-                .inner()
+                .serviceClient()
                 .getSyncMembers()
                 .get(resourceGroupName, sqlServerName, databaseName, syncGroupName, name);
         return syncMemberInner != null
@@ -65,7 +65,7 @@ public class SqlSyncMemberOperationsImpl
         final String name) {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getSyncMembers()
             .getAsync(resourceGroupName, sqlServerName, databaseName, syncGroupName, name)
             .map(
@@ -149,7 +149,7 @@ public class SqlSyncMemberOperationsImpl
         }
         this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getSyncMembers()
             .delete(
                 this.sqlSyncGroup.resourceGroupName(),
@@ -166,7 +166,7 @@ public class SqlSyncMemberOperationsImpl
         }
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getSyncMembers()
             .deleteAsync(
                 this.sqlSyncGroup.resourceGroupName(),
@@ -182,7 +182,7 @@ public class SqlSyncMemberOperationsImpl
             ResourceId resourceId = ResourceId.fromString(id);
             this
                 .sqlServerManager
-                .inner()
+                .serviceClient()
                 .getSyncMembers()
                 .delete(
                     resourceId.resourceGroupName(),
@@ -200,7 +200,7 @@ public class SqlSyncMemberOperationsImpl
             ResourceId resourceId = ResourceId.fromString(id);
             return this
                 .sqlServerManager
-                .inner()
+                .serviceClient()
                 .getSyncMembers()
                 .deleteAsync(
                     resourceId.resourceGroupName(),
@@ -220,7 +220,7 @@ public class SqlSyncMemberOperationsImpl
             PagedIterable<SyncMemberInner> syncMemberInners =
                 this
                     .sqlServerManager
-                    .inner()
+                    .serviceClient()
                     .getSyncMembers()
                     .listBySyncGroup(
                         this.sqlSyncGroup.resourceGroupName(),
@@ -242,7 +242,7 @@ public class SqlSyncMemberOperationsImpl
         final SqlSyncMemberOperationsImpl self = this;
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getSyncMembers()
             .listBySyncGroupAsync(
                 this.sqlSyncGroup.resourceGroupName(),

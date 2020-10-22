@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ManagedRuleSet model. */
+/** Defines a managed rule set. */
 @Fluent
 public final class ManagedRuleSet {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedRuleSet.class);

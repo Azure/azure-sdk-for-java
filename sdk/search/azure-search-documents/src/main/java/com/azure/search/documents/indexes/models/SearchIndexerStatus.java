@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SearchIndexerStatus model. */
+/** Represents the current status and execution history of an indexer. */
 @Immutable
 public final class SearchIndexerStatus {
     /*

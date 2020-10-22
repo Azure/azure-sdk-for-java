@@ -2,7 +2,7 @@
 
 Azure Digital Twins is a developer platform for next-generation IoT solutions that lets you create, run, and manage digital representations of your business environment, securely and efficiently in the cloud. With Azure Digital Twins, creating live operational state representations is quick and cost-effective, and digital representations stay current with real-time data from IoT and other data sources. If you are new to Azure Digital Twins and would like to learn more about the platform, please make sure you check out the Azure Digital Twins [official documentation page](https://docs.microsoft.com/azure/digital-twins/overview).
 
-For an introduction on how to program against the Azure Digital Twins service, visit the [coding tutorial page](https://docs.microsoft.com/en-us/azure/digital-twins/tutorial-code) for an easy step-by-step guide. Visit [this tutorial](https://docs.microsoft.com/azure/digital-twins/tutorial-command-line-app) to learn how to interact with an Azure Digital Twin instance using a command-line client application. Finally, for a quick guide on how to build an end-to-end Azure Digital Twins solution that is driven by live data from your environment, make sure you check out [this helpful guide](https://docs.microsoft.com/azure/digital-twins/tutorial-end-to-end).
+For an introduction on how to program against the Azure Digital Twins service, visit the [coding tutorial page](https://docs.microsoft.com/azure/digital-twins/tutorial-code) for an easy step-by-step guide. Visit [this tutorial](https://docs.microsoft.com/azure/digital-twins/tutorial-command-line-app) to learn how to interact with an Azure Digital Twin instance using a command-line client application. Finally, for a quick guide on how to build an end-to-end Azure Digital Twins solution that is driven by live data from your environment, make sure you check out [this helpful guide](https://docs.microsoft.com/azure/digital-twins/tutorial-end-to-end).
 
 The guides mentioned above can help you get started with key elements of Azure Digital Twins, such as creating Azure Digital Twins instances, models, twin graphs, etc. Use this samples guide below to familiarize yourself with the various APIs that help you program against Azure Digital Twins.
 
@@ -33,7 +33,7 @@ The async client is implemented using [Reactor](https://projectreactor.io/docs/c
 
 To create a new digital twins client, you need the endpoint to an Azure Digital Twin instance and credentials.
 In the sample below, you can set `AdtEndpoint`, `TenantId`, `ClientId`, and `ClientSecret` as command-line arguments.
-The client requires an instance of [TokenCredential](https://docs.microsoft.com/en-us/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable).
+The client requires an instance of [TokenCredential](https://docs.microsoft.com/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable).
 In this samples, we illustrate how to use one derived class: ClientSecretCredential.
 
 > Note: In order to access the data plane for the Digital Twins service, the entity must be given permissions.
@@ -222,7 +222,7 @@ You can also retrieve the application/json string payload from disk and pass it 
 
 ```java
 String payload = <Load the file content into memory>;
-String digitalTwinCreateResponse = syncClient.createDigitalTwin(twinId, payload);
+String digitalTwinCreateResponse = syncClient.createDigitalTwin(twinId, payload, String.class);
 ```
 
 ### Get and deserialize a digital twin
@@ -232,7 +232,7 @@ You can get a digital twin in 2 separate formats
 - In a String format by just calling:
 
 ```java
-String stringDt = syncClient.getDigitalTwin(twinId);
+String stringDt = syncClient.getDigitalTwin(twinId, String.class);
 ```
 
 - Choose what type you would like the twin to be deserialized as:
@@ -243,14 +243,14 @@ BasicDigitalTwin basicDt = syncClient.getDigitalTwin(twinId, BasicDigitalTwin.cl
 
 ### Query digital twins
 
-Query the Azure Digital Twins instance for digital twins using the [Azure Digital Twins Query Store language](https://review.docs.microsoft.com/en-us/azure/digital-twins-v2/concepts-query-language?branch=pr-en-us-114648). Query calls support paging. Here's an example of how to query for digital twins and how to iterate over the results.
+Query the Azure Digital Twins instance for digital twins using the [Azure Digital Twins Query Store language](https://review.docs.microsoft.com/azure/digital-twins-v2/concepts-query-language?branch=pr-en-us-114648). Query calls support paging. Here's an example of how to query for digital twins and how to iterate over the results.
 
 ```java
 // This code snippet demonstrates the simplest way to iterate over the digital twin results, where paging
 // happens under the covers.
 
 // You can either get a String representation of your query response
-PagedIterable<String> pageableResponse = syncClient.query("SELECT * FROM digitaltwins");
+PagedIterable<String> pageableResponse = syncClient.query("SELECT * FROM digitaltwins", String.class);
 
 // Iterate over the twin instances in the pageable response.
 foreach (String response in pageableResponse)
@@ -295,7 +295,7 @@ client.updateComponent(basicDigitalTwinId, "Component1", updateOperationUtility.
 Get a component by providing name of a component and Id of digital twin to which it belongs.
 
 ```java
-String getComponentResponse = client.getComponent(digitalTwinId, "Component1");
+String getComponentResponse = client.getComponent(digitalTwinId, "Component1", String.class);
 ```
 
 ## Create, get,  list and delete digital twin relationships
@@ -392,7 +392,7 @@ eventRoute.setFilter(filter);
 client.createEventRoute(eventRouteId, eventRoute);
 ```
 
-For more information on the event route filter language, see the "how to manage routes" [filter events documentation](https://docs.microsoft.com/en-us/azure/digital-twins/how-to-manage-routes-apis-cli#filter-events).
+For more information on the event route filter language, see the "how to manage routes" [filter events documentation](https://docs.microsoft.com/azure/digital-twins/how-to-manage-routes-apis-cli#filter-events).
 
 ### List event routes
 

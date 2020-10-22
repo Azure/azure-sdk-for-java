@@ -16,7 +16,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineCaptureParameters;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizes;
 import com.azure.resourcemanager.compute.models.VirtualMachines;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
 import com.azure.resourcemanager.compute.fluent.VirtualMachinesClient;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.network.NetworkManager;
@@ -51,11 +51,11 @@ public class VirtualMachinesImpl
         StorageManager storageManager,
         NetworkManager networkManager,
         AuthorizationManager authorizationManager) {
-        super(computeManager.inner().getVirtualMachines(), computeManager);
+        super(computeManager.serviceClient().getVirtualMachines(), computeManager);
         this.storageManager = storageManager;
         this.networkManager = networkManager;
         this.authorizationManager = authorizationManager;
-        this.vmSizes = new VirtualMachineSizesImpl(computeManager.inner().getVirtualMachineSizes());
+        this.vmSizes = new VirtualMachineSizesImpl(computeManager.serviceClient().getVirtualMachineSizes());
     }
 
     // Actions
@@ -210,12 +210,15 @@ public class VirtualMachinesImpl
 
     @Override
     public Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name) {
-        return AcceptedImpl.newAccepted(logger,
-            manager().inner(),
-            () -> this.inner().deleteWithResponseAsync(resourceGroupName, name).block(),
-            Function.identity(),
-            Void.class,
-            null);
+        return AcceptedImpl
+            .newAccepted(
+                logger,
+                this.manager().serviceClient().getHttpPipeline(),
+                this.manager().serviceClient().getDefaultPollInterval(),
+                () -> this.inner().deleteWithResponseAsync(resourceGroupName, name).block(),
+                Function.identity(),
+                Void.class,
+                null);
     }
 
     // Getters

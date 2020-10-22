@@ -4,7 +4,7 @@ package com.azure.resourcemanager;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.resourcemanager.resources.fluentcore.arm.ManagerBase;
+import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
@@ -24,10 +24,10 @@ import java.io.IOException;
  * @param <CollectionT> Type representing the collection of the top level resources
  */
 public abstract class TestTemplate<
-    ResourceT extends GroupableResource<? extends ManagerBase, ?>,
+    ResourceT extends GroupableResource<? extends Manager<?>, ?>,
     CollectionT extends
         SupportsListing<ResourceT> & SupportsGettingByResourceGroup<ResourceT> & SupportsDeletingById
-            & SupportsGettingById<ResourceT> & HasManager<? extends ManagerBase>> {
+            & SupportsGettingById<ResourceT> & HasManager<?>> {
 
     private ResourceT resource;
     private CollectionT collection;

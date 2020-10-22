@@ -3,17 +3,17 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.inner.SecurityRuleInner;
+import com.azure.resourcemanager.network.fluent.models.SecurityRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import java.util.List;
 import java.util.Set;
 
 /** A network security rule in a network security group. */
 @Fluent
-public interface NetworkSecurityRule extends HasInner<SecurityRuleInner>, ChildResource<NetworkSecurityGroup> {
+public interface NetworkSecurityRule extends HasInnerModel<SecurityRuleInner>, ChildResource<NetworkSecurityGroup> {
 
     /** @return the direction of the network traffic that the network security rule applies to. */
     SecurityRuleDirection direction();

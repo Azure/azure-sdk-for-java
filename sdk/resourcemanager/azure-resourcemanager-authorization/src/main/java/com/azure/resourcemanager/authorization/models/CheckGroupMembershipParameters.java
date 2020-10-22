@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The CheckGroupMembershipParameters model. */
+/** Request parameters for IsMemberOf API call. */
 @Fluent
 public final class CheckGroupMembershipParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckGroupMembershipParameters.class);

@@ -270,6 +270,19 @@ public class CosmosContainer {
         }
     }
 
+    private TransactionalBatchResponse blockBatchResponse(Mono<TransactionalBatchResponse> batchResponseMono) {
+        try {
+            return batchResponseMono.block();
+        } catch (Exception ex) {
+            final Throwable throwable = Exceptions.unwrap(ex);
+            if (throwable instanceof CosmosException) {
+                throw (CosmosException) throwable;
+            } else {
+                throw ex;
+            }
+        }
+    }
+
     /**
      * Read all items as {@link CosmosPagedIterable} in the current container.
      *
@@ -451,6 +464,78 @@ public class CosmosContainer {
      */
     public <T> CosmosItemResponse<Object> deleteItem(T item, CosmosItemRequestOptions options) {
         return  this.blockDeleteItemResponse(asyncContainer.deleteItem(item, options));
+    }
+
+    /**
+     * Executes the transactional batch.
+     *
+     * @param transactionalBatch Batch having list of operation and partition key which will be executed by this container.
+     *
+     * @return A TransactionalBatchResponse which contains details of execution of the transactional batch.
+     * <p>
+     * If the transactional batch executes successfully, the value returned by {@link
+     * TransactionalBatchResponse#getStatusCode} on the response returned will be set to 200}.
+     * <p>
+     * If an operation within the transactional batch fails during execution, no changes from the batch will be
+     * committed and the status of the failing operation is made available by {@link
+     * TransactionalBatchResponse#getStatusCode} or by the exception. To obtain information about the operations
+     * that failed in case of some user error like conflict, not found etc, the response can be enumerated.
+     * This returns {@link TransactionalBatchOperationResult} instances corresponding to each operation in the
+     * transactional batch in the order they were added to the transactional batch.
+     * For a result corresponding to an operation within the transactional batch, use
+     * {@link TransactionalBatchOperationResult#getStatusCode}
+     * to access the status of the operation. If the operation was not executed or it was aborted due to the failure of
+     * another operation within the transactional batch, the value of this field will be 424;
+     * for the operation that caused the batch to abort, the value of this field
+     * will indicate the cause of failure.
+     * <p>
+     * If there are issues such as request timeouts, Gone, session not available, network failure
+     * or if the service somehow returns 5xx then this will throw an exception instead of returning a TransactionalBatchResponse.
+     * <p>
+     * Use {@link TransactionalBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
+     * transactional batch succeeded.
+     */
+    @Beta(Beta.SinceVersion.V4_7_0)
+    public TransactionalBatchResponse executeTransactionalBatch(TransactionalBatch transactionalBatch) {
+        return this.blockBatchResponse(asyncContainer.executeTransactionalBatch(transactionalBatch));
+    }
+
+    /**
+     * Executes the transactional batch.
+     *
+     * @param transactionalBatch Batch having list of operation and partition key which will be executed by this container.
+     * @param requestOptions Options that apply specifically to batch request.
+     *
+     * @return A TransactionalBatchResponse which contains details of execution of the transactional batch.
+     * <p>
+     * If the transactional batch executes successfully, the value returned by {@link
+     * TransactionalBatchResponse#getStatusCode} on the response returned will be set to 200}.
+     * <p>
+     * If an operation within the transactional batch fails during execution, no changes from the batch will be
+     * committed and the status of the failing operation is made available by {@link
+     * TransactionalBatchResponse#getStatusCode} or by the exception. To obtain information about the operations
+     * that failed in case of some user error like conflict, not found etc, the response can be enumerated.
+     * This returns {@link TransactionalBatchOperationResult} instances corresponding to each operation in the
+     * transactional batch in the order they were added to the transactional batch.
+     * For a result corresponding to an operation within the transactional batch, use
+     * {@link TransactionalBatchOperationResult#getStatusCode}
+     * to access the status of the operation. If the operation was not executed or it was aborted due to the failure of
+     * another operation within the transactional batch, the value of this field will be 424;
+     * for the operation that caused the batch to abort, the value of this field
+     * will indicate the cause of failure.
+     * <p>
+     * If there are issues such as request timeouts, Gone, session not available, network failure
+     * or if the service somehow returns 5xx then this will throw an exception instead of returning a TransactionalBatchResponse.
+     * <p>
+     * Use {@link TransactionalBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
+     * transactional batch succeeded.
+     */
+    @Beta(Beta.SinceVersion.V4_7_0)
+    public TransactionalBatchResponse executeTransactionalBatch(
+        TransactionalBatch transactionalBatch,
+        TransactionalBatchRequestOptions requestOptions) {
+
+        return this.blockBatchResponse(asyncContainer.executeTransactionalBatch(transactionalBatch, requestOptions));
     }
 
     /**

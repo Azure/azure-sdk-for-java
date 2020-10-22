@@ -11,6 +11,7 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -20,11 +21,10 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.rest.ActivationResponse;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -311,7 +311,8 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
 
     public static <T, InnerT> Accepted<T> newAccepted(
         ClientLogger logger,
-        AzureServiceClient client,
+        HttpPipeline httpPipeline,
+        Duration pollInterval,
         Supplier<Response<Flux<ByteBuffer>>> activationOperation,
         Function<InnerT, T> convertOperation,
         Type innerType,
@@ -327,9 +328,9 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
         } else {
             Accepted<T> accepted = new AcceptedImpl<InnerT, T>(
                 activationResponse,
-                client.getSerializerAdapter(),
-                client.getHttpPipeline(),
-                SdkContext.getDelayDuration(client.getDefaultPollInterval()),
+                SerializerFactory.createDefaultManagementSerializerAdapter(),
+                httpPipeline,
+                ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(pollInterval),
                 innerType, innerType,
                 convertOperation);
 
@@ -337,9 +338,10 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
         }
     }
 
-    public static <T extends HasInner<InnerT>, InnerT> Accepted<T> newAccepted(
+    public static <T extends HasInnerModel<InnerT>, InnerT> Accepted<T> newAccepted(
         ClientLogger logger,
-        AzureServiceClient client,
+        HttpPipeline httpPipeline,
+        Duration pollInterval,
         Supplier<Response<Flux<ByteBuffer>>> activationOperation,
         Function<InnerT, T> convertOperation,
         Type innerType,
@@ -355,14 +357,14 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
         } else {
             Accepted<T> accepted = new AcceptedImpl<InnerT, T>(
                 activationResponse,
-                client.getSerializerAdapter(),
-                client.getHttpPipeline(),
-                SdkContext.getDelayDuration(client.getDefaultPollInterval()),
+                SerializerFactory.createDefaultManagementSerializerAdapter(),
+                httpPipeline,
+                ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(pollInterval),
                 innerType, innerType,
                 convertOperation);
 
             if (postActivation != null) {
-                postActivation.accept(accepted.getActivationResponse().getValue().inner());
+                postActivation.accept(accepted.getActivationResponse().getValue().innerModel());
             }
 
             return accepted;

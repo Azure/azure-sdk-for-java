@@ -10,7 +10,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VirtualMachineScaleSetUpdateOSDisk model. */
+/**
+ * Describes virtual machine scale set operating system disk Update Object. This should be used for Updating VMSS OS
+ * Disk.
+ */
 @Fluent
 public final class VirtualMachineScaleSetUpdateOSDisk {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetUpdateOSDisk.class);

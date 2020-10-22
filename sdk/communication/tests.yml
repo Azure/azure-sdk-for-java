@@ -1,0 +1,16 @@
+trigger: none
+
+jobs:
+- template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+  parameters:
+    Artifacts:
+      - name: azure-communication-administration
+        groupId: com.azure
+        safeName: azurecommunicationadministration
+      - name: azure-communication-chat
+        groupId: com.azure
+        safeName: azurecommunicationchatclient
+    ServiceDirectory: communication
+    EnvVars:
+      AZURE_TEST_MODE: LIVE
+      SKIP_PHONENUMBER_INTEGRATION_TESTS: TRUE

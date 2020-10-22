@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** The MetricAlertResourcePatch model. */
+/** The metric alert resource for patch operations. */
 @JsonFlatten
 @Fluent
 public class MetricAlertResourcePatch {

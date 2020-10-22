@@ -11,7 +11,7 @@ import com.azure.search.documents.models.AutocompleteMode;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AutocompleteOptions model. */
+/** Parameter group. */
 @Fluent
 public final class AutocompleteOptions {
     /*

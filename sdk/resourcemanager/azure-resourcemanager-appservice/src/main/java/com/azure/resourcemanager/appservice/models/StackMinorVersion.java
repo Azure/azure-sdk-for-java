@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The StackMinorVersion model. */
+/** Application stack minor version. */
 @Fluent
 public final class StackMinorVersion {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StackMinorVersion.class);

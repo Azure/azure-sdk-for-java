@@ -6,12 +6,12 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.inner.ResourceHealthMetadataInner;
+import com.azure.resourcemanager.appservice.fluent.models.ResourceHealthMetadataInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ResourceHealthMetadataCollection model. */
+/** Collection of resource health metadata. */
 @Fluent
 public final class ResourceHealthMetadataCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceHealthMetadataCollection.class);

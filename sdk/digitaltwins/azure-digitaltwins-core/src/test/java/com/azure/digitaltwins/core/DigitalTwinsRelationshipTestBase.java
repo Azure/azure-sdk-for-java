@@ -30,8 +30,16 @@ public abstract class DigitalTwinsRelationshipTestBase extends DigitalTwinsTestB
     static final String HVAC_COOLS_FLOOR_RELATIONSHIP_ID = "HvacToFloorRelationship";
     static final String ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID = "RoomToFloorRelationship";
 
+    // Relationships list operation default max item count is 10. We create 31 to make sure we will get over 3 pages of response.
+    // Ideally, service team would let us set max items per page when listing, but that isn't a feature yet
+    static final int BULK_RELATIONSHIP_COUNT = 31;
+    static final int RELATIONSHIP_PAGE_SIZE_DEFAULT = 10;
+
     @Test
     public abstract void relationshipLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
+
+    @Test
+    public abstract void relationshipListOperationWithMultiplePages(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
 
     void createModelsRunner(String floorModelId, String roomModelId, String hvacModelId, Consumer<List<String>> createModelsTestRunner) {
         String floorModel = getFloorModelPayload(floorModelId, roomModelId, hvacModelId);

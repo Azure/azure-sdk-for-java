@@ -7,8 +7,8 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.redis.RedisManager;
 import com.azure.resourcemanager.redis.fluent.RedisClient;
-import com.azure.resourcemanager.redis.fluent.inner.OperationInner;
-import com.azure.resourcemanager.redis.fluent.inner.RedisResourceInner;
+import com.azure.resourcemanager.redis.fluent.models.OperationInner;
+import com.azure.resourcemanager.redis.fluent.models.RedisResourceInner;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisCaches;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
@@ -19,7 +19,7 @@ public class RedisCachesImpl
     implements RedisCaches {
 
     public RedisCachesImpl(final RedisManager redisManager) {
-        super(redisManager.inner().getRedis(), redisManager);
+        super(redisManager.serviceClient().getRedis(), redisManager);
     }
 
     @Override
@@ -47,6 +47,6 @@ public class RedisCachesImpl
 
     @Override
     public PagedFlux<OperationInner> listOperationsAsync() {
-        return this.manager().inner().getOperations().listAsync();
+        return this.manager().serviceClient().getOperations().listAsync();
     }
 }

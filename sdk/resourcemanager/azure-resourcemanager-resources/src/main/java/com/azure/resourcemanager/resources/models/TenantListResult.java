@@ -6,12 +6,12 @@ package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.fluent.inner.TenantIdDescriptionInner;
+import com.azure.resourcemanager.resources.fluent.models.TenantIdDescriptionInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The TenantListResult model. */
+/** Tenant Ids information. */
 @Fluent
 public final class TenantListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TenantListResult.class);

@@ -9,13 +9,13 @@ import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineUnmanagedDataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachines;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import org.junit.jupiter.api.Assertions;
 
 public class TestVirtualMachineDataDisk extends TestTemplate<VirtualMachine, VirtualMachines> {
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
-        final String vmName = virtualMachines.manager().sdkContext().randomResourceName("vm", 10);
+        final String vmName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
         VirtualMachine virtualMachine =
             virtualMachines
                 .define(vmName)
@@ -33,10 +33,10 @@ public class TestVirtualMachineDataDisk extends TestTemplate<VirtualMachine, Vir
                 .withNewVhd(20)
                 .withCaching(CachingTypes.READ_ONLY)
                 .attach()
-                .withSize(VirtualMachineSizeTypes.STANDARD_A8)
+                .withSize(VirtualMachineSizeTypes.STANDARD_A2)
                 .create();
 
-        Assertions.assertTrue(virtualMachine.size().equals(VirtualMachineSizeTypes.STANDARD_A8));
+        Assertions.assertTrue(virtualMachine.size().equals(VirtualMachineSizeTypes.STANDARD_A2));
         Assertions.assertTrue(virtualMachine.unmanagedDataDisks().size() == 2);
         VirtualMachineUnmanagedDataDisk disk2 = null;
         for (VirtualMachineUnmanagedDataDisk dataDisk : virtualMachine.unmanagedDataDisks().values()) {

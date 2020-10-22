@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VirtualMachineReimageParameters model. */
+/** Parameters for Reimaging Virtual Machine. NOTE: Virtual Machine OS disk will always be reimaged. */
 @Fluent
 public class VirtualMachineReimageParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineReimageParameters.class);

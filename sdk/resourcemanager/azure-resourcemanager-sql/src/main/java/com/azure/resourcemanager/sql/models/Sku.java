@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Sku model. */
+/** An ARM Resource SKU. */
 @Fluent
 public final class Sku {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Sku.class);

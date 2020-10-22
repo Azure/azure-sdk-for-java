@@ -10,7 +10,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SuggestRequest model. */
+/** Parameters for filtering, sorting, fuzzy matching, and other suggestions query behaviors. */
 @Fluent
 public final class SuggestRequest {
     /*

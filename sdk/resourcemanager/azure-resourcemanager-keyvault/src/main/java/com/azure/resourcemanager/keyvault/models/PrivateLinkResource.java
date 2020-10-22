@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PrivateLinkResource model. */
+/** A private link resource. */
 @JsonFlatten
 @Fluent
 public class PrivateLinkResource extends Resource {

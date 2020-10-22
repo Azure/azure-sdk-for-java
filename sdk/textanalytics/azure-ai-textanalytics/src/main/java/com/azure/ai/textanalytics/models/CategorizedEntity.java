@@ -15,7 +15,6 @@ public final class CategorizedEntity {
     private final String subcategory;
     private final double confidenceScore;
     private final int offset;
-    private final int length;
 
     /**
      * Creates a {@link CategorizedEntity} model that describes entity.
@@ -32,7 +31,6 @@ public final class CategorizedEntity {
         this.subcategory = subcategory;
         this.confidenceScore = confidenceScore;
         this.offset = 0;
-        this.length = 0;
     }
 
     /**
@@ -44,16 +42,14 @@ public final class CategorizedEntity {
      * @param confidenceScore If a well-known item is recognized, a decimal number denoting the confidence level
      * between 0 and 1 will be returned.
      * @param offset The start position for the entity text.
-     * @param length The length for the entity text.
      */
     public CategorizedEntity(String text, EntityCategory category, String subcategory, double confidenceScore,
-        int offset, int length) {
+        int offset) {
         this.text = text;
         this.category = category;
         this.subcategory = subcategory;
         this.confidenceScore = confidenceScore;
         this.offset = offset;
-        this.length = length;
     }
 
     /**
@@ -100,14 +96,5 @@ public final class CategorizedEntity {
      */
     public int getOffset() {
         return offset;
-    }
-
-    /**
-     * Get the length of entity text.
-     *
-     * @return The length of entity text.
-     */
-    public int getLength() {
-        return length;
     }
 }

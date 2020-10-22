@@ -5,9 +5,9 @@ package com.azure.resourcemanager.resources.fluentcore.arm.collection.implementa
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Resource;
+import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.arm.ManagerBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -35,7 +35,7 @@ public abstract class TopLevelModifiableResourcesImpl<
         ImplT extends T,
         InnerT extends Resource,
         InnerCollectionT extends InnerSupportsListing<InnerT> & InnerSupportsGet<InnerT> & InnerSupportsDelete<?>,
-        ManagerT extends ManagerBase>
+        ManagerT extends Manager<?>>
         extends GroupableResourcesImpl<T, ImplT, InnerT, InnerCollectionT, ManagerT>
         implements
         SupportsListing<T>,

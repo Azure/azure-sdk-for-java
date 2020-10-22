@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The HubPublicIpAddresses model. */
+/** Public IP addresses associated with azure firewall. */
 @Fluent
 public final class HubPublicIpAddresses {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(HubPublicIpAddresses.class);

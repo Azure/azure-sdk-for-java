@@ -6,12 +6,12 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VirtualMachineScaleSetListWithLinkResult model. */
+/** The List Virtual Machine operation response. */
 @Fluent
 public final class VirtualMachineScaleSetListWithLinkResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetListWithLinkResult.class);

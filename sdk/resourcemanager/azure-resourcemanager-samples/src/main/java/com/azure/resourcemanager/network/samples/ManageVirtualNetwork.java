@@ -7,14 +7,14 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
@@ -34,22 +34,22 @@ public final class ManageVirtualNetwork {
 
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
-        final String vnetName1 = azure.sdkContext().randomResourceName("vnet1", 20);
-        final String vnetName2 = azure.sdkContext().randomResourceName("vnet2", 20);
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
+        final String vnetName1 = Utils.randomResourceName(azureResourceManager, "vnet1", 20);
+        final String vnetName2 = Utils.randomResourceName(azureResourceManager, "vnet2", 20);
         final String vnet1FrontEndSubnetName = "frontend";
         final String vnet1BackEndSubnetName = "backend";
         final String vnet1FrontEndSubnetNsgName = "frontendnsg";
         final String vnet1BackEndSubnetNsgName = "backendnsg";
-        final String frontEndVMName = azure.sdkContext().randomResourceName("fevm", 24);
-        final String backEndVMName = azure.sdkContext().randomResourceName("bevm", 24);
-        final String publicIPAddressLeafDnsForFrontEndVM = azure.sdkContext().randomResourceName("pip1", 24);
+        final String frontEndVMName = Utils.randomResourceName(azureResourceManager, "fevm", 24);
+        final String backEndVMName = Utils.randomResourceName(azureResourceManager, "bevm", 24);
+        final String publicIPAddressLeafDnsForFrontEndVM = Utils.randomResourceName(azureResourceManager, "pip1", 24);
         final String userName = "tirekicker";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
-        final String rgName = azure.sdkContext().randomResourceName("rgNEMV", 24);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgNEMV", 24);
 
         try {
             //============================================================
@@ -59,7 +59,7 @@ public final class ManageVirtualNetwork {
 
             System.out.println("Creating a network security group for virtual network backend subnet...");
 
-            NetworkSecurityGroup backEndSubnetNsg = azure.networkSecurityGroups().define(vnet1BackEndSubnetNsgName)
+            NetworkSecurityGroup backEndSubnetNsg = azureResourceManager.networkSecurityGroups().define(vnet1BackEndSubnetNsgName)
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
                     .defineRule("DenyInternetInComing")
@@ -89,7 +89,7 @@ public final class ManageVirtualNetwork {
 
             System.out.println("Creating virtual network #1...");
 
-            Network virtualNetwork1 = azure.networks().define(vnetName1)
+            Network virtualNetwork1 = azureResourceManager.networks().define(vnetName1)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
                     .withAddressSpace("192.168.0.0/16")
@@ -112,7 +112,7 @@ public final class ManageVirtualNetwork {
 
             System.out.println("Creating a network security group for virtual network backend subnet...");
 
-            NetworkSecurityGroup frontEndSubnetNsg = azure.networkSecurityGroups().define(vnet1FrontEndSubnetNsgName)
+            NetworkSecurityGroup frontEndSubnetNsg = azureResourceManager.networkSecurityGroups().define(vnet1FrontEndSubnetNsgName)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
                     .defineRule("AllowHttpInComing")
@@ -161,7 +161,7 @@ public final class ManageVirtualNetwork {
 
             Date t1 = new Date();
 
-            VirtualMachine frontEndVM = azure.virtualMachines().define(frontEndVMName)
+            VirtualMachine frontEndVM = azureResourceManager.virtualMachines().define(frontEndVMName)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
                     .withExistingPrimaryNetwork(virtualNetwork1)
@@ -187,7 +187,7 @@ public final class ManageVirtualNetwork {
 
             Date t3 = new Date();
 
-            VirtualMachine backEndVM = azure.virtualMachines().define(backEndVMName)
+            VirtualMachine backEndVM = azureResourceManager.virtualMachines().define(backEndVMName)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
                     .withExistingPrimaryNetwork(virtualNetwork1)
@@ -212,7 +212,7 @@ public final class ManageVirtualNetwork {
 
             System.out.println("Creating virtual network #2...");
 
-            Network virtualNetwork2 = azure.networks().define(vnetName2)
+            Network virtualNetwork2 = azureResourceManager.networks().define(vnetName2)
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
                     .create();
@@ -225,7 +225,7 @@ public final class ManageVirtualNetwork {
             //============================================================
             // List virtual networks
 
-            for (Network virtualNetwork : azure.networks().listByResourceGroup(rgName)) {
+            for (Network virtualNetwork : azureResourceManager.networks().listByResourceGroup(rgName)) {
                 Utils.print(virtualNetwork);
             }
 
@@ -233,14 +233,14 @@ public final class ManageVirtualNetwork {
             //============================================================
             // Delete a virtual network
             System.out.println("Deleting the virtual network");
-            azure.networks().deleteById(virtualNetwork2.id());
+            azureResourceManager.networks().deleteById(virtualNetwork2.id());
             System.out.println("Deleted the virtual network");
 
             return true;
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             } catch (Exception g) {
@@ -260,18 +260,19 @@ public final class ManageVirtualNetwork {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

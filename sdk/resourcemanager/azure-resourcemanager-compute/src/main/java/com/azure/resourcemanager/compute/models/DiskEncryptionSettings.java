@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DiskEncryptionSettings model. */
+/** Describes a Encryption Settings for a Disk. */
 @Fluent
 public final class DiskEncryptionSettings {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskEncryptionSettings.class);

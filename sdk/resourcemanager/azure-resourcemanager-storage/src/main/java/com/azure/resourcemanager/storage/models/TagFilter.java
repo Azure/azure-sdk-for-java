@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TagFilter model. */
+/** Blob index tag based filtering for blob objects. */
 @Fluent
 public final class TagFilter {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TagFilter.class);

@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VirtualMachineExtensionUpdate model. */
+/** Describes a Virtual Machine Extension. */
 @JsonFlatten
 @Fluent
 public class VirtualMachineExtensionUpdate extends UpdateResource {

@@ -1,7 +1,11 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (Unreleased)
 
+
+## 1.3.0 (2020-10-12)
+### Dependency Updates
+- Update `azure-messaging-eventhubs` dependency to `5.3.0`.
 
 ## 1.2.0 (2020-09-11)
 - Updated dependency version of `azure-messaging-eventhubs` to `5.2.0`.
@@ -52,7 +56,7 @@ our efforts can be found in the [Azure SDK Design Guidelines for Java](https://a
 - Receive messages from all partitions of an Azure Event Hub using `EventProcessor`.
 - Provide an instance of `BlobCheckpointStore` to your Event Processor. `BlobCheckpointStore` uses Azure Blob Storage to
 store checkpoints and balance partition load among all instances of Event Processors.
-- Store checkpoint and partition ownership details in [Azure Storage Blobs](https://azure.microsoft.com/en-us/services/storage/blobs/).
+- Store checkpoint and partition ownership details in [Azure Storage Blobs](https://azure.microsoft.com/services/storage/blobs/).
 
 ### Known issues
 

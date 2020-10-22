@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PartnerInfo model. */
+/** Partner server information for the failover group. */
 @Fluent
 public final class PartnerInfo {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PartnerInfo.class);

@@ -6,12 +6,12 @@ package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.fluent.inner.OAuth2PermissionGrantInner;
+import com.azure.resourcemanager.authorization.fluent.models.OAuth2PermissionGrantInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The OAuth2PermissionGrantListResult model. */
+/** Server response for get oauth2 permissions grants. */
 @Fluent
 public final class OAuth2PermissionGrantListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OAuth2PermissionGrantListResult.class);

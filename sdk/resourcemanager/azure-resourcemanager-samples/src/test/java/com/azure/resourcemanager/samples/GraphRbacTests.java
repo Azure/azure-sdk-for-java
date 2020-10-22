@@ -10,7 +10,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.annotation.DoNotRecord;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.authorization.samples.ManageServicePrincipalCredentials;
 import com.azure.resourcemanager.authorization.samples.ManageUsersGroupsAndRoles;
 import com.azure.core.management.profile.AzureProfile;
@@ -24,7 +24,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class GraphRbacTests extends ResourceManagerTestBase {
-    private Azure.Authenticated authenticated;
+    private AzureResourceManager azureResourceManager;
     private AzureProfile profile;
 
     @Test
@@ -34,7 +34,7 @@ public class GraphRbacTests extends ResourceManagerTestBase {
             return;
         }
 
-        Assertions.assertTrue(ManageUsersGroupsAndRoles.runSample(authenticated, profile));
+        Assertions.assertTrue(ManageUsersGroupsAndRoles.runSample(azureResourceManager, profile));
     }
 
 //    @Test
@@ -49,7 +49,7 @@ public class GraphRbacTests extends ResourceManagerTestBase {
             return;
         }
 
-        Assertions.assertTrue(ManageServicePrincipalCredentials.runSample(authenticated, profile));
+        Assertions.assertTrue(ManageServicePrincipalCredentials.runSample(azureResourceManager, profile));
     }
 
     @Override
@@ -72,7 +72,7 @@ public class GraphRbacTests extends ResourceManagerTestBase {
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
-        authenticated = Azure.authenticate(httpPipeline, profile);
+        azureResourceManager = buildManager(AzureResourceManager.class, httpPipeline, profile);
         this.profile = profile;
     }
 

@@ -49,8 +49,8 @@ public class EventRoutesSyncSamples {
 
         String existingEventRouteId = null;
         for (EventRoute eventRoute : eventRoutes) {
-            existingEventRouteId = eventRoute.getId();
-            ConsoleLogger.print(String.format("\tEventRouteId: %s", eventRoute.getId()));
+            existingEventRouteId = eventRoute.getEventRouteId();
+            ConsoleLogger.print(String.format("\tEventRouteId: %s", eventRoute.getEventRouteId()));
             ConsoleLogger.print(String.format("\tEventRouteEndpointName: %s", eventRoute.getEndpointName()));
             if (eventRoute.getFilter() != null)
             {
@@ -65,7 +65,7 @@ public class EventRoutesSyncSamples {
             try {
                 EventRoute existingEventRoute = client.getEventRoute(existingEventRouteId);
                 ConsoleLogger.print(String.format("Successfully retrieved event route with Id %s", existingEventRouteId));
-                ConsoleLogger.print(String.format("\tEventRouteId: %s", existingEventRoute.getId()));
+                ConsoleLogger.print(String.format("\tEventRouteId: %s", existingEventRoute.getEventRouteId()));
                 ConsoleLogger.print(String.format("\tEventRouteEndpointName: %s", existingEventRoute.getEndpointName()));
                 if (existingEventRoute.getFilter() != null)
                 {
@@ -87,8 +87,7 @@ public class EventRoutesSyncSamples {
             String eventRouteId = "SomeEventRoute-" + UUID.randomUUID();
             String eventRouteEndpointName = parsedArguments.getEventRouteEndpointName();
             String filter = "$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'";
-            EventRoute eventRoute = new EventRoute();
-            eventRoute.setEndpointName(eventRouteEndpointName);
+            EventRoute eventRoute = new EventRoute(eventRouteEndpointName);
             eventRoute.setFilter(filter);
 
             try {

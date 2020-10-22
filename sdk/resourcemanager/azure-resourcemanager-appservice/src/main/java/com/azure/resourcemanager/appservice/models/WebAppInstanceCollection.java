@@ -6,12 +6,12 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteInstanceInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteInstanceInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The WebAppInstanceCollection model. */
+/** Collection of app instances. */
 @Fluent
 public final class WebAppInstanceCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WebAppInstanceCollection.class);

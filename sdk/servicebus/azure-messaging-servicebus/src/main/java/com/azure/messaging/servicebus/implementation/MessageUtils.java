@@ -3,10 +3,7 @@
 
 package com.azure.messaging.servicebus.implementation;
 
-import com.azure.core.amqp.exception.AmqpErrorContext;
-import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpConstants;
-import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.util.CoreUtils;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 import org.apache.qpid.proton.amqp.Binary;
@@ -22,6 +19,8 @@ import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -90,19 +89,19 @@ public final class MessageUtils {
     }
 
     /**
-     * Gets the {@link Instant} representation of .NET epoch ticks. .NET ticks are measured from 0001/01/01. Java {@link
-     * Instant} is measured from 1970/01/01.
+     * Gets the {@link OffsetDateTime} representation of .NET epoch ticks. .NET ticks are measured from 0001/01/01.
+     * Java {@link OffsetDateTime} is measured from 1970/01/01.
      *
      * @param dotNetTicks long measured from 01/01/0001
      *
      * @return The instant represented by the ticks.
      */
-    static Instant convertDotNetTicksToInstant(long dotNetTicks) {
+    static OffsetDateTime convertDotNetTicksToOffsetDateTime(long dotNetTicks) {
         long ticksFromEpoch = dotNetTicks - EPOCH_IN_DOT_NET_TICKS;
         long millisecondsFromEpoch = Double.valueOf(ticksFromEpoch * 0.0001).longValue();
         long fractionTicks = ticksFromEpoch % 10000;
 
-        return Instant.ofEpochMilli(millisecondsFromEpoch).plusNanos(fractionTicks * 100);
+        return Instant.ofEpochMilli(millisecondsFromEpoch).plusNanos(fractionTicks * 100).atOffset(ZoneOffset.UTC);
     }
 
     /**
@@ -207,35 +206,6 @@ public final class MessageUtils {
      */
     public static long toPrimitive(Long value) {
         return value != null ? value : 0L;
-    }
-
-    /**
-     * Creates an exception given the error condition and context.
-     *
-     * @param errorCondition Error condition for the AMQP exception.
-     * @param errorContext AMQP context it occurred in.
-     *
-     * @return Corresponding {@link Throwable} for the error condition.
-     */
-    static Throwable toException(ErrorCondition errorCondition, AmqpErrorContext errorContext) {
-        final Symbol condition = errorCondition.getCondition();
-        final String description = errorCondition.getDescription();
-
-        try {
-            return ExceptionUtil.toException(condition.toString(), description, errorContext);
-        } catch (IllegalArgumentException ignored) {
-            final ServiceBusErrorCondition error = ServiceBusErrorCondition.fromString(condition.toString());
-
-            return toException(error, description, errorContext);
-        }
-    }
-
-    static Throwable toException(ServiceBusErrorCondition errorCondition, String description,
-        AmqpErrorContext errorContext) {
-
-        final boolean isTransient = errorCondition.isTransient();
-        final String message = String.format("condition[%s]: %s", errorCondition.toString(), description);
-        return new AmqpException(isTransient, message, errorContext);
     }
 
     private static byte[] reorderBytes(byte[] javaBytes) {

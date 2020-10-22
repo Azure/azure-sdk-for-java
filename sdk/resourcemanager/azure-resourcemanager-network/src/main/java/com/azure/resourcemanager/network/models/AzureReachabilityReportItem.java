@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AzureReachabilityReportItem model. */
+/** Azure reachability report details for a given provider location. */
 @Fluent
 public final class AzureReachabilityReportItem {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureReachabilityReportItem.class);

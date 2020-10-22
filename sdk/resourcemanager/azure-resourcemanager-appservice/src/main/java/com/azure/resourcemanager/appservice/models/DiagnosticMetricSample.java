@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The DiagnosticMetricSample model. */
+/** Class representing Diagnostic Metric. */
 @Fluent
 public final class DiagnosticMetricSample {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DiagnosticMetricSample.class);

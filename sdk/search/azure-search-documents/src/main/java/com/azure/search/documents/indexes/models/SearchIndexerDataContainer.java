@@ -10,7 +10,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SearchIndexerDataContainer model. */
+/** Represents information about the entity (such as Azure SQL table or CosmosDB collection) that will be indexed. */
 @Fluent
 public final class SearchIndexerDataContainer {
     /*

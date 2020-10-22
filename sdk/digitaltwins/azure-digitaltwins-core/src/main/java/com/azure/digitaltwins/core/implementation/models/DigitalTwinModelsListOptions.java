@@ -7,35 +7,90 @@ package com.azure.digitaltwins.core.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DigitalTwinModelsListOptions model. */
+/** Parameter group. */
 @Fluent
 public final class DigitalTwinModelsListOptions {
     /*
-     * The maximum number of items to retrieve per request. The server may
-     * choose to return less than the requested max.
+     * Identifies the request in a distributed tracing system.
      */
-    @JsonProperty(value = "MaxItemCount")
-    private Integer maxItemCount;
+    @JsonProperty(value = "traceparent")
+    private String traceparent;
+
+    /*
+     * Provides vendor-specific trace identification information and is a
+     * companion to traceparent.
+     */
+    @JsonProperty(value = "tracestate")
+    private String tracestate;
+
+    /*
+     * The maximum number of items to retrieve per request. The server may
+     * choose to return less than the requested number.
+     */
+    @JsonProperty(value = "MaxItemsPerPage")
+    private Integer maxItemsPerPage;
 
     /**
-     * Get the maxItemCount property: The maximum number of items to retrieve per request. The server may choose to
-     * return less than the requested max.
+     * Get the traceparent property: Identifies the request in a distributed tracing system.
      *
-     * @return the maxItemCount value.
+     * @return the traceparent value.
      */
-    public Integer getMaxItemCount() {
-        return this.maxItemCount;
+    public String getTraceparent() {
+        return this.traceparent;
     }
 
     /**
-     * Set the maxItemCount property: The maximum number of items to retrieve per request. The server may choose to
-     * return less than the requested max.
+     * Set the traceparent property: Identifies the request in a distributed tracing system.
      *
-     * @param maxItemCount the maxItemCount value to set.
+     * @param traceparent the traceparent value to set.
      * @return the DigitalTwinModelsListOptions object itself.
      */
-    public DigitalTwinModelsListOptions setMaxItemCount(Integer maxItemCount) {
-        this.maxItemCount = maxItemCount;
+    public DigitalTwinModelsListOptions setTraceparent(String traceparent) {
+        this.traceparent = traceparent;
+        return this;
+    }
+
+    /**
+     * Get the tracestate property: Provides vendor-specific trace identification information and is a companion to
+     * traceparent.
+     *
+     * @return the tracestate value.
+     */
+    public String getTracestate() {
+        return this.tracestate;
+    }
+
+    /**
+     * Set the tracestate property: Provides vendor-specific trace identification information and is a companion to
+     * traceparent.
+     *
+     * @param tracestate the tracestate value to set.
+     * @return the DigitalTwinModelsListOptions object itself.
+     */
+    public DigitalTwinModelsListOptions setTracestate(String tracestate) {
+        this.tracestate = tracestate;
+        return this;
+    }
+
+    /**
+     * Get the maxItemsPerPage property: The maximum number of items to retrieve per request. The server may choose to
+     * return less than the requested number.
+     *
+     * @return the maxItemsPerPage value.
+     */
+    public Integer getMaxItemsPerPage() {
+        return this.maxItemsPerPage;
+    }
+
+    /**
+     * Set the maxItemsPerPage property: The maximum number of items to retrieve per request. The server may choose to
+     * return less than the requested number.
+     *
+     * @param maxItemsPerPage the maxItemsPerPage value to set.
+     * @return the DigitalTwinModelsListOptions object itself.
+     */
+    public DigitalTwinModelsListOptions setMaxItemsPerPage(Integer maxItemsPerPage) {
+        this.maxItemsPerPage = maxItemsPerPage;
         return this;
     }
 

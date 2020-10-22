@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-/** The ThrottledRequestsInput model. */
+/** Api request input for LogAnalytics getThrottledRequests Api. */
 @Immutable
 public final class ThrottledRequestsInput extends LogAnalyticsInputBase {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ThrottledRequestsInput.class);

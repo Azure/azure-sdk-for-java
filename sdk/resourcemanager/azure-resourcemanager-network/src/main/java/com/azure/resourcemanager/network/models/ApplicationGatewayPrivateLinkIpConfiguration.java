@@ -11,7 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ApplicationGatewayPrivateLinkIpConfiguration model. */
+/** The application gateway private link ip configuration. */
 @JsonFlatten
 @Fluent
 public class ApplicationGatewayPrivateLinkIpConfiguration extends SubResource {

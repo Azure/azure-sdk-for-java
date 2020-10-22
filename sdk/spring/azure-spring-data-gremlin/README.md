@@ -51,10 +51,10 @@ This repository only supports Spring Data 2.x. Version mapping between spring bo
 `spring-data-gremlin` is published on Maven Central Repository.  
 If you are using Maven, add the following dependency.  
 
-[//]: # ({x-version-update-start;com.azure:azure-spring-data-gremlin;current})
+[//]: # ({x-version-update-start;com.azure.spring:azure-spring-data-gremlin;current})
 ```xml
 <dependency>
-    <groupId>com.azure</groupId>
+    <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-data-gremlin</artifactId>
     <version>2.3.1-beta.1</version>
 </dependency>
@@ -182,7 +182,7 @@ public class SampleApplication implements CommandLineRunner {
 Autowired UserRepository interface, then can do save, delete and find operations. 
 
 ## Examples
-Please refer to [sample project](../azure-spring-boot-samples/azure-spring-data-sample-gremlin/) and [web sample project](../azure-spring-boot-samples/azure-spring-data-sample-gremlin-web-service).
+Please refer to [sample project](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-data-sample-gremlin/) and [web sample project](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-data-sample-gremlin-web-service).
 
 ## Data / Telemetry
 

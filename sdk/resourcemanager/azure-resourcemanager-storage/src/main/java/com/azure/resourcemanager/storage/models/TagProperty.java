@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The TagProperty model. */
+/** A tag of the LegalHold of a blob container. */
 @Immutable
 public final class TagProperty {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TagProperty.class);

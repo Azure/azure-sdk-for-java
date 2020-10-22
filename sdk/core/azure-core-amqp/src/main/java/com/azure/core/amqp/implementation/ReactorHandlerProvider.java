@@ -13,6 +13,7 @@ import com.azure.core.amqp.implementation.handler.WebSocketsConnectionHandler;
 import com.azure.core.amqp.implementation.handler.WebSocketsProxyConnectionHandler;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
+import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.reactor.Reactor;
 
 import java.time.Duration;
@@ -49,20 +50,20 @@ public class ReactorHandlerProvider {
      */
     public ConnectionHandler createConnectionHandler(String connectionId, String hostname,
             AmqpTransportType transportType, ProxyOptions proxyOptions, String product, String clientVersion,
-            ClientOptions clientOptions) {
+            SslDomain.VerifyMode verifyMode, ClientOptions clientOptions) {
         switch (transportType) {
             case AMQP:
-                return new ConnectionHandler(connectionId, hostname, product, clientVersion, clientOptions);
+                return new ConnectionHandler(connectionId, hostname, product, clientVersion, verifyMode, clientOptions);
             case AMQP_WEB_SOCKETS:
                 if (proxyOptions != null && proxyOptions.isProxyAddressConfigured()) {
                     return new WebSocketsProxyConnectionHandler(connectionId, hostname, proxyOptions, product,
-                        clientVersion, clientOptions);
+                        clientVersion, verifyMode, clientOptions);
                 } else if (WebSocketsProxyConnectionHandler.shouldUseProxy(hostname)) {
                     logger.info("System default proxy configured for hostname '{}'. Using proxy.", hostname);
                     return new WebSocketsProxyConnectionHandler(connectionId, hostname,
-                        ProxyOptions.SYSTEM_DEFAULTS, product, clientVersion, clientOptions);
+                        ProxyOptions.SYSTEM_DEFAULTS, product, clientVersion, verifyMode, clientOptions);
                 } else {
-                    return new WebSocketsConnectionHandler(connectionId, hostname, product, clientVersion,
+                    return new WebSocketsConnectionHandler(connectionId, hostname, product, clientVersion, verifyMode,
                         clientOptions);
                 }
             default:

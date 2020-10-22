@@ -11,6 +11,7 @@ import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareStorageException
+
 import reactor.test.StepVerifier
 import spock.lang.Unroll
 
@@ -211,7 +212,7 @@ class ShareAsyncAPITests extends APISpec {
         primaryShareAsyncClient.createWithResponse(null, 1).block()
         when:
         def getQuotaBeforeVerifier = StepVerifier.create(primaryShareAsyncClient.getProperties())
-        def setQuotaVerifier = StepVerifier.create(primaryShareAsyncClient.setQuotaWithResponse(2, null))
+        def setQuotaVerifier = StepVerifier.create(primaryShareAsyncClient.setQuotaWithResponse(2))
         def getQuotaAfterVerifier = StepVerifier.create(primaryShareAsyncClient.getProperties())
         then:
         getQuotaBeforeVerifier.assertNext {

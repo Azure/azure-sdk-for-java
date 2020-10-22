@@ -32,6 +32,7 @@ public final class IdentityClientOptions {
     private boolean allowUnencryptedCache;
     private boolean sharedTokenCacheEnabled;
     private String keePassDatabasePath;
+    private boolean includeX5c;
     private AuthenticationRecord authenticationRecord;
 
     /**
@@ -239,6 +240,28 @@ public final class IdentityClientOptions {
      */
     public IdentityClientOptions setAuthenticationRecord(AuthenticationRecord authenticationRecord) {
         this.authenticationRecord = authenticationRecord;
+        return this;
+    }
+
+
+    /**
+     * Get the status whether x5c claim (public key of the certificate) should be included as part of the authentication
+     * request or not.
+     * @return the status of x5c claim inclusion.
+     */
+    public boolean isIncludeX5c() {
+        return includeX5c;
+    }
+
+    /**
+     * Specifies if the x5c claim (public key of the certificate) should be sent as part of the authentication request.
+     * The default value is false.
+     *
+     * @param includeX5c true if the x5c should be sent. Otherwise false
+     * @return The updated identity client options.
+     */
+    public IdentityClientOptions setIncludeX5c(boolean includeX5c) {
+        this.includeX5c = includeX5c;
         return this;
     }
 

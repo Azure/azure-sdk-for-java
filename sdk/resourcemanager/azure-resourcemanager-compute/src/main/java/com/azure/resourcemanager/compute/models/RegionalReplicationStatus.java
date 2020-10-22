@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RegionalReplicationStatus model. */
+/** This is the regional replication status. */
 @Immutable
 public final class RegionalReplicationStatus {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RegionalReplicationStatus.class);

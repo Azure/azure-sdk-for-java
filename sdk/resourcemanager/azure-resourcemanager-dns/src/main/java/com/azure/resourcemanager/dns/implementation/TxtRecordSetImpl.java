@@ -5,7 +5,7 @@ package com.azure.resourcemanager.dns.implementation;
 import com.azure.resourcemanager.dns.models.RecordType;
 import com.azure.resourcemanager.dns.models.TxtRecord;
 import com.azure.resourcemanager.dns.models.TxtRecordSet;
-import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
+import com.azure.resourcemanager.dns.fluent.models.RecordSetInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,21 +22,21 @@ class TxtRecordSetImpl extends DnsRecordSetImpl implements TxtRecordSet {
 
     @Override
     public List<TxtRecord> records() {
-        if (this.inner().txtRecords() != null) {
-            return Collections.unmodifiableList(this.inner().txtRecords());
+        if (this.innerModel().txtRecords() != null) {
+            return Collections.unmodifiableList(this.innerModel().txtRecords());
         }
         return Collections.unmodifiableList(new ArrayList<>());
     }
 
     @Override
     protected RecordSetInner prepareForUpdate(RecordSetInner resource) {
-        if (this.inner().txtRecords() != null && this.inner().txtRecords().size() > 0) {
+        if (this.innerModel().txtRecords() != null && this.innerModel().txtRecords().size() > 0) {
             if (resource.txtRecords() == null) {
                 resource.withTxtRecords(new ArrayList<>());
             }
 
-            resource.txtRecords().addAll(this.inner().txtRecords());
-            this.inner().txtRecords().clear();
+            resource.txtRecords().addAll(this.innerModel().txtRecords());
+            this.innerModel().txtRecords().clear();
         }
 
         if (this.recordSetRemoveInfo.txtRecords().size() > 0) {

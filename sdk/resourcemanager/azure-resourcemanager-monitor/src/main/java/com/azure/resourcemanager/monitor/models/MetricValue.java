@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The MetricValue model. */
+/** Represents a metric value. */
 @Fluent
 public final class MetricValue {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricValue.class);

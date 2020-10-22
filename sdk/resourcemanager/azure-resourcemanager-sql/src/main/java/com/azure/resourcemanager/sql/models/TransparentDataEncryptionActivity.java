@@ -7,13 +7,13 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.sql.fluent.inner.TransparentDataEncryptionActivityInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
+import com.azure.resourcemanager.sql.fluent.models.TransparentDataEncryptionActivityInner;
 
 /** An immutable client-side representation of an Azure SQL database's TransparentDataEncryptionActivity. */
 @Fluent
 public interface TransparentDataEncryptionActivity
-    extends HasInner<TransparentDataEncryptionActivityInner>, HasResourceGroup, HasName, HasId {
+    extends HasInnerModel<TransparentDataEncryptionActivityInner>, HasResourceGroup, HasName, HasId {
     /** @return name of the SQL Server to which this replication belongs */
     String sqlServerName();
 

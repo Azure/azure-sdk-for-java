@@ -5,10 +5,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.http.HttpClient;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
-import com.azure.digitaltwins.core.models.ModelData;
+import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
 import com.azure.digitaltwins.core.models.BasicDigitalTwin;
 import com.azure.digitaltwins.core.models.DigitalTwinsResponse;
-import com.azure.digitaltwins.core.models.UpdateComponentRequestOptions;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -46,8 +45,8 @@ public class ComponentsTests extends ComponentsTestBase {
 
         try {
             // Create models and components to test the lifecycle.
-            List<ModelData> createdList = client.createModels(modelsList);
-            logger.info("Created {} models successfully", createdList.size());
+            Iterable<DigitalTwinsModelData> createdList = client.createModels(modelsList);
+            logger.info("Created models successfully");
 
             BasicDigitalTwin createdTwin = client.createDigitalTwin(roomWithWifiTwinId, deserializeJsonString(roomWithWifiTwin, BasicDigitalTwin.class), BasicDigitalTwin.class);
 
@@ -55,7 +54,7 @@ public class ComponentsTests extends ComponentsTestBase {
             assertEquals(createdTwin.getId(), roomWithWifiTwinId);
 
             // Get the component
-            Response<String> getComponentResponse = client.getComponentWithResponse(roomWithWifiTwinId, wifiComponentName, Context.NONE);
+            Response<String> getComponentResponse = client.getComponentWithResponse(roomWithWifiTwinId, wifiComponentName, String.class, null, Context.NONE);
             assertEquals(getComponentResponse.getStatusCode(), HttpURLConnection.HTTP_OK);
 
             // Update component
@@ -63,7 +62,7 @@ public class ComponentsTests extends ComponentsTestBase {
                 roomWithWifiTwinId,
                 wifiComponentName,
                 TestAssetsHelper.getWifiComponentUpdatePayload(),
-                new UpdateComponentRequestOptions(),
+                null,
                 Context.NONE);
 
             assertEquals(updateComponentResponse.getStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);

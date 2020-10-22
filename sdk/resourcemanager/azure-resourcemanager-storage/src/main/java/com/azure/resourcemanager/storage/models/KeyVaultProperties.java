@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The KeyVaultProperties model. */
+/** Properties of key vault. */
 @Fluent
 public final class KeyVaultProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultProperties.class);

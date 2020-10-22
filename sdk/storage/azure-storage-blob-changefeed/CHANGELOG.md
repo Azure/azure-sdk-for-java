@@ -1,7 +1,10 @@
 # Release History
 
-## 12.0.0-beta.3 (Unreleased)
+## 12.0.0-beta.4 (Unreleased)
 
+
+## 12.0.0-beta.3 (2020-10-01)
+- Added support to specify context in the sync methods.
 
 ## 12.0.0-beta.2 (2020-08-13)
 - Added the ability to read to the current hour

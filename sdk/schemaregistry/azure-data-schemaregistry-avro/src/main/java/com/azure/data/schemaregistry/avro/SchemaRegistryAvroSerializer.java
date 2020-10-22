@@ -18,6 +18,7 @@ import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
@@ -28,15 +29,18 @@ public final class SchemaRegistryAvroSerializer implements ObjectSerializer {
     private final ClientLogger logger = new ClientLogger(SchemaRegistryAvroSerializer.class);
 
     static final int SCHEMA_ID_SIZE = 32;
+    static final int RECORD_FORMAT_INDICATOR_SIZE = 4;
     private final SchemaRegistryAsyncClient schemaRegistryClient;
-    private final AvroSchemaRegistryUtils codec;
+    private final AvroSchemaRegistryUtils avroSchemaRegistryUtils;
     private final String schemaGroup;
     private final Boolean autoRegisterSchemas;
 
-    SchemaRegistryAvroSerializer(SchemaRegistryAsyncClient registryClient, AvroSchemaRegistryUtils codec,
-                                      String schemaGroup, Boolean autoRegisterSchemas) {
-        this.schemaRegistryClient = registryClient;
-        this.codec = codec;
+    SchemaRegistryAvroSerializer(SchemaRegistryAsyncClient schemaRegistryClient,
+                     AvroSchemaRegistryUtils avroSchemaRegistryUtils, String schemaGroup, Boolean autoRegisterSchemas) {
+        this.schemaRegistryClient = Objects.requireNonNull(schemaRegistryClient,
+            "'schemaRegistryClient' cannot be null.");
+        this.avroSchemaRegistryUtils = Objects.requireNonNull(avroSchemaRegistryUtils,
+            "'avroSchemaRegistryUtils' cannot be null.");
         this.schemaGroup = schemaGroup;
         this.autoRegisterSchemas = autoRegisterSchemas;
     }
@@ -56,7 +60,6 @@ public final class SchemaRegistryAvroSerializer implements ObjectSerializer {
 
         return Mono.fromCallable(() -> {
             byte[] payload = new byte[stream.available()];
-
             while (true) {
                 if (stream.read(payload) == -1) {
                     break;
@@ -70,6 +73,13 @@ public final class SchemaRegistryAvroSerializer implements ObjectSerializer {
                 }
 
                 ByteBuffer buffer = ByteBuffer.wrap(payload);
+
+                byte[] recordFormatIndicator = getRecordFormatIndicator(buffer);
+                if (!Arrays.equals(recordFormatIndicator, new byte[]{0x00, 0x00, 0x00, 0x00})) {
+                    return Mono.error(
+                        new IllegalStateException("Illegal format: unsupported record format indicator in payload"));
+                }
+
                 String schemaId = getSchemaIdFromPayload(buffer);
 
                 return this.schemaRegistryClient.getSchema(schemaId)
@@ -88,7 +98,7 @@ public final class SchemaRegistryAvroSerializer implements ObjectSerializer {
                         int length = buffer.limit() - SCHEMA_ID_SIZE;
                         byte[] b = Arrays.copyOfRange(buffer.array(), start, start + length);
 
-                        sink.next(codec.decode(b, payloadSchema));
+                        sink.next(avroSchemaRegistryUtils.decode(b, payloadSchema));
                     });
             });
     }
@@ -106,16 +116,21 @@ public final class SchemaRegistryAvroSerializer implements ObjectSerializer {
                 "Null object, behavior should be defined in concrete serializer implementation."));
         }
 
-        String schemaString = codec.getSchemaString(object);
-        String schemaName = codec.getSchemaName(object);
+        String schemaString = avroSchemaRegistryUtils.getSchemaString(object);
+        String schemaName = avroSchemaRegistryUtils.getSchemaName(object);
 
         return this.maybeRegisterSchema(this.schemaGroup, schemaName, schemaString)
             .handle((id, sink) -> {
-                ByteBuffer idBuffer = ByteBuffer.allocate(SCHEMA_ID_SIZE)
+                ByteBuffer recordFormatIndicatorBuffer = ByteBuffer
+                    .allocate(RECORD_FORMAT_INDICATOR_SIZE)
+                    .put(new byte[] {0x00, 0x00, 0x00, 0x00});
+                ByteBuffer idBuffer = ByteBuffer
+                    .allocate(SCHEMA_ID_SIZE)
                     .put(id.getBytes(StandardCharsets.UTF_8));
                 try {
+                    outputStream.write(recordFormatIndicatorBuffer.array());
                     outputStream.write(idBuffer.array());
-                    outputStream.write(codec.encode(object));
+                    outputStream.write(avroSchemaRegistryUtils.encode(object));
                     sink.complete();
                 } catch (IOException e) {
                     sink.error(new UncheckedIOException(e.getMessage(), e));
@@ -132,6 +147,12 @@ public final class SchemaRegistryAvroSerializer implements ObjectSerializer {
         buffer.get(schemaGuidByteArray);
 
         return new String(schemaGuidByteArray, StandardCharsets.UTF_8);
+    }
+
+    private byte[] getRecordFormatIndicator(ByteBuffer buffer) {
+        byte[] indicatorBytes = new byte[RECORD_FORMAT_INDICATOR_SIZE];
+        buffer.get(indicatorBytes);
+        return indicatorBytes;
     }
 
     /**

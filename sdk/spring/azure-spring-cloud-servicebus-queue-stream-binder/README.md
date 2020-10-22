@@ -8,17 +8,17 @@ microservice using **Spring Cloud Stream** based on [Azure Service Bus Queue][az
 ## Getting started
 
 ### Prerequisites
-- Java Development Kit (JDK) with version 8 or above
+- [Java Development Kit (JDK)][jdk_link] with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [Maven][maven] 3.0 and above
 
 ### Include the package
-[//]: # ({x-version-update-start;com.microsoft.azure:spring-cloud-azure-servicebus-queue-stream-binder;current})
+[//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-servicebus-queue-stream-binder;current})
 ```xml
 <dependency>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>spring-cloud-azure-servicebus-queue-stream-binder</artifactId>
-    <version>1.2.8</version>
+    <groupId>com.azure.spring</groupId>
+    <artifactId>azure-spring-cloud-servicebus-queue-stream-binder</artifactId>
+    <version>2.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -101,6 +101,14 @@ Controls if is a session aware consumer. Set it to `true` if is a queue with ses
 
 Default: `false`
 
+**_requeueRejected_**
+
+Controls if is a message that trigger any exception in consumer will be force to DLQ. 
+Set it to `true` if a message that trigger any exception in consumer will be force to DLQ.
+Set it to `false` if a message that trigger any exception in consumer will be re-queued. 
+
+Default: `false`
+
 ## Examples
 
 Please use this `sample` as a reference for how to use this binder in your projects. 
@@ -143,12 +151,14 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [maven]: http://maven.apache.org
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-cloud-azure-servicebus-queue-stream-binder
 [refdocs]: https://azure.github.io/azure-sdk-for-java/spring.html#spring-cloud-azure-servicebus-queue-stream-binder
-[sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-servicebus-queue-binder-sample
+[sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-queue-binder
 [spring_boot_logging]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
 [service_bus_queue_binder]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-servicebus-queue-stream-binder
 [service_bus_topic_binder]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-servicebus-topic-stream-binder
-[spring_cloud_stream_binder_service_bus_multiple_binders]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-servicebus-queue-multibinders-sample
-[spring_cloud_stream_binder_service_bus_queue]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-servicebus-queue-binder-sample
-[spring_cloud_stream_binder_service_bus_topic]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-servicebus-topic-binder-sample
+[spring_cloud_stream_binder_service_bus_multiple_binders]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-queue-multibinders
+[spring_cloud_stream_binder_service_bus_queue]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-queue-binder
+[spring_cloud_stream_binder_service_bus_topic]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-topic-binder
 [spring_integration]: https://spring.io/projects/spring-integration
 [src_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-servicebus-queue-stream-binder
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+

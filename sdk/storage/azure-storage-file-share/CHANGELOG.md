@@ -1,6 +1,20 @@
 # Release History
 
-## 12.7.0-beta.1 (Unreleased)
+## 12.7.0-beta.2 (Unreleased)
+- Added support to specify whether or not a pipeline policy should be added per call or per retry.
+- Added support for setting access tier on a share through ShareClient.create, ShareClient.setAccessTier.
+- Added support for getting access tier on a share through ShareClient.getProperties, ShareServiceClient.listShares
+- Renamed setAccessTier to setProperties and deprecated setQuotaInGb in favor of setProperties.
+- Renamed DeleteSnapshotsOptionType to ShareSnapshotsDeleteOptionType in ShareClient.delete
+
+## 12.7.0-beta.1 (2020-10-01)
+- Added support for the 2020-02-10 service version. 
+- Added support to getFileRanges on a previous snapshot by adding the getFileRangesDiff API. 
+- Added support to set whether or not smb multichannel is enabled.
+- Added support to lease shares and snapshot shares.
+- Added support to specify a lease id for share operations. 
+- Fixed a bug where getProperties on a file client would throw a HttpResponseException instead of ShareStorageException.
+- Fixed a bug where snapshot would be appended to a share snapshot instead of sharesnapshot.
 - Fixed a bug that would cause auth failures when building a client by passing an endpoint which had a sas token with protocol set to https,http
 - Fixed a bug where a custom application id in HttpLogOptions would not be added to the User Agent String.
 

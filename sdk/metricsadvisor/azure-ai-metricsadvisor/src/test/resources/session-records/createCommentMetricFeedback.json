@@ -1,0 +1,46 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//feedback/metric",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "91f4a131-4698-4fe4-936a-6481d743aa97",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "8b164274-9923-4288-aaec-a9744634d827",
+      "x-envoy-upstream-service-time" : "341",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "8b164274-9923-4288-aaec-a9744634d827",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "Date" : "Wed, 23 Sep 2020 23:17:00 GMT",
+      "Location" : "https://anuchan-cg-metric-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/fc2abd1f-821d-4dac-8bec-e09c977fb6fa"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//feedback/metric/fc2abd1f-821d-4dac-8bec-e09c977fb6fa",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2b1743d2-a301-4fae-b41e-c1136318eb3a"
+    },
+    "Response" : {
+      "x-request-id" : "d47a001c-b358-44c7-9538-c9c942492824",
+      "x-envoy-upstream-service-time" : "121",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "d47a001c-b358-44c7-9538-c9c942492824",
+      "retry-after" : "0",
+      "Content-Length" : "394",
+      "StatusCode" : "200",
+      "Body" : "{\"feedbackId\":\"fc2abd1f-821d-4dac-8bec-e09c977fb6fa\",\"createdTime\":\"2020-09-23T23:17:00.425Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Amphibian\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2020-08-05T07:00:00Z\",\"endTime\":\"2020-08-07T07:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}}",
+      "Date" : "Wed, 23 Sep 2020 23:17:01 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

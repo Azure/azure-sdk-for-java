@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TroubleshootingRecommendedActions model. */
+/** Recommended actions based on discovered issues. */
 @Fluent
 public final class TroubleshootingRecommendedActions {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TroubleshootingRecommendedActions.class);

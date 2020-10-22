@@ -1,8 +1,8 @@
 # Azure Log Analytics
 
-This project provides client tools or utilities in Java that make it easy to query data in [Azure Log Analytics](https://azure.microsoft.com/en-us/services/log-analytics/). For reference documentation on classes and models, please see the [Azure SDK for Java reference](https://docs.microsoft.com/en-us/java/api/overview/azure/?view=azure-java-stable). 
+This project provides client tools or utilities in Java that make it easy to query data in [Azure Log Analytics](https://azure.microsoft.com/services/log-analytics/). For reference documentation on classes and models, please see the [Azure SDK for Java reference](https://docs.microsoft.com/java/api/overview/azure/?view=azure-java-stable). 
 
-Azure Log Analytics provides agents for telemtry collection and enables deep analytics via a [rich query language](https://docs.loganalytics.io/index). This SDK provides query access to data already stored in Log Analytics. To start collecting data from different sources, take a look at these [quickstarts](https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-quick-collect-azurevm). 
+Azure Log Analytics provides agents for telemtry collection and enables deep analytics via a [rich query language](https://docs.loganalytics.io/index). This SDK provides query access to data already stored in Log Analytics. To start collecting data from different sources, take a look at these [quickstarts](https://docs.microsoft.com/azure/log-analytics/log-analytics-quick-collect-azurevm). 
 
 ## Examples
 

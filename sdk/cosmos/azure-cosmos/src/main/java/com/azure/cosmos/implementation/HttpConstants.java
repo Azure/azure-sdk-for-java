@@ -249,6 +249,11 @@ public class HttpConstants {
         public static final String API_TYPE = "x-ms-cosmos-apitype";
         public static final String QUERY_METRICS = "x-ms-documentdb-query-metrics";
 
+        // Batch operations
+        public static final String IS_BATCH_ATOMIC = "x-ms-cosmos-batch-atomic";
+        public static final String IS_BATCH_ORDERED = "x-ms-cosmos-batch-ordered";
+        public static final String IS_BATCH_REQUEST = "x-ms-cosmos-is-batch-request";
+        public static final String SHOULD_BATCH_CONTINUE_ON_ERROR = "x-ms-cosmos-batch-continue-on-error";
     }
 
     public static class A_IMHeaderValues {
@@ -310,6 +315,9 @@ public class HttpConstants {
 
         // Client generated gateway network error substatus
         public static final int GATEWAY_ENDPOINT_UNAVAILABLE = 10001;
+
+        // Client generated gateway network error on ReadTimeoutException
+        public static final int GATEWAY_ENDPOINT_READ_TIMEOUT = 10002;
     }
 
     public static class HeaderValues {

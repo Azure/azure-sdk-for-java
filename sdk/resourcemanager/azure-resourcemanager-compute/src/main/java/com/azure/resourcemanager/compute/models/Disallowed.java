@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The Disallowed model. */
+/** Describes the disallowed disk types. */
 @Fluent
 public final class Disallowed {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Disallowed.class);

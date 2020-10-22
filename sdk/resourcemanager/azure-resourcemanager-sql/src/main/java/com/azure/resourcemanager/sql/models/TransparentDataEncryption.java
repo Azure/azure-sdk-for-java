@@ -8,9 +8,9 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
-import com.azure.resourcemanager.sql.fluent.inner.TransparentDataEncryptionInner;
+import com.azure.resourcemanager.sql.fluent.models.TransparentDataEncryptionInner;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 @Fluent
 public interface TransparentDataEncryption
     extends Refreshable<TransparentDataEncryption>,
-        HasInner<TransparentDataEncryptionInner>,
+        HasInnerModel<TransparentDataEncryptionInner>,
         HasResourceGroup,
         HasName,
         HasId {

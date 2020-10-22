@@ -23,6 +23,8 @@ import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyType;
 
+import java.time.Duration;
+
 /**
  * The KeyClient provides synchronous methods to manage {@link KeyVaultKey keys} in the Azure Key Vault. The client supports
  * creating, retrieving, updating, deleting, purging, backing up, restoring and listing the {@link KeyVaultKey keys}. The client
@@ -437,7 +439,7 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes the key from the keyvault. Prints out the recovery id of the deleted key returned in the
      * response.</p>
-     * {@codesnippet com.azure.keyvault.keys.keyclient.deleteKey#string}
+     * {@codesnippet com.azure.keyvault.keys.keyclient.deleteKey#String}
      *
      * @param name The name of the key to be deleted.
      * @return A {@link SyncPoller} to poll on and retrieve {@link DeletedKey deleted key}
@@ -446,6 +448,29 @@ public final class KeyClient {
      */
     public SyncPoller<DeletedKey, Void> beginDeleteKey(String name) {
         return client.beginDeleteKey(name).getSyncPoller();
+    }
+
+    /**
+     * Deletes a key of any type from the key vault. If soft-delete is enabled on the key vault then the key is placed
+     * in the deleted state and requires to be purged for permanent deletion else the key is permanently deleted. The
+     * delete operation applies to any key stored in Azure Key Vault but it cannot be applied to an individual version
+     * of a key. This operation removes the cryptographic material associated with the key, which means the key is not
+     * usable for Sign/Verify, Wrap/Unwrap or Encrypt/Decrypt operations. This operation requires the {@code
+     * keys/delete} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Deletes the key from the keyvault. Prints out the recovery id of the deleted key returned in the
+     * response.</p>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.deleteKey#String-Duration}
+     *
+     * @param name The name of the key to be deleted.
+     * @param pollingInterval The interval at which the operation status will be polled for.
+     * @return A {@link SyncPoller} to poll on and retrieve {@link DeletedKey deleted key}
+     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
+     * @throws HttpResponseException when a key with {@code name} is empty string.
+     */
+    public SyncPoller<DeletedKey, Void> beginDeleteKey(String name, Duration pollingInterval) {
+        return client.beginDeleteKey(name, pollingInterval).getSyncPoller();
     }
 
     /**
@@ -533,7 +558,7 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Recovers the deleted key from the key vault enabled for soft-delete.</p>
      * //Assuming key is deleted on a soft-delete enabled key vault.
-     * {@codesnippet com.azure.keyvault.keys.keyclient.recoverDeletedKey#string}
+     * {@codesnippet com.azure.keyvault.keys.keyclient.recoverDeletedKey#String}
      *
      * @param name The name of the deleted key to be recovered.
      * @return A {@link SyncPoller} to poll on and retrieve {@link KeyVaultKey recovered key}.
@@ -542,6 +567,26 @@ public final class KeyClient {
      */
     public SyncPoller<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
         return client.beginRecoverDeletedKey(name).getSyncPoller();
+    }
+
+    /**
+     * Recovers the deleted key in the key vault to its latest version and can only be performed on a soft-delete
+     * enabled vault. An attempt to recover an non-deleted key will return an error. Consider this the inverse of the
+     * delete operation on soft-delete enabled vaults. This operation requires the {@code keys/recover} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Recovers the deleted key from the key vault enabled for soft-delete.</p>
+     * //Assuming key is deleted on a soft-delete enabled key vault.
+     * {@codesnippet com.azure.keyvault.keys.keyclient.recoverDeletedKey#String-Duration}
+     *
+     * @param name The name of the deleted key to be recovered.
+     * @param pollingInterval The interval at which the operation status will be polled for.
+     * @return A {@link SyncPoller} to poll on and retrieve {@link KeyVaultKey recovered key}.
+     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
+     * @throws HttpResponseException when a key with {@code name} is empty string.
+     */
+    public SyncPoller<KeyVaultKey, Void> beginRecoverDeletedKey(String name, Duration pollingInterval) {
+        return client.beginRecoverDeletedKey(name, pollingInterval).getSyncPoller();
     }
 
     /**

@@ -4,18 +4,18 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.monitor.fluent.inner.AutoscaleProfileInner;
+import com.azure.resourcemanager.monitor.fluent.models.AutoscaleProfileInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasParent;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 /** An immutable client-side representation of an Azure autoscale profile. */
 @Fluent
-public interface AutoscaleProfile extends HasInner<AutoscaleProfileInner>, HasParent<AutoscaleSetting>, HasName {
+public interface AutoscaleProfile extends HasInnerModel<AutoscaleProfileInner>, HasParent<AutoscaleSetting>, HasName {
     /**
      * Get the minimum number of instances for the resource.
      *

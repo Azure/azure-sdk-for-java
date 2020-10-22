@@ -6,12 +6,12 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.cosmos.fluent.inner.NotebookWorkspaceInner;
+import com.azure.resourcemanager.cosmos.fluent.models.NotebookWorkspaceInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The NotebookWorkspaceListResult model. */
+/** A list of notebook workspace resources. */
 @Fluent
 public final class NotebookWorkspaceListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NotebookWorkspaceListResult.class);

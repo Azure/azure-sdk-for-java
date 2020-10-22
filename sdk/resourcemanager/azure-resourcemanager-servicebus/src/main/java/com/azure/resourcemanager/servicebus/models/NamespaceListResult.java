@@ -6,12 +6,12 @@ package com.azure.resourcemanager.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.servicebus.fluent.inner.NamespaceResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.NamespaceResourceInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The NamespaceListResult model. */
+/** The response of the List Namespace operation. */
 @Fluent
 public final class NamespaceListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NamespaceListResult.class);
