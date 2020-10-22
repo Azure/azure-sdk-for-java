@@ -188,6 +188,6 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [logging_doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
 [eventhubs_multibinders_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-multibinders
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
-[maven]: http://maven.apache.org/
+[maven]: https://maven.apache.org/
 [azure_event_hub]: https://azure.microsoft.com/services/event-hubs/
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
