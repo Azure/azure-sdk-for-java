@@ -13,9 +13,12 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.servicebus.TopicClient;
 import com.microsoft.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
+import com.microsoft.azure.spring.cloud.context.core.config.AzureProperties;
 import com.microsoft.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
+import com.microsoft.azure.spring.cloud.context.core.impl.ServiceBusTopicManager;
 import com.microsoft.azure.spring.cloud.context.core.impl.ServiceBusTopicSubscriptionManager;
 import com.microsoft.azure.spring.cloud.telemetry.TelemetryCollector;
 import com.microsoft.azure.spring.integration.servicebus.factory.DefaultServiceBusTopicClientFactory;
@@ -36,12 +39,14 @@ public class AzureServiceBusTopicAutoConfiguration {
     private static final String SERVICE_BUS_TOPIC = "ServiceBusTopic";
     private static final String NAMESPACE = "Namespace";
 
-    
-    @Autowired(required = false)
-    private ServiceBusTopicSubscriptionManager serviceBusTopicSubscriptionManager;
-    
     @Autowired(required = false)
     private ServiceBusNamespaceManager serviceBusNamespaceManager;
+
+    @Autowired(required = false)
+    private ServiceBusTopicManager serviceBusTopicManager;
+
+    @Autowired(required = false)
+    private ServiceBusTopicSubscriptionManager serviceBusTopicSubscriptionManager;
 
     @PostConstruct
     public void collectTelemetry() {
@@ -52,16 +57,17 @@ public class AzureServiceBusTopicAutoConfiguration {
     @ConditionalOnMissingBean
     public ServiceBusTopicClientFactory topicClientFactory(AzureServiceBusProperties serviceBusProperties) {
         String connectionString = serviceBusProperties.getConnectionString();
-        DefaultServiceBusTopicClientFactory clientFactory =
-            new DefaultServiceBusTopicClientFactory(serviceBusProperties.getConnectionString());
+        DefaultServiceBusTopicClientFactory clientFactory = new DefaultServiceBusTopicClientFactory(
+                serviceBusProperties.getConnectionString());
 
         if (serviceBusTopicSubscriptionManager != null && serviceBusNamespaceManager != null) {
             clientFactory.setNamespace(serviceBusProperties.getNamespace());
             clientFactory.setServiceBusNamespaceManager(serviceBusNamespaceManager);
+            clientFactory.setServiceBusTopicManager(serviceBusTopicManager);
             clientFactory.setServiceBusTopicSubscriptionManager(serviceBusTopicSubscriptionManager);
         } else {
             TelemetryCollector.getInstance().addProperty(SERVICE_BUS_TOPIC, NAMESPACE,
-                ServiceBusUtils.getNamespace(connectionString));
+                    ServiceBusUtils.getNamespace(connectionString));
         }
 
         return clientFactory;
@@ -69,7 +75,25 @@ public class AzureServiceBusTopicAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
+    public ServiceBusNamespaceManager serviceBusNamespaceManager(Azure azure, AzureProperties azureProperties) {
+        return new ServiceBusNamespaceManager(azure, azureProperties);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public ServiceBusTopicSubscriptionManager serviceBusTopicSubscriptionManager(AzureProperties azureProperties) {
+        return new ServiceBusTopicSubscriptionManager(azureProperties);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
     public ServiceBusTopicOperation topicOperation(ServiceBusTopicClientFactory factory) {
         return new ServiceBusTopicTemplate(factory);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public ServiceBusTopicManager serviceBusTopicManager(AzureProperties azureProperties) {
+        return new ServiceBusTopicManager(azureProperties);
     }
 }
