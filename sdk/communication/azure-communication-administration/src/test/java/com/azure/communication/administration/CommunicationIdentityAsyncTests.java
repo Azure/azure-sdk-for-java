@@ -11,10 +11,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.azure.communication.common.CommunicationUser;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -27,16 +29,16 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        asyncClient = getCommunicationIdentityClient().buildAsyncClient();
     }
 
-    @Test
-    public void createAsyncIdentityClientUsingConnectionString() {
-        //Arrange
-        asyncClient = getCommunicationIdentityClientUsingConnectionString().buildAsyncClient();
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createAsyncIdentityClientUsingConnectionString(HttpClient httpClient) {
+        // Arrange
+        asyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient).buildAsyncClient();
         assertNotNull(asyncClient);
 
-        //Act & Assert
+        // Action & Assert
         Mono<CommunicationUser> response = asyncClient.createUser();
         StepVerifier.create(response)
             .assertNext(item -> {
@@ -46,8 +48,13 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             .verifyComplete();
     }
 
-    @Test
-    public void createUser() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createUser(HttpClient httpClient) {
+        // Arrange
+        asyncClient = getCommunicationIdentityClient(httpClient).buildAsyncClient();
+
+        // Action & Assert
         Mono<CommunicationUser> response = asyncClient.createUser();
         StepVerifier.create(response)
             .assertNext(item -> {
@@ -56,8 +63,13 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             .verifyComplete();
     }
 
-    @Test
-    public void createUserWithResponse() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createUserWithResponse(HttpClient httpClient) {
+        // Arrange
+        asyncClient = getCommunicationIdentityClient(httpClient).buildAsyncClient();
+
+        // Action & Assert
         Mono<Response<CommunicationUser>> response = asyncClient.createUserWithResponse();
         StepVerifier.create(response)
             .assertNext(item -> {
@@ -68,9 +80,13 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             .verifyComplete();
     }
 
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createUserWithContext(HttpClient httpClient) {
+        // Arrange
+        asyncClient = getCommunicationIdentityClient(httpClient).buildAsyncClient();
 
-    @Test
-    public void createUserWithContext() {
+        // Action & Assert
         Mono<Response<CommunicationUser>> response = asyncClient.createUser(Context.NONE);
         StepVerifier.create(response)
             .assertNext(item -> {
@@ -81,8 +97,13 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             .verifyComplete();
     }
 
-    @Test
-    public void deleteUser() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void deleteUser(HttpClient httpClient) {
+        // Arrange
+        asyncClient = getCommunicationIdentityClient(httpClient).buildAsyncClient();
+
+        // Action & Assert
         StepVerifier.create(
             asyncClient.createUser()
                 .flatMap(communicationUser -> {
@@ -91,9 +112,13 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             .verifyComplete();
     }
 
-    @Test
-    public void deleteUserWithResponse() {
-        //Arrange
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void deleteUserWithResponse(HttpClient httpClient) {
+        // Arrange
+        asyncClient = getCommunicationIdentityClient(httpClient).buildAsyncClient();
+
+        // Action & Assert
         StepVerifier.create(
             asyncClient.createUser()
                 .flatMap(communicationUser -> {
@@ -105,8 +130,13 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             .verifyComplete();
     }
 
-    @Test
-    public void revokeToken() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void revokeToken(HttpClient httpClient) {
+        // Arrange
+        asyncClient = getCommunicationIdentityClient(httpClient).buildAsyncClient();
+
+        // Action & Assert
         StepVerifier.create(
             asyncClient.createUser()
                 .flatMap(communicationUser -> {
@@ -119,8 +149,13 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             .verifyComplete();
     }
 
-    @Test
-    public void revokeTokenWithResponse() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void revokeTokenWithResponse(HttpClient httpClient) {
+        // Arrange
+        asyncClient = getCommunicationIdentityClient(httpClient).buildAsyncClient();
+
+        // Action & Assert
         StepVerifier.create(
             asyncClient.createUser()
                 .flatMap(communicationUser -> {
@@ -136,8 +171,13 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             .verifyComplete();
     }
 
-    @Test
-    public void issueToken() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void issueToken(HttpClient httpClient) {
+        // Arrange
+        asyncClient = getCommunicationIdentityClient(httpClient).buildAsyncClient();
+
+        // Action & Assert
         StepVerifier.create(
             asyncClient.createUser()
                 .flatMap(communicationUser -> {
@@ -154,8 +194,13 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             .verifyComplete();
     }
 
-    @Test
-    public void issueTokenWithResponse() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void issueTokenWithResponse(HttpClient httpClient) {
+        // Arrange
+        asyncClient = getCommunicationIdentityClient(httpClient).buildAsyncClient();
+
+        // Action & Assert
         StepVerifier.create(
             asyncClient.createUser()
                 .flatMap(communicationUser -> {
