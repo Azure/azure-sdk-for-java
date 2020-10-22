@@ -162,7 +162,7 @@ function Get-java-CSVMetadata () {
   return $uniquePackages
 }
 
-function Get-java-GithubIOArtifact() {
+function Get-java-GithubIOArtifacts() {
   return Get-BlobStorage-Artifacts -blobStorageUrl $BlobStorageUrl -blobDirectoryRegex "^java/(.*)/$"
 }
 
