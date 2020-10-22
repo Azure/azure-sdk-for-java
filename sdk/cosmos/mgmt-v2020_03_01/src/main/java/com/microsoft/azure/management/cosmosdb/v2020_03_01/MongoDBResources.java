@@ -34,7 +34,7 @@ public interface MongoDBResources {
     /**
      * Gets the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -45,7 +45,7 @@ public interface MongoDBResources {
     /**
      * Lists the MongoDB databases under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -55,7 +55,7 @@ public interface MongoDBResources {
     /**
      * Deletes an existing Azure Cosmos DB MongoDB database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -66,7 +66,7 @@ public interface MongoDBResources {
     /**
      * Gets the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -77,7 +77,7 @@ public interface MongoDBResources {
     /**
      * Update RUs per second of the an Azure Cosmos DB MongoDB database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB database.
@@ -87,9 +87,31 @@ public interface MongoDBResources {
     Observable<ThroughputSettingsGetResults> updateMongoDBDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName, ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
+     * Migrate an Azure Cosmos DB MongoDB database from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ThroughputSettingsGetResults> migrateMongoDBDatabaseToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName);
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB database from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ThroughputSettingsGetResults> migrateMongoDBDatabaseToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName);
+
+    /**
      * Gets the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -101,7 +123,7 @@ public interface MongoDBResources {
     /**
      * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -112,9 +134,33 @@ public interface MongoDBResources {
     Observable<ThroughputSettingsGetResults> updateMongoDBCollectionThroughputAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
+     * Migrate an Azure Cosmos DB MongoDB collection from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ThroughputSettingsGetResults> migrateMongoDBCollectionToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName, String collectionName);
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB collection from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ThroughputSettingsGetResults> migrateMongoDBCollectionToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName, String collectionName);
+
+    /**
      * Gets the MongoDB collection under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -126,7 +172,7 @@ public interface MongoDBResources {
     /**
      * Lists the MongoDB collection under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -137,7 +183,7 @@ public interface MongoDBResources {
     /**
      * Deletes an existing Azure Cosmos DB MongoDB Collection.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
