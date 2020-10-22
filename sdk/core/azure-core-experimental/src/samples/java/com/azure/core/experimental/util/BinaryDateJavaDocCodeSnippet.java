@@ -58,8 +58,8 @@ public class BinaryDateJavaDocCodeSnippet {
      */
     public void createFromStream() {
         // BEGIN: com.azure.core.experimental.util.BinaryDocument.from#Stream
-        final byte[] data = "Some Data".getBytes(StandardCharsets.UTF_8);
-        BinaryData binaryData = BinaryData.fromStream(new ByteArrayInputStream(data));
+        final ByteArrayInputStream inputStream = new ByteArrayInputStream("Some Data".getBytes(StandardCharsets.UTF_8));
+        BinaryData binaryData = BinaryData.fromStream(inputStream);
         System.out.println(binaryData.toString());
         // END: com.azure.core.experimental.util.BinaryDocument.from#Stream
     }
@@ -111,8 +111,7 @@ public class BinaryDateJavaDocCodeSnippet {
         }
         final Person data = new Person().setName("John");
 
-        // Ensure your classpath have the Serializer to use to serialize object. For example you can use one of
-        // following library.
+        // Ensure your classpath have the Serializer to serialize the object. Azure provides has following libraries.
         // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson or
         // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson
 

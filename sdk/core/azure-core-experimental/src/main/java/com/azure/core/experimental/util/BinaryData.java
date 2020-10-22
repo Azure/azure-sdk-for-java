@@ -29,18 +29,19 @@ import java.util.Objects;
  * can be created from {@link InputStream}, {@link Flux} of {@link ByteBuffer}, {@link String}, {@link Object}, or byte
  * array.
  * <p><strong>Immutable data</strong><p/>
- * {@link BinaryData} is constructed by coping the give data. Once {@link BinaryData} is instantiated, It's data can not
- * be updated.
+ * {@link BinaryData} is constructed by coping the given data. Once {@link BinaryData} is instantiated, it's data can
+ * not be changed. It provides various convenient APIs to get data out of {@link BinaryData}, they all starts with the
+ * <b>BinaryData.to...()</b>, For example {@link BinaryData#toBytes()}.
  * <p>
- * It provides a way to serialize {@link Object} into {@link BinaryData} using API
+ * It provides a way to serialize {@link Object} into {@link BinaryData} using
  * {@link BinaryData#fromObject(Object, ObjectSerializer)} where you can provide your {@link ObjectSerializer}.
  * <p>
- * It provides a way to de-serialize {@link BinaryData} into specified {@link Object} using API
+ * It provides a way to de-serialize {@link BinaryData} into specified {@link Object} using
  * {@link BinaryData#toObject(Class, ObjectSerializer)} where you can provide object type and your
  * {@link ObjectSerializer}.
  * <p>
- * It provides API to use default json serializer which is available in classpath. The serializer must implement
- * {@link JsonSerializer} interface.
+ * It provides API to use default json serializer which is available in classpath. The serializer on classpath must
+ * implement {@link JsonSerializer} interface.
  * <p>
  * Code samples are explained below.
  *
