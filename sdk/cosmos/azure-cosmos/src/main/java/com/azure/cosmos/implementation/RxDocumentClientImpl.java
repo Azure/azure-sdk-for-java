@@ -1030,18 +1030,31 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, consistencyLevel.toString());
         }
 
-        //  If content response on write is not enabled, and operation is document write - then add minimal prefer header
-        if (resourceType.equals(ResourceType.Document) && operationType.isWriteOperation() && !this.contentResponseOnWriteEnabled) {
-            headers.put(HttpConstants.HttpHeaders.PREFER, HttpConstants.HeaderValues.PREFER_RETURN_MINIMAL);
-        }
-
         if (options == null) {
+            //  Corner case, if options are null, then just check this flag from CosmosClientBuilder
+            //  If content response on write is not enabled, and operation is document write - then add minimal prefer header
+            //  Otherwise, don't add this header, which means return the full response
+            if (!this.contentResponseOnWriteEnabled && resourceType.equals(ResourceType.Document) && operationType.isWriteOperation()) {
+                headers.put(HttpConstants.HttpHeaders.PREFER, HttpConstants.HeaderValues.PREFER_RETURN_MINIMAL);
+            }
             return headers;
         }
 
         Map<String, String> customOptions = options.getHeaders();
         if (customOptions != null) {
             headers.putAll(customOptions);
+        }
+
+        boolean contentResponseOnWriteEnabled = this.contentResponseOnWriteEnabled;
+        //  If options has contentResponseOnWriteEnabled set to true / false, override the value from CosmosClientBuilder
+        if (options.isContentResponseOnWriteEnabled() != null) {
+            contentResponseOnWriteEnabled = options.isContentResponseOnWriteEnabled();
+        }
+
+        //  If content response on write is not enabled, and operation is document write - then add minimal prefer header
+        //  Otherwise, don't add this header, which means return the full response
+        if (!contentResponseOnWriteEnabled && resourceType.equals(ResourceType.Document) && operationType.isWriteOperation()) {
+            headers.put(HttpConstants.HttpHeaders.PREFER, HttpConstants.HeaderValues.PREFER_RETURN_MINIMAL);
         }
 
         if (options.getIfMatchETag() != null) {
