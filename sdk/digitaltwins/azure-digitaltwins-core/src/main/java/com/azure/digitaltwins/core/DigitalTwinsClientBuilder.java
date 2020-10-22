@@ -104,9 +104,11 @@ public final class DigitalTwinsClientBuilder {
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
 
         // Give precedence to applicationId configured in clientOptions over the one configured in httpLogOptions.
-        // Azure.Core deprecated setting the applicationId in httpLogOptions.
-        String applicationId =
-            clientOptions == null ? httpLogOptions.getApplicationId() : clientOptions.getApplicationId();
+        // Azure.Core deprecated setting the applicationId in httpLogOptions, but we should still support it.
+        String applicationId = clientOptions == null
+            ? httpLogOptions.getApplicationId()
+            : clientOptions.getApplicationId();
+
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, configuration));
 
         // Adds a "x-ms-client-request-id" header to each request. This header is useful for tracing requests through Azure ecosystems
