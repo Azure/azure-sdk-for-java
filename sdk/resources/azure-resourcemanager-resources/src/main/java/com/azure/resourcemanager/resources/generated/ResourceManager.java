@@ -111,7 +111,7 @@ public final class ResourceManager {
          * @return the configurable object itself.
          */
         public Configurable withHttpClient(HttpClient httpClient) {
-            this.httpClient = Objects.requireNonNull(httpClient);
+            this.httpClient = Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
             return this;
         }
 
@@ -122,7 +122,7 @@ public final class ResourceManager {
          * @return the configurable object itself.
          */
         public Configurable withLogOptions(HttpLogOptions httpLogOptions) {
-            this.httpLogOptions = Objects.requireNonNull(httpLogOptions);
+            this.httpLogOptions = Objects.requireNonNull(httpLogOptions, "'httpLogOptions' cannot be null.");
             return this;
         }
 
@@ -133,7 +133,7 @@ public final class ResourceManager {
          * @return the configurable object itself.
          */
         public Configurable withPolicy(HttpPipelinePolicy policy) {
-            this.policies.add(Objects.requireNonNull(policy));
+            this.policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
             return this;
         }
 
@@ -144,7 +144,7 @@ public final class ResourceManager {
          * @return the configurable object itself.
          */
         public Configurable withRetryPolicy(RetryPolicy retryPolicy) {
-            this.retryPolicy = Objects.requireNonNull(retryPolicy);
+            this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
             return this;
         }
 
@@ -155,9 +155,9 @@ public final class ResourceManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval);
+            this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval, "'retryPolicy' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("'httpPipeline' cannot be nagative"));
+                throw logger.logExceptionAsError(new IllegalArgumentException("'httpPipeline' cannot be negative"));
             }
             return this;
         }
