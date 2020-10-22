@@ -28,8 +28,8 @@ public class AgentPoolInner extends SubResource {
      * Number of agents (VMs) to host docker containers. Allowed values must be
      * in the range of 1 to 100 (inclusive). The default value is 1.
      */
-    @JsonProperty(value = "properties.count", required = true)
-    private int count;
+    @JsonProperty(value = "properties.count")
+    private Integer count;
 
     /**
      * Size of agent VMs. Possible values include: 'Standard_A1',
@@ -85,7 +85,7 @@ public class AgentPoolInner extends SubResource {
      * 'Standard_ND24s', 'Standard_ND6s', 'Standard_NV12', 'Standard_NV24',
      * 'Standard_NV6'.
      */
-    @JsonProperty(value = "properties.vmSize", required = true)
+    @JsonProperty(value = "properties.vmSize")
     private ContainerServiceVMSizeTypes vmSize;
 
     /**
@@ -228,7 +228,7 @@ public class AgentPoolInner extends SubResource {
      *
      * @return the count value
      */
-    public int count() {
+    public Integer count() {
         return this.count;
     }
 
@@ -238,7 +238,7 @@ public class AgentPoolInner extends SubResource {
      * @param count the count value to set
      * @return the AgentPoolInner object itself.
      */
-    public AgentPoolInner withCount(int count) {
+    public AgentPoolInner withCount(Integer count) {
         this.count = count;
         return this;
     }
