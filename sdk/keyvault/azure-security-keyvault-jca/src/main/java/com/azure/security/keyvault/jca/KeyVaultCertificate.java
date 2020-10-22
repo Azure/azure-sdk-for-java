@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.Set;
 
 /**
- * The KeyVault certificate.
+ * The Azure Key Vault certificate.
  */
 class KeyVaultCertificate extends X509Certificate {
 

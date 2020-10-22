@@ -34,7 +34,7 @@ import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
 
 /**
- * The REST client specific to Azure KeyVault.
+ * The REST client specific to Azure Key Vault.
  */
 class KeyVaultClient extends DelegateRestClient {
 
@@ -49,7 +49,7 @@ class KeyVaultClient extends DelegateRestClient {
     private static final String API_VERSION_POSTFIX = "?api-version=7.1";
 
     /**
-     * Stores the KeyVault URI.
+     * Stores the Azure Key Vault URI.
      */
     private final String keyVaultUri;
 
@@ -71,11 +71,11 @@ class KeyVaultClient extends DelegateRestClient {
     /**
      * Constructor.
      *
-     * @param keyVaultUri the KeyVault URI.
+     * @param keyVaultUri the Azure Key Vault URI.
      */
     KeyVaultClient(String keyVaultUri) {
         super(RestClientFactory.createClient());
-        LOGGER.log(INFO, "Using KeyVault: {0}", keyVaultUri);
+        LOGGER.log(INFO, "Using Azure Key Vault: {0}", keyVaultUri);
         if (!keyVaultUri.endsWith("/")) {
             keyVaultUri = keyVaultUri + "/";
         }
@@ -85,7 +85,7 @@ class KeyVaultClient extends DelegateRestClient {
     /**
      * Constructor.
      *
-     * @param keyVaultUri the KeyVault URI.
+     * @param keyVaultUri the Azure Key Vault URI.
      * @param tenantId the tenant ID.
      * @param clientId the client ID.
      * @param clientSecret the client secret.
@@ -212,8 +212,8 @@ class KeyVaultClient extends DelegateRestClient {
                                        .orElse(false);
         if (isExportable) {
             // Because the certificate is exportable the private key is
-            // available. So we'll use the KeyVault Secrets API to get the 
-            // private key.
+            // available. So we'll use the Azure Key Vault Secrets API to get
+            // the private key.
             String certificateSecretUri = certificateBundle.getSid();
             HashMap<String, String> headers = new HashMap<>();
             headers.put("Authorization", "Bearer " + getAccessToken());

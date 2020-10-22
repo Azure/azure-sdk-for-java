@@ -3,9 +3,9 @@
 The JCA Provider for Azure Key Vault is a JCA provider for certificates in 
 Azure Key Vault. It is built on four principles:
  
-1. Must be extremely thin to run within a JVM
-1. Must not introduce any library version conflicts with Java app code dependencies
-1. Must not introduce any class loader hierarchy conflicts with Java app code dependencies
+1. Must be extremely thin to run within a JVM.
+1. Must not introduce any library version conflicts with Java app code dependencies.
+1. Must not introduce any class loader hierarchy conflicts with Java app code dependencies.
 1. Must be ready for "never trust, always verify and credential-free" Zero Trust environments.
 
 ## Testing the version under development
@@ -20,7 +20,7 @@ following command line:
 
 ## Server side SSL
 
-If you are looking to integrate the JCA provider to create a SSLServerSocket
+If you are looking to integrate the JCA provider to create an SSLServerSocket
 see the example below.
 
 ```java
@@ -45,7 +45,7 @@ see the example below.
     SSLServerSocket serverSocket = (SSLServerSocket) factory.createServerSocket(8765);
 ```
 
-Note if you want to use Azure managed identity, you should set the value
+Note if you want to use Azure Managed Identity, you should set the value
 of `azure.keyvault.uri`, and the rest of the parameters would be `null`.
 
 ## Client side SSL
@@ -112,7 +112,7 @@ For Spring Boot applications see our [Spring Boot starter]<!--(../../spring/azur
 
 1. [Java Cryptography Architecture (JCA) Reference Guide](https://docs.oracle.com/javase/8/docs/technotes/guides/security/crypto/CryptoSpec.html)
 
-# Azure KeyVault JCA client library for Java
+# Azure Key Vault JCA client library for Java
 
 # Getting started
 
