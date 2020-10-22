@@ -1360,7 +1360,6 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
                 client.beginRecognizeBusinessCardsFromUrl(sourceUrl,
                     new RecognizeBusinessCardsOptions()
-                        .setContentType(FormContentType.APPLICATION_PDF)
                         .setFieldElementsIncluded(true)
                         .setPollInterval(durationTestMode))
                     .getSyncPoller();
