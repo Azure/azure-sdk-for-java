@@ -63,8 +63,8 @@ public class ServiceBusSessionReceiverAsyncClient implements AutoCloseable {
     public Mono<ServiceBusReceiverAsyncClient> acceptNextSession() {
         return unNamedSessionManager.getActiveLink().flatMap(receiveLink -> receiveLink.getSessionId()
             .map(sessionId -> {
-                ReceiverOptions newReceiverOptions = new ReceiverOptions(this.receiverOptions.getReceiveMode(),
-                    this.receiverOptions.getPrefetchCount(), null);
+                ReceiverOptions newReceiverOptions = new ReceiverOptions(receiverOptions.getReceiveMode(),
+                    receiverOptions.getPrefetchCount(), sessionId, null, receiverOptions.getMaxLockRenewDuration());
                 final ServiceBusSessionManager sessionSpecificManager = new ServiceBusSessionManager(entityPath,
                     entityType, connectionProcessor, tracerProvider, messageSerializer, newReceiverOptions,
                     receiveLink);
@@ -85,8 +85,8 @@ public class ServiceBusSessionReceiverAsyncClient implements AutoCloseable {
         if (CoreUtils.isNullOrEmpty(sessionId)) {
             return monoError(logger, new IllegalArgumentException("sessionId can not be null or empty"));
         }
-        ReceiverOptions newReceiverOptions = new ReceiverOptions(this.receiverOptions.getReceiveMode(),
-            this.receiverOptions.getPrefetchCount(), null);
+        ReceiverOptions newReceiverOptions = new ReceiverOptions(receiverOptions.getReceiveMode(),
+            receiverOptions.getPrefetchCount(), sessionId, null, receiverOptions.getMaxLockRenewDuration());
         final ServiceBusSessionManager sessionSpecificManager = new ServiceBusSessionManager(entityPath, entityType,
             connectionProcessor, tracerProvider, messageSerializer, newReceiverOptions);
 
