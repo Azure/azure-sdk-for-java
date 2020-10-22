@@ -46,7 +46,7 @@ public final class PublishComponentTelemetryOptions {
     /**
      * Set the traceparent property: Identifies the request in a distributed tracing system.
      *
-     * @param traceparent the traceparent value to set.
+     * @param traceParent the traceparent value to set.
      * @return the PublishComponentTelemetryOptions object itself.
      */
     public PublishComponentTelemetryOptions setTraceParent(String traceParent) {
@@ -68,7 +68,7 @@ public final class PublishComponentTelemetryOptions {
      * Set the tracestate property: Provides vendor-specific trace identification information and is a companion to
      * traceparent.
      *
-     * @param tracestate the tracestate value to set.
+     * @param traceState the tracestate value to set.
      * @return the PublishComponentTelemetryOptions object itself.
      */
     public PublishComponentTelemetryOptions setTraceState(String traceState) {
