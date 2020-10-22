@@ -11,8 +11,11 @@ package com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.implementati
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.DefaultErrorResponseException;
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SqlContainerCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SqlDatabaseCreateUpdateParameters;
+import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SqlRoleAssignmentCreateUpdateParameters;
+import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SqlRoleDefinitionCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SqlStoredProcedureCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SqlTriggerCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SqlUserDefinedFunctionCreateUpdateParameters;
@@ -205,6 +208,54 @@ public class SqlResourcesInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SqlResources beginDeleteSqlTrigger" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/triggers/{triggerName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDeleteSqlTrigger(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("containerName") String containerName, @Path("triggerName") String triggerName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SqlResources getSqlRoleDefinition" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleDefinitions/{roleDefinitionId}")
+        Observable<Response<ResponseBody>> getSqlRoleDefinition(@Path("roleDefinitionId") String roleDefinitionId, @Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SqlResources createUpdateSqlRoleDefinition" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleDefinitions/{roleDefinitionId}")
+        Observable<Response<ResponseBody>> createUpdateSqlRoleDefinition(@Path("roleDefinitionId") String roleDefinitionId, @Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Query("api-version") String apiVersion, @Body SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SqlResources beginCreateUpdateSqlRoleDefinition" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleDefinitions/{roleDefinitionId}")
+        Observable<Response<ResponseBody>> beginCreateUpdateSqlRoleDefinition(@Path("roleDefinitionId") String roleDefinitionId, @Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Query("api-version") String apiVersion, @Body SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SqlResources deleteSqlRoleDefinition" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleDefinitions/{roleDefinitionId}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteSqlRoleDefinition(@Path("roleDefinitionId") String roleDefinitionId, @Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SqlResources beginDeleteSqlRoleDefinition" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleDefinitions/{roleDefinitionId}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> beginDeleteSqlRoleDefinition(@Path("roleDefinitionId") String roleDefinitionId, @Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SqlResources listSqlRoleDefinitions" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleDefinitions")
+        Observable<Response<ResponseBody>> listSqlRoleDefinitions(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SqlResources getSqlRoleAssignment" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleAssignments/{roleAssignmentId}")
+        Observable<Response<ResponseBody>> getSqlRoleAssignment(@Path("roleAssignmentId") String roleAssignmentId, @Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SqlResources createUpdateSqlRoleAssignment" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleAssignments/{roleAssignmentId}")
+        Observable<Response<ResponseBody>> createUpdateSqlRoleAssignment(@Path("roleAssignmentId") String roleAssignmentId, @Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Query("api-version") String apiVersion, @Body SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SqlResources beginCreateUpdateSqlRoleAssignment" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleAssignments/{roleAssignmentId}")
+        Observable<Response<ResponseBody>> beginCreateUpdateSqlRoleAssignment(@Path("roleAssignmentId") String roleAssignmentId, @Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Query("api-version") String apiVersion, @Body SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SqlResources deleteSqlRoleAssignment" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleAssignments/{roleAssignmentId}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteSqlRoleAssignment(@Path("roleAssignmentId") String roleAssignmentId, @Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SqlResources beginDeleteSqlRoleAssignment" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleAssignments/{roleAssignmentId}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> beginDeleteSqlRoleAssignment(@Path("roleAssignmentId") String roleAssignmentId, @Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SqlResources listSqlRoleAssignments" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleAssignments")
+        Observable<Response<ResponseBody>> listSqlRoleAssignments(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -3696,6 +3747,1060 @@ public class SqlResourcesInner {
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB SQL Role Definition with the given Id.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SqlRoleDefinitionGetResultsInner object if successful.
+     */
+    public SqlRoleDefinitionGetResultsInner getSqlRoleDefinition(String roleDefinitionId, String resourceGroupName, String accountName) {
+        return getSqlRoleDefinitionWithServiceResponseAsync(roleDefinitionId, resourceGroupName, accountName).toBlocking().single().body();
+    }
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB SQL Role Definition with the given Id.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SqlRoleDefinitionGetResultsInner> getSqlRoleDefinitionAsync(String roleDefinitionId, String resourceGroupName, String accountName, final ServiceCallback<SqlRoleDefinitionGetResultsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getSqlRoleDefinitionWithServiceResponseAsync(roleDefinitionId, resourceGroupName, accountName), serviceCallback);
+    }
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB SQL Role Definition with the given Id.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SqlRoleDefinitionGetResultsInner object
+     */
+    public Observable<SqlRoleDefinitionGetResultsInner> getSqlRoleDefinitionAsync(String roleDefinitionId, String resourceGroupName, String accountName) {
+        return getSqlRoleDefinitionWithServiceResponseAsync(roleDefinitionId, resourceGroupName, accountName).map(new Func1<ServiceResponse<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner>() {
+            @Override
+            public SqlRoleDefinitionGetResultsInner call(ServiceResponse<SqlRoleDefinitionGetResultsInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB SQL Role Definition with the given Id.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SqlRoleDefinitionGetResultsInner object
+     */
+    public Observable<ServiceResponse<SqlRoleDefinitionGetResultsInner>> getSqlRoleDefinitionWithServiceResponseAsync(String roleDefinitionId, String resourceGroupName, String accountName) {
+        if (roleDefinitionId == null) {
+            throw new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        final String apiVersion = "2020-06-01-preview";
+        return service.getSqlRoleDefinition(roleDefinitionId, this.client.subscriptionId(), resourceGroupName, accountName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SqlRoleDefinitionGetResultsInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SqlRoleDefinitionGetResultsInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SqlRoleDefinitionGetResultsInner> clientResponse = getSqlRoleDefinitionDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SqlRoleDefinitionGetResultsInner> getSqlRoleDefinitionDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SqlRoleDefinitionGetResultsInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SqlRoleDefinitionGetResultsInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Creates or updates an Azure Cosmos DB SQL Role Definition.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param createUpdateSqlRoleDefinitionParameters The properties required to create or update a Role Definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SqlRoleDefinitionGetResultsInner object if successful.
+     */
+    public SqlRoleDefinitionGetResultsInner createUpdateSqlRoleDefinition(String roleDefinitionId, String resourceGroupName, String accountName, SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters) {
+        return createUpdateSqlRoleDefinitionWithServiceResponseAsync(roleDefinitionId, resourceGroupName, accountName, createUpdateSqlRoleDefinitionParameters).toBlocking().last().body();
+    }
+
+    /**
+     * Creates or updates an Azure Cosmos DB SQL Role Definition.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param createUpdateSqlRoleDefinitionParameters The properties required to create or update a Role Definition.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SqlRoleDefinitionGetResultsInner> createUpdateSqlRoleDefinitionAsync(String roleDefinitionId, String resourceGroupName, String accountName, SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters, final ServiceCallback<SqlRoleDefinitionGetResultsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createUpdateSqlRoleDefinitionWithServiceResponseAsync(roleDefinitionId, resourceGroupName, accountName, createUpdateSqlRoleDefinitionParameters), serviceCallback);
+    }
+
+    /**
+     * Creates or updates an Azure Cosmos DB SQL Role Definition.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param createUpdateSqlRoleDefinitionParameters The properties required to create or update a Role Definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<SqlRoleDefinitionGetResultsInner> createUpdateSqlRoleDefinitionAsync(String roleDefinitionId, String resourceGroupName, String accountName, SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters) {
+        return createUpdateSqlRoleDefinitionWithServiceResponseAsync(roleDefinitionId, resourceGroupName, accountName, createUpdateSqlRoleDefinitionParameters).map(new Func1<ServiceResponse<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner>() {
+            @Override
+            public SqlRoleDefinitionGetResultsInner call(ServiceResponse<SqlRoleDefinitionGetResultsInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Creates or updates an Azure Cosmos DB SQL Role Definition.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param createUpdateSqlRoleDefinitionParameters The properties required to create or update a Role Definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<SqlRoleDefinitionGetResultsInner>> createUpdateSqlRoleDefinitionWithServiceResponseAsync(String roleDefinitionId, String resourceGroupName, String accountName, SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters) {
+        if (roleDefinitionId == null) {
+            throw new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (createUpdateSqlRoleDefinitionParameters == null) {
+            throw new IllegalArgumentException("Parameter createUpdateSqlRoleDefinitionParameters is required and cannot be null.");
+        }
+        Validator.validate(createUpdateSqlRoleDefinitionParameters);
+        final String apiVersion = "2020-06-01-preview";
+        Observable<Response<ResponseBody>> observable = service.createUpdateSqlRoleDefinition(roleDefinitionId, this.client.subscriptionId(), resourceGroupName, accountName, apiVersion, createUpdateSqlRoleDefinitionParameters, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<SqlRoleDefinitionGetResultsInner>() { }.getType());
+    }
+
+    /**
+     * Creates or updates an Azure Cosmos DB SQL Role Definition.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param createUpdateSqlRoleDefinitionParameters The properties required to create or update a Role Definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SqlRoleDefinitionGetResultsInner object if successful.
+     */
+    public SqlRoleDefinitionGetResultsInner beginCreateUpdateSqlRoleDefinition(String roleDefinitionId, String resourceGroupName, String accountName, SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters) {
+        return beginCreateUpdateSqlRoleDefinitionWithServiceResponseAsync(roleDefinitionId, resourceGroupName, accountName, createUpdateSqlRoleDefinitionParameters).toBlocking().single().body();
+    }
+
+    /**
+     * Creates or updates an Azure Cosmos DB SQL Role Definition.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param createUpdateSqlRoleDefinitionParameters The properties required to create or update a Role Definition.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SqlRoleDefinitionGetResultsInner> beginCreateUpdateSqlRoleDefinitionAsync(String roleDefinitionId, String resourceGroupName, String accountName, SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters, final ServiceCallback<SqlRoleDefinitionGetResultsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateUpdateSqlRoleDefinitionWithServiceResponseAsync(roleDefinitionId, resourceGroupName, accountName, createUpdateSqlRoleDefinitionParameters), serviceCallback);
+    }
+
+    /**
+     * Creates or updates an Azure Cosmos DB SQL Role Definition.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param createUpdateSqlRoleDefinitionParameters The properties required to create or update a Role Definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SqlRoleDefinitionGetResultsInner object
+     */
+    public Observable<SqlRoleDefinitionGetResultsInner> beginCreateUpdateSqlRoleDefinitionAsync(String roleDefinitionId, String resourceGroupName, String accountName, SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters) {
+        return beginCreateUpdateSqlRoleDefinitionWithServiceResponseAsync(roleDefinitionId, resourceGroupName, accountName, createUpdateSqlRoleDefinitionParameters).map(new Func1<ServiceResponse<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner>() {
+            @Override
+            public SqlRoleDefinitionGetResultsInner call(ServiceResponse<SqlRoleDefinitionGetResultsInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Creates or updates an Azure Cosmos DB SQL Role Definition.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param createUpdateSqlRoleDefinitionParameters The properties required to create or update a Role Definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SqlRoleDefinitionGetResultsInner object
+     */
+    public Observable<ServiceResponse<SqlRoleDefinitionGetResultsInner>> beginCreateUpdateSqlRoleDefinitionWithServiceResponseAsync(String roleDefinitionId, String resourceGroupName, String accountName, SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters) {
+        if (roleDefinitionId == null) {
+            throw new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (createUpdateSqlRoleDefinitionParameters == null) {
+            throw new IllegalArgumentException("Parameter createUpdateSqlRoleDefinitionParameters is required and cannot be null.");
+        }
+        Validator.validate(createUpdateSqlRoleDefinitionParameters);
+        final String apiVersion = "2020-06-01-preview";
+        return service.beginCreateUpdateSqlRoleDefinition(roleDefinitionId, this.client.subscriptionId(), resourceGroupName, accountName, apiVersion, createUpdateSqlRoleDefinitionParameters, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SqlRoleDefinitionGetResultsInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SqlRoleDefinitionGetResultsInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SqlRoleDefinitionGetResultsInner> clientResponse = beginCreateUpdateSqlRoleDefinitionDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SqlRoleDefinitionGetResultsInner> beginCreateUpdateSqlRoleDefinitionDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SqlRoleDefinitionGetResultsInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SqlRoleDefinitionGetResultsInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL Role Definition.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void deleteSqlRoleDefinition(String roleDefinitionId, String resourceGroupName, String accountName) {
+        deleteSqlRoleDefinitionWithServiceResponseAsync(roleDefinitionId, resourceGroupName, accountName).toBlocking().last().body();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL Role Definition.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteSqlRoleDefinitionAsync(String roleDefinitionId, String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteSqlRoleDefinitionWithServiceResponseAsync(roleDefinitionId, resourceGroupName, accountName), serviceCallback);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL Role Definition.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> deleteSqlRoleDefinitionAsync(String roleDefinitionId, String resourceGroupName, String accountName) {
+        return deleteSqlRoleDefinitionWithServiceResponseAsync(roleDefinitionId, resourceGroupName, accountName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL Role Definition.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteSqlRoleDefinitionWithServiceResponseAsync(String roleDefinitionId, String resourceGroupName, String accountName) {
+        if (roleDefinitionId == null) {
+            throw new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        final String apiVersion = "2020-06-01-preview";
+        Observable<Response<ResponseBody>> observable = service.deleteSqlRoleDefinition(roleDefinitionId, this.client.subscriptionId(), resourceGroupName, accountName, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL Role Definition.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginDeleteSqlRoleDefinition(String roleDefinitionId, String resourceGroupName, String accountName) {
+        beginDeleteSqlRoleDefinitionWithServiceResponseAsync(roleDefinitionId, resourceGroupName, accountName).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL Role Definition.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginDeleteSqlRoleDefinitionAsync(String roleDefinitionId, String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteSqlRoleDefinitionWithServiceResponseAsync(roleDefinitionId, resourceGroupName, accountName), serviceCallback);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL Role Definition.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginDeleteSqlRoleDefinitionAsync(String roleDefinitionId, String resourceGroupName, String accountName) {
+        return beginDeleteSqlRoleDefinitionWithServiceResponseAsync(roleDefinitionId, resourceGroupName, accountName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL Role Definition.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteSqlRoleDefinitionWithServiceResponseAsync(String roleDefinitionId, String resourceGroupName, String accountName) {
+        if (roleDefinitionId == null) {
+            throw new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        final String apiVersion = "2020-06-01-preview";
+        return service.beginDeleteSqlRoleDefinition(roleDefinitionId, this.client.subscriptionId(), resourceGroupName, accountName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginDeleteSqlRoleDefinitionDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginDeleteSqlRoleDefinitionDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Retrieves the list of all Azure Cosmos DB SQL Role Definitions.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;SqlRoleDefinitionGetResultsInner&gt; object if successful.
+     */
+    public List<SqlRoleDefinitionGetResultsInner> listSqlRoleDefinitions(String resourceGroupName, String accountName) {
+        return listSqlRoleDefinitionsWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
+    }
+
+    /**
+     * Retrieves the list of all Azure Cosmos DB SQL Role Definitions.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<SqlRoleDefinitionGetResultsInner>> listSqlRoleDefinitionsAsync(String resourceGroupName, String accountName, final ServiceCallback<List<SqlRoleDefinitionGetResultsInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listSqlRoleDefinitionsWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
+    }
+
+    /**
+     * Retrieves the list of all Azure Cosmos DB SQL Role Definitions.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;SqlRoleDefinitionGetResultsInner&gt; object
+     */
+    public Observable<List<SqlRoleDefinitionGetResultsInner>> listSqlRoleDefinitionsAsync(String resourceGroupName, String accountName) {
+        return listSqlRoleDefinitionsWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<List<SqlRoleDefinitionGetResultsInner>>, List<SqlRoleDefinitionGetResultsInner>>() {
+            @Override
+            public List<SqlRoleDefinitionGetResultsInner> call(ServiceResponse<List<SqlRoleDefinitionGetResultsInner>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Retrieves the list of all Azure Cosmos DB SQL Role Definitions.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;SqlRoleDefinitionGetResultsInner&gt; object
+     */
+    public Observable<ServiceResponse<List<SqlRoleDefinitionGetResultsInner>>> listSqlRoleDefinitionsWithServiceResponseAsync(String resourceGroupName, String accountName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        final String apiVersion = "2020-06-01-preview";
+        return service.listSqlRoleDefinitions(this.client.subscriptionId(), resourceGroupName, accountName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<SqlRoleDefinitionGetResultsInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<SqlRoleDefinitionGetResultsInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SqlRoleDefinitionGetResultsInner>> result = listSqlRoleDefinitionsDelegate(response);
+                        List<SqlRoleDefinitionGetResultsInner> items = null;
+                        if (result.body() != null) {
+                            items = result.body().items();
+                        }
+                        ServiceResponse<List<SqlRoleDefinitionGetResultsInner>> clientResponse = new ServiceResponse<List<SqlRoleDefinitionGetResultsInner>>(items, result.response());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<SqlRoleDefinitionGetResultsInner>> listSqlRoleDefinitionsDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SqlRoleDefinitionGetResultsInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<SqlRoleDefinitionGetResultsInner>>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB SQL Role Assignment with the given Id.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SqlRoleAssignmentGetResultsInner object if successful.
+     */
+    public SqlRoleAssignmentGetResultsInner getSqlRoleAssignment(String roleAssignmentId, String resourceGroupName, String accountName) {
+        return getSqlRoleAssignmentWithServiceResponseAsync(roleAssignmentId, resourceGroupName, accountName).toBlocking().single().body();
+    }
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB SQL Role Assignment with the given Id.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SqlRoleAssignmentGetResultsInner> getSqlRoleAssignmentAsync(String roleAssignmentId, String resourceGroupName, String accountName, final ServiceCallback<SqlRoleAssignmentGetResultsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getSqlRoleAssignmentWithServiceResponseAsync(roleAssignmentId, resourceGroupName, accountName), serviceCallback);
+    }
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB SQL Role Assignment with the given Id.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SqlRoleAssignmentGetResultsInner object
+     */
+    public Observable<SqlRoleAssignmentGetResultsInner> getSqlRoleAssignmentAsync(String roleAssignmentId, String resourceGroupName, String accountName) {
+        return getSqlRoleAssignmentWithServiceResponseAsync(roleAssignmentId, resourceGroupName, accountName).map(new Func1<ServiceResponse<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner>() {
+            @Override
+            public SqlRoleAssignmentGetResultsInner call(ServiceResponse<SqlRoleAssignmentGetResultsInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB SQL Role Assignment with the given Id.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SqlRoleAssignmentGetResultsInner object
+     */
+    public Observable<ServiceResponse<SqlRoleAssignmentGetResultsInner>> getSqlRoleAssignmentWithServiceResponseAsync(String roleAssignmentId, String resourceGroupName, String accountName) {
+        if (roleAssignmentId == null) {
+            throw new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        final String apiVersion = "2020-06-01-preview";
+        return service.getSqlRoleAssignment(roleAssignmentId, this.client.subscriptionId(), resourceGroupName, accountName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SqlRoleAssignmentGetResultsInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SqlRoleAssignmentGetResultsInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SqlRoleAssignmentGetResultsInner> clientResponse = getSqlRoleAssignmentDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SqlRoleAssignmentGetResultsInner> getSqlRoleAssignmentDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SqlRoleAssignmentGetResultsInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SqlRoleAssignmentGetResultsInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Creates or updates an Azure Cosmos DB SQL Role Assignment.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param createUpdateSqlRoleAssignmentParameters The properties required to create or update a Role Assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SqlRoleAssignmentGetResultsInner object if successful.
+     */
+    public SqlRoleAssignmentGetResultsInner createUpdateSqlRoleAssignment(String roleAssignmentId, String resourceGroupName, String accountName, SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters) {
+        return createUpdateSqlRoleAssignmentWithServiceResponseAsync(roleAssignmentId, resourceGroupName, accountName, createUpdateSqlRoleAssignmentParameters).toBlocking().last().body();
+    }
+
+    /**
+     * Creates or updates an Azure Cosmos DB SQL Role Assignment.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param createUpdateSqlRoleAssignmentParameters The properties required to create or update a Role Assignment.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SqlRoleAssignmentGetResultsInner> createUpdateSqlRoleAssignmentAsync(String roleAssignmentId, String resourceGroupName, String accountName, SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters, final ServiceCallback<SqlRoleAssignmentGetResultsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createUpdateSqlRoleAssignmentWithServiceResponseAsync(roleAssignmentId, resourceGroupName, accountName, createUpdateSqlRoleAssignmentParameters), serviceCallback);
+    }
+
+    /**
+     * Creates or updates an Azure Cosmos DB SQL Role Assignment.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param createUpdateSqlRoleAssignmentParameters The properties required to create or update a Role Assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<SqlRoleAssignmentGetResultsInner> createUpdateSqlRoleAssignmentAsync(String roleAssignmentId, String resourceGroupName, String accountName, SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters) {
+        return createUpdateSqlRoleAssignmentWithServiceResponseAsync(roleAssignmentId, resourceGroupName, accountName, createUpdateSqlRoleAssignmentParameters).map(new Func1<ServiceResponse<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner>() {
+            @Override
+            public SqlRoleAssignmentGetResultsInner call(ServiceResponse<SqlRoleAssignmentGetResultsInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Creates or updates an Azure Cosmos DB SQL Role Assignment.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param createUpdateSqlRoleAssignmentParameters The properties required to create or update a Role Assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<SqlRoleAssignmentGetResultsInner>> createUpdateSqlRoleAssignmentWithServiceResponseAsync(String roleAssignmentId, String resourceGroupName, String accountName, SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters) {
+        if (roleAssignmentId == null) {
+            throw new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (createUpdateSqlRoleAssignmentParameters == null) {
+            throw new IllegalArgumentException("Parameter createUpdateSqlRoleAssignmentParameters is required and cannot be null.");
+        }
+        Validator.validate(createUpdateSqlRoleAssignmentParameters);
+        final String apiVersion = "2020-06-01-preview";
+        Observable<Response<ResponseBody>> observable = service.createUpdateSqlRoleAssignment(roleAssignmentId, this.client.subscriptionId(), resourceGroupName, accountName, apiVersion, createUpdateSqlRoleAssignmentParameters, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<SqlRoleAssignmentGetResultsInner>() { }.getType());
+    }
+
+    /**
+     * Creates or updates an Azure Cosmos DB SQL Role Assignment.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param createUpdateSqlRoleAssignmentParameters The properties required to create or update a Role Assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SqlRoleAssignmentGetResultsInner object if successful.
+     */
+    public SqlRoleAssignmentGetResultsInner beginCreateUpdateSqlRoleAssignment(String roleAssignmentId, String resourceGroupName, String accountName, SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters) {
+        return beginCreateUpdateSqlRoleAssignmentWithServiceResponseAsync(roleAssignmentId, resourceGroupName, accountName, createUpdateSqlRoleAssignmentParameters).toBlocking().single().body();
+    }
+
+    /**
+     * Creates or updates an Azure Cosmos DB SQL Role Assignment.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param createUpdateSqlRoleAssignmentParameters The properties required to create or update a Role Assignment.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SqlRoleAssignmentGetResultsInner> beginCreateUpdateSqlRoleAssignmentAsync(String roleAssignmentId, String resourceGroupName, String accountName, SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters, final ServiceCallback<SqlRoleAssignmentGetResultsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateUpdateSqlRoleAssignmentWithServiceResponseAsync(roleAssignmentId, resourceGroupName, accountName, createUpdateSqlRoleAssignmentParameters), serviceCallback);
+    }
+
+    /**
+     * Creates or updates an Azure Cosmos DB SQL Role Assignment.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param createUpdateSqlRoleAssignmentParameters The properties required to create or update a Role Assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SqlRoleAssignmentGetResultsInner object
+     */
+    public Observable<SqlRoleAssignmentGetResultsInner> beginCreateUpdateSqlRoleAssignmentAsync(String roleAssignmentId, String resourceGroupName, String accountName, SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters) {
+        return beginCreateUpdateSqlRoleAssignmentWithServiceResponseAsync(roleAssignmentId, resourceGroupName, accountName, createUpdateSqlRoleAssignmentParameters).map(new Func1<ServiceResponse<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner>() {
+            @Override
+            public SqlRoleAssignmentGetResultsInner call(ServiceResponse<SqlRoleAssignmentGetResultsInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Creates or updates an Azure Cosmos DB SQL Role Assignment.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param createUpdateSqlRoleAssignmentParameters The properties required to create or update a Role Assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SqlRoleAssignmentGetResultsInner object
+     */
+    public Observable<ServiceResponse<SqlRoleAssignmentGetResultsInner>> beginCreateUpdateSqlRoleAssignmentWithServiceResponseAsync(String roleAssignmentId, String resourceGroupName, String accountName, SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters) {
+        if (roleAssignmentId == null) {
+            throw new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (createUpdateSqlRoleAssignmentParameters == null) {
+            throw new IllegalArgumentException("Parameter createUpdateSqlRoleAssignmentParameters is required and cannot be null.");
+        }
+        Validator.validate(createUpdateSqlRoleAssignmentParameters);
+        final String apiVersion = "2020-06-01-preview";
+        return service.beginCreateUpdateSqlRoleAssignment(roleAssignmentId, this.client.subscriptionId(), resourceGroupName, accountName, apiVersion, createUpdateSqlRoleAssignmentParameters, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SqlRoleAssignmentGetResultsInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SqlRoleAssignmentGetResultsInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SqlRoleAssignmentGetResultsInner> clientResponse = beginCreateUpdateSqlRoleAssignmentDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SqlRoleAssignmentGetResultsInner> beginCreateUpdateSqlRoleAssignmentDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SqlRoleAssignmentGetResultsInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SqlRoleAssignmentGetResultsInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL Role Assignment.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void deleteSqlRoleAssignment(String roleAssignmentId, String resourceGroupName, String accountName) {
+        deleteSqlRoleAssignmentWithServiceResponseAsync(roleAssignmentId, resourceGroupName, accountName).toBlocking().last().body();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL Role Assignment.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteSqlRoleAssignmentAsync(String roleAssignmentId, String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteSqlRoleAssignmentWithServiceResponseAsync(roleAssignmentId, resourceGroupName, accountName), serviceCallback);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL Role Assignment.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> deleteSqlRoleAssignmentAsync(String roleAssignmentId, String resourceGroupName, String accountName) {
+        return deleteSqlRoleAssignmentWithServiceResponseAsync(roleAssignmentId, resourceGroupName, accountName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL Role Assignment.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteSqlRoleAssignmentWithServiceResponseAsync(String roleAssignmentId, String resourceGroupName, String accountName) {
+        if (roleAssignmentId == null) {
+            throw new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        final String apiVersion = "2020-06-01-preview";
+        Observable<Response<ResponseBody>> observable = service.deleteSqlRoleAssignment(roleAssignmentId, this.client.subscriptionId(), resourceGroupName, accountName, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL Role Assignment.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginDeleteSqlRoleAssignment(String roleAssignmentId, String resourceGroupName, String accountName) {
+        beginDeleteSqlRoleAssignmentWithServiceResponseAsync(roleAssignmentId, resourceGroupName, accountName).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL Role Assignment.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginDeleteSqlRoleAssignmentAsync(String roleAssignmentId, String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteSqlRoleAssignmentWithServiceResponseAsync(roleAssignmentId, resourceGroupName, accountName), serviceCallback);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL Role Assignment.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginDeleteSqlRoleAssignmentAsync(String roleAssignmentId, String resourceGroupName, String accountName) {
+        return beginDeleteSqlRoleAssignmentWithServiceResponseAsync(roleAssignmentId, resourceGroupName, accountName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL Role Assignment.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteSqlRoleAssignmentWithServiceResponseAsync(String roleAssignmentId, String resourceGroupName, String accountName) {
+        if (roleAssignmentId == null) {
+            throw new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        final String apiVersion = "2020-06-01-preview";
+        return service.beginDeleteSqlRoleAssignment(roleAssignmentId, this.client.subscriptionId(), resourceGroupName, accountName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginDeleteSqlRoleAssignmentDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginDeleteSqlRoleAssignmentDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Retrieves the list of all Azure Cosmos DB SQL Role Assignments.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;SqlRoleAssignmentGetResultsInner&gt; object if successful.
+     */
+    public List<SqlRoleAssignmentGetResultsInner> listSqlRoleAssignments(String resourceGroupName, String accountName) {
+        return listSqlRoleAssignmentsWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
+    }
+
+    /**
+     * Retrieves the list of all Azure Cosmos DB SQL Role Assignments.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<SqlRoleAssignmentGetResultsInner>> listSqlRoleAssignmentsAsync(String resourceGroupName, String accountName, final ServiceCallback<List<SqlRoleAssignmentGetResultsInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listSqlRoleAssignmentsWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
+    }
+
+    /**
+     * Retrieves the list of all Azure Cosmos DB SQL Role Assignments.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;SqlRoleAssignmentGetResultsInner&gt; object
+     */
+    public Observable<List<SqlRoleAssignmentGetResultsInner>> listSqlRoleAssignmentsAsync(String resourceGroupName, String accountName) {
+        return listSqlRoleAssignmentsWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<List<SqlRoleAssignmentGetResultsInner>>, List<SqlRoleAssignmentGetResultsInner>>() {
+            @Override
+            public List<SqlRoleAssignmentGetResultsInner> call(ServiceResponse<List<SqlRoleAssignmentGetResultsInner>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Retrieves the list of all Azure Cosmos DB SQL Role Assignments.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;SqlRoleAssignmentGetResultsInner&gt; object
+     */
+    public Observable<ServiceResponse<List<SqlRoleAssignmentGetResultsInner>>> listSqlRoleAssignmentsWithServiceResponseAsync(String resourceGroupName, String accountName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        final String apiVersion = "2020-06-01-preview";
+        return service.listSqlRoleAssignments(this.client.subscriptionId(), resourceGroupName, accountName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<SqlRoleAssignmentGetResultsInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<SqlRoleAssignmentGetResultsInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SqlRoleAssignmentGetResultsInner>> result = listSqlRoleAssignmentsDelegate(response);
+                        List<SqlRoleAssignmentGetResultsInner> items = null;
+                        if (result.body() != null) {
+                            items = result.body().items();
+                        }
+                        ServiceResponse<List<SqlRoleAssignmentGetResultsInner>> clientResponse = new ServiceResponse<List<SqlRoleAssignmentGetResultsInner>>(items, result.response());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<SqlRoleAssignmentGetResultsInner>> listSqlRoleAssignmentsDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SqlRoleAssignmentGetResultsInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<SqlRoleAssignmentGetResultsInner>>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
                 .build(response);
     }
 

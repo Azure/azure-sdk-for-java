@@ -140,6 +140,18 @@ public class DatabaseAccountUpdateParameters {
     private BackupPolicy backupPolicy;
 
     /**
+     * The CORS policy for the Cosmos DB database account.
+     */
+    @JsonProperty(value = "properties.cors")
+    private List<CorsPolicy> cors;
+
+    /**
+     * The identity property.
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
+
+    /**
      * Get the tags value.
      *
      * @return the tags value
@@ -516,6 +528,46 @@ public class DatabaseAccountUpdateParameters {
      */
     public DatabaseAccountUpdateParameters withBackupPolicy(BackupPolicy backupPolicy) {
         this.backupPolicy = backupPolicy;
+        return this;
+    }
+
+    /**
+     * Get the CORS policy for the Cosmos DB database account.
+     *
+     * @return the cors value
+     */
+    public List<CorsPolicy> cors() {
+        return this.cors;
+    }
+
+    /**
+     * Set the CORS policy for the Cosmos DB database account.
+     *
+     * @param cors the cors value to set
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters withCors(List<CorsPolicy> cors) {
+        this.cors = cors;
+        return this;
+    }
+
+    /**
+     * Get the identity value.
+     *
+     * @return the identity value
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity value.
+     *
+     * @param identity the identity value to set
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
         return this;
     }
 

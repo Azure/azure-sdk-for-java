@@ -24,7 +24,9 @@ public class RestoreParameters {
     private RestoreMode restoreMode;
 
     /**
-     * Path of the source account from which the restore has to be initiated.
+     * The id of the restorable database account from which the restore has to
+     * be initiated. For example:
+     * /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}.
      */
     @JsonProperty(value = "restoreSource")
     private String restoreSource;
@@ -62,7 +64,7 @@ public class RestoreParameters {
     }
 
     /**
-     * Get path of the source account from which the restore has to be initiated.
+     * Get the id of the restorable database account from which the restore has to be initiated. For example: /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}.
      *
      * @return the restoreSource value
      */
@@ -71,7 +73,7 @@ public class RestoreParameters {
     }
 
     /**
-     * Set path of the source account from which the restore has to be initiated.
+     * Set the id of the restorable database account from which the restore has to be initiated. For example: /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}.
      *
      * @param restoreSource the restoreSource value to set
      * @return the RestoreParameters object itself.
