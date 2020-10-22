@@ -184,9 +184,18 @@ final class Transforms {
             .map(selectionMark -> {
                 final FormSelectionMark formSelectionMark = new FormSelectionMark(
                     null, toBoundingBox(selectionMark.getBoundingBox()), pageNumber);
+                final SelectionMarkState selectionMarkStateImpl = selectionMark.getState();
+                com.azure.ai.formrecognizer.models.SelectionMarkState selectionMarkState = null;
+                if (SelectionMarkState.SELECTED.equals(selectionMarkStateImpl)) {
+                    selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.SELECTED;
+                } else if (SelectionMarkState.UNSELECTED.equals(selectionMarkStateImpl)) {
+                    selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.UNSELECTED;
+                } else {
+                    throw LOGGER.logThrowableAsError(new RuntimeException(
+                            String.format("%s, unsupported selection mark state.", selectionMarkStateImpl)));
+                }
                 PrivateFieldAccessHelper.set(formSelectionMark, "confidence", selectionMark.getConfidence());
-                PrivateFieldAccessHelper.set(formSelectionMark, "state",
-                    toSelectionMarkState(selectionMark.getState()));
+                PrivateFieldAccessHelper.set(formSelectionMark, "state", selectionMarkState);
                 return formSelectionMark;
             })
             .collect(Collectors.toList());
@@ -326,8 +335,23 @@ final class Transforms {
                     toFieldValueObject(fieldValue.getValueObject(), readResults), FieldValueType.MAP);
                 break;
             case SELECTION_MARK:
-                value = new com.azure.ai.formrecognizer.models.FieldValue(
-                    toSelectionMarkState(fieldValue.getValueSelectionMark()), FieldValueType.SELECTION_MARK_STATE);
+                com.azure.ai.formrecognizer.models.SelectionMarkState selectionMarkState = null;
+                final FieldValueSelectionMark fieldValueSelectionMarkState = fieldValue.getValueSelectionMark();
+                if (FieldValueSelectionMark.SELECTED.equals(fieldValueSelectionMarkState)) {
+                    selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.SELECTED;
+                } else if (FieldValueSelectionMark.UNSELECTED.equals(fieldValueSelectionMarkState)) {
+                    selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.UNSELECTED;
+                } else {
+                    // TODO: (ServiceBug)
+                    // Currently, the fieldValue's valueSelectionMark is null which is incorrect.
+                    // Use the fieldValue's text as the temperately solution.
+                    selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.fromString(
+                        fieldValue.getText());
+                    //        throw LOGGER.logThrowableAsError(new RuntimeException(
+                    //                String.format("%s, unsupported selection mark state.", selectionMarkState)));
+                }
+                value = new com.azure.ai.formrecognizer.models.FieldValue(selectionMarkState,
+                    FieldValueType.SELECTION_MARK_STATE);
                 break;
             default:
                 throw LOGGER.logExceptionAsError(new RuntimeException("FieldValue Type not supported"));
@@ -536,33 +560,5 @@ final class Transforms {
             pointList.add(new Point(serviceBoundingBox.get(i), serviceBoundingBox.get(++i)));
         }
         return new FieldBoundingBox(pointList);
-    }
-
-    /**
-     * Helper method to convert the service level selection marks state to SDK level model.
-     *
-     * @param selectionMarkState The selection mark state, i.e., SELECTED and UNSELECTED.
-     *
-     * @return The selection mark state in the SDK level model.
-     */
-    private static com.azure.ai.formrecognizer.models.SelectionMarkState toSelectionMarkState(
-        Object selectionMarkState) {
-        if (selectionMarkState instanceof FieldValueSelectionMark) {
-            if (FieldValueSelectionMark.SELECTED.equals(selectionMarkState)) {
-                return com.azure.ai.formrecognizer.models.SelectionMarkState.SELECTED;
-            } else if (FieldValueSelectionMark.UNSELECTED.equals(selectionMarkState)) {
-                return com.azure.ai.formrecognizer.models.SelectionMarkState.UNSELECTED;
-            }
-        } else if (selectionMarkState instanceof SelectionMarkState) {
-            if (SelectionMarkState.SELECTED.equals(selectionMarkState)) {
-                return com.azure.ai.formrecognizer.models.SelectionMarkState.SELECTED;
-            } else if (SelectionMarkState.UNSELECTED.equals(selectionMarkState)) {
-                return com.azure.ai.formrecognizer.models.SelectionMarkState.UNSELECTED;
-            }
-        }
-        return null;
-        // TODO: (shawn) currently, the fieldValue's valueSelectionMark is null which is incorrect.
-//        throw LOGGER.logThrowableAsError(new RuntimeException(
-//                String.format("%s, unsupported selection mark state.", selectionMarkState)));
     }
 }
