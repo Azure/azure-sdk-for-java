@@ -1124,14 +1124,15 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
     }
 
-    private Mono<Boolean> validateSession(String sessionId) {
-        String optionSessionId = receiverOptions.getSessionId();
-        if (optionSessionId != null && !optionSessionId.equals(sessionId)) {
-            return monoError(logger, new IllegalArgumentException(String.format(
-                "This receiver client is tied to session %s. It can't be used for another %s.",
-                optionSessionId, sessionId)));
-        } else {
-            return Mono.just(true);
-        }
-    }
+    //TODO: discuss whether we should disallow session id call on peek, receiveDeferred.
+//    private Mono<Boolean> validateSession(String sessionId) {
+//        String optionSessionId = receiverOptions.getSessionId();
+//        if (optionSessionId != null && !optionSessionId.equals(sessionId)) {
+//            return monoError(logger, new IllegalArgumentException(String.format(
+//                "This receiver client is tied to session %s. It can't be used for another %s.",
+//                optionSessionId, sessionId)));
+//        } else {
+//            return Mono.just(true);
+//        }
+//    }
 }

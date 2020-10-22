@@ -34,7 +34,7 @@ public class ServiceBusSessionReceiverAsyncClient implements AutoCloseable {
     private final TracerProvider tracerProvider;
     private final MessageSerializer messageSerializer;
     private final Runnable onClientClose;
-    private final UnnamedSessionManager unNamedSessionManager;  // for acceptNextSession()
+    private final ServiceBusSessionManager unNamedSessionManager;  // for acceptNextSession()
     private final ClientLogger logger = new ClientLogger(ServiceBusSessionReceiverAsyncClient.class);
 
     ServiceBusSessionReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath,
@@ -50,8 +50,8 @@ public class ServiceBusSessionReceiverAsyncClient implements AutoCloseable {
         this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
-        this.unNamedSessionManager = new UnnamedSessionManager(entityPath, entityType,
-            connectionProcessor, connectionProcessor.getRetryOptions().getTryTimeout(), tracerProvider,
+        this.unNamedSessionManager = new ServiceBusSessionManager(entityPath, entityType,
+            connectionProcessor, tracerProvider,
             messageSerializer, receiverOptions);
     }
 
@@ -64,10 +64,10 @@ public class ServiceBusSessionReceiverAsyncClient implements AutoCloseable {
         return unNamedSessionManager.getActiveLink().flatMap(receiveLink -> receiveLink.getSessionId()
             .map(sessionId -> {
                 ReceiverOptions newReceiverOptions = new ReceiverOptions(this.receiverOptions.getReceiveMode(),
-                    this.receiverOptions.getPrefetchCount(), sessionId, null);
-                final UnnamedSessionManager sessionSpecificManager = new UnnamedSessionManager(entityPath, entityType,
-                    connectionProcessor, connectionProcessor.getRetryOptions().getTryTimeout(), tracerProvider,
-                    messageSerializer, newReceiverOptions, receiveLink);
+                    this.receiverOptions.getPrefetchCount(), null);
+                final ServiceBusSessionManager sessionSpecificManager = new ServiceBusSessionManager(entityPath,
+                    entityType, connectionProcessor, tracerProvider, messageSerializer, newReceiverOptions,
+                    receiveLink);
                 return new ServiceBusReceiverAsyncClient(fullyQualifiedNamespace, entityPath,
                     entityType, newReceiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
                     tracerProvider, messageSerializer, onClientClose, sessionSpecificManager);
@@ -86,10 +86,9 @@ public class ServiceBusSessionReceiverAsyncClient implements AutoCloseable {
             return monoError(logger, new IllegalArgumentException("sessionId can not be null or empty"));
         }
         ReceiverOptions newReceiverOptions = new ReceiverOptions(this.receiverOptions.getReceiveMode(),
-            this.receiverOptions.getPrefetchCount(), sessionId, null);
-        final UnnamedSessionManager sessionSpecificManager = new UnnamedSessionManager(entityPath, entityType,
-            connectionProcessor, connectionProcessor.getRetryOptions().getTryTimeout(), tracerProvider,
-            messageSerializer, newReceiverOptions);
+            this.receiverOptions.getPrefetchCount(), null);
+        final ServiceBusSessionManager sessionSpecificManager = new ServiceBusSessionManager(entityPath, entityType,
+            connectionProcessor, tracerProvider, messageSerializer, newReceiverOptions);
 
         return sessionSpecificManager.getActiveLink().thenReturn(new ServiceBusReceiverAsyncClient(
             fullyQualifiedNamespace, entityPath, entityType, newReceiverOptions, connectionProcessor,
@@ -111,7 +110,8 @@ public class ServiceBusSessionReceiverAsyncClient implements AutoCloseable {
                 new IllegalArgumentException("Maximum number of concurrent sessions must be positive."));
         }
         ReceiverOptions newReceiverOptions = new ReceiverOptions(this.receiverOptions.getReceiveMode(),
-            this.receiverOptions.getPrefetchCount(), null, maxConcurrentSessions);
+            this.receiverOptions.getPrefetchCount(), null, maxConcurrentSessions,
+            this.receiverOptions.getMaxLockRenewDuration());
         return new ServiceBusReceiverAsyncClient(fullyQualifiedNamespace, entityPath,
             entityType, newReceiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
             tracerProvider, messageSerializer, onClientClose);

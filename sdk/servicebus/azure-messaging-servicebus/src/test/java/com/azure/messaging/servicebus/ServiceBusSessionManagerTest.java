@@ -345,8 +345,7 @@ class ServiceBusSessionManagerTest {
     void multipleReceiveUnnamedSession() {
         // Arrange
         final int expectedLinksCreated = 2;
-        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null,
-            false, 1, Duration.ZERO);
+        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, 1, Duration.ZERO);
 
         sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             tracerProvider, messageSerializer, receiverOptions);

@@ -108,9 +108,9 @@ class ServiceBusSessionManager implements AutoCloseable {
     }
 
     ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
-        ServiceBusConnectionProcessor connectionProcessor, Duration operationTimeout, TracerProvider tracerProvider,
+        ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
         MessageSerializer messageSerializer, ReceiverOptions receiverOptions) {
-        this(entityPath, entityType, connectionProcessor, operationTimeout, tracerProvider,
+        this(entityPath, entityType, connectionProcessor, tracerProvider,
             messageSerializer, receiverOptions, null);
     }
 
