@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
+import com.azure.ai.formrecognizer.models.FormSelectionMark;
 import com.azure.ai.formrecognizer.models.FormTable;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
@@ -17,10 +18,9 @@ import java.nio.file.Files;
 import java.util.List;
 
 /**
- * Sample for recognizing content information from a document given through a file.
+ * Sample for recognizing content information with selection mark from a document given through a file.
  */
-public class RecognizeContent {
-
+public class RecognizeContentWithSelectionMarks {
     /**
      * Main method to invoke this demo.
      *
@@ -36,7 +36,7 @@ public class RecognizeContent {
             .buildClient();
 
         File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/"
-            + "forms/Form_1.jpg");
+                                       + "forms/selectionMarkForm.pdf");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
@@ -57,11 +57,19 @@ public class RecognizeContent {
                 final FormTable formTable = tables.get(i1);
                 System.out.printf("Table %d has %d rows and %d columns.%n", i1, formTable.getRowCount(),
                     formTable.getColumnCount());
-                formTable.getCells().forEach(formTableCell -> {
+                formTable.getCells().forEach(formTableCell ->
                     System.out.printf("Cell has text '%s', within bounding box %s.%n", formTableCell.getText(),
-                        formTableCell.getBoundingBox().toString());
-                });
+                        formTableCell.getBoundingBox().toString()));
                 System.out.println();
+            }
+            // Selection Mark
+            for (FormSelectionMark selectionMark : formPage.getSelectionMarks()) {
+                System.out.printf(
+                    "Page: %s, Selection mark is %s within bounding box %s has a confidence score %.2f.%n",
+                    selectionMark.getPageNumber(),
+                    selectionMark.getState(),
+                    selectionMark.getBoundingBox().toString(),
+                    selectionMark.getConfidence());
             }
         }
     }
