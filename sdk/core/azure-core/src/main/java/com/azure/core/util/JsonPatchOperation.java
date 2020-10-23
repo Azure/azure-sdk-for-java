@@ -3,6 +3,7 @@
 
 package com.azure.core.util;
 
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.Objects;
@@ -11,6 +12,7 @@ import java.util.Optional;
 /**
  * Represents a JSON Patch operation.
  */
+@Immutable
 @JsonSerialize(using = JsonPatchOperationSerializer.class)
 public final class JsonPatchOperation {
     private final JsonPatchOperationKind op;
