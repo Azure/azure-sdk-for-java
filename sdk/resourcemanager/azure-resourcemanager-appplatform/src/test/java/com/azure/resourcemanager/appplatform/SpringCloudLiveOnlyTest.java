@@ -180,8 +180,8 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
 
         AppServiceCertificateOrder certificateOrder = appServiceManager.certificateOrders().define(certOrderName)
             .withExistingResourceGroup(rgName)
-            .withHostName(String.format("*.%s", domainName))
-            .withWildcardSku()
+            .withHostName(String.format("ssl.%s", domainName))
+            .withStandardSku()
             .withDomainVerification(domain)
             .withNewKeyVault(vaultName, region)
             .withAutoRenew(true)

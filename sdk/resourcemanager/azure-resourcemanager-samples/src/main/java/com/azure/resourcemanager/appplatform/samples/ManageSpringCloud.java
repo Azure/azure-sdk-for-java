@@ -187,11 +187,11 @@
 //                .withCNameRecordSet("ssl", gateway.fqdn())
 //                .apply();
 //
-//            System.out.printf("Purchasing a certificate for *.%s and save to %s in key vault named %s ...%n", domainName, certOrderName, vaultName);
+//            System.out.printf("Purchasing a certificate for ssl.%s and save to %s in key vault named %s ...%n", domainName, certOrderName, vaultName);
 //            AppServiceCertificateOrder certificateOrder = azureResourceManager.appServiceCertificateOrders().define(certOrderName)
 //                .withExistingResourceGroup(rgName)
-//                .withHostName(String.format("*.%s", domainName))
-//                .withWildcardSku()
+//                .withHostName(String.format("ssl.%s", domainName))
+//                .withStandardSku()
 //                .withDomainVerification(domain)
 //                .withNewKeyVault(vaultName, region)
 //                .withAutoRenew(true)
