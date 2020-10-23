@@ -67,8 +67,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch}
  *
  * <p><strong>Send messages using a size-limited {@link ServiceBusMessageBatch} to a Service Bus resource</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch
- * #CreateMessageBatchOptionsLimitedSize}
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch#CreateMessageBatchOptionsLimitedSize}
  *
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
