@@ -125,7 +125,7 @@ class KeyVaultClient extends DelegateRestClient {
      *
      * @return the list of aliases.
      */
-    public List<String> getAliases() {
+    List<String> getAliases() {
         ArrayList<String> result = new ArrayList<>();
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + getAccessToken());
@@ -171,7 +171,7 @@ class KeyVaultClient extends DelegateRestClient {
      * @param alias the alias.
      * @return the certificate, or null if not found.
      */
-    public Certificate getCertificate(String alias) {
+    Certificate getCertificate(String alias) {
         LOGGER.entering("KeyVaultClient", "getCertificate", alias);
         LOGGER.log(INFO, "Getting certificate for alias: {0}", alias);
         X509Certificate certificate = null;
@@ -200,7 +200,7 @@ class KeyVaultClient extends DelegateRestClient {
      * @param password the password.
      * @return the key.
      */
-    public Key getKey(String alias, char[] password) {
+    Key getKey(String alias, char[] password) {
         LOGGER.entering("KeyVaultClient", "getKey", new Object[] { alias, password });
         LOGGER.log(INFO, "Getting key for alias: {0}", alias);
         Key key = null;

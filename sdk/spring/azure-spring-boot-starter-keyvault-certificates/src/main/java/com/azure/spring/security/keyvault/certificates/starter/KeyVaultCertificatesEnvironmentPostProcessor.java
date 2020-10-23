@@ -7,7 +7,6 @@ import com.azure.security.keyvault.jca.KeyVaultTrustManagerFactoryProvider;
 
 import java.security.Security;
 import java.util.Properties;
-import java.util.logging.Logger;
 import javax.net.ssl.HttpsURLConnection;
 
 import org.springframework.boot.SpringApplication;
@@ -21,11 +20,6 @@ import static org.springframework.core.Ordered.LOWEST_PRECEDENCE;
 
 @Order(LOWEST_PRECEDENCE)
 public class KeyVaultCertificatesEnvironmentPostProcessor implements EnvironmentPostProcessor {
-
-    /**
-     * Stores the logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(KeyVaultCertificatesEnvironmentPostProcessor.class.getName());
 
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment,
