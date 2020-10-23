@@ -18,7 +18,6 @@ public class AmqpTransportTypeTest {
     public void createFromString() {
         String socketString = "Amqpwebsockets";
         AmqpTransportType actual = AmqpTransportType.fromString(socketString);
-        actual.toString();
         Assertions.assertEquals(AmqpTransportType.AMQP_WEB_SOCKETS, actual);
     }
 

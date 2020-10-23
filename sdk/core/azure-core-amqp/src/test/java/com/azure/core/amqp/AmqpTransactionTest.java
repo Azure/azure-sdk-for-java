@@ -33,7 +33,6 @@ public class AmqpTransactionTest {
 
         // Assert
         assertNotNull(actual);
-        actual.toString();
         assertArrayEquals(TRANSACTION_ID, actual.getTransactionId().array());
     }
 }

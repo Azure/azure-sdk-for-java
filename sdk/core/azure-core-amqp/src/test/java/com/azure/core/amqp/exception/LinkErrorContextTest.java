@@ -26,6 +26,5 @@ public class LinkErrorContextTest {
         Assertions.assertEquals(entity, context.getEntityPath());
         Assertions.assertEquals(trackingId, context.getTrackingId());
         Assertions.assertEquals(credits, context.getLinkCredit());
-        Assertions.assertEquals(context.toString(),context.toString());
     }
 }
