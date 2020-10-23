@@ -1589,11 +1589,12 @@ public final class Utils {
      * @param alias User alias
      * @param password alias password
      * @param cnName domain name
+     * @param dnsName dns name in subject alternate name
      * @throws Exception exceptions from the creation
      * @throws IOException IO Exception
      */
-    public static void createCertificate(String certPath, String pfxPath,
-                                         String alias, String password, String cnName) throws IOException {
+    public static void createCertificate(String certPath, String pfxPath, String alias,
+                                         String password, String cnName, String dnsName) throws IOException {
         if (new File(pfxPath).exists()) {
             return;
         }
@@ -1618,6 +1619,12 @@ public final class Utils {
             "-keystore", pfxPath, "-storepass", password, "-validity",
             validityInDays, "-keyalg", keyAlg, "-sigalg", sigAlg, "-keysize", keySize,
             "-storetype", storeType, "-dname", "CN=" + cnName, "-ext", "EKU=1.3.6.1.5.5.7.3.1"};
+        if (dnsName != null) {
+            List<String> args = new ArrayList<>(List.of(commandArgs));
+            args.add("-ext");
+            args.add("san=dns:" + dnsName);
+            commandArgs = args.toArray(new String[0]);
+        }
         Utils.cmdInvocation(commandArgs, true);
 
         // Create cer file i.e. extract public key from pfx
