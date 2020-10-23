@@ -207,7 +207,7 @@ class KeyVaultClient extends DelegateRestClient {
         CertificateBundle certificateBundle = getCertificateBundle(alias);
         boolean isExportable = Optional.ofNullable(certificateBundle)
                                        .map(CertificateBundle::getPolicy)
-                                       .map(CertificatePolicy::getKey_props)
+                                       .map(CertificatePolicy::getKeyProperties)
                                        .map(KeyProperties::isExportable)
                                        .orElse(false);
         if (isExportable) {
