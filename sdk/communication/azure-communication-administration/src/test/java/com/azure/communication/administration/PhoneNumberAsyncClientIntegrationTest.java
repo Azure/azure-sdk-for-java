@@ -540,8 +540,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
         StepVerifier.create(mono)
             .assertNext(item -> {
                 assertEquals(SearchStatus.SUCCESS, item.getStatus());
-            })
-            .verifyComplete();
+            });
     }
 
     private PhoneNumberAsyncClient getClient(HttpClient httpClient) {
