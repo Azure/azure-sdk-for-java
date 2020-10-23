@@ -122,7 +122,6 @@ public class ReadmeSamples {
      * Code snippet for checking ingestion status.
      */
     public void checkIngestionStatus() {
-
         String dataFeedId = "3d48er30-6e6e-4391-b78f-b00dfee1e6f5";
 
         metricsAdvisorAdminClient.listDataFeedIngestionStatus(
