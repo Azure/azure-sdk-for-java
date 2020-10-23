@@ -7,9 +7,11 @@ import com.azure.ai.formrecognizer.implementation.PrivateFieldAccessHelper;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.implementation.models.DocumentResult;
 import com.azure.ai.formrecognizer.implementation.models.FieldValue;
+import com.azure.ai.formrecognizer.implementation.models.FieldValueSelectionMark;
 import com.azure.ai.formrecognizer.implementation.models.KeyValuePair;
 import com.azure.ai.formrecognizer.implementation.models.PageResult;
 import com.azure.ai.formrecognizer.implementation.models.ReadResult;
+import com.azure.ai.formrecognizer.implementation.models.SelectionMarkState;
 import com.azure.ai.formrecognizer.implementation.models.TextLine;
 import com.azure.ai.formrecognizer.implementation.models.TextWord;
 import com.azure.ai.formrecognizer.models.FieldBoundingBox;
@@ -20,6 +22,7 @@ import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.FormLine;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormPageRange;
+import com.azure.ai.formrecognizer.models.FormSelectionMark;
 import com.azure.ai.formrecognizer.models.FormTable;
 import com.azure.ai.formrecognizer.models.FormTableCell;
 import com.azure.ai.formrecognizer.models.FormWord;
@@ -144,6 +147,7 @@ final class Transforms {
         forEachWithIndex(readResults, ((index, readResultItem) -> {
             List<FormTable> perPageTableList = new ArrayList<>();
 
+            // add form tables
             if (!pageResultsIsNullOrEmpty) {
                 PageResult pageResultItem = pageResults.get(index);
                 perPageTableList = getPageTables(pageResultItem, readResults, pageResultItem.getPage());
@@ -155,11 +159,49 @@ final class Transforms {
                 perPageFormLineList = getReadResultFormLines(readResultItem);
             }
 
-            // get form tables
-            formPages.add(getFormPage(readResultItem, perPageTableList, perPageFormLineList));
+            // add selection marks
+            List<FormSelectionMark> perPageFormSelectionMarkList = new ArrayList<>();
+            if (includeFieldElements && !CoreUtils.isNullOrEmpty(readResultItem.getSelectionMarks())) {
+                PageResult pageResultItem = pageResults.get(index);
+                perPageFormSelectionMarkList = getReadResultFormSelectionMarks(readResultItem,
+                    pageResultItem.getPage());
+            }
+
+            formPages.add(getFormPage(readResultItem, perPageTableList, perPageFormLineList,
+                perPageFormSelectionMarkList));
         }));
 
         return formPages;
+    }
+
+    /**
+     * Helper method to convert the per page {@link ReadResult} item to {@link FormSelectionMark}.
+     *
+     * @param readResultItem The per page text extraction item result returned by the service.
+     * @param pageNumber The page number.
+     *
+     * @return A list of {@code FormSelectionMark}.
+     */
+    static List<FormSelectionMark> getReadResultFormSelectionMarks(ReadResult readResultItem, int pageNumber) {
+        return readResultItem.getSelectionMarks().stream()
+            .map(selectionMark -> {
+                final FormSelectionMark formSelectionMark = new FormSelectionMark(
+                    null, toBoundingBox(selectionMark.getBoundingBox()), pageNumber);
+                final SelectionMarkState selectionMarkStateImpl = selectionMark.getState();
+                com.azure.ai.formrecognizer.models.SelectionMarkState selectionMarkState = null;
+                if (SelectionMarkState.SELECTED.equals(selectionMarkStateImpl)) {
+                    selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.SELECTED;
+                } else if (SelectionMarkState.UNSELECTED.equals(selectionMarkStateImpl)) {
+                    selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.UNSELECTED;
+                } else {
+                    throw LOGGER.logThrowableAsError(new RuntimeException(
+                            String.format("%s, unsupported selection mark state.", selectionMarkStateImpl)));
+                }
+                PrivateFieldAccessHelper.set(formSelectionMark, "confidence", selectionMark.getConfidence());
+                PrivateFieldAccessHelper.set(formSelectionMark, "state", selectionMarkState);
+                return formSelectionMark;
+            })
+            .collect(Collectors.toList());
     }
 
     /**
@@ -297,6 +339,25 @@ final class Transforms {
                 value = new com.azure.ai.formrecognizer.models.FieldValue(
                     toFieldValueObject(fieldValue.getValueObject(), readResults, isBusinessCard), FieldValueType.MAP);
                 break;
+            case SELECTION_MARK:
+                com.azure.ai.formrecognizer.models.SelectionMarkState selectionMarkState = null;
+                final FieldValueSelectionMark fieldValueSelectionMarkState = fieldValue.getValueSelectionMark();
+                if (FieldValueSelectionMark.SELECTED.equals(fieldValueSelectionMarkState)) {
+                    selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.SELECTED;
+                } else if (FieldValueSelectionMark.UNSELECTED.equals(fieldValueSelectionMarkState)) {
+                    selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.UNSELECTED;
+                } else {
+                    // TODO: (ServiceBug)
+                    // Currently, the fieldValue's valueSelectionMark is null which is incorrect.
+                    // Use the fieldValue's text as the temperately solution.
+                    selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.fromString(
+                        fieldValue.getText());
+                    //        throw LOGGER.logThrowableAsError(new RuntimeException(
+                    //                String.format("%s, unsupported selection mark state.", selectionMarkState)));
+                }
+                value = new com.azure.ai.formrecognizer.models.FieldValue(selectionMarkState,
+                    FieldValueType.SELECTION_MARK_STATE);
+                break;
             default:
                 throw LOGGER.logExceptionAsError(new RuntimeException("FieldValue Type not supported"));
         }
@@ -385,12 +446,13 @@ final class Transforms {
      * @param readResultItem The per page text extraction item result returned by the service.
      * @param perPageTableList The per page tables list.
      * @param perPageLineList The per page form lines.
+     * @param perPageSelectionMarkList The per page selection marks.
      *
      * @return The per page {@code FormPage}.
      */
     private static FormPage getFormPage(ReadResult readResultItem, List<FormTable> perPageTableList,
-        List<FormLine> perPageLineList) {
-        return new FormPage(
+        List<FormLine> perPageLineList, List<FormSelectionMark> perPageSelectionMarkList) {
+        FormPage formPage = new FormPage(
             readResultItem.getHeight(),
             readResultItem.getAngle(),
             LengthUnit.fromString(readResultItem.getUnit().toString()),
@@ -398,6 +460,8 @@ final class Transforms {
             perPageLineList,
             perPageTableList,
             readResultItem.getPage());
+        PrivateFieldAccessHelper.set(formPage, "selectionMarks", perPageSelectionMarkList);
+        return formPage;
     }
 
     /**
