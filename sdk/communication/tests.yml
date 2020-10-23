@@ -9,8 +9,9 @@ jobs:
         safeName: azurecommunicationadministration
       - name: azure-communication-chat
         groupId: com.azure
-        safeName: azurecommunicationchatclient
+        safeName: azurecommunicationchat
     ServiceDirectory: communication
     EnvVars:
       AZURE_TEST_MODE: LIVE
       SKIP_PHONENUMBER_INTEGRATION_TESTS: TRUE
+      SKIP_CHAT_READ_RECEIPT_LIVE_TESTS: TRUE

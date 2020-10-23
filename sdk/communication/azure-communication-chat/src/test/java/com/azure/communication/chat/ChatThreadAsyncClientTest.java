@@ -5,6 +5,8 @@ package com.azure.communication.chat;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -176,8 +178,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                 }
         
                 assertTrue(returnedMembers.size() == 4);
-            })
-            .verifyComplete();
+            });
 
         for (ChatThreadMember member: options.getMembers()) {
             StepVerifier.create(chatThreadClient.removeMemberWithResponse(member.getUser()))
@@ -406,6 +407,9 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
             .verifyComplete();
     }
 
+    @DisabledIfEnvironmentVariable(
+    named = "SKIP_CHAT_READ_RECEIPT_LIVE_TESTS",
+    matches = "(?i)(true)")
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canSendThenListReadReceipts(HttpClient httpClient) throws InterruptedException {
@@ -431,14 +435,14 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                     assertEquals(resp.getStatusCode(), 200);
                     resp.getItems().forEach(item -> returnedReadReceipts.add(item));
                 });
-        
-                if (interceptorManager.isPlaybackMode()) {
-                    assertTrue(returnedReadReceipts.size() > 0);
-                    checkReadReceiptListContainsMessageId(returnedReadReceipts, messageResponseRef.get().getId());
-                }
+                assertTrue(returnedReadReceipts.size() > 0);
+                checkReadReceiptListContainsMessageId(returnedReadReceipts, messageResponseRef.get().getId());
             });
     }
 
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_CHAT_READ_RECEIPT_LIVE_TESTS",
+        matches = "(?i)(true)")
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canSendThenListReadReceiptsWithResponse(HttpClient httpClient) throws InterruptedException {
@@ -466,12 +470,9 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                     resp.getItems().forEach(item -> returnedReadReceipts.add(item));
                 });
 
-                if (interceptorManager.isPlaybackMode()) {
-                    assertTrue(returnedReadReceipts.size() > 0);
-                    checkReadReceiptListContainsMessageId(returnedReadReceipts, messageResponseRef.get().getId());
-                }
-            })
-            .verifyComplete();
+                assertTrue(returnedReadReceipts.size() > 0);
+                checkReadReceiptListContainsMessageId(returnedReadReceipts, messageResponseRef.get().getId());
+            });
             
     }
 }
