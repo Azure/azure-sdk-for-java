@@ -339,7 +339,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * Sends a scheduled messages to the Azure Service Bus entity this sender is connected to. A scheduled message is
      * enqueued and made available to receivers only at the scheduled enqueue time.
      *
-     * @param messages Message to be sent to the Service Bus Queue.
+     * @param messages Messages to be sent to the Service Bus Queue.
      * @param scheduledEnqueueTime OffsetDateTime at which the message should appear in the Service Bus queue or topic.
      *
      * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
@@ -354,7 +354,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * Sends a scheduled messages to the Azure Service Bus entity this sender is connected to. A scheduled message is
      * enqueued and made available to receivers only at the scheduled enqueue time.
      *
-     * @param messages Message to be sent to the Service Bus Queue.
+     * @param messages Messages to be sent to the Service Bus Queue.
      * @param scheduledEnqueueTime Instant at which the message should appear in the Service Bus queue or topic.
      * @param transactionContext to be set on batch message before scheduling them on Service Bus.
      *
@@ -387,10 +387,12 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                         boolean added = messageBatch.tryAdd(message);
                         if (!added) {
                             final String error = String.format(Locale.US,
-                                "Messages exceed max allowed size. Failed to add message at index '%s'.",
-                                index.get());
-                            throw new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, error,
-                                link.getErrorContext());
+                                "Messages exceed max allowed size '%s' bytes for all the messages together."
+                                    + " Failed to add message at index '%s'.",
+                                maxSize, index.get());
+                            //throw new ;
+                            throw logger.logExceptionAsError(new AmqpException(false,
+                                AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, error, link.getErrorContext()));
                         }
                     });
 
