@@ -45,6 +45,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.implementation.Utility.forEachWithIndex;
 import static com.azure.ai.formrecognizer.implementation.models.FieldValueType.ARRAY;
+import static com.azure.ai.formrecognizer.implementation.models.FieldValueType.OBJECT;
 
 /**
  * Helper class to convert service level models to SDK exposed models.
@@ -66,10 +67,11 @@ final class Transforms {
      * @param includeFieldElements Boolean to indicate if to set reference elements data on fields.
      *
      * @param modelId the unlabeled model Id used for recognition.
+     * @param isBusinessCard boolean indicating if its recognizing a business card.
      * @return The List of {@code RecognizedForm}.
      */
     static List<RecognizedForm> toRecognizedForm(AnalyzeResult analyzeResult, boolean includeFieldElements,
-        String modelId) {
+        String modelId, boolean isBusinessCard) {
         List<ReadResult> readResults = analyzeResult.getReadResults();
         List<DocumentResult> documentResults = analyzeResult.getDocumentResults();
         List<PageResult> pageResults = analyzeResult.getPageResults();
@@ -88,7 +90,8 @@ final class Transforms {
                     formPageRange = new FormPageRange(1, 1);
                 }
 
-                Map<String, FormField> extractedFieldMap = getLabeledFieldMap(documentResultItem, readResults);
+                Map<String, FormField> extractedFieldMap = getLabeledFieldMap(documentResultItem, readResults,
+                    isBusinessCard);
                 final RecognizedForm recognizedForm = new RecognizedForm(
                     extractedFieldMap,
                     documentResultItem.getDocType(),
@@ -251,10 +254,11 @@ final class Transforms {
      *
      * @param documentResultItem The extracted document level information.
      * @param readResults The text extraction result returned by the service.
+     * @param isBusinessCard boolean indicating if its recognizing a business card.
      * @return The {@link RecognizedForm#getFields}.
      */
     private static Map<String, FormField> getLabeledFieldMap(DocumentResult documentResultItem,
-        List<ReadResult> readResults) {
+        List<ReadResult> readResults, boolean isBusinessCard) {
         Map<String, FormField> recognizedFieldMap = new LinkedHashMap<>();
         // add receipt fields
         if (!CoreUtils.isNullOrEmpty(documentResultItem.getFields())) {
@@ -268,7 +272,7 @@ final class Transforms {
                         valueData = new FieldData(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
                             fieldValue.getPage(), formElementList);
                     }
-                    recognizedFieldMap.put(key, setFormField(key, valueData, fieldValue, readResults));
+                    recognizedFieldMap.put(key, setFormField(key, valueData, fieldValue, readResults, isBusinessCard));
                 } else {
                     recognizedFieldMap.put(key, new FormField(key, null, null, null,
                         DEFAULT_CONFIDENCE_VALUE));
@@ -283,14 +287,15 @@ final class Transforms {
      * {@link FormField} with reference elements set when {@code includeFieldElements} is set to true.
      *
      * @param name The name of the field.
-     * @param fieldValue The named field values returned by the service.
      * @param valueData The value text of the field.
+     * @param fieldValue The named field values returned by the service.
      * @param readResults The text extraction result returned by the service.
      *
+     * @param isBusinessCard boolean indicating if its recognizing a business card.
      * @return The strongly typed {@link FormField} for the field input.
      */
     private static FormField setFormField(String name, FieldData valueData, FieldValue fieldValue,
-        List<ReadResult> readResults) {
+        List<ReadResult> readResults, boolean isBusinessCard) {
         com.azure.ai.formrecognizer.models.FieldValue value;
         switch (fieldValue.getType()) {
             case PHONE_NUMBER:
@@ -328,11 +333,11 @@ final class Transforms {
                 break;
             case ARRAY:
                 value = new com.azure.ai.formrecognizer.models.FieldValue(
-                    toFieldValueArray(fieldValue.getValueArray(), readResults), FieldValueType.LIST);
+                    toFieldValueArray(fieldValue.getValueArray(), readResults, isBusinessCard), FieldValueType.LIST);
                 break;
             case OBJECT:
                 value = new com.azure.ai.formrecognizer.models.FieldValue(
-                    toFieldValueObject(fieldValue.getValueObject(), readResults), FieldValueType.MAP);
+                    toFieldValueObject(fieldValue.getValueObject(), readResults, isBusinessCard), FieldValueType.MAP);
                 break;
             case SELECTION_MARK:
                 com.azure.ai.formrecognizer.models.SelectionMarkState selectionMarkState = null;
@@ -357,7 +362,8 @@ final class Transforms {
                 throw LOGGER.logExceptionAsError(new RuntimeException("FieldValue Type not supported"));
         }
 
-        return new FormField(name, null, valueData, value, setDefaultConfidenceValue(fieldValue.getConfidence()));
+        return new FormField(name, null, valueData, value,
+            setDefaultConfidenceValue(fieldValue.getConfidence()));
     }
 
     /**
@@ -378,10 +384,11 @@ final class Transforms {
      *
      * @param valueObject The array of field values returned by the service in {@link FieldValue#getValueObject()}.
      *
+     * @param isBusinessCard boolean indicating if its recognizing a business card.
      * @return The Map of {@link FormField}.
      */
     private static Map<String, FormField> toFieldValueObject(Map<String, FieldValue> valueObject,
-        List<ReadResult> readResults) {
+        List<ReadResult> readResults, boolean isBusinessCard) {
         Map<String, FormField> fieldValueObjectMap = new TreeMap<>();
         valueObject.forEach((key, fieldValue) ->
             fieldValueObjectMap.put(key,
@@ -391,7 +398,7 @@ final class Transforms {
                         fieldValue.getPage(),
                         setReferenceElements(fieldValue.getElements(), readResults)),
                     fieldValue,
-                    readResults)
+                    readResults, isBusinessCard)
             ));
         return fieldValueObjectMap;
     }
@@ -403,20 +410,32 @@ final class Transforms {
      *
      * @param valueArray The array of field values returned by the service in {@link FieldValue#getValueArray()}.
      * @param readResults The text extraction result returned by the service.
-     *
+     * @param isBusinessCard boolean indicating if its recognizing a business card.
      * @return The List of {@link FormField}.
      */
-    private static List<FormField> toFieldValueArray(List<FieldValue> valueArray, List<ReadResult> readResults) {
+    private static List<FormField> toFieldValueArray(List<FieldValue> valueArray, List<ReadResult> readResults,
+        boolean isBusinessCard) {
         return valueArray.stream()
             .map(fieldValue -> {
                 FieldData valueData = null;
                 // ARRAY has ho value data, such as bounding box.
-                if (ARRAY != fieldValue.getType()) {
+                if (ARRAY != fieldValue.getType() && OBJECT != fieldValue.getType()) {
                     valueData = new FieldData(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
-                        fieldValue.getPage() == null ? 1 : fieldValue.getPage(),
+                        fieldValue.getPage(),
                         setReferenceElements(fieldValue.getElements(), readResults));
+                } else if (isBusinessCard && OBJECT.equals(fieldValue.getType())) {
+                    // TODO: (savaity) Service bug, update after fixed.
+                    if (fieldValue.getValueObject().get("FirstName") != null
+                        && fieldValue.getValueObject().get("LastName") != null) {
+                        if (fieldValue.getValueObject().get("FirstName").getPage()
+                            .equals(fieldValue.getValueObject().get("LastName").getPage())) {
+                            valueData = new FieldData(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
+                                fieldValue.getValueObject().get("FirstName").getPage(),
+                                setReferenceElements(fieldValue.getElements(), readResults));
+                        }
+                    }
                 }
-                return setFormField(null, valueData, fieldValue, readResults);
+                return setFormField(null, valueData, fieldValue, readResults, isBusinessCard);
             })
             .collect(Collectors.toList());
     }

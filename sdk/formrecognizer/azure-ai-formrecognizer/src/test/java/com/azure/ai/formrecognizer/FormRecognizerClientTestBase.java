@@ -59,8 +59,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
-import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PREBUILT_TYPE.BUSINESS_CARD;
-import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PREBUILT_TYPE.RECEIPT;
+import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.BUSINESS_CARD;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_API_KEY;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL;
@@ -117,11 +116,11 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static final List<String> BUSINESS_CARD_FIELDS = Arrays.asList("ContactNames", "JobTitles", "Departments",
         "Emails", "Websites", "MobilePhones", "OtherPhones", "Faxes", "Addresses", "CompanyNames");
 
-    // Business Card fields
+    // Receipt fields
     static final List<String> RECEIPT_FIELDS = Arrays.asList("MerchantName", "MerchantPhoneNumber", "MerchantAddress",
         "Total", "Subtotal", "Tax", "TransactionDate", "TransactionDate", "TransactionTime", "Items");
 
-    enum PREBUILT_TYPE {
+    enum PrebuiltType {
         RECEIPT, BUSINESS_CARD
     }
 
@@ -664,7 +663,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     }
 
     void validatePrebuiltResultData(List<RecognizedForm> actualPrebuiltRecognizedForms, boolean includeFieldElements,
-        PREBUILT_TYPE prebuiltType) {
+        PrebuiltType prebuiltType) {
         final AnalyzeResult rawResponse = getAnalyzeRawResponse().getAnalyzeResult();
         final List<ReadResult> rawReadResults = rawResponse.getReadResults();
         for (int i = 0; i < actualPrebuiltRecognizedForms.size(); i++) {
@@ -834,6 +833,11 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         assertEquals("+14257793479", phoneNumberList.get(0).getValue().asPhoneNumber());
         assertNotNull(businessCard1.getPages());
 
+        // assert contact name page number
+        FormField contactNameField = businessCard1Fields.get("ContactNames").getValue().asList().get(0);
+        assertEquals(contactNameField.getValueData().getPageNumber(), 1);
+        assertEquals(contactNameField.getValueData().getText(), "JOHN SINGER");
+
         assertEquals(2, businessCard2.getPageRange().getFirstPageNumber());
         assertEquals(2, businessCard2.getPageRange().getLastPageNumber());
         Map<String, FormField> businessCard2Fields = businessCard2.getFields();
@@ -842,6 +846,11 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         List<FormField> phoneNumber2List = businessCard2Fields.get("OtherPhones").getValue().asList();
         assertEquals("+44 (0) 20 9876 5432", phoneNumber2List.get(0).getValueData().getText());
         assertNotNull(businessCard2.getPages());
+
+        // assert contact name page number
+        FormField contactName2Field = businessCard2Fields.get("ContactNames").getValue().asList().get(0);
+        assertEquals(contactName2Field.getValueData().getPageNumber(), 2);
+        assertEquals(contactName2Field.getValueData().getText(), "Dr. Avery Smith");
     }
 
     static void validateMultipageReceiptData(List<RecognizedForm> recognizedReceipts) {
