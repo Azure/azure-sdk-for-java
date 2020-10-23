@@ -279,8 +279,8 @@ public final class  BinaryData {
     }
 
     /**
-     * Return a {@link Mono} by deserializing the bytes into the {@link Object} of given type after applying the provided
-     * {@link ObjectSerializer} on the {@link BinaryData}.
+     * Return a {@link Mono} by deserializing the bytes into the {@link Object} of given type after applying the
+     * provided {@link ObjectSerializer} on the {@link BinaryData}.
      *
      * <p><strong>Gets the specified object</strong></p>
      * {@codesnippet com.azure.core.experimental.util.BinaryDocument.to#ObjectAsync}
