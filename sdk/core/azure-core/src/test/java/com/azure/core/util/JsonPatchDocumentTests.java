@@ -42,6 +42,13 @@ public class JsonPatchDocumentTests {
         assertEquals(expected, SERIALIZER.serialize(document, SerializerEncoding.JSON).replace(" ", ""));
     }
 
+    @ParameterizedTest
+    @MethodSource("formattingSupplier")
+    public void jsonifyOperations(JsonPatchDocument document, String expected) throws IOException {
+        assertEquals(expected, SERIALIZER.serialize(document.getOperations(), SerializerEncoding.JSON)
+            .replace(" ", ""));
+    }
+
     private static Stream<Arguments> formattingSupplier() {
         JsonPatchDocument complexDocument = newDocument()
             .appendTest("/a/b/c", "foo")
