@@ -407,11 +407,11 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
             .verifyComplete();
     }
 
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
         named = "SKIP_CHAT_READ_RECEIPT_LIVE_TESTS",
         matches = "(?i)(true)")
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canSendThenListReadReceipts(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient);
@@ -440,11 +440,11 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
             });
     }
 
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
         named = "SKIP_CHAT_READ_RECEIPT_LIVE_TESTS",
         matches = "(?i)(true)")
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canSendThenListReadReceiptsWithResponse(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient);
