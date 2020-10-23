@@ -36,6 +36,7 @@ import com.microsoft.azure.management.compute.v2020_06_01.VirtualMachineScaleSet
 import com.microsoft.azure.management.compute.v2020_06_01.VirtualMachineScaleSetVMs;
 import com.microsoft.azure.management.compute.v2020_06_01.LogAnalytics;
 import com.microsoft.azure.management.compute.v2020_06_01.VirtualMachineRunCommands;
+import com.microsoft.azure.management.compute.v2020_06_01.VirtualMachineScaleSetVMRunCommands;
 import com.microsoft.azure.management.compute.v2020_06_01.ResourceSkus;
 import com.microsoft.azure.management.compute.v2020_06_01.Disks;
 import com.microsoft.azure.management.compute.v2020_06_01.Snapshots;
@@ -74,6 +75,7 @@ public final class ComputeManager extends ManagerCore<ComputeManager, ComputeMan
     private VirtualMachineScaleSetVMs virtualMachineScaleSetVMs;
     private LogAnalytics logAnalytics;
     private VirtualMachineRunCommands virtualMachineRunCommands;
+    private VirtualMachineScaleSetVMRunCommands virtualMachineScaleSetVMRunCommands;
     private ResourceSkus resourceSkus;
     private Disks disks;
     private Snapshots snapshots;
@@ -330,6 +332,16 @@ public final class ComputeManager extends ManagerCore<ComputeManager, ComputeMan
             this.virtualMachineRunCommands = new VirtualMachineRunCommandsImpl(this);
         }
         return this.virtualMachineRunCommands;
+    }
+
+    /**
+     * @return Entry point to manage VirtualMachineScaleSetVMRunCommands.
+     */
+    public VirtualMachineScaleSetVMRunCommands virtualMachineScaleSetVMRunCommands() {
+        if (this.virtualMachineScaleSetVMRunCommands == null) {
+            this.virtualMachineScaleSetVMRunCommands = new VirtualMachineScaleSetVMRunCommandsImpl(this);
+        }
+        return this.virtualMachineScaleSetVMRunCommands;
     }
 
     /**
