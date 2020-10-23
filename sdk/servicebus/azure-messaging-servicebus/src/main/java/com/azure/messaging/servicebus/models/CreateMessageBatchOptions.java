@@ -15,7 +15,7 @@ import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
  * @see ServiceBusSenderAsyncClient
  */
 @Fluent
-public class CreateMessageBatchOptions {
+public final class CreateMessageBatchOptions {
     private int maximumSizeInBytes;
 
     /**

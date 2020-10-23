@@ -99,7 +99,7 @@ public final class ServiceBusMessageBatch {
      */
     public boolean tryAddMessage(final ServiceBusMessage serviceBusMessage) {
         if (serviceBusMessage == null) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("message cannot be null"));
+            throw logger.logExceptionAsWarning(new NullPointerException("'serviceBusMessage' cannot be null"));
         }
         ServiceBusMessage serviceBusMessageUpdated =
             tracerProvider.isEnabled() ? traceMessageSpan(serviceBusMessage) : serviceBusMessage;
