@@ -3,7 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.messaging.servicebus.models.CreateBatchOptions;
+import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
 
 import java.util.Arrays;
 import java.util.List;
@@ -43,13 +43,13 @@ public class SendMessageBatchSyncSample {
 
         // Creates an ServiceBusMessageBatch where the ServiceBus.
         ServiceBusMessageBatch currentBatch = senderClient.createBatch(
-            new CreateBatchOptions().setMaximumSizeInBytes(1024));
+            new CreateMessageBatchOptions().setMaximumSizeInBytes(1024));
 
         // We try to add as many messages as a batch can fit based on the maximum size and send to Service Bus when
         // the batch can hold no more messages. Create a new batch for next set of messages and repeat until all
         // messages are sent.
         for (ServiceBusMessage message : testMessages) {
-            if (currentBatch.tryAdd(message)) {
+            if (currentBatch.tryAddMessage(message)) {
                 continue;
             }
 
@@ -58,7 +58,7 @@ public class SendMessageBatchSyncSample {
             currentBatch = senderClient.createBatch();
 
             // Add that message that we couldn't before.
-            if (!currentBatch.tryAdd(message)) {
+            if (!currentBatch.tryAddMessage(message)) {
                 System.err.printf("Message is too large for an empty batch. Skipping. Max size: %s. Message: %s%n",
                     currentBatch.getMaxSizeInBytes(), new String(message.getBody(), UTF_8));
             }

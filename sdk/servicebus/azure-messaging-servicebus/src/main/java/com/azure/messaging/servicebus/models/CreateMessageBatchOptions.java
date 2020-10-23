@@ -15,7 +15,7 @@ import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
  * @see ServiceBusSenderAsyncClient
  */
 @Fluent
-public class CreateBatchOptions {
+public class CreateMessageBatchOptions {
     private int maximumSizeInBytes;
 
     /**
@@ -23,9 +23,9 @@ public class CreateBatchOptions {
      *
      * @param maximumSizeInBytes The maximum size to allow for the batch of messages.
      *
-     * @return The updated {@link CreateBatchOptions} object.
+     * @return The updated {@link CreateMessageBatchOptions} object.
      */
-    public CreateBatchOptions setMaximumSizeInBytes(int maximumSizeInBytes) {
+    public CreateMessageBatchOptions setMaximumSizeInBytes(int maximumSizeInBytes) {
         this.maximumSizeInBytes = maximumSizeInBytes;
         return this;
     }

@@ -97,7 +97,7 @@ public final class ServiceBusMessageBatch {
      * @throws AmqpException if {@code message} is larger than the maximum size of the {@link
      *     ServiceBusMessageBatch}.
      */
-    public boolean tryAdd(final ServiceBusMessage serviceBusMessage) {
+    public boolean tryAddMessage(final ServiceBusMessage serviceBusMessage) {
         if (serviceBusMessage == null) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException("message cannot be null"));
         }
