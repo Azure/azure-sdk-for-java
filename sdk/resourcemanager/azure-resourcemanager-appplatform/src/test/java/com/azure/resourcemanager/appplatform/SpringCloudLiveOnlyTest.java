@@ -50,6 +50,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -325,7 +326,7 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
             validityInDays, "-keyalg", keyAlg, "-sigalg", sigAlg, "-keysize", keySize,
             "-storetype", storeType, "-dname", "CN=" + cnName, "-ext", "EKU=1.3.6.1.5.5.7.3.1"};
         if (dnsName != null) {
-            List<String> args = new ArrayList<>(List.of(commandArgs));
+            List<String> args = new ArrayList<>(Arrays.asList(commandArgs));
             args.add("-ext");
             args.add("san=dns:" + dnsName);
             commandArgs = args.toArray(new String[0]);

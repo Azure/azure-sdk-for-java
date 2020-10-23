@@ -166,6 +166,7 @@ import java.nio.file.Files;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -1620,7 +1621,7 @@ public final class Utils {
             validityInDays, "-keyalg", keyAlg, "-sigalg", sigAlg, "-keysize", keySize,
             "-storetype", storeType, "-dname", "CN=" + cnName, "-ext", "EKU=1.3.6.1.5.5.7.3.1"};
         if (dnsName != null) {
-            List<String> args = new ArrayList<>(List.of(commandArgs));
+            List<String> args = new ArrayList<>(Arrays.asList(commandArgs));
             args.add("-ext");
             args.add("san=dns:" + dnsName);
             commandArgs = args.toArray(new String[0]);
