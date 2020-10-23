@@ -12,15 +12,14 @@ import com.azure.ai.formrecognizer.models.FormRecognizerError;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.ai.formrecognizer.training.models.CustomFormModelField;
 import com.azure.ai.formrecognizer.training.models.CustomFormModelInfo;
+import com.azure.ai.formrecognizer.training.models.CustomFormModelProperties;
 import com.azure.ai.formrecognizer.training.models.CustomFormModelStatus;
 import com.azure.ai.formrecognizer.training.models.CustomFormSubmodel;
-import com.azure.ai.formrecognizer.training.models.CustomFormModelProperties;
 import com.azure.ai.formrecognizer.training.models.TrainingDocumentInfo;
 import com.azure.ai.formrecognizer.training.models.TrainingStatus;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,7 +34,6 @@ import static com.azure.ai.formrecognizer.implementation.Utility.forEachWithInde
  */
 final class CustomModelTransforms {
     private static final ClientLogger LOGGER = new ClientLogger(CustomModelTransforms.class);
-    static final Duration DEFAULT_DURATION = Duration.ofSeconds(5);
 
     private CustomModelTransforms() {
     }
