@@ -894,7 +894,7 @@ directive:
         "@JsonDeserialize(using = CustomHierarchicalListingDeserializer.class)\npublic final class BlobHierarchyListSegment {");
 ```
 
-### Add the CustomPageListingDeserializer attribute
+### Add the PageListDeserializer attribute
 ``` yaml
 directive:
 - from: PageList.java
@@ -906,7 +906,7 @@ directive:
         "import com.fasterxml.jackson.annotation.JsonProperty;\nimport com.fasterxml.jackson.databind.annotation.JsonDeserialize;").
       replace(
         "public final class PageList {",
-        "@JsonDeserialize(using = CustomPageListingDeserializer.class)\npublic final class PageList {");
+        "@JsonDeserialize(using = PageListDeserializer.class)\npublic final class PageList {");
 ```
 
 ### Add EncryptionKeySha256 to PageBlobUploadPagesFromURLHeaders
