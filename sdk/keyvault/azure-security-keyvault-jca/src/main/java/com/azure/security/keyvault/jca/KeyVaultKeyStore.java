@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.security.keyvault.jca;
 
 import java.io.BufferedReader;
@@ -199,10 +198,10 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
         if (param instanceof KeyVaultLoadStoreParameter) {
             KeyVaultLoadStoreParameter parameter = (KeyVaultLoadStoreParameter) param;
             keyVaultClient = new KeyVaultClient(
-                parameter.getUri(),
-                parameter.getTenantId(),
-                parameter.getClientId(),
-                parameter.getClientSecret());
+                    parameter.getUri(),
+                    parameter.getTenantId(),
+                    parameter.getClientId(),
+                    parameter.getClientSecret());
         }
         sideLoad();
     }
@@ -279,16 +278,19 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
      * @throws IOException when an I/O error occurs.
      */
     private byte[] readAllBytes(InputStream inputStream) throws IOException {
-        ByteArrayOutputStream byteOutput = new ByteArrayOutputStream();
-        byte[] buffer = new byte[1024];
-        while (true) {
-            int r = inputStream.read(buffer);
-            if (r == -1) {
-                break;
+        byte[] bytes = new byte[0];
+        try (ByteArrayOutputStream byteOutput = new ByteArrayOutputStream()) {
+            byte[] buffer = new byte[1024];
+            while (true) {
+                int r = inputStream.read(buffer);
+                if (r == -1) {
+                    break;
+                }
+                byteOutput.write(buffer, 0, r);
             }
-            byteOutput.write(buffer, 0, r);
+            bytes = byteOutput.toByteArray();
         }
-        return byteOutput.toByteArray();
+        return bytes;
     }
 
     /**
@@ -309,12 +311,12 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
                             try {
                                 CertificateFactory cf = CertificateFactory.getInstance("X.509");
                                 X509Certificate certificate = (X509Certificate) cf.generateCertificate(
-                                    new ByteArrayInputStream(bytes));
+                                        new ByteArrayInputStream(bytes));
                                 engineSetCertificateEntry(alias, certificate);
                                 LOGGER.log(INFO, "Side loaded certificate: {0} from: {1}",
-                                    new Object[] { alias, filename });
+                                        new Object[]{alias, filename});
                             } catch (CertificateException e) {
-                                LOGGER.log(WARNING, "Unable to side-load certificate", e);
+                                LOGGER.log(WARNING, "Unable to side-load certificate from: " + filename, e);
                             }
                         }
                     }
