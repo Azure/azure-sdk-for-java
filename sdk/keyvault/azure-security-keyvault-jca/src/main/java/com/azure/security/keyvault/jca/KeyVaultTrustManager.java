@@ -19,7 +19,7 @@ import javax.net.ssl.X509ExtendedTrustManager;
 /**
  * The Azure Key Vault variant of the X509TrustManager.
  */
-public class KeyVaultTrustManager extends X509ExtendedTrustManager implements X509TrustManager {
+public class KeyVaultTrustManager extends X509ExtendedTrustManager {
 
     /**
      * Stores the default trust manager.

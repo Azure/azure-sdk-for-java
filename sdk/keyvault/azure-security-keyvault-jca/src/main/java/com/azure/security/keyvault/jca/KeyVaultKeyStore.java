@@ -278,7 +278,7 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
      * @throws IOException when an I/O error occurs.
      */
     private byte[] readAllBytes(InputStream inputStream) throws IOException {
-        byte[] bytes = new byte[0];
+        byte[] bytes;
         try (ByteArrayOutputStream byteOutput = new ByteArrayOutputStream()) {
             byte[] buffer = new byte[1024];
             while (true) {
