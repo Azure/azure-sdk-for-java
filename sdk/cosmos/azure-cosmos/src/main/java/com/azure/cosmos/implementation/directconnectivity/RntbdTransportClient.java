@@ -590,17 +590,17 @@ public final class RntbdTransportClient extends TransportClient {
          * <pre>{@code RntbdTransportClient.class.getClassLoader().getResourceAsStream("azure.cosmos.directTcp.defaultOptions.json")}</pre>
          * <p>Example: <pre>{@code {
          *   "bufferPageSize": 8192,
-         *   "connectionEndpointRediscoveryEnabled": true,
-         *   "connectTimeout": "PT1M",
+         *   "connectionEndpointRediscoveryEnabled": false,
+         *   "connectTimeout": "PT5S",
          *   "idleChannelTimeout": "PT0S",
-         *   "idleEndpointTimeout": "PT1M10S",
+         *   "idleEndpointTimeout": "PT1H",
          *   "maxBufferCapacity": 8388608,
-         *   "maxChannelsPerEndpoint": 10,
+         *   "maxChannelsPerEndpoint": 130,
          *   "maxRequestsPerChannel": 30,
-         *   "maxConcurrentRequestsPerEndpointOverride": 500,
+         *   "maxConcurrentRequestsPerEndpointOverride": -1,
          *   "receiveHangDetectionTime": "PT1M5S",
          *   "requestTimeout": "PT5S",
-         *   "requestTimerResolution": "PT0.5S",
+         *   "requestTimerResolution": "PT100MS",
          *   "sendHangDetectionTime": "PT10S",
          *   "shutdownTimeout": "PT15S",
          *   "threadCount": 16

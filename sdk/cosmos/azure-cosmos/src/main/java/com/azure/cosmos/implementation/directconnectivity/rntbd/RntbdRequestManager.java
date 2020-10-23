@@ -527,7 +527,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
         if (message == RntbdHealthCheckRequest.MESSAGE) {
 
-            context.writeAndFlush(RntbdHealthCheckRequest.MESSAGE, promise).addListener(completed -> {
+            context.write(RntbdHealthCheckRequest.MESSAGE, promise).addListener(completed -> {
                 if (completed.isSuccess()) {
                     this.timestamps.channelPingCompleted();
                 }

@@ -99,6 +99,7 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
         final RntbdRequestManager requestManager = new RntbdRequestManager(
             this.healthChecker,
             this.config.maxRequestsPerChannel());
+        final long idleConnectionTimerResolutionInNanos = config.idleConnectionTimerResolutionInNanos();
         final ChannelPipeline pipeline = channel.pipeline();
 
         pipeline.addFirst(
@@ -113,14 +114,9 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
         }
 
         pipeline.addFirst(
-            // Initialize sslHandler with jdkCompatibilityMode = true for OpenSSL context
-            // TODO Log an issue with netty for clarification on the design of this constructor and the
-            //  semantic differences between the JDK and OpenSSL implementations
-            new SslHandler(this.config.sslContext().newEngine(channel.alloc())));
-
-        final long idleConnectionTimerResolutionInNanos = config.idleConnectionTimerResolutionInNanos();
-
-        pipeline.addFirst(
+            // TODO (DANOBLE) Log an issue with netty
+            // Initialize sslHandler with jdkCompatibilityMode = true for openssl context.
+            new SslHandler(this.config.sslContext().newEngine(channel.alloc())),
             new IdleStateHandler(
                 idleConnectionTimerResolutionInNanos,
                 idleConnectionTimerResolutionInNanos,
