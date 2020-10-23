@@ -109,12 +109,14 @@ public class ServiceBusSessionReceiverAsyncClient implements AutoCloseable {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Maximum number of concurrent sessions must be positive."));
         }
-        ReceiverOptions newReceiverOptions = new ReceiverOptions(this.receiverOptions.getReceiveMode(),
-            this.receiverOptions.getPrefetchCount(), null, maxConcurrentSessions,
-            this.receiverOptions.getMaxLockRenewDuration());
+        ReceiverOptions newReceiverOptions = new ReceiverOptions(receiverOptions.getReceiveMode(),
+            receiverOptions.getPrefetchCount(), null, maxConcurrentSessions,
+            receiverOptions.getMaxLockRenewDuration());
+        ServiceBusSessionManager newSessionManager = new ServiceBusSessionManager(entityPath, entityType,
+            connectionProcessor, tracerProvider, messageSerializer, newReceiverOptions);
         return new ServiceBusReceiverAsyncClient(fullyQualifiedNamespace, entityPath,
             entityType, newReceiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
-            tracerProvider, messageSerializer, onClientClose);
+            tracerProvider, messageSerializer, onClientClose, newSessionManager);
     }
 
     @Override
