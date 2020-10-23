@@ -716,8 +716,8 @@ public class VirtualMachineScaleSetExtensionsInner {
     /**
      * Gets a list of all extensions in a VM scale set.
      *
-    ServiceResponse<PageImpl1<VirtualMachineScaleSetExtensionInner>> * @param resourceGroupName The name of the resource group.
-    ServiceResponse<PageImpl1<VirtualMachineScaleSetExtensionInner>> * @param vmScaleSetName The name of the VM scale set containing the extension.
+    ServiceResponse<PageImpl<VirtualMachineScaleSetExtensionInner>> * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<VirtualMachineScaleSetExtensionInner>> * @param vmScaleSetName The name of the VM scale set containing the extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;VirtualMachineScaleSetExtensionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -739,7 +739,7 @@ public class VirtualMachineScaleSetExtensionsInner {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualMachineScaleSetExtensionInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<VirtualMachineScaleSetExtensionInner>> result = listDelegate(response);
+                        ServiceResponse<PageImpl<VirtualMachineScaleSetExtensionInner>> result = listDelegate(response);
                         return Observable.just(new ServiceResponse<Page<VirtualMachineScaleSetExtensionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -748,9 +748,9 @@ public class VirtualMachineScaleSetExtensionsInner {
             });
     }
 
-    private ServiceResponse<PageImpl1<VirtualMachineScaleSetExtensionInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl1<VirtualMachineScaleSetExtensionInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl1<VirtualMachineScaleSetExtensionInner>>() { }.getType())
+    private ServiceResponse<PageImpl<VirtualMachineScaleSetExtensionInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<VirtualMachineScaleSetExtensionInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<VirtualMachineScaleSetExtensionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -836,7 +836,7 @@ public class VirtualMachineScaleSetExtensionsInner {
     /**
      * Gets a list of all extensions in a VM scale set.
      *
-    ServiceResponse<PageImpl1<VirtualMachineScaleSetExtensionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<VirtualMachineScaleSetExtensionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;VirtualMachineScaleSetExtensionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -850,7 +850,7 @@ public class VirtualMachineScaleSetExtensionsInner {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualMachineScaleSetExtensionInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<VirtualMachineScaleSetExtensionInner>> result = listNextDelegate(response);
+                        ServiceResponse<PageImpl<VirtualMachineScaleSetExtensionInner>> result = listNextDelegate(response);
                         return Observable.just(new ServiceResponse<Page<VirtualMachineScaleSetExtensionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -859,9 +859,9 @@ public class VirtualMachineScaleSetExtensionsInner {
             });
     }
 
-    private ServiceResponse<PageImpl1<VirtualMachineScaleSetExtensionInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl1<VirtualMachineScaleSetExtensionInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl1<VirtualMachineScaleSetExtensionInner>>() { }.getType())
+    private ServiceResponse<PageImpl<VirtualMachineScaleSetExtensionInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<VirtualMachineScaleSetExtensionInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<VirtualMachineScaleSetExtensionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
