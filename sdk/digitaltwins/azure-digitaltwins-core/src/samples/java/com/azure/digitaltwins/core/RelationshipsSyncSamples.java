@@ -21,7 +21,6 @@ package com.azure.digitaltwins.core;
 
 public class RelationshipsSyncSamples {
     private static DigitalTwinsClient client;
-    private static final ObjectMapper mapper = new ObjectMapper();
 
     public static Function<Integer, String> randomIntegerStringGenerator = (maxLength) -> {
         int randInt = new Random().nextInt((int)Math.pow(10, 8) - 1) + 1;

@@ -113,7 +113,7 @@ public final class DigitalTwinsAsyncClient {
      * @return The deserialized application/json object representing the digital twin created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<T> createDigitalTwin(String digitalTwinId, T digitalTwin, Class<T> clazz)
+    public <T extends IDigitalTwin> Mono<T> createDigitalTwin(String digitalTwinId, T digitalTwin, Class<T> clazz)
     {
         return createDigitalTwinWithResponse(digitalTwinId, digitalTwin, clazz, null)
             .map(DigitalTwinsResponse::getValue);
@@ -141,11 +141,11 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link DigitalTwinsResponse} containing the deserialized application/json object representing the digital twin created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<DigitalTwinsResponse<T>> createDigitalTwinWithResponse(String digitalTwinId, T digitalTwin, Class<T> clazz, CreateDigitalTwinOptions options) {
+    public <T extends IDigitalTwin> Mono<DigitalTwinsResponse<T>> createDigitalTwinWithResponse(String digitalTwinId, T digitalTwin, Class<T> clazz, CreateDigitalTwinOptions options) {
         return withContext(context -> createDigitalTwinWithResponse(digitalTwinId, digitalTwin, clazz, options, context));
     }
 
-    <T> Mono<DigitalTwinsResponse<T>> createDigitalTwinWithResponse(String digitalTwinId, T digitalTwin, Class<T> clazz, CreateDigitalTwinOptions options, Context context) {
+    <T extends IDigitalTwin> Mono<DigitalTwinsResponse<T>> createDigitalTwinWithResponse(String digitalTwinId, T digitalTwin, Class<T> clazz, CreateDigitalTwinOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
             .addWithResponseAsync(digitalTwinId, digitalTwin, OptionsConverter.toProtocolLayerOptions(options), context)
@@ -186,7 +186,7 @@ public final class DigitalTwinsAsyncClient {
      * @return The deserialized application/json object representing the digital twin
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<T> getDigitalTwin(String digitalTwinId, Class<T> clazz)
+    public <T extends IDigitalTwin> Mono<T> getDigitalTwin(String digitalTwinId, Class<T> clazz)
     {
         return getDigitalTwinWithResponse(digitalTwinId, clazz, null)
             .map(DigitalTwinsResponse::getValue);
@@ -215,12 +215,12 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link DigitalTwinsResponse} containing the deserialized application/json object representing the digital twin.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<DigitalTwinsResponse<T>> getDigitalTwinWithResponse(String digitalTwinId, Class<T> clazz, GetDigitalTwinOptions options)
+    public <T extends IDigitalTwin> Mono<DigitalTwinsResponse<T>> getDigitalTwinWithResponse(String digitalTwinId, Class<T> clazz, GetDigitalTwinOptions options)
     {
         return withContext(context -> getDigitalTwinWithResponse(digitalTwinId, clazz, options, context));
     }
 
-    <T> Mono<DigitalTwinsResponse<T>> getDigitalTwinWithResponse(String digitalTwinId, Class<T> clazz, GetDigitalTwinOptions options, Context context) {
+    <T extends IDigitalTwin> Mono<DigitalTwinsResponse<T>> getDigitalTwinWithResponse(String digitalTwinId, Class<T> clazz, GetDigitalTwinOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
             .getByIdWithResponseAsync(digitalTwinId, OptionsConverter.toProtocolLayerOptions(options), context)
@@ -355,7 +355,7 @@ public final class DigitalTwinsAsyncClient {
      * @return The relationship created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<T> createRelationship(String digitalTwinId, String relationshipId, T relationship, Class<T> clazz) {
+    public <T extends IDigitalTwinRelationship> Mono<T> createRelationship(String digitalTwinId, String relationshipId, T relationship, Class<T> clazz) {
         return createRelationshipWithResponse(digitalTwinId, relationshipId, relationship, clazz, null)
             .map(DigitalTwinsResponse::getValue);
     }
@@ -383,11 +383,11 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link DigitalTwinsResponse} containing the relationship created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<DigitalTwinsResponse<T>> createRelationshipWithResponse(String digitalTwinId, String relationshipId, T relationship, Class<T> clazz, CreateRelationshipOptions options) {
+    public <T extends IDigitalTwinRelationship> Mono<DigitalTwinsResponse<T>> createRelationshipWithResponse(String digitalTwinId, String relationshipId, T relationship, Class<T> clazz, CreateRelationshipOptions options) {
         return withContext(context -> createRelationshipWithResponse(digitalTwinId, relationshipId, relationship, clazz, options, context));
     }
 
-    <T> Mono<DigitalTwinsResponse<T>> createRelationshipWithResponse(String digitalTwinId, String relationshipId, T relationship, Class<T> clazz, CreateRelationshipOptions options, Context context) {
+    <T extends IDigitalTwinRelationship> Mono<DigitalTwinsResponse<T>> createRelationshipWithResponse(String digitalTwinId, String relationshipId, T relationship, Class<T> clazz, CreateRelationshipOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
             .addRelationshipWithResponseAsync(digitalTwinId, relationshipId, relationship, OptionsConverter.toProtocolLayerOptions(options), context)
@@ -424,7 +424,7 @@ public final class DigitalTwinsAsyncClient {
      * @return The deserialized relationship.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<T> getRelationship(String digitalTwinId, String relationshipId, Class<T> clazz) {
+    public <T extends IDigitalTwinRelationship> Mono<T> getRelationship(String digitalTwinId, String relationshipId, Class<T> clazz) {
         return getRelationshipWithResponse(digitalTwinId, relationshipId, clazz, null)
             .map(DigitalTwinsResponse::getValue);
     }
@@ -450,11 +450,11 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link DigitalTwinsResponse} containing the deserialized relationship.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<DigitalTwinsResponse<T>> getRelationshipWithResponse(String digitalTwinId, String relationshipId, Class<T> clazz, GetRelationshipOptions options) {
+    public <T extends IDigitalTwinRelationship> Mono<DigitalTwinsResponse<T>> getRelationshipWithResponse(String digitalTwinId, String relationshipId, Class<T> clazz, GetRelationshipOptions options) {
         return withContext(context -> getRelationshipWithResponse(digitalTwinId, relationshipId, clazz, options, context));
     }
 
-    <T> Mono<DigitalTwinsResponse<T>> getRelationshipWithResponse(String digitalTwinId, String relationshipId, Class<T> clazz, GetRelationshipOptions options, Context context) {
+    <T extends IDigitalTwinRelationship> Mono<DigitalTwinsResponse<T>> getRelationshipWithResponse(String digitalTwinId, String relationshipId, Class<T> clazz, GetRelationshipOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
             .getRelationshipByIdWithResponseAsync(digitalTwinId, relationshipId, OptionsConverter.toProtocolLayerOptions(options), context)
@@ -576,7 +576,7 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link PagedFlux} of relationships belonging to the specified digital twin and the http response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public <T> PagedFlux<T> listRelationships(String digitalTwinId, Class<T> clazz) {
+    public <T extends IDigitalTwinRelationship> PagedFlux<T> listRelationships(String digitalTwinId, Class<T> clazz) {
         return listRelationships(digitalTwinId, null, clazz, null);
     }
 
@@ -599,19 +599,19 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link PagedFlux} of relationships belonging to the specified digital twin and the http response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public <T> PagedFlux<T> listRelationships(String digitalTwinId, String relationshipName, Class<T> clazz, ListRelationshipsOptions options) {
+    public <T extends IDigitalTwinRelationship> PagedFlux<T> listRelationships(String digitalTwinId, String relationshipName, Class<T> clazz, ListRelationshipsOptions options) {
         return new PagedFlux<>(
             () -> withContext(context -> listRelationshipsFirstPage(digitalTwinId, relationshipName, clazz, options, context)),
             nextLink -> withContext(context -> listRelationshipsNextPage(nextLink, clazz, options, context)));
     }
 
-    <T> PagedFlux<T> listRelationships(String digitalTwinId, String relationshipName, Class<T> clazz, ListRelationshipsOptions options, Context context) {
+    <T extends IDigitalTwinRelationship> PagedFlux<T> listRelationships(String digitalTwinId, String relationshipName, Class<T> clazz, ListRelationshipsOptions options, Context context) {
         return new PagedFlux<>(
             () -> listRelationshipsFirstPage(digitalTwinId, relationshipName, clazz, options, context),
             nextLink -> listRelationshipsNextPage(nextLink, clazz, options, context));
     }
 
-    <T> Mono<PagedResponse<T>> listRelationshipsFirstPage(String digitalTwinId, String relationshipName, Class<T> clazz, ListRelationshipsOptions options, Context context) {
+    <T extends IDigitalTwinRelationship> Mono<PagedResponse<T>> listRelationshipsFirstPage(String digitalTwinId, String relationshipName, Class<T> clazz, ListRelationshipsOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
             .listRelationshipsSinglePageAsync(digitalTwinId, relationshipName, OptionsConverter.toProtocolLayerOptions(options), context)
@@ -639,7 +639,7 @@ public final class DigitalTwinsAsyncClient {
             );
     }
 
-    <T> Mono<PagedResponse<T>> listRelationshipsNextPage(String nextLink, Class<T> clazz, ListRelationshipsOptions options, Context context) {
+    <T extends IDigitalTwinRelationship> Mono<PagedResponse<T>> listRelationshipsNextPage(String nextLink, Class<T> clazz, ListRelationshipsOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
             .listRelationshipsNextSinglePageAsync(nextLink, OptionsConverter.toProtocolLayerOptions(options), context)

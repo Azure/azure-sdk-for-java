@@ -5,6 +5,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
+import com.azure.digitaltwins.core.models.BasicDigitalTwin;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -86,7 +88,7 @@ public class PublishTelemetryTests extends PublishTelemetryTestBase{
         }
     }
 
-    private void createModelsAndTwins(DigitalTwinsClient client, String wifiModelId, String roomWithWifiModelId, String roomWithWifiTwinId){
+    private void createModelsAndTwins(DigitalTwinsClient client, String wifiModelId, String roomWithWifiModelId, String roomWithWifiTwinId) throws JsonProcessingException {
         String wifiModelPayload = TestAssetsHelper.getWifiModelPayload(wifiModelId);
         String roomWithWifiModelPayload = TestAssetsHelper.getRoomWithWifiModelPayload(roomWithWifiModelId, wifiModelId, TestAssetDefaults.WIFI_COMPONENT_NAME);
 
@@ -94,6 +96,6 @@ public class PublishTelemetryTests extends PublishTelemetryTestBase{
 
         String roomWithWifiTwinPayload = TestAssetsHelper.getRoomWithWifiTwinPayload(roomWithWifiModelId, TestAssetDefaults.WIFI_COMPONENT_NAME);
 
-        client.createDigitalTwin(roomWithWifiTwinId, roomWithWifiTwinPayload, String.class);
+        client.createDigitalTwin(roomWithWifiTwinId, deserializeJsonString(roomWithWifiTwinPayload, BasicDigitalTwin.class), BasicDigitalTwin.class);
     }
 }

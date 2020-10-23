@@ -4,6 +4,8 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
+import com.azure.digitaltwins.core.models.BasicDigitalTwin;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -84,7 +86,7 @@ public class PublishTelemetryAsyncTests extends PublishTelemetryTestBase {
         }
     }
 
-    private void createModelsAndTwins(DigitalTwinsAsyncClient asyncClient, String wifiModelId, String roomWithWifiModelId, String roomWithWifiTwinId){
+    private void createModelsAndTwins(DigitalTwinsAsyncClient asyncClient, String wifiModelId, String roomWithWifiModelId, String roomWithWifiTwinId) throws JsonProcessingException {
         String wifiModelPayload = TestAssetsHelper.getWifiModelPayload(wifiModelId);
         String roomWithWifiModelPayload = TestAssetsHelper.getRoomWithWifiModelPayload(roomWithWifiModelId, wifiModelId, TestAssetDefaults.WIFI_COMPONENT_NAME);
 
@@ -96,7 +98,7 @@ public class PublishTelemetryAsyncTests extends PublishTelemetryTestBase {
         String roomWithWifiTwinPayload = TestAssetsHelper.getRoomWithWifiTwinPayload(roomWithWifiModelId, TestAssetDefaults.WIFI_COMPONENT_NAME);
 
         StepVerifier
-            .create(asyncClient.createDigitalTwin(roomWithWifiTwinId, roomWithWifiTwinPayload, String.class))
+            .create(asyncClient.createDigitalTwin(roomWithWifiTwinId, deserializeJsonString(roomWithWifiTwinPayload, BasicDigitalTwin.class), BasicDigitalTwin.class))
             .assertNext(createResponse -> logger.info("Created {} digitalTwin successfully", createResponse))
             .verifyComplete();
     }

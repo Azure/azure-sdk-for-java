@@ -47,10 +47,10 @@ public class TwinTests extends TwinTestBase{
             BasicDigitalTwin createdTwin = client.createDigitalTwin(roomTwinId, deserializeJsonString(roomTwin, BasicDigitalTwin.class), BasicDigitalTwin.class);
 
             logger.info("Created {} twin successfully", createdTwin.getId());
-            assertEquals(createdTwin.getId(), roomTwinId);
+            assertEquals(roomTwinId, createdTwin.getId());
 
             // Get Twin.
-            DigitalTwinsResponse<String> getTwinResponse = client.getDigitalTwinWithResponse(roomTwinId, String.class, null, Context.NONE);
+            DigitalTwinsResponse<BasicDigitalTwin> getTwinResponse = client.getDigitalTwinWithResponse(roomTwinId, BasicDigitalTwin.class, null, Context.NONE);
             assertEquals(getTwinResponse.getStatusCode(), HttpURLConnection.HTTP_OK);
 
             // Update Twin.
@@ -101,6 +101,6 @@ public class TwinTests extends TwinTestBase{
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
         String twinId = testResourceNamer.randomUuid();
 
-        assertRestException(() -> client.getDigitalTwin(twinId, String.class), HttpURLConnection.HTTP_NOT_FOUND);
+        assertRestException(() -> client.getDigitalTwin(twinId, BasicDigitalTwin.class), HttpURLConnection.HTTP_NOT_FOUND);
     }
 }

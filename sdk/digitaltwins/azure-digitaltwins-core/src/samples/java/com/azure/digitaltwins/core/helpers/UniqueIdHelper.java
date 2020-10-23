@@ -3,6 +3,7 @@ package com.azure.digitaltwins.core.helpers;
 import com.azure.digitaltwins.core.DigitalTwinsAsyncClient;
 import com.azure.digitaltwins.core.DigitalTwinsClient;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
+import com.azure.digitaltwins.core.models.BasicDigitalTwin;
 
 import java.net.HttpURLConnection;
 import java.util.Objects;
@@ -18,16 +19,16 @@ public class UniqueIdHelper {
     }
 
     public static String getUniqueDigitalTwinId(String baseName, DigitalTwinsAsyncClient client, Function<Integer, String> randomIntegerStringGenerator) {
-        return getUniqueId(baseName, (digitalTwinId -> client.getDigitalTwin(digitalTwinId, String.class).block()), randomIntegerStringGenerator);
+        return getUniqueId(baseName, (digitalTwinId -> client.getDigitalTwin(digitalTwinId, BasicDigitalTwin.class).block()), randomIntegerStringGenerator);
     }
 
     public static String getUniqueDigitalTwinId(String baseName, DigitalTwinsClient client, Function<Integer, String> randomIntegerStringGenerator) {
-        return getUniqueId(baseName, (digitalTwinId -> client.getDigitalTwin(digitalTwinId, String.class)), randomIntegerStringGenerator);
+        return getUniqueId(baseName, (digitalTwinId -> client.getDigitalTwin(digitalTwinId, BasicDigitalTwin.class)), randomIntegerStringGenerator);
     }
 
     // Taking randomIntegerStringGenerator as a parameter here because e2e tests use a special function for recording and replaying "random" numbers
     // and samples just use random numbers.
-    private static String getUniqueId(String baseName, Function<String, String> getResource, Function<Integer, String> randomIntegerStringGenerator) {
+    private static <T> String getUniqueId(String baseName, Function<String, T> getResource, Function<Integer, String> randomIntegerStringGenerator) {
         int maxAttempts = 10;
         int maxRandomDigits = 8; // Not to be confused with max random value. This value determines the length of the string of random integers
 

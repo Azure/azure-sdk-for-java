@@ -5,6 +5,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
 import com.azure.digitaltwins.core.models.BasicDigitalTwin;
 import com.azure.digitaltwins.core.models.QueryOptions;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -28,7 +29,7 @@ public class QueryAsyncTests extends QueryTestBase{
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void validQuerySucceeds(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
+    public void validQuerySucceeds(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
         int pageSize = 5;
         String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
@@ -46,12 +47,12 @@ public class QueryAsyncTests extends QueryTestBase{
                 .verifyComplete();
 
             // Create a room twin with property "IsOccupied" : true
-            String roomTwin = TestAssetsHelper.getRoomTwinPayload(roomModelId);
+            BasicDigitalTwin roomTwin = deserializeJsonString(TestAssetsHelper.getRoomTwinPayload(roomModelId), BasicDigitalTwin.class);
 
             for (int i = 0; i < pageSize + 1; i++) {
                 String roomTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
                 roomTwinIds.add(roomTwinId);
-                StepVerifier.create(asyncClient.createDigitalTwinWithResponse(roomTwinId, roomTwin, String.class, null))
+                StepVerifier.create(asyncClient.createDigitalTwinWithResponse(roomTwinId, roomTwin, BasicDigitalTwin.class, null))
                     .assertNext(response ->
                         assertThat(response.getStatusCode())
                             .as("Created digitaltwin successfully")

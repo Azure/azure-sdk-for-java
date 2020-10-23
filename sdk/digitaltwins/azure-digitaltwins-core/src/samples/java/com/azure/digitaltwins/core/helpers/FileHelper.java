@@ -3,6 +3,8 @@
 
 package com.azure.digitaltwins.core.helpers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,9 +21,9 @@ public class FileHelper {
      * @return List of all file names and their content in map format.
      * @throws IOException If an I/O error is thrown when accessing the starting file.
      */
-    public static Map<String, String> loadAllFilesInPath(Path path) throws IOException {
-        Map<String, String> fileContents = new HashMap<>();
-
+    public static <T> Map<String, T> loadAllFilesInPath(Path path, Class<T> clazz) throws IOException {
+        Map<String, T> fileContents = new HashMap<>();
+        ObjectMapper mapper = new ObjectMapper();
         Stream<Path> paths = Files.walk(path);
         paths
             .filter(filePath -> filePath.toFile().getName().endsWith(".json"))
@@ -31,7 +33,13 @@ public class FileHelper {
                     String fileAsString = lines.collect(Collectors.joining());
                     lines.close();
 
-                    fileContents.put(getFileNameFromPath(filePath), cleanupJsonString(fileAsString));
+                    if (clazz == String.class) {
+                        // don't deserialize into a type
+                        fileContents.put(getFileNameFromPath(filePath), (T) cleanupJsonString(fileAsString));
+                    }
+                    else {
+                        fileContents.put(getFileNameFromPath(filePath), mapper.readValue(cleanupJsonString(fileAsString), clazz));
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

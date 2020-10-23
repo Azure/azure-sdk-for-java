@@ -48,14 +48,14 @@ public class ComponentsAsyncTests extends ComponentsTestBase {
 
             StepVerifier.create(asyncClient.createDigitalTwin(roomWithWifiTwinId, deserializeJsonString(roomWithWifiTwin, BasicDigitalTwin.class), BasicDigitalTwin.class))
                 .assertNext(createdTwin -> {
-                    assertEquals(createdTwin.getId(), roomWithWifiTwinId);
+                    assertEquals(roomWithWifiTwinId, createdTwin.getId());
                     logger.info("Created {} twin successfully", createdTwin.getId());
                 })
                 .verifyComplete();
 
             StepVerifier.create(asyncClient.getComponentWithResponse(roomWithWifiTwinId, wifiComponentName, String.class, null))
                 .assertNext(createResponse -> {
-                    assertEquals(createResponse.getStatusCode(), HttpURLConnection.HTTP_OK);
+                    assertEquals(HttpURLConnection.HTTP_OK, createResponse.getStatusCode());
                     logger.info("Got component successfully");
 
                 })
@@ -63,7 +63,7 @@ public class ComponentsAsyncTests extends ComponentsTestBase {
 
             StepVerifier.create(asyncClient.updateComponentWithResponse(roomWithWifiTwinId, wifiComponentName, TestAssetsHelper.getWifiComponentUpdatePayload(), null))
                 .assertNext(updateResponse -> {
-                    assertEquals(updateResponse.getStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
+                    assertEquals(HttpURLConnection.HTTP_NO_CONTENT, updateResponse.getStatusCode());
                     logger.info("Updated the component successfully");
                 })
                 .verifyComplete();

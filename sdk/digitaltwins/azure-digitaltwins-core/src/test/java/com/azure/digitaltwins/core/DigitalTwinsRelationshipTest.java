@@ -7,7 +7,12 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.digitaltwins.core.models.*;
+import com.azure.digitaltwins.core.models.BasicDigitalTwin;
+import com.azure.digitaltwins.core.models.BasicRelationship;
+import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
+import com.azure.digitaltwins.core.models.DigitalTwinsResponse;
+import com.azure.digitaltwins.core.models.IncomingRelationship;
+import com.azure.digitaltwins.core.models.ListIncomingRelationshipsOptions;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -27,7 +32,6 @@ import static java.net.HttpURLConnection.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBase {
     private final ClientLogger logger = new ClientLogger(DigitalTwinsRelationshipTest.class);
@@ -85,9 +89,12 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
                 .as("Created relationship from room -> floor");
             logger.info("Created {} relationship between source = {} and target = {}", roomFloorRelationship.getRelationshipId(), roomFloorRelationship.getSourceDigitalTwinId(), roomFloorRelationship.getTargetDigitalTwinId());
 
-            // Create a relation which already exists - should return status code 409 (Conflict).
+            // Create a relationship which already exists - should return status code 409 (Conflict).
+            BasicRelationship relationship = deserializeJsonString(floorTwinContainedInRelationshipPayload, BasicRelationship.class);
             assertRestException(
-                () -> client.createRelationship(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID, floorTwinContainedInRelationshipPayload, String.class),
+                () -> {
+                    client.createRelationship(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID, relationship, BasicRelationship.class);
+                },
                 HTTP_PRECON_FAILED
             );
 
@@ -151,7 +158,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
 
             // GET a relationship which doesn't exist - should return status code 404 (Not Found).
             assertRestException(
-                () -> client.getRelationship(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, String.class),
+                () -> client.getRelationship(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, BasicRelationship.class),
                 HTTP_NOT_FOUND
             );
 

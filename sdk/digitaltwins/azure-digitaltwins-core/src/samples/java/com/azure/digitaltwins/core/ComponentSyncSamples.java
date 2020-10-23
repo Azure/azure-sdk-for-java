@@ -97,17 +97,13 @@ public class ComponentSyncSamples {
                     .addCustomProperties("ComponentProp2", 123)
             );
 
-        String basicDigitalTwinPayload = mapper.writeValueAsString(basicTwin);
-
         BasicDigitalTwin basicTwinResponse = client.createDigitalTwin(basicDigitalTwinId, basicTwin, BasicDigitalTwin.class);
 
         ConsoleLogger.print("Created digital twin " + basicTwinResponse.getId());
 
         // You can get a digital twin in json string format and deserialize it on your own
-        Response<String> getStringDigitalTwinResponse = client.getDigitalTwinWithResponse(basicDigitalTwinId, String.class, null, Context.NONE);
-        ConsoleLogger.print("Successfully retrieved digital twin as a json string \n" + getStringDigitalTwinResponse.getValue());
-
-        BasicDigitalTwin deserializedDigitalTwin = mapper.readValue(getStringDigitalTwinResponse.getValue(), BasicDigitalTwin.class);
+        Response<BasicDigitalTwin> getStringDigitalTwinResponse = client.getDigitalTwinWithResponse(basicDigitalTwinId, BasicDigitalTwin.class, null, Context.NONE);
+        BasicDigitalTwin deserializedDigitalTwin = getStringDigitalTwinResponse.getValue();
         ConsoleLogger.print("Deserialized the string response into a BasicDigitalTwin with Id: " + deserializedDigitalTwin.getId());
 
         // You can also get a digital twin using the built in deserializer into a BasicDigitalTwin.
@@ -124,7 +120,7 @@ public class ComponentSyncSamples {
             HashMap component1 = mapper.readValue(component1RawText, HashMap.class);
 
             ConsoleLogger.print("Retrieved digital twin using generic API to use built in deserialization into a BasicDigitalTwin with Id: " + basicDigitalTwin.getId() + ":\n\t"
-                + "Etag: " + basicDigitalTwin.getEtag() + "\n\t"
+                + "Etag: " + basicDigitalTwin.getETag() + "\n\t"
                 + "Prop1: " + basicDigitalTwin.getCustomProperties().get("Prop1") + "\n\t"
                 + "Prop2: " + basicDigitalTwin.getCustomProperties().get("Prop2") + "\n\t"
                 + "ComponentProp1: " + component1.get("ComponentProp1") + "\n\t"

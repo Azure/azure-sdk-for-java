@@ -4,6 +4,7 @@
 package com.azure.digitaltwins.core.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.digitaltwins.core.IDigitalTwinRelationship;
 import com.fasterxml.jackson.annotation.*;
 
 import java.util.HashMap;
@@ -17,18 +18,18 @@ import static com.fasterxml.jackson.annotation.JsonInclude.*;
  */
 @Fluent
 @JsonInclude(Include.NON_NULL)
-public final class BasicRelationship {
+public final class BasicRelationship implements IDigitalTwinRelationship {
 
-    @JsonProperty(value = "$relationshipId", required = true)
+    @JsonProperty(value = IDigitalTwinRelationship.DIGITAL_TWIN_RELATIONSHIP_ID_JSON_PROPERTY_NAME, required = true)
     private String id;
 
-    @JsonProperty(value = "$sourceId", required = true)
+    @JsonProperty(value = IDigitalTwinRelationship.DIGITAL_TWIN_RELATIONSHIP_SOURCE_ID_JSON_PROPERTY_NAME, required = true)
     private String sourceId;
 
-    @JsonProperty(value = "$targetId", required = true)
+    @JsonProperty(value = IDigitalTwinRelationship.DIGITAL_TWIN_RELATIONSHIP_TARGET_ID_JSON_PROPERTY_NAME, required = true)
     private String targetId;
 
-    @JsonProperty(value = "$relationshipName", required = true)
+    @JsonProperty(value = IDigitalTwinRelationship.DIGITAL_TWIN_RELATIONSHIP_NAME_JSON_PROPERTY_NAME, required = true)
     private String name;
 
     @JsonIgnore

@@ -127,11 +127,11 @@ public class DigitalTwinsLifecycleAsyncSample {
      */
     public static void deleteTwins() throws IOException, InterruptedException {
         ConsoleLogger.printHeader("Delete digital twins");
-        Map<String, String> twins = FileHelper.loadAllFilesInPath(TWINS_PATH);
+        Map<String, BasicDigitalTwin> twins = FileHelper.loadAllFilesInPath(TWINS_PATH, BasicDigitalTwin.class);
 
         // Call APIs to clean up any pre-existing resources that might be referenced by this sample. If digital twin does not exist, ignore.
         // Once the async API terminates (either successfully, or with an error), the latch count is decremented, or the semaphore is released.
-        for (Map.Entry<String, String> twin : twins.entrySet()) {
+        for (Map.Entry<String, BasicDigitalTwin> twin : twins.entrySet()) {
             String twinId = twin.getKey();
 
             // This list contains all the relationships that existing between the twins referenced by this sample.
@@ -226,7 +226,7 @@ public class DigitalTwinsLifecycleAsyncSample {
      */
     public static void createAllModels() throws IOException, InterruptedException {
         ConsoleLogger.printHeader("Creating models");
-        List<String> modelsToCreate = new ArrayList<>(FileHelper.loadAllFilesInPath(MODELS_PATH).values());
+        List<String> modelsToCreate = new ArrayList<>(FileHelper.loadAllFilesInPath(MODELS_PATH, String.class).values());
         final CountDownLatch createModelsLatch = new CountDownLatch(1);
 
         // Call API to create the models. For each async operation, once the operation is completed successfully, a latch is counted down.
@@ -269,12 +269,12 @@ public class DigitalTwinsLifecycleAsyncSample {
      */
     public static void createAllTwins() throws IOException, InterruptedException {
         ConsoleLogger.printHeader("Create digital twins");
-        Map<String, String> twins = FileHelper.loadAllFilesInPath(TWINS_PATH);
+        Map<String, BasicDigitalTwin> twins = FileHelper.loadAllFilesInPath(TWINS_PATH, BasicDigitalTwin.class);
         final CountDownLatch createTwinsLatch = new CountDownLatch(twins.size());
 
         // Call APIs to create the twins. For each async operation, once the operation is completed successfully, a latch is counted down.
         twins
-            .forEach((twinId, twinContent) -> client.createDigitalTwin(twinId, twinContent, String.class)
+            .forEach((twinId, twinContent) -> client.createDigitalTwin(twinId, twinContent, BasicDigitalTwin.class)
                 .subscribe(
                     twin -> ConsoleLogger.printSuccess("Created digital twin: " + twinId + "\n\t Body: " + twin),
                     throwable -> ConsoleLogger.printFatal("Could not create digital twin " + twinId + " due to " + throwable),
@@ -291,32 +291,22 @@ public class DigitalTwinsLifecycleAsyncSample {
      */
     public static void connectTwinsTogether() throws IOException, InterruptedException {
         ConsoleLogger.printHeader("Connect digital twins");
-        Map<String, String> allRelationships = FileHelper.loadAllFilesInPath(RELATIONSHIPS_PATH);
+        Map<String, BasicRelationship> allRelationships = FileHelper.loadAllFilesInPath(RELATIONSHIPS_PATH, BasicRelationship.class);
         final CountDownLatch connectTwinsLatch = new CountDownLatch(4);
 
         // For each relationship array we deserialize it first.
         // We deserialize as BasicRelationship to get the entire custom relationship (custom relationship properties).
         allRelationships.values().forEach(
             relationshipContent -> {
-                try {
-                    List<BasicRelationship> relationships = MAPPER.readValue(relationshipContent, new TypeReference<List<BasicRelationship>>() { });
-
-                    // From loaded relationships, get the source Id and Id from each one, and create it with full relationship payload.
-                    relationships
-                        .forEach(relationship -> {
-                            try {
-                                client.createRelationship(relationship.getSourceDigitalTwinId(), relationship.getRelationshipId(), MAPPER.writeValueAsString(relationship), String.class)
-                                    .doOnSuccess(s -> ConsoleLogger.printSuccess("Linked twin " + relationship.getSourceDigitalTwinId() + " to twin " + relationship.getTargetDigitalTwinId() + " as " + relationship.getRelationshipName()))
-                                    .doOnError(IgnoreConflictError)
-                                    .doOnTerminate(connectTwinsLatch::countDown)
-                                    .subscribe();
-                            } catch (JsonProcessingException e) {
-                                throw new RuntimeException("JsonProcessingException while serializing relationship string from BasicRelationship: ", e);
-                            }
-                        });
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException("JsonProcessingException while deserializing relationship string to BasicRelationship: ", e);
-                }
+                // From loaded relationships, get the source Id and Id from each one, and create it with full relationship payload.
+                allRelationships.values()
+                    .forEach(relationship -> {
+                        client.createRelationship(relationship.getSourceDigitalTwinId(), relationship.getRelationshipId(), relationship, BasicRelationship.class)
+                            .doOnSuccess(s -> ConsoleLogger.printSuccess("Linked twin " + relationship.getSourceDigitalTwinId() + " to twin " + relationship.getTargetDigitalTwinId() + " as " + relationship.getRelationshipName()))
+                            .doOnError(IgnoreConflictError)
+                            .doOnTerminate(connectTwinsLatch::countDown)
+                            .subscribe();
+                    });
             }
         );
 

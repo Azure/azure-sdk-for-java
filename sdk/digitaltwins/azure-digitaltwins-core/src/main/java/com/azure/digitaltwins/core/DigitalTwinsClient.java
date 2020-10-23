@@ -58,10 +58,6 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.createDigitalTwins#String-Object-Class#BasicDigitalTwin}
      *
-     * <p>Or alternatively String can be used as input and output type:</p>
-     *
-     * {@codesnippet com.azure.digitaltwins.core.syncClient.createDigitalTwins#String-Object-Class#String}
-     *
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param clazz The model class to serialize the request with and deserialize the response with.
      * @param <T> The generic type to serialize the request with and deserialize the response with.
@@ -69,7 +65,7 @@ public final class DigitalTwinsClient {
      * @return The deserialized application/json object representing the digital twin created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> T createDigitalTwin(String digitalTwinId, T digitalTwin, Class<T> clazz)
+    public <T extends IDigitalTwin> T createDigitalTwin(String digitalTwinId, T digitalTwin, Class<T> clazz)
     {
         return createDigitalTwinWithResponse(digitalTwinId, digitalTwin, clazz, null, Context.NONE).getValue();
     }
@@ -84,10 +80,6 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.createDigitalTwinsWithResponse#String-Object-Class-Options-Context#BasicDigitalTwin}
      *
-     * <p>Or alternatively String can be used as input and output type:</p>
-     *
-     * {@codesnippet com.azure.digitaltwins.core.syncClient.createDigitalTwins#String-Object-Class#String}
-     *
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param digitalTwin The application/json object representing the digital twin to create.
      * @param clazz The model class to serialize the request with and deserialize the response with.
@@ -97,7 +89,7 @@ public final class DigitalTwinsClient {
      * @return A {@link DigitalTwinsResponse} containing the deserialized application/json object representing the digital twin created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Response<T> createDigitalTwinWithResponse(String digitalTwinId, T digitalTwin, Class<T> clazz, CreateDigitalTwinOptions options, Context context)
+    public <T extends IDigitalTwin> Response<T> createDigitalTwinWithResponse(String digitalTwinId, T digitalTwin, Class<T> clazz, CreateDigitalTwinOptions options, Context context)
     {
         return digitalTwinsAsyncClient.createDigitalTwinWithResponse(digitalTwinId, digitalTwin, clazz, options, context).block();
     }
@@ -114,17 +106,13 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.getDigitalTwin#String-Class#BasicDigitalTwin}
      *
-     * <p>Alternatively String can be used to get the response in a json string format.</p>
-     *
-     * {@codesnippet com.azure.digitaltwins.core.syncClient.getDigitalTwin#String-Class#String}
-     *
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param clazz The model class to deserialize the response with.
      * @param <T> The generic type to deserialize the digital twin with.
      * @return The deserialized application/json object representing the digital twin.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> T getDigitalTwin(String digitalTwinId, Class<T> clazz)
+    public <T extends IDigitalTwin> T getDigitalTwin(String digitalTwinId, Class<T> clazz)
     {
         return getDigitalTwinWithResponse(digitalTwinId, clazz, null, Context.NONE).getValue();
     }
@@ -141,10 +129,6 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.getDigitalTwinWithResponse#String-Class-Options-Context#BasicDigitalTwin}
      *
-     * <p>Alternatively String can be used to get the response in a json string format.</p>
-     *
-     * {@codesnippet com.azure.digitaltwins.core.syncClient.getDigitalTwinWithResponse#String-Class-Options-Context#String}
-     *
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param clazz The model class to deserialize the response with.
      * @param <T> The generic type to deserialize the digital twin with.
@@ -153,7 +137,7 @@ public final class DigitalTwinsClient {
      * @return A {@link DigitalTwinsResponse} containing the deserialized application/json object representing the digital twin.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> DigitalTwinsResponse<T> getDigitalTwinWithResponse(String digitalTwinId, Class<T> clazz, GetDigitalTwinOptions options, Context context)
+    public <T extends IDigitalTwin> DigitalTwinsResponse<T> getDigitalTwinWithResponse(String digitalTwinId, Class<T> clazz, GetDigitalTwinOptions options, Context context)
     {
         return digitalTwinsAsyncClient.getDigitalTwinWithResponse(digitalTwinId, clazz, options, context).block();
     }
@@ -246,10 +230,6 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.createRelationship#String-String-Object-Class#BasicRelationship}
      *
-     * <p>Or alternatively String can be used as input and output deserialization type:</p>
-     *
-     * {@codesnippet com.azure.digitaltwins.core.syncClient.createRelationship#String-String-Object-Class#String}
-     *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be created.
      * @param relationship The application/json object representing the relationship to be created.
@@ -258,7 +238,7 @@ public final class DigitalTwinsClient {
      * @return The relationship created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> T createRelationship(String digitalTwinId, String relationshipId, T relationship, Class<T> clazz) {
+    public <T extends IDigitalTwinRelationship> T createRelationship(String digitalTwinId, String relationshipId, T relationship, Class<T> clazz) {
         return createRelationshipWithResponse(digitalTwinId, relationshipId, relationship, clazz, null, Context.NONE).getValue();
     }
 
@@ -272,10 +252,6 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.createRelationshipWithResponse#String-String-Object-Class-Options-Context#BasicRelationship}
      *
-     * <p>Or alternatively String can be used as input and output deserialization type:</p>
-     *
-     * {@codesnippet com.azure.digitaltwins.core.syncClient.createRelationshipWithResponse#String-String-Object-Class-Options-Context#String}
-     *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be created.
      * @param relationship The application/json object representing the relationship to be created.
@@ -286,7 +262,7 @@ public final class DigitalTwinsClient {
      * @return A {@link DigitalTwinsResponse} containing the relationship created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> DigitalTwinsResponse<T> createRelationshipWithResponse(String digitalTwinId, String relationshipId, T relationship, Class<T> clazz, CreateRelationshipOptions options, Context context) {
+    public <T extends IDigitalTwinRelationship> DigitalTwinsResponse<T> createRelationshipWithResponse(String digitalTwinId, String relationshipId, T relationship, Class<T> clazz, CreateRelationshipOptions options, Context context) {
         return digitalTwinsAsyncClient.createRelationshipWithResponse(digitalTwinId, relationshipId, relationship, clazz, options, context).block();
     }
 
@@ -299,10 +275,6 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.getRelationship#String#BasicRelationship}
      *
-     * <p>Or alternatively String can be used as input and output deserialization type:</p>
-     *
-     * {@codesnippet com.azure.digitaltwins.core.syncClient.getRelationship#String#String}
-     *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to retrieve.
      * @param clazz The model class to deserialize the relationship into.
@@ -310,7 +282,7 @@ public final class DigitalTwinsClient {
      * @return The deserialized relationship.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> T getRelationship(String digitalTwinId, String relationshipId, Class<T> clazz) {
+    public <T extends IDigitalTwinRelationship> T getRelationship(String digitalTwinId, String relationshipId, Class<T> clazz) {
         return getRelationshipWithResponse(digitalTwinId, relationshipId, clazz, null, Context.NONE).getValue();
     }
 
@@ -323,10 +295,6 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.getRelationshipWithResponse#String-String-Class-Options-Context#BasicRelationship}
      *
-     * <p>Or alternatively String can be used as input and output deserialization type:</p>
-     *
-     * {@codesnippet com.azure.digitaltwins.core.syncClient.getRelationshipWithResponse#String-String-Class-Options-Context#String}
-     *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to retrieve.
      * @param clazz The model class to deserialize the relationship into.
@@ -336,7 +304,7 @@ public final class DigitalTwinsClient {
      * @return A {@link DigitalTwinsResponse} containing the deserialized relationship.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> DigitalTwinsResponse<T> getRelationshipWithResponse(String digitalTwinId, String relationshipId, Class<T> clazz, GetRelationshipOptions options, Context context) {
+    public <T extends IDigitalTwinRelationship> DigitalTwinsResponse<T> getRelationshipWithResponse(String digitalTwinId, String relationshipId, Class<T> clazz, GetRelationshipOptions options, Context context) {
         return digitalTwinsAsyncClient.getRelationshipWithResponse(digitalTwinId, relationshipId, clazz, options, context).block();
     }
 
@@ -419,10 +387,6 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.listRelationships#String-Class#BasicRelationship#IterateByItem}
      *
-     * <p>Or alternatively String can be used as input and output deserialization type:</p>
-     *
-     * {@codesnippet com.azure.digitaltwins.core.syncClient.listRelationships#String-Class#String#IterateByItem}
-     *
      * @param digitalTwinId The Id of the source digital twin.
      * @param clazz The model class to deserialize each relationship into. Since a digital twin might have relationships
      *              that conform to different models, it is advisable to convert them to a generic model like {@link BasicRelationship}.
@@ -430,7 +394,7 @@ public final class DigitalTwinsClient {
      * @return A {@link PagedIterable} of relationships belonging to the specified digital twin.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public <T> PagedIterable<T> listRelationships(String digitalTwinId, Class<T> clazz) {
+    public <T extends IDigitalTwinRelationship> PagedIterable<T> listRelationships(String digitalTwinId, Class<T> clazz) {
         return listRelationships(digitalTwinId, null, clazz, null, Context.NONE);
     }
 
@@ -443,10 +407,6 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.listRelationships#String-String-Class-Options-Context#BasicRelationship#IterateByItem}
      *
-     * <p>Or alternatively String can be used as input and output deserialization type:</p>
-     *
-     * {@codesnippet com.azure.digitaltwins.core.syncClient.listRelationships#String-String-Class-Options-Context#String#IterateByItem}
-     *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipName The name of a relationship to filter to.
      * @param clazz The model class to deserialize each relationship into. Since a digital twin might have relationships
@@ -457,7 +417,7 @@ public final class DigitalTwinsClient {
      * @return A {@link PagedIterable} of relationships belonging to the specified digital twin.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public <T> PagedIterable<T> listRelationships(String digitalTwinId, String relationshipName, Class<T> clazz, ListRelationshipsOptions options, Context context) {
+    public <T extends IDigitalTwinRelationship> PagedIterable<T> listRelationships(String digitalTwinId, String relationshipName, Class<T> clazz, ListRelationshipsOptions options, Context context) {
         return new PagedIterable<>(digitalTwinsAsyncClient.listRelationships(digitalTwinId, relationshipName, clazz, options, context));
     }
 
