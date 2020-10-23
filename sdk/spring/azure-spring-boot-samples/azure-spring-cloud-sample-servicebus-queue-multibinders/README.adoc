@@ -118,7 +118,7 @@ See https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-man
 1. Update link:src/main/resources/application.properties[application.properties]
 +
 ....
-# Enable MSI for event hub and storage account
+# Enable MSI
 spring.cloud.azure.msi-enabled=true
 spring.cloud.azure.resource-group=[resource-group]
 spring.cloud.azure.subscription-id=[subscription-id]
