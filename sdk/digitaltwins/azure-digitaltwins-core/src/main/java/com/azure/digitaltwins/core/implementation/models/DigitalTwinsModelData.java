@@ -50,7 +50,7 @@ public final class DigitalTwinsModelData {
      * The model definition.
      */
     @JsonProperty(value = "model")
-    private Object model;
+    private Object dtdlModel;
 
     /**
      * Creates an instance of DigitalTwinsModelData class.
@@ -162,18 +162,18 @@ public final class DigitalTwinsModelData {
      *
      * @return the model value.
      */
-    public Object getModel() {
-        return this.model;
+    public Object getDtdlModel() {
+        return this.dtdlModel;
     }
 
     /**
      * Set the model property: The model definition.
      *
-     * @param model the model value to set.
+     * @param dtdlModel the model value to set.
      * @return the DigitalTwinsModelData object itself.
      */
-    public DigitalTwinsModelData setModel(Object model) {
-        this.model = model;
+    public DigitalTwinsModelData setDtdlModel(Object dtdlModel) {
+        this.dtdlModel = dtdlModel;
         return this;
     }
 

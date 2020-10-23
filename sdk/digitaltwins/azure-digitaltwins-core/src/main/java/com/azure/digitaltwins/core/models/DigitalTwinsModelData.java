@@ -49,24 +49,24 @@ public final class DigitalTwinsModelData {
     private boolean decommissioned;
 
     /*
-     * The model definition.
+     * The model definition that conforms to the Digital Twins Definition Language (DTDL) v2.
      */
     @JsonProperty(value = "model")
-    private String model;
+    private String dtdlModel;
 
     /**
      * Construct a new DigitalTwinsModelData instance. This class should only be constructed internally since the
      * service never takes this as an input.
      *
      * @param modelId The Id of the model.
-     * @param model The contents of the model.
+     * @param dtdlModel The contents of the model.
      * @param displayName The language map of the localized display names.
      * @param description The language map of the localized descriptions.
      * @param uploadTime The time when this model was uploaded.
      * @param decommissioned If this model has been decommissioned.
      */
     public DigitalTwinsModelData(String modelId,
-                                 String model,
+                                 String dtdlModel,
                                  Map<String, String> displayName,
                                  Map<String, String> description,
                                  OffsetDateTime uploadTime,
@@ -76,7 +76,7 @@ public final class DigitalTwinsModelData {
         this.id = modelId;
         this.uploadTime = uploadTime;
         this.decommissioned = decommissioned;
-        this.model = model;
+        this.dtdlModel = dtdlModel;
     }
 
     /**
@@ -132,7 +132,7 @@ public final class DigitalTwinsModelData {
      *
      * @return the model value.
      */
-    public String getModel() {
-        return this.model;
+    public String getDtdlModel() {
+        return this.dtdlModel;
     }
 }

@@ -60,7 +60,7 @@ public abstract class ModelsTestBase extends DigitalTwinsTestBase {
         // ModelData objects that are obtained through the createModels API do not populate the model field, so it isn't
         // worth comparing those ModelData objects with ModelData objects retrieved through getModel calls
         if (compareModel) {
-            assertEquals(expected.getModel(), actual.getModel());
+            assertEquals(expected.getDtdlModel(), actual.getDtdlModel());
         }
 
         assertEquals(expected.getDescriptionLanguageMap().size(), actual.getDescriptionLanguageMap().size());

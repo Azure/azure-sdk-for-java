@@ -741,13 +741,13 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.createModels#Iterable}
      *
-     * @param models The list of models to create. Each string corresponds to exactly one model.
+     * @param dtdlModels The list of models to create. Each string corresponds to exactly one model.
      * @return A List of created models. Each {@link DigitalTwinsModelData} instance in this list
      * will contain metadata about the created model, but will not contain the model itself.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<Iterable<DigitalTwinsModelData>> createModels(Iterable<String> models) {
-        return createModelsWithResponse(models, null)
+    public Mono<Iterable<DigitalTwinsModelData>> createModels(Iterable<String> dtdlModels) {
+        return createModelsWithResponse(dtdlModels, null)
             .map(Response::getValue);
     }
 
@@ -758,19 +758,19 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.createModelsWithResponse#Iterable-Options}
      *
-     * @param models The list of models to create. Each string corresponds to exactly one model.
+     * @param dtdlModels The list of models to create. Each string corresponds to exactly one model.
      * @param options The optional parameters for this request. If null, the default option values will be used.
      * @return A {@link Response} containing the list of created models. Each {@link DigitalTwinsModelData} instance in this list
      * will contain metadata about the created model, but will not contain the model itself.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<Response<Iterable<DigitalTwinsModelData>>> createModelsWithResponse(Iterable<String> models, CreateModelsOptions options) {
-        return withContext(context -> createModelsWithResponse(models, options, context));
+    public Mono<Response<Iterable<DigitalTwinsModelData>>> createModelsWithResponse(Iterable<String> dtdlModels, CreateModelsOptions options) {
+        return withContext(context -> createModelsWithResponse(dtdlModels, options, context));
     }
 
-    Mono<Response<Iterable<DigitalTwinsModelData>>> createModelsWithResponse(Iterable<String> models, CreateModelsOptions options, Context context) {
+    Mono<Response<Iterable<DigitalTwinsModelData>>> createModelsWithResponse(Iterable<String> dtdlModels, CreateModelsOptions options, Context context) {
         List<Object> modelsPayload = new ArrayList<>();
-        for (String model : models) {
+        for (String model : dtdlModels) {
             try {
                 modelsPayload.add(mapper.readValue(model, Object.class));
             }
