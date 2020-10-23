@@ -49,9 +49,9 @@ class KeyVaultClient extends DelegateRestClient {
     private static final String API_VERSION_POSTFIX = "?api-version=7.1";
 
     /**
-     * Stores the Azure Key Vault URI.
+     * Stores the Azure Key Vault URL.
      */
-    private final String keyVaultUri;
+    private final String keyVaultUrl;
 
     /**
      * Stores the tenant ID.
@@ -79,7 +79,7 @@ class KeyVaultClient extends DelegateRestClient {
         if (!keyVaultUri.endsWith("/")) {
             keyVaultUri = keyVaultUri + "/";
         }
-        this.keyVaultUri = keyVaultUri;
+        this.keyVaultUrl = keyVaultUri;
     }
 
     /**
@@ -129,7 +129,7 @@ class KeyVaultClient extends DelegateRestClient {
         ArrayList<String> result = new ArrayList<>();
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + getAccessToken());
-        String url = String.format("%scertificates%s", keyVaultUri, API_VERSION_POSTFIX);
+        String url = String.format("%scertificates%s", keyVaultUrl, API_VERSION_POSTFIX);
         String response = get(url, headers);
         CertificateListResult certificateListResult = null;
         if (response != null) {
@@ -156,7 +156,7 @@ class KeyVaultClient extends DelegateRestClient {
         CertificateBundle result = null;
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + getAccessToken());
-        String url = String.format("%scertificates/%s%s", keyVaultUri, alias, API_VERSION_POSTFIX);
+        String url = String.format("%scertificates/%s%s", keyVaultUrl, alias, API_VERSION_POSTFIX);
         String response = get(url, headers);
         if (response != null) {
             JsonConverter converter = JsonConverterFactory.createJsonConverter();
