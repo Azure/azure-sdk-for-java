@@ -32,14 +32,24 @@ public class DatafeedAsyncSample {
 
         // Create Data feed
         System.out.printf("Creating Data feed%n");
+        DataFeed appInsightsDataFeed = new DataFeed()
+            .setName("sample_db")
+            .setSource(new AzureAppInsightsDataFeedSource("application_id", "api_key", "azure_Cloud", "query"))
+            .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
+            .setSchema(
+                new DataFeedSchema(
+                    Arrays.asList(
+                        new Metric().setName("cost"),
+                        new Metric().setName("revenue")
+                )).setDimensions(
+                    Arrays.asList(
+                        new Dimension().setName("city"),
+                        new Dimension().setName("category")
+                    ))
+            ).setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse("2020-07-01T00:00:00Z")));
+
         final Mono<DataFeed> createdDataFeedMono = advisorAdministrationAsyncClient
-            .createDataFeed("sample_db",
-                new AzureAppInsightsDataFeedSource("application_id", "api_key", "azure_Cloud", "query"),
-                new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY),
-                new DataFeedSchema(Arrays.asList(new Metric().setName("cost"), new Metric().setName(
-                    "revenue"))).setDimensions(Arrays.asList(new Dimension().setName("city"),
-                    new Dimension().setName("category"))),
-                new DataFeedIngestionSettings(OffsetDateTime.parse("2020-07-01T00:00:00Z")), null);
+            .createDataFeed(appInsightsDataFeed);
 
         createdDataFeedMono
             .doOnSubscribe(__ ->

@@ -91,7 +91,8 @@ public final class DataFeedOptions {
      * @return the adminEmails value.
      */
     public List<String> getAdminEmails() {
-        return Collections.unmodifiableList(this.adminEmails);
+        return this.adminEmails == null
+            ? null : Collections.unmodifiableList(this.adminEmails);
     }
 
     /**
@@ -112,7 +113,8 @@ public final class DataFeedOptions {
      * @return the viewerEmails value.
      */
     public List<String> getViewerEmails() {
-        return Collections.unmodifiableList(this.viewerEmails);
+        return this.viewerEmails == null
+            ? null : Collections.unmodifiableList(this.viewerEmails);
     }
 
     /**

@@ -36,7 +36,6 @@ import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -179,7 +178,7 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
                 new Dimension().setName("category").setDisplayName("category"))))
             .setName("java_create_data_feed_test_sample" + UUID.randomUUID())
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
-            .setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse(INGESTION_START_TIME))));
+            .setIngestionSettings(new DataFeedIngestionSettings(INGESTION_START_TIME)));
     }
 
 

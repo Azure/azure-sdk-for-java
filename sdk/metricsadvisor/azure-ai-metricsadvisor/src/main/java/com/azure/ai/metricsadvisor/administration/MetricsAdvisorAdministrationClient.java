@@ -5,13 +5,8 @@ package com.azure.ai.metricsadvisor.administration;
 
 import com.azure.ai.metricsadvisor.models.AnomalyAlertConfiguration;
 import com.azure.ai.metricsadvisor.models.DataFeed;
-import com.azure.ai.metricsadvisor.models.DataFeedGranularity;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionProgress;
-import com.azure.ai.metricsadvisor.models.DataFeedIngestionSettings;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionStatus;
-import com.azure.ai.metricsadvisor.models.DataFeedOptions;
-import com.azure.ai.metricsadvisor.models.DataFeedSchema;
-import com.azure.ai.metricsadvisor.models.DataFeedSource;
 import com.azure.ai.metricsadvisor.models.Hook;
 import com.azure.ai.metricsadvisor.models.ListDataFeedIngestionOptions;
 import com.azure.ai.metricsadvisor.models.ListDataFeedOptions;
@@ -52,57 +47,34 @@ public final class MetricsAdvisorAdministrationClient {
      * Create a new data feed.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataFeed#String-DataFeedSource-DataFeedGranularity-DataFeedSchema-DataFeedIngestionSettings-DataFeedOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataFeed#DataFeed}
      *
-     * @param dataFeedName the name of the data feed.
-     * @param dataFeedSource the source of the data feed.
-     * @param dataFeedGranularity the granularity details of the time series.
-     * @param dataFeedSchema the schema detail properties of the data feed.
-     * @param dataFeedIngestionSettings the data feed ingestion properties.
-     * @param dataFeedOptions the additional options to configure the data feed.
-     *
+     * @param dataFeed The data feed to be created.
      * @return The created data feed.
-     * @throws NullPointerException If {@code dataFeedName}, {@code dataFeedSource}, {@code metricColumns},
+     * @throws NullPointerException If {@code dataFeed}, {@code dataFeedName}, {@code dataFeedSource}, {@code metrics},
      * {@code granularityType} or {@code ingestionStartTime} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataFeed createDataFeed(String dataFeedName,
-        DataFeedSource dataFeedSource,
-        DataFeedGranularity dataFeedGranularity,
-        DataFeedSchema dataFeedSchema,
-        DataFeedIngestionSettings dataFeedIngestionSettings,
-        DataFeedOptions dataFeedOptions) {
-        return createDataFeedWithResponse(dataFeedName, dataFeedSource, dataFeedGranularity, dataFeedSchema,
-            dataFeedIngestionSettings, dataFeedOptions, Context.NONE).getValue();
+    public DataFeed createDataFeed(DataFeed dataFeed) {
+        return createDataFeedWithResponse(dataFeed, Context.NONE).getValue();
     }
 
     /**
      * Create a new data feed with REST response.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataFeedWithResponse#String-DataFeedSource-DataFeedGranularity-DataFeedSchema-DataFeedIngestionSettings-DataFeedOptions-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataFeedWithResponse#DataFeed-Context}
      *
-     * @param dataFeedName the name of the data feed.
-     * @param dataFeedSource the source of the data feed.
-     * @param dataFeedGranularity the granularity details of the time series.
-     * @param dataFeedSchema the schema detail properties of the data feed.
-     * @param dataFeedIngestionSettings the data feed ingestion properties.
-     * @param dataFeedOptions the additional options to configure the data feed.
+     * @param dataFeed The data feed to be created.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link Response} containing the created data feed.
-     * @throws NullPointerException If {@code dataFeedName}, {@code dataFeedSource}, {@code metricColumns},
+     * @throws NullPointerException If {@code dataFeed}, {@code dataFeedName}, {@code dataFeedSource}, {@code metrics},
      * {@code granularityType} or {@code ingestionStartTime} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataFeed> createDataFeedWithResponse(String dataFeedName,
-        DataFeedSource dataFeedSource,
-        DataFeedGranularity dataFeedGranularity,
-        DataFeedSchema dataFeedSchema,
-        DataFeedIngestionSettings dataFeedIngestionSettings,
-        DataFeedOptions dataFeedOptions, Context context) {
-        return client.createDataFeedWithResponse(dataFeedName, dataFeedSource, dataFeedGranularity, dataFeedSchema,
-            dataFeedIngestionSettings, dataFeedOptions, context).block();
+    public Response<DataFeed> createDataFeedWithResponse(DataFeed dataFeed, Context context) {
+        return client.createDataFeedWithResponse(dataFeed, context).block();
     }
 
     /**

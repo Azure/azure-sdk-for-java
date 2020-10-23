@@ -27,7 +27,6 @@ import com.azure.ai.metricsadvisor.models.SuppressCondition;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.Assertions;
 
-import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
@@ -800,12 +799,10 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
                 new Dimension().setName("category").setDisplayName("category"))))
             .setName("java_data_feed_for_detection" + UUID.randomUUID())
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
-            .setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse(INGESTION_START_TIME)));
+            .setIngestionSettings(new DataFeedIngestionSettings(INGESTION_START_TIME));
 
-        return client.createDataFeed(dataFeed.getName(),
-            dataFeed.getSource(), dataFeed.getGranularity(),
-            dataFeed.getSchema(), dataFeed.getIngestionSettings(),
-            dataFeed.getOptions());
+        return client.createDataFeed(
+                dataFeed);
     }
 
     protected void assertUpdateDetectionConfigurationOutput(

@@ -28,7 +28,7 @@ public abstract class AnomalyForDetectionConfigTestBase extends MetricsAdvisorCl
         final OffsetDateTime startTime = TIME_SERIES_START_TIME;
         final OffsetDateTime endTime = TIME_SERIES_END_TIME;
         final ListAnomaliesDetectedFilter filter = new ListAnomaliesDetectedFilter()
-            .setSeverity(Severity.LOW, Severity.MEDIUM);
+            .setSeverityRange(Severity.LOW, Severity.MEDIUM);
         final ListAnomaliesDetectedOptions options = new ListAnomaliesDetectedOptions(startTime, endTime)
             .setTop(10)
             .setFilter(filter);

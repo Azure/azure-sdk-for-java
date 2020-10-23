@@ -38,9 +38,9 @@ public final class TestUtils {
     static final String INCORRECT_UUID = "a0a3998a-4c4affe66b7";
     static final String INCORRECT_UUID_ERROR = "Invalid UUID string: " + INCORRECT_UUID;
     static final String DATAFEED_ID_REQUIRED_ERROR = "'dataFeedId' cannot be null.";
+    static final OffsetDateTime INGESTION_START_TIME = OffsetDateTime.parse("2019-10-01T00:00:00Z");
 
     public static final String AZURE_METRICS_ADVISOR_ENDPOINT = "AZURE_METRICS_ADVISOR_ENDPOINT";
-    protected static final String INGESTION_START_TIME = "2019-10-01T00:00:00Z";
 
     static final String TEMPLATE_QUERY = "select * from adsample2 where Timestamp = @StartTime";
     static final String TABLE_QUERY = "PartitionKey ge '@StartTime' and PartitionKey lt '@EndTime'";
@@ -136,7 +136,7 @@ public final class TestUtils {
                 new Dimension().setName("category"))))
             .setName("java_SQL_create_data_feed_test_sample" + UUID.randomUUID())
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
-            .setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse(INGESTION_START_TIME)));
+            .setIngestionSettings(new DataFeedIngestionSettings(INGESTION_START_TIME));
     }
 
     static DataFeed getAzureBlobDataFeedSample() {
@@ -149,7 +149,7 @@ public final class TestUtils {
                 new Dimension().setName("category"))))
             .setName("java_BLOB_create_data_feed_test_sample" + UUID.randomUUID())
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
-            .setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse(INGESTION_START_TIME)));
+            .setIngestionSettings(new DataFeedIngestionSettings(INGESTION_START_TIME));
     }
 
     /**

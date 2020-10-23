@@ -17,7 +17,6 @@ import com.azure.ai.metricsadvisor.models.DataFeedOptions;
 import com.azure.ai.metricsadvisor.models.DataFeedRollupSettings;
 import com.azure.ai.metricsadvisor.models.DataFeedRollupType;
 import com.azure.ai.metricsadvisor.models.DataFeedSchema;
-import com.azure.ai.metricsadvisor.models.DataFeedSource;
 import com.azure.ai.metricsadvisor.models.DataFeedStatus;
 import com.azure.ai.metricsadvisor.models.DetectionConditionsOperator;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
@@ -60,7 +59,7 @@ import java.util.stream.Stream;
  * Code snippet for {@link MetricsAdvisorAdministrationClient}
  */
 public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
-    private MetricsAdvisorAdministrationClient metricsAdvisorAdministrationClient =
+    private MetricsAdvisorAdministrationClient metricsAdvisorAdminClient =
         new MetricsAdvisorAdministrationClientBuilder().buildClient();
 
     /**
@@ -68,7 +67,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
      */
     public void createMetricsAdvisorAdministrationClient() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.instantiation
-        MetricsAdvisorAdministrationClient metricsAdvisorAdministrationClient =
+        MetricsAdvisorAdministrationClient metricsAdvisorAdminClient =
             new MetricsAdvisorAdministrationClientBuilder()
                 .credential(new MetricsAdvisorKeyCredential("{subscription_key}", "{api_key}"))
                 .endpoint("{endpoint}")
@@ -97,55 +96,66 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
     // Create Data Feed
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationClient#createDataFeed(String, DataFeedSource,
-     * DataFeedGranularity, DataFeedSchema, DataFeedIngestionSettings, DataFeedOptions)}
+     * Code snippet for {@link MetricsAdvisorAdministrationClient#createDataFeed(DataFeed)}
      */
     public void createDataFeed() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataFeed#String-DataFeedSource-DataFeedGranularity-DataFeedSchema-DataFeedIngestionSettings-DataFeedOptions
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataFeed#DataFeed
+        DataFeed dataFeed = new DataFeed()
+            .setName("dataFeedName")
+            .setSource(new MySqlDataFeedSource("conn-string", "query"))
+            .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
+            .setSchema(new DataFeedSchema(
+                Arrays.asList(
+                    new Metric().setName("metric1"),
+                    new Metric().setName("metric2")
+                )
+            ))
+            .setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse("2020-01-01T00:00:00Z")))
+            .setOptions(new DataFeedOptions()
+                .setDescription("data feed description")
+                .setRollupSettings(new DataFeedRollupSettings()
+                    .setRollupType(DataFeedRollupType.AUTO_ROLLUP)));
 
-        DataFeed createdDataFeed = metricsAdvisorAdministrationClient.createDataFeed(
-            "dataFeedName",
-            new MySqlDataFeedSource("conn-string", "query"),
-            new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY),
-            new DataFeedSchema(Arrays.asList(new Metric().setName("metric1"), new Metric().setName(
-                "metric2"))),
-            new DataFeedIngestionSettings(OffsetDateTime.parse("")),
-            new DataFeedOptions().setDescription("data feed description")
-                .setRollupSettings(new DataFeedRollupSettings().setRollupType(DataFeedRollupType.AUTO_ROLLUP)));
+        DataFeed createdDataFeed = metricsAdvisorAdminClient.createDataFeed(dataFeed);
 
         System.out.printf("Data feed Id: %s%n", createdDataFeed.getId());
         System.out.printf("Data feed description: %s%n", createdDataFeed.getOptions().getDescription());
-        System.out.printf("Data feed source type: %.2f%n", createdDataFeed.getSourceType());
-        System.out.printf("Data feed creator: %.2f%n", createdDataFeed.getCreator());
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataFeed#String-DataFeedSource-DataFeedGranularity-DataFeedSchema-DataFeedIngestionSettings-DataFeedOptions
+        System.out.printf("Data feed source type: %s%n", createdDataFeed.getSourceType());
+        System.out.printf("Data feed creator: %s%n", createdDataFeed.getCreator());
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataFeed#DataFeed
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationClient#createDataFeedWithResponse(String,
-     * DataFeedSource, DataFeedGranularity, DataFeedSchema, DataFeedIngestionSettings, DataFeedOptions, Context)}
+     * Code snippet for {@link MetricsAdvisorAdministrationClient#createDataFeedWithResponse(DataFeed, Context)}
      */
     public void createDataFeedWithResponse() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataFeedWithResponse#String-DataFeedSource-DataFeedGranularity-DataFeedSchema-DataFeedIngestionSettings-DataFeedOptions-Context
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataFeedWithResponse#DataFeed-Context
+        DataFeed dataFeed = new DataFeed()
+            .setName("dataFeedName")
+            .setSource(new MySqlDataFeedSource("conn-string", "query"))
+            .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
+            .setSchema(new DataFeedSchema(
+                Arrays.asList(
+                    new Metric().setName("metric1"),
+                    new Metric().setName("metric2")
+                )
+            ))
+            .setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse("2020-01-01T00:00:00Z")))
+            .setOptions(new DataFeedOptions()
+                .setDescription("data feed description")
+                .setRollupSettings(new DataFeedRollupSettings()
+                    .setRollupType(DataFeedRollupType.AUTO_ROLLUP)));
 
         final Response<DataFeed> createdDataFeedResponse =
-            metricsAdvisorAdministrationClient.createDataFeedWithResponse(
-                "dataFeedName",
-                new MySqlDataFeedSource("conn-string", "query"),
-                new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY),
-                new DataFeedSchema(Arrays.asList(new Metric().setName("metric1"), new Metric().setName(
-                    "metric2"))),
-                new DataFeedIngestionSettings(OffsetDateTime.parse("")),
-                new DataFeedOptions().setDescription("data feed description")
-                    .setRollupSettings(new DataFeedRollupSettings().setRollupType(DataFeedRollupType.AUTO_ROLLUP)),
-                Context.NONE);
+            metricsAdvisorAdminClient.createDataFeedWithResponse(dataFeed, Context.NONE);
 
         System.out.printf("Data feed create operation status: %s%n", createdDataFeedResponse.getStatusCode());
-        DataFeed dataFeed = createdDataFeedResponse.getValue();
-        System.out.printf("Data feed Id: %s%n", dataFeed.getId());
-        System.out.printf("Data feed description: %s%n", dataFeed.getOptions().getDescription());
-        System.out.printf("Data feed source type: %.2f%n", dataFeed.getSourceType());
-        System.out.printf("Data feed creator: %.2f%n", dataFeed.getCreator());
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataFeedWithResponse#String-DataFeedSource-DataFeedGranularity-DataFeedSchema-DataFeedIngestionSettings-DataFeedOptions-Context
+        DataFeed createdDataFeed = createdDataFeedResponse.getValue();
+        System.out.printf("Data feed Id: %s%n", createdDataFeed.getId());
+        System.out.printf("Data feed description: %s%n", createdDataFeed.getOptions().getDescription());
+        System.out.printf("Data feed source type: %s%n", createdDataFeed.getSourceType());
+        System.out.printf("Data feed creator: %s%n", createdDataFeed.getCreator());
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataFeedWithResponse#DataFeed-Context
     }
 
     /**
@@ -153,12 +163,12 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
      */
     public void getDataFeed() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDataFeed#String
-
-        DataFeed dataFeed = metricsAdvisorAdministrationClient.getDataFeed("dataFeedId");
+        final String dataFeedId = "r47053f1-9080-09lo-bacf-8dccf2e86f";
+        DataFeed dataFeed = metricsAdvisorAdminClient.getDataFeed(dataFeedId);
         System.out.printf("Data feed Id: %s%n", dataFeed.getId());
         System.out.printf("Data feed description: %s%n", dataFeed.getOptions().getDescription());
-        System.out.printf("Data feed source type: %.2f%n", dataFeed.getSourceType());
-        System.out.printf("Data feed creator: %.2f%n", dataFeed.getCreator());
+        System.out.printf("Data feed source type: %s%n", dataFeed.getSourceType());
+        System.out.printf("Data feed creator: %s%n", dataFeed.getCreator());
         // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDataFeed#String
     }
 
@@ -167,16 +177,16 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
      */
     public void getDataFeedWithResponse() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDataFeedWithResponse#String-Context
-
+        final String dataFeedId = "r47053f1-9080-09lo-bacf-8dccf2e86f";
         final Response<DataFeed> dataFeedResponse =
-            metricsAdvisorAdministrationClient.getDataFeedWithResponse("dataFeedId", Context.NONE);
+            metricsAdvisorAdminClient.getDataFeedWithResponse(dataFeedId, Context.NONE);
 
-        System.out.printf("Data feed create operation status: %s%n", dataFeedResponse.getStatusCode());
+        System.out.printf("Data feed get operation status: %s%n", dataFeedResponse.getStatusCode());
         DataFeed dataFeed = dataFeedResponse.getValue();
         System.out.printf("Data feed Id: %s%n", dataFeed.getId());
         System.out.printf("Data feed description: %s%n", dataFeed.getOptions().getDescription());
-        System.out.printf("Data feed source type: %.2f%n", dataFeed.getSourceType());
-        System.out.printf("Data feed creator: %.2f%n", dataFeed.getCreator());
+        System.out.printf("Data feed source type: %s%n", dataFeed.getSourceType());
+        System.out.printf("Data feed creator: %s%n", dataFeed.getCreator());
         // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDataFeedWithResponse#String-Context
     }
 
@@ -187,7 +197,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDataFeed#DataFeed
 
         DataFeed existingDataFeed = new DataFeed();
-        final DataFeed updatedDataFeed = metricsAdvisorAdministrationClient.updateDataFeed(
+        final DataFeed updatedDataFeed = metricsAdvisorAdminClient.updateDataFeed(
             existingDataFeed.setOptions(new DataFeedOptions().setDescription("set updated description")));
 
         System.out.printf("Data feed Id: %s%n", updatedDataFeed.getId());
@@ -202,7 +212,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDataFeedWithResponse#DataFeed-Context
         DataFeed existingDataFeed = new DataFeed();
         final Response<DataFeed> updateDataFeedWithResponse =
-            metricsAdvisorAdministrationClient.updateDataFeedWithResponse(
+            metricsAdvisorAdminClient.updateDataFeedWithResponse(
                 existingDataFeed.setOptions(new DataFeedOptions().setDescription("set updated description")),
                 Context.NONE);
 
@@ -218,7 +228,8 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
      */
     public void deleteDataFeed() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDataFeed#String
-        metricsAdvisorAdministrationClient.deleteDataFeed("dataFeedId");
+        final String dataFeedId = "r47053f1-9080-09lo-bacf-8dccf2e86f";
+        metricsAdvisorAdminClient.deleteDataFeed(dataFeedId);
         // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDataFeed#String
     }
 
@@ -227,9 +238,9 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
      */
     public void deleteDataFeedWithResponse() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDataFeedWithResponse#String-Context
-        final Response<Void> response = metricsAdvisorAdministrationClient.deleteDataFeedWithResponse("dataFeedId",
-            Context.NONE);
-
+        final String dataFeedId = "r47053f1-9080-09lo-bacf-8dccf2e86f";
+        final Response<Void> response = metricsAdvisorAdminClient
+            .deleteDataFeedWithResponse(dataFeedId, Context.NONE);
         System.out.printf("Data feed delete operation status : %s%n", response.getStatusCode());
         // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDataFeedWithResponse#String-Context
     }
@@ -239,12 +250,12 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
      */
     public void listDataFeeds() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataFeeds
-        metricsAdvisorAdministrationClient.listDataFeeds()
+        metricsAdvisorAdminClient.listDataFeeds()
             .forEach(dataFeed -> {
                 System.out.printf("Data feed Id: %s%n", dataFeed.getId());
                 System.out.printf("Data feed description: %s%n", dataFeed.getOptions().getDescription());
-                System.out.printf("Data feed source type: %.2f%n", dataFeed.getSourceType());
-                System.out.printf("Data feed creator: %.2f%n", dataFeed.getCreator());
+                System.out.printf("Data feed source type: %s%n", dataFeed.getSourceType());
+                System.out.printf("Data feed creator: %s%n", dataFeed.getCreator());
             });
         // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataFeeds
     }
@@ -255,7 +266,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
      */
     public void listDataFeedWithOptions() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataFeeds#ListDataFeedOptions-Context
-        metricsAdvisorAdministrationClient.listDataFeeds(
+        metricsAdvisorAdminClient.listDataFeeds(
             new ListDataFeedOptions()
                 .setListDataFeedFilter(
                     new ListDataFeedFilter()
@@ -265,10 +276,10 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
             .forEach(dataFeed -> {
                 System.out.printf("Data feed Id: %s%n", dataFeed.getId());
                 System.out.printf("Data feed description: %s%n", dataFeed.getOptions().getDescription());
-                System.out.printf("Data feed source type: %.2f%n", dataFeed.getSourceType());
-                System.out.printf("Data feed creator: %.2f%n", dataFeed.getCreator());
-                System.out.printf("Data feed status: %.2f%n", dataFeed.getStatus());
-                System.out.printf("Data feed granularity type: %.2f%n", dataFeed.getGranularity().getGranularityType());
+                System.out.printf("Data feed source type: %s%n", dataFeed.getSourceType());
+                System.out.printf("Data feed creator: %s%n", dataFeed.getCreator());
+                System.out.printf("Data feed status: %s%n", dataFeed.getStatus());
+                System.out.printf("Data feed granularity type: %s%n", dataFeed.getGranularity().getGranularityType());
             });
         // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataFeeds#ListDataFeedOptions-Context
     }
@@ -283,7 +294,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
             .addEmailToAlert("alertme@alertme.com")
             .setExternalLink("https://adwiki.azurewebsites.net/articles/howto/alerts/create-hooks.html");
 
-        Hook hook = metricsAdvisorAdministrationClient.createHook(emailHook);
+        Hook hook = metricsAdvisorAdminClient.createHook(emailHook);
         EmailHook createdEmailHook = (EmailHook) hook;
         System.out.printf("Hook Id: %s%n", createdEmailHook.getId());
         System.out.printf("Hook Name: %s%n", createdEmailHook.getName());
@@ -303,7 +314,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
             .addEmailToAlert("alertme@alertme.com")
             .setExternalLink("https://adwiki.azurewebsites.net/articles/howto/alerts/create-hooks.html");
 
-        Response<Hook> response = metricsAdvisorAdministrationClient.createHookWithResponse(emailHook, Context.NONE);
+        Response<Hook> response = metricsAdvisorAdminClient.createHookWithResponse(emailHook, Context.NONE);
         System.out.printf("Response statusCode: %d%n", response.getStatusCode());
         EmailHook createdEmailHook = (EmailHook) response.getValue();
         System.out.printf("Hook Id: %s%n", createdEmailHook.getId());
@@ -320,7 +331,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
     public void getHook() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getHook#String
         final String hookId = "f00853f1-6627-447f-bacf-8dccf2e86fed";
-        Hook hook = metricsAdvisorAdministrationClient.getHook(hookId);
+        Hook hook = metricsAdvisorAdminClient.getHook(hookId);
         if (hook instanceof EmailHook) {
             EmailHook emailHook = (EmailHook) hook;
             System.out.printf("Hook Id: %s%n", emailHook.getId());
@@ -346,7 +357,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
     public void getHookWithResponse() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getHookWithResponse#String-Context
         final String hookId = "f00853f1-6627-447f-bacf-8dccf2e86fed";
-        Response<Hook> response = metricsAdvisorAdministrationClient.getHookWithResponse(hookId, Context.NONE);
+        Response<Hook> response = metricsAdvisorAdminClient.getHookWithResponse(hookId, Context.NONE);
         System.out.printf("Response statusCode: %d%n", response.getStatusCode());
         Hook hook = response.getValue();
         if (hook instanceof EmailHook) {
@@ -374,13 +385,13 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
     public void updateHook() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateHook#Hook
         final String emailHookId = "f00853f1-6627-447f-bacf-8dccf2e86fed";
-        Hook hook = metricsAdvisorAdministrationClient.getHook(emailHookId);
+        Hook hook = metricsAdvisorAdminClient.getHook(emailHookId);
         EmailHook emailHook = (EmailHook) hook;
         emailHook
             .removeEmailToAlert("alertme@alertme.com")
             .addEmailToAlert("alertme2@alertme.com")
             .addEmailToAlert("alertme3@alertme.com");
-        Hook updatedHook = metricsAdvisorAdministrationClient.updateHook(emailHook);
+        Hook updatedHook = metricsAdvisorAdminClient.updateHook(emailHook);
         EmailHook updatedEmailHook = (EmailHook) updatedHook;
         System.out.printf("Hook Id: %s%n", updatedEmailHook.getId());
         System.out.printf("Hook Name: %s%n", updatedEmailHook.getName());
@@ -397,14 +408,14 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateHookWithResponse#Hook-Context
         final String emailHookId = "f00853f1-6627-447f-bacf-8dccf2e86fed";
         Response<Hook> response
-            = metricsAdvisorAdministrationClient.getHookWithResponse(emailHookId, Context.NONE);
+            = metricsAdvisorAdminClient.getHookWithResponse(emailHookId, Context.NONE);
         EmailHook emailHook = (EmailHook) response.getValue();
         emailHook
             .removeEmailToAlert("alertme@alertme.com")
             .addEmailToAlert("alertme2@alertme.com")
             .addEmailToAlert("alertme3@alertme.com");
         Response<Hook> updateResponse
-            = metricsAdvisorAdministrationClient.updateHookWithResponse(emailHook, Context.NONE);
+            = metricsAdvisorAdminClient.updateHookWithResponse(emailHook, Context.NONE);
         EmailHook updatedEmailHook = (EmailHook) updateResponse.getValue();
         System.out.printf("Hook Id: %s%n", updatedEmailHook.getId());
         System.out.printf("Hook Name: %s%n", updatedEmailHook.getName());
@@ -420,7 +431,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
     public void deleteHook() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteHook#String
         final String emailHookId = "f00853f1-6627-447f-bacf-8dccf2e86fed";
-        metricsAdvisorAdministrationClient.deleteHook(emailHookId);
+        metricsAdvisorAdminClient.deleteHook(emailHookId);
         // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteHook#String
     }
 
@@ -431,8 +442,8 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteHookWithResponse#String-Context
         final String emailHookId = "f00853f1-6627-447f-bacf-8dccf2e86fed";
         Response<Void> response
-            = metricsAdvisorAdministrationClient.deleteHookWithResponse(emailHookId, Context.NONE);
-        System.out.printf("Response statusCode: %d%n", response.getStatusCode());
+            = metricsAdvisorAdminClient.deleteHookWithResponse(emailHookId, Context.NONE);
+        System.out.printf("Response status code: %d%n", response.getStatusCode());
         // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteHookWithResponse#String-Context
     }
 
@@ -441,7 +452,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
      */
     public void listHooks() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listHooks
-        PagedIterable<Hook> hooks = metricsAdvisorAdministrationClient.listHooks();
+        PagedIterable<Hook> hooks = metricsAdvisorAdminClient.listHooks();
         for (Hook hook : hooks) {
             if (hook instanceof EmailHook) {
                 EmailHook emailHook = (EmailHook) hook;
@@ -471,7 +482,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
         ListHookOptions options = new ListHookOptions()
             .setSkip(100)
             .setTop(20);
-        PagedIterable<Hook> hooks = metricsAdvisorAdministrationClient.listHooks(options, Context.NONE);
+        PagedIterable<Hook> hooks = metricsAdvisorAdminClient.listHooks(options, Context.NONE);
         Stream<PagedResponse<Hook>> hooksPageStream = hooks.streamByPage();
         int[] pageCount = new int[1];
         hooksPageStream.forEach(hookPage -> {
@@ -510,7 +521,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
         final ListDataFeedIngestionOptions options = new ListDataFeedIngestionOptions(startTime, endTime);
         PagedIterable<DataFeedIngestionStatus> ingestionStatuses
-            = metricsAdvisorAdministrationClient.listDataFeedIngestionStatus(dataFeedId, options);
+            = metricsAdvisorAdminClient.listDataFeedIngestionStatus(dataFeedId, options);
 
         for (DataFeedIngestionStatus ingestionStatus : ingestionStatuses) {
             System.out.printf("Timestamp: %s%n", ingestionStatus.getTimestamp());
@@ -530,7 +541,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
         final ListDataFeedIngestionOptions options = new ListDataFeedIngestionOptions(startTime, endTime);
         PagedIterable<DataFeedIngestionStatus> ingestionStatuses
-            = metricsAdvisorAdministrationClient.listDataFeedIngestionStatus(dataFeedId, options, Context.NONE);
+            = metricsAdvisorAdminClient.listDataFeedIngestionStatus(dataFeedId, options, Context.NONE);
         Stream<PagedResponse<DataFeedIngestionStatus>> ingestionStatusPageStream = ingestionStatuses.streamByPage();
         int[] pageCount = new int[1];
         ingestionStatusPageStream.forEach(ingestionStatusPage -> {
@@ -552,7 +563,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
         final String dataFeedId = "4957a2f7-a0f4-4fc0-b8d7-d866c1df0f4c";
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-03-03T00:00:00Z");
-        metricsAdvisorAdministrationClient.refreshDataFeedIngestion(dataFeedId,
+        metricsAdvisorAdminClient.refreshDataFeedIngestion(dataFeedId,
             startTime,
             endTime);
         // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.refreshDataFeedIngestion#String-OffsetDateTime-OffsetDateTime
@@ -566,7 +577,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
         final String dataFeedId = "4957a2f7-a0f4-4fc0-b8d7-d866c1df0f4c";
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-03-03T00:00:00Z");
-        Response<Void> response = metricsAdvisorAdministrationClient.refreshDataFeedIngestionWithResponse(dataFeedId,
+        Response<Void> response = metricsAdvisorAdminClient.refreshDataFeedIngestionWithResponse(dataFeedId,
             startTime,
             endTime,
             Context.NONE);
@@ -581,7 +592,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDataFeedIngestionProgress#String
         final String dataFeedId = "4957a2f7-a0f4-4fc0-b8d7-d866c1df0f4c";
         DataFeedIngestionProgress ingestionProgress
-            = metricsAdvisorAdministrationClient.getDataFeedIngestionProgress(dataFeedId);
+            = metricsAdvisorAdminClient.getDataFeedIngestionProgress(dataFeedId);
         System.out.printf("Latest active timestamp: %s%n", ingestionProgress.getLatestActiveTimestamp());
         System.out.printf("Latest successful timestamp: %s%n", ingestionProgress.getLatestSuccessTimestamp());
         // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDataFeedIngestionProgress#String
@@ -594,7 +605,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDataFeedIngestionProgressWithResponse#String-Context
         final String dataFeedId = "4957a2f7-a0f4-4fc0-b8d7-d866c1df0f4c";
         Response<DataFeedIngestionProgress> response
-            = metricsAdvisorAdministrationClient.getDataFeedIngestionProgressWithResponse(dataFeedId, Context.NONE);
+            = metricsAdvisorAdminClient.getDataFeedIngestionProgressWithResponse(dataFeedId, Context.NONE);
         System.out.printf("Response statusCode: %d%n", response.getStatusCode());
         DataFeedIngestionProgress ingestionProgress = response.getValue();
         System.out.printf("Latest active timestamp: %s%n", ingestionProgress.getLatestActiveTimestamp());
@@ -633,7 +644,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
             .setWholeSeriesDetectionCondition(wholeSeriesCondition);
 
         final String metricId = "0b836da8-10e6-46cd-8f4f-28262e113a62";
-        AnomalyDetectionConfiguration createdDetectionConfig = metricsAdvisorAdministrationClient
+        AnomalyDetectionConfiguration createdDetectionConfig = metricsAdvisorAdminClient
             .createMetricAnomalyDetectionConfiguration(metricId, detectionConfig);
         System.out.printf("Detection config Id: %s%n", createdDetectionConfig.getId());
         System.out.printf("Name: %s%n", createdDetectionConfig.getName());
@@ -674,7 +685,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
             .setWholeSeriesDetectionCondition(wholeSeriesCondition);
 
         final String metricId = "0b836da8-10e6-46cd-8f4f-28262e113a62";
-        Response<AnomalyDetectionConfiguration> response = metricsAdvisorAdministrationClient
+        Response<AnomalyDetectionConfiguration> response = metricsAdvisorAdminClient
             .createMetricAnomalyDetectionConfigurationWithResponse(metricId, detectionConfig, Context.NONE);
         System.out.printf("Response statusCode: %d%n", response.getStatusCode());
         AnomalyDetectionConfiguration createdDetectionConfig = response.getValue();
@@ -691,7 +702,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
     public void getDetectionConfiguration() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getMetricAnomalyDetectionConfiguration#String
         final String detectionConfigId = "7b8069a1-1564-46da-9f50-b5d0dd9129ab";
-        AnomalyDetectionConfiguration detectionConfig = metricsAdvisorAdministrationClient
+        AnomalyDetectionConfiguration detectionConfig = metricsAdvisorAdminClient
             .getMetricAnomalyDetectionConfiguration(detectionConfigId);
         System.out.printf("Detection config Id: %s%n", detectionConfig.getId());
         System.out.printf("Name: %s%n", detectionConfig.getName());
@@ -755,8 +766,8 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
         for (MetricSingleSeriesDetectionCondition seriesDetectionCondition : seriesDetectionConditions) {
             DimensionKey seriesKey = seriesDetectionCondition.getSeriesKey();
             final String seriesKeyStr
-                = Arrays.toString(seriesKey.asMap().entrySet().stream().toArray());
-            System.out.printf("- Series Key:%n", seriesKeyStr);
+                = Arrays.toString(seriesKey.asMap().entrySet().toArray());
+            System.out.printf("- Series Key:%s%n", seriesKeyStr);
             System.out.printf(" - Use %s operator for multiple detection conditions:%n",
                 seriesDetectionCondition.getCrossConditionsOperator());
 
@@ -810,8 +821,8 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
             : seriesGroupDetectionConditions) {
             DimensionKey seriesGroupKey = seriesGroupDetectionCondition.getSeriesGroupKey();
             final String seriesGroupKeyStr
-                = Arrays.toString(seriesGroupKey.asMap().entrySet().stream().toArray());
-            System.out.printf("- Series Group Key:%n", seriesGroupKeyStr);
+                = Arrays.toString(seriesGroupKey.asMap().entrySet().toArray());
+            System.out.printf("- Series Group Key:%s%n", seriesGroupKeyStr);
             System.out.printf(" - Use %s operator for multiple detection conditions:%n",
                 seriesGroupDetectionCondition.getCrossConditionsOperator());
 
@@ -866,7 +877,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
     public void getDetectionConfigurationWithResponse() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getMetricAnomalyDetectionConfigurationWithResponse#String-Context
         final String detectionConfigId = "7b8069a1-1564-46da-9f50-b5d0dd9129ab";
-        Response<AnomalyDetectionConfiguration> response = metricsAdvisorAdministrationClient
+        Response<AnomalyDetectionConfiguration> response = metricsAdvisorAdminClient
             .getMetricAnomalyDetectionConfigurationWithResponse(detectionConfigId, Context.NONE);
         System.out.printf("Response statusCode: %d%n", response.getStatusCode());
         AnomalyDetectionConfiguration detectionConfig = response.getValue();
@@ -932,8 +943,8 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
         for (MetricSingleSeriesDetectionCondition seriesDetectionCondition : seriesDetectionConditions) {
             DimensionKey seriesKey = seriesDetectionCondition.getSeriesKey();
             final String seriesKeyStr
-                = Arrays.toString(seriesKey.asMap().entrySet().stream().toArray());
-            System.out.printf("- Series Key:%n", seriesKeyStr);
+                = Arrays.toString(seriesKey.asMap().entrySet().toArray());
+            System.out.printf("- Series Key:%s%n", seriesKeyStr);
             System.out.printf(" - Use %s operator for multiple detection conditions:%n",
                 seriesDetectionCondition.getCrossConditionsOperator());
 
@@ -987,8 +998,8 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
             : seriesGroupDetectionConditions) {
             DimensionKey seriesGroupKey = seriesGroupDetectionCondition.getSeriesGroupKey();
             final String seriesGroupKeyStr
-                = Arrays.toString(seriesGroupKey.asMap().entrySet().stream().toArray());
-            System.out.printf("- Series Group Key:%n", seriesGroupKeyStr);
+                = Arrays.toString(seriesGroupKey.asMap().entrySet().toArray());
+            System.out.printf("- Series Group Key:%s%n", seriesGroupKeyStr);
             System.out.printf(" - Use %s operator for multiple detection conditions:%n",
                 seriesGroupDetectionCondition.getCrossConditionsOperator());
 
@@ -1044,7 +1055,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listMetricAnomalyDetectionConfigurations#String
         final String metricId = "0b836da8-10e6-46cd-8f4f-28262e113a62";
         PagedIterable<AnomalyDetectionConfiguration> configsIterable
-            = metricsAdvisorAdministrationClient.listMetricAnomalyDetectionConfigurations(metricId);
+            = metricsAdvisorAdminClient.listMetricAnomalyDetectionConfigurations(metricId);
 
         for (AnomalyDetectionConfiguration detectionConfig : configsIterable) {
             System.out.printf("Detection config Id: %s%n", detectionConfig.getId());
@@ -1062,7 +1073,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listMetricAnomalyDetectionConfigurations#String-Context
         final String metricId = "0b836da8-10e6-46cd-8f4f-28262e113a62";
         PagedIterable<AnomalyDetectionConfiguration> configsIterable
-            = metricsAdvisorAdministrationClient.listMetricAnomalyDetectionConfigurations(metricId, Context.NONE);
+            = metricsAdvisorAdminClient.listMetricAnomalyDetectionConfigurations(metricId, Context.NONE);
 
         Stream<PagedResponse<AnomalyDetectionConfiguration>> configByPageStream
             = configsIterable.streamByPage();
@@ -1085,7 +1096,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
     public void updateDetectionConfiguration() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateMetricAnomalyDetectionConfiguration#AnomalyDetectionConfiguration
         final String detectionConfigId = "7b8069a1-1564-46da-9f50-b5d0dd9129ab";
-        AnomalyDetectionConfiguration detectionConfig = metricsAdvisorAdministrationClient
+        AnomalyDetectionConfiguration detectionConfig = metricsAdvisorAdminClient
             .getMetricAnomalyDetectionConfiguration(detectionConfigId);
 
         detectionConfig.setName("updated config name");
@@ -1099,7 +1110,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
                     .setAnomalyDetectorDirection(AnomalyDetectorDirection.UP)
                     .setSuppressCondition(new SuppressCondition().setMinNumber(2).setMinRatio(2))));
 
-        AnomalyDetectionConfiguration updatedDetectionConfig = metricsAdvisorAdministrationClient
+        AnomalyDetectionConfiguration updatedDetectionConfig = metricsAdvisorAdminClient
             .updateMetricAnomalyDetectionConfiguration(detectionConfig);
 
         System.out.printf("Detection config Id: %s%n", updatedDetectionConfig.getId());
@@ -1115,7 +1126,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
     public void updateDetectionConfigurationWithResponse() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateMetricAnomalyDetectionConfigurationWithResponse#AnomalyDetectionConfiguration-Context
         final String detectionConfigId = "7b8069a1-1564-46da-9f50-b5d0dd9129ab";
-        Response<AnomalyDetectionConfiguration> getResponse = metricsAdvisorAdministrationClient
+        Response<AnomalyDetectionConfiguration> getResponse = metricsAdvisorAdminClient
             .getMetricAnomalyDetectionConfigurationWithResponse(detectionConfigId, Context.NONE);
         AnomalyDetectionConfiguration detectionConfig = getResponse.getValue();
         detectionConfig.setName("updated config name");
@@ -1129,7 +1140,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
                     .setAnomalyDetectorDirection(AnomalyDetectorDirection.UP)
                     .setSuppressCondition(new SuppressCondition().setMinNumber(2).setMinRatio(2))));
 
-        Response<AnomalyDetectionConfiguration> updateResponse = metricsAdvisorAdministrationClient
+        Response<AnomalyDetectionConfiguration> updateResponse = metricsAdvisorAdminClient
             .updateMetricAnomalyDetectionConfigurationWithResponse(detectionConfig, Context.NONE);
 
         System.out.printf("Response StatusCode: %s%n", updateResponse.getStatusCode());
@@ -1147,7 +1158,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
     public void deleteDetectionConfiguration() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteMetricAnomalyDetectionConfiguration#String
         final String detectionConfigId = "7b8069a1-1564-46da-9f50-b5d0dd9129ab";
-        metricsAdvisorAdministrationClient
+        metricsAdvisorAdminClient
             .deleteMetricAnomalyDetectionConfiguration(detectionConfigId);
         // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteMetricAnomalyDetectionConfiguration#String
     }
@@ -1158,7 +1169,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
     public void deleteDetectionConfigurationWithResponse() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteMetricAnomalyDetectionConfigurationWithResponse#String-Context
         final String detectionConfigId = "7b8069a1-1564-46da-9f50-b5d0dd9129ab";
-        Response<Void> response = metricsAdvisorAdministrationClient
+        Response<Void> response = metricsAdvisorAdminClient
             .deleteMetricAnomalyDetectionConfigurationWithResponse(detectionConfigId, Context.NONE);
         System.out.printf("Response Status Code: %s%n", response.getStatusCode());
         // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteMetricAnomalyDetectionConfigurationWithResponse#String-Context
@@ -1175,7 +1186,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
         String hookId2 = "8i48er30-6e6e-4391-b78f-b00dfee1e6f5";
 
         final AnomalyAlertConfiguration anomalyAlertConfiguration
-            = metricsAdvisorAdministrationClient.createAnomalyAlertConfiguration(
+            = metricsAdvisorAdminClient.createAnomalyAlertConfiguration(
             new AnomalyAlertConfiguration("My Alert config name")
                 .setDescription("alert config description")
                 .setMetricAlertConfigurations(Arrays.asList(
@@ -1190,7 +1201,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
 
         System.out.printf("Anomaly alert configuration Id: %s%n", anomalyAlertConfiguration.getId());
         System.out.printf("Anomaly alert configuration description: %s%n", anomalyAlertConfiguration.getDescription());
-        System.out.printf("Anomaly alert configuration hook ids: %.2f%n",
+        System.out.printf("Anomaly alert configuration hook ids: %s%n",
             anomalyAlertConfiguration.getIdOfHooksToAlert());
         System.out.printf("Anomaly alert configuration cross metrics operator: %s%n",
             anomalyAlertConfiguration.getCrossMetricsOperator().toString());
@@ -1209,7 +1220,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
         String hookId2 = "8i48er30-6e6e-4391-b78f-b00dfee1e6f5";
 
         final Response<AnomalyAlertConfiguration> alertConfigurationResponse
-            = metricsAdvisorAdministrationClient.createAnomalyAlertConfigurationWithResponse(
+            = metricsAdvisorAdminClient.createAnomalyAlertConfigurationWithResponse(
             new AnomalyAlertConfiguration("My Alert config name")
                 .setDescription("alert config description")
                 .setMetricAlertConfigurations(Arrays.asList(
@@ -1226,7 +1237,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
         final AnomalyAlertConfiguration anomalyAlertConfiguration = alertConfigurationResponse.getValue();
         System.out.printf("Anomaly alert configuration Id: %s%n", anomalyAlertConfiguration.getId());
         System.out.printf("Anomaly alert configuration description: %s%n", anomalyAlertConfiguration.getDescription());
-        System.out.printf("Anomaly alert configuration hook ids: %.2f%n",
+        System.out.printf("Anomaly alert configuration hook ids: %s%n",
             anomalyAlertConfiguration.getIdOfHooksToAlert());
         System.out.printf("Anomaly alert configuration cross metrics operator: %s%n",
             anomalyAlertConfiguration.getCrossMetricsOperator().toString());
@@ -1241,10 +1252,10 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
         String alertConfigId = "1p0f8er30-6e6e-4391-b78f-bpfdfee1e6f5";
 
         AnomalyAlertConfiguration anomalyAlertConfiguration
-            = metricsAdvisorAdministrationClient.getAnomalyAlertConfiguration(alertConfigId);
+            = metricsAdvisorAdminClient.getAnomalyAlertConfiguration(alertConfigId);
         System.out.printf("Anomaly alert configuration Id: %s%n", anomalyAlertConfiguration.getId());
         System.out.printf("Anomaly alert configuration description: %s%n", anomalyAlertConfiguration.getDescription());
-        System.out.printf("Anomaly alert configuration hook ids: %.2f%n",
+        System.out.printf("Anomaly alert configuration hook ids: %s%n",
             anomalyAlertConfiguration.getIdOfHooksToAlert());
         System.out.printf("Anomaly alert configuration cross metrics operator: %s%n",
             anomalyAlertConfiguration.getCrossMetricsOperator().toString());
@@ -1259,13 +1270,13 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
         String alertConfigId = "1p0f8er30-6e6e-4391-b78f-bpfdfee1e6f5";
 
         Response<AnomalyAlertConfiguration> alertConfigurationResponse
-            = metricsAdvisorAdministrationClient.getAnomalyAlertConfigurationWithResponse(alertConfigId, Context.NONE);
+            = metricsAdvisorAdminClient.getAnomalyAlertConfigurationWithResponse(alertConfigId, Context.NONE);
 
         System.out.printf("Anomaly alert creation operation status: %s%n", alertConfigurationResponse.getStatusCode());
         final AnomalyAlertConfiguration anomalyAlertConfiguration = alertConfigurationResponse.getValue();
         System.out.printf("Anomaly alert configuration Id: %s%n", anomalyAlertConfiguration.getId());
         System.out.printf("Anomaly alert configuration description: %s%n", anomalyAlertConfiguration.getDescription());
-        System.out.printf("Anomaly alert configuration hook ids: %.2f%n",
+        System.out.printf("Anomaly alert configuration hook ids: %s%n",
             anomalyAlertConfiguration.getIdOfHooksToAlert());
         System.out.printf("Anomaly alert configuration cross metrics operator: %s%n",
             anomalyAlertConfiguration.getCrossMetricsOperator().toString());
@@ -1282,9 +1293,9 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
         String additionalHookId = "2gh8er30-6e6e-4391-b78f-bpfdfee1e6f5";
 
         AnomalyAlertConfiguration existingAnomalyConfig
-            = metricsAdvisorAdministrationClient.getAnomalyAlertConfiguration(alertConfigId);
+            = metricsAdvisorAdminClient.getAnomalyAlertConfiguration(alertConfigId);
         final AnomalyAlertConfiguration updatAnomalyAlertConfiguration
-            = metricsAdvisorAdministrationClient.updateAnomalyAlertConfiguration(
+            = metricsAdvisorAdminClient.updateAnomalyAlertConfiguration(
             existingAnomalyConfig
                 .addIdOfHookToAlert(additionalHookId)
                 .setDescription("updated to add more hook ids")
@@ -1293,7 +1304,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
         System.out.printf("Updated anomaly alert configuration Id: %s%n", updatAnomalyAlertConfiguration.getId());
         System.out.printf("Updated anomaly alert configuration description: %s%n",
             updatAnomalyAlertConfiguration.getDescription());
-        System.out.printf("Updated anomaly alert configuration hook ids: %.2f%n",
+        System.out.printf("Updated anomaly alert configuration hook ids: %s%n",
             updatAnomalyAlertConfiguration.getIdOfHooksToAlert());
         // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateAnomalyAlertConfiguration#AnomalyAlertConfiguration
     }
@@ -1308,9 +1319,9 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
         String additionalHookId = "2gh8er30-6e6e-4391-b78f-bpfdfee1e6f5";
 
         AnomalyAlertConfiguration existingAnomalyConfig
-            = metricsAdvisorAdministrationClient.getAnomalyAlertConfiguration(alertConfigId);
+            = metricsAdvisorAdminClient.getAnomalyAlertConfiguration(alertConfigId);
         final Response<AnomalyAlertConfiguration> alertConfigurationResponse
-            = metricsAdvisorAdministrationClient.updateAnomalyAlertConfigurationWithResponse(
+            = metricsAdvisorAdminClient.updateAnomalyAlertConfigurationWithResponse(
             existingAnomalyConfig
                 .addIdOfHookToAlert(additionalHookId)
                 .setDescription("updated to add more hook ids"), Context.NONE);
@@ -1331,7 +1342,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
     public void deleteAnomalyAlertConfiguration() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteAnomalyAlertConfiguration#String
         String alertConfigId = "1p0f8er30-6e6e-4391-b78f-bpfdfee1e6f5";
-        metricsAdvisorAdministrationClient.deleteAnomalyAlertConfiguration(alertConfigId);
+        metricsAdvisorAdminClient.deleteAnomalyAlertConfiguration(alertConfigId);
         // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteAnomalyAlertConfiguration#String
     }
 
@@ -1342,7 +1353,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteAnomalyAlertConfigurationWithResponse#String-Context
         String alertConfigId = "1p0f8er30-6e6e-4391-b78f-bpfdfee1e6f5";
         final Response<Void> response =
-            metricsAdvisorAdministrationClient.deleteAnomalyAlertConfigurationWithResponse(alertConfigId, Context.NONE);
+            metricsAdvisorAdminClient.deleteAnomalyAlertConfigurationWithResponse(alertConfigId, Context.NONE);
 
         System.out.printf("Anomaly alert config delete operation status : %s%n", response.getStatusCode());
         // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteAnomalyAlertConfigurationWithResponse#String-Context
@@ -1354,12 +1365,12 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
     public void listAnomalyAlertConfigurations() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listAnomalyAlertConfigurations#String
         String detectionConfigId = "3rt98er30-6e6e-4391-b78f-bpfdfee1e6f5";
-        metricsAdvisorAdministrationClient.listAnomalyAlertConfigurations(detectionConfigId)
+        metricsAdvisorAdminClient.listAnomalyAlertConfigurations(detectionConfigId)
             .forEach(anomalyAlertConfiguration -> {
                 System.out.printf("Anomaly alert configuration Id: %s%n", anomalyAlertConfiguration.getId());
                 System.out.printf("Anomaly alert configuration description: %s%n",
                     anomalyAlertConfiguration.getDescription());
-                System.out.printf("Anomaly alert configuration hook ids: %.2f%n",
+                System.out.printf("Anomaly alert configuration hook ids: %s%n",
                     anomalyAlertConfiguration.getIdOfHooksToAlert());
                 System.out.printf("Anomaly alert configuration cross metrics operator: %s%n",
                     anomalyAlertConfiguration.getCrossMetricsOperator().toString());
@@ -1373,12 +1384,12 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
     public void listAnomalyAlertConfigurationsWithContext() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listAnomalyAlertConfigurations#String-Context
         String detectionConfigId = "3rt98er30-6e6e-4391-b78f-bpfdfee1e6f5";
-        metricsAdvisorAdministrationClient.listAnomalyAlertConfigurations(detectionConfigId, Context.NONE)
+        metricsAdvisorAdminClient.listAnomalyAlertConfigurations(detectionConfigId, Context.NONE)
             .forEach(anomalyAlertConfiguration -> {
                 System.out.printf("Anomaly alert configuration Id: %s%n", anomalyAlertConfiguration.getId());
                 System.out.printf("Anomaly alert configuration description: %s%n",
                     anomalyAlertConfiguration.getDescription());
-                System.out.printf("Anomaly alert configuration hook ids: %.2f%n",
+                System.out.printf("Anomaly alert configuration hook ids: %s%n",
                     anomalyAlertConfiguration.getIdOfHooksToAlert());
                 System.out.printf("Anomaly alert configuration cross metrics operator: %s%n",
                     anomalyAlertConfiguration.getCrossMetricsOperator().toString());

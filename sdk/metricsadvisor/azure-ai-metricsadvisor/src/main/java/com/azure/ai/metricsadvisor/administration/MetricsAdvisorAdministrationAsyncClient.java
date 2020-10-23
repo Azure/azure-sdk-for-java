@@ -38,7 +38,6 @@ import com.azure.ai.metricsadvisor.models.DataFeedMissingDataPointFillSettings;
 import com.azure.ai.metricsadvisor.models.DataFeedOptions;
 import com.azure.ai.metricsadvisor.models.DataFeedRollupSettings;
 import com.azure.ai.metricsadvisor.models.DataFeedSchema;
-import com.azure.ai.metricsadvisor.models.DataFeedSource;
 import com.azure.ai.metricsadvisor.models.Hook;
 import com.azure.ai.metricsadvisor.models.ListDataFeedFilter;
 import com.azure.ai.metricsadvisor.models.ListDataFeedIngestionOptions;
@@ -105,71 +104,46 @@ public class MetricsAdvisorAdministrationAsyncClient {
      * Create a new data feed.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDataFeed#String-DataFeedSource-DataFeedGranularity-DataFeedSchema-DataFeedIngestionSettings-DataFeedOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDataFeed#DataFeed}
      *
-     * @param dataFeedName the name of the data feed.
-     * @param dataFeedSource the source of the data feed.
-     * @param dataFeedGranularity the granularity details of the data feed.
-     * @param dataFeedSchema the schema detail properties of the data feed.
-     * @param dataFeedIngestionSettings the data feed ingestion properties.
-     * @param dataFeedOptions the additional options to configure the data feed.
-     *
+     * @param dataFeed The data feed to be created.
      * @return A {@link Mono} containing the created data feed.
-     * @throws NullPointerException If {@code dataFeedName}, {@code dataFeedSource}, {@code metrics},
+     * @throws NullPointerException If {@code dataFeed}, {@code dataFeedName}, {@code dataFeedSource}, {@code metrics},
      * {@code granularityType} or {@code ingestionStartTime} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DataFeed> createDataFeed(String dataFeedName,
-        DataFeedSource dataFeedSource,
-        DataFeedGranularity dataFeedGranularity,
-        DataFeedSchema dataFeedSchema,
-        DataFeedIngestionSettings dataFeedIngestionSettings,
-        DataFeedOptions dataFeedOptions) {
-        return createDataFeedWithResponse(dataFeedName, dataFeedSource, dataFeedGranularity, dataFeedSchema,
-            dataFeedIngestionSettings, dataFeedOptions).flatMap(FluxUtil::toMono);
+    public Mono<DataFeed> createDataFeed(DataFeed dataFeed) {
+        return createDataFeedWithResponse(dataFeed).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Create a new data feed with REST response.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDataFeedWithResponse#String-DataFeedSource-DataFeedGranularity-DataFeedSchema-DataFeedIngestionSettings-DataFeedOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDataFeedWithResponse#DataFeed}
      *
-     * @param dataFeedName the name of the data feed.
-     * @param dataFeedSource the source of the data feed.
-     * @param dataFeedGranularity the granularity details of the data feed.
-     * @param dataFeedSchema the schema detail properties of the data feed.
-     * @param dataFeedIngestionSettings the data feed ingestion properties.
-     * @param dataFeedOptions the additional options to configure the data feed.
      *
+     * @param dataFeed The data feed to be created.
      * @return A {@link Response} of a {@link Mono} containing the created {@link DataFeed data feed}.
-     * @throws NullPointerException If {@code dataFeedName}, {@code dataFeedSource}, {@code metrics},
+     * @throws NullPointerException If {@code dataFeed}, {@code dataFeedName}, {@code dataFeedSource}, {@code metrics},
      * {@code granularityType} or {@code ingestionStartTime} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DataFeed>> createDataFeedWithResponse(String dataFeedName,
-        DataFeedSource dataFeedSource,
-        DataFeedGranularity dataFeedGranularity,
-        DataFeedSchema dataFeedSchema,
-        DataFeedIngestionSettings dataFeedIngestionSettings,
-        DataFeedOptions dataFeedOptions) {
+    public Mono<Response<DataFeed>> createDataFeedWithResponse(DataFeed dataFeed) {
         try {
-            return withContext(context -> createDataFeedWithResponse(dataFeedName, dataFeedSource,
-                dataFeedGranularity, dataFeedSchema,
-                dataFeedIngestionSettings, dataFeedOptions, context));
+            return withContext(context -> createDataFeedWithResponse(dataFeed, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<DataFeed>> createDataFeedWithResponse(String dataFeedName,
-        DataFeedSource dataFeedSource,
-        DataFeedGranularity dataFeedGranularity,
-        DataFeedSchema dataFeedSchema,
-        DataFeedIngestionSettings dataFeedIngestionSettings,
-        DataFeedOptions dataFeedOptions, Context context) {
-        Objects.requireNonNull(dataFeedSource, "'dataFeedSource' cannot be null or empty.");
-        Objects.requireNonNull(dataFeedName, "'dataFeedName' cannot be null or empty.");
+    Mono<Response<DataFeed>> createDataFeedWithResponse(DataFeed dataFeed, Context context) {
+        Objects.requireNonNull(dataFeed, "'dataFeed' is required and cannot be null.");
+        Objects.requireNonNull(dataFeed.getSource(), "'dataFeedSource' is required and cannot be null.");
+        Objects.requireNonNull(dataFeed.getName(), "'dataFeedName' cannot be null or empty.");
+        final DataFeedSchema dataFeedSchema = dataFeed.getSchema();
+        final DataFeedGranularity dataFeedGranularity = dataFeed.getGranularity();
+        final DataFeedIngestionSettings dataFeedIngestionSettings = dataFeed.getIngestionSettings();
 
         if (dataFeedSchema == null) {
             throw logger.logExceptionAsError(
@@ -181,7 +155,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
 
         if (dataFeedGranularity == null) {
             throw logger.logExceptionAsError(
-                new NullPointerException("'dataFeedGranularity.granularityType' cannot be null or empty."));
+                new NullPointerException("'dataFeedGranularity.granularityType' is required and cannot be null."));
 
         } else {
             Objects.requireNonNull(dataFeedGranularity.getGranularityType(),
@@ -194,13 +168,15 @@ public class MetricsAdvisorAdministrationAsyncClient {
 
         if (dataFeedIngestionSettings == null) {
             throw logger.logExceptionAsError(
-                new NullPointerException("'dataFeedIngestionSettings.ingestionStartTime' cannot be null or empty."));
+                new NullPointerException(
+                    "'dataFeedIngestionSettings.ingestionStartTime' is required and cannot be null."));
         } else {
             Objects.requireNonNull(dataFeedIngestionSettings.getIngestionStartTime(),
-                "'dataFeedIngestionSettings.ingestionStartTime' cannot be null or empty.");
+                "'dataFeedIngestionSettings.ingestionStartTime' is required and cannot be null.");
         }
 
-        final DataFeedOptions finalDataFeedOptions = dataFeedOptions == null ? new DataFeedOptions() : dataFeedOptions;
+        final DataFeedOptions finalDataFeedOptions = dataFeed.getOptions() == null
+            ? new DataFeedOptions() : dataFeed.getOptions();
         final DataFeedRollupSettings dataFeedRollupSettings = finalDataFeedOptions.getRollupSettings() == null
             ? new DataFeedRollupSettings() : finalDataFeedOptions.getRollupSettings();
         final DataFeedMissingDataPointFillSettings dataFeedMissingDataPointFillSettings =
@@ -208,8 +184,8 @@ public class MetricsAdvisorAdministrationAsyncClient {
                 ? new DataFeedMissingDataPointFillSettings() : finalDataFeedOptions.getMissingDataPointFillSettings();
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
 
-        return service.createDataFeedWithResponseAsync(DataFeedTransforms.toDataFeedDetailSource(dataFeedSource)
-            .setDataFeedName(dataFeedName)
+        return service.createDataFeedWithResponseAsync(DataFeedTransforms.toDataFeedDetailSource(dataFeed.getSource())
+            .setDataFeedName(dataFeed.getName())
             .setDataFeedDescription(finalDataFeedOptions.getDescription())
             .setGranularityName(Granularity.fromString(dataFeedGranularity.getGranularityType() == null
                 ? null : dataFeedGranularity.getGranularityType().toString()))
