@@ -36,8 +36,7 @@ public class FileHelper {
                     if (clazz == String.class) {
                         // don't deserialize into a type
                         fileContents.put(getFileNameFromPath(filePath), (T) cleanupJsonString(fileAsString));
-                    }
-                    else {
+                    } else {
                         fileContents.put(getFileNameFromPath(filePath), mapper.readValue(cleanupJsonString(fileAsString), clazz));
                     }
                 } catch (IOException e) {
