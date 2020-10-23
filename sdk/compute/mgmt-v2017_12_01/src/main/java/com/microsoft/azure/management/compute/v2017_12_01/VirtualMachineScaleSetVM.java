@@ -52,7 +52,7 @@ public interface VirtualMachineScaleSetVM extends HasInner<VirtualMachineScaleSe
     /**
      * @return the instanceView value.
      */
-    VirtualMachineInstanceView instanceView();
+    VirtualMachineScaleSetVMInstanceView instanceView();
 
     /**
      * @return the latestModelApplied value.
@@ -140,6 +140,8 @@ public interface VirtualMachineScaleSetVM extends HasInner<VirtualMachineScaleSe
         interface WithAvailabilitySet {
             /**
              * Specifies availabilitySet.
+             * @param availabilitySet Specifies information about the availability set that the virtual machine should be assigned to. Virtual machines specified in the same availability set are allocated to different nodes to maximize availability. For more information about availability sets, see [Manage the availability of virtual machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-manage-availability?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json). &lt;br&gt;&lt;br&gt; For more information on Azure planned maintenance, see [Planned maintenance for virtual machines in Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-planned-maintenance?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json) &lt;br&gt;&lt;br&gt; Currently, a VM can only be added to availability set at creation time. An existing VM cannot be added to an availability set
+             * @return the next update stage
              */
             Update withAvailabilitySet(SubResource availabilitySet);
         }
@@ -150,6 +152,8 @@ public interface VirtualMachineScaleSetVM extends HasInner<VirtualMachineScaleSe
         interface WithDiagnosticsProfile {
             /**
              * Specifies diagnosticsProfile.
+             * @param diagnosticsProfile Specifies the boot diagnostic settings state. &lt;br&gt;&lt;br&gt;Minimum api-version: 2015-06-15
+             * @return the next update stage
              */
             Update withDiagnosticsProfile(DiagnosticsProfile diagnosticsProfile);
         }
@@ -160,6 +164,8 @@ public interface VirtualMachineScaleSetVM extends HasInner<VirtualMachineScaleSe
         interface WithHardwareProfile {
             /**
              * Specifies hardwareProfile.
+             * @param hardwareProfile Specifies the hardware settings for the virtual machine
+             * @return the next update stage
              */
             Update withHardwareProfile(HardwareProfile hardwareProfile);
         }
@@ -170,6 +176,8 @@ public interface VirtualMachineScaleSetVM extends HasInner<VirtualMachineScaleSe
         interface WithLicenseType {
             /**
              * Specifies licenseType.
+             * @param licenseType Specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; Windows_Client &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; If this element is included in a request for an update, the value must match the initial value. This value cannot be updated. &lt;br&gt;&lt;br&gt; For more information, see [Azure Hybrid Use Benefit for Windows Server](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-hybrid-use-benefit-licensing?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json) &lt;br&gt;&lt;br&gt; Minimum api-version: 2015-06-15
+             * @return the next update stage
              */
             Update withLicenseType(String licenseType);
         }
@@ -180,6 +188,8 @@ public interface VirtualMachineScaleSetVM extends HasInner<VirtualMachineScaleSe
         interface WithNetworkProfile {
             /**
              * Specifies networkProfile.
+             * @param networkProfile Specifies the network interfaces of the virtual machine
+             * @return the next update stage
              */
             Update withNetworkProfile(NetworkProfile networkProfile);
         }
@@ -190,6 +200,8 @@ public interface VirtualMachineScaleSetVM extends HasInner<VirtualMachineScaleSe
         interface WithOsProfile {
             /**
              * Specifies osProfile.
+             * @param osProfile Specifies the operating system settings for the virtual machine
+             * @return the next update stage
              */
             Update withOsProfile(OSProfile osProfile);
         }
@@ -200,6 +212,8 @@ public interface VirtualMachineScaleSetVM extends HasInner<VirtualMachineScaleSe
         interface WithPlan {
             /**
              * Specifies plan.
+             * @param plan Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable the image for programmatic use.  In the Azure portal, find the marketplace image that you want to use and then click **Want to deploy programmatically, Get Started -&gt;**. Enter any required information and then click **Save**
+             * @return the next update stage
              */
             Update withPlan(Plan plan);
         }
@@ -210,6 +224,8 @@ public interface VirtualMachineScaleSetVM extends HasInner<VirtualMachineScaleSe
         interface WithStorageProfile {
             /**
              * Specifies storageProfile.
+             * @param storageProfile Specifies the storage settings for the virtual machine disks
+             * @return the next update stage
              */
             Update withStorageProfile(StorageProfile storageProfile);
         }
@@ -220,6 +236,8 @@ public interface VirtualMachineScaleSetVM extends HasInner<VirtualMachineScaleSe
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags Resource tags
+             * @return the next update stage
              */
             Update withTags(Map<String, String> tags);
         }
