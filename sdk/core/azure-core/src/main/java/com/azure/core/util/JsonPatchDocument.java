@@ -7,8 +7,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -20,19 +19,15 @@ import java.util.Objects;
 /**
  * Represents a JSON Patch document.
  */
-//@JsonSerialize(using = JsonPatchDocumentSerializer.class)
-public class JsonPatchDocument {
+@JsonSerialize(using = JsonPatchDocumentSerializer.class)
+public final class JsonPatchDocument {
     private static final Object SERIALIZER_INSTANTIATION_SYNCHRONIZER = new Object();
     private static volatile JsonSerializer defaultSerializer;
 
-    @JsonIgnore
     private final ClientLogger logger = new ClientLogger(JsonPatchDocument.class);
 
-    @JsonValue
-    private final List<JsonPatchOperation> operations;
-
-    @JsonIgnore
     private final JsonSerializer serializer;
+    private final List<JsonPatchOperation> operations;
 
     /**
      * Creates a new JSON Patch document.
@@ -53,7 +48,14 @@ public class JsonPatchDocument {
         this.serializer = serializer;
     }
 
-    List<JsonPatchOperation> getOperations() {
+    /**
+     * Gets a representation of the {@link JsonPatchOperation JSON patch operations} in this JSON patch document.
+     * <p>
+     * Modifications to the returned list won't mutate the operations in the document.
+     *
+     * @return The JSON patch operations in this JSON patch document.
+     */
+    public List<JsonPatchOperation> getOperations() {
         return new ArrayList<>(operations);
     }
 
