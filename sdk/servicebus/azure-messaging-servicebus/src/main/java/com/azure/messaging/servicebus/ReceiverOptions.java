@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 
 import java.time.Duration;
@@ -36,7 +37,7 @@ class ReceiverOptions {
         this.isRollingSessionReceiver = isRollingSessionReceiver;
         this.maxConcurrentSessions = maxConcurrentSessions;
         this.maxLockRenewDuration = maxLockRenewDuration;
-        this.isSessionReceiver = sessionId == null && !isRollingSessionReceiver;
+        this.isSessionReceiver = !CoreUtils.isNullOrEmpty(sessionId) || isRollingSessionReceiver;
     }
 
     /**

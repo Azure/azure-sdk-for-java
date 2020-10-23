@@ -75,6 +75,7 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -925,7 +926,10 @@ class ServiceBusReceiverAsyncClientTest {
             .expectNextCount(numberOfEvents)
             .verifyComplete();
 
-        verify(amqpReceiveLink, times(numberOfEvents)).updateDisposition(lockToken, Accepted.getInstance());
+        // Since the completion event is scheduled on another scheduler. the main thread can return control before
+        // the operation has actually completed. However, the event is already scheduled on the reactor.
+        verify(sessionReceiveLink, atLeast(numberOfEvents - 1))
+            .updateDisposition(lockToken, Accepted.getInstance());
     }
 
     @Test
@@ -952,7 +956,10 @@ class ServiceBusReceiverAsyncClientTest {
             .expectNextCount(numberOfEvents)
             .verifyComplete();
 
-        verify(sessionReceiveLink, times(numberOfEvents)).updateDisposition(lockToken, Accepted.getInstance());
+        // Since the completion event is scheduled on another scheduler. the main thread can return control before
+        // the operation has actually completed. However, the event is already scheduled on the reactor.
+        verify(sessionReceiveLink, atLeast(numberOfEvents - 1))
+            .updateDisposition(lockToken, Accepted.getInstance());
     }
 
     private List<Message> getMessages() {

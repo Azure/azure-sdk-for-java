@@ -593,25 +593,24 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             ? sessionManager.receive()
             : getOrCreateConsumer().receive().map(ServiceBusReceivedMessageContext::new);
 
+        final Flux<ServiceBusReceivedMessageContext> withAutoLockRenewal;
+        if (receiverOptions.isAutoLockRenewEnabled()) {
+            return new FluxAutoLockRenew(messageFlux, receiverOptions.getMaxLockRenewDuration(), renewalContainer,
+                this::renewMessageLock);
+        } else {
+            withAutoLockRenewal = messageFlux;
+        }
 
         final Flux<ServiceBusReceivedMessageContext> withAutoComplete;
         if (receiverOptions.isEnableAutoComplete()) {
-            withAutoComplete = new FluxAutoComplete(messageFlux,
+            withAutoComplete = new FluxAutoComplete(withAutoLockRenewal,
                 context -> context.getMessage() != null ? complete(context.getMessage()) : Mono.empty(),
                 context -> context.getMessage() != null ? abandon(context.getMessage()) : Mono.empty());
         } else {
-            withAutoComplete = messageFlux;
+            withAutoComplete = withAutoLockRenewal;
         }
 
-        final Flux<ServiceBusReceivedMessageContext> withAutoLockRenewal;
-        if (receiverOptions.isAutoLockRenewEnabled()) {
-            return new FluxAutoLockRenew(withAutoComplete, receiverOptions.getMaxLockRenewDuration(), renewalContainer,
-                this::renewMessageLock);
-        } else {
-            withAutoLockRenewal = withAutoComplete;
-        }
-
-        return withAutoLockRenewal;
+        return withAutoComplete;
     }
 
     /**

@@ -10,6 +10,7 @@ import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxOperator;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
 import reactor.util.context.Context;
 
 import java.util.Objects;
@@ -120,7 +121,9 @@ final class FluxAutoComplete extends FluxOperator<ServiceBusReceivedMessageConte
         private void applyWithCatch(Function<ServiceBusReceivedMessageContext, Mono<Void>> function,
             ServiceBusReceivedMessageContext message, String operation) {
             try {
+                logger.warning("COMPLETE-OPERATION BEFORE.");
                 function.apply(message).block();
+                logger.warning("COMPLETE-OPERATION AFTER.");
             } catch (Exception e) {
                 logger.warning("Unable to '{}' message.", operation, e);
                 onError(e);
