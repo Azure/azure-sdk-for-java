@@ -64,7 +64,7 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
     /**
      * Stores the key vault client.
      */
-    private KeyVaultClient keyVault;
+    private KeyVaultClient keyVaultClient;
 
     /**
      * Constructor.
@@ -83,13 +83,13 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
         String tenantId = System.getProperty("azure.keyvault.tenantId");
         String clientId = System.getProperty("azure.keyvault.clientId");
         String clientSecret = System.getProperty("azure.keyvault.clientSecret");
-        keyVault = new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret);
+        keyVaultClient = new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret);
     }
 
     @Override
     public Enumeration<String> engineAliases() {
         if (aliases == null) {
-            aliases = keyVault.getAliases();
+            aliases = keyVaultClient.getAliases();
         }
         return Collections.enumeration(aliases);
     }
@@ -114,7 +114,7 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
         if (certificates.containsKey(alias)) {
             certificate = certificates.get(alias);
         } else {
-            certificate = keyVault.getCertificate(alias);
+            certificate = keyVaultClient.getCertificate(alias);
             if (certificate != null) {
                 certificates.put(alias, certificate);
                 if (!aliases.contains(alias)) {
@@ -130,7 +130,7 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
         String alias = null;
         if (cert != null) {
             if (aliases == null) {
-                aliases = keyVault.getAliases();
+                aliases = keyVaultClient.getAliases();
             }
             for (String candidateAlias : aliases) {
                 Certificate certificate = engineGetCertificate(candidateAlias);
@@ -170,7 +170,7 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
         if (certificateKeys.containsKey(alias)) {
             key = certificateKeys.get(alias);
         } else {
-            key = keyVault.getKey(alias, password);
+            key = keyVaultClient.getKey(alias, password);
             if (key != null) {
                 certificateKeys.put(alias, key);
                 if (!aliases.contains(alias)) {
@@ -184,7 +184,7 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
     @Override
     public boolean engineIsCertificateEntry(String alias) {
         if (aliases == null) {
-            aliases = keyVault.getAliases();
+            aliases = keyVaultClient.getAliases();
         }
         return aliases.contains(alias);
     }
@@ -198,7 +198,7 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
     public void engineLoad(KeyStore.LoadStoreParameter param) {
         if (param instanceof KeyVaultLoadStoreParameter) {
             KeyVaultLoadStoreParameter parameter = (KeyVaultLoadStoreParameter) param;
-            keyVault = new KeyVaultClient(
+            keyVaultClient = new KeyVaultClient(
                 parameter.getUri(),
                 parameter.getTenantId(),
                 parameter.getClientId(),
@@ -215,7 +215,7 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
     @Override
     public void engineSetCertificateEntry(String alias, Certificate certificate) {
         if (aliases == null) {
-            aliases = keyVault.getAliases();
+            aliases = keyVaultClient.getAliases();
         }
         if (!aliases.contains(alias)) {
             aliases.add(alias);
