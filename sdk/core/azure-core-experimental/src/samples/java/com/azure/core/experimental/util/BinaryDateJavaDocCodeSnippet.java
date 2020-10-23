@@ -166,7 +166,6 @@ public class BinaryDateJavaDocCodeSnippet {
             new MyJsonSerializer(); // Replace this with your Serializer
         BinaryData binaryData = BinaryData.fromObject(data, serializer);
 
-        // Lets print the value of BinaryData
         Disposable subscriber = binaryData
             .toObjectAsync(Person.class, serializer)
             .map(person -> {
@@ -179,6 +178,44 @@ public class BinaryDateJavaDocCodeSnippet {
         TimeUnit.SECONDS.sleep(5);
         subscriber.dispose();
         // END: com.azure.core.experimental.util.BinaryDocument.to#ObjectAsync
+    }
+
+    /**
+     * Codesnippets for {@link BinaryData#toObject(Class, ObjectSerializer)}.
+     */
+    public void createToObject() {
+        // BEGIN: com.azure.core.experimental.util.BinaryDocument.to#Object
+        // Lets say we have Person object which could be serialized into json.
+        class Person {
+            @JsonProperty
+            private String name;
+
+            @JsonSetter
+            public Person setName(String name) {
+                this.name = name;
+                return this;
+            }
+
+            @JsonGetter
+            public String getName() {
+                return name;
+            }
+        }
+        final Person data = new Person().setName("John");
+
+        // Provide your custom serializer or use Azure provided serializers.
+        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson or
+        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson
+
+        final ObjectSerializer serializer =
+            new MyJsonSerializer(); // Replace this with your Serializer
+        BinaryData binaryData = BinaryData.fromObject(data, serializer);
+
+        Person person = binaryData.toObject(Person.class, serializer);
+        // Lets print the name
+        System.out.println("Name : " + person.getName());
+
+        // END: com.azure.core.experimental.util.BinaryDocument.to#Object
     }
 
     /**

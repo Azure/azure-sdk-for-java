@@ -261,6 +261,8 @@ public final class  BinaryData {
      * Deserialize the bytes into the {@link Object} of given type by applying the provided {@link ObjectSerializer} on
      * the data.
      *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.core.experimental.util.BinaryDocument.to#Object}
      * @param clazz representing the type of the Object.
      * @param serializer to use deserialize data into type.
      * @param <T> Generic type that the data is deserialized into.
