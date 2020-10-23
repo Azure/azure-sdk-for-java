@@ -235,7 +235,7 @@ public class AADOAuth2LoginConditionalPolicyConfigSample extends WebSecurityConf
 ### Customize scopes in authorize requests
 
 By default, `azure-spring-boot-starter-active-directory` configures scopes of `openid`, `profile` and `https://graph.microsoft.com/user.read` to implement OpenID Connect protocol and access of Microsoft Graph API. For customization of scope, developers need to configure in the `application.properties`:
-```yaml
+```properties
 azure.activedirectory.scope = openid, profile, https://graph.microsoft.com/user.read, {your-customized-scope}
 ``` 
 Note, if you don't configure the 3 mentioned permissions, this starter will add them automatically.

@@ -19,15 +19,19 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import javax.naming.ServiceUnavailableException;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.azure.spring.autoconfigure.aad.AADOAuth2ErrorCode.CONDITIONAL_ACCESS_POLICY;
 import static com.azure.spring.autoconfigure.aad.AADOAuth2ErrorCode.INVALID_REQUEST;
 import static com.azure.spring.autoconfigure.aad.AADOAuth2ErrorCode.SERVER_SERVER;
 
 /**
- * This implementation will retrieve group info of user from Microsoft Graph and map groups to {@link GrantedAuthority}.
+ * This implementation will retrieve group info of user from Microsoft Graph and map groups to {@link
+ * GrantedAuthority}.
  */
 public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, OidcUser> {
     private final AADAuthenticationProperties aadAuthenticationProperties;
@@ -53,10 +57,19 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
                 aadAuthenticationProperties,
                 serviceEndpointsProperties
             );
+            boolean isGraphApiVersionIsV2 = Optional.of(aadAuthenticationProperties)
+                                                    .map(AADAuthenticationProperties::getEnvironment)
+                                                    .map(environment -> environment.contains("v2-graph"))
+                                                    .orElse(false);
+            String applicationIdUri = isGraphApiVersionIsV2 ? "https://graph.microsoft.com/" : "https://graph.windows"
+                + ".net/";
+
             String graphApiToken = azureADGraphClient
-                .acquireTokenForGraphApi(
+                .acquireTokenForScope(
                     userRequest.getIdToken().getTokenValue(),
-                    aadAuthenticationProperties.getTenantId()
+                    aadAuthenticationProperties.getTenantId(),
+                    applicationIdUri,
+                    Arrays.asList("User.Read").stream().collect(Collectors.toSet())
                 )
                 .accessToken();
             mappedAuthorities = azureADGraphClient.getGrantedAuthorities(graphApiToken);
@@ -74,12 +87,12 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
             }
         }
         String nameAttributeKey = Optional.of(userRequest)
-            .map(OAuth2UserRequest::getClientRegistration)
-            .map(ClientRegistration::getProviderDetails)
-            .map(ClientRegistration.ProviderDetails::getUserInfoEndpoint)
-            .map(ClientRegistration.ProviderDetails.UserInfoEndpoint::getUserNameAttributeName)
-            .filter(s -> !s.isEmpty())
-            .orElse(AADTokenClaim.NAME);
+                                          .map(OAuth2UserRequest::getClientRegistration)
+                                          .map(ClientRegistration::getProviderDetails)
+                                          .map(ClientRegistration.ProviderDetails::getUserInfoEndpoint)
+                                          .map(ClientRegistration.ProviderDetails.UserInfoEndpoint::getUserNameAttributeName)
+                                          .filter(s -> !s.isEmpty())
+                                          .orElse(AADTokenClaim.NAME);
         // Create a copy of oidcUser but use the mappedAuthorities instead
         return new DefaultOidcUser(mappedAuthorities, oidcUser.getIdToken(), nameAttributeKey);
     }

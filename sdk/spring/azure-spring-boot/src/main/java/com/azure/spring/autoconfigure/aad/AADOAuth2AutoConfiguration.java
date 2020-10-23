@@ -26,10 +26,12 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 
 import javax.annotation.PostConstruct;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.azure.spring.telemetry.TelemetryData.SERVICE_NAME;
 import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
@@ -37,12 +39,9 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Azure Active Authentication OAuth 2.0.
  * <p>
- * The configuration will be activated when configured:
- * 1. {@literal azure.activedirectory.client-id}
- * 2. {@literal azure.activedirectory.client-secret}
- * 3. {@literal azure.activedirectory.tenant-id}
- * client-id, client-secret, tenant-id used in ClientRegistration.
- * client-id, client-secret also used to get graphApiToken, then get groups.
+ * The configuration will be activated when configured: 1. {@literal azure.activedirectory.client-id} 2. {@literal
+ * azure.activedirectory.client-secret} 3. {@literal azure.activedirectory.tenant-id} client-id, client-secret,
+ * tenant-id used in ClientRegistration. client-id, client-secret also used to get graphApiToken, then get groups.
  * <p>
  * A OAuth2 user service {@link AADOAuth2UserService} will be auto-configured by specifying {@literal
  * azure.activedirectory.user-group.allowed-groups} property.
@@ -50,7 +49,7 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
 @Configuration
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-@ConditionalOnProperty(prefix = "azure.activedirectory", value = {"client-id", "client-secret", "tenant-id"})
+@ConditionalOnProperty(prefix = "azure.activedirectory", value = { "client-id", "client-secret", "tenant-id" })
 @PropertySource(value = "classpath:service-endpoints.properties")
 @EnableConfigurationProperties({ AADAuthenticationProperties.class, ServiceEndpointsProperties.class })
 public class AADOAuth2AutoConfiguration {
@@ -86,20 +85,23 @@ public class AADOAuth2AutoConfiguration {
                                              .map(AADAuthenticationProperties::getRedirectUriTemplate)
                                              .orElse("{baseUrl}/login/oauth2/code/{registrationId}");
 
-        List<String> scope = aadAuthenticationProperties.getScope();
-        if (!scope.toString().contains(".default")) {
+        List<String> scopes = aadAuthenticationProperties.getScope();
+        List<String> graphApiScopes = scopes.stream()
+                                            .filter(this::isGraphApiScope)
+                                            .collect(Collectors.toList());
+        if (!graphApiScopes.toString().contains(".default")) {
             if (aadAuthenticationProperties.allowedGroupsConfigured()
-                && !scope.contains("https://graph.microsoft.com/user.read")
+                && !graphApiScopes.contains("https://graph.microsoft.com/user.read")
             ) {
-                scope.add("https://graph.microsoft.com/user.read");
+                graphApiScopes.add("https://graph.microsoft.com/user.read");
                 LOGGER.warn("scope 'https://graph.microsoft.com/user.read' has been added.");
             }
-            if (!scope.contains("openid")) {
-                scope.add("openid");
+            if (!graphApiScopes.contains("openid")) {
+                graphApiScopes.add("openid");
                 LOGGER.warn("scope 'openid' has been added.");
             }
-            if (!scope.contains("profile")) {
-                scope.add("profile");
+            if (!graphApiScopes.contains("profile")) {
+                graphApiScopes.add("profile");
                 LOGGER.warn("scope 'profile' has been added.");
             }
         }
@@ -110,7 +112,7 @@ public class AADOAuth2AutoConfiguration {
                                  .clientAuthenticationMethod(ClientAuthenticationMethod.POST)
                                  .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                                  .redirectUriTemplate(redirectUriTemplate)
-                                 .scope(scope)
+                                 .scope(graphApiScopes)
                                  .authorizationUri(
                                      String.format(
                                          "https://login.microsoftonline.com/%s/oauth2/v2.0/authorize",
@@ -133,6 +135,11 @@ public class AADOAuth2AutoConfiguration {
                                  )
                                  .clientName("Azure")
                                  .build();
+    }
+
+    private boolean isGraphApiScope(String scopes) {
+        List<String> openidPermissions = Arrays.asList("openid", "profile", "email", "offline_access");
+        return openidPermissions.contains(scopes) || scopes.startsWith("https://graph.microsoft.com/");
     }
 
     @PostConstruct
