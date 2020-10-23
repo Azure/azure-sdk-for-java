@@ -24,9 +24,9 @@ public final class DigitalTwinsModelDataConverter {
 
         String modelStringValue = null;
 
-        if (input.getDtdlModel() != null){
+        if (input.getModel() != null){
             try {
-                modelStringValue = new ObjectMapper().writeValueAsString(input.getDtdlModel());
+                modelStringValue = new ObjectMapper().writeValueAsString(input.getModel());
             } catch (JsonProcessingException e) {
                 throw new IllegalArgumentException("ModelData does not have a valid model definition.", e);
             }
