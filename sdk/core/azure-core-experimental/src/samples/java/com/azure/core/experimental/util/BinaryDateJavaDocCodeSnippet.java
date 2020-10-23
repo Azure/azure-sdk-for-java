@@ -111,7 +111,7 @@ public class BinaryDateJavaDocCodeSnippet {
         }
         final Person data = new Person().setName("John");
 
-        // Ensure your classpath have the Serializer to serialize the object. Azure provides has following libraries.
+        // Provide your custom serializer or use Azure provided serializers.
         // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson or
         // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson
 
@@ -158,8 +158,7 @@ public class BinaryDateJavaDocCodeSnippet {
         }
         final Person data = new Person().setName("John");
 
-        // Ensure your classpath have the Serializer to use to serialize object. For example you can use one of
-        // following library.
+        // Provide your custom serializer or use Azure provided serializers.
         // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson or
         // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson
 
@@ -180,6 +179,40 @@ public class BinaryDateJavaDocCodeSnippet {
         TimeUnit.SECONDS.sleep(5);
         subscriber.dispose();
         // END: com.azure.core.experimental.util.BinaryDocument.to#ObjectAsync
+    }
+
+    /**
+     * Codesnippets for {@link BinaryData#fromObject(Object)}.
+     */
+    public void createFromObjectDefaultSerializer() {
+        // BEGIN: com.azure.core.experimental.util.BinaryDocument.from.default.serializer#Object
+        // Lets say we have Person object which could be serialized into json.
+        class Person {
+            @JsonProperty
+            private String name;
+
+            @JsonSetter
+            public Person setName(String name) {
+                this.name = name;
+                return this;
+            }
+
+            @JsonGetter
+            public String getName() {
+                return name;
+            }
+        }
+        final Person data = new Person().setName("John");
+
+        // Ensure your classpath have the Serializer to serialize the object which implement implement
+        // com.azure.core.util.serializer.JsonSerializer interface.
+        // Or use Azure provided libraries for this.
+        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson or
+        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson
+
+        BinaryData binaryData = BinaryData.fromObject(data);
+        System.out.println(binaryData.toString());
+        // END: com.azure.core.experimental.util.BinaryDocument.from.default.serializer#Object
     }
 
     public static class MyJsonSerializer implements JsonSerializer {

@@ -29,23 +29,11 @@ import java.util.Objects;
  * can be created from {@link InputStream}, {@link Flux} of {@link ByteBuffer}, {@link String}, {@link Object}, or byte
  * array.
  * <p><strong>Immutable data</strong></p>
- * {@link BinaryData} is constructed by coping the given data. Once {@link BinaryData} is instantiated, it's data can
- * not be changed. It provides various convenient APIs to get data out of {@link BinaryData}, they all starts with the
- * <b>BinaryData.to...()</b>, For example {@link BinaryData#toBytes()}.
+ * {@link BinaryData} is constructed by copying the given data. Once {@link BinaryData} is instantiated, it can not be
+ * changed. It provides various convenient APIs to get data out of {@link BinaryData}, they all start with the 'to'
+ * prefix, for example {@link BinaryData#toBytes()}.
  * <p>
- * It provides a way to serialize {@link Object} into {@link BinaryData} using
- * {@link BinaryData#fromObject(Object, ObjectSerializer)} where you can provide your {@link ObjectSerializer}.
- * <p>
- * It provides a way to de-serialize {@link BinaryData} into specified {@link Object} using
- * {@link BinaryData#toObject(Class, ObjectSerializer)} where you can provide object type and your
- * {@link ObjectSerializer}.
- * <p>
- * It provides API to use default json serializer which is available in classpath. The serializer on classpath must
- * implement {@link JsonSerializer} interface.
- * <p>Read more about <a href="http://aka.ms/azsdk/java/wiki/serialization">serialization</a>.
- *
- * <p>
- * Code samples are explained below.
+ * Code samples are presented below.
  *
  * <p><strong>Create an instance from Bytes</strong></p>
  * {@codesnippet com.azure.core.experimental.util.BinaryDocument.from#bytes}
@@ -63,10 +51,11 @@ import java.util.Objects;
  * {@codesnippet com.azure.core.experimental.util.BinaryDocument.from#Object}
  *
  * @see ObjectSerializer
+ * @see JsonSerializer
+ * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
  */
 public final class  BinaryData {
     private static final ClientLogger LOGGER = new ClientLogger(BinaryData.class);
-    private static final byte[] EMPTY_BYTES = new byte[0];
     private static final BinaryData EMPTY_DATA = new BinaryData(new byte[0]);
 
     private static final Object LOCK = new Object();
@@ -184,12 +173,15 @@ public final class  BinaryData {
      * Serialize the given {@link Object} into {@link BinaryData} using json serializer which is available on classpath.
      * The serializer on classpath must implement {@link JsonSerializer} interface. If the given Object is {@code null},
      * an empty {@link BinaryData} will be returned.
-     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.core.experimental.util.BinaryDocument.from.default.serializer#Object}
+
      * @param data The {@link Object} which needs to be serialized into bytes.
      * @throws IllegalStateException If a {@link JsonSerializer} cannot be found on the classpath.
      * @return {@link BinaryData} representing the JSON serialized object.
      *
      * @see JsonSerializer
+     * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
      */
     public static BinaryData fromObject(Object data) {
         if (Objects.isNull(data)) {
@@ -212,6 +204,9 @@ public final class  BinaryData {
      * @param serializer to use for serializing the object.
      * @throws NullPointerException If {@code serializer} is null.
      * @return {@link BinaryData} representing binary data.
+     * @see ObjectSerializer
+     * @see JsonSerializer
+     * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
      */
     public static BinaryData fromObject(Object data, ObjectSerializer serializer) {
         if (Objects.isNull(data)) {
@@ -233,6 +228,8 @@ public final class  BinaryData {
      * @param serializer to use for serializing the object.
      * @throws NullPointerException If {@code serializer} is null.
      * @return {@link Mono} of {@link BinaryData} representing the binary data.
+     * @see ObjectSerializer
+     * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
      */
     public static Mono<BinaryData> fromObjectAsync(Object data, ObjectSerializer serializer) {
         if (Objects.isNull(serializer)) {
@@ -280,7 +277,7 @@ public final class  BinaryData {
     }
 
     /**
-     * Return a {@link Mono} by deserialize the bytes into the {@link Object} of given type after applying the provided
+     * Return a {@link Mono} by deserializing the bytes into the {@link Object} of given type after applying the provided
      * {@link ObjectSerializer} on the {@link BinaryData}.
      *
      * <p><strong>Gets the specified object</strong></p>
@@ -321,7 +318,7 @@ public final class  BinaryData {
     }
 
     /**
-     * Return a {@link Mono} by deserialize the bytes into the {@link Object} of given type after applying the Json
+     * Return a {@link Mono} by deserializing the bytes into the {@link Object} of given type after applying the Json
      * serializer found on classpath.
      *
      * <p><strong>Gets the specified object</strong></p>
