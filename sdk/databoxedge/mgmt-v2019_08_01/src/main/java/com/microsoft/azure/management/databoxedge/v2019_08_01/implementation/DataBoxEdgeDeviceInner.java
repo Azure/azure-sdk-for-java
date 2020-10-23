@@ -9,20 +9,19 @@
 package com.microsoft.azure.management.databoxedge.v2019_08_01.implementation;
 
 import java.util.Map;
-
-import com.microsoft.azure.Resource;
 import com.microsoft.azure.management.databoxedge.v2019_08_01.DataBoxEdgeDeviceStatus;
 import com.microsoft.azure.management.databoxedge.v2019_08_01.DeviceType;
 import java.util.List;
 import com.microsoft.azure.management.databoxedge.v2019_08_01.RoleTypes;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.management.databoxedge.v2019_08_01.ARMBaseModel;
 
 /**
  * The Data Box Edge/Gateway device.
  */
 @JsonFlatten
-public class DataBoxEdgeDeviceInner extends Resource {
+public class DataBoxEdgeDeviceInner extends ARMBaseModel {
     /**
      * The location of the device. This is a supported and registered Azure
      * geographical region (for example, West US, East US, or Southeast Asia).

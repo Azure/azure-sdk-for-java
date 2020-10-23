@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.microsoft.azure.management.databoxedge.v2019_08_01.ARMBaseModel;
-import com.microsoft.azure.management.databoxedge.v2019_08_01.IoTRole;
 
 /**
  * Compute role.
