@@ -367,7 +367,7 @@ final class Transforms {
                     if (fieldValue.getValueObject().get("FirstName") != null
                         && fieldValue.getValueObject().get("LastName") != null) {
                         if (fieldValue.getValueObject().get("FirstName").getPage()
-                            == fieldValue.getValueObject().get("LastName").getPage()) {
+                            .equals(fieldValue.getValueObject().get("LastName").getPage())) {
                             valueData = new FieldData(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
                                 fieldValue.getValueObject().get("FirstName").getPage(),
                                 setReferenceElements(fieldValue.getElements(), readResults));

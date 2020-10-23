@@ -58,8 +58,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
-import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PREBUILT_TYPE.BUSINESS_CARD;
-import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PREBUILT_TYPE.RECEIPT;
+import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.BUSINESS_CARD;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_API_KEY;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL;
@@ -119,7 +118,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static final List<String> RECEIPT_FIELDS = Arrays.asList("MerchantName", "MerchantPhoneNumber", "MerchantAddress",
         "Total", "Subtotal", "Tax", "TransactionDate", "TransactionDate", "TransactionTime", "Items");
 
-    enum PREBUILT_TYPE {
+    enum PrebuiltType {
         RECEIPT, BUSINESS_CARD
     }
 
@@ -628,7 +627,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     }
 
     void validatePrebuiltResultData(List<RecognizedForm> actualPrebuiltRecognizedForms, boolean includeFieldElements,
-        PREBUILT_TYPE prebuiltType) {
+        PrebuiltType prebuiltType) {
         final AnalyzeResult rawResponse = getAnalyzeRawResponse().getAnalyzeResult();
         final List<ReadResult> rawReadResults = rawResponse.getReadResults();
         for (int i = 0; i < actualPrebuiltRecognizedForms.size(); i++) {
