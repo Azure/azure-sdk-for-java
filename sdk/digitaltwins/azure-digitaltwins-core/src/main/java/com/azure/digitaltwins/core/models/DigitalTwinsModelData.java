@@ -49,7 +49,7 @@ public final class DigitalTwinsModelData {
     private boolean decommissioned;
 
     /*
-     * The model definition that conforms to the Digital Twins Definition Language (DTDL) v2.
+     * The model definition that conforms to Digital Twins Definition Language (DTDL) v2.
      */
     @JsonProperty(value = "model")
     private String dtdlModel;
