@@ -9,6 +9,6 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
-    <module>azure-resourcemanager-resources</module>
+    <module>azure-resourcemanager-resources-generated</module>
   </modules>
 </project>
