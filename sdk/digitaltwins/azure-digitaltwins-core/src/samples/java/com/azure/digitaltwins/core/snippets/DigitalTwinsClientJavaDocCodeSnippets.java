@@ -554,7 +554,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
                 "Retrieved relationship with Id: " +
                     rel.getRelationshipId() +
                     " from: " +
-                    rel.getSourceId() +
+                    rel.getSourceDigitalTwinId() +
                     " to: myDigitalTwinId");
         }
         // END: com.azure.digitaltwins.core.syncClient.listIncomingRelationships#String
@@ -571,7 +571,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
                 "Retrieved relationship with Id: " +
                 rel.getRelationshipId() +
                 " from: " +
-                rel.getSourceId() +
+                rel.getSourceDigitalTwinId() +
                 " to: myDigitalTwinId");
         }
         // END: com.azure.digitaltwins.core.syncClient.listIncomingRelationships#String-Options-Context

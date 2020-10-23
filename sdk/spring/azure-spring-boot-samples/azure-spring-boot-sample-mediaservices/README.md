@@ -9,7 +9,7 @@ This sample project demonstrates how to use Azure Media Services with Spring Boo
 
 * A [Java Development Kit (JDK)][jdk_link], version 1.8.
 
-* [Apache Maven](http://maven.apache.org/), version 3.0 or later.
+* [Apache Maven](https://maven.apache.org/), version 3.0 or later.
 
 ## Getting started
 ### Create Azure Media Services on Azure
@@ -56,7 +56,7 @@ mvn spring-boot:run
 
 ## License
 
-The video file `video.mp4` under `src/main/resources` folder is from GitHub repository [big-buck-bunny-480p-5s](https://github.com/bower-media-samples/big-buck-bunny-480p-5s) without any modification and is under the [Creative Commons Attribution 3.0 license](http://creativecommons.org/licenses/by/3.0/).
+The video file `video.mp4` under `src/main/resources` folder is from GitHub repository [big-buck-bunny-480p-5s](https://github.com/bower-media-samples/big-buck-bunny-480p-5s) without any modification and is under the [Creative Commons Attribution 3.0 license](https://creativecommons.org/licenses/by/3.0/).
 
 <!-- LINKS -->
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable

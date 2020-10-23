@@ -11,7 +11,7 @@ This sample project demonstrates how to use Azure Cosmos DB via Spring Boot Star
 
 * A [Java Development Kit (JDK)][jdk_link], version 1.8.
 
-* [Apache Maven](http://maven.apache.org/), version 3.0 or later.
+* [Apache Maven](https://maven.apache.org/), version 3.0 or later.
 
 
 ### Create an Azure Cosmos DB on Azure

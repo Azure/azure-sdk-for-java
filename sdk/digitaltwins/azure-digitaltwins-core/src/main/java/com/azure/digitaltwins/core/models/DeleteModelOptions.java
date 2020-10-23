@@ -43,7 +43,7 @@ public final class DeleteModelOptions {
      * @param traceparent the traceparent value to set.
      * @return the DeleteModelOptions object itself.
      */
-    public DeleteModelOptions setTraceparent(String traceparent) {
+    public DeleteModelOptions setTraceParent(String traceparent) {
         this.traceparent = traceparent;
         return this;
     }
@@ -65,7 +65,7 @@ public final class DeleteModelOptions {
      * @param tracestate the tracestate value to set.
      * @return the DeleteModelOptions object itself.
      */
-    public DeleteModelOptions setTracestate(String tracestate) {
+    public DeleteModelOptions setTraceState(String tracestate) {
         this.tracestate = tracestate;
         return this;
     }

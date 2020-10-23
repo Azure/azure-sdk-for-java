@@ -43,7 +43,7 @@ public final class CreateModelsOptions {
      * @param traceparent the traceparent value to set.
      * @return the CreateModelsOptions object itself.
      */
-    public CreateModelsOptions setTraceparent(String traceparent) {
+    public CreateModelsOptions setTraceParent(String traceparent) {
         this.traceparent = traceparent;
         return this;
     }
@@ -65,7 +65,7 @@ public final class CreateModelsOptions {
      * @param tracestate the tracestate value to set.
      * @return the CreateModelsOptions object itself.
      */
-    public CreateModelsOptions setTracestate(String tracestate) {
+    public CreateModelsOptions setTraceState(String tracestate) {
         this.tracestate = tracestate;
         return this;
     }

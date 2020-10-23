@@ -7,7 +7,7 @@ This sample describes how to use [azure-spring-cloud-starter-appconfiguration-co
 ### Prerequisite
 
 * A [Java Development Kit (JDK)][jdk_link], version 8.
-* [Apache Maven](http://maven.apache.org/), version 3.0 or later.
+* [Apache Maven](https://maven.apache.org/), version 3.0 or later.
 
 ### How to run
 

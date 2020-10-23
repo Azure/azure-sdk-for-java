@@ -43,7 +43,7 @@ public final class CreateRelationshipOptions {
      * @param traceparent the traceparent value to set.
      * @return the CreateRelationshipOptions object itself.
      */
-    public CreateRelationshipOptions setTraceparent(String traceparent) {
+    public CreateRelationshipOptions setTraceParent(String traceparent) {
         this.traceparent = traceparent;
         return this;
     }
@@ -65,7 +65,7 @@ public final class CreateRelationshipOptions {
      * @param tracestate the tracestate value to set.
      * @return the CreateRelationshipOptions object itself.
      */
-    public CreateRelationshipOptions setTracestate(String tracestate) {
+    public CreateRelationshipOptions setTraceState(String tracestate) {
         this.tracestate = tracestate;
         return this;
     }
