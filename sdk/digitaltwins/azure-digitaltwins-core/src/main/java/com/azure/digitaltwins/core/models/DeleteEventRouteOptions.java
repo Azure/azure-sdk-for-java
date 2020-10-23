@@ -33,7 +33,7 @@ public final class DeleteEventRouteOptions {
      *
      * @return the traceparent value.
      */
-    public String getTraceparent() {
+    public String getTraceParent() {
         return this.traceparent;
     }
 
@@ -43,7 +43,7 @@ public final class DeleteEventRouteOptions {
      * @param traceparent the traceparent value to set.
      * @return the DeleteEventRouteOptions object itself.
      */
-    public DeleteEventRouteOptions setTraceparent(String traceparent) {
+    public DeleteEventRouteOptions setTraceParent(String traceparent) {
         this.traceparent = traceparent;
         return this;
     }
@@ -54,7 +54,7 @@ public final class DeleteEventRouteOptions {
      *
      * @return the tracestate value.
      */
-    public String getTracestate() {
+    public String getTraceState() {
         return this.tracestate;
     }
 
@@ -65,7 +65,7 @@ public final class DeleteEventRouteOptions {
      * @param tracestate the tracestate value to set.
      * @return the DeleteEventRouteOptions object itself.
      */
-    public DeleteEventRouteOptions setTracestate(String tracestate) {
+    public DeleteEventRouteOptions setTraceState(String tracestate) {
         this.tracestate = tracestate;
         return this;
     }

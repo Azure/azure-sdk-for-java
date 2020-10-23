@@ -48,12 +48,12 @@ extends:
       - name: azure-spring-boot-starter-data-gremlin
         groupId: com.azure.spring
         safeName: azurespringbootstarterdatagremlin
+      - name: azure-spring-boot-starter-keyvault-certificates
+        groupId: com.azure.spring
+        safeName: azurespringbootstarterkeyvaultcertificates
       - name: azure-spring-boot-starter-keyvault-secrets
         groupId: com.azure.spring
         safeName: azurespringbootstarterkeyvaultsecrets
-      - name: azure-spring-boot-starter-metrics
-        groupId: com.azure.spring
-        safeName: azurespringbootstartermetrics
       - name: azure-spring-boot-starter-servicebus-jms
         groupId: com.azure.spring
         safeName: azurespringbootstarterservicebusjms

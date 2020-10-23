@@ -138,7 +138,7 @@ class ServiceBusReceiverAsyncClientTest {
     }
 
     @BeforeEach
-    void setup(TestInfo testInfo) {
+   void setup(TestInfo testInfo) {
         logger.info("[{}] Setting up.", testInfo.getDisplayName());
 
         MockitoAnnotations.initMocks(this);
@@ -173,11 +173,11 @@ class ServiceBusReceiverAsyncClientTest {
                     connectionOptions.getRetry()));
 
         receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, false), connectionProcessor, CLEANUP_INTERVAL,
+            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, null, false), connectionProcessor, CLEANUP_INTERVAL,
             tracerProvider, messageSerializer, onClientClose);
 
         sessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, false, "Some-Session",
+            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, null, false, "Some-Session",
                 false, null, true),
             connectionProcessor, CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
     }
@@ -267,7 +267,9 @@ class ServiceBusReceiverAsyncClientTest {
         final String lockToken = UUID.randomUUID().toString();
 
         ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
+        when(receivedMessage.getLockedUntil()).thenReturn(OffsetDateTime.now());
         when(receivedMessage.getLockToken()).thenReturn(lockToken);
+
         when(messageSerializer.deserialize(any(Message.class), eq(ServiceBusReceivedMessage.class)))
             .thenReturn(receivedMessage);
 
@@ -335,7 +337,7 @@ class ServiceBusReceiverAsyncClientTest {
      */
     @Test
     void completeInReceiveAndDeleteMode() {
-        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, PREFETCH, false);
+        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, PREFETCH, null, false);
         ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, options, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
             messageSerializer, onClientClose);
@@ -590,11 +592,14 @@ class ServiceBusReceiverAsyncClientTest {
         ServiceBusReceiverClientBuilder builder = new ServiceBusClientBuilder()
             .connectionString(NAMESPACE_CONNECTION_STRING)
             .receiver()
-            .topicName("baz").subscriptionName("bar").prefetchCount(-1)
+            .topicName("baz").subscriptionName("bar")
             .receiveMode(ReceiveMode.PEEK_LOCK);
 
+
+
+
         // Act & Assert
-        Assertions.assertThrows(IllegalArgumentException.class, () -> builder.buildAsyncClient());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> builder.prefetchCount(-1));
     }
 
     @Test
@@ -618,6 +623,36 @@ class ServiceBusReceiverAsyncClientTest {
         // Assert
         Assertions.assertEquals(entityPath, actual);
         Assertions.assertEquals(NAMESPACE, actualNamespace);
+    }
+
+    /**
+     * Verifies that client can call multiple receiveMessages on same receiver instance.
+     */
+    @Test
+    void canPerformMultipleReceive() {
+        // Arrange
+        final int numberOfEvents = 1;
+        final List<Message> messages = getMessages();
+
+        ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
+        when(receivedMessage.getLockedUntil()).thenReturn(OffsetDateTime.now());
+        when(receivedMessage.getLockToken()).thenReturn(UUID.randomUUID().toString());
+        when(messageSerializer.deserialize(any(Message.class), eq(ServiceBusReceivedMessage.class)))
+            .thenReturn(receivedMessage);
+
+        // Act & Assert
+
+        StepVerifier.create(receiver.receiveMessages().take(numberOfEvents))
+            .then(() -> messages.forEach(m -> messageSink.next(m)))
+            .expectNextCount(numberOfEvents)
+            .verifyComplete();
+
+        StepVerifier.create(receiver.receiveMessages().take(numberOfEvents))
+            .then(() -> messages.forEach(m -> messageSink.next(m)))
+            .expectNextCount(numberOfEvents)
+            .verifyComplete();
+
+        verify(amqpReceiveLink).addCredits(PREFETCH);
     }
 
     /**

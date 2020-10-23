@@ -32,7 +32,7 @@ public interface Clusters extends SupportsCreating<Cluster.DefinitionStages.Blan
     /**
      * List all Event Hubs Namespace IDs in an Event Hubs Dedicated Cluster.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request

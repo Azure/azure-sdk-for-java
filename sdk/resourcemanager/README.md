@@ -28,7 +28,7 @@ If you are an existing user of the older version of Azure management library for
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager</artifactId>
-  <version>2.0.0-beta.5</version>
+  <version>2.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -297,12 +297,15 @@ client.virtualMachines().listByResourceGroup(rgName);
 ## Troubleshooting
 
 If you encounter any bugs, please file issues via [GitHub Issues](https://github.com/Azure/azure-sdk-for-java/issues/new/choose) 
-or checkout [StackOverflow for Azure Java SDK](http://stackoverflow.com/questions/tagged/azure-java-sdk).
+or checkout [StackOverflow for Azure Java SDK](https://stackoverflow.com/questions/tagged/azure-java-sdk).
 
 ### HTTP client
 
 An `HttpClient` implementation must exist on the classpath.
 See [Include optional packages](#include-optional-packages).
+
+Latest `azure-identity` package specifies dependency on `azure-core-http-netty` package for convenience.
+If you would like to use a different `HttpClient`, please exclude `azure-core-http-netty` from `azure-identity`.
 
 ### Enabling logging
 
@@ -319,12 +322,17 @@ AzureResourceManager azure = AzureResourceManager
     .withDefaultSubscription();
 ```
 
+### ARM throttling
+
+Azure Resource Manager applies throttling on the number of requests sent from client within certain span of time.
+For details, please refer to [Guidance on ARM throttling][throttling].
+
 ## Next steps
 
 ## Contributing
 
 If you would like to become an active contributor to this project please follow the instructions provided in
-[Microsoft Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
+[Microsoft Azure Projects Contribution Guidelines](https://azure.github.io/guidelines.html).
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
@@ -333,7 +341,7 @@ If you would like to become an active contributor to this project please follow 
 5. Create new Pull Request
 
 <!-- LINKS -->
-[docs]: http://azure.github.io/azure-sdk-for-java/resourcemanager.html
+[docs]: https://azure.github.io/azure-sdk-for-java/resourcemanager.html
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity
@@ -345,4 +353,5 @@ If you would like to become an active contributor to this project please follow 
 [sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/SAMPLE.md
 [design]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/DESIGN.md
 [design_preview]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/DESIGN_PREVIEW.md
+[throttling]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/THROTTLING.md
 [reactor]: https://projectreactor.io/

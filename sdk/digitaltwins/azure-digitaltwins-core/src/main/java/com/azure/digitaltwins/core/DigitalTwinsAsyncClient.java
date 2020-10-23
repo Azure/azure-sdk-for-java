@@ -106,7 +106,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.createDigitalTwins#String-Object-Class#String}
      *
-     * @param digitalTwinId The Id of the digital twin.
+     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param digitalTwin The application/json object representing the digital twin to create.
      * @param clazz The model class to serialize the request with and deserialize the response with.
      * @param <T> The generic type to serialize the request with and deserialize the response with.
@@ -133,7 +133,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.createDigitalTwinsWithResponse#String-Object-Class-Options#String}
      *
-     * @param digitalTwinId The Id of the digital twin.
+     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param digitalTwin The application/json object representing the digital twin to create.
      * @param clazz The model class to serialize the request with and deserialize the response with.
      * @param <T> The generic type to serialize the request with and deserialize the response with.
@@ -246,7 +246,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.updateDigitalTwin#String-List}
      *
-     * @param digitalTwinId The Id of the digital twin.
+     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param jsonPatch The JSON patch to apply to the specified digital twin.
      *                                    This argument can be created using {@link UpdateOperationUtility}.
      * @return An empty Mono
@@ -267,7 +267,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.updateDigitalTwinWithResponse#String-List-Options}
      *
-     * @param digitalTwinId The Id of the digital twin.
+     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param jsonPatch The JSON patch to apply to the specified digital twin.
      *                                    This argument can be created using {@link UpdateOperationUtility}.
      * @param options The optional parameters for this request. If null, the default option values will be used.
@@ -911,8 +911,8 @@ public final class DigitalTwinsAsyncClient {
         if (options != null) {
             protocolLayerOptions = new com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions()
                 .setMaxItemsPerPage(options.getMaxItemsPerPage())
-                .setTraceparent(options.getTraceparent())
-                .setTracestate(options.getTracestate());
+                .setTraceparent(options.getTraceParent())
+                .setTracestate(options.getTraceState());
         }
 
         return protocolLayer.getDigitalTwinModels().listNextSinglePageAsync(
@@ -998,11 +998,11 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link Response} with no parsed payload object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> decommissionModelWithResponse(String modelId, UpdateModelOptions options) {
+    public Mono<Response<Void>> decommissionModelWithResponse(String modelId, DecommissionModelOptions options) {
         return withContext(context -> decommissionModelWithResponse(modelId, options, context));
     }
 
-    Mono<Response<Void>> decommissionModelWithResponse(String modelId, UpdateModelOptions options, Context context) {
+    Mono<Response<Void>> decommissionModelWithResponse(String modelId, DecommissionModelOptions options, Context context) {
         List<Object> updateOperation = new UpdateOperationUtility()
             .appendReplaceOperation("/decommissioned", true)
             .getUpdateOperations();
@@ -1494,8 +1494,8 @@ public final class DigitalTwinsAsyncClient {
         }
         else {
             protocolLayerOptions = new com.azure.digitaltwins.core.implementation.models.DigitalTwinsSendTelemetryOptions()
-                .setTraceparent(options.getTraceparent())
-                .setTracestate(options.getTracestate());
+                .setTraceparent(options.getTraceParent())
+                .setTracestate(options.getTraceState());
         }
 
         return protocolLayer.getDigitalTwins().sendTelemetryWithResponseAsync(
@@ -1573,8 +1573,8 @@ public final class DigitalTwinsAsyncClient {
         }
         else {
             protocolLayerOptions = new com.azure.digitaltwins.core.implementation.models.DigitalTwinsSendComponentTelemetryOptions()
-                .setTraceparent(options.getTraceparent())
-                .setTracestate(options.getTracestate());
+                .setTraceparent(options.getTraceParent())
+                .setTracestate(options.getTraceState());
         }
 
         return protocolLayer.getDigitalTwins().sendComponentTelemetryWithResponseAsync(
