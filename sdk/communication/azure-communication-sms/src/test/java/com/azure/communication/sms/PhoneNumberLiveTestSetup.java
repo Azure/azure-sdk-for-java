@@ -2,7 +2,6 @@ package com.azure.communication.sms;
 
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
-import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.GLOBAL;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
@@ -26,15 +25,16 @@ public class PhoneNumberLiveTestSetup implements BeforeAllCallback, ExtensionCon
 
     private static boolean started = false;
     private static String LOCALE = "en-us";
-    private static String COUNTRY_CODE = "en-us";
+    private static String COUNTRY_CODE = "US";
     private static String NAME_FOR_SEARCH = "SetupSearch";
     private static String DESCRIPTION_FOR_SEARCH = "Setup Phone Number Search for Live Tests";
+    private PhoneNumberClient phoneNumberClient;
 
     @Override
     public void beforeAll(ExtensionContext context) {
         if (!started) {
             started = true;
-            PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+            phoneNumberClient = createPhoneNumberClient();
 
             PagedIterable<PhonePlanGroup> phonePlanGroups = phoneNumberClient
                 .listPhonePlanGroups(COUNTRY_CODE, LOCALE, true);
@@ -83,7 +83,7 @@ public class PhoneNumberLiveTestSetup implements BeforeAllCallback, ExtensionCon
 
     @Override
     public void close() {
-        // Your "after all tests" logic goes here
+        phoneNumberClient.releasePhoneNumbers(phoneNumbers)
     }
 
     private PhoneNumberClient createPhoneNumberClient() {
