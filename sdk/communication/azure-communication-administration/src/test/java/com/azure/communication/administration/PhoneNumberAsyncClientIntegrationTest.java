@@ -530,12 +530,11 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void beginPurchaseSearch(HttpClient httpClient){
+    public void beginPurchaseSearch(HttpClient httpClient) {
         Duration pollInterval = Duration.ofSeconds(5);
-        PollerFlux<Void,Void> poller =
+        PollerFlux<Void, Void> poller =
             this.getClient(httpClient).beginPurchaseReservation(SEARCH_ID, pollInterval);
-        poller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-        .blockLast();
+        poller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
         Mono<PhoneNumberSearch> mono = this.getClient(httpClient).getSearchById(SEARCH_ID);
         StepVerifier.create(mono)
             .assertNext(item -> {
