@@ -164,18 +164,7 @@ First, we need to ensure that this {instruction}[instruction] is completed befor
 
 1. Update stream binding related properties in link:src/main/resources/application.properties[application.properties]
 
-+
-[source%nowrap,properties]
-....
-spring.cloud.stream.bindings.input.destination=[servicebus-queue-1-name]
-spring.cloud.stream.bindings.output.destination=[servicebus-queue-name-same-as-above]
-
-
-spring.cloud.stream.bindings.input1.destination=[servicebus-queue-2-name]
-spring.cloud.stream.bindings.output1.destination=[servicebus-queue-name-same-as-above]
-....
-
-2. Run the `mvn clean spring-boot:run` in the root of the code sample to get the app running.
+2. For connection string usage, run the `mvn clean spring-boot:run` in the root of the code sample to get the app running; for MSI usage, deploy or redeploy web application.
 
 3. Send a POST request to test the default binder
 +
@@ -183,6 +172,11 @@ spring.cloud.stream.bindings.output1.destination=[servicebus-queue-name-same-as-
 $ curl -X POST http://localhost:8080/messages?message=hello
 ....
 +
+or when the app runs on App Service or VM
++
+....
+$ curl -d -X POST https://[your-app-URL]/messages?message=hello
+....
 
 4. Verify in your app's logs that a similar message was posted:
 +
@@ -197,6 +191,11 @@ $ curl -X POST http://localhost:8080/messages?message=hello
 $ curl -X POST http://localhost:8080/messages1?message=hello
 ....
 +
+or when the app runs on App Service or VM
++
+....
+$ curl -d -X POST https://[your-app-URL]/messages1?message=hello
+....
 
 6. Verify in your app's logs that a similar message was posted:
 +
