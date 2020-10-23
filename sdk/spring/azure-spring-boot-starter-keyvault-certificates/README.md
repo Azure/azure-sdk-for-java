@@ -253,7 +253,7 @@ side-loaded certificates.
 
 If you want to test the current version under development you will have to
 
-1. Build and install the [Microsoft Azure JCA Provider]<!--(../../keyvault/azure-security-keyvault-jca/README.md)--> for KeyVault
+1. Build and install the [Azure Key Vault JCA client library for Java](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-jca/README.md)
 1. Build and install this starter.
 
 To build and install the starter use the following command line:
