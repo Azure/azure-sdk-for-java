@@ -181,7 +181,7 @@ public final class  BinaryData {
      * @return {@link BinaryData} representing the JSON serialized object.
      *
      * @see JsonSerializer
-     * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
+     * @see <a href="ObjectSerializer" target="_blank">More about serialization</a>
      */
     public static BinaryData fromObject(Object data) {
         if (Objects.isNull(data)) {
@@ -196,6 +196,10 @@ public final class  BinaryData {
     /**
      * Serialize the given {@link Object} into {@link BinaryData} using the provided {@link ObjectSerializer}.
      * If the Object is {@code null}, an empty {@link BinaryData} will be returned.
+     * <p>You can provide your custom implementation of {@link ObjectSerializer} interface or use one provided in azure
+     * sdk by adding them as dependency. These implementations could be found at
+     * <a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson" target="_blank">Json Jackson serializer</a>
+     * and <a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson" target="_blank">Gson based serializer</a>.
      *
      * <p><strong>Create an instance from Object</strong></p>
      * {@codesnippet com.azure.core.experimental.util.BinaryDocument.from#Object}
@@ -223,6 +227,11 @@ public final class  BinaryData {
     /**
      * Serialize the given {@link Object} into {@link Mono} {@link BinaryData} using the provided
      * {@link ObjectSerializer}. If the Object is {@code null}, an empty {@link BinaryData} will be returned.
+     *
+     * <p>You can provide your custom implementation of {@link ObjectSerializer} interface or use one provided in azure
+     * sdk by adding them as dependency. These implementations could be found at
+     * <a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson" target="_blank">Json Jackson serializer</a>
+     * and <a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson" target="_blank">Gson based serializer</a>.
      *
      * @param data The {@link Object} which needs to be serialized into bytes.
      * @param serializer to use for serializing the object.
@@ -261,6 +270,11 @@ public final class  BinaryData {
      * Deserialize the bytes into the {@link Object} of given type by applying the provided {@link ObjectSerializer} on
      * the data.
      *
+     * <p>You can provide your custom implementation of {@link ObjectSerializer} interface or use one provided in azure
+     * sdk by adding them as dependency. These implementations could be found at
+     * <a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson" target="_blank">Json Jackson serializer</a>
+     * and <a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson" target="_blank">Gson based serializer</a>.
+     *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.core.experimental.util.BinaryDocument.to#Object}
      * @param clazz representing the type of the Object.
@@ -281,6 +295,11 @@ public final class  BinaryData {
     /**
      * Return a {@link Mono} by deserializing the bytes into the {@link Object} of given type after applying the
      * provided {@link ObjectSerializer} on the {@link BinaryData}.
+     *
+     * <p>You can provide your custom implementation of {@link ObjectSerializer} interface or use one provided in azure
+     * sdk by adding them as dependency. These implementations could be found at
+     * <a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson" target="_blank">Json Jackson serializer</a>
+     * and <a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson" target="_blank">Gson based serializer</a>.
      *
      * <p><strong>Gets the specified object</strong></p>
      * {@codesnippet com.azure.core.experimental.util.BinaryDocument.to#ObjectAsync}
