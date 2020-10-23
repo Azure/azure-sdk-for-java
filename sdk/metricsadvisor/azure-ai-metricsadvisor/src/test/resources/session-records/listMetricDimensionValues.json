@@ -1,45 +1,45 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//metrics/3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5/dimension/query",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//metrics/27e3015f-04fd-44ba-a20b-bc529a0aebae/dimension/query",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "5f4b201e-bd8b-4089-a5e8-1c347c3ed105",
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.2 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "47f1c5b8-1db6-41a3-9dfb-0fef1db7194c",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "d7fb2c38-5d38-4a5f-813c-b3352fff2d08",
-      "x-envoy-upstream-service-time" : "174",
+      "x-request-id" : "ebd97b68-a1e6-4d9a-8723-1b8da91fab10",
+      "x-envoy-upstream-service-time" : "214",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "d7fb2c38-5d38-4a5f-813c-b3352fff2d08",
+      "apim-request-id" : "ebd97b68-a1e6-4d9a-8723-1b8da91fab10",
       "retry-after" : "0",
-      "Content-Length" : "497",
+      "Content-Length" : "607",
       "StatusCode" : "200",
-      "Body" : "{\"value\":[\"Algerian Fir\",\"Almond\",\"Aspen\",\"Austrian Pine\",\"Bastard Service Tree\",\"Birch\",\"Black Birch (River Birch)\",\"Black Mulberry\",\"Black Poplar\",\"Blackthorn\",\"Blue Atlas Cedar\",\"Box elder\",\"Cabbage Palm\",\"Caucasian Fir\",\"Caucasian Lime\",\"Cherry\",\"Cherry Laurel\",\"Chinese red-barked birch\",\"Cider gum\",\"Cockspur Thorn\"],\"@nextLink\":\"https://anuchan-cg-metric-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/metrics/3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5/dimension/query?$top=20&$skip=20\"}",
-      "Date" : "Mon, 14 Sep 2020 06:27:22 GMT",
+      "Body" : "{\"value\":[\"Automotive & Powersports\",\"Baby Products (Excluding Apparel)\",\"Beauty\",\"Books\",\"Camera & Photo\",\"Cell Phones\",\"Clothing & Accessories\",\"Collectible Coins\",\"Device Accessories\",\"Electronics (Accessories)\",\"Electronics (Consumer)\",\"Fine Art\",\"Grocery & Gourmet Food\",\"Handmade\",\"Health & Personal Care\",\"Historical & Advertising Collectibles\",\"Home & Garden\",\"Industrial & Scientific\",\"Jewelry\",\"Luggage & Travel Accessories\"],\"@nextLink\":\"https://js-metrics-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/metrics/27e3015f-04fd-44ba-a20b-bc529a0aebae/dimension/query?$top=20&$skip=20\"}",
+      "Date" : "Fri, 23 Oct 2020 22:46:36 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/metrics/3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5/dimension/query?$top=20&$skip=20",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com:443/metricsadvisor/v1.0/metrics/27e3015f-04fd-44ba-a20b-bc529a0aebae/dimension/query?$top=20&$skip=20",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "bb95fc4b-4d45-4548-b15f-2623338a133c",
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.2 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "25b943e4-2caa-4cc7-a2df-bd166abfa97a",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "73aae4a6-e5be-4087-8853-74bff2366a40",
-      "x-envoy-upstream-service-time" : "194",
+      "x-request-id" : "e8847e87-f85b-45ed-a5c7-501c0274ec0f",
+      "x-envoy-upstream-service-time" : "79",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "73aae4a6-e5be-4087-8853-74bff2366a40",
+      "apim-request-id" : "e8847e87-f85b-45ed-a5c7-501c0274ec0f",
       "retry-after" : "0",
-      "Content-Length" : "161",
+      "Content-Length" : "234",
       "StatusCode" : "200",
-      "Body" : "{\"value\":[\"Common Alder\",\"Common Ash\",\"Common Beech\",\"Common Hazel\",\"Common Juniper\",\"Common Lime\",\"Common Walnut\",\"Common Yew\",\"Copper Beech\"],\"@nextLink\":null}",
-      "Date" : "Mon, 14 Sep 2020 06:27:23 GMT",
+      "Body" : "{\"value\":[\"Music\",\"Musical Instruments\",\"Office Products\",\"Outdoors\",\"Personal Computers\",\"Shoes Handbags & Sunglasses\",\"Software & Computer Games\",\"Sports\",\"Sports Collectibles\",\"__SUM__\",\"Tools & Home Improvement\"],\"@nextLink\":null}",
+      "Date" : "Fri, 23 Oct 2020 22:46:36 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

@@ -18,17 +18,17 @@ public abstract class AlertTestBase extends MetricsAdvisorClientTestBase {
     // Pre-configured test resource.
     protected static class ListAlertsInput {
         static final ListAlertsInput INSTANCE = new ListAlertsInput();
-        final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
-        final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
+        final OffsetDateTime startTime = OffsetDateTime.parse("2020-10-10T00:00:00Z");
+        final OffsetDateTime endTime = OffsetDateTime.parse("2020-10-21T00:00:00Z");
         final TimeMode timeMode = TimeMode.ANOMALY_TIME;
         final ListAlertOptions options = new ListAlertOptions(startTime, endTime, timeMode)
             .setTop(10);
-        final String alertConfigurationId = "ff3014a0-bbbb-41ec-a637-677e77b81299";
+        final String alertConfigurationId = "204a211a-c5f4-45f3-a30e-512fb25d1d2c";
     }
 
     protected static class ListAlertsOutput {
         static final ListAlertsOutput INSTANCE = new ListAlertsOutput();
-        final int expectedAlerts = 3;
+        final int expectedAlerts = 4;
     }
 
     protected void assertAlertOutput(Alert alert) {

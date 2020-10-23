@@ -219,7 +219,7 @@ public class AnomalyAlertTest extends AnomalyAlertTestBase {
                 = new MetricAnomalyAlertConfiguration(DETECTION_CONFIGURATION_ID,
                 MetricAnomalyAlertScope.forWholeSeries());
             final MetricAnomalyAlertConfiguration metricAnomalyAlertConfiguration2
-                = new MetricAnomalyAlertConfiguration("bd309211-64b5-4a7a-bb81-a2789599c526",
+                = new MetricAnomalyAlertConfiguration("e17f32d4-3ddf-4dc7-84ee-b4130c7e1777",
                 MetricAnomalyAlertScope.forWholeSeries());
 
             // Act & Assert
