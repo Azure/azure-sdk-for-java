@@ -4,11 +4,28 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
+import com.azure.core.credential.TokenCredential;
 
 import java.net.URI;
 
 /**
  * A utility class that parses a connection string into sections.
+ * A Service Bus connection string is a set of key value pairs separated by semi-colon. A typical example is
+ * "Endpoint=sb://sbnamespace.servicebus.windows.net/;SharedAccessKeyName=someKeyName;SharedAccessKey=someKeyValue".
+ *
+ * A connection may have the following sections:
+ * <ul>
+ *     <li>Endpoint, which is mandatory. The hostname part of it is the "Fully qualified namespace".</li>
+ *     <li>SharedAccessKeyName and SharedAccessKey, optional, used to authenticate the access to the ServiceBus.</li>
+ *     <li>SharedAccessSignature, optional, an alternative way to authenticate the access to the ServiceBus.</li>
+ *     <li>EntityPath, optional, the queue name or the topic name under the service namespace</li>
+ * </ul>
+ *
+ * When you have a ServiceBus connection string, you can use {@link ServiceBusClientBuilder#connectionString(String)}
+ * to build a client. But if you'd like to use a {@link com.azure.core.credential.TokenCredential} to access a
+ * ServiceBus, you can use this utility class to take the fully qualified namespace and optionally the entity path
+ * (queue/topic name) from the connection string and then use
+ * {@link ServiceBusClientBuilder#credential(String, TokenCredential)}.
  */
 public final class ServiceBusConnectionStringProperties {
     private final URI endpoint;
@@ -29,6 +46,8 @@ public final class ServiceBusConnectionStringProperties {
      * Parse a ServiceBus connection string into an instance of this class.
      * @param connectionString The connection string to be parsed.
      * @return An instance of this class.
+     * @throws NullPointerException if {@code connectionString} is null.
+     * @throws IllegalArgumentException if the {@code connectionString} is empty or malformatted.
      */
     public static ServiceBusConnectionStringProperties parse(String connectionString) {
         return new ServiceBusConnectionStringProperties(new ConnectionStringProperties(connectionString));
