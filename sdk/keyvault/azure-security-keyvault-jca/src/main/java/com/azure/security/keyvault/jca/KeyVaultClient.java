@@ -182,7 +182,7 @@ class KeyVaultClient extends DelegateRestClient {
                 try {
                     CertificateFactory cf = CertificateFactory.getInstance("X.509");
                     certificate = (X509Certificate) cf.generateCertificate(
-                        new ByteArrayInputStream(Base64.getDecoder().decode(certificateBundle.getCer()))
+                        new ByteArrayInputStream(Base64.getDecoder().decode(certificateString))
                     );
                 } catch (CertificateException ce) {
                     LOGGER.log(WARNING, "Certificate error", ce);
