@@ -93,7 +93,7 @@ public final class ServiceBusMessageBatch {
      * @return {@code true} if the message could be added to the batch; {@code false} if the event was too large to fit
      *     in the batch.
      *
-     * @throws IllegalArgumentException if {@code message} is {@code null}.
+     * @throws NullPointerException if {@code message} is {@code null}.
      * @throws AmqpException if {@code message} is larger than the maximum size of the {@link
      *     ServiceBusMessageBatch}.
      */
