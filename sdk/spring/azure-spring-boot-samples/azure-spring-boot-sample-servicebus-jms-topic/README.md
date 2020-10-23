@@ -12,7 +12,7 @@ Running this sample will be charged by Azure. You can check the usage and bill a
 
 * A [Java Development Kit (JDK)][jdk_link], version 1.8.
 
-* [Apache Maven](http://maven.apache.org/), version 3.0 or later.
+* [Apache Maven](https://maven.apache.org/), version 3.0 or later.
 
 ### Create Service Bus on Azure
 1. Go to [Azure portal](https://portal.azure.com/) and create the service by following this [link](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal). 
@@ -59,7 +59,7 @@ First, we need to ensure that this [instruction] is completed before run.
     Received message from topic: hello
     ```
     
-4. Delete the resources on [Azure Portal](http://ms.portal.azure.com/) to avoid extra charges.
+4. Delete the resources on [Azure Portal](https://ms.portal.azure.com/) to avoid extra charges.
 
 ## Troubleshooting
 ## Next steps

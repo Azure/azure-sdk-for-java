@@ -50,7 +50,7 @@ Management libraries can be identified by namespaces that start with `azure-mgmt
 
 ## Need help?
 
-- For reference documentation visit the [Azure SDK for Java documentation](http://aka.ms/java-docs).
+- For reference documentation visit the [Azure SDK for Java documentation](https://aka.ms/java-docs).
 - For tutorials, samples, quick starts and other documentation, visit [Azure for Java Developers](https://docs.microsoft.com/java/azure/).
 - For build reports on code quality, test coverage, etc, visit [Azure Java SDK](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/index.html).
 - File an issue via [Github Issues](https://github.com/Azure/azure-sdk-for-java/issues/new/choose).
