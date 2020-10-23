@@ -100,9 +100,7 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
 
             enabled = environment.getProperty("azure.keyvault.jca.disableHostnameVerification");
             if (Boolean.parseBoolean(enabled)) {
-                HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> {
-                    return true;
-                });
+                HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
             }
         }
     }
