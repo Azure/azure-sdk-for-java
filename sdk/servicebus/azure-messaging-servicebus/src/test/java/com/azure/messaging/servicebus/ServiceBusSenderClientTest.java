@@ -79,7 +79,7 @@ public class ServiceBusSenderClientTest {
      */
     @Test
     void createBatchNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> sender.createBatch(null));
+        Assertions.assertThrows(NullPointerException.class, () -> sender.createMessageBatch(null));
     }
 
     /**
@@ -93,7 +93,7 @@ public class ServiceBusSenderClientTest {
         when(asyncSender.createMessageBatch()).thenReturn(Mono.just(batch));
 
         //Act
-        ServiceBusMessageBatch batchMessage = sender.createBatch();
+        ServiceBusMessageBatch batchMessage = sender.createMessageBatch();
 
         //Assert
         Assertions.assertEquals(MAX_MESSAGE_LENGTH_BYTES, batchMessage.getMaxSizeInBytes());
@@ -115,7 +115,7 @@ public class ServiceBusSenderClientTest {
         when(asyncSender.createMessageBatch(options)).thenThrow(new IllegalArgumentException("too large size"));
 
         // Act & Assert
-        Assertions.assertThrows(IllegalArgumentException.class, () -> sender.createBatch(options));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> sender.createMessageBatch(options));
         verify(asyncSender, times(1)).createMessageBatch(options);
     }
 
@@ -133,7 +133,7 @@ public class ServiceBusSenderClientTest {
         when(asyncSender.createMessageBatch(options)).thenReturn(Mono.just(batch));
 
         // Act
-        ServiceBusMessageBatch messageBatch = sender.createBatch(options);
+        ServiceBusMessageBatch messageBatch = sender.createMessageBatch(options);
 
         //Assert
         Assertions.assertEquals(batch, messageBatch);

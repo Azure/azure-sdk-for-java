@@ -98,7 +98,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(3, messageId, CONTENTS_BYTES);
 
         // Assert & Act
-        ServiceBusMessageBatch batch = sender.createBatch(options);
+        ServiceBusMessageBatch batch = sender.createMessageBatch(options);
         for (ServiceBusMessage message : messages) {
             Assertions.assertTrue(batch.tryAddMessage(message));
         }

@@ -46,14 +46,14 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
             .sender()
             .buildClient();
 
-        // BEGIN: com.azure.messaging.servicebus.servicebussenderclient.createBatch
+        // BEGIN: com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch
 
         List<ServiceBusMessage> messages = Arrays.asList(new ServiceBusMessage("test-1".getBytes(UTF_8)),
             new ServiceBusMessage("test-2".getBytes(UTF_8)));
 
         final CreateMessageBatchOptions options = new CreateMessageBatchOptions().setMaximumSizeInBytes(10 * 1024);
         // Creating a batch without options set.
-        ServiceBusMessageBatch batch = sender.createBatch(options);
+        ServiceBusMessageBatch batch = sender.createMessageBatch(options);
         for (ServiceBusMessage message : messages) {
             if (batch.tryAddMessage(message)) {
                 continue;
@@ -61,7 +61,7 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
 
             sender.sendMessages(batch);
         }
-        // END: com.azure.messaging.servicebus.servicebussenderclient.createBatch
+        // END: com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch
 
         sender.close();
     }
@@ -86,7 +86,7 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
         final ServiceBusMessage thirdMessage = new ServiceBusMessage("message-3".getBytes(UTF_8));
         thirdMessage.getApplicationProperties().put("telemetry", "fps");
 
-        // BEGIN: com.azure.messaging.servicebus.servicebussenderclient.createBatch#CreateMessageBatchOptions-int
+        // BEGIN: com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch#CreateMessageBatchOptions-int
 
 
         final List<ServiceBusMessage> telemetryMessages = Arrays.asList(firstMessage, secondMessage, thirdMessage);
@@ -96,14 +96,14 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
         final CreateMessageBatchOptions options = new CreateMessageBatchOptions()
             .setMaximumSizeInBytes(256);
 
-        ServiceBusMessageBatch currentBatch = sender.createBatch(options);
+        ServiceBusMessageBatch currentBatch = sender.createMessageBatch(options);
 
         // For each telemetry message, we try to add it to the current batch.
         // When the batch is full, send it then create another batch to add more mesages to.
         for (ServiceBusMessage message : telemetryMessages) {
             if (!currentBatch.tryAddMessage(message)) {
                 sender.sendMessages(currentBatch);
-                currentBatch = sender.createBatch(options);
+                currentBatch = sender.createMessageBatch(options);
 
                 // Add the message we couldn't before.
                 if (!currentBatch.tryAddMessage(message)) {
@@ -111,6 +111,6 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
                 }
             }
         }
-        // END: com.azure.messaging.servicebus.servicebussenderclient.createBatch#CreateMessageBatchOptions-int
+        // END: com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch#CreateMessageBatchOptions-int
     }
 }

@@ -60,7 +60,7 @@ public class ServiceBusSenderAsyncClientJavaDocCodeSamples {
      * Code snippet demonstrating how to send a batch to Service Bus queue or topic.
      */
     public void sendBatch() {
-        // BEGIN: com.azure.messaging.servicebus.servicebusasyncsenderclient.createBatch
+        // BEGIN: com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch
         // The required parameter is a way to authenticate with Service Bus using credentials.
         // The connectionString provides a way to authenticate with Service Bus.
         ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
@@ -79,7 +79,7 @@ public class ServiceBusSenderAsyncClientJavaDocCodeSamples {
         },
             error -> System.err.println("Error occurred while sending batch:" + error),
             () -> System.out.println("Send complete."));
-        // END: com.azure.messaging.servicebus.servicebusasyncsenderclient.createBatch
+        // END: com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch
 
         sender.close();
     }
@@ -98,7 +98,7 @@ public class ServiceBusSenderAsyncClientJavaDocCodeSamples {
         final ServiceBusMessage secondMessage = new ServiceBusMessage("98".getBytes(UTF_8));
         secondMessage.getApplicationProperties().put("telemetry", "cpu-temperature");
 
-        // BEGIN: com.azure.messaging.servicebus.servicebusasyncsenderclient.createBatch#CreateBatchOptionsLimitedSize
+        // BEGIN: com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch#CreateMessageBatchOptionsLimitedSize
         final Flux<ServiceBusMessage> telemetryMessages = Flux.just(firstMessage, secondMessage);
 
         // Setting `setMaximumSizeInBytes` when creating a batch, limits the size of that batch.
@@ -135,6 +135,6 @@ public class ServiceBusSenderAsyncClientJavaDocCodeSamples {
                     sender.sendMessages(batch).block();
                 }
             });
-        // END: com.azure.messaging.servicebus.servicebusasyncsenderclient.createBatch#CreateBatchOptionsLimitedSize
+        // END: com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch#CreateMessageBatchOptionsLimitedSize
     }
 }

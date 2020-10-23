@@ -42,7 +42,7 @@ public class SendMessageBatchSyncSample {
             .buildClient();
 
         // Creates an ServiceBusMessageBatch where the ServiceBus.
-        ServiceBusMessageBatch currentBatch = senderClient.createBatch(
+        ServiceBusMessageBatch currentBatch = senderClient.createMessageBatch(
             new CreateMessageBatchOptions().setMaximumSizeInBytes(1024));
 
         // We try to add as many messages as a batch can fit based on the maximum size and send to Service Bus when
@@ -55,7 +55,7 @@ public class SendMessageBatchSyncSample {
 
             // The batch is full, so we create a new batch and send the batch.
             senderClient.sendMessages(currentBatch);
-            currentBatch = senderClient.createBatch();
+            currentBatch = senderClient.createMessageBatch();
 
             // Add that message that we couldn't before.
             if (!currentBatch.tryAddMessage(message)) {

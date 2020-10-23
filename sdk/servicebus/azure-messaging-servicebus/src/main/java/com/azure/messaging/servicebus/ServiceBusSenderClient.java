@@ -20,10 +20,10 @@ import java.util.Objects;
  * {@codesnippet com.azure.messaging.servicebus.servicebussenderclient.instantiation}
  *
  * <p><strong>Send messages to a Service Bus resource</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.servicebussenderclient.createBatch}
+ * {@codesnippet com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch}
  *
  * <p><strong>Send messages using a size-limited {@link ServiceBusMessageBatch}</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.servicebussenderclient.createBatch#CreateMessageBatchOptions-int}
+ * {@codesnippet com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch#CreateMessageBatchOptions-int}
  *
  * @see ServiceBusClientBuilder#sender()
  * @see ServiceBusSenderAsyncClient To communicate with a Service Bus resource using an asynchronous client.
@@ -70,7 +70,7 @@ public class ServiceBusSenderClient implements AutoCloseable {
      *
      * @return A {@link ServiceBusMessageBatch} that can fit as many messages as the transport allows.
      */
-    public ServiceBusMessageBatch createBatch() {
+    public ServiceBusMessageBatch createMessageBatch() {
         return asyncClient.createMessageBatch().block(tryTimeout);
     }
 
@@ -81,7 +81,7 @@ public class ServiceBusSenderClient implements AutoCloseable {
      * @return A new {@link ServiceBusMessageBatch} configured with the given options.
      * @throws NullPointerException if {@code options} is null.
      */
-    public ServiceBusMessageBatch createBatch(CreateMessageBatchOptions options) {
+    public ServiceBusMessageBatch createMessageBatch(CreateMessageBatchOptions options) {
         Objects.requireNonNull(options, "'options' cannot be null.");
         return asyncClient.createMessageBatch(options).block(tryTimeout);
     }
