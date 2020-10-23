@@ -9,6 +9,9 @@ parameters:
 - name: Artifacts
   type: object
   default: []
+- name: TestPipeline
+  type: boolean
+  default: false
 - name: AdditionalModules
   type: object
   default: []
@@ -30,9 +33,10 @@ stages:
     jobs:
     - template: ../jobs/archetype-sdk-client.yml
       parameters:
-        ServiceDirectory: ${{parameters.ServiceDirectory}}
-        SDKType: ${{parameters.SDKType}}
-        Artifacts: ${{parameters.Artifacts}}
+        ServiceDirectory: ${{ parameters.ServiceDirectory }}
+        TestPipeline: ${{ parameters.TestPipeline }}
+        SDKType: ${{ parameters.SDKType }}
+        Artifacts: ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
@@ -40,10 +44,11 @@ stages:
     - template: archetype-java-release.yml
       parameters:
         DependsOn: Build
-        ServiceDirectory: ${{parameters.ServiceDirectory}}
-        SDKType: ${{parameters.SDKType}}
-        Artifacts: ${{parameters.Artifacts}}
+        ServiceDirectory: ${{ parameters.ServiceDirectory }}
+        SDKType: ${{ parameters.SDKType }}
+        Artifacts: ${{ parameters.Artifacts }}
+        TestPipeline: ${{ parameters.TestPipeline }}
         ArtifactName: packages
-        TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
-        TargetDocRepoName: ${{parameters.TargetDocRepoName}} 
+        TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
+        TargetDocRepoName: ${{ parameters.TargetDocRepoName }} 
 
