@@ -87,7 +87,7 @@ public interface Volume extends HasInner<VolumeInner>, Indexable, Refreshable<Vo
     /**
      * @return the serviceLevel value.
      */
-    ServiceLevel serviceLevel();
+    VolumeServiceLevel serviceLevel();
 
     /**
      * @return the snapshotDirectoryVisible value.
@@ -271,7 +271,7 @@ public interface Volume extends HasInner<VolumeInner>, Indexable, Refreshable<Vo
              * @param serviceLevel The service level of the file system. Possible values include: 'Standard', 'Premium', 'Ultra'
              * @return the next definition stage
              */
-            WithCreate withServiceLevel(ServiceLevel serviceLevel);
+            WithCreate withServiceLevel(VolumeServiceLevel serviceLevel);
         }
 
         /**
