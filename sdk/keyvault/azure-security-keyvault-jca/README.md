@@ -19,6 +19,8 @@ Azure Key Vault. It is built on four principles:
 If you are looking to integrate the JCA provider to create an SSLServerSocket
 see the example below.
 
+<!-- embedme src/samples/java/sample/ServerSSLSample.java#L20-L38 -->
+
 ```java
     KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
     Security.addProvider(provider);
@@ -48,6 +50,8 @@ of `azure.keyvault.uri`, and the rest of the parameters would be `null`.
 
 If you are looking to integrate the JCA provider for client side socket 
 connections, see the Apache HTTP client example below.
+
+<!-- embedme src/samples/java/sample/ClientSSLSample.java#L29-L73 -->
 
 ```java
     KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
