@@ -58,6 +58,11 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-communication-administration</artifactId>
+      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-communication-administration;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
       <version>1.5.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>

@@ -12,11 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import reactor.test.StepVerifier;
 
+@ExtendWith({PhoneNumberLiveTestSetup.class})
 public class SmsLiveAsyncClientTests extends SmsLiveTestBase {
 
     private List<PhoneNumber> to;
