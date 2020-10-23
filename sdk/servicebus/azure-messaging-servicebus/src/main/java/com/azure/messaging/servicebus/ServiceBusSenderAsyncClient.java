@@ -390,7 +390,6 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                                 "Messages exceed max allowed size '%s' bytes for all the messages together."
                                     + " Failed to add message at index '%s'.",
                                 maxSize, index.get());
-                            //throw new ;
                             throw logger.logExceptionAsError(new AmqpException(false,
                                 AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, error, link.getErrorContext()));
                         }

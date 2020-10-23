@@ -248,31 +248,6 @@ class ServiceBusSenderAsyncClientTest {
             .verify();
     }
 
-    @Test
-    void scheduleMessageSizeTooBig() {
-        // Arrange
-        int maxLinkSize = 1024;
-        int batchSize = maxLinkSize + 10;
-
-        OffsetDateTime instant = mock(OffsetDateTime.class);
-        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(batchSize, UUID.randomUUID().toString());
-
-        final AmqpSendLink link = mock(AmqpSendLink.class);
-        when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
-
-        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull()))
-            .thenReturn(Mono.just(link));
-        when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
-
-        // Act & Assert
-        StepVerifier.create(sender.scheduleMessages(messages, instant))
-            .verifyErrorMatches(throwable -> {
-                assertTrue(throwable instanceof  AmqpException);
-                assertSame(((AmqpException) throwable).getErrorCondition(), AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED);
-                return true;
-            });
-    }
-
     /**
      * Verifies that the producer can create a batch with a given {@link CreateBatchOptions#getMaximumSizeInBytes()}.
      */
@@ -315,6 +290,31 @@ class ServiceBusSenderAsyncClientTest {
             .verifyComplete();
     }
 
+    @Test
+    void scheduleMessageSizeTooBig() {
+        // Arrange
+        int maxLinkSize = 1024;
+        int batchSize = maxLinkSize + 10;
+
+        OffsetDateTime instant = mock(OffsetDateTime.class);
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(batchSize, UUID.randomUUID().toString());
+
+        final AmqpSendLink link = mock(AmqpSendLink.class);
+        when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
+
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull()))
+            .thenReturn(Mono.just(link));
+        when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
+
+        // Act & Assert
+        StepVerifier.create(sender.scheduleMessages(messages, instant))
+            .verifyErrorMatches(throwable -> {
+                assertTrue(throwable instanceof  AmqpException);
+                assertSame(((AmqpException) throwable).getErrorCondition(), AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED);
+                return true;
+            });
+    }
+    
     /**
      * Verifies that sending multiple message will result in calling sender.send(MessageBatch, transaction).
      */
