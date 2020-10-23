@@ -834,4 +834,59 @@ public final class PhoneNumberAsyncClient {
             return Mono.just(pollingContext.getLatestResponse().getValue());
         };
     }
+
+    /**
+     * LongRunningOperation for the purchaseSearch.
+     *
+     * @param reservationId ID of the reservation
+     * @param pollInterval Time lapse of the poll request.
+     * @return A {@link PollerFlux} object.
+     */
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<Void, Void> beginPurchaseReservation(String reservationId, Duration pollInterval) {
+        Objects.requireNonNull(reservationId, "'reservationId' can not be null.");
+        Objects.requireNonNull(pollInterval, "'pollInterval' can not be null.");
+
+        return new PollerFlux<Void, Void>(pollInterval,
+            purchaseReservationActivationOperation(reservationId),
+            purchaseReservationCreatePollOperation(reservationId),
+            (activationResponse, pollingContext) -> Mono.error(new RuntimeException("Cancellation is not supported")),
+            purchaseReservationFetchResultOperation());
+    }
+
+    private Function<PollingContext<Void>, Mono<Void>> purchaseReservationActivationOperation(String reservationId) {
+
+        return (pollingContext) -> {
+            Mono<Void> response = purchaseSearch(reservationId);
+            return response;
+        };
+    }
+
+    private Function<PollingContext<Void>, Mono<PollResponse<Void>>>
+        purchaseReservationCreatePollOperation(String reservationId) {
+        return (pollingContext) -> getSearchById(reservationId)
+            .flatMap(getSearchResponse -> {
+                SearchStatus statusResponse = getSearchResponse.getStatus();
+                if (statusResponse.equals(SearchStatus.RESERVED) 
+                    || statusResponse.equals(SearchStatus.EXPIRED)
+                    || statusResponse.equals(SearchStatus.SUCCESS)) {
+                    return Mono.just(new PollResponse<>(
+                    LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null));
+                }
+                if (statusResponse.equals(SearchStatus.ERROR)) {
+                    return Mono.just(new PollResponse<>(
+                    LongRunningOperationStatus.FAILED, null));
+                }
+                return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, null));
+            });
+    }
+
+    private Function<PollingContext<Void>,
+        Mono<Void>> purchaseReservationFetchResultOperation() {
+        return pollingContext -> {
+            return Mono.empty();
+        };
+
+    }
 }

@@ -18,6 +18,7 @@ import com.azure.communication.administration.models.PhonePlan;
 import com.azure.communication.administration.models.PhonePlanGroup;
 import com.azure.communication.administration.models.PstnConfiguration;
 import com.azure.communication.administration.models.ReleaseResponse;
+import com.azure.communication.administration.models.SearchStatus;
 import com.azure.communication.administration.models.UpdateNumberCapabilitiesResponse;
 import com.azure.communication.administration.models.UpdatePhoneNumberCapabilitiesResponse;
 import com.azure.communication.common.PhoneNumber;
@@ -525,6 +526,22 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
         PhoneNumberSearch testResult = asyncRes.getValue();
         assertEquals(testResult.getPhoneNumbers().size(), 2);
         assertNotNull(testResult.getSearchId());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void beginPurchaseSearch(HttpClient httpClient){
+        Duration pollInterval = Duration.ofSeconds(5);
+        PollerFlux<Void,Void> poller =
+            this.getClient(httpClient).beginPurchaseReservation(SEARCH_ID, pollInterval);
+        poller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+        .blockLast();
+        Mono<PhoneNumberSearch> mono = this.getClient(httpClient).getSearchById(SEARCH_ID);
+        StepVerifier.create(mono)
+            .assertNext(item -> {
+                assertEquals(SearchStatus.SUCCESS, item.getStatus());
+            })
+            .verifyComplete();
     }
 
     private PhoneNumberAsyncClient getClient(HttpClient httpClient) {
