@@ -73,8 +73,17 @@ public final class RntbdContextNegotiator extends CombinedChannelDuplexHandler<R
 
         logger.debug("{} START CONTEXT REQUEST", context.channel());
 
-        final Channel channel = context.channel();
+        final Channel channel;
+        try {
+             channel = context.channel();
+        } catch(Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+        logger.info("channel {}", channel.remoteAddress() + ": " + channel.isActive());
+        logger.info("build new RntbdContextRequest");
         final RntbdContextRequest request = new RntbdContextRequest(Utils.randomUUID(), this.userAgent);
+        logger.info("get rntbdContextRequestFuture");
         final CompletableFuture<RntbdContextRequest> contextRequestFuture = this.manager.rntbdContextRequestFuture();
 
         super.write(context, request, channel.newPromise().addListener((ChannelFutureListener)future -> {

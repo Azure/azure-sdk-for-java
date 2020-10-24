@@ -6,11 +6,14 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class RntbdContextRequestDecoder extends ByteToMessageDecoder {
 
+    private static Logger logger = LoggerFactory.getLogger(RntbdContextRequestDecoder.class);
     public RntbdContextRequestDecoder() {
         this.setSingleDecode(true);
     }
@@ -25,6 +28,7 @@ public class RntbdContextRequestDecoder extends ByteToMessageDecoder {
     @Override
     public void channelRead(final ChannelHandlerContext context, final Object message) throws Exception {
 
+        logger.info("reached to channel read");
         if (message instanceof ByteBuf) {
 
             final ByteBuf in = (ByteBuf)message;
@@ -52,6 +56,7 @@ public class RntbdContextRequestDecoder extends ByteToMessageDecoder {
      */
     @Override
     protected void decode(final ChannelHandlerContext context, final ByteBuf in, final List<Object> out) throws IllegalStateException {
+        logger.info("reached to Decode");
 
         final RntbdContextRequest request;
         in.markReaderIndex();

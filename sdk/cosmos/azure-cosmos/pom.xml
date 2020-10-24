@@ -237,7 +237,6 @@ Licensed under the MIT License.
           </rules>
         </configuration>
       </plugin>
-
     </plugins>
   </build>
   <profiles>
