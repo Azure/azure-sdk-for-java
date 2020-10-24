@@ -36,7 +36,7 @@ public class ServiceBusMessageBatchTest {
     @Test
     public void nullMessage() {
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(1024, errorContextProvider, tracerProvider, serializer, null, null);
-        assertThrows(IllegalArgumentException.class, () -> batch.tryAddMessage(null));
+        assertThrows(NullPointerException.class, () -> batch.tryAddMessage(null));
     }
 
     /**
