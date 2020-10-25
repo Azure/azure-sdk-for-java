@@ -4,7 +4,6 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.SearchDocument;
-import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.models.SuggestResult;
 
 /**
@@ -22,22 +21,6 @@ public final class SuggestResultConverter {
 
         SearchDocument additionalProperties = new SearchDocument(obj.getAdditionalProperties());
         SuggestResultHelper.setAdditionalProperties(suggestResult, additionalProperties);
-
-        return suggestResult;
-    }
-
-    /**
-     * Maps from {@link SuggestResult} to {@link com.azure.search.documents.implementation.models.SuggestResult}.
-     */
-    public static com.azure.search.documents.implementation.models.SuggestResult map(SuggestResult obj) {
-        if (obj == null) {
-            return null;
-        }
-        com.azure.search.documents.implementation.models.SuggestResult suggestResult =
-            new com.azure.search.documents.implementation.models.SuggestResult(obj.getText());
-
-        SearchDocument additionalProperties = obj.getDocument(SearchDocument.class);
-        PrivateFieldAccessHelper.set(suggestResult, "additionalProperties", additionalProperties);
 
         return suggestResult;
     }
