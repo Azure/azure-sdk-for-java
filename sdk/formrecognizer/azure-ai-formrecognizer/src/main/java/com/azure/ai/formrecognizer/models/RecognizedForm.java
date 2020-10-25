@@ -3,6 +3,8 @@
 
 package com.azure.ai.formrecognizer.models;
 
+import com.azure.ai.formrecognizer.implementation.RecognizedFormHelper;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +39,20 @@ public final class RecognizedForm {
     private Float formTypeConfidence;
 
     private String modelId;
+
+    static {
+        RecognizedFormHelper.setAccessor(new RecognizedFormHelper.RecognizedFormAccessor() {
+            @Override
+            public void setFormTypeConfidence(RecognizedForm form, Float formTypeConfidence) {
+                form.setFormTypeConfidence(formTypeConfidence);
+            }
+
+            @Override
+            public void setModelId(RecognizedForm form, String modelId) {
+                form.setModelId(modelId);
+            }
+        });
+    }
 
     /**
      * Constructs a RecognizedForm object.
@@ -109,5 +125,25 @@ public final class RecognizedForm {
      */
     public String getModelId() {
         return modelId;
+    }
+
+    /**
+     * The private setter to set the formTypeConfidence property
+     * via {@link RecognizedFormHelper.RecognizedFormAccessor}.
+     *
+     * @param formTypeConfidence The confidence of the form type identified by the model.
+     */
+    private void setFormTypeConfidence(Float formTypeConfidence) {
+        this.formTypeConfidence = formTypeConfidence;
+    }
+
+    /**
+     * The private setter to set the modelId property
+     * via {@link RecognizedFormHelper.RecognizedFormAccessor}.
+     *
+     * @param modelId The identifier of the model that was used for recognition.
+     */
+    private void setModelId(String modelId) {
+        this.modelId = modelId;
     }
 }
