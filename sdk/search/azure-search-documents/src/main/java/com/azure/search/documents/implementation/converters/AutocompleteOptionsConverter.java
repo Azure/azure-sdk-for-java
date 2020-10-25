@@ -45,7 +45,7 @@ public final class AutocompleteOptionsConverter {
 
         if (obj.getSearchFields() != null) {
             List<String> searchFields = new ArrayList<>(obj.getSearchFields());
-            PrivateFieldAccessHelper.set(autocompleteOptions, "searchFields", searchFields);
+            AutocompleteOptionsHelper.setSearchFields(autocompleteOptions, searchFields);
         }
 
         String highlightPreTag = obj.getHighlightPreTag();

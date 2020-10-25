@@ -21,7 +21,7 @@ public final class IndexingResultConverter {
         IndexingResult indexingResult = new IndexingResult(obj.getKey(), obj.isSucceeded(), obj.getStatusCode());
 
         String errorMessage = obj.getErrorMessage();
-        PrivateFieldAccessHelper.set(indexingResult, "errorMessage", errorMessage);
+        IndexingResultHelper.setErrorMessage(indexingResult, errorMessage);
 
         return indexingResult;
     }

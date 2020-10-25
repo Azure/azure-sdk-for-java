@@ -21,7 +21,7 @@ public final class SuggestResultConverter {
         SuggestResult suggestResult = new SuggestResult(obj.getText());
 
         SearchDocument additionalProperties = new SearchDocument(obj.getAdditionalProperties());
-        PrivateFieldAccessHelper.set(suggestResult, "additionalProperties", additionalProperties);
+        SuggestResultHelper.setAdditionalProperties(suggestResult, additionalProperties);
 
         return suggestResult;
     }
