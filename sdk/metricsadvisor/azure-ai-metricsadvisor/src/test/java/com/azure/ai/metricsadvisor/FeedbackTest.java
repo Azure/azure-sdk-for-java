@@ -217,13 +217,14 @@ public class FeedbackTest extends FeedbackTestBase {
     public void getMetricFeedbackValidId(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
-
-        // Act & Assert
-        final Response<MetricFeedback> metricFeedbackResponse =
-            client.getMetricFeedbackWithResponse(COMMENT_FEEDBACK_ID, Context.NONE);
-        assertEquals(metricFeedbackResponse.getStatusCode(), HttpResponseStatus.OK.code());
-        validateMetricFeedbackResult(getCommentFeedback(), metricFeedbackResponse.getValue(), COMMENT);
-
+        creatMetricFeedbackRunner(expectedMetricFeedback -> {
+            final MetricFeedback createdFeedback = client.createMetricFeedback(METRIC_ID, expectedMetricFeedback);
+            // Act & Assert
+            final Response<MetricFeedback> metricFeedbackResponse =
+                client.getMetricFeedbackWithResponse(createdFeedback.getId(), Context.NONE);
+            assertEquals(metricFeedbackResponse.getStatusCode(), HttpResponseStatus.OK.code());
+            validateMetricFeedbackResult(getCommentFeedback(), metricFeedbackResponse.getValue(), COMMENT);
+        }, COMMENT);
     }
 
     // Create metric feedback

@@ -14,6 +14,7 @@ import java.time.OffsetDateTime;
 
 public abstract class AlertTestBase extends MetricsAdvisorClientTestBase {
     public abstract void listAlerts(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
+    public static final String ALERT_CONFIG_ID = "204a211a-c5f4-45f3-a30e-512fb25d1d2c";
 
     // Pre-configured test resource.
     protected static class ListAlertsInput {
@@ -23,7 +24,7 @@ public abstract class AlertTestBase extends MetricsAdvisorClientTestBase {
         final TimeMode timeMode = TimeMode.ANOMALY_TIME;
         final ListAlertOptions options = new ListAlertOptions(startTime, endTime, timeMode)
             .setTop(10);
-        final String alertConfigurationId = "204a211a-c5f4-45f3-a30e-512fb25d1d2c";
+        final String alertConfigurationId = ALERT_CONFIG_ID;
     }
 
     protected static class ListAlertsOutput {
