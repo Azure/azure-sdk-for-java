@@ -28,6 +28,15 @@ public final class CreateDigitalTwinOptions {
     @JsonProperty(value = "tracestate")
     private String tracestate;
 
+    /*
+     * If-Non-Match header that makes the request method conditional on a recipient cache or origin server either not having any current representation of the target resource.
+     * Acceptable values are null or "*".
+     * If IfNonMatch option is null the service will replace the existing entity with the new entity.
+     * If IfNonMatch option is "*" the service will reject the request if the entity already exists.
+     */
+    @JsonProperty(value = "If-None-Match")
+    private String ifNoneMatch;
+
     /**
      * Get the traceparent property: Identifies the request in a distributed tracing system.
      *
@@ -35,6 +44,20 @@ public final class CreateDigitalTwinOptions {
      */
     public String getTraceParent() {
         return this.traceparent;
+    }
+
+    /**
+     * Get the ifNoneMatch property
+     *
+     * If-Non-Match header makes the request method conditional on a recipient cache or origin server either not having any current representation of the target resource.
+     * Acceptable values are null or "*".
+     * If IfNonMatch option is null the service will replace the existing entity with the new entity.
+     * If IfNonMatch option is "*" the service will reject the request if the entity already exists.
+     *
+     * @return the ifNoneMatch value.
+     */
+    public String getIfNoneMatch() {
+        return this.ifNoneMatch;
     }
 
     /**
@@ -67,6 +90,22 @@ public final class CreateDigitalTwinOptions {
      */
     public CreateDigitalTwinOptions setTraceState(String tracestate) {
         this.tracestate = tracestate;
+        return this;
+    }
+
+    /**
+     * Set the ifNoneMatch property.
+     *
+     * If-Non-Match header makes the request method conditional on a recipient cache or origin server either not having any current representation of the target resource.
+     * Acceptable values are null or "*".
+     * If IfNonMatch option is null the service will replace the existing entity with the new entity.
+     * If IfNonMatch option is "*" the service will reject the request if the entity already exists.
+     *
+     * @param ifNoneMatch the ifNoneMatch value to set.
+     * @return the CreateRelationshipOptions object itself.
+     */
+    public CreateDigitalTwinOptions setIfNoneMatch(String ifNoneMatch) {
+        this.ifNoneMatch = ifNoneMatch;
         return this;
     }
 }

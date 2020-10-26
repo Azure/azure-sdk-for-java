@@ -64,11 +64,11 @@ public class TwinTests extends TwinTestBase{
 
             BasicDigitalTwin getTwinObject = client.getDigitalTwin(roomTwinId, BasicDigitalTwin.class);
 
-            assertThat(getTwinObject.getCustomProperties().get("Humidity"))
+            assertThat(getTwinObject.getProperties().get("Humidity"))
                 .as("Humidity is added")
                 .isEqualTo(30);
 
-            assertThat(getTwinObject.getCustomProperties().get("Temperature"))
+            assertThat(getTwinObject.getProperties().get("Temperature"))
                 .as("Temperature is updated")
                 .isEqualTo(70);
 

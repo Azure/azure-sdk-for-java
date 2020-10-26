@@ -28,6 +28,15 @@ public final class CreateRelationshipOptions {
     @JsonProperty(value = "tracestate")
     private String tracestate;
 
+    /*
+     * If-Non-Match header that makes the request method conditional on a recipient cache or origin server either not having any current representation of the target resource.
+     * Acceptable values are null or "*".
+     * If IfNonMatch option is null the service will replace the existing entity with the new entity.
+     * If IfNonMatch option is "*" the service will reject the request if the entity already exists.
+     */
+    @JsonProperty(value = "If-None-Match")
+    private String ifNoneMatch;
+
     /**
      * Get the traceparent property: Identifies the request in a distributed tracing system.
      *
@@ -59,6 +68,20 @@ public final class CreateRelationshipOptions {
     }
 
     /**
+     * Get the ifNoneMatch property
+     *
+     * If-Non-Match header makes the request method conditional on a recipient cache or origin server either not having any current representation of the target resource.
+     * Acceptable values are null or "*".
+     * If IfNonMatch option is null the service will replace the existing entity with the new entity.
+     * If IfNonMatch option is "*" the service will reject the request if the entity already exists.
+     *
+     * @return the ifNoneMatch value.
+     */
+    public String getIfNoneMatch() {
+        return this.ifNoneMatch;
+    }
+
+    /**
      * Set the tracestate property: Provides vendor-specific trace identification information and is a companion to
      * traceparent.
      *
@@ -67,6 +90,22 @@ public final class CreateRelationshipOptions {
      */
     public CreateRelationshipOptions setTraceState(String tracestate) {
         this.tracestate = tracestate;
+        return this;
+    }
+
+    /**
+     * Set the ifNoneMatch property.
+     *
+     * If-Non-Match header makes the request method conditional on a recipient cache or origin server either not having any current representation of the target resource.
+     * Acceptable values are null or "*".
+     * If IfNonMatch option is null the service will replace the existing entity with the new entity.
+     * If IfNonMatch option is "*" the service will reject the request if the entity already exists.
+     *
+     * @param ifNoneMatch the ifNoneMatch value to set.
+     * @return the CreateRelationshipOptions object itself.
+     */
+    public CreateRelationshipOptions setIfNoneMatch(String ifNoneMatch) {
+        this.ifNoneMatch = ifNoneMatch;
         return this;
     }
 }

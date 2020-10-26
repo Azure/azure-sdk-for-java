@@ -268,8 +268,8 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
                 "mySourceDigitalTwinId",
                 "myTargetDigitalTwinId",
                 "contains")
-            .addCustomProperty("Prop1", "Prop1 value")
-            .addCustomProperty("Prop2", 6);
+            .addProperty("Prop1", "Prop1 value")
+            .addProperty("Prop2", 6);
 
         BasicRelationship createdRelationship = digitalTwinsSyncClient.createRelationship(
             "mySourceDigitalTwinId",
@@ -309,8 +309,8 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
                 "mySourceDigitalTwinId",
                 "myTargetDigitalTwinId",
                 "contains")
-            .addCustomProperty("Prop1", "Prop1 value")
-            .addCustomProperty("Prop2", 6);
+            .addProperty("Prop1", "Prop1 value")
+            .addProperty("Prop2", 6);
 
         Response<BasicRelationship> createdRelationshipWithResponse =
             digitalTwinsSyncClient.createRelationshipWithResponse(

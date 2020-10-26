@@ -16,7 +16,10 @@ public final class OptionsConverter {
             return null;
         }
 
-        return new DigitalTwinsAddOptions().setTraceparent(options.getTraceParent()).setTracestate(options.getTraceState());
+        return new DigitalTwinsAddOptions()
+            .setTraceparent(options.getTraceParent())
+            .setTracestate(options.getTraceState())
+            .setIfNoneMatch(options.getIfNoneMatch());
     }
 
     public static DigitalTwinsAddRelationshipOptions toProtocolLayerOptions(CreateRelationshipOptions options) {
@@ -24,7 +27,10 @@ public final class OptionsConverter {
             return null;
         }
 
-        return new DigitalTwinsAddRelationshipOptions().setTraceparent(options.getTraceParent()).setTracestate(options.getTraceState());
+        return new DigitalTwinsAddRelationshipOptions()
+            .setTraceparent(options.getTraceParent())
+            .setTracestate(options.getTraceState())
+            .setIfNoneMatch(options.getIfNoneMatch());
     }
 
     public static DigitalTwinModelsAddOptions toProtocolLayerOptions(CreateModelsOptions options) {
