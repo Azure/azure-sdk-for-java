@@ -73,15 +73,10 @@ public class AdvancedDiffLabeledUnlabeledData {
         // `labelText` is not populated for a model trained with labels as this was the given label used to extract
         // the key
         formsWithLabeledModel.forEach(labeledForm -> labeledForm.getFields().forEach((label, formField) -> {
-            final StringBuilder boundingBoxStr = new StringBuilder();
-            if (formField.getValueData().getBoundingBox() != null) {
-                formField.getValueData().getBoundingBox().getPoints().stream().map(point ->
-                    String.format("[%.2f, %.2f]", point.getX(), point.getY())).forEach(boundingBoxStr::append);
-            }
             System.out.printf("Field %s has value data text %s based on %s within bounding box %s with a confidence "
                     + "score of %.2f.%n",
-                label, formField.getValueData().getText(), formField.getValueData().getText(), boundingBoxStr,
-                formField.getConfidence());
+                label, formField.getValueData().getText(), formField.getValueData().getText(),
+                formField.getValueData().getBoundingBox().toString(), formField.getConfidence());
 
             // Find the value of a specific labeled field.
             System.out.println("Value for a specific labeled field using the training-time label:");

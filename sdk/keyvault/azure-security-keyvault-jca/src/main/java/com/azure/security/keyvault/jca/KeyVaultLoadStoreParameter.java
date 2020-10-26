@@ -6,7 +6,7 @@ package com.azure.security.keyvault.jca;
 import java.security.KeyStore;
 
 /**
- * The Azure KeyVault LoadStoreParameter of the KeyStoreSpi.
+ * The Azure Key Vault LoadStoreParameter of the KeyStoreSpi.
  */
 public class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParameter {
 
@@ -33,7 +33,7 @@ public class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParameter {
     /**
      * Constructor.
      *
-     * @param uri the KeyVault URI.
+     * @param uri the Azure Key Vault URI.
      * @param tenantId the tenant ID.
      * @param clientId the client ID.
      * @param clientSecret the client secret.

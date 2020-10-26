@@ -7,12 +7,13 @@ import com.azure.core.annotation.Fluent;
 
 import java.time.Duration;
 
+import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
+
 /**
  * The configurable options to pass when creating a composed model.
  */
 @Fluent
 public final class CreateComposedModelOptions {
-    private static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
     private String modelName;
     private Duration pollInterval = DEFAULT_POLL_INTERVAL;
 
