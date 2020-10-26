@@ -23,6 +23,12 @@ public final class DigitalTwinsAddOptions {
     @JsonProperty(value = "tracestate")
     private String tracestate;
 
+    /*
+     * Only perform the operation if the entity does not already exist.
+     */
+    @JsonProperty(value = "If-None-Match")
+    private String ifNoneMatch;
+
     /**
      * Get the traceparent property: Identifies the request in a distributed tracing system.
      *
@@ -62,6 +68,26 @@ public final class DigitalTwinsAddOptions {
      */
     public DigitalTwinsAddOptions setTracestate(String tracestate) {
         this.tracestate = tracestate;
+        return this;
+    }
+
+    /**
+     * Get the ifNoneMatch property: Only perform the operation if the entity does not already exist.
+     *
+     * @return the ifNoneMatch value.
+     */
+    public String getIfNoneMatch() {
+        return this.ifNoneMatch;
+    }
+
+    /**
+     * Set the ifNoneMatch property: Only perform the operation if the entity does not already exist.
+     *
+     * @param ifNoneMatch the ifNoneMatch value to set.
+     * @return the DigitalTwinsAddOptions object itself.
+     */
+    public DigitalTwinsAddOptions setIfNoneMatch(String ifNoneMatch) {
+        this.ifNoneMatch = ifNoneMatch;
         return this;
     }
 

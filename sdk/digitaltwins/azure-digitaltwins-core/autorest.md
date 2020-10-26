@@ -41,3 +41,11 @@ java:
     custom-types-subpackage: models
     required-fields-as-ctor-args: true
 ```
+``` yaml
+
+directive:
+- from: swagger-document
+  where: $..[?(@.name=='If-None-Match')]
+  transform: delete $.enum;
+
+```
