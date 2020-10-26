@@ -113,7 +113,7 @@
                     <rules>
                         <bannedDependencies>
                             <includes>
-                                <include>org.apache.httpcomponents.client5:httpclient5:[5.0.1]</include> <!-- {x-include-update;org.apache.httpcomponents.client5:httpclient5;external_dependency} -->
+                                <include>org.apache.httpcomponents.client5:httpclient5:[5.0.3]</include> <!-- {x-include-update;org.apache.httpcomponents.client5:httpclient5;external_dependency} -->
                                 <include>com.fasterxml.jackson.core:jackson-databind:[2.11.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                                 <include>org.slf4j:slf4j-nop:[1.7.30]</include> <!-- {x-include-update;org.slf4j:slf4j-nop;external_dependency} -->
                             </includes>
@@ -152,7 +152,7 @@
         <dependency>
             <groupId>org.apache.httpcomponents.client5</groupId>
             <artifactId>httpclient5</artifactId>
-            <version>5.0.1</version> <!-- {x-version-update;org.apache.httpcomponents.client5:httpclient5;external_dependency} -->
+            <version>5.0.3</version> <!-- {x-version-update;org.apache.httpcomponents.client5:httpclient5;external_dependency} -->
             <optional>true</optional>
         </dependency>
         <!-- Jackson Databind -->
