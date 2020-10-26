@@ -186,7 +186,8 @@ public class TracerProvider {
         return tracerMono
             .doOnSuccess(response -> {
                 if (Configs.isClientTelemetryEnabled(BridgeInternal.isClientTelemetryEnabled(client)) && response instanceof CosmosItemResponse) {
-                    CosmosItemResponse itemResponse = (CosmosItemResponse) response;
+                    @SuppressWarnings("unchecked")
+                    CosmosItemResponse<T> itemResponse = (CosmosItemResponse<T>) response;
                     fillClientTelemetry(client, itemResponse.getDiagnostics(), itemResponse.getStatusCode(),
                         ModelBridgeInternal.getPayloadLength(itemResponse), containerId,
                         databaseId, operationType, resourceType, consistencyLevel,
@@ -227,18 +228,17 @@ public class TracerProvider {
             , operationType, resourceType, consistencyLevel, ClientTelemetry.REQUEST_LATENCY_NAME,
             ClientTelemetry.REQUEST_LATENCY_UNIT);
         if (telemetry.getClientTelemetryInfo().getOperationInfoMap().containsKey(reportPayloadLatency)) {
-            ClientTelemetry.RecordValue(telemetry.getClientTelemetryInfo().getOperationInfoMap().get(reportPayloadLatency), cosmosDiagnostics.getDuration().toNanos()/1000);
+            ClientTelemetry.recordValue(telemetry.getClientTelemetryInfo().getOperationInfoMap().get(reportPayloadLatency), cosmosDiagnostics.getDuration().toNanos()/1000);
         } else {
-            ConcurrentDoubleHistogram latencyHistogram = null;
+            ConcurrentDoubleHistogram latencyHistogram;
             if (statusCode == HttpConstants.StatusCodes.OK || statusCode == HttpConstants.StatusCodes.CREATED) {
-                latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX,
-                    ClientTelemetry.REQUEST_LATENCY_SUCCESS_PRECISION);
+                latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX, ClientTelemetry.REQUEST_LATENCY_SUCCESS_PRECISION);
             } else {
-                latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX,
-                    ClientTelemetry.REQUEST_LATENCY_FAILURE_PRECISION);
+                latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX, ClientTelemetry.REQUEST_LATENCY_FAILURE_PRECISION);
             }
+
             latencyHistogram.setAutoResize(true);
-            ClientTelemetry.RecordValue(latencyHistogram, cosmosDiagnostics.getDuration().toNanos()/1000);
+            ClientTelemetry.recordValue(latencyHistogram, cosmosDiagnostics.getDuration().toNanos()/1000);
             telemetry.getClientTelemetryInfo().getOperationInfoMap().put(reportPayloadLatency, latencyHistogram);
         }
 
@@ -246,11 +246,11 @@ public class TracerProvider {
             statusCode, objectSize, containerId, databaseId
             , operationType, resourceType, consistencyLevel, ClientTelemetry.REQUEST_CHARGE_NAME, ClientTelemetry.REQUEST_CHARGE_UNIT);
         if (telemetry.getClientTelemetryInfo().getOperationInfoMap().containsKey(reportPayloadRequestCharge)) {
-            ClientTelemetry.RecordValue( telemetry.getClientTelemetryInfo().getOperationInfoMap().get(reportPayloadRequestCharge), requestCharge);
+            ClientTelemetry.recordValue( telemetry.getClientTelemetryInfo().getOperationInfoMap().get(reportPayloadRequestCharge), requestCharge);
         } else {
             ConcurrentDoubleHistogram requestChargeHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_CHARGE_MAX, ClientTelemetry.REQUEST_CHARGE_PRECISION);
             requestChargeHistogram.setAutoResize(true);
-            ClientTelemetry.RecordValue(requestChargeHistogram, requestCharge);
+            ClientTelemetry.recordValue(requestChargeHistogram, requestCharge);
             telemetry.getClientTelemetryInfo().getOperationInfoMap().put(reportPayloadRequestCharge,
                 requestChargeHistogram);
         }

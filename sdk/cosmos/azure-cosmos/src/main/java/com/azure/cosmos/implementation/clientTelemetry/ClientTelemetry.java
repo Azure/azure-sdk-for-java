@@ -31,10 +31,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ClientTelemetry {
-    public final static int TELEMETRY_SCHEDULING_IN_SEC = 600;
     public final static int REQUEST_LATENCY_MAX = 300000000;
     public final static int REQUEST_LATENCY_SUCCESS_PRECISION = 4;
-    public final static int REQUEST_LATENCY_FAILURE_PRECISION = 4;
+    public final static int REQUEST_LATENCY_FAILURE_PRECISION = 2;
     public final static String REQUEST_LATENCY_NAME = "RequestLatency";
     public final static String REQUEST_LATENCY_UNIT = "MicroSec";
 
@@ -68,6 +67,7 @@ public class ClientTelemetry {
     private static final double PERCENTILE_95 = 95.0;
     private static final double PERCENTILE_99 = 99.0;
     private static final double PERCENTILE_999 = 99.9;
+    private final int clientTelemetrySchedulingSec;
 
     public ClientTelemetry(Boolean acceleratedNetworking,
                            String clientId,
@@ -78,7 +78,8 @@ public class ClientTelemetry {
                            String applicationRegion,
                            String hostEnvInfo,
                            HttpClient httpClient,
-                           boolean isClientTelemetryEnabled
+                           boolean isClientTelemetryEnabled,
+                           Configs Configs
     ) {
         clientTelemetryInfo = new ClientTelemetryInfo(clientId, processId, userAgent, connectionMode,
             globalDatabaseAccountName, applicationRegion, hostEnvInfo, acceleratedNetworking);
@@ -90,13 +91,14 @@ public class ClientTelemetry {
         this.isClosed = false;
         this.httpClient = httpClient;
         this.isClientTelemetryEnabled = isClientTelemetryEnabled;
+        this.clientTelemetrySchedulingSec = Configs.getClientTelemetrySchedulingInSec();
     }
 
     public ClientTelemetryInfo getClientTelemetryInfo() {
         return clientTelemetryInfo;
     }
 
-    public static void RecordValue(DoubleHistogram doubleHistogram, long value) {
+    public static void recordValue(DoubleHistogram doubleHistogram, long value) {
         try {
             doubleHistogram.recordValue(value);
         } catch (Exception ex) {
@@ -104,7 +106,7 @@ public class ClientTelemetry {
         }
     }
 
-    public static void RecordValue(DoubleHistogram doubleHistogram, double value) {
+    public static void recordValue(DoubleHistogram doubleHistogram, double value) {
         try {
             doubleHistogram.recordValue(value);
         } catch (Exception ex) {
@@ -113,7 +115,6 @@ public class ClientTelemetry {
     }
 
     public void init() {
-        System.out.println("ClientTelemetry.init");
         loadAzureVmMetaData();
         sendClientTelemetry().subscribe();
     }
@@ -125,7 +126,7 @@ public class ClientTelemetry {
     }
 
     private Mono<Void> sendClientTelemetry() {
-        return Mono.delay(Duration.ofSeconds(TELEMETRY_SCHEDULING_IN_SEC))
+        return Mono.delay(Duration.ofSeconds(clientTelemetrySchedulingSec))
             .flatMap(t -> {
                 if (this.isClosed) {
                     logger.warn("client already closed");
@@ -177,6 +178,7 @@ public class ClientTelemetry {
     }
 
     private void clearDataForNextRun() {
+        System.out.println("ClientTelemetry.clearDataForNextRun");
         this.clientTelemetryInfo.getOperationInfoMap().clear();
         this.clientTelemetryInfo.getCacheRefreshInfoMap().clear();
         for (DoubleHistogram histogram : this.clientTelemetryInfo.getSystemInfoMap().values()) {

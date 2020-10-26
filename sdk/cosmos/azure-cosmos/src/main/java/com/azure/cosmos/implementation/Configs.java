@@ -42,7 +42,9 @@ public class Configs {
     private static final String QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS";
     private static final String ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS";
     private static final String CLIENT_TELEMETRY_ENABLED = "COSMOS.CLIENT_TELEMETRY_ENABLED";
+    private static final String CLIENT_TELEMETRY_SCHEDULING_IN_SECONDS = "COSMOS.CLIENT_TELEMETRY_SCHEDULING_IN_SECONDS";
 
+    private static final int DEFAULT_CLIENT_TELEMETRY_SCHEDULING_IN_SECONDS = 10 * 60;
     private static final int DEFAULT_UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS = 5 * 60;
 
     private static final int DEFAULT_MAX_HTTP_BODY_LENGTH_IN_BYTES = 6 * 1024 * 1024; //6MB
@@ -174,6 +176,10 @@ public class Configs {
 
     public int getUnavailableLocationsExpirationTimeInSeconds() {
         return getJVMConfigAsInt(UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS, DEFAULT_UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS);
+    }
+
+    public int getClientTelemetrySchedulingInSec() {
+        return getJVMConfigAsInt(CLIENT_TELEMETRY_SCHEDULING_IN_SECONDS, DEFAULT_CLIENT_TELEMETRY_SCHEDULING_IN_SECONDS);
     }
 
     public int getGlobalEndpointManagerMaxInitializationTimeInSeconds() {

@@ -185,9 +185,9 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             , operationType, resourceType, consistencyLevel, ClientTelemetry.REQUEST_LATENCY_NAME,
             ClientTelemetry.REQUEST_LATENCY_UNIT);
         if (telemetry.getClientTelemetryInfo().getOperationInfoMap().containsKey(reportPayloadLatency)) {
-            ClientTelemetry.RecordValue(telemetry.getClientTelemetryInfo().getOperationInfoMap().get(reportPayloadLatency), latency.toNanos() / 1000);
+            ClientTelemetry.recordValue(telemetry.getClientTelemetryInfo().getOperationInfoMap().get(reportPayloadLatency), latency.toNanos() / 1000);
         } else {
-            ConcurrentDoubleHistogram latencyHistogram = null;
+            ConcurrentDoubleHistogram latencyHistogram;
             if (statusCode == HttpConstants.StatusCodes.OK) {
                 latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX,
                     ClientTelemetry.REQUEST_LATENCY_SUCCESS_PRECISION);
@@ -195,8 +195,9 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                 latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX,
                     ClientTelemetry.REQUEST_LATENCY_FAILURE_PRECISION);
             }
+
             latencyHistogram.setAutoResize(true);
-            ClientTelemetry.RecordValue(latencyHistogram, latency.toNanos() / 1000);
+            ClientTelemetry.recordValue(latencyHistogram, latency.toNanos() / 1000);
             telemetry.getClientTelemetryInfo().getOperationInfoMap().put(reportPayloadLatency, latencyHistogram);
         }
 
@@ -205,11 +206,11 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             , operationType, resourceType, consistencyLevel, ClientTelemetry.REQUEST_CHARGE_NAME,
             ClientTelemetry.REQUEST_CHARGE_UNIT);
         if (telemetry.getClientTelemetryInfo().getOperationInfoMap().containsKey(reportPayloadRequestCharge)) {
-            ClientTelemetry.RecordValue(telemetry.getClientTelemetryInfo().getOperationInfoMap().get(reportPayloadRequestCharge), requestCharge);
+            ClientTelemetry.recordValue(telemetry.getClientTelemetryInfo().getOperationInfoMap().get(reportPayloadRequestCharge), requestCharge);
         } else {
-            ConcurrentDoubleHistogram requestChargeHistogram = new ConcurrentDoubleHistogram(10000, 2);
+            ConcurrentDoubleHistogram requestChargeHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_CHARGE_MAX, ClientTelemetry.REQUEST_CHARGE_PRECISION);
             requestChargeHistogram.setAutoResize(true);
-            ClientTelemetry.RecordValue(requestChargeHistogram, requestCharge);
+            ClientTelemetry.recordValue(requestChargeHistogram, requestCharge);
             telemetry.getClientTelemetryInfo().getOperationInfoMap().put(reportPayloadRequestCharge,
                 requestChargeHistogram);
         }

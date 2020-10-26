@@ -3,12 +3,28 @@
 package com.azure.cosmos.implementation.clientTelemetry;
 
 public class AzureVMMetadata {
-    public Compute compute;
+    private Compute compute;
     public String getLocation() {
-        return compute != null ? compute.location : null;
+        return compute != null ? compute.getLocation() : null;
     }
 
-    public class Compute{
-        public String location;
+    public Compute getCompute() {
+        return compute;
+    }
+
+    public void setCompute(Compute compute) {
+        this.compute = compute;
+    }
+
+    static class Compute{
+        private String location;
+
+        public String getLocation() {
+            return location;
+        }
+
+        public void setLocation(String location) {
+            this.location = location;
+        }
     }
 }

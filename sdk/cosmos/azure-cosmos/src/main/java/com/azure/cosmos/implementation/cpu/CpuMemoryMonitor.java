@@ -174,8 +174,8 @@ public class CpuMemoryMonitor {
                 buffer[clockHand] = new CpuLoad(now, currentCpuUtilization);
                 clockHand = (clockHand + 1) % buffer.length;
 
-                ClientTelemetry.RecordValue(clientTelemetryCpuHistogram, currentCpuUtilization);
-                ClientTelemetry.RecordValue(clientTelemetryMemoryHistogram, currentMemoryUtilization);
+                ClientTelemetry.recordValue(clientTelemetryCpuHistogram, currentCpuUtilization);
+                ClientTelemetry.recordValue(clientTelemetryMemoryHistogram, currentMemoryUtilization);
 
                 for (int i = 0; i < buffer.length; i++) {
                     int index = (clockHand + i) % buffer.length;

@@ -3,6 +3,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
+import com.azure.cosmos.implementation.DiagnosticsInstantSerializer;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.OperationType;
@@ -12,7 +13,7 @@ import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.DiagnosticsInstantSerializer;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
@@ -21,7 +22,6 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.io.IOException;
 import java.net.URI;
@@ -120,24 +120,20 @@ class ClientSideRequestStatistics {
         CosmosException exception) {
         Instant responseTime = Instant.now();
         connectionMode = ConnectionMode.GATEWAY;
-        URI locationEndPoint = null;
-        if (rxDocumentServiceRequest.requestContext != null) {
-            this.retryContext = new RetryContext(rxDocumentServiceRequest.requestContext.retryContext);
-            if (rxDocumentServiceRequest.requestContext.locationEndpointToRoute != null) {
-                locationEndPoint = rxDocumentServiceRequest.requestContext.locationEndpointToRoute;
-            }
-        }
+
 
         synchronized (this) {
             if (responseTime.isAfter(this.requestEndTimeUTC)) {
                 this.requestEndTimeUTC = responseTime;
             }
 
-            if (rxDocumentServiceRequest != null
-                    && rxDocumentServiceRequest.requestContext != null
-                    && rxDocumentServiceRequest.requestContext.retryContext != null) {
-                rxDocumentServiceRequest.requestContext.retryContext.retryEndTime = Instant.now();
-                this.retryContext = new RetryContext(rxDocumentServiceRequest.requestContext.retryContext);
+            URI locationEndPoint = null;
+            if (rxDocumentServiceRequest != null && rxDocumentServiceRequest.requestContext != null) {
+                locationEndPoint = rxDocumentServiceRequest.requestContext.locationEndpointToRoute;
+                if (rxDocumentServiceRequest.requestContext.retryContext != null) {
+                    rxDocumentServiceRequest.requestContext.retryContext.retryEndTime = Instant.now();
+                    this.retryContext = new RetryContext(rxDocumentServiceRequest.requestContext.retryContext);
+                }
             }
 
             if (locationEndPoint != null) {

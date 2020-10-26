@@ -160,7 +160,12 @@ Licensed under the MIT License.
       <scope>test</scope>
       <version>4.2</version> <!-- {x-version-update;org.apache.commons:commons-collections4;external_dependency} -->
     </dependency>
-
+    <!-- https://mvnrepository.com/artifact/org.hdrhistogram/HdrHistogram -->
+    <dependency>
+      <groupId>org.hdrhistogram</groupId>
+      <artifactId>HdrHistogram</artifactId>
+      <version>2.1.4</version>
+    </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-text</artifactId>
@@ -263,7 +268,6 @@ Licensed under the MIT License.
           <skip>true</skip>
         </configuration>
       </plugin>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -302,6 +306,7 @@ Licensed under the MIT License.
                 <include>io.projectreactor:reactor-core:[3.3.9.RELEASE]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
                 <include>io.projectreactor.netty:reactor-netty:[0.9.11.RELEASE]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
                 <include>org.slf4j:slf4j-api:[1.7.30]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
+                <include>org.hdrhistogram:HdrHistogram</include> <!-- {x-include-update;org.hdrhistogram:HdrHistogram;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
