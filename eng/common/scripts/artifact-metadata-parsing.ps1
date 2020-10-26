@@ -581,7 +581,7 @@ function Get-BlobStorage-Artifacts($blobStorageUrl, $blobDirectoryRegex) {
 # The sequence of Bom bytes differs by different encoding. 
 # The helper function here is only to strip the utf-8 encoding system as it is used by blob storage list api.
 # Return the original string if not in BOM utf-8 sequence.
-function removeBomFromString([string]$bomAwareString) {
+function RemoveBomFromString([string]$bomAwareString) {
   if ($bomAwareString.length -le 3) {
       return $bomAwareString
   }
