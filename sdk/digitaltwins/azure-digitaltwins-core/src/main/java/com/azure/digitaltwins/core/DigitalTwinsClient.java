@@ -814,7 +814,7 @@ public final class DigitalTwinsClient {
      * @param eventRoute The event route to create.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createEventRoute(String eventRouteId, DigitalTwinsEventRoute eventRoute) {
+    public void createOrReplaceEventRoute(String eventRouteId, DigitalTwinsEventRoute eventRoute) {
         createOrReplaceEventRouteWithResponse(eventRouteId, eventRoute, null, Context.NONE);
     }
 
@@ -834,7 +834,7 @@ public final class DigitalTwinsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createOrReplaceEventRouteWithResponse(String eventRouteId, DigitalTwinsEventRoute eventRoute, CreateEventRouteOptions options, Context context) {
-        return this.digitalTwinsAsyncClient.createEventRouteWithResponse(eventRouteId, eventRoute, options, context).block();
+        return this.digitalTwinsAsyncClient.createOrReplaceEventRouteWithResponse(eventRouteId, eventRoute, options, context).block();
     }
 
     /**

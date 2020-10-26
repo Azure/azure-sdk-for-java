@@ -1251,7 +1251,7 @@ public final class DigitalTwinsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createOrReplaceEventRoute(String eventRouteId, DigitalTwinsEventRoute eventRoute)
     {
-        return createEventRouteWithResponse(eventRouteId, eventRoute, null)
+        return createOrReplaceEventRouteWithResponse(eventRouteId, eventRoute, null)
             .flatMap(voidResponse -> Mono.empty());
     }
 
@@ -1269,12 +1269,12 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link Response} containing an empty mono.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createEventRouteWithResponse(String eventRouteId, DigitalTwinsEventRoute eventRoute, CreateEventRouteOptions options)
+    public Mono<Response<Void>> createOrReplaceEventRouteWithResponse(String eventRouteId, DigitalTwinsEventRoute eventRoute, CreateEventRouteOptions options)
     {
-        return withContext(context -> createEventRouteWithResponse(eventRouteId, eventRoute, options, context));
+        return withContext(context -> createOrReplaceEventRouteWithResponse(eventRouteId, eventRoute, options, context));
     }
 
-    Mono<Response<Void>> createEventRouteWithResponse(String eventRouteId, DigitalTwinsEventRoute eventRoute, CreateEventRouteOptions options, Context context)
+    Mono<Response<Void>> createOrReplaceEventRouteWithResponse(String eventRouteId, DigitalTwinsEventRoute eventRoute, CreateEventRouteOptions options, Context context)
     {
         return this.protocolLayer.getEventRoutes().addWithResponseAsync(eventRouteId, EventRouteConverter.map(eventRoute), OptionsConverter.toProtocolLayerOptions(options), context);
     }

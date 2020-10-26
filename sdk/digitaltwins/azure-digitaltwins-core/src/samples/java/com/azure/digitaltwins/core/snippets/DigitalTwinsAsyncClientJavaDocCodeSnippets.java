@@ -814,7 +814,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsAsyncClient#createEventRouteWithResponse(String, DigitalTwinsEventRoute, CreateEventRouteOptions)}
+     * {@link DigitalTwinsAsyncClient#createOrReplaceEventRouteWithResponse(String, DigitalTwinsEventRoute, CreateEventRouteOptions)}
      */
     @Override
     public void createEventRouteWithResponse() {
@@ -823,7 +823,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
             "$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'";
 
         DigitalTwinsEventRoute eventRoute = new DigitalTwinsEventRoute("myEndpointName").setFilter(filter);
-        digitalTwinsAsyncClient.createEventRouteWithResponse(
+        digitalTwinsAsyncClient.createOrReplaceEventRouteWithResponse(
             "myEventRouteId",
             eventRoute,
             new CreateEventRouteOptions())
