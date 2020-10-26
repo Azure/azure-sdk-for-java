@@ -10,6 +10,7 @@ package com.microsoft.azure.management.synapse.v2019_06_01_preview.implementatio
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.ErrorContractInnerException;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;

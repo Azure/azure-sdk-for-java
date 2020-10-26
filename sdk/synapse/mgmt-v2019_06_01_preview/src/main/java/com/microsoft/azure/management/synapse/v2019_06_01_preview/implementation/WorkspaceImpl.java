@@ -16,9 +16,11 @@ import com.microsoft.azure.management.synapse.v2019_06_01_preview.DataLakeStorag
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.VirtualNetworkProfile;
 import java.util.Map;
 import java.util.List;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.ManagedVirtualNetworkSettings;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.ManagedIdentity;
 import java.util.ArrayList;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.PrivateEndpointConnection;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.WorkspacePatchInfoManagedVirtualNetworkSettings;
 import rx.functions.Func1;
 
 class WorkspaceImpl extends GroupableResourceCoreImpl<Workspace, WorkspaceInner, WorkspaceImpl, SynapseManager> implements Workspace, Workspace.Definition, Workspace.Update {
@@ -102,6 +104,11 @@ class WorkspaceImpl extends GroupableResourceCoreImpl<Workspace, WorkspaceInner,
     }
 
     @Override
+    public ManagedVirtualNetworkSettings managedVirtualNetworkSettings() {
+        return this.inner().managedVirtualNetworkSettings();
+    }
+
+    @Override
     public List<PrivateEndpointConnection> privateEndpointConnections() {
         List<PrivateEndpointConnection> lst = new ArrayList<PrivateEndpointConnection>();
         if (this.inner().privateEndpointConnections() != null) {
@@ -157,6 +164,12 @@ class WorkspaceImpl extends GroupableResourceCoreImpl<Workspace, WorkspaceInner,
     }
 
     @Override
+    public WorkspaceImpl withManagedVirtualNetworkSettings(ManagedVirtualNetworkSettings managedVirtualNetworkSettings) {
+        this.inner().withManagedVirtualNetworkSettings(managedVirtualNetworkSettings);
+        return this;
+    }
+
+    @Override
     public WorkspaceImpl withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
         this.inner().withPrivateEndpointConnections(privateEndpointConnections);
         return this;
@@ -171,6 +184,12 @@ class WorkspaceImpl extends GroupableResourceCoreImpl<Workspace, WorkspaceInner,
     @Override
     public WorkspaceImpl withVirtualNetworkProfile(VirtualNetworkProfile virtualNetworkProfile) {
         this.inner().withVirtualNetworkProfile(virtualNetworkProfile);
+        return this;
+    }
+
+    @Override
+    public WorkspaceImpl withManagedVirtualNetworkSettings(WorkspacePatchInfoManagedVirtualNetworkSettings managedVirtualNetworkSettings) {
+        this.updateParameter.withManagedVirtualNetworkSettings(managedVirtualNetworkSettings);
         return this;
     }
 
