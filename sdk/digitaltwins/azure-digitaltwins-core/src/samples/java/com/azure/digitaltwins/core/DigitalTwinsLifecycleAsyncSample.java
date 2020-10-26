@@ -226,7 +226,7 @@ public class DigitalTwinsLifecycleAsyncSample {
      */
     public static void createAllModels() throws IOException, InterruptedException {
         ConsoleLogger.printHeader("Creating models");
-        List<String> modelsToCreate = new ArrayList<>(FileHelper.loadAllFilesInPath(MODELS_PATH, String.class).values());
+        List<String> modelsToCreate = new ArrayList<>(FileHelper.loadAllFilesInPath(MODELS_PATH).values());
         final CountDownLatch createModelsLatch = new CountDownLatch(1);
 
         // Call API to create the models. For each async operation, once the operation is completed successfully, a latch is counted down.

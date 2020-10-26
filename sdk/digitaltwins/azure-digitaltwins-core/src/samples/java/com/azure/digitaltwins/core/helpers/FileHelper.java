@@ -35,10 +35,38 @@ public class FileHelper {
 
                     if (clazz == String.class) {
                         // don't deserialize into a type
-                        fileContents.put(getFileNameFromPath(filePath), (T) cleanupJsonString(fileAsString));
+                        String cleanedJsonString = cleanupJsonString(fileAsString);
+                        T c = (T) cleanedJsonString;
+                        fileContents.put(getFileNameFromPath(filePath), c);
                     } else {
                         fileContents.put(getFileNameFromPath(filePath), mapper.readValue(cleanupJsonString(fileAsString), clazz));
                     }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+
+        return fileContents;
+    }
+
+    /**
+     * Loads all json file contents in a path.
+     * @param path Path to the target directory.
+     * @return List of all file names and their content in map format.
+     * @throws IOException If an I/O error is thrown when accessing the starting file.
+     */
+    public static Map<String, String> loadAllFilesInPath(Path path) throws IOException {
+        Map<String, String> fileContents = new HashMap<>();
+        Stream<Path> paths = Files.walk(path);
+        paths
+            .filter(filePath -> filePath.toFile().getName().endsWith(".json"))
+            .forEach(filePath -> {
+                try {
+                    Stream<String> lines = Files.lines(filePath);
+                    String fileAsString = lines.collect(Collectors.joining());
+                    lines.close();
+                    // don't deserialize into a type
+                    fileContents.put(getFileNameFromPath(filePath), cleanupJsonString(fileAsString));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

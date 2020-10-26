@@ -5,16 +5,24 @@ package com.azure.digitaltwins.core.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.digitaltwins.core.IDigitalTwinRelationship;
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.fasterxml.jackson.annotation.JsonInclude.*;
+import static com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
  * Although relationships have a user-defined schema, these properties should exist on every instance.
  * This is useful to use as a base class to ensure your custom relationships have the necessary properties.
+ *
+ * <p>
+ * Note that this class extends the {@link IDigitalTwinRelationship} interface so it can be used as the input type for calls such
+ * as {@link com.azure.digitaltwins.core.DigitalTwinsClient#createRelationship(String, String, IDigitalTwinRelationship, Class)}.
  */
 @Fluent
 @JsonInclude(Include.NON_NULL)

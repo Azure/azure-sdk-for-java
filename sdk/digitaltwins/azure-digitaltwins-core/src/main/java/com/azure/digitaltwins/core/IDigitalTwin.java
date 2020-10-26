@@ -50,5 +50,5 @@ public interface IDigitalTwin {
      *
      * @return The information about the model a digital twin conforms to. This field is present on every digital twin.
      */
-    public DigitalTwinMetadata getMetadata();
+    public IDigitalTwinMetadata getMetadata();
 }

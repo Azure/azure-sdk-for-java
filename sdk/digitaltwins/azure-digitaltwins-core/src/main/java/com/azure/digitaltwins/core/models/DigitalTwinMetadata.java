@@ -4,6 +4,7 @@
 package com.azure.digitaltwins.core.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.digitaltwins.core.IDigitalTwinMetadata;
 import com.fasterxml.jackson.annotation.*;
 
 import java.util.HashMap;
@@ -18,9 +19,9 @@ import static com.fasterxml.jackson.annotation.JsonInclude.*;
  */
 @Fluent
 @JsonInclude(Include.NON_NULL)
-public final class DigitalTwinMetadata {
+public final class DigitalTwinMetadata implements IDigitalTwinMetadata {
 
-    @JsonProperty(value = "$model", required = true)
+    @JsonProperty(value = DIGITAL_TWIN_METADATA_MODEL_ID_JSON_PROPERTY_NAME, required = true)
     private String modelId;
 
     @JsonIgnore

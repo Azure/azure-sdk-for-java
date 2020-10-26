@@ -261,7 +261,7 @@ foreach (String response in pageableResponse)
 // Or you can use the generic API to get a specific type back.
 PagedIterable<BasicDigitalTwin> deserializedResponse = syncClient.query("SELECT * FROM digitaltwins", BasicDigitalTwin.class)
 
-for(BasicDigitalTwin digitalTwin : deserializedResponse){
+for (BasicDigitalTwin digitalTwin : deserializedResponse) {
     System.out.println("Retrieved digital twin with Id: " + digitalTwin.getId());
 }
 ```

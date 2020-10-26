@@ -15,6 +15,9 @@ import static com.fasterxml.jackson.annotation.JsonInclude.*;
 /**
  * An optional, helper class for deserializing a digital twin.
  * Only properties with non-null values are included.
+ * <p>
+ * Note that this class extends the {@link IDigitalTwin} interface so it can be used as the input type for calls such
+ * as {@link com.azure.digitaltwins.core.DigitalTwinsClient#createDigitalTwin(String, IDigitalTwin, Class)}.
  */
 @Fluent
 @JsonInclude(Include.NON_NULL)
