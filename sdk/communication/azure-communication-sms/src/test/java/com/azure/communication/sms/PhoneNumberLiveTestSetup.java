@@ -27,7 +27,7 @@ public class PhoneNumberLiveTestSetup implements BeforeAllCallback, ExtensionCon
     private static boolean started = false;
     private static String LOCALE = "en-us";
     private static String COUNTRY_CODE = "US";
-    private static String NAME_FOR_SEARCH = "SetupSearch";
+    private static String NAME_FOR_SEARCH = "TestSearch";
     private static String DESCRIPTION_FOR_SEARCH = "Setup Phone Number Search for Live Tests";
     private PhoneNumberClient phoneNumberClient;
     private List<String> phoneNumbers;
@@ -75,6 +75,8 @@ public class PhoneNumberLiveTestSetup implements BeforeAllCallback, ExtensionCon
             if (phoneNumbers.size() > 0) {
                 Configuration.getGlobalConfiguration().put("SMS_SERVICE_PHONE_NUMBER", phoneNumbers.get(0));
             }
+
+            // TODO: Blocked on Purchase Phone Numbers LRO
             phoneNumberClient.purchaseSearch(searchResult.getSearchId());
         }
     }
@@ -83,6 +85,7 @@ public class PhoneNumberLiveTestSetup implements BeforeAllCallback, ExtensionCon
     public void close() {
 
         // Release phone numbers after tests end
+        // TODO: Blocked on Release Phone Numbers LRO
         final List<PhoneNumber> releasedPhoneNumbers = new ArrayList<>();
         for(String phoneNumber : phoneNumbers) {
             releasedPhoneNumbers.add(new PhoneNumber(phoneNumber));
