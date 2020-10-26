@@ -16,7 +16,7 @@ import java.util.Objects;
  * Refs: https://docs.microsoft.com/en-us/previous-versions/azure/ad/graph/api/api-catalog
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MemberShip implements Serializable {
+public class Membership implements Serializable {
     private static final long serialVersionUID = 9064197572478554735L;
     public static final String OBJECT_TYPE_GROUP = "Group";
 
@@ -25,7 +25,7 @@ public class MemberShip implements Serializable {
     private final String displayName;
 
     @JsonCreator
-    public MemberShip(
+    public Membership(
         @JsonProperty("objectId") @JsonAlias("id") String objectID,
         @JsonProperty("objectType") @JsonAlias("@odata.type") String objectType,
         @JsonProperty("displayName") String displayName) {
@@ -51,10 +51,10 @@ public class MemberShip implements Serializable {
         if (o == this) {
             return true;
         }
-        if (!(o instanceof MemberShip)) {
+        if (!(o instanceof Membership)) {
             return false;
         }
-        final MemberShip group = (MemberShip) o;
+        final Membership group = (Membership) o;
         return this.getDisplayName().equals(group.getDisplayName())
                 && this.getObjectID().equals(group.getObjectID())
                 && this.getObjectType().equals(group.getObjectType());
