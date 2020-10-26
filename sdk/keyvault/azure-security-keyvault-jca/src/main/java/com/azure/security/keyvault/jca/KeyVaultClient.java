@@ -49,9 +49,9 @@ class KeyVaultClient extends DelegateRestClient {
     private static final String API_VERSION_POSTFIX = "?api-version=7.1";
 
     /**
-     * Stores the Azure Key Vault URI.
+     * Stores the Azure Key Vault URL.
      */
-    private final String keyVaultUri;
+    private final String keyVaultUrl;
 
     /**
      * Stores the tenant ID.
@@ -79,7 +79,7 @@ class KeyVaultClient extends DelegateRestClient {
         if (!keyVaultUri.endsWith("/")) {
             keyVaultUri = keyVaultUri + "/";
         }
-        this.keyVaultUri = keyVaultUri;
+        this.keyVaultUrl = keyVaultUri;
     }
 
     /**
@@ -125,11 +125,11 @@ class KeyVaultClient extends DelegateRestClient {
      *
      * @return the list of aliases.
      */
-    public List<String> getAliases() {
+    List<String> getAliases() {
         ArrayList<String> result = new ArrayList<>();
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + getAccessToken());
-        String url = String.format("%scertificates%s", keyVaultUri, API_VERSION_POSTFIX);
+        String url = String.format("%scertificates%s", keyVaultUrl, API_VERSION_POSTFIX);
         String response = get(url, headers);
         CertificateListResult certificateListResult = null;
         if (response != null) {
@@ -156,7 +156,7 @@ class KeyVaultClient extends DelegateRestClient {
         CertificateBundle result = null;
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + getAccessToken());
-        String url = String.format("%scertificates/%s%s", keyVaultUri, alias, API_VERSION_POSTFIX);
+        String url = String.format("%scertificates/%s%s", keyVaultUrl, alias, API_VERSION_POSTFIX);
         String response = get(url, headers);
         if (response != null) {
             JsonConverter converter = JsonConverterFactory.createJsonConverter();
@@ -171,7 +171,7 @@ class KeyVaultClient extends DelegateRestClient {
      * @param alias the alias.
      * @return the certificate, or null if not found.
      */
-    public Certificate getCertificate(String alias) {
+    Certificate getCertificate(String alias) {
         LOGGER.entering("KeyVaultClient", "getCertificate", alias);
         LOGGER.log(INFO, "Getting certificate for alias: {0}", alias);
         X509Certificate certificate = null;
@@ -182,7 +182,7 @@ class KeyVaultClient extends DelegateRestClient {
                 try {
                     CertificateFactory cf = CertificateFactory.getInstance("X.509");
                     certificate = (X509Certificate) cf.generateCertificate(
-                        new ByteArrayInputStream(Base64.getDecoder().decode(certificateBundle.getCer()))
+                        new ByteArrayInputStream(Base64.getDecoder().decode(certificateString))
                     );
                 } catch (CertificateException ce) {
                     LOGGER.log(WARNING, "Certificate error", ce);
@@ -200,14 +200,14 @@ class KeyVaultClient extends DelegateRestClient {
      * @param password the password.
      * @return the key.
      */
-    public Key getKey(String alias, char[] password) {
+    Key getKey(String alias, char[] password) {
         LOGGER.entering("KeyVaultClient", "getKey", new Object[] { alias, password });
         LOGGER.log(INFO, "Getting key for alias: {0}", alias);
         Key key = null;
         CertificateBundle certificateBundle = getCertificateBundle(alias);
         boolean isExportable = Optional.ofNullable(certificateBundle)
                                        .map(CertificateBundle::getPolicy)
-                                       .map(CertificatePolicy::getKey_props)
+                                       .map(CertificatePolicy::getKeyProperties)
                                        .map(KeyProperties::isExportable)
                                        .orElse(false);
         if (isExportable) {

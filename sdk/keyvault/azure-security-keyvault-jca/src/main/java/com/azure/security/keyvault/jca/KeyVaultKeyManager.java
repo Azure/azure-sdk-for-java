@@ -127,6 +127,8 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
                         chain.add((X509Certificate) certificate);
                     }
                 }
+            } else {
+                LOGGER.log(WARNING, "No certificate chain found for alias: {0}", alias);
             }
         } catch (KeyStoreException kse) {
             LOGGER.log(WARNING, "Unable to get certificate chain for alias: " + alias, kse);
