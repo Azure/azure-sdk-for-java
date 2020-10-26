@@ -345,16 +345,15 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         // Action & Assert
         chatThreadClient.sendReadReceipt(response.getId());
 
-        PagedIterable<ReadReceipt> readReceiptsResponse = chatThreadClient.listReadReceipts();
-
-        // process the iterableByPage
-        List<ReadReceipt> returnedReadReceipts = new ArrayList<ReadReceipt>();
-        readReceiptsResponse.iterableByPage().forEach(resp -> {
-            assertEquals(resp.getStatusCode(), 200);
+        if (interceptorManager.isPlaybackMode()) {
+            PagedIterable<ReadReceipt> readReceiptsResponse = chatThreadClient.listReadReceipts();
+            // process the iterableByPage
+            List<ReadReceipt> returnedReadReceipts = new ArrayList<ReadReceipt>();
+            readReceiptsResponse.iterableByPage().forEach(resp -> {
+                assertEquals(resp.getStatusCode(), 200);
             resp.getItems().forEach(item -> returnedReadReceipts.add(item));
         });
 
-        if (interceptorManager.isPlaybackMode()) {
             assertTrue(returnedReadReceipts.size() > 0);
             checkReadReceiptListContainsMessageId(returnedReadReceipts, response.getId());
         }
@@ -372,6 +371,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         // Action & Assert
         chatThreadClient.sendReadReceiptWithResponse(response.getId(), Context.NONE);
 
+        if (interceptorManager.isPlaybackMode()) {
         PagedIterable<ReadReceipt> readReceiptsResponse = chatThreadClient.listReadReceipts();
 
         // process the iterableByPage
@@ -380,8 +380,6 @@ public class ChatThreadClientTest extends ChatClientTestBase {
             assertEquals(resp.getStatusCode(), 200);
             resp.getItems().forEach(item -> returnedReadReceipts.add(item));
         });
-
-        if (interceptorManager.isPlaybackMode()) {
             assertTrue(returnedReadReceipts.size() > 0);
             checkReadReceiptListContainsMessageId(returnedReadReceipts, response.getId());
         }

@@ -13,6 +13,7 @@ jobs:
     ServiceDirectory: communication
     EnvVars:
       AZURE_TEST_MODE: LIVE
+      AZURE_TEST_HTTP_CLIENTS: netty
       SKIP_PHONENUMBER_INTEGRATION_TESTS: TRUE
       SKIP_LIVE_TEST: TRUE
 
