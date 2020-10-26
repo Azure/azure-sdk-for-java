@@ -14,6 +14,9 @@
 - Change group id from `com.microsoft.azure` to `com.azure.spring`.
 - Change artifact id from `azure-active-directory-spring-boot-starter` to `azure-spring-boot-starter-active-directory`.
 
+### New Features
+- Support acquiring access tokens of previously consented permissions for web-hosted resources from Azure AD.
+
 ## 2.3.5 (2020-09-14)
 ### Key Bug Fixes
 - Get full list of groups the user belongs to from Graph API

@@ -198,7 +198,6 @@ azure.activedirectory.environment=cn-v2-graph
 
 Please refer to [azure-spring-boot-sample-active-directory-backend-v2](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend-v2/README.md) to see a sample configured to use the Microsoft Graph API.
 
-
 ### AAD Conditional Access Policy
 Now azure-active-directory-spring-boot-starter has supported AAD conditional access policy, if you are using this policy, you need add **AADOAuth2AuthorizationRequestResolver** and **AADAuthenticationFailureHandler** to your WebSecurityConfigurerAdapter.
 <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/AADOAuth2LoginConditionalPolicyConfigSample.java#L26-L53 -->
@@ -232,6 +231,7 @@ public class AADOAuth2LoginConditionalPolicyConfigSample extends WebSecurityConf
     }
 }
 ```
+
 ### Customize scopes in authorize requests
 
 By default, `azure-spring-boot-starter-active-directory` configures scopes of `openid`, `profile` and `https://graph.microsoft.com/user.read` to implement OpenID Connect protocol and access of Microsoft Graph API. For customization of scope, developers need to configure in the `application.properties`:
@@ -239,6 +239,42 @@ By default, `azure-spring-boot-starter-active-directory` configures scopes of `o
 azure.activedirectory.scope = openid, profile, https://graph.microsoft.com/user.read, {your-customized-scope}
 ``` 
 Note, if you don't configure the 3 mentioned permissions, this starter will add them automatically.
+
+### Acquire access tokens for web-hosted resources of specific permissions
+
+Now, `azure-active-directory-spring-boot-starter` has supported acquiring access tokens for a web-hosted resource of previously consented permissions.
+To use this feature, you can creat a instance of `AzureADGraphClient` and use `getOboToken` function as needed.
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/AADOAuth2LoginAcquireTokenHomeControllerSample.java#L18-L44 -->
+
+```java
+@Controller
+public class AADOAuth2LoginAcquireTokenHomeControllerSample {
+    @Autowired
+    private OAuth2AuthorizedClientService authorizedClientService;
+    @Autowired
+    private AADAuthenticationProperties aadAuthenticationProperties;
+    @Autowired
+    private ServiceEndpointsProperties serviceEndpointsProperties;
+
+    @GetMapping("/")
+    public String index(Model model, OAuth2AuthenticationToken authentication) throws ServiceUnavailableException {
+
+        AzureADGraphClient graphClient = new AzureADGraphClient(aadAuthenticationProperties,
+            serviceEndpointsProperties);
+
+        String accessToken = graphClient.getOboToken("https://graph.microsoft.com/",
+            new HashSet<>(Arrays.asList("User.Read")));
+
+        final OAuth2AuthorizedClient authorizedClient =
+            this.authorizedClientService.loadAuthorizedClient(
+                authentication.getAuthorizedClientRegistrationId(),
+                authentication.getName());
+        model.addAttribute("userName", authentication.getName());
+        model.addAttribute("clientName", authorizedClient.getClientRegistration().getClientName());
+        return "index";
+    }
+}
+```
 
 ## Troubleshooting
 ### Enable client logging

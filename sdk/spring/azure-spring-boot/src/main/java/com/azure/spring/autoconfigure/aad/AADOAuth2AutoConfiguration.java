@@ -87,6 +87,8 @@ public class AADOAuth2AutoConfiguration {
 
         List<String> scopes = aadAuthenticationProperties.getScope();
         List<String> graphApiScopes = scopes.stream()
+                                            .map(String::trim)
+                                            .map(String::toLowerCase)
                                             .filter(this::isGraphApiScope)
                                             .collect(Collectors.toList());
         if (!graphApiScopes.toString().contains(".default")) {

@@ -20,10 +20,9 @@ import javax.naming.ServiceUnavailableException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static com.azure.spring.autoconfigure.aad.AADOAuth2ErrorCode.CONDITIONAL_ACCESS_POLICY;
 import static com.azure.spring.autoconfigure.aad.AADOAuth2ErrorCode.INVALID_REQUEST;
@@ -57,19 +56,13 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
                 aadAuthenticationProperties,
                 serviceEndpointsProperties
             );
-            boolean isGraphApiVersionIsV2 = Optional.of(aadAuthenticationProperties)
-                                                    .map(AADAuthenticationProperties::getEnvironment)
-                                                    .map(environment -> environment.contains("v2-graph"))
-                                                    .orElse(false);
-            String applicationIdUri = isGraphApiVersionIsV2 ? "https://graph.microsoft.com/" : "https://graph.windows"
-                + ".net/";
 
             String graphApiToken = azureADGraphClient
                 .acquireTokenForScope(
                     userRequest.getIdToken().getTokenValue(),
                     aadAuthenticationProperties.getTenantId(),
-                    applicationIdUri,
-                    Arrays.asList("User.Read").stream().collect(Collectors.toSet())
+                    azureADGraphClient.getGraphApiUri(),
+                    new HashSet<>(Arrays.asList("user.read"))
                 )
                 .accessToken();
             mappedAuthorities = azureADGraphClient.getGrantedAuthorities(graphApiToken);

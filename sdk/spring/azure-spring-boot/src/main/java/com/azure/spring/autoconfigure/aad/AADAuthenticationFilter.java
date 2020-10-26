@@ -28,6 +28,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.text.ParseException;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Optional;
 
 import static com.azure.spring.autoconfigure.aad.Constants.BEARER_PREFIX;
@@ -111,7 +113,12 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
                 userPrincipal = userPrincipalManager.buildUserPrincipal(aadIssuedBearerToken);
                 String tenantId = userPrincipal.getClaim(AADTokenClaim.TID).toString();
                 String accessTokenForGraphApi = azureADGraphClient
-                    .acquireTokenForGraphApi(aadIssuedBearerToken, tenantId)
+                    .acquireTokenForScope(
+                        aadIssuedBearerToken,
+                        tenantId,
+                        azureADGraphClient.getGraphApiUri(),
+                        new HashSet<>(Arrays.asList("user.read"))
+                    )
                     .accessToken();
                 userPrincipal.setAccessTokenForGraphApi(accessTokenForGraphApi);
                 userPrincipal.setGroups(azureADGraphClient.getGroups(accessTokenForGraphApi));
