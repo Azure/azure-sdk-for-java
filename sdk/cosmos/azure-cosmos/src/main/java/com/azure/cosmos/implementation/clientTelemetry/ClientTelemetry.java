@@ -183,6 +183,7 @@ public class ClientTelemetry {
         //Filling cpu information
         DoubleHistogram cpuHistogram = new DoubleHistogram(ClientTelemetry.CPU_MAX,
             ClientTelemetry.CPU_PRECISION);
+        cpuHistogram.setAutoResize(true);
         for(double val : CpuMemoryMonitor.getClientTelemetryCpuLatestList()) {
             recordValue(cpuHistogram, val);
         }
@@ -192,6 +193,7 @@ public class ClientTelemetry {
         //Filling memory information
         DoubleHistogram memoryHistogram = new DoubleHistogram(ClientTelemetry.MEMORY_MAX,
             ClientTelemetry.MEMORY_PRECISION);
+        memoryHistogram.setAutoResize(true);
         for(double val : CpuMemoryMonitor.getClientTelemetryMemoryLatestList()) {
             recordValue(memoryHistogram, val);
         }
