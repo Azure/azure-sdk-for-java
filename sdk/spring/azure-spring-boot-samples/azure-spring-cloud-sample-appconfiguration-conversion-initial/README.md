@@ -10,7 +10,7 @@ This sample shows how to convert a Spring Cloud Application with Cosmos DB to be
 
 * A [Java Development Kit (JDK)][jdk_link], version 8.
 
-* [Apache Maven](http://maven.apache.org/), version 3.0 or later.
+* [Apache Maven](https://maven.apache.org/), version 3.0 or later.
 
 ### Quick Start
 
@@ -76,7 +76,7 @@ In this section, you clone a containerized Spring Boot application and test it l
 1. Change directory to the initial project; for example:
 
    ```shell
-   cd sdk/spring/azure-spring-boot-samples/azure-appconfiguration-conversion-sample-initial
+   cd sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-appconfiguration-conversion-initial
    ```
 
 #### Config the sample

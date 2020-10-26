@@ -106,13 +106,13 @@ To get the binaries of this library as distributed by Microsoft, ready for use w
 Clone the repo, then run `mvn compile` from the root directory.
 
 To run the recorded tests:
-1. If you have not already, you need to install the [Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html) package.
+1. If you have not already, you need to install the [Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files](https://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html) package.
 2. run `mvn jetty:run` to start a jetty server. This starts a service that will block the terminal so you will likely want to open a second terminal to run the actual tests.
 3. In your second terminal run `mvn test`.
 
 ## Contributing
 
-If you would like to become an active contributor to this project please follow the instructions provided in [Microsoft Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
+If you would like to become an active contributor to this project please follow the instructions provided in [Microsoft Azure Projects Contribution Guidelines](https://azure.github.io/guidelines.html).
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)

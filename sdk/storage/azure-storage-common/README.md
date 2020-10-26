@@ -57,7 +57,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 <!-- LINKS -->
 [source]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-common/src
 [samples_readme]: src/samples/README.md
-[docs]: http://azure.github.io/azure-sdk-for-java/
+[docs]: https://azure.github.io/azure-sdk-for-java/
 [sas_token]: https://docs.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/

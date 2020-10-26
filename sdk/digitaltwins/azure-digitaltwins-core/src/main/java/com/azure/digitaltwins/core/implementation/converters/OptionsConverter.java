@@ -16,7 +16,7 @@ public final class OptionsConverter {
             return null;
         }
 
-        return new DigitalTwinsAddOptions().setTraceparent(options.getTraceparent()).setTracestate(options.getTracestate());
+        return new DigitalTwinsAddOptions().setTraceparent(options.getTraceParent()).setTracestate(options.getTraceState());
     }
 
     public static DigitalTwinsAddRelationshipOptions toProtocolLayerOptions(CreateRelationshipOptions options) {
@@ -24,7 +24,7 @@ public final class OptionsConverter {
             return null;
         }
 
-        return new DigitalTwinsAddRelationshipOptions().setTraceparent(options.getTraceparent()).setTracestate(options.getTracestate());
+        return new DigitalTwinsAddRelationshipOptions().setTraceparent(options.getTraceParent()).setTracestate(options.getTraceState());
     }
 
     public static DigitalTwinModelsAddOptions toProtocolLayerOptions(CreateModelsOptions options) {
@@ -32,15 +32,15 @@ public final class OptionsConverter {
             return null;
         }
 
-        return new DigitalTwinModelsAddOptions().setTraceparent(options.getTraceparent()).setTracestate(options.getTracestate());
+        return new DigitalTwinModelsAddOptions().setTraceparent(options.getTraceParent()).setTracestate(options.getTraceState());
     }
 
-    public static DigitalTwinModelsUpdateOptions toProtocolLayerOptions(UpdateModelOptions options) {
+    public static DigitalTwinModelsUpdateOptions toProtocolLayerOptions(DecommissionModelOptions options) {
         if (options == null) {
             return null;
         }
 
-        return new DigitalTwinModelsUpdateOptions().setTraceparent(options.getTraceparent()).setTracestate(options.getTracestate());
+        return new DigitalTwinModelsUpdateOptions().setTraceparent(options.getTraceParent()).setTracestate(options.getTraceState());
     }
 
     public static DigitalTwinModelsListOptions toProtocolLayerOptions(ListModelsOptions options) {
@@ -49,8 +49,8 @@ public final class OptionsConverter {
         }
 
         return new DigitalTwinModelsListOptions()
-            .setTraceparent(options.getTraceparent())
-            .setTracestate(options.getTracestate())
+            .setTraceparent(options.getTraceParent())
+            .setTracestate(options.getTraceState())
             .setMaxItemsPerPage(options.getMaxItemsPerPage());
     }
 
@@ -59,7 +59,7 @@ public final class OptionsConverter {
             return null;
         }
 
-        return new DigitalTwinModelsGetByIdOptions().setTraceparent(options.getTraceparent()).setTracestate(options.getTracestate());
+        return new DigitalTwinModelsGetByIdOptions().setTraceparent(options.getTraceParent()).setTracestate(options.getTraceState());
     }
 
     public static DigitalTwinModelsDeleteOptions toProtocolLayerOptions(DeleteModelOptions options) {
@@ -67,7 +67,7 @@ public final class OptionsConverter {
             return null;
         }
 
-        return new DigitalTwinModelsDeleteOptions().setTraceparent(options.getTraceparent()).setTracestate(options.getTracestate());
+        return new DigitalTwinModelsDeleteOptions().setTraceparent(options.getTraceParent()).setTracestate(options.getTraceState());
     }
 
     public static EventRoutesAddOptions toProtocolLayerOptions(CreateEventRouteOptions options) {
@@ -75,7 +75,7 @@ public final class OptionsConverter {
             return null;
         }
 
-        return new EventRoutesAddOptions().setTraceparent(options.getTraceparent()).setTracestate(options.getTracestate());
+        return new EventRoutesAddOptions().setTraceparent(options.getTraceParent()).setTracestate(options.getTraceState());
     }
 
     public static EventRoutesListOptions toProtocolLayerOptions(ListEventRoutesOptions options) {
@@ -84,8 +84,8 @@ public final class OptionsConverter {
         }
 
         return new EventRoutesListOptions()
-            .setTraceparent(options.getTraceparent())
-            .setTracestate(options.getTracestate())
+            .setTraceparent(options.getTraceParent())
+            .setTracestate(options.getTraceState())
             .setMaxItemsPerPage(options.getMaxItemsPerPage());
     }
 
@@ -94,7 +94,7 @@ public final class OptionsConverter {
             return null;
         }
 
-        return new EventRoutesGetByIdOptions().setTraceparent(options.getTraceparent()).setTracestate(options.getTracestate());
+        return new EventRoutesGetByIdOptions().setTraceparent(options.getTraceParent()).setTracestate(options.getTraceState());
     }
 
     public static EventRoutesDeleteOptions toProtocolLayerOptions(DeleteEventRouteOptions options) {
@@ -102,7 +102,7 @@ public final class OptionsConverter {
             return null;
         }
 
-        return new EventRoutesDeleteOptions().setTraceparent(options.getTraceparent()).setTracestate(options.getTracestate());
+        return new EventRoutesDeleteOptions().setTraceparent(options.getTraceParent()).setTracestate(options.getTraceState());
     }
 
     public static DigitalTwinsGetByIdOptions toProtocolLayerOptions(GetDigitalTwinOptions options) {
@@ -110,7 +110,7 @@ public final class OptionsConverter {
             return null;
         }
 
-        return new DigitalTwinsGetByIdOptions().setTraceparent(options.getTraceparent()).setTracestate(options.getTracestate());
+        return new DigitalTwinsGetByIdOptions().setTraceparent(options.getTraceParent()).setTracestate(options.getTraceState());
     }
 
     public static DigitalTwinsDeleteOptions toProtocolLayerOptions(DeleteDigitalTwinOptions options) {
@@ -119,8 +119,8 @@ public final class OptionsConverter {
         }
 
         return new DigitalTwinsDeleteOptions()
-            .setTraceparent(options.getTraceparent())
-            .setTracestate(options.getTracestate())
+            .setTraceparent(options.getTraceParent())
+            .setTracestate(options.getTraceState())
             .setIfMatch(options.getIfMatch());
     }
 
@@ -130,8 +130,8 @@ public final class OptionsConverter {
         }
 
         return new DigitalTwinsUpdateOptions()
-            .setTraceparent(options.getTraceparent())
-            .setTracestate(options.getTracestate())
+            .setTraceparent(options.getTraceParent())
+            .setTracestate(options.getTraceState())
             .setIfMatch(options.getIfMatch());
     }
 
@@ -140,7 +140,7 @@ public final class OptionsConverter {
             return null;
         }
 
-        return new DigitalTwinsGetRelationshipByIdOptions().setTraceparent(options.getTraceparent()).setTracestate(options.getTracestate());
+        return new DigitalTwinsGetRelationshipByIdOptions().setTraceparent(options.getTraceParent()).setTracestate(options.getTraceState());
     }
 
     public static DigitalTwinsUpdateRelationshipOptions toProtocolLayerOptions(UpdateRelationshipOptions options) {
@@ -149,8 +149,8 @@ public final class OptionsConverter {
         }
 
         return new DigitalTwinsUpdateRelationshipOptions()
-            .setTraceparent(options.getTraceparent())
-            .setTracestate(options.getTracestate())
+            .setTraceparent(options.getTraceParent())
+            .setTracestate(options.getTraceState())
             .setIfMatch(options.getIfMatch());
     }
 
@@ -160,8 +160,8 @@ public final class OptionsConverter {
         }
 
         return new DigitalTwinsDeleteRelationshipOptions()
-            .setTraceparent(options.getTraceparent())
-            .setTracestate(options.getTracestate())
+            .setTraceparent(options.getTraceParent())
+            .setTracestate(options.getTraceState())
             .setIfMatch(options.getIfMatch());
     }
 
@@ -170,7 +170,7 @@ public final class OptionsConverter {
             return null;
         }
 
-        return new DigitalTwinsListRelationshipsOptions().setTraceparent(options.getTraceparent()).setTracestate(options.getTracestate());
+        return new DigitalTwinsListRelationshipsOptions().setTraceparent(options.getTraceParent()).setTracestate(options.getTraceState());
     }
 
     public static DigitalTwinsListIncomingRelationshipsOptions toProtocolLayerOptions(ListIncomingRelationshipsOptions options) {
@@ -178,7 +178,7 @@ public final class OptionsConverter {
             return null;
         }
 
-        return new DigitalTwinsListIncomingRelationshipsOptions().setTraceparent(options.getTraceparent()).setTracestate(options.getTracestate());
+        return new DigitalTwinsListIncomingRelationshipsOptions().setTraceparent(options.getTraceParent()).setTracestate(options.getTraceState());
     }
 
     public static DigitalTwinsGetComponentOptions toProtocolLayerOptions(GetComponentOptions options) {
@@ -186,7 +186,7 @@ public final class OptionsConverter {
             return null;
         }
 
-        return new DigitalTwinsGetComponentOptions().setTraceparent(options.getTraceparent()).setTracestate(options.getTracestate());
+        return new DigitalTwinsGetComponentOptions().setTraceparent(options.getTraceParent()).setTracestate(options.getTraceState());
     }
 
     public static DigitalTwinsUpdateComponentOptions toProtocolLayerOptions(UpdateComponentOptions options) {
@@ -195,8 +195,8 @@ public final class OptionsConverter {
         }
 
         return new DigitalTwinsUpdateComponentOptions()
-            .setTraceparent(options.getTraceparent())
-            .setTracestate(options.getTracestate())
+            .setTraceparent(options.getTraceParent())
+            .setTracestate(options.getTraceState())
             .setIfMatch(options.getIfMatch());
     }
 
@@ -206,8 +206,8 @@ public final class OptionsConverter {
         }
 
         return new QueryTwinsOptions()
-            .setTraceparent(options.getTraceparent())
-            .setTracestate(options.getTracestate())
+            .setTraceparent(options.getTraceParent())
+            .setTracestate(options.getTraceState())
             .setMaxItemsPerPage(options.getMaxItemsPerPage());
     }
 }

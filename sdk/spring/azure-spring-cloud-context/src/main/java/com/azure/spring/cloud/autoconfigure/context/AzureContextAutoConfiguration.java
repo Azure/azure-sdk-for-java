@@ -17,6 +17,8 @@ import com.azure.spring.cloud.context.core.impl.AzureResourceManagerProvider;
 import com.azure.spring.cloud.context.core.impl.DefaultCredentialsProvider;
 import com.microsoft.rest.RestClient;
 import java.io.IOException;
+import java.util.Optional;
+
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -56,12 +58,10 @@ public class AzureContextAutoConfiguration {
             .withInterceptor(new ResourceManagerThrottlingInterceptor()).withUserAgent(SPRING_CLOUD_USER_AGENT)
             .build();
 
-        if (azureProperties.getSubscriptionId() == null) {
-            return Azure.authenticate(restClient, credentials.domain()).withDefaultSubscription();
-        } else {
-            return Azure.authenticate(restClient, credentials.domain())
-                .withSubscription(azureProperties.getSubscriptionId());
-        }
+        String subscriptionId = Optional.of(azureProperties.getSubscriptionId())
+                                        .orElseGet(credentials::defaultSubscriptionId);
+        return Azure.authenticate(restClient, credentials.domain())
+                    .withSubscription(subscriptionId);
     }
 
     @Bean

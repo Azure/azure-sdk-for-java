@@ -96,7 +96,7 @@ public class CommunicationUserCredentialTests {
 
         @Override
         public String get() throws InterruptedException, ExecutionException {
-            return tokenMocker.generateRawToken("Mock", "user", 12 * 60 + 5);
+            return tokenMocker.generateRawToken("Mock", "user", 10 * 60 + 1);
         }
 
         @Override
@@ -123,7 +123,7 @@ public class CommunicationUserCredentialTests {
 
     @Test
     public void fresherShouldBeCalledAfterExpiringTime() throws InterruptedException, ExecutionException, IOException {
-        String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", 610);
+        String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", 601);
         immediateFresher.resetCallCount();
         CountDownLatch countDownLatch = new CountDownLatch(1);
         immediateFresher.setOnCallReturn(countDownLatch::countDown);
@@ -154,7 +154,7 @@ public class CommunicationUserCredentialTests {
 
     @Test
     public void refresherShouldBeCalledAgainAfterFirstRefreshCall() throws InterruptedException, ExecutionException, IOException {
-        String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", 610);
+        String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", 601);
         immediateFresher.resetCallCount();
         CountDownLatch firstCountDownLatch = new CountDownLatch(1);
         immediateFresher.setOnCallReturn(firstCountDownLatch::countDown);
@@ -261,7 +261,7 @@ public class CommunicationUserCredentialTests {
 
     @Test
     public void shouldNotModifyTokenWhenRefresherThrows() throws InterruptedException, ExecutionException, IOException {
-        String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", 610);
+        String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", 601);
         CommunicationUserCredential userCredential = new CommunicationUserCredential(exceptionRefresher, tokenStr, true);
         CountDownLatch countDownLatch = new CountDownLatch(1);
         exceptionRefresher.setOnCallReturn(countDownLatch::countDown);
@@ -339,7 +339,7 @@ public class CommunicationUserCredentialTests {
             if (this.onCallReturn != null) {
                 this.onCallReturn.run();
             }
-            return tokenMocker.generateRawToken("Mock", "user", 12 * 60);
+            return tokenMocker.generateRawToken("Mock", "user", 601);
         }
 
         @Override
