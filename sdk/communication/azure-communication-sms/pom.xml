@@ -60,6 +60,7 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-administration</artifactId>
       <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-communication-administration;current} -->
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

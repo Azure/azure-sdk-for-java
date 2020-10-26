@@ -18,7 +18,7 @@ The sample is composed of two layers: Angular JS client and Spring Boot RESTful 
 To run this sample, you'll need:
 
 - JDK 1.8 and above
-- [Maven](http://maven.apache.org/) 3.0 and above
+- [Maven](https://maven.apache.org/) 3.0 and above
 - An Internet connection
 - A Windows machine (necessary if you want to run the app on Windows)
 - An OS X machine (necessary if you want to run the app on Mac)

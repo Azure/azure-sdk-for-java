@@ -9,7 +9,7 @@ jobs:
         safeName: azurecommunicationadministration
       - name: azure-communication-chat
         groupId: com.azure
-        safeName: azurecommunicationchatclient
+        safeName: azurecommunicationchat
       - name: azure-communication-sms
         groupId: com.azure
         safeName: azurecommunicationsms
@@ -17,3 +17,4 @@ jobs:
     EnvVars:
       AZURE_TEST_MODE: LIVE
       SKIP_PHONENUMBER_INTEGRATION_TESTS: TRUE
+      SKIP_LIVE_TEST: TRUE

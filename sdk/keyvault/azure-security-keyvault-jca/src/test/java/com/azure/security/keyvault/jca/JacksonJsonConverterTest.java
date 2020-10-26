@@ -12,8 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * The JUnit tests for the JsonbJsonConverter class.
- *
- * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 public class JacksonJsonConverterTest {
 

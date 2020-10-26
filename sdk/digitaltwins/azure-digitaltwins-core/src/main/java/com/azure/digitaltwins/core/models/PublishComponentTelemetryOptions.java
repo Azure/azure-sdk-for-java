@@ -49,7 +49,7 @@ public final class PublishComponentTelemetryOptions {
      * @param traceparent the traceparent value to set.
      * @return the PublishComponentTelemetryOptions object itself.
      */
-    public PublishComponentTelemetryOptions setTraceparent(String traceparent) {
+    public PublishComponentTelemetryOptions setTraceParent(String traceparent) {
         this.traceparent = traceparent;
         return this;
     }
@@ -71,7 +71,7 @@ public final class PublishComponentTelemetryOptions {
      * @param tracestate the tracestate value to set.
      * @return the PublishComponentTelemetryOptions object itself.
      */
-    public PublishComponentTelemetryOptions setTracestate(String tracestate) {
+    public PublishComponentTelemetryOptions setTraceState(String tracestate) {
         this.tracestate = tracestate;
         return this;
     }

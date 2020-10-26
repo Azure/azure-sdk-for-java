@@ -834,4 +834,62 @@ public final class PhoneNumberAsyncClient {
             return Mono.just(pollingContext.getLatestResponse().getValue());
         };
     }
+
+    /**
+     * Initiates a purchase process and polls until a terminal state is reached
+     * This function returns a Long Running Operation poller that allows you to 
+     * wait indefinitely until the operation is complete.
+     *
+     * @param searchId ID of the search
+     * @param pollInterval The time our long running operation will keep on polling 
+     * until it gets a result from the server
+     * @return A {@link PollerFlux} object.
+     */
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<Void, Void> beginPurchaseSearch(String searchId, Duration pollInterval) {
+        Objects.requireNonNull(searchId, "'searchId' can not be null.");
+        Objects.requireNonNull(pollInterval, "'pollInterval' can not be null.");
+
+        return new PollerFlux<Void, Void>(pollInterval,
+            purchaseSearchActivationOperation(searchId),
+            purchaseSearchPollOperation(searchId),
+            (activationResponse, pollingContext) -> Mono.error(new RuntimeException("Cancellation is not supported")),
+            purchaseSearchFetchResultOperation());
+    }
+
+    private Function<PollingContext<Void>, Mono<Void>> purchaseSearchActivationOperation(String searchId) {
+
+        return (pollingContext) -> {
+            Mono<Void> response = purchaseSearch(searchId);
+            return response;
+        };
+    }
+
+    private Function<PollingContext<Void>, Mono<PollResponse<Void>>>
+        purchaseSearchPollOperation(String searchId) {
+        return (pollingContext) -> getSearchById(searchId)
+            .flatMap(getSearchResponse -> {
+                SearchStatus statusResponse = getSearchResponse.getStatus();
+                if (statusResponse.equals(SearchStatus.RESERVED) 
+                    || statusResponse.equals(SearchStatus.EXPIRED)
+                    || statusResponse.equals(SearchStatus.SUCCESS)) {
+                    return Mono.just(new PollResponse<>(
+                    LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null));
+                }
+                if (statusResponse.equals(SearchStatus.ERROR)) {
+                    return Mono.just(new PollResponse<>(
+                    LongRunningOperationStatus.FAILED, null));
+                }
+                return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, null));
+            });
+    }
+
+    private Function<PollingContext<Void>,
+        Mono<Void>> purchaseSearchFetchResultOperation() {
+        return pollingContext -> {
+            return Mono.empty();
+        };
+
+    }
 }

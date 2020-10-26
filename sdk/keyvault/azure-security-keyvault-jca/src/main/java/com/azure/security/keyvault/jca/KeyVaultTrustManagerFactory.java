@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * The KeyVault variant of the TrustManagerFactory.
+ * The Azure Key Vault variant of the TrustManagerFactory.
  */
 public class KeyVaultTrustManagerFactory extends TrustManagerFactorySpi {
 

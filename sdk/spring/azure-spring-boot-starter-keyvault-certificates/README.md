@@ -5,16 +5,16 @@
 ### Using a managed identity
 
 To use the starter for server side SSL, you will need to add the following to
-your application.properties (if the application is using Spring Cloud Config 
-Server for its configuration add it to the bootstrap.yml of the application)
+your `application.properties` (if the application is using Spring Cloud Config 
+Server for its configuration add it to the `bootstrap.yml` of the application)
 
 ```
-azure.keyvault.uri=<the URI of the Azure KeyVault to use>
-server.ssl.key-alias=<the name of the certificate in Azure KeyVault to use>
+azure.keyvault.uri=<the URI of the Azure Key Vault to use>
+server.ssl.key-alias=<the name of the certificate in Azure Key Vault to use>
 server.ssl.key-store-type=AzureKeyVault
 ```
 
-Note: make sure the managed identity has access to the Azure KeyVault to access
+Note: make sure the managed identity has access to the Azure Key Vault to access
 keys, secrets and certificates.
 
 Add then add the following Maven dependency to your POM file.
@@ -29,19 +29,19 @@ Add then add the following Maven dependency to your POM file.
 ### Using a client ID and client secret
 
 To use the starter for server side SSL, you will need to add the following to
-your application.properties (if the application is using Spring Cloud Config 
-Server for its configuration add it to the bootstrap.yml of the application)
+your `application.properties` (if the application is using Spring Cloud Config 
+Server for its configuration add it to the `bootstrap.yml` of the application)
 
 ```
-azure.keyvault.uri=<the URI of the Azure KeyVault to use>
+azure.keyvault.uri=<the URI of the Azure Key Vault to use>
 azure.keyvault.tenantId=<the ID of your Azure tenant>
-azure.keyvault.clientId=<the client ID with access to Azure KeyVault>
+azure.keyvault.clientId=<the client ID with access to Azure Key Vault>
 azure.keyvault.clientSecret=<the client secret associated wit the client ID>
-server.ssl.key-alias=<the name of the certificate in Azure KeyVault to use>
+server.ssl.key-alias=<the name of the certificate in Azure Key Vault to use>
 server.ssl.key-store-type=AzureKeyVault
 ```
 
-Note: make sure the client ID has access to the Azure KeyVault to access
+Note: make sure the client ID has access to the Azure Key Vault to access
 keys, secrets and certificates.
 
 Add then add the following Maven dependency to your POM file.
@@ -58,13 +58,13 @@ Add then add the following Maven dependency to your POM file.
 ### Using a managed identity
 
 To use the starter for client side SSL, you will need to add the following to
-your application.properties (if the application is using Spring Cloud Config 
-Server for its configuration add it to the bootstrap.yml of the application)
+your `application.properties` (if the application is using Spring Cloud Config 
+Server for its configuration add it to the `bootstrap.yml` of the application)
 
 ```
-azure.keyvault.uri=<the URI of the Azure KeyVault to use>
+azure.keyvault.uri=<the URI of the Azure Key Vault to use>
 ```
-Note: make sure the managed identity has access to the Azure KeyVault to access
+Note: make sure the managed identity has access to the Azure Key Vault to access
 keys, secrets and certificates.
 
 Add then add the following Maven dependency to your POM file.
@@ -76,7 +76,7 @@ Add then add the following Maven dependency to your POM file.
     </dependency>
 ```
 
-If you are using RestTemplate use code similar to the example below.
+If you are using `RestTemplate` use code similar to the example below.
 
 ```java
     @Bean
@@ -104,17 +104,17 @@ If you are using RestTemplate use code similar to the example below.
 ### Using a client ID and client secret
 
 To use the starter for client side SSL, you will need to add the following to
-your application.properties (if the application is using Spring Cloud Config 
-Server for its configuration add it to the bootstrap.yml of the application)
+your `application.properties` (if the application is using Spring Cloud Config 
+Server for its configuration add it to the `bootstrap.yml` of the application)
 
 ```
-azure.keyvault.uri=<the URI of the Azure KeyVault to use>
+azure.keyvault.uri=<the URI of the Azure Key Vault to use>
 azure.keyvault.tenantId=<the ID of your Azure tenant>
-azure.keyvault.clientId=<the client ID with access to Azure KeyVault>
+azure.keyvault.clientId=<the client ID with access to Azure Key Vault>
 azure.keyvault.clientSecret=<the client secret associated wit the client ID>
 ```
 
-Note: make sure the client ID has access to the Azure KeyVault to access
+Note: make sure the client ID has access to the Azure Key Vault to access
 keys, secrets and certificates.
 
 Add then add the following Maven dependency to your POM file.
@@ -126,7 +126,7 @@ Add then add the following Maven dependency to your POM file.
     </dependency>
 ```
 
-Then if you are using RestTemplate use the code below as a starting
+Then if you are using `RestTemplate` use the code below as a starting
 point:
 
 ```java
@@ -161,7 +161,7 @@ to add the following configuration:
 ```yaml
 azure:
   keyvault:
-    uri: <the URI of the Azure KeyVault to use>
+    uri: <the URI of the Azure Key Vault to use>
     jca: 
       overrideTrustManagerFactory: true
 ```
@@ -180,8 +180,8 @@ azure:
 ```
 
 If you are developing you can completely disable the certificate and hostname
-validation altogether by using the configuration below. Note this is NOT 
-recommended for production!
+validation altogether by using the configuration below. **Note this is NOT 
+recommended for production!**
 
 ```yaml
 spring:
@@ -194,7 +194,7 @@ spring:
 
 ## Creating an Azure Key Vault
 
-To create an Azure KeyVault use the command line below:
+To create an Azure Key Vault use the command line below:
 
 ```shell
   export KEY_VAULT=mykeyvault
@@ -246,14 +246,14 @@ Notes:
 1. The alias (certificate name) is constructed from the filename of the 
 certificate (minus the extension). So if your filename is `mycert.x509` the
 certificate will be added with the alias of `mycert`. 
-2. Certificates coming from Azure KeyVault take precedence over 
+2. Certificates coming from Azure Key Vault take precedence over 
 side-loaded certificates.
 
 ## Testing the current version under development 
 
 If you want to test the current version under development you will have to
 
-1. Build and install the [Microsoft Azure JCA Provider]<!--(../../keyvault/azure-security-keyvault-jca/README.md)--> for KeyVault
+1. Build and install the [Azure Key Vault JCA client library for Java](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-jca/README.md)
 1. Build and install this starter.
 
 To build and install the starter use the following command line:
@@ -263,7 +263,7 @@ To build and install the starter use the following command line:
 ```
 
 
-# Azure KeyVault Certificates client library for Java
+# Azure Key Vault Certificates client library for Java
 
 # Getting started
 

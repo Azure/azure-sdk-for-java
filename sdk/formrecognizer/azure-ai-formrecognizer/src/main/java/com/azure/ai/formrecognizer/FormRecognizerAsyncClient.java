@@ -153,7 +153,7 @@ public final class FormRecognizerAsyncClient {
                     .andThen(after -> after.map(modelSimpleResponse ->
                         toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
                             isFieldElementsIncluded,
-                            modelId))
+                            modelId, false))
                         .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
@@ -246,7 +246,7 @@ public final class FormRecognizerAsyncClient {
                     .andThen(after -> after.map(modelSimpleResponse ->
                         toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
                             isFieldElementsIncluded,
-                            modelId))
+                            modelId, false))
                         .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
@@ -478,7 +478,7 @@ public final class FormRecognizerAsyncClient {
                     .andThen(after -> after.map(modelSimpleResponse ->
                         toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
                             isFieldElementsIncluded,
-                            null))
+                            null, false))
                         .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
@@ -573,7 +573,7 @@ public final class FormRecognizerAsyncClient {
                     .andThen(after -> after.map(modelSimpleResponse ->
                         toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
                             isFieldElementsIncluded,
-                            null))
+                            null, false))
                         .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
@@ -655,7 +655,7 @@ public final class FormRecognizerAsyncClient {
                     .andThen(after -> after.map(modelSimpleResponse -> toRecognizedForm(
                         modelSimpleResponse.getValue().getAnalyzeResult(),
                         isFieldElementsIncluded,
-                        null))
+                        null, true))
                         .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
@@ -748,7 +748,7 @@ public final class FormRecognizerAsyncClient {
                     .andThen(after -> after.map(modelSimpleResponse -> toRecognizedForm(
                         modelSimpleResponse.getValue().getAnalyzeResult(),
                         isFieldElementsIncluded,
-                        null))
+                        null, true))
                         .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);

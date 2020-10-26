@@ -146,8 +146,8 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             List<String> incomingRelationshipsSourceIds = new ArrayList<>();
             StepVerifier
                 .create(asyncClient.listIncomingRelationships(floorTwinId, null))
-                .assertNext(incomingRelationship -> incomingRelationshipsSourceIds.add(incomingRelationship.getSourceId()))
-                .assertNext(incomingRelationship -> incomingRelationshipsSourceIds.add(incomingRelationship.getSourceId()))
+                .assertNext(incomingRelationship -> incomingRelationshipsSourceIds.add(incomingRelationship.getSourceDigitalTwinId()))
+                .assertNext(incomingRelationship -> incomingRelationshipsSourceIds.add(incomingRelationship.getSourceDigitalTwinId()))
                 .expectComplete()
                 .verify();
             assertThat(incomingRelationshipsSourceIds)
@@ -331,7 +331,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                         incomingRelationshipsPageCount.getAndIncrement();
                         logger.info("content for this page " + incomingRelationshipsPageCount);
                         for (IncomingRelationship relationship : page.getValue()) {
-                            logger.info(relationship.getSourceId());
+                            logger.info(relationship.getSourceDigitalTwinId());
                         }
 
                         if (page.getContinuationToken() != null) {
