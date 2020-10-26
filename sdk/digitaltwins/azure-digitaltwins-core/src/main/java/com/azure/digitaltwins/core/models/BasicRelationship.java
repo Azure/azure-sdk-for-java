@@ -32,7 +32,7 @@ public final class BasicRelationship {
     private String name;
 
     @JsonIgnore
-    private final Map<String, Object> customProperties = new HashMap<>();
+    private final Map<String, Object> properties = new HashMap<>();
 
     /**
      * Construct a basic digital twin relationship.
@@ -93,8 +93,8 @@ public final class BasicRelationship {
      * @return The additional properties defined in the model. This field will contain any properties of the relationship that are not already defined by the other strong types of this class.
      */
     @JsonAnyGetter
-    public Map<String, Object> getCustomProperties() {
-        return customProperties;
+    public Map<String, Object> getProperties() {
+        return properties;
     }
 
     /**
@@ -104,8 +104,8 @@ public final class BasicRelationship {
      * @return The BasicRelationship object itself.
      */
     @JsonAnySetter
-    public BasicRelationship addCustomProperty(String key, Object value) {
-        this.customProperties.put(key, value);
+    public BasicRelationship addProperty(String key, Object value) {
+        this.properties.put(key, value);
         return this;
     }
 

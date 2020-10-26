@@ -203,13 +203,13 @@ BasicDigitalTwin basicTwin = new BasicDigitalTwin()
         new DigitalTwinMetadata()
             .setModelId(modelId)
     )
-    .addCustomProperty("Prop1", "Value1")
-    .addCustomProperty("Prop2", 987)
-    .addCustomProperty(
+    .addProperty("Prop1", "Value1")
+    .addProperty("Prop2", 987)
+    .addProperty(
         "Component1",
         new ModelProperties()
-            .setCustomProperties("ComponentProp1", "Component value 1")
-            .setCustomProperties("ComponentProp2", 123)
+            .addroperty("ComponentProp1", "Component value 1")
+            .addroperty("ComponentProp2", 123)
     );
 
 BasicDigitalTwin basicTwinResponse = syncClient.createDigitalTwin(basicDtId, basicTwin, BasicDigitalTwin.class);
@@ -312,8 +312,8 @@ BasicRelationship buildingFloorRelationshipPayload = new BasicRelationship()
     .setSourceId(buildingTwinId)
     .setTargetId(floorTwinId)
     .setName("contains")
-    .addCustomProperty("Prop1", "Prop1 value")
-    .addCustomProperty("Prop2", 6);
+    .addProperty("Prop1", "Prop1 value")
+    .addProperty("Prop2", 6);
 
 client.createRelationship(buildingTwinId, buildingFloorRelationshipId, buildingFloorRelationshipPayload, BasicRelationship.class);
 ```
@@ -332,8 +332,8 @@ Response<BasicRelationship> getRelationshipResponse = client.getRelationshipWith
 if (getRelationshipResponse.getStatusCode() == HttpURLConnection.HTTP_OK) {
     BasicRelationship retrievedRelationship = getRelationshipResponse.getValue();
     ConsoleLogger.printSuccess("Retrieved relationship: " + retrievedRelationship.getId() + " from twin: " + retrievedRelationship.getSourceId() + "\n\t" +
-        "Prop1: " + retrievedRelationship.getCustomProperties().get("Prop1") + "\n\t" +
-        "Prop2: " + retrievedRelationship.getCustomProperties().get("Prop2"));
+        "Prop1: " + retrievedRelationship.getProperties().get("Prop1") + "\n\t" +
+        "Prop2: " + retrievedRelationship.getProperties().get("Prop2"));
 }
 ```
 
