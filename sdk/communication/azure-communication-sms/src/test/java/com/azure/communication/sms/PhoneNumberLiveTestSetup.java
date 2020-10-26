@@ -15,6 +15,7 @@ import com.azure.communication.administration.models.PhoneNumberSearch;
 import com.azure.communication.administration.models.PhoneNumberType;
 import com.azure.communication.administration.models.PhonePlan;
 import com.azure.communication.administration.models.PhonePlanGroup;
+import com.azure.communication.common.PhoneNumber;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class PhoneNumberLiveTestSetup implements BeforeAllCallback, ExtensionCon
     private static String NAME_FOR_SEARCH = "SetupSearch";
     private static String DESCRIPTION_FOR_SEARCH = "Setup Phone Number Search for Live Tests";
     private PhoneNumberClient phoneNumberClient;
+    private List<String> phoneNumbers;
 
     @Override
     public void beforeAll(ExtensionContext context) {
@@ -63,27 +65,29 @@ public class PhoneNumberLiveTestSetup implements BeforeAllCallback, ExtensionCon
                 .setDescription(DESCRIPTION_FOR_SEARCH)
                 .setDisplayName(NAME_FOR_SEARCH)
                 .setPhonePlanIds(phonePlanIds)
-                .setQuantity(2);
+                .setQuantity(1);
 
             Duration duration = Duration.ofSeconds(10);
             SyncPoller<PhoneNumberSearch, PhoneNumberSearch> res = phoneNumberClient.beginCreateSearch(createSearchOptions, duration);
             res.waitForCompletion();
             PhoneNumberSearch searchResult = res.getFinalResult();
-
-            String phoneNumber = searchResult.getPhoneNumbers().get(0);
-
-            Configuration.getGlobalConfiguration().put("SMS_SERVICE_PHONE_NUMBER", phoneNumber);
-
+            phoneNumbers = searchResult.getPhoneNumbers();
+            if (phoneNumbers.size() > 0) {
+                Configuration.getGlobalConfiguration().put("SMS_SERVICE_PHONE_NUMBER", phoneNumbers.get(0));
+            }
             phoneNumberClient.purchaseSearch(searchResult.getSearchId());
-  
-            // The following line registers a callback hook when the root test context is shut down
-            // context.getRoot().getStore(GLOBAL).put("any unique name", this);
         }
     }
 
     @Override
     public void close() {
-        phoneNumberClient.releasePhoneNumbers(phoneNumbers)
+
+        // Release phone numbers after tests end
+        final List<PhoneNumber> releasedPhoneNumbers = new ArrayList<>();
+        for(String phoneNumber : phoneNumbers) {
+            releasedPhoneNumbers.add(new PhoneNumber(phoneNumber));
+        }
+        phoneNumberClient.releasePhoneNumbers(releasedPhoneNumbers);
     }
 
     private PhoneNumberClient createPhoneNumberClient() {
