@@ -78,8 +78,7 @@ public class ClientTelemetry {
                            String applicationRegion,
                            String hostEnvInfo,
                            HttpClient httpClient,
-                           boolean isClientTelemetryEnabled,
-                           Configs Configs
+                           boolean isClientTelemetryEnabled
     ) {
         clientTelemetryInfo = new ClientTelemetryInfo(clientId, processId, userAgent, connectionMode,
             globalDatabaseAccountName, applicationRegion, hostEnvInfo, acceleratedNetworking);

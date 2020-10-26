@@ -395,7 +395,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             clientTelemetry = new ClientTelemetry(null, UUID.randomUUID().toString(),
                 ManagementFactory.getRuntimeMXBean().getName(), userAgentContainer.getUserAgent(),
                 connectionPolicy.getConnectionMode(), globalEndpointManager.getLatestDatabaseAccount().getId(),
-                null, null, httpClient(), connectionPolicy.isClientTelemetryEnabled(), this.configs);
+                null, null, httpClient(), connectionPolicy.isClientTelemetryEnabled());
             clientTelemetry.init();
         } catch (Exception e) {
             logger.error("unexpected failure in initializing client.", e);
