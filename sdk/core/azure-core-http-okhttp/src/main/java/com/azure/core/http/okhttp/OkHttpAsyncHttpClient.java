@@ -9,6 +9,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.okhttp.implementation.OkHttpResponseCloser;
 import com.azure.core.util.CoreUtils;
 import okhttp3.Call;
 import okhttp3.Headers;
@@ -97,7 +98,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
                     return Mono.just(rb.head());
                 } else {
                     return toOkHttpRequestBody(request.getBody(), request.getHeaders())
-                            .map(requestBody -> rb.method(request.getHttpMethod().toString(), requestBody));
+                        .map(requestBody -> rb.method(request.getHttpMethod().toString(), requestBody));
                 }
             })
             .map(Request.Builder::build);
@@ -128,11 +129,10 @@ class OkHttpAsyncHttpClient implements HttpClient {
     /**
      * Aggregate Flux of java.nio.ByteBuffer to single okio.ByteString.
      *
-     * Pooled okio.Buffer type is used to buffer emitted ByteBuffer instances.
-     * Content of each ByteBuffer will be written (i.e copied) to the internal okio.Buffer slots.
-     * Once the stream terminates, the contents of all slots get copied to one single byte array
-     * and okio.ByteString will be created referring this byte array.
-     * Finally the initial okio.Buffer will be returned to the pool.
+     * Pooled okio.Buffer type is used to buffer emitted ByteBuffer instances. Content of each ByteBuffer will be
+     * written (i.e copied) to the internal okio.Buffer slots. Once the stream terminates, the contents of all slots get
+     * copied to one single byte array and okio.ByteString will be created referring this byte array. Finally the
+     * initial okio.Buffer will be returned to the pool.
      *
      * @param bbFlux the Flux of ByteBuffer to aggregate
      * @return a mono emitting aggregated ByteString
@@ -148,7 +148,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
                     throw Exceptions.propagate(ioe);
                 }
             })
-            .map(b -> ByteString.of(b.readByteArray())),
+                .map(b -> ByteString.of(b.readByteArray())),
             okio.Buffer::clear)
             .switchIfEmpty(EMPTY_BYTE_STRING_MONO);
     }
@@ -170,9 +170,9 @@ class OkHttpAsyncHttpClient implements HttpClient {
         @Override
         public void onResponse(okhttp3.Call call, okhttp3.Response response) {
             HttpResponse azureResponse = new OkHttpResponse(response, request);
+            OkHttpResponseCloser.trackResponse(azureResponse);
 
-            sink.success(new OkHttpResponse(response, request));
-            sink.onDispose(azureResponse::close);
+            sink.success(azureResponse);
         }
     }
 
@@ -225,7 +225,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
                 bodyStream -> {
                     try {
                         // OkHttp: The stream from ResponseBody::byteStream() has to be explicitly closed.
-                 // https://square.github.io/okhttp/4.x/okhttp/okhttp3/-response-body/#the-response-body-must-be-closed
+                        // https://square.github.io/okhttp/4.x/okhttp/okhttp3/-response-body/#the-response-body-must-be-closed
                         bodyStream.close();
                     } catch (IOException ioe) {
                         throw Exceptions.propagate(ioe);
@@ -287,8 +287,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
         }
 
         /**
-         * Creates a Flux of ByteBuffer, with each ByteBuffer wrapping bytes read from the given
-         * InputStream.
+         * Creates a Flux of ByteBuffer, with each ByteBuffer wrapping bytes read from the given InputStream.
          *
          * @param inputStream InputStream to back the Flux
          * @return Flux of ByteBuffer backed by the InputStream

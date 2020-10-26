@@ -9,6 +9,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.netty.implementation.NettyResponseCloser;
 import com.azure.core.util.CoreUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -108,9 +109,13 @@ class NettyAsyncHttpClient implements HttpClient {
      */
     private static BiFunction<HttpClientResponse, Connection, Publisher<HttpResponse>> responseDelegate(
         final HttpRequest restRequest, final boolean disableBufferCopy) {
-        return (reactorNettyResponse, reactorNettyConnection) -> Mono.defer(() -> Mono.using(() ->
-            new ReactorNettyHttpResponse(reactorNettyResponse, reactorNettyConnection, restRequest, disableBufferCopy),
-            Mono::just, HttpResponse::close));
+        return (reactorNettyResponse, reactorNettyConnection) -> {
+            HttpResponse response = new ReactorNettyHttpResponse(reactorNettyResponse, reactorNettyConnection,
+                restRequest, disableBufferCopy);
+            NettyResponseCloser.trackResponse(response);
+
+            return Mono.just(response);
+        };
     }
 
     static class ReactorNettyHttpResponse extends HttpResponse {
