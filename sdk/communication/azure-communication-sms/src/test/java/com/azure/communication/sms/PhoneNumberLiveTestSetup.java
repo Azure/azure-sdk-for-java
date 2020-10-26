@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.communication.administration.PhoneNumberClient;
@@ -37,10 +38,12 @@ public class PhoneNumberLiveTestSetup implements BeforeAllCallback, ExtensionCon
 
     @Override
     public void beforeAll(ExtensionContext context) {
-        if (!started) {
+        System.out.println("Begin Running Phone Number Setup for Live Tests");
+        if (!started && Configuration.getGlobalConfiguration().get("AZURE_TEST_MODE") == TestMode.LIVE.name()) {
             started = true;
-            phoneNumberClient = createPhoneNumberClient();
 
+            // Set up for creating phone number search
+            phoneNumberClient = createPhoneNumberClient();
             PagedIterable<PhonePlanGroup> phonePlanGroups = phoneNumberClient
                 .listPhonePlanGroups(COUNTRY_CODE, LOCALE, true);
             
@@ -58,7 +61,7 @@ public class PhoneNumberLiveTestSetup implements BeforeAllCallback, ExtensionCon
             String phonePlanId = phonePlan.getPhonePlanId();
             String areaCode = phonePlan.getAreaCodes().get(0);
 
-            // // Create Search
+            // Create phone number search
             List<String> phonePlanIds = new ArrayList<>();
             phonePlanIds.add(phonePlanId);
 
@@ -79,10 +82,13 @@ public class PhoneNumberLiveTestSetup implements BeforeAllCallback, ExtensionCon
                 Configuration.getGlobalConfiguration().put("SMS_SERVICE_PHONE_NUMBER", phoneNumbers.get(0));
             }
 
+            // Purchase phone number
             SyncPoller<Void, Void> result = phoneNumberClient.beginPurchaseSearch(searchResult.getSearchId(), duration);
             result.waitForCompletion();
 
             assertEquals(phoneNumberClient.getSearchById(searchResult.getSearchId()).getStatus(), SearchStatus.SUCCESS);
+            System.out.println("Finished Running Phone Number Setup for Live Tests");
+            System.out.println("Using phone number: " + phoneNumbers.get(0));
         }
     }
 
@@ -96,6 +102,8 @@ public class PhoneNumberLiveTestSetup implements BeforeAllCallback, ExtensionCon
             releasedPhoneNumbers.add(new PhoneNumber(phoneNumber));
         }
         phoneNumberClient.releasePhoneNumbers(releasedPhoneNumbers);
+        System.out.println("Release and clean up phone numbers for Live Tests");
+
     }
 
     private PhoneNumberClient createPhoneNumberClient() {

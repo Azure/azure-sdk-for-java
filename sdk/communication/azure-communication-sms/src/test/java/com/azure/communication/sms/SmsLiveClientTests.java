@@ -128,7 +128,7 @@ public class SmsLiveClientTests extends SmsLiveTestBase {
 
     private SmsClient getTestSmsClient(HttpClient httpClient) {
   
-        return getSmsClientBuilder(httpClient)
+        return getSmsClientBuilderWithConnectionString(httpClient)
             .buildClient();
     }    
 }
