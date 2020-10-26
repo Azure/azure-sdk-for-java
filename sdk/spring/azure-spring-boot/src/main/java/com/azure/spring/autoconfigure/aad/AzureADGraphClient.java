@@ -310,7 +310,8 @@ public class AzureADGraphClient {
         }
         return result;
     }
-
+    
+    @SuppressWarnings("unchecked")
     private void loadOBOTokenFromSession() {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         oboTokenMap = (Map<String, AccessToken>) attr.getRequest().getSession(false)
