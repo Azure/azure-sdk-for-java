@@ -12,7 +12,7 @@ jobs:
         safeName: azurecommunicationchat
     ServiceDirectory: communication
     EnvVars:
-      AZURE_TEST_MODE: RECORD
+      AZURE_TEST_MODE: LIVE
       SKIP_PHONENUMBER_INTEGRATION_TESTS: TRUE
       SKIP_LIVE_TEST: TRUE
 

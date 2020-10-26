@@ -32,7 +32,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @MethodSource("com.azure.communication.administration.CommunicationIdentityClientTestBase#getTestParameters")
     public void createAsyncIdentityClientUsingConnectionString(HttpClient httpClient) {
         // Arrange
         asyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient).buildAsyncClient();
@@ -49,7 +49,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @MethodSource("com.azure.communication.administration.CommunicationIdentityClientTestBase#getTestParameters")
     public void createUser(HttpClient httpClient) {
         // Arrange
         asyncClient = getCommunicationIdentityClient(httpClient).buildAsyncClient();
@@ -64,7 +64,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @MethodSource("com.azure.communication.administration.CommunicationIdentityClientTestBase#getTestParameters")
     public void createUserWithResponse(HttpClient httpClient) {
         // Arrange
         asyncClient = getCommunicationIdentityClient(httpClient).buildAsyncClient();
@@ -81,7 +81,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @MethodSource("com.azure.communication.administration.CommunicationIdentityClientTestBase#getTestParameters")
     public void createUserWithContext(HttpClient httpClient) {
         // Arrange
         asyncClient = getCommunicationIdentityClient(httpClient).buildAsyncClient();
@@ -98,7 +98,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @MethodSource("com.azure.communication.administration.CommunicationIdentityClientTestBase#getTestParameters")
     public void deleteUser(HttpClient httpClient) {
         // Arrange
         asyncClient = getCommunicationIdentityClient(httpClient).buildAsyncClient();
@@ -113,7 +113,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @MethodSource("com.azure.communication.administration.CommunicationIdentityClientTestBase#getTestParameters")
     public void deleteUserWithResponse(HttpClient httpClient) {
         // Arrange
         asyncClient = getCommunicationIdentityClient(httpClient).buildAsyncClient();
@@ -131,7 +131,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @MethodSource("com.azure.communication.administration.CommunicationIdentityClientTestBase#getTestParameters")
     public void revokeToken(HttpClient httpClient) {
         // Arrange
         asyncClient = getCommunicationIdentityClient(httpClient).buildAsyncClient();
@@ -150,7 +150,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @MethodSource("com.azure.communication.administration.CommunicationIdentityClientTestBase#getTestParameters")
     public void revokeTokenWithResponse(HttpClient httpClient) {
         // Arrange
         asyncClient = getCommunicationIdentityClient(httpClient).buildAsyncClient();
@@ -172,7 +172,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @MethodSource("com.azure.communication.administration.CommunicationIdentityClientTestBase#getTestParameters")
     public void issueToken(HttpClient httpClient) {
         // Arrange
         asyncClient = getCommunicationIdentityClient(httpClient).buildAsyncClient();
@@ -195,7 +195,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @MethodSource("com.azure.communication.administration.CommunicationIdentityClientTestBase#getTestParameters")
     public void issueTokenWithResponse(HttpClient httpClient) {
         // Arrange
         asyncClient = getCommunicationIdentityClient(httpClient).buildAsyncClient();
