@@ -15,7 +15,10 @@ import com.azure.communication.administration.models.PhoneNumberSearch;
 import com.azure.communication.administration.models.PhoneNumberType;
 import com.azure.communication.administration.models.PhonePlan;
 import com.azure.communication.administration.models.PhonePlanGroup;
+import com.azure.communication.administration.models.SearchStatus;
 import com.azure.communication.common.PhoneNumber;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -76,8 +79,10 @@ public class PhoneNumberLiveTestSetup implements BeforeAllCallback, ExtensionCon
                 Configuration.getGlobalConfiguration().put("SMS_SERVICE_PHONE_NUMBER", phoneNumbers.get(0));
             }
 
-            // TODO: Blocked on Purchase Phone Numbers LRO
-            phoneNumberClient.purchaseSearch(searchResult.getSearchId());
+            SyncPoller<Void, Void> result = phoneNumberClient.beginPurchaseSearch(searchResult.getSearchId(), duration);
+            result.waitForCompletion();
+
+            assertEquals(phoneNumberClient.getSearchById(searchResult.getSearchId()).getStatus(), SearchStatus.SUCCESS);
         }
     }
 

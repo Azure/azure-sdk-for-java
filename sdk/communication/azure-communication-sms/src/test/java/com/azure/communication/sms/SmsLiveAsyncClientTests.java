@@ -78,7 +78,7 @@ public class SmsLiveAsyncClientTests extends SmsLiveTestBase {
     }    
 
     private SmsAsyncClient getTestSmsClient(HttpClient httpClient) {
-        return getSmsClientBuilder(httpClient)
+        return getSmsClientBuilderWithConnectionString(httpClient)
             .buildAsyncClient();
     }  
 }
