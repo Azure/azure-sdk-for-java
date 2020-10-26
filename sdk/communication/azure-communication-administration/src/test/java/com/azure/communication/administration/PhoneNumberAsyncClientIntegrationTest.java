@@ -533,7 +533,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
     public void beginPurchaseSearch(HttpClient httpClient) {
         Duration pollInterval = Duration.ofSeconds(5);
         PollerFlux<Void, Void> poller =
-            this.getClient(httpClient).beginPurchaseReservation(SEARCH_ID, pollInterval);
+            this.getClient(httpClient).beginPurchaseSearch(SEARCH_ID, pollInterval);
         poller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
         Mono<PhoneNumberSearch> mono = this.getClient(httpClient).getSearchById(SEARCH_ID);
         StepVerifier.create(mono)

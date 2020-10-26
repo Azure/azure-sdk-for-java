@@ -836,36 +836,39 @@ public final class PhoneNumberAsyncClient {
     }
 
     /**
-     * LongRunningOperation for the purchaseSearch.
+     * Initiates a purchase process and polls until a terminal state is reached
+     * This function returns a Long Running Operation poller that allows you to 
+     * wait indefinitely until the operation is complete.
      *
-     * @param reservationId ID of the reservation
-     * @param pollInterval Time lapse of the poll request.
+     * @param searchId ID of the search
+     * @param pollInterval The time our long running operation will keep on polling 
+     * until it gets a result from the server
      * @return A {@link PollerFlux} object.
      */
 
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<Void, Void> beginPurchaseReservation(String reservationId, Duration pollInterval) {
-        Objects.requireNonNull(reservationId, "'reservationId' can not be null.");
+    public PollerFlux<Void, Void> beginPurchaseSearch(String searchId, Duration pollInterval) {
+        Objects.requireNonNull(searchId, "'searchId' can not be null.");
         Objects.requireNonNull(pollInterval, "'pollInterval' can not be null.");
 
         return new PollerFlux<Void, Void>(pollInterval,
-            purchaseReservationActivationOperation(reservationId),
-            purchaseReservationCreatePollOperation(reservationId),
+            purchaseSearchActivationOperation(searchId),
+            purchaseSearchPollOperation(searchId),
             (activationResponse, pollingContext) -> Mono.error(new RuntimeException("Cancellation is not supported")),
-            purchaseReservationFetchResultOperation());
+            purchaseSearchFetchResultOperation());
     }
 
-    private Function<PollingContext<Void>, Mono<Void>> purchaseReservationActivationOperation(String reservationId) {
+    private Function<PollingContext<Void>, Mono<Void>> purchaseSearchActivationOperation(String searchId) {
 
         return (pollingContext) -> {
-            Mono<Void> response = purchaseSearch(reservationId);
+            Mono<Void> response = purchaseSearch(searchId);
             return response;
         };
     }
 
     private Function<PollingContext<Void>, Mono<PollResponse<Void>>>
-        purchaseReservationCreatePollOperation(String reservationId) {
-        return (pollingContext) -> getSearchById(reservationId)
+        purchaseSearchPollOperation(String searchId) {
+        return (pollingContext) -> getSearchById(searchId)
             .flatMap(getSearchResponse -> {
                 SearchStatus statusResponse = getSearchResponse.getStatus();
                 if (statusResponse.equals(SearchStatus.RESERVED) 
@@ -883,7 +886,7 @@ public final class PhoneNumberAsyncClient {
     }
 
     private Function<PollingContext<Void>,
-        Mono<Void>> purchaseReservationFetchResultOperation() {
+        Mono<Void>> purchaseSearchFetchResultOperation() {
         return pollingContext -> {
             return Mono.empty();
         };
