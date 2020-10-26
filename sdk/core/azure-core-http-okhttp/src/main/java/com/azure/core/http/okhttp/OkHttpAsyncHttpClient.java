@@ -169,7 +169,10 @@ class OkHttpAsyncHttpClient implements HttpClient {
 
         @Override
         public void onResponse(okhttp3.Call call, okhttp3.Response response) {
+            HttpResponse azureResponse = new OkHttpResponse(response, request);
+
             sink.success(new OkHttpResponse(response, request));
+            sink.onDispose(azureResponse::close);
         }
     }
 

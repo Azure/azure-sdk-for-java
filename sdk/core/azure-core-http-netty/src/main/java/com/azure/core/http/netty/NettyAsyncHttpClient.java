@@ -108,9 +108,9 @@ class NettyAsyncHttpClient implements HttpClient {
      */
     private static BiFunction<HttpClientResponse, Connection, Publisher<HttpResponse>> responseDelegate(
         final HttpRequest restRequest, final boolean disableBufferCopy) {
-        return (reactorNettyResponse, reactorNettyConnection) ->
-            Mono.just(new ReactorNettyHttpResponse(reactorNettyResponse, reactorNettyConnection, restRequest,
-                disableBufferCopy));
+        return (reactorNettyResponse, reactorNettyConnection) -> Mono.defer(() -> Mono.using(() ->
+            new ReactorNettyHttpResponse(reactorNettyResponse, reactorNettyConnection, restRequest, disableBufferCopy),
+            Mono::just, HttpResponse::close));
     }
 
     static class ReactorNettyHttpResponse extends HttpResponse {
