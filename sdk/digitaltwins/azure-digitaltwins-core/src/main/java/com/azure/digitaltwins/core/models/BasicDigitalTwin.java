@@ -88,7 +88,7 @@ public final class BasicDigitalTwin {
     }
 
     /**
-     * Gets the additional properties of the digital twin. This field will contain any properties of the digital twin that are not already defined by the other strong types of this class.
+     * Gets the additional custom properties of the digital twin. This field will contain any properties of the digital twin that are not already defined by the other strong types of this class.
      * @return The additional properties of the digital twin. This field will contain any properties of the digital twin that are not already defined by the other strong types of this class.
      */
     @JsonAnyGetter
@@ -97,7 +97,7 @@ public final class BasicDigitalTwin {
     }
 
     /**
-     * Adds an additional property to the digital twin. This field will contain any properties of the digital twin that are not already defined by the other strong types of this class.
+     * Adds an additional custom property to the digital twin. This field will contain any properties of the digital twin that are not already defined by the other strong types of this class.
      * @param key The key of the additional property to be added to the digital twin.
      * @param value The value of the additional property to be added to the digital twin.
      * @return The BasicDigitalTwin object itself.
