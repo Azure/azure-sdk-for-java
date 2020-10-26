@@ -32,7 +32,7 @@ public final class BasicRelationship {
     private String name;
 
     @JsonIgnore
-    private final Map<String, Object> customProperties = new HashMap<>();
+    private final Map<String, Object> properties = new HashMap<>();
 
     /**
      * Construct a basic digital twin relationship.
@@ -89,23 +89,23 @@ public final class BasicRelationship {
     }
 
     /**
-     * Gets the additional properties defined in the model. This field will contain any properties of the relationship that are not already defined by the other strong types of this class.
-     * @return The additional properties defined in the model. This field will contain any properties of the relationship that are not already defined by the other strong types of this class.
+     * Gets the additional custom properties defined in the model. This field will contain any properties of the relationship that are not already defined by the other strong types of this class.
+     * @return The additional custom properties defined in the model. This field will contain any properties of the relationship that are not already defined by the other strong types of this class.
      */
     @JsonAnyGetter
-    public Map<String, Object> getCustomProperties() {
-        return customProperties;
+    public Map<String, Object> getProperties() {
+        return properties;
     }
 
     /**
-     * Adds an additional property to this model. This field will contain any properties of the relationship that are not already defined by the other strong types of this class.
+     * Adds an additional custom property to this model. This field will contain any properties of the relationship that are not already defined by the other strong types of this class.
      * @param key The key of the additional property to be added to the relationship.
      * @param value The value of the additional property to be added to the relationship.
      * @return The BasicRelationship object itself.
      */
     @JsonAnySetter
-    public BasicRelationship addCustomProperty(String key, Object value) {
-        this.customProperties.put(key, value);
+    public BasicRelationship addProperty(String key, Object value) {
+        this.properties.put(key, value);
         return this;
     }
 

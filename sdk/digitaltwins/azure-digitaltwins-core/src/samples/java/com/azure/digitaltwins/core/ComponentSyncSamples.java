@@ -88,13 +88,13 @@ public class ComponentSyncSamples {
                 new DigitalTwinMetadata()
                     .setModelId(modelId)
             )
-            .addCustomProperty("Prop1", "Value1")
-            .addCustomProperty("Prop2", 987)
-            .addCustomProperty(
+            .addProperty("Prop1", "Value1")
+            .addProperty("Prop2", 987)
+            .addProperty(
                 "Component1",
                 new ModelProperties()
-                    .addCustomProperties("ComponentProp1", "Component value 1")
-                    .addCustomProperties("ComponentProp2", 123)
+                    .addProperty("ComponentProp1", "Component value 1")
+                    .addProperty("ComponentProp2", 123)
             );
 
         String basicDigitalTwinPayload = mapper.writeValueAsString(basicTwin);
@@ -119,14 +119,14 @@ public class ComponentSyncSamples {
 
             BasicDigitalTwin basicDigitalTwin = basicDigitalTwinResponse.getValue();
 
-            String component1RawText = mapper.writeValueAsString(basicDigitalTwin.getCustomProperties().get("Component1"));
+            String component1RawText = mapper.writeValueAsString(basicDigitalTwin.getProperties().get("Component1"));
 
             HashMap component1 = mapper.readValue(component1RawText, HashMap.class);
 
             ConsoleLogger.print("Retrieved digital twin using generic API to use built in deserialization into a BasicDigitalTwin with Id: " + basicDigitalTwin.getId() + ":\n\t"
                 + "Etag: " + basicDigitalTwin.getEtag() + "\n\t"
-                + "Prop1: " + basicDigitalTwin.getCustomProperties().get("Prop1") + "\n\t"
-                + "Prop2: " + basicDigitalTwin.getCustomProperties().get("Prop2") + "\n\t"
+                + "Prop1: " + basicDigitalTwin.getProperties().get("Prop1") + "\n\t"
+                + "Prop2: " + basicDigitalTwin.getProperties().get("Prop2") + "\n\t"
                 + "ComponentProp1: " + component1.get("ComponentProp1") + "\n\t"
                 + "ComponentProp2: " + component1.get("ComponentProp2") + "\n\t"
             );

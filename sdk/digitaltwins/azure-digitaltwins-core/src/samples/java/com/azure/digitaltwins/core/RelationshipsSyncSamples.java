@@ -102,8 +102,8 @@ public class RelationshipsSyncSamples {
         ConsoleLogger.printHeader("Create relationships");
 
         BasicRelationship buildingFloorRelationshipPayload = new BasicRelationship(buildingFloorRelationshipId, buildingTwinId, floorTwinId, "contains")
-            .addCustomProperty("Prop1", "Prop1 value")
-            .addCustomProperty("Prop2", 6);
+            .addProperty("Prop1", "Prop1 value")
+            .addProperty("Prop2", 6);
 
         client.createRelationship(buildingTwinId, buildingFloorRelationshipId, buildingFloorRelationshipPayload, BasicRelationship.class);
 
@@ -120,8 +120,8 @@ public class RelationshipsSyncSamples {
         if (getRelationshipResponse.getStatusCode() == HttpURLConnection.HTTP_OK) {
             BasicRelationship retrievedRelationship = getRelationshipResponse.getValue();
             ConsoleLogger.printSuccess("Retrieved relationship: " + retrievedRelationship.getRelationshipId() + " from twin: " + retrievedRelationship.getSourceDigitalTwinId() + "\n\t" +
-                "Prop1: " + retrievedRelationship.getCustomProperties().get("Prop1") + "\n\t" +
-                "Prop2: " + retrievedRelationship.getCustomProperties().get("Prop2"));
+                "Prop1: " + retrievedRelationship.getProperties().get("Prop1") + "\n\t" +
+                "Prop2: " + retrievedRelationship.getProperties().get("Prop2"));
         }
 
         ConsoleLogger.printHeader("List relationships");

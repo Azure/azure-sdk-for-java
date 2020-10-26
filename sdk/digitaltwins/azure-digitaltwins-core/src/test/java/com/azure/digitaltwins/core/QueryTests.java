@@ -52,7 +52,7 @@ public class QueryTests extends QueryTestBase{
             PagedIterable<BasicDigitalTwin> pagedQueryResponse = client.query(queryString, BasicDigitalTwin.class, new QueryOptions().setMaxItemsPerPage(pageSize), Context.NONE);
 
             for(BasicDigitalTwin digitalTwin : pagedQueryResponse){
-                assertThat(digitalTwin.getCustomProperties().get("IsOccupied"))
+                assertThat(digitalTwin.getProperties().get("IsOccupied"))
                     .as("IsOccupied should be true")
                     .isEqualTo(true);
             }
