@@ -473,6 +473,7 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*[/\\]textanalytics[/\\].*"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*[/\\]schemaregistry[/\\].*"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*[/\\]monitor[/\\].*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*[/\\]eventhubs[/\\].*"/>
 
   <!-- Don't enforce non-static ClientLogger instances in azure-core-mgmt PollerFactory and PollingState types-->
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ThrowFromClientLoggerCheck|GoodLoggingCheck)"
@@ -565,6 +566,12 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.administration.PhoneNumberClient.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.administration.PhoneNumberAsyncClient.java"/>
 
+  <!-- Checkstyle suppression for Event Hubs client APIs that use Flux instead of PagedFlux for methods that return a collection -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.messaging.eventhubs.EventHubConsumerClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.messaging.eventhubs.EventHubConsumerAsyncClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.messaging.eventhubs.EventHubProducerClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.messaging.eventhubs.EventHubProducerAsyncClient.java"/>
+
   <!-- ### begin: Spring related suppression -->
   <!-- GoodLoggingCheck: Spring as a framework, will not directly use ClientLogger-->
   <suppress checks="com.azure.tools.checkstyle.checks.(GoodLoggingCheck|ThrowFromClientLoggerCheck)" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"></suppress>
@@ -603,11 +610,11 @@
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.keyvault.KeyVaultOperation.java"/>
 
   <suppress checks="MethodName" files="com.azure.spring.data.gremlin.common.GremlinConfig.java"/>
-  
+
   <suppress checks="MethodName" files="com.azure.spring.integration.core.api.CheckpointConfig.java"/>
   <suppress checks="MethodName" files="com.azure.spring.integration.servicebus.ServiceBusClientConfig.java"/>
 
-  <!-- Checkstyle suppressions for azure.spring.data.cosmos package -->	
+  <!-- Checkstyle suppressions for azure.spring.data.cosmos package -->
   <suppress checks="MethodName|MemberName|ParameterName" files="src[/\\]test[/\\]java[/\\]com[/\\]azure[/\\]spring[/\\]data[/\\]cosmos[/\\]domain|repository.*.java"/>
   <suppress checks="MethodName" files="com.azure.spring.data.cosmos.config.CosmosConfig.java"/>
   <suppress checks="PackageName" files="com.azure.spring.data.cosmos.multidatasource.*\.java"/>
