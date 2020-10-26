@@ -335,6 +335,9 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)")
     public void canSendThenListReadReceipts(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient);
@@ -354,14 +357,15 @@ public class ChatThreadClientTest extends ChatClientTestBase {
             resp.getItems().forEach(item -> returnedReadReceipts.add(item));
         });
 
-        if (interceptorManager.isPlaybackMode()) {
-            assertTrue(returnedReadReceipts.size() > 0);
-            checkReadReceiptListContainsMessageId(returnedReadReceipts, response.getId());
-        }
+        assertTrue(returnedReadReceipts.size() > 0);
+        checkReadReceiptListContainsMessageId(returnedReadReceipts, response.getId());
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)")
     public void canSendThenListReadReceiptsWithResponse(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient);
@@ -381,9 +385,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
             resp.getItems().forEach(item -> returnedReadReceipts.add(item));
         });
 
-        if (interceptorManager.isPlaybackMode()) {
-            assertTrue(returnedReadReceipts.size() > 0);
-            checkReadReceiptListContainsMessageId(returnedReadReceipts, response.getId());
-        }
+        assertTrue(returnedReadReceipts.size() > 0);
+        checkReadReceiptListContainsMessageId(returnedReadReceipts, response.getId());
     }
 }
