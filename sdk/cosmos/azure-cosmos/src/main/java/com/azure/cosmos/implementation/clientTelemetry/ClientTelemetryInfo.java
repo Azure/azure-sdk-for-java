@@ -21,9 +21,6 @@ public class ClientTelemetryInfo {
     private String applicationRegion;
     private String hostEnvInfo;
     private Boolean acceleratedNetworking;
-    private Set<ReportPayload> systemInfo;
-    private Set<ReportPayload> cacheRefreshInfo;
-    private Set<ReportPayload> operationInfo;
     private Map<ReportPayload, DoubleHistogram> systemInfoMap;
     private Map<ReportPayload, DoubleHistogram> cacheRefreshInfoMap;
     private Map<ReportPayload, DoubleHistogram> operationInfoMap;
@@ -119,30 +116,6 @@ public class ClientTelemetryInfo {
 
     public void setAcceleratedNetworking(Boolean acceleratedNetworking) {
         this.acceleratedNetworking = acceleratedNetworking;
-    }
-
-    public Set<ReportPayload> getSystemInfo() {
-        return systemInfo;
-    }
-
-    public void setSystemInfo(Set<ReportPayload> systemInfo) {
-        this.systemInfo = systemInfo;
-    }
-
-    public Set<ReportPayload> getCacheRefreshInfo() {
-        return cacheRefreshInfo;
-    }
-
-    public void setCacheRefreshInfo(Set<ReportPayload> cacheRefreshInfo) {
-        this.cacheRefreshInfo = cacheRefreshInfo;
-    }
-
-    public Set<ReportPayload> getOperationInfo() {
-        return operationInfo;
-    }
-
-    public void setOperationInfo(Set<ReportPayload> operationInfo) {
-        this.operationInfo = operationInfo;
     }
 
     public Map<ReportPayload, DoubleHistogram> getSystemInfoMap() {

@@ -83,11 +83,6 @@ public class ClientTelemetry {
     ) {
         clientTelemetryInfo = new ClientTelemetryInfo(clientId, processId, userAgent, connectionMode,
             globalDatabaseAccountName, applicationRegion, hostEnvInfo, acceleratedNetworking);
-        ReportPayload cpuReportPayload = new ReportPayload(CPU_NAME, CPU_UNIT);
-        clientTelemetryInfo.getSystemInfoMap().put(cpuReportPayload, CpuMemoryMonitor.getCpuLoadForClientTelemetry());
-
-        ReportPayload memoryReportPayload = new ReportPayload(MEMORY_NAME, MEMORY_UNIT);
-        clientTelemetryInfo.getSystemInfoMap().put(memoryReportPayload, CpuMemoryMonitor.getRemainingForClientTelemetry());
         this.isClosed = false;
         this.httpClient = httpClient;
         this.isClientTelemetryEnabled = isClientTelemetryEnabled;
@@ -178,7 +173,6 @@ public class ClientTelemetry {
     }
 
     private void clearDataForNextRun() {
-        System.out.println("ClientTelemetry.clearDataForNextRun");
         this.clientTelemetryInfo.getOperationInfoMap().clear();
         this.clientTelemetryInfo.getCacheRefreshInfoMap().clear();
         for (DoubleHistogram histogram : this.clientTelemetryInfo.getSystemInfoMap().values()) {
@@ -187,6 +181,24 @@ public class ClientTelemetry {
     }
 
     private void readHistogram() {
+        //Filling cpu information
+        DoubleHistogram cpuHistogram = new DoubleHistogram(ClientTelemetry.CPU_MAX,
+            ClientTelemetry.CPU_PRECISION);
+        for(double val : CpuMemoryMonitor.getClientTelemetryCpuLatestList()) {
+            recordValue(cpuHistogram, val);
+        }
+        ReportPayload cpuReportPayload = new ReportPayload(CPU_NAME, CPU_UNIT);
+        clientTelemetryInfo.getSystemInfoMap().put(cpuReportPayload, cpuHistogram);
+
+        //Filling memory information
+        DoubleHistogram memoryHistogram = new DoubleHistogram(ClientTelemetry.MEMORY_MAX,
+            ClientTelemetry.MEMORY_PRECISION);
+        for(double val : CpuMemoryMonitor.getClientTelemetryMemoryLatestList()) {
+            recordValue(memoryHistogram, val);
+        }
+        ReportPayload memoryReportPayload = new ReportPayload(MEMORY_NAME, MEMORY_UNIT);
+        clientTelemetryInfo.getSystemInfoMap().put(memoryReportPayload, memoryHistogram);
+
         this.clientTelemetryInfo.setTimeStamp(Instant.now().toString());
         for (Map.Entry<ReportPayload, DoubleHistogram> entry : this.clientTelemetryInfo.getSystemInfoMap().entrySet()) {
             fillMetricsInfo(entry.getKey(), entry.getValue());
@@ -198,10 +210,6 @@ public class ClientTelemetry {
         for (Map.Entry<ReportPayload, DoubleHistogram> entry : this.clientTelemetryInfo.getOperationInfoMap().entrySet()) {
             fillMetricsInfo(entry.getKey(), entry.getValue());
         }
-
-        this.clientTelemetryInfo.setSystemInfo(this.clientTelemetryInfo.getSystemInfoMap().keySet());
-        this.clientTelemetryInfo.setCacheRefreshInfo(this.clientTelemetryInfo.getCacheRefreshInfoMap().keySet());
-        this.clientTelemetryInfo.setOperationInfo(this.clientTelemetryInfo.getOperationInfoMap().keySet());
     }
 
     private void fillMetricsInfo(ReportPayload payload, DoubleHistogram histogram) {

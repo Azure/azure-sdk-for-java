@@ -4,7 +4,9 @@
 package com.azure.cosmos.implementation.cpu;
 
 
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.clientTelemetry.ClientTelemetry;
+import org.HdrHistogram.ConcurrentDoubleHistogram;
 import org.HdrHistogram.DoubleHistogram;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,10 +53,9 @@ public class CpuMemoryMonitor {
 
     private static CpuLoadHistory currentReading = DEFAULT_READING; // Guarded by rwLock.
     private static final CpuLoad[] buffer = new CpuLoad[CpuMemoryMonitor.HISTORY_LENGTH];
-    private static final DoubleHistogram clientTelemetryCpuHistogram = new DoubleHistogram(ClientTelemetry.CPU_MAX,
-        ClientTelemetry.CPU_PRECISION);
-    private static final DoubleHistogram clientTelemetryMemoryHistogram =
-        new DoubleHistogram(ClientTelemetry.MEMORY_MAX, ClientTelemetry.MEMORY_PRECISION);
+    private static final int clientTelemetryLength = Configs.getClientTelemetrySchedulingInSec()/DEFAULT_REFRESH_INTERVAL_IN_SECONDS;
+    private static double[] clientTelemetryCpuLatestList = new double[clientTelemetryLength];
+    private static double[] clientTelemetryMemoryLatestList = new double[clientTelemetryLength];
 
     private static ScheduledFuture<?> future;
 
@@ -125,23 +126,25 @@ public class CpuMemoryMonitor {
     }
 
     // Returns a clientTelemetryCpuHistogram for percentile creation
-    public static DoubleHistogram getCpuLoadForClientTelemetry() {
+    public static double[] getClientTelemetryCpuLatestList() {
         rwLock.readLock().lock();
         try {
-            return clientTelemetryCpuHistogram;
+            return clientTelemetryCpuLatestList;
         } finally {
             rwLock.readLock().unlock();
         }
     }
+
     // Returns a clientTelemetryMemoryHistogram for percentile creation
-    public static DoubleHistogram getRemainingForClientTelemetry() {
+    public static double[] getClientTelemetryMemoryLatestList() {
         rwLock.readLock().lock();
         try {
-            return clientTelemetryMemoryHistogram;
+            return clientTelemetryMemoryLatestList;
         } finally {
             rwLock.readLock().unlock();
         }
     }
+
     private static void closeInternal() {
         synchronized (lifeCycleLock) {
             if (future != null) {
@@ -174,8 +177,9 @@ public class CpuMemoryMonitor {
                 buffer[clockHand] = new CpuLoad(now, currentCpuUtilization);
                 clockHand = (clockHand + 1) % buffer.length;
 
-                ClientTelemetry.recordValue(clientTelemetryCpuHistogram, currentCpuUtilization);
-                ClientTelemetry.recordValue(clientTelemetryMemoryHistogram, currentMemoryUtilization);
+                clientTelemetryCpuLatestList[clientTelemetryIndex] = currentCpuUtilization;
+                clientTelemetryMemoryLatestList[clientTelemetryIndex] = currentMemoryUtilization;
+                clientTelemetryIndex = (clientTelemetryIndex + 1) % clientTelemetryLength;
 
                 for (int i = 0; i < buffer.length; i++) {
                     int index = (clockHand + i) % buffer.length;

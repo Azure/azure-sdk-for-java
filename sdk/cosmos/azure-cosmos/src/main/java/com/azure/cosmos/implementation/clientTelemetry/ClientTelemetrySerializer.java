@@ -43,9 +43,9 @@ public class ClientTelemetrySerializer extends StdSerializer<ClientTelemetryInfo
                 telemetry.getAcceleratedNetworking().toString());
         }
 
-        generator.writeObjectField("systemInfo", telemetry.getSystemInfo());
-        generator.writeObjectField("cacheRefreshInfo", telemetry.getCacheRefreshInfo());
-        generator.writeObjectField("operationInfo", telemetry.getOperationInfo());
+        generator.writeObjectField("systemInfo", telemetry.getSystemInfoMap().keySet());
+        generator.writeObjectField("cacheRefreshInfo", telemetry.getCacheRefreshInfoMap().keySet());
+        generator.writeObjectField("operationInfo", telemetry.getOperationInfoMap().keySet());
         generator.writeEndObject();
     }
 }
