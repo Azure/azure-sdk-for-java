@@ -41,6 +41,8 @@ java:
     custom-types-subpackage: models
     required-fields-as-ctor-args: true
 ```
+
+#This directive removes the specified enum values from the swagger so the code generator will expose IfNonMatch header as an option instead of always attaching it to requests with its only default value.
 ``` yaml
 
 directive:
