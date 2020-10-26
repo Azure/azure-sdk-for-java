@@ -4,10 +4,6 @@ package sample;
 
 import com.azure.security.keyvault.jca.KeyVaultJcaProvider;
 import com.azure.security.keyvault.jca.KeyVaultLoadStoreParameter;
-import java.io.IOException;
-import java.security.KeyStore;
-import java.security.Security;
-import javax.net.ssl.SSLContext;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
@@ -19,6 +15,11 @@ import org.apache.hc.client5.http.ssl.TrustSelfSignedStrategy;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 import org.apache.hc.core5.ssl.SSLContexts;
+
+import javax.net.ssl.SSLContext;
+import java.io.IOException;
+import java.security.KeyStore;
+import java.security.Security;
 
 /**
  * The ClientSSL sample.

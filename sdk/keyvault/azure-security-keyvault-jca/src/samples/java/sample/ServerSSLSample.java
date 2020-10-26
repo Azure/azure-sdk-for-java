@@ -4,12 +4,13 @@ package sample;
 
 import com.azure.security.keyvault.jca.KeyVaultJcaProvider;
 import com.azure.security.keyvault.jca.KeyVaultLoadStoreParameter;
-import java.security.KeyStore;
-import java.security.Security;
+
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLServerSocket;
 import javax.net.ssl.SSLServerSocketFactory;
+import java.security.KeyStore;
+import java.security.Security;
 
 /**
  * The ServerSSL sample.
@@ -22,10 +23,10 @@ public class ServerSSLSample {
 
         KeyStore ks = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-                System.getProperty("azure.keyvault.uri"),
-                System.getProperty("azure.tenant.id"),
-                System.getProperty("azure.client.id"),
-                System.getProperty("azure.client.secret"));
+            System.getProperty("azure.keyvault.uri"),
+            System.getProperty("azure.tenant.id"),
+            System.getProperty("azure.client.id"),
+            System.getProperty("azure.client.secret"));
         ks.load(parameter);
 
         KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());

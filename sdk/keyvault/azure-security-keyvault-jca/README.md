@@ -22,25 +22,25 @@ see the example below.
 <!-- embedme src/samples/java/sample/ServerSSLSample.java#L20-L38 -->
 
 ```java
-    KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
-    Security.addProvider(provider);
+KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
+Security.addProvider(provider);
 
-    KeyStore ks = KeyStore.getInstance("AzureKeyVault");
-    KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-        System.getProperty("azure.keyvault.uri"), 
-        System.getProperty("azure.tenant.id"), 
-        System.getProperty("azure.client.id"),
-        System.getProperty("azure.client.secret"));
-    ks.load(parameter);
+KeyStore ks = KeyStore.getInstance("AzureKeyVault");
+KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+    System.getProperty("azure.keyvault.uri"),
+    System.getProperty("azure.tenant.id"),
+    System.getProperty("azure.client.id"),
+    System.getProperty("azure.client.secret"));
+ks.load(parameter);
 
-    KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-    kmf.init(ks, "".toCharArray());
+KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+kmf.init(ks, "".toCharArray());
 
-    SSLContext context = SSLContext.getInstance("TLS");
-    context.init(kmf.getKeyManagers(), null, null);
+SSLContext context = SSLContext.getInstance("TLS");
+context.init(kmf.getKeyManagers(), null, null);
 
-    SSLServerSocketFactory factory = (SSLServerSocketFactory) context.getServerSocketFactory();
-    SSLServerSocket serverSocket = (SSLServerSocket) factory.createServerSocket(8765);
+SSLServerSocketFactory factory = context.getServerSocketFactory();
+SSLServerSocket serverSocket = (SSLServerSocket) factory.createServerSocket(8765);
 ```
 
 Note if you want to use Azure Managed Identity, you should set the value
@@ -54,51 +54,51 @@ connections, see the Apache HTTP client example below.
 <!-- embedme src/samples/java/sample/ClientSSLSample.java#L29-L73 -->
 
 ```java
-    KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
-    Security.addProvider(provider);
+KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
+Security.addProvider(provider);
 
-    KeyStore ks = KeyStore.getInstance("AzureKeyVault");
-    KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getProperty("azure.keyvault.uri"), 
-            System.getProperty("azure.tenant.id"), 
-            System.getProperty("azure.client.id"),
-            System.getProperty("azure.client.secret"));
-    ks.load(parameter);
+KeyStore ks = KeyStore.getInstance("AzureKeyVault");
+KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+        System.getProperty("azure.keyvault.uri"),
+        System.getProperty("azure.tenant.id"),
+        System.getProperty("azure.client.id"),
+        System.getProperty("azure.client.secret"));
+ks.load(parameter);
 
-    SSLContext sslContext = SSLContexts
-            .custom()
-            .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
-            .build();
+SSLContext sslContext = SSLContexts
+        .custom()
+        .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
+        .build();
 
-    SSLConnectionSocketFactory sslSocketFactory = SSLConnectionSocketFactoryBuilder
-            .create()
-            .setSslContext(sslContext)
-            .setHostnameVerifier((hostname, session) -> {
-                return true;
-            })
-            .build();
+SSLConnectionSocketFactory sslSocketFactory = SSLConnectionSocketFactoryBuilder
+        .create()
+        .setSslContext(sslContext)
+        .setHostnameVerifier((hostname, session) -> {
+            return true;
+        })
+        .build();
 
-    PoolingHttpClientConnectionManager cm = PoolingHttpClientConnectionManagerBuilder
-            .create()
-            .setSSLSocketFactory(sslSocketFactory)
-            .build();
+PoolingHttpClientConnectionManager cm = PoolingHttpClientConnectionManagerBuilder
+        .create()
+        .setSSLSocketFactory(sslSocketFactory)
+        .build();
 
-    String result = null;
+String result = null;
 
-    try ( CloseableHttpClient client = HttpClients.custom().setConnectionManager(cm).build()) {
-        HttpGet httpGet = new HttpGet("https://localhost:8766");
-        HttpClientResponseHandler<String> responseHandler = (ClassicHttpResponse response) -> {
-            int status = response.getCode();
-            String result1 = "Not success";
-            if (status == 204) {
-                result1 = "Success";
-            }
-            return result1;
-        };
-        result = client.execute(httpGet, responseHandler);
-    } catch (IOException ioe) {
-        ioe.printStackTrace();
-    }
+try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(cm).build()) {
+    HttpGet httpGet = new HttpGet("https://localhost:8766");
+    HttpClientResponseHandler<String> responseHandler = (ClassicHttpResponse response) -> {
+        int status = response.getCode();
+        String result1 = "Not success";
+        if (status == 204) {
+            result1 = "Success";
+        }
+        return result1;
+    };
+    result = client.execute(httpGet, responseHandler);
+} catch (IOException ioe) {
+    ioe.printStackTrace();
+}
 ```
 
 Note if you want to use Azure managed identity, you should set the value
