@@ -253,7 +253,7 @@ public class DigitalTwinsLifecycleAsyncSample {
         // Call API to list the models. For each async operation, once the operation is completed successfully, a latch is counted down.
         client.listModels()
             .doOnNext(modelData -> ConsoleLogger.printSuccess("Retrieved model: " + modelData.getModelId() + ", display name '" + modelData.getDisplayNameLanguageMap().get("en") + "'," +
-                    " upload time '" + modelData.getUploadTime() + "' and decommissioned '" + modelData.isDecommissioned() + "'"))
+                    " upload time '" + modelData.getUploadedOn() + "' and decommissioned '" + modelData.isDecommissioned() + "'"))
             .doOnError(throwable -> ConsoleLogger.printFatal("List models error: " + throwable))
             .doOnTerminate(listModelsLatch::countDown)
             .subscribe();
