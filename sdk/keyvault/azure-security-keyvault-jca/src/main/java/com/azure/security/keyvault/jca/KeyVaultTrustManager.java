@@ -17,7 +17,7 @@ import javax.net.ssl.SSLEngine;
 import javax.net.ssl.X509ExtendedTrustManager;
 
 /**
- * The KeyVault variant of the X509TrustManager.
+ * The Azure Key Vault variant of the X509TrustManager.
  */
 public class KeyVaultTrustManager extends X509ExtendedTrustManager implements X509TrustManager {
 
