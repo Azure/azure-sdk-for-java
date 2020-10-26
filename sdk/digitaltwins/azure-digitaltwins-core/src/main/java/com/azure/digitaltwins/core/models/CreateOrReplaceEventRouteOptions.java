@@ -9,10 +9,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The optional parameters for
- * {@link com.azure.digitaltwins.core.DigitalTwinsClient#createOrReplaceEventRouteWithResponse(String, DigitalTwinsEventRoute, CreateEventRouteOptions, Context)} and
+ * {@link com.azure.digitaltwins.core.DigitalTwinsClient#createOrReplaceEventRouteWithResponse(String, DigitalTwinsEventRoute, CreateOrReplaceEventRouteOptions, Context)} and
+ * {@link com.azure.digitaltwins.core.DigitalTwinsAsyncClient#createOrReplaceEventRouteWithResponse(String, DigitalTwinsEventRoute, CreateOrReplaceEventRouteOptions)}
  */
 @Fluent
-public final class CreateEventRouteOptions {
+public final class CreateOrReplaceEventRouteOptions {
     /*
      * Identifies the request in a distributed tracing system.
      */
@@ -39,9 +40,9 @@ public final class CreateEventRouteOptions {
      * Set the traceparent property: Identifies the request in a distributed tracing system.
      *
      * @param traceparent the traceparent value to set.
-     * @return the CreateEventRouteOptions object itself.
+     * @return the CreateOrReplaceEventRouteOptions object itself.
      */
-    public CreateEventRouteOptions setTraceParent(String traceparent) {
+    public CreateOrReplaceEventRouteOptions setTraceParent(String traceparent) {
         this.traceparent = traceparent;
         return this;
     }
@@ -61,9 +62,9 @@ public final class CreateEventRouteOptions {
      * traceparent.
      *
      * @param tracestate the tracestate value to set.
-     * @return the CreateEventRouteOptions object itself.
+     * @return the CreateOrReplaceEventRouteOptions object itself.
      */
-    public CreateEventRouteOptions setTraceState(String tracestate) {
+    public CreateOrReplaceEventRouteOptions setTraceState(String tracestate) {
         this.tracestate = tracestate;
         return this;
     }

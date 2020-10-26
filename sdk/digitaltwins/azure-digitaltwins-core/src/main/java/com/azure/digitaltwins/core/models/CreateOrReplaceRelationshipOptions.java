@@ -9,11 +9,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The optional parameters for
- * {@link com.azure.digitaltwins.core.DigitalTwinsClient#createOrReplaceRelationshipWithResponse(String, String, Object, Class, CreateRelationshipOptions, Context)} and
- * {@link com.azure.digitaltwins.core.DigitalTwinsAsyncClient#createOrReplaceRelationshipWithResponse(String, String, Object, Class, CreateRelationshipOptions)}
+ * {@link com.azure.digitaltwins.core.DigitalTwinsClient#createOrReplaceRelationshipWithResponse(String, String, Object, Class, CreateOrReplaceRelationshipOptions, Context)} and
+ * {@link com.azure.digitaltwins.core.DigitalTwinsAsyncClient#createOrReplaceRelationshipWithResponse(String, String, Object, Class, CreateOrReplaceRelationshipOptions)}
  */
 @Fluent
-public final class CreateRelationshipOptions {
+public final class CreateOrReplaceRelationshipOptions {
     /*
      * Identifies the request in a distributed tracing system.
      */
@@ -49,9 +49,9 @@ public final class CreateRelationshipOptions {
      * Set the traceparent property: Identifies the request in a distributed tracing system.
      *
      * @param traceparent the traceparent value to set.
-     * @return the CreateRelationshipOptions object itself.
+     * @return the CreateOrReplaceRelationshipOptions object itself.
      */
-    public CreateRelationshipOptions setTraceParent(String traceparent) {
+    public CreateOrReplaceRelationshipOptions setTraceParent(String traceparent) {
         this.traceparent = traceparent;
         return this;
     }
@@ -85,9 +85,9 @@ public final class CreateRelationshipOptions {
      * traceparent.
      *
      * @param tracestate the tracestate value to set.
-     * @return the CreateRelationshipOptions object itself.
+     * @return the CreateOrReplaceRelationshipOptions object itself.
      */
-    public CreateRelationshipOptions setTraceState(String tracestate) {
+    public CreateOrReplaceRelationshipOptions setTraceState(String tracestate) {
         this.tracestate = tracestate;
         return this;
     }
@@ -101,9 +101,9 @@ public final class CreateRelationshipOptions {
      * If IfNonMatch option is "*" the service will reject the request if the entity already exists.
      *
      * @param ifNoneMatch the ifNoneMatch value to set.
-     * @return the CreateRelationshipOptions object itself.
+     * @return the CreateOrReplaceRelationshipOptions object itself.
      */
-    public CreateRelationshipOptions setIfNoneMatch(String ifNoneMatch) {
+    public CreateOrReplaceRelationshipOptions setIfNoneMatch(String ifNoneMatch) {
         this.ifNoneMatch = ifNoneMatch;
         return this;
     }

@@ -11,7 +11,7 @@ import com.azure.digitaltwins.core.models.*;
  * This class must be manually updated each time a new option is added to a service API.
  */
 public final class OptionsConverter {
-    public static DigitalTwinsAddOptions toProtocolLayerOptions(CreateDigitalTwinOptions options) {
+    public static DigitalTwinsAddOptions toProtocolLayerOptions(CreateOrReplaceDigitalTwinOptions options) {
         if (options == null) {
             return null;
         }
@@ -22,7 +22,7 @@ public final class OptionsConverter {
             .setIfNoneMatch(options.getIfNoneMatch());
     }
 
-    public static DigitalTwinsAddRelationshipOptions toProtocolLayerOptions(CreateRelationshipOptions options) {
+    public static DigitalTwinsAddRelationshipOptions toProtocolLayerOptions(CreateOrReplaceRelationshipOptions options) {
         if (options == null) {
             return null;
         }
@@ -76,7 +76,7 @@ public final class OptionsConverter {
         return new DigitalTwinModelsDeleteOptions().setTraceparent(options.getTraceParent()).setTracestate(options.getTraceState());
     }
 
-    public static EventRoutesAddOptions toProtocolLayerOptions(CreateEventRouteOptions options) {
+    public static EventRoutesAddOptions toProtocolLayerOptions(CreateOrReplaceEventRouteOptions options) {
         if (options == null) {
             return null;
         }

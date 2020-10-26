@@ -85,7 +85,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsClient#createOrReplaceDigitalTwinWithResponse(String, Object, Class, CreateDigitalTwinOptions, Context)}
+     * {@link DigitalTwinsClient#createOrReplaceDigitalTwinWithResponse(String, Object, Class, CreateOrReplaceDigitalTwinOptions, Context)}
      */
     @Override
     public void createDigitalTwinWithResponse() {
@@ -104,7 +104,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             basicDigitalTwin.getId(),
             basicDigitalTwin,
             BasicDigitalTwin.class,
-            new CreateDigitalTwinOptions(),
+            new CreateOrReplaceDigitalTwinOptions(),
             new Context("Key", "Value"));
 
         System.out.println("Response http status: "
@@ -120,7 +120,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             basicDigitalTwin.getId(),
             stringPayload,
             String.class,
-            new CreateDigitalTwinOptions(),
+            new CreateOrReplaceDigitalTwinOptions(),
             new Context("Key", "Value"));
 
         System.out.println(
@@ -299,7 +299,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsClient#createOrReplaceRelationshipWithResponse(String, String, Object, Class, CreateRelationshipOptions, Context)}
+     * {@link DigitalTwinsClient#createOrReplaceRelationshipWithResponse(String, String, Object, Class, CreateOrReplaceRelationshipOptions, Context)}
      */
     @Override
     public void createRelationshipWithResponse() {
@@ -318,7 +318,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
                 "myRelationshipId",
                 buildingToFloorBasicRelationship,
                 BasicRelationship.class,
-                new CreateRelationshipOptions(),
+                new CreateOrReplaceRelationshipOptions(),
                 new Context("key", "value"));
 
         System.out.println(
@@ -338,7 +338,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             "myRelationshipId",
             relationshipPayload,
             String.class,
-            new CreateRelationshipOptions(),
+            new CreateOrReplaceRelationshipOptions(),
             new Context("key", "value"));
 
         System.out.println(
@@ -877,7 +877,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsClient#createOrReplaceEventRouteWithResponse(String, DigitalTwinsEventRoute, CreateEventRouteOptions, Context)}
+     * {@link DigitalTwinsClient#createOrReplaceEventRouteWithResponse(String, DigitalTwinsEventRoute, CreateOrReplaceEventRouteOptions, Context)}
      */
     @Override
     public void createEventRouteWithResponse() {
@@ -889,7 +889,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         Response<Void> response = digitalTwinsSyncClient.createOrReplaceEventRouteWithResponse(
             "myEventRouteId",
             eventRoute,
-            new CreateEventRouteOptions(),
+            new CreateOrReplaceEventRouteOptions(),
             new Context("key", "value"));
 
         System.out.println("Created an event rout with HTTP status code: " + response.getStatusCode());

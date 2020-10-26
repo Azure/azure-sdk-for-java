@@ -9,11 +9,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The optional parameters for
- * {@link com.azure.digitaltwins.core.DigitalTwinsClient#createOrReplaceDigitalTwinWithResponse(String, Object, Class, CreateDigitalTwinOptions, Context)} and
- * {@link com.azure.digitaltwins.core.DigitalTwinsAsyncClient#createOrReplaceDigitalTwinWithResponse(String, Object, Class, CreateDigitalTwinOptions)}
+ * {@link com.azure.digitaltwins.core.DigitalTwinsClient#createOrReplaceDigitalTwinWithResponse(String, Object, Class, CreateOrReplaceDigitalTwinOptions, Context)} and
+ * {@link com.azure.digitaltwins.core.DigitalTwinsAsyncClient#createOrReplaceDigitalTwinWithResponse(String, Object, Class, CreateOrReplaceDigitalTwinOptions)}
  */
 @Fluent
-public final class CreateDigitalTwinOptions {
+public final class CreateOrReplaceDigitalTwinOptions {
     /*
      * Identifies the request in a distributed tracing system.
      */
@@ -63,9 +63,9 @@ public final class CreateDigitalTwinOptions {
      * Set the traceparent property: Identifies the request in a distributed tracing system.
      *
      * @param traceparent the traceparent value to set.
-     * @return the CreateDigitalTwinOptions object itself.
+     * @return the CreateOrReplaceDigitalTwinOptions object itself.
      */
-    public CreateDigitalTwinOptions setTraceParent(String traceparent) {
+    public CreateOrReplaceDigitalTwinOptions setTraceParent(String traceparent) {
         this.traceparent = traceparent;
         return this;
     }
@@ -85,9 +85,9 @@ public final class CreateDigitalTwinOptions {
      * traceparent.
      *
      * @param tracestate the tracestate value to set.
-     * @return the CreateDigitalTwinOptions object itself.
+     * @return the CreateOrReplaceDigitalTwinOptions object itself.
      */
-    public CreateDigitalTwinOptions setTraceState(String tracestate) {
+    public CreateOrReplaceDigitalTwinOptions setTraceState(String tracestate) {
         this.tracestate = tracestate;
         return this;
     }
@@ -101,9 +101,9 @@ public final class CreateDigitalTwinOptions {
      * If IfNonMatch option is "*" the service will reject the request if the entity already exists.
      *
      * @param ifNoneMatch the ifNoneMatch value to set.
-     * @return the CreateRelationshipOptions object itself.
+     * @return the CreateOrReplaceRelationshipOptions object itself.
      */
-    public CreateDigitalTwinOptions setIfNoneMatch(String ifNoneMatch) {
+    public CreateOrReplaceDigitalTwinOptions setIfNoneMatch(String ifNoneMatch) {
         this.ifNoneMatch = ifNoneMatch;
         return this;
     }
