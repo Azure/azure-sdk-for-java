@@ -21,7 +21,7 @@ You can follow the below steps:
 
 ### Platform configurations
 
-![image-20201023164214468](docs/image-20201023164214468.png)
+![Platform configurations](docs/image-platform-configurations.png "Platform configurations")
 
 - Set redirect URIs with `http://localhost:8080/login/oauth2/code/azure`.
 - Ensure **Access tokens** and **ID tokens** are selected.
@@ -73,12 +73,13 @@ azure.activedirectory.tenant-id=common
 ----
 ### Meet with `AADSTS240002: Input id_token cannot be used as 'urn:ietf:params:oauth:grant-type:jwt-bearer' grant` error.
 In Azure portal, app registration Manifest page, configure `oauth2AllowImplicitFlow` in your application manifest to be `true`.   
-See [this issue](https://github.com/MicrosoftDocs/azure-docs/issues/8121#issuecomment-387090099) for details on this workaround.
+See [this issue][issuecomment-387090099] for details on this workaround.
 
-![image-20201023163006486](docs/image-20201023163006486.png)
+![Manifest Config](docs/image-manifest-config.png "Manifest Config")
 
 ## Next steps
 ## Contributing
 <!-- LINKS -->
 
 [instruction]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source
+[issuecomment-387090099]: https://github.com/MicrosoftDocs/azure-docs/issues/8121#issuecomment-387090099
