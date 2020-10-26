@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-/** The DocumentResult model. */
+/** A set of extracted fields corresponding to the input document. */
 @Fluent
 public final class DocumentResult {
     /*
@@ -32,7 +32,7 @@ public final class DocumentResult {
     private List<Integer> pageRange;
 
     /*
-     * Predicted document type confidence.
+     * Confidence score.
      */
     @JsonProperty(value = "docTypeConfidence")
     private Float docTypeConfidence;
@@ -104,7 +104,7 @@ public final class DocumentResult {
     }
 
     /**
-     * Get the docTypeConfidence property: Predicted document type confidence.
+     * Get the docTypeConfidence property: Confidence score.
      *
      * @return the docTypeConfidence value.
      */
@@ -113,7 +113,7 @@ public final class DocumentResult {
     }
 
     /**
-     * Set the docTypeConfidence property: Predicted document type confidence.
+     * Set the docTypeConfidence property: Confidence score.
      *
      * @param docTypeConfidence the docTypeConfidence value to set.
      * @return the DocumentResult object itself.

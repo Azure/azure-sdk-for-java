@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The TextWord model. */
+/** An object representing a word. */
 @Fluent
 public final class TextWord {
     /*
@@ -28,6 +28,12 @@ public final class TextWord {
      */
     @JsonProperty(value = "confidence")
     private Float confidence;
+
+    /*
+     * Text appearance properties.
+     */
+    @JsonProperty(value = "appearance")
+    private Appearance appearance;
 
     /**
      * Get the text property: The text content of the word.
@@ -86,6 +92,26 @@ public final class TextWord {
      */
     public TextWord setConfidence(Float confidence) {
         this.confidence = confidence;
+        return this;
+    }
+
+    /**
+     * Get the appearance property: Text appearance properties.
+     *
+     * @return the appearance value.
+     */
+    public Appearance getAppearance() {
+        return this.appearance;
+    }
+
+    /**
+     * Set the appearance property: Text appearance properties.
+     *
+     * @param appearance the appearance value to set.
+     * @return the TextWord object itself.
+     */
+    public TextWord setAppearance(Appearance appearance) {
+        this.appearance = appearance;
         return this;
     }
 }
