@@ -5,16 +5,15 @@ package com.azure.digitaltwins.core.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Context;
-import com.azure.digitaltwins.core.implementation.models.EventRoutesListOptions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The optional parameters for
- * {@link com.azure.digitaltwins.core.DigitalTwinsClient#listEventRoutes(ListEventRoutesOptions, Context)} and
- * {@link com.azure.digitaltwins.core.DigitalTwinsAsyncClient#listEventRoutes(ListEventRoutesOptions)}
+ * {@link com.azure.digitaltwins.core.DigitalTwinsClient#listEventRoutes(ListDigitalTwinsEventRoutesOptions, Context)} and
+ * {@link com.azure.digitaltwins.core.DigitalTwinsAsyncClient#listEventRoutes(ListDigitalTwinsEventRoutesOptions)}
  */
 @Fluent
-public final class ListEventRoutesOptions {
+public final class ListDigitalTwinsEventRoutesOptions {
     /*
      * Identifies the request in a distributed tracing system.
      */
@@ -50,7 +49,7 @@ public final class ListEventRoutesOptions {
      * @param traceparent the traceparent value to set.
      * @return the ListEventRoutesOptions object itself.
      */
-    public ListEventRoutesOptions setTraceParent(String traceparent) {
+    public ListDigitalTwinsEventRoutesOptions setTraceParent(String traceparent) {
         this.traceparent = traceparent;
         return this;
     }
@@ -72,7 +71,7 @@ public final class ListEventRoutesOptions {
      * @param tracestate the tracestate value to set.
      * @return the ListEventRoutesOptions object itself.
      */
-    public ListEventRoutesOptions setTraceState(String tracestate) {
+    public ListDigitalTwinsEventRoutesOptions setTraceState(String tracestate) {
         this.tracestate = tracestate;
         return this;
     }
@@ -94,7 +93,7 @@ public final class ListEventRoutesOptions {
      * @param maxItemsPerPage the maxItemsPerPage value to set.
      * @return the ListEventRoutesOptions object itself.
      */
-    public ListEventRoutesOptions setMaxItemsPerPage(Integer maxItemsPerPage) {
+    public ListDigitalTwinsEventRoutesOptions setMaxItemsPerPage(Integer maxItemsPerPage) {
         this.maxItemsPerPage = maxItemsPerPage;
         return this;
     }

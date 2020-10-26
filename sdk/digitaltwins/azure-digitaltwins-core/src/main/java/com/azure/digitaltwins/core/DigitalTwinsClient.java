@@ -814,7 +814,7 @@ public final class DigitalTwinsClient {
      * @param eventRoute The event route to create.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createOrReplaceEventRoute(String eventRouteId, EventRoute eventRoute) {
+    public void createOrReplaceEventRoute(String eventRouteId, DigitalTwinsEventRoute eventRoute) {
         createOrReplaceEventRouteWithResponse(eventRouteId, eventRoute, null, Context.NONE);
     }
 
@@ -833,8 +833,8 @@ public final class DigitalTwinsClient {
      * @return A {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createOrReplaceEventRouteWithResponse(String eventRouteId, EventRoute eventRoute, CreateEventRouteOptions options, Context context) {
-        return this.digitalTwinsAsyncClient.createEventRouteWithResponse(eventRouteId, eventRoute, options, context).block();
+    public Response<Void> createOrReplaceEventRouteWithResponse(String eventRouteId, DigitalTwinsEventRoute eventRoute, CreateEventRouteOptions options, Context context) {
+        return this.digitalTwinsAsyncClient.createOrReplaceEventRouteWithResponse(eventRouteId, eventRoute, options, context).block();
     }
 
     /**
@@ -848,7 +848,7 @@ public final class DigitalTwinsClient {
      * @return The retrieved event route.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EventRoute getEventRoute(String eventRouteId) {
+    public DigitalTwinsEventRoute getEventRoute(String eventRouteId) {
         return getEventRouteWithResponse(eventRouteId, null, Context.NONE).getValue();
     }
 
@@ -865,7 +865,7 @@ public final class DigitalTwinsClient {
      * @return A {@link Response} containing the retrieved event route.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EventRoute> getEventRouteWithResponse(String eventRouteId, GetEventRouteOptions options, Context context) {
+    public Response<DigitalTwinsEventRoute> getEventRouteWithResponse(String eventRouteId, GetDigitalTwinsEventRouteOptions options, Context context) {
         return this.digitalTwinsAsyncClient.getEventRouteWithResponse(eventRouteId, options, context).block();
     }
 
@@ -913,7 +913,7 @@ public final class DigitalTwinsClient {
      * This PagedIterable may take multiple service requests to iterate over all event routes.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventRoute> listEventRoutes() {
+    public PagedIterable<DigitalTwinsEventRoute> listEventRoutes() {
         return listEventRoutes(null, Context.NONE);
     }
 
@@ -930,7 +930,7 @@ public final class DigitalTwinsClient {
      * This PagedIterable may take multiple service requests to iterate over all event routes.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventRoute> listEventRoutes(ListEventRoutesOptions options, Context context) {
+    public PagedIterable<DigitalTwinsEventRoute> listEventRoutes(ListDigitalTwinsEventRoutesOptions options, Context context) {
         return new PagedIterable<>(this.digitalTwinsAsyncClient.listEventRoutes(options, context));
     }
 
@@ -951,7 +951,7 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.publishTelemetry#String-String-Object#String}
      *
-     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link DigitalTwinsEventRoute}
      * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
      * @param digitalTwinId The Id of the digital twin.
      * @param messageId A unique message identifier (within the scope of the digital twin id) that is commonly used for de-duplicating messages. Defaults to a random UUID if argument is null.
@@ -975,7 +975,7 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.publishTelemetryWithResponse#String-String-Object-Options-Context#String}
      *
-     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link DigitalTwinsEventRoute}
      * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
      * @param digitalTwinId The Id of the digital twin.
      * @param messageId A unique message identifier (within the scope of the digital twin id) that is commonly used for de-duplicating messages. Defaults to a random UUID if argument is null.
@@ -1002,7 +1002,7 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.publishComponentTelemetry#String-String-String-Object#String}
      *
-     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link DigitalTwinsEventRoute}
      * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
      * @param digitalTwinId The Id of the digital twin.
      * @param componentName The name of the DTDL component.
@@ -1027,7 +1027,7 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.publishComponentTelemetryWithResponse#String-String-String-Object-Options-Context#String}
      *
-     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link DigitalTwinsEventRoute}
      * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
      * @param digitalTwinId The Id of the digital twin.
      * @param componentName The name of the DTDL component.

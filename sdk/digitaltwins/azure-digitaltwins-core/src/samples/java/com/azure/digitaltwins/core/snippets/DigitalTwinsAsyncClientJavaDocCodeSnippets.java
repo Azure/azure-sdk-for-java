@@ -799,7 +799,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     //region EventRouteSnippets
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#createOrReplaceEventRoute(String, EventRoute)}
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#createOrReplaceEventRoute(String, DigitalTwinsEventRoute)}
      */
     @Override
     public void createEventRoute() {
@@ -807,14 +807,14 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
         String filter =
             "$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'";
 
-        EventRoute eventRoute = new EventRoute("myEndpointName").setFilter(filter);
+        DigitalTwinsEventRoute eventRoute = new DigitalTwinsEventRoute("myEndpointName").setFilter(filter);
         digitalTwinsAsyncClient.createOrReplaceEventRoute("myEventRouteId", eventRoute).subscribe();
         // END: com.azure.digitaltwins.core.asyncClient.createOrReplaceEventRoute#String-EventRoute
     }
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsAsyncClient#createEventRouteWithResponse(String, EventRoute, CreateEventRouteOptions)}
+     * {@link DigitalTwinsAsyncClient#createOrReplaceEventRouteWithResponse(String, DigitalTwinsEventRoute, CreateEventRouteOptions)}
      */
     @Override
     public void createEventRouteWithResponse() {
@@ -822,8 +822,8 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
         String filter =
             "$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'";
 
-        EventRoute eventRoute = new EventRoute("myEndpointName").setFilter(filter);
-        digitalTwinsAsyncClient.createEventRouteWithResponse(
+        DigitalTwinsEventRoute eventRoute = new DigitalTwinsEventRoute("myEndpointName").setFilter(filter);
+        digitalTwinsAsyncClient.createOrReplaceEventRouteWithResponse(
             "myEventRouteId",
             eventRoute,
             new CreateEventRouteOptions())
@@ -845,14 +845,14 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsAsyncClient#getEventRouteWithResponse(String, GetEventRouteOptions)}
+     * {@link DigitalTwinsAsyncClient#getEventRouteWithResponse(String, GetDigitalTwinsEventRouteOptions)}
      */
     @Override
     public void getEventRouteWithResponse() {
         // BEGIN: com.azure.digitaltwins.core.asyncClient.getEventRouteWithResponse#String-Options
         digitalTwinsAsyncClient.getEventRouteWithResponse(
             "myEventRouteId",
-            new GetEventRouteOptions())
+            new GetDigitalTwinsEventRouteOptions())
         .subscribe(eventRouteWithResponse -> {
             System.out.println(
                 "Received get event route operation response with HTTP status code: " +
@@ -895,7 +895,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     /**
      * Generates code samples for using
      * {@link DigitalTwinsAsyncClient#listEventRoutes()} and
-     * {@link DigitalTwinsAsyncClient#listEventRoutes(ListEventRoutesOptions)}
+     * {@link DigitalTwinsAsyncClient#listEventRoutes(ListDigitalTwinsEventRoutesOptions)}
      */
     @Override
     public void listEventRoutes() {
@@ -906,7 +906,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
         // END: com.azure.digitaltwins.core.asyncClient.listEventRoutes
 
         // BEGIN: com.azure.digitaltwins.core.asyncClient.listEventRoutes#Options
-        digitalTwinsAsyncClient.listEventRoutes(new ListEventRoutesOptions().setMaxItemsPerPage(5))
+        digitalTwinsAsyncClient.listEventRoutes(new ListDigitalTwinsEventRoutesOptions().setMaxItemsPerPage(5))
             .doOnNext(eventRoute -> System.out.println("Retrieved event route with Id: " + eventRoute.getEventRouteId()))
             .subscribe();
         // END: com.azure.digitaltwins.core.asyncClient.listEventRoutes#Options

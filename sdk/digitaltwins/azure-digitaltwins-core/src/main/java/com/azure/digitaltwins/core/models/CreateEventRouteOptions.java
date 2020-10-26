@@ -9,8 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The optional parameters for
- * {@link com.azure.digitaltwins.core.DigitalTwinsClient#createOrReplaceEventRouteWithResponse(String, EventRoute, CreateEventRouteOptions, Context)} and
- * {@link com.azure.digitaltwins.core.DigitalTwinsAsyncClient#createEventRouteWithResponse(String, EventRoute, CreateEventRouteOptions)}
+ * {@link com.azure.digitaltwins.core.DigitalTwinsClient#createOrReplaceEventRouteWithResponse(String, DigitalTwinsEventRoute, CreateEventRouteOptions, Context)} and
  */
 @Fluent
 public final class CreateEventRouteOptions {

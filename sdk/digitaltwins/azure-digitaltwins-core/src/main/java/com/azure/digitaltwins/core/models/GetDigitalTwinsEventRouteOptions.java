@@ -5,16 +5,15 @@ package com.azure.digitaltwins.core.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Context;
-import com.azure.digitaltwins.core.implementation.models.EventRoutesGetByIdOptions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The optional parameters for
- * {@link com.azure.digitaltwins.core.DigitalTwinsClient#getEventRouteWithResponse(String, GetEventRouteOptions, Context)} and
- * {@link com.azure.digitaltwins.core.DigitalTwinsAsyncClient#getEventRouteWithResponse(String, GetEventRouteOptions)}
+ * {@link com.azure.digitaltwins.core.DigitalTwinsClient#getEventRouteWithResponse(String, GetDigitalTwinsEventRouteOptions, Context)} and
+ * {@link com.azure.digitaltwins.core.DigitalTwinsAsyncClient#getEventRouteWithResponse(String, GetDigitalTwinsEventRouteOptions)}
  */
 @Fluent
-public final class GetEventRouteOptions {
+public final class GetDigitalTwinsEventRouteOptions {
     /*
      * Identifies the request in a distributed tracing system.
      */
@@ -41,9 +40,9 @@ public final class GetEventRouteOptions {
      * Set the traceparent property: Identifies the request in a distributed tracing system.
      *
      * @param traceparent the traceparent value to set.
-     * @return the GetEventRouteOptions object itself.
+     * @return the GetDigitalTwinsEventRouteOptions object itself.
      */
-    public GetEventRouteOptions setTraceParent(String traceparent) {
+    public GetDigitalTwinsEventRouteOptions setTraceParent(String traceparent) {
         this.traceparent = traceparent;
         return this;
     }
@@ -65,7 +64,7 @@ public final class GetEventRouteOptions {
      * @param tracestate the tracestate value to set.
      * @return the GetEventRouteOptions object itself.
      */
-    public GetEventRouteOptions setTraceState(String tracestate) {
+    public GetDigitalTwinsEventRouteOptions setTraceState(String tracestate) {
         this.tracestate = tracestate;
         return this;
     }

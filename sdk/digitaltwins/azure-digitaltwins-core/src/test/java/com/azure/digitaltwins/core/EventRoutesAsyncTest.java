@@ -2,8 +2,8 @@ package com.azure.digitaltwins.core;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.digitaltwins.core.models.EventRoute;
-import com.azure.digitaltwins.core.models.ListEventRoutesOptions;
+import com.azure.digitaltwins.core.models.DigitalTwinsEventRoute;
+import com.azure.digitaltwins.core.models.ListDigitalTwinsEventRoutesOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -31,7 +31,7 @@ public class EventRoutesAsyncTest extends EventRoutesTestBase {
         String eventRouteId = testResourceNamer.randomUuid();
 
         // CREATE
-        EventRoute eventRouteToCreate = new EventRoute(EVENT_ROUTE_ENDPOINT_NAME);
+        DigitalTwinsEventRoute eventRouteToCreate = new DigitalTwinsEventRoute(EVENT_ROUTE_ENDPOINT_NAME);
         eventRouteToCreate.setFilter(FILTER);
         StepVerifier.create(asyncClient.createOrReplaceEventRoute(eventRouteId, eventRouteToCreate))
             .verifyComplete();
@@ -79,7 +79,7 @@ public class EventRoutesAsyncTest extends EventRoutesTestBase {
     public void createEventRouteThrowsIfFilterIsMalformed(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
         String eventRouteId = testResourceNamer.randomUuid();
-        EventRoute eventRouteToCreate = new EventRoute(EVENT_ROUTE_ENDPOINT_NAME);
+        DigitalTwinsEventRoute eventRouteToCreate = new DigitalTwinsEventRoute(EVENT_ROUTE_ENDPOINT_NAME);
         eventRouteToCreate.setFilter("this is not a valid filter");
 
         StepVerifier.create(asyncClient.createOrReplaceEventRoute(eventRouteId, eventRouteToCreate))
@@ -97,7 +97,7 @@ public class EventRoutesAsyncTest extends EventRoutesTestBase {
         // create enough event routes so that the list API can have multiple pages
         for (int i = 0; i < eventRouteCountToCreate; i++) {
             String eventRouteId = testResourceNamer.randomUuid();
-            EventRoute eventRouteToCreate = new EventRoute(EVENT_ROUTE_ENDPOINT_NAME);
+            DigitalTwinsEventRoute eventRouteToCreate = new DigitalTwinsEventRoute(EVENT_ROUTE_ENDPOINT_NAME);
             eventRouteToCreate.setFilter(FILTER);
             StepVerifier.create(asyncClient.createOrReplaceEventRoute(eventRouteId, eventRouteToCreate))
                 .verifyComplete();
@@ -105,7 +105,7 @@ public class EventRoutesAsyncTest extends EventRoutesTestBase {
 
         // list event routes by page, make sure that all non-final pages have the expected page size
         AtomicInteger pageCount = new AtomicInteger(0);
-        ListEventRoutesOptions listEventRoutesOptions = (new ListEventRoutesOptions()).setMaxItemsPerPage(expectedPageSize);
+        ListDigitalTwinsEventRoutesOptions listEventRoutesOptions = (new ListDigitalTwinsEventRoutesOptions()).setMaxItemsPerPage(expectedPageSize);
         StepVerifier.create(asyncClient.listEventRoutes(listEventRoutesOptions).byPage())
             .thenConsumeWhile(
                 (pagedResponseOfEventRoute) -> pagedResponseOfEventRoute != null,

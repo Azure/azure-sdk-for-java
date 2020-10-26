@@ -5,7 +5,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.digitaltwins.core.helpers.ConsoleLogger;
 import com.azure.digitaltwins.core.helpers.SamplesArguments;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
-import com.azure.digitaltwins.core.models.EventRoute;
+import com.azure.digitaltwins.core.models.DigitalTwinsEventRoute;
 import com.azure.identity.ClientSecretCredentialBuilder;
 
 import java.util.UUID;
@@ -38,7 +38,7 @@ public class EventRoutesSyncSamples {
 
         ConsoleLogger.printHeader("List event routes");
         ConsoleLogger.print("Listing all current event routes in your Azure Digital Twins instance");
-        PagedIterable<EventRoute> eventRoutes = null;
+        PagedIterable<DigitalTwinsEventRoute> eventRoutes = null;
         try {
             eventRoutes = client.listEventRoutes();
         } catch (ErrorResponseException ex) {
@@ -48,7 +48,7 @@ public class EventRoutesSyncSamples {
         }
 
         String existingEventRouteId = null;
-        for (EventRoute eventRoute : eventRoutes) {
+        for (DigitalTwinsEventRoute eventRoute : eventRoutes) {
             existingEventRouteId = eventRoute.getEventRouteId();
             ConsoleLogger.print(String.format("\tEventRouteId: %s", eventRoute.getEventRouteId()));
             ConsoleLogger.print(String.format("\tEventRouteEndpointName: %s", eventRoute.getEndpointName()));
@@ -63,7 +63,7 @@ public class EventRoutesSyncSamples {
             ConsoleLogger.printHeader("Get event route");
             ConsoleLogger.print(String.format("Getting a single event route with Id %s", existingEventRouteId));
             try {
-                EventRoute existingEventRoute = client.getEventRoute(existingEventRouteId);
+                DigitalTwinsEventRoute existingEventRoute = client.getEventRoute(existingEventRouteId);
                 ConsoleLogger.print(String.format("Successfully retrieved event route with Id %s", existingEventRouteId));
                 ConsoleLogger.print(String.format("\tEventRouteId: %s", existingEventRoute.getEventRouteId()));
                 ConsoleLogger.print(String.format("\tEventRouteEndpointName: %s", existingEventRoute.getEndpointName()));
@@ -87,7 +87,7 @@ public class EventRoutesSyncSamples {
             String eventRouteId = "SomeEventRoute-" + UUID.randomUUID();
             String eventRouteEndpointName = parsedArguments.getEventRouteEndpointName();
             String filter = "$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'";
-            EventRoute eventRoute = new EventRoute(eventRouteEndpointName);
+            DigitalTwinsEventRoute eventRoute = new DigitalTwinsEventRoute(eventRouteEndpointName);
             eventRoute.setFilter(filter);
 
             try {
