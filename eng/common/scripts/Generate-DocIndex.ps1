@@ -44,7 +44,7 @@ function Get-TocMapping {
     return $orderServiceMapping                   
 }
 
-function generateDocfxTocContent([Hashtable]$tocContent) {
+function GenerateDocfxTocContent([Hashtable]$tocContent) {
     LogDebug "Start generating the docfx toc and build docfx site..."
     $DocOutDir = "${RepoRoot}/docfx_project"
 
