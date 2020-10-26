@@ -30,7 +30,7 @@ public final class CreateDigitalTwinOptions {
 
     /*
      * If-Non-Match header that makes the request method conditional on a recipient cache or origin server either not having any current representation of the target resource.
-     * @see <a href="https://tools.ietf.org/html/rfc7232#section-3.2"> RFC </a>.
+     * @see <a href="https://tools.ietf.org/html/rfc7232#section-3.2">RFC</a> for documentation
      * Acceptable values are null or "*".
      * If IfNonMatch option is null the service will replace the existing entity with the new entity.
      * If IfNonMatch option is "*" the service will reject the request if the entity already exists.
@@ -51,7 +51,7 @@ public final class CreateDigitalTwinOptions {
      * Get the ifNoneMatch property
      *
      * If-Non-Match header makes the request method conditional on a recipient cache or origin server either not having any current representation of the target resource.
-     * @see <a href="https://tools.ietf.org/html/rfc7232#section-3.2"> RFC </a>.
+     * @see <a href="https://tools.ietf.org/html/rfc7232#section-3.2">RFC</a> for documentation
      * Acceptable values are null or "*".
      * If IfNonMatch option is null the service will replace the existing entity with the new entity.
      * If IfNonMatch option is "*" the service will reject the request if the entity already exists.
