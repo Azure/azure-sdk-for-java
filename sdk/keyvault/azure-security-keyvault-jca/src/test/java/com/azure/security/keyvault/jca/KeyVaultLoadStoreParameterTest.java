@@ -9,8 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * The JUnit tests for the KeyVaultLoadStoreParameter class.
- *
- * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 public class KeyVaultLoadStoreParameterTest {
 

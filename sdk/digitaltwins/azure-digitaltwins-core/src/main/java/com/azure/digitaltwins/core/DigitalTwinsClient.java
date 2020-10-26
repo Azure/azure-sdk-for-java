@@ -506,13 +506,13 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.createModels#Iterable}
      *
-     * @param models The list of models to create. Each string corresponds to exactly one model.
+     * @param dtdlModels The list of models to create. Each string corresponds to exactly one model.
      * @return A List of created models. Each {@link DigitalTwinsModelData} instance in this list
      * will contain metadata about the created model, but will not contain the model itself.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Iterable<DigitalTwinsModelData> createModels(Iterable<String> models) {
-        return createModelsWithResponse(models, null, Context.NONE).getValue();
+    public Iterable<DigitalTwinsModelData> createModels(Iterable<String> dtdlModels) {
+        return createModelsWithResponse(dtdlModels, null, Context.NONE).getValue();
     }
 
     /**
@@ -522,15 +522,15 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.createModelsWithResponse#Iterable}
      *
-     * @param models The list of models to create. Each string corresponds to exactly one model.
+     * @param dtdlModels The list of models to create. Each string corresponds to exactly one model.
      * @param options The optional parameters for this request. If null, the default option values will be used.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} containing the list of created models. Each {@link DigitalTwinsModelData} instance in this list
      * will contain metadata about the created model, but will not contain the model itself.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Response<Iterable<DigitalTwinsModelData>> createModelsWithResponse(Iterable<String> models, CreateModelsOptions options, Context context) {
-        return digitalTwinsAsyncClient.createModelsWithResponse(models, options, context).block();
+    public Response<Iterable<DigitalTwinsModelData>> createModelsWithResponse(Iterable<String> dtdlModels, CreateModelsOptions options, Context context) {
+        return digitalTwinsAsyncClient.createModelsWithResponse(dtdlModels, options, context).block();
     }
 
     /**

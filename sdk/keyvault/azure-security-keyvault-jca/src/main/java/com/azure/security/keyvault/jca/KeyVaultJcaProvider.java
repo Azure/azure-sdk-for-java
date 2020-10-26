@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 /**
- * The Azure KeyVault security provider.
+ * The Azure Key Vault security provider.
  */
 public class KeyVaultJcaProvider extends Provider {
 
@@ -22,7 +22,7 @@ public class KeyVaultJcaProvider extends Provider {
     /**
      * Stores the information.
      */
-    private static final String INFO = "Azure KeyVault JCA Provider";
+    private static final String INFO = "Azure Key Vault JCA Provider";
 
     /**
      * Stores the name.

@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * Handles serialization of a {@link JsonPatchOperation}.
  */
-class JsonPatchOperationSerializer extends JsonSerializer<JsonPatchOperation> {
+final class JsonPatchOperationSerializer extends JsonSerializer<JsonPatchOperation> {
     @Override
     public void serialize(JsonPatchOperation value, JsonGenerator gen, SerializerProvider serializers)
         throws IOException {

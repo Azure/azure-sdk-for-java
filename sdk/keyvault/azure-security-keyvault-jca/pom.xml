@@ -16,7 +16,7 @@
     <artifactId>azure-security-keyvault-jca</artifactId>
     <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
     <name>JCA Provider for Azure Key Vault</name>
-    <description>The Java Crypto Architecture (JCA) Provider for Azure KeyVault</description>
+    <description>The Java Crypto Architecture (JCA) Provider for Azure Key Vault</description>
     <build>
         <plugins>
             <plugin>
@@ -195,7 +195,7 @@
       
               To run the integration tests pass in the following system properties
       
-              - azure.keyvault.uri    - the KeyVault URI
+              - azure.keyvault.uri    - the Azure Key Vault URI
               - azure.tenant.id       - your tenant ID
               - azure.client.id       - the (application) client ID
               - azure.client.secret   - the (application) client secret

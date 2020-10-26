@@ -275,4 +275,4 @@ Options are available to customize how targeting evaluation is performed across 
 
 <!-- Links -->
 [example_project]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-feature-management-web
-[ITargetingContextAccessor]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-feature-management-web/src/main/java/com/example/TargetingContextAccessor.java
+[ITargetingContextAccessor]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-feature-management-web/src/main/java/com/azure/spring/sample/featuremanagement/web/TargetingContextAccessor.java

@@ -22,7 +22,7 @@ import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
 
 /**
- * The KeyVault variant of the X509ExtendedKeyManager.
+ * The Azure Key Vault variant of the X509ExtendedKeyManager.
  */
 public class KeyVaultKeyManager extends X509ExtendedKeyManager {
 
@@ -63,8 +63,8 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
         String alias = null;
         try {
             /*
-             * If we only have one alias and the keystore type is not 'AzureKeyVault'
-             * return that alias as a match.
+             * If we only have one alias and the keystore type is not 
+             * 'AzureKeyVault' return that alias as a match.
              */
             if (!keystore.getProvider().getName().equals("AzureKeyVault")
                 && keystore.size() == 1) {
@@ -87,8 +87,8 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
         String alias = null;
         try {
             /*
-             * If we only have one alias and the keystore type is not 'AzureKeyVault'
-             * return that alias as a match.
+             * If we only have one alias and the keystore type is not 
+             * 'AzureKeyVault' return that alias as a match.
              */
             if (!keystore.getProvider().getName().equals("AzureKeyVault")
                 && keystore.size() == 1) {
@@ -127,6 +127,8 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
                         chain.add((X509Certificate) certificate);
                     }
                 }
+            } else {
+                LOGGER.log(WARNING, "No certificate chain found for alias: {0}", alias);
             }
         } catch (KeyStoreException kse) {
             LOGGER.log(WARNING, "Unable to get certificate chain for alias: " + alias, kse);

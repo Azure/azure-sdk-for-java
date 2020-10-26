@@ -3,6 +3,7 @@
 
 package com.azure.core.util;
 
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.Objects;
@@ -11,8 +12,9 @@ import java.util.Optional;
 /**
  * Represents a JSON Patch operation.
  */
+@Immutable
 @JsonSerialize(using = JsonPatchOperationSerializer.class)
-final class JsonPatchOperation {
+public final class JsonPatchOperation {
     private final JsonPatchOperationKind op;
     private final String from;
     private final String path;
@@ -41,7 +43,7 @@ final class JsonPatchOperation {
      *
      * @return The kind of operation.
      */
-    JsonPatchOperationKind getOp() {
+    public JsonPatchOperationKind getOp() {
         return op;
     }
 
@@ -50,7 +52,7 @@ final class JsonPatchOperation {
      *
      * @return The operation from target path.
      */
-    String getFrom() {
+    public String getFrom() {
         return from;
     }
 
@@ -59,16 +61,18 @@ final class JsonPatchOperation {
      *
      * @return The operation target path.
      */
-    String getPath() {
+    public String getPath() {
         return path;
     }
 
     /**
      * Gets the operation value.
+     * <p>
+     * If the operation doesn't take a value {@link Option#uninitialized()} will be returned.
      *
      * @return The operation value.
      */
-    Option<String> getValue() {
+    public Option<String> getValue() {
         return value;
     }
 

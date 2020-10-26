@@ -127,7 +127,7 @@ public final class ManageLinuxWebAppWithDomainSsl {
 
             System.out.println("Creating a self-signed certificate " + pfxPath + "...");
 
-            Utils.createCertificate(cerPath, pfxPath, domainName, certPassword, "*." + domainName);
+            Utils.createCertificate(cerPath, pfxPath, domainName, certPassword, "*." + domainName, null);
 
             System.out.println("Created self-signed certificate " + pfxPath);
 

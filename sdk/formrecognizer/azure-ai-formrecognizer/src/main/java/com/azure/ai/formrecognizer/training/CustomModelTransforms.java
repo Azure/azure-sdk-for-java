@@ -12,15 +12,14 @@ import com.azure.ai.formrecognizer.models.FormRecognizerError;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.ai.formrecognizer.training.models.CustomFormModelField;
 import com.azure.ai.formrecognizer.training.models.CustomFormModelInfo;
+import com.azure.ai.formrecognizer.training.models.CustomFormModelProperties;
 import com.azure.ai.formrecognizer.training.models.CustomFormModelStatus;
 import com.azure.ai.formrecognizer.training.models.CustomFormSubmodel;
-import com.azure.ai.formrecognizer.training.models.CustomFormModelProperties;
 import com.azure.ai.formrecognizer.training.models.TrainingDocumentInfo;
 import com.azure.ai.formrecognizer.training.models.TrainingStatus;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,7 +34,6 @@ import static com.azure.ai.formrecognizer.implementation.Utility.forEachWithInde
  */
 final class CustomModelTransforms {
     private static final ClientLogger LOGGER = new ClientLogger(CustomModelTransforms.class);
-    static final Duration DEFAULT_DURATION = Duration.ofSeconds(5);
 
     private CustomModelTransforms() {
     }
@@ -100,8 +98,9 @@ final class CustomModelTransforms {
             modelErrors,
             trainingDocumentInfoList);
 
+        CustomFormModelProperties customFormModelProperties = new CustomFormModelProperties();
+
         if (modelInfo.getAttributes() != null) {
-            CustomFormModelProperties customFormModelProperties = new CustomFormModelProperties();
             PrivateFieldAccessHelper.set(customFormModelProperties, "isComposed",
                 modelInfo.getAttributes().isComposed());
             PrivateFieldAccessHelper.set(customFormModel, "customFormModelProperties",
@@ -110,7 +109,12 @@ final class CustomModelTransforms {
                 PrivateFieldAccessHelper.set(customFormModel, "trainingDocuments",
                     trainingDocumentInfoList);
             }
+        } else {
+            // default to false
+            PrivateFieldAccessHelper.set(customFormModel, "customFormModelProperties",
+                customFormModelProperties);
         }
+
         if (modelInfo.getModelName() != null) {
             PrivateFieldAccessHelper.set(customFormModel, "modelName", modelInfo.getModelName());
         }
