@@ -87,7 +87,13 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
 
             // Create a relation which already exists - should return status code 409 (Conflict).
             assertRestException(
-                () -> client.createRelationship(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID, floorTwinContainedInRelationshipPayload, String.class),
+                () -> client.createRelationshipWithResponse(
+                    roomTwinId,
+                    ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID,
+                    floorTwinContainedInRelationshipPayload,
+                    String.class,
+                    new CreateRelationshipOptions().setIfNoneMatch("*"),
+                    Context.NONE),
                 HTTP_PRECON_FAILED
             );
 
