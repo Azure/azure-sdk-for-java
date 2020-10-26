@@ -138,7 +138,7 @@ public class RelationshipsSyncSamples {
         PagedIterable<IncomingRelationship> incomingRelationships = client.listIncomingRelationships(floorTwinId, null, Context.NONE);
 
         for (IncomingRelationship incomingRelationship : incomingRelationships) {
-            ConsoleLogger.printSuccess("Found an incoming relationship: " + incomingRelationship.getRelationshipId() + " from: " + incomingRelationship.getSourceId());
+            ConsoleLogger.printSuccess("Found an incoming relationship: " + incomingRelationship.getRelationshipId() + " from: " + incomingRelationship.getSourceDigitalTwinId());
         }
 
         // Delete the contains relationship, created earlier in the sample code, from building to floor.

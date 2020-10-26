@@ -15,15 +15,15 @@ import java.util.Objects;
  * Refs: https://docs.microsoft.com/en-us/previous-versions/azure/ad/graph/api/api-catalog
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MemberShips {
+public class Memberships {
 
     private final String odataNextLink;
-    private final List<MemberShip> value;
+    private final List<Membership> value;
 
     @JsonCreator
-    public MemberShips(
+    public Memberships(
         @JsonProperty("odata.nextLink") String odataNextLink,
-        @JsonProperty("value") List<MemberShip> value) {
+        @JsonProperty("value") List<Membership> value) {
         this.odataNextLink = odataNextLink;
         this.value = value;
     }
@@ -32,7 +32,7 @@ public class MemberShips {
         return odataNextLink;
     }
 
-    public List<MemberShip> getValue() {
+    public List<Membership> getValue() {
         return value;
     }
 
@@ -41,10 +41,10 @@ public class MemberShips {
         if (o == this) {
             return true;
         }
-        if (!(o instanceof MemberShips)) {
+        if (!(o instanceof Memberships)) {
             return false;
         }
-        final MemberShips groups = (MemberShips) o;
+        final Memberships groups = (Memberships) o;
         return this.getOdataNextLink().equals(groups.getOdataNextLink())
                 && this.getValue().equals(groups.getValue());
     }

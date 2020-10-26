@@ -110,7 +110,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
             // LIST incoming relationships
             List<String> incomingRelationshipsSourceIds = new ArrayList<>();
             PagedIterable<IncomingRelationship> listIncomingRelationships = client.listIncomingRelationships(floorTwinId, new ListIncomingRelationshipsOptions(), Context.NONE);
-            listIncomingRelationships.forEach(incomingRelationship -> incomingRelationshipsSourceIds.add(incomingRelationship.getSourceId()));
+            listIncomingRelationships.forEach(incomingRelationship -> incomingRelationshipsSourceIds.add(incomingRelationship.getSourceDigitalTwinId()));
             assertThat(incomingRelationshipsSourceIds)
                 .as("Floor has incoming relationships from room and hvac")
                 .containsExactlyInAnyOrder(roomTwinId, hvacTwinId);

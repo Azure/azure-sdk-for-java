@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Represents the JSON Patch operation kind.
  */
-enum JsonPatchOperationKind {
+public enum JsonPatchOperationKind {
     /**
      * Add operation.
      */
@@ -45,6 +45,11 @@ enum JsonPatchOperationKind {
         this.op = op;
     }
 
+    /**
+     * Gets the string representation of the JSON patch operation kind.
+     *
+     * @return The string representation of the JSON patch operation kind.
+     */
     @JsonValue
     public String toString() {
         return op;

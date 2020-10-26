@@ -55,7 +55,7 @@ public final class BasicDigitalTwin {
      * Gets a string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.
      * @return A string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.
      */
-    public String getDigitalTwinEtag() {
+    public String getEtag() {
         return twinETag;
     }
 
