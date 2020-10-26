@@ -46,7 +46,7 @@ azure-servicebus-jms-spring-boot-starter | [![Maven Central](https://img.shields
 
 ### Azure Spring Cloud
 
-[Spring Cloud](http://projects.spring.io/spring-cloud/) provides boilerplate patterns for developers to quickly build and orchestrate their microservice based applications. Based on that, **Spring Cloud Azure** is designed to provide seamless Spring integration with Azure services. Developers can adopt a Spring-idiomatic way to take advantage of services on Azure, with only few lines of configuration and minimal code changes. 
+[Spring Cloud](https://spring.io/projects/spring-cloud) provides boilerplate patterns for developers to quickly build and orchestrate their microservice based applications. Based on that, **Spring Cloud Azure** is designed to provide seamless Spring integration with Azure services. Developers can adopt a Spring-idiomatic way to take advantage of services on Azure, with only few lines of configuration and minimal code changes. 
 
 #### Module and Starter
 
@@ -101,7 +101,7 @@ Snapshots built from `master` branch are available, add [maven repositories](htt
 </repositories>
 ```
 ## Examples
-You could check [Spring Integration Guides](https://docs.microsoft.com/en-us/azure/developer/java/spring-framework/) articles to learn more on usage of specific starters.
+You could check [Spring Integration Guides](https://docs.microsoft.com/java/azure/spring-framework) articles to learn more on usage of specific starters.
 
 ## Troubleshooting
 ## Next steps
