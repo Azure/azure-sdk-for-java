@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * event route can point towards an Azure EventHub as a consumer of published telemetry.
  */
 @Fluent
-public final class EventRoute {
+public final class DigitalTwinsEventRoute {
     /*
      * The id of the event route.
      */
@@ -40,7 +40,7 @@ public final class EventRoute {
      * @param endpointName the name of the endpoint that this event route connects to.
      */
     @JsonCreator
-    public EventRoute(@JsonProperty(value = "endpointName", required = true) String endpointName) {
+    public DigitalTwinsEventRoute(@JsonProperty(value = "endpointName", required = true) String endpointName) {
         this.endpointName = endpointName;
     }
 
@@ -77,7 +77,7 @@ public final class EventRoute {
      * @param filter the filter value to set.
      * @return the EventRoute object itself.
      */
-    public EventRoute setFilter(String filter) {
+    public DigitalTwinsEventRoute setFilter(String filter) {
         this.filter = filter;
         return this;
     }
@@ -88,7 +88,7 @@ public final class EventRoute {
      * @param id The event route's Id to set.
      * @return the EventRoute object itself.
      */
-    public EventRoute setEventRouteId(String id) {
+    public DigitalTwinsEventRoute setEventRouteId(String id) {
         this.id = id;
         return this;
     }

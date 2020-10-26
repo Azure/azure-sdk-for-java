@@ -5,13 +5,12 @@ package com.azure.digitaltwins.core.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Context;
-import com.azure.digitaltwins.core.implementation.models.EventRoutesAddOptions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The optional parameters for
- * {@link com.azure.digitaltwins.core.DigitalTwinsClient#createEventRouteWithResponse(String, EventRoute, CreateEventRouteOptions, Context)} and
- * {@link com.azure.digitaltwins.core.DigitalTwinsAsyncClient#createEventRouteWithResponse(String, EventRoute, CreateEventRouteOptions)}
+ * {@link com.azure.digitaltwins.core.DigitalTwinsClient#createEventRouteWithResponse(String, DigitalTwinsEventRoute, CreateEventRouteOptions, Context)} and
+ * {@link com.azure.digitaltwins.core.DigitalTwinsAsyncClient#createEventRouteWithResponse(String, DigitalTwinsEventRoute, CreateEventRouteOptions)}
  */
 @Fluent
 public final class CreateEventRouteOptions {

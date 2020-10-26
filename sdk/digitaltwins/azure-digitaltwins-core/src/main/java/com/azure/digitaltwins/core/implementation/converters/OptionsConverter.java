@@ -84,7 +84,7 @@ public final class OptionsConverter {
         return new EventRoutesAddOptions().setTraceparent(options.getTraceParent()).setTracestate(options.getTraceState());
     }
 
-    public static EventRoutesListOptions toProtocolLayerOptions(ListEventRoutesOptions options) {
+    public static EventRoutesListOptions toProtocolLayerOptions(ListDigitalTwinsEventRoutesOptions options) {
         if (options == null) {
             return null;
         }
@@ -95,7 +95,7 @@ public final class OptionsConverter {
             .setMaxItemsPerPage(options.getMaxItemsPerPage());
     }
 
-    public static EventRoutesGetByIdOptions toProtocolLayerOptions(GetEventRouteOptions options) {
+    public static EventRoutesGetByIdOptions toProtocolLayerOptions(GetDigitalTwinsEventRouteOptions options) {
         if (options == null) {
             return null;
         }

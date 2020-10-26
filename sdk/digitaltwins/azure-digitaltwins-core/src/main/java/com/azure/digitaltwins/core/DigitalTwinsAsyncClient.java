@@ -1241,7 +1241,7 @@ public final class DigitalTwinsAsyncClient {
      * @return An empty mono.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createEventRoute(String eventRouteId, EventRoute eventRoute)
+    public Mono<Void> createEventRoute(String eventRouteId, DigitalTwinsEventRoute eventRoute)
     {
         return createEventRouteWithResponse(eventRouteId, eventRoute, null)
             .flatMap(voidResponse -> Mono.empty());
@@ -1261,12 +1261,12 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link Response} containing an empty mono.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createEventRouteWithResponse(String eventRouteId, EventRoute eventRoute, CreateEventRouteOptions options)
+    public Mono<Response<Void>> createEventRouteWithResponse(String eventRouteId, DigitalTwinsEventRoute eventRoute, CreateEventRouteOptions options)
     {
         return withContext(context -> createEventRouteWithResponse(eventRouteId, eventRoute, options, context));
     }
 
-    Mono<Response<Void>> createEventRouteWithResponse(String eventRouteId, EventRoute eventRoute, CreateEventRouteOptions options, Context context)
+    Mono<Response<Void>> createEventRouteWithResponse(String eventRouteId, DigitalTwinsEventRoute eventRoute, CreateEventRouteOptions options, Context context)
     {
         return this.protocolLayer.getEventRoutes().addWithResponseAsync(eventRouteId, EventRouteConverter.map(eventRoute), OptionsConverter.toProtocolLayerOptions(options), context);
     }
@@ -1282,7 +1282,7 @@ public final class DigitalTwinsAsyncClient {
      * @return The retrieved event route.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EventRoute> getEventRoute(String eventRouteId)
+    public Mono<DigitalTwinsEventRoute> getEventRoute(String eventRouteId)
     {
         return getEventRouteWithResponse(eventRouteId, null)
             .map(Response::getValue);
@@ -1300,12 +1300,12 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link Response} containing the retrieved event route.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<EventRoute>> getEventRouteWithResponse(String eventRouteId, GetEventRouteOptions options)
+    public Mono<Response<DigitalTwinsEventRoute>> getEventRouteWithResponse(String eventRouteId, GetDigitalTwinsEventRouteOptions options)
     {
         return withContext(context -> getEventRouteWithResponse(eventRouteId, options, context));
     }
 
-    Mono<Response<EventRoute>> getEventRouteWithResponse(String eventRouteId, GetEventRouteOptions options, Context context)
+    Mono<Response<DigitalTwinsEventRoute>> getEventRouteWithResponse(String eventRouteId, GetDigitalTwinsEventRouteOptions options, Context context)
     {
         return this.protocolLayer.getEventRoutes().getByIdWithResponseAsync(eventRouteId, OptionsConverter.toProtocolLayerOptions(options), context)
             .map(eventRouteResponse -> new SimpleResponse<>(
@@ -1365,7 +1365,7 @@ public final class DigitalTwinsAsyncClient {
      * This PagedFlux may take multiple service requests to iterate over all event routes.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<EventRoute> listEventRoutes()
+    public PagedFlux<DigitalTwinsEventRoute> listEventRoutes()
     {
         return listEventRoutes(null);
     }
@@ -1377,42 +1377,42 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.listEventRoutes#Options}
      *
-     * @param options The optional parameters to use when listing event routes. See {@link ListEventRoutesOptions} for more details
+     * @param options The optional parameters to use when listing event routes. See {@link ListDigitalTwinsEventRoutesOptions} for more details
      * on what optional parameters can be set.
      * @return A {@link PagedFlux} that contains all the event routes that exist in your digital twins instance.
      * This PagedFlux may take multiple service requests to iterate over all event routes.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<EventRoute> listEventRoutes(ListEventRoutesOptions options)
+    public PagedFlux<DigitalTwinsEventRoute> listEventRoutes(ListDigitalTwinsEventRoutesOptions options)
     {
         return new PagedFlux<>(
             () -> withContext(context -> listEventRoutesFirstPage(options, context)),
             nextLink -> withContext(context -> listEventRoutesNextPage(nextLink, options, context)));
     }
 
-    PagedFlux<EventRoute> listEventRoutes(ListEventRoutesOptions options, Context context)
+    PagedFlux<DigitalTwinsEventRoute> listEventRoutes(ListDigitalTwinsEventRoutesOptions options, Context context)
     {
         return new PagedFlux<>(
             () -> listEventRoutesFirstPage(options, context),
             nextLink -> listEventRoutesNextPage(nextLink, options, context));
     }
 
-    Mono<PagedResponse<EventRoute>> listEventRoutesFirstPage(ListEventRoutesOptions options, Context context) {
+    Mono<PagedResponse<DigitalTwinsEventRoute>> listEventRoutesFirstPage(ListDigitalTwinsEventRoutesOptions options, Context context) {
         return protocolLayer
             .getEventRoutes()
             .listSinglePageAsync(OptionsConverter.toProtocolLayerOptions(options), context)
             .map(pagedEventRouteMappingFunction);
     }
 
-    Mono<PagedResponse<EventRoute>> listEventRoutesNextPage(String nextLink, ListEventRoutesOptions options, Context context) {
+    Mono<PagedResponse<DigitalTwinsEventRoute>> listEventRoutesNextPage(String nextLink, ListDigitalTwinsEventRoutesOptions options, Context context) {
         return protocolLayer
             .getEventRoutes()
             .listNextSinglePageAsync(nextLink, OptionsConverter.toProtocolLayerOptions(options), context)
             .map(pagedEventRouteMappingFunction);
     }
 
-    private Function<PagedResponse<com.azure.digitaltwins.core.implementation.models.EventRoute>, PagedResponse<EventRoute>> pagedEventRouteMappingFunction = (pagedEventRouteResponse) -> {
-        List<EventRoute> convertedList = pagedEventRouteResponse.getValue().stream()
+    private Function<PagedResponse<com.azure.digitaltwins.core.implementation.models.EventRoute>, PagedResponse<DigitalTwinsEventRoute>> pagedEventRouteMappingFunction = (pagedEventRouteResponse) -> {
+        List<DigitalTwinsEventRoute> convertedList = pagedEventRouteResponse.getValue().stream()
             .map(EventRouteConverter::map)
             .filter(Objects::nonNull)
             .collect(Collectors.toList());
@@ -1443,7 +1443,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.publishTelemetry#String-String-Object#String}
      *
-     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link DigitalTwinsEventRoute}
      * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
      * @param digitalTwinId The Id of the digital twin.
      * @param messageId A unique message identifier (within the scope of the digital twin id) that is commonly used for de-duplicating messages. Defaults to a random UUID if argument is null.
@@ -1469,7 +1469,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.publishTelemetryWithResponse#String-String-Object-Options#String}
      *
-     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link DigitalTwinsEventRoute}
      * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
      * @param digitalTwinId The Id of the digital twin.
      * @param messageId A unique message identifier (within the scope of the digital twin id) that is commonly used for de-duplicating messages. Defaults to a random UUID if argument is null.
@@ -1520,7 +1520,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.publishComponentTelemetry#String-String-String-Object#String}
      *
-     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link DigitalTwinsEventRoute}
      * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
      * @param digitalTwinId The Id of the digital twin.
      * @param componentName The name of the DTDL component.
@@ -1547,7 +1547,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.publishComponentTelemetryWithResponse#String-String-String-Object-Options#String}
      *
-     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link DigitalTwinsEventRoute}
      * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
      * @param digitalTwinId The Id of the digital twin.
      * @param componentName The name of the DTDL component.

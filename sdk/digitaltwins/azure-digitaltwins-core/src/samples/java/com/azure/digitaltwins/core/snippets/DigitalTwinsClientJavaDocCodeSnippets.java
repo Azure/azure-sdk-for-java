@@ -862,7 +862,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     //region EventRouteSnippets
 
     /**
-     * Generates code samples for using {@link DigitalTwinsClient#createEventRoute(String, EventRoute)}
+     * Generates code samples for using {@link DigitalTwinsClient#createEventRoute(String, DigitalTwinsEventRoute)}
      */
     @Override
     public void createEventRoute() {
@@ -870,14 +870,14 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         String filter =
             "$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'";
 
-        EventRoute eventRoute = new EventRoute("myEndpointName").setFilter(filter);
+        DigitalTwinsEventRoute eventRoute = new DigitalTwinsEventRoute("myEndpointName").setFilter(filter);
         digitalTwinsSyncClient.createEventRoute("myEventRouteId", eventRoute);
         // END: com.azure.digitaltwins.core.syncClient.createEventRoute#String-EventRoute
     }
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsClient#createEventRouteWithResponse(String, EventRoute, CreateEventRouteOptions, Context)}
+     * {@link DigitalTwinsClient#createEventRouteWithResponse(String, DigitalTwinsEventRoute, CreateEventRouteOptions, Context)}
      */
     @Override
     public void createEventRouteWithResponse() {
@@ -885,7 +885,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         String filter =
             "$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'";
 
-        EventRoute eventRoute = new EventRoute("myEndpointName").setFilter(filter);
+        DigitalTwinsEventRoute eventRoute = new DigitalTwinsEventRoute("myEndpointName").setFilter(filter);
         Response<Void> response = digitalTwinsSyncClient.createEventRouteWithResponse(
             "myEventRouteId",
             eventRoute,
@@ -902,7 +902,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     @Override
     public void getEventRoute() {
         // BEGIN: com.azure.digitaltwins.core.syncClient.getEventRoute#String
-        EventRoute eventRoute = digitalTwinsSyncClient.getEventRoute("myEventRouteId");
+        DigitalTwinsEventRoute eventRoute = digitalTwinsSyncClient.getEventRoute("myEventRouteId");
 
         System.out.println("Retrieved event route with Id: " + eventRoute.getEventRouteId());
         // END: com.azure.digitaltwins.core.syncClient.getEventRoute#String
@@ -910,14 +910,14 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsClient#getEventRouteWithResponse(String, GetEventRouteOptions, Context)}
+     * {@link DigitalTwinsClient#getEventRouteWithResponse(String, GetDigitalTwinsEventRouteOptions, Context)}
      */
     @Override
     public void getEventRouteWithResponse() {
         // BEGIN: com.azure.digitaltwins.core.syncClient.getEventRouteWithResponse#String-Options-Context
-        Response<EventRoute> eventRouteWithResponse = digitalTwinsSyncClient.getEventRouteWithResponse(
+        Response<DigitalTwinsEventRoute> eventRouteWithResponse = digitalTwinsSyncClient.getEventRouteWithResponse(
             "myEventRouteId",
-            new GetEventRouteOptions(),
+            new GetDigitalTwinsEventRouteOptions(),
             new Context("key", "value"));
 
         System.out.println(
@@ -957,20 +957,20 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
     /**
      * Generates code samples for using {@link DigitalTwinsClient#listEventRoutes()} and
-     * {@link DigitalTwinsClient#listEventRoutes(ListEventRoutesOptions, Context)}
+     * {@link DigitalTwinsClient#listEventRoutes(ListDigitalTwinsEventRoutesOptions, Context)}
      */
     @Override
     public void listEventRoutes() {
         // BEGIN: com.azure.digitaltwins.core.syncClient.listEventRoutes
-        PagedIterable<EventRoute> listResponse =  digitalTwinsSyncClient.listEventRoutes();
+        PagedIterable<DigitalTwinsEventRoute> listResponse =  digitalTwinsSyncClient.listEventRoutes();
 
         listResponse.forEach(
             eventRoute -> System.out.println("Retrieved event route with Id: " + eventRoute.getEventRouteId()));
         // END: com.azure.digitaltwins.core.syncClient.listEventRoutes
 
         // BEGIN: com.azure.digitaltwins.core.syncClient.listEventRoutes#Options-Context
-        PagedIterable<EventRoute> listResponseWithOptions =  digitalTwinsSyncClient.listEventRoutes(
-            new ListEventRoutesOptions().setMaxItemsPerPage(5),
+        PagedIterable<DigitalTwinsEventRoute> listResponseWithOptions =  digitalTwinsSyncClient.listEventRoutes(
+            new ListDigitalTwinsEventRoutesOptions().setMaxItemsPerPage(5),
             new Context("key", "value"));
 
         listResponseWithOptions

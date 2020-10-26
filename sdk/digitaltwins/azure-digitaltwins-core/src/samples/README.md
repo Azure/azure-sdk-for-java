@@ -163,7 +163,7 @@ asynClient.listModels()
 Use `getModel` with model's unique identifier to get a specific model.
 
 ```java
-asyncClient.createDigitalTwin(twinId, twinContent)
+asyncClient.createOrReplaceDigitalTwin(twinId, twinContent)
     .subscribe(
         twin -> System.out.println("Created digital twin: " + twinId + "\n\t Body: " + twin),
         throwable -> System.out.println("Could not create digital twin " + twinId + " due to " + throwable)
@@ -212,7 +212,7 @@ BasicDigitalTwin basicTwin = new BasicDigitalTwin()
             .addroperty("ComponentProp2", 123)
     );
 
-BasicDigitalTwin basicTwinResponse = syncClient.createDigitalTwin(basicDtId, basicTwin, BasicDigitalTwin.class);
+BasicDigitalTwin basicTwinResponse = syncClient.createOrReplaceDigitalTwin(basicDtId, basicTwin, BasicDigitalTwin.class);
 ```
 
 Alternatively, you can create your own custom data types to serialize and deserialize your digital twins.
@@ -222,7 +222,7 @@ You can also retrieve the application/json string payload from disk and pass it 
 
 ```java
 String payload = <Load the file content into memory>;
-String digitalTwinCreateResponse = syncClient.createDigitalTwin(twinId, payload, String.class);
+String digitalTwinCreateResponse = syncClient.createOrReplaceDigitalTwin(twinId, payload, String.class);
 ```
 
 ### Get and deserialize a digital twin
@@ -315,7 +315,7 @@ BasicRelationship buildingFloorRelationshipPayload = new BasicRelationship()
     .addProperty("Prop1", "Prop1 value")
     .addProperty("Prop2", 6);
 
-client.createRelationship(buildingTwinId, buildingFloorRelationshipId, buildingFloorRelationshipPayload, BasicRelationship.class);
+client.createOrReplaceRelationship(buildingTwinId, buildingFloorRelationshipId, buildingFloorRelationshipPayload, BasicRelationship.class);
 ```
 
 ### Get and deserialize a digital twin relationship
@@ -385,11 +385,11 @@ To create an event route, provide an Id of an event route such as "sampleEventRo
 
 ```java
 String filter = "$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'";
-EventRoute eventRoute = new EventRoute();
+DigitalTwinsEventRoute eventRoute = new EventRoute();
 eventRoute.setEndpointName(eventRouteEndpointName);
 eventRoute.setFilter(filter);
 
-client.createEventRoute(eventRouteId, eventRoute);
+client.createOrReplaceEventRoute(eventRouteId, eventRoute);
 ```
 
 For more information on the event route filter language, see the "how to manage routes" [filter events documentation](https://docs.microsoft.com/azure/digital-twins/how-to-manage-routes-apis-cli#filter-events).
@@ -399,9 +399,9 @@ For more information on the event route filter language, see the "how to manage 
 List a specific event route given event route Id or all event routes setting options with `GetEventRouteAsync` and `GetEventRoutesAsync`.
 
 ```java
-PagedIterable<EventRoute> eventRoutes = client.listEventRoutes();
+PagedIterable<DigitalTwinsEventRoute> eventRoutes = client.listEventRoutes();
 
-for (EventRoute eventRoute : eventRoutes) {
+for (DigitalTwinsEventRoute eventRoute : eventRoutes) {
     existingEventRouteId = eventRoute.getId();
     System.out.println(String.format("\tEventRouteId: %s", eventRoute.getId()));
     System.out.println(String.format("\tEventRouteEndpointName: %s", eventRoute.getEndpointName()));
