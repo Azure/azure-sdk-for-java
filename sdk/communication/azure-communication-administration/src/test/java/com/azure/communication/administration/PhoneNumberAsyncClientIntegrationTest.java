@@ -454,38 +454,6 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void releasePhoneNumbers(HttpClient httpClient) {
-        List<PhoneNumber> phoneNumbers = new ArrayList<>();
-        phoneNumbers.add(new PhoneNumber(PHONENUMBER_TO_RELEASE));
-
-        Mono<ReleaseResponse> mono = this.getClient(httpClient).releasePhoneNumbers(phoneNumbers);
-
-        StepVerifier.create(mono)
-            .assertNext(item -> {
-                assertNotNull(item.getReleaseId());
-            })
-            .verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void releasePhoneNumbersWithResponse(HttpClient httpClient) {
-        List<PhoneNumber> phoneNumbers = new ArrayList<>();
-        phoneNumbers.add(new PhoneNumber(PHONENUMBER_TO_RELEASE));
-
-        Mono<Response<ReleaseResponse>> mono =
-            this.getClient(httpClient).releasePhoneNumbersWithResponse(phoneNumbers, Context.NONE);
-
-        StepVerifier.create(mono)
-            .assertNext(item -> {
-                assertEquals(200, item.getStatusCode());
-                assertNotNull(item.getValue().getReleaseId());
-            })
-            .verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void beginCreateSearch(HttpClient httpClient) {
         List<String> phonePlanIds = new ArrayList<>();
         phonePlanIds.add(PHONE_PLAN_ID);

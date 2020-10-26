@@ -557,7 +557,7 @@ public final class PhoneNumberAsyncClient {
         return releasePhoneNumbersWithResponse(phoneNumbers, null);
     }
 
-    Mono<Response<ReleaseResponse>> releasePhoneNumbersWithResponse(List<PhoneNumber> phoneNumbers, Context context) {
+    private Mono<Response<ReleaseResponse>> releasePhoneNumbersWithResponse(List<PhoneNumber> phoneNumbers, Context context) {
         Objects.requireNonNull(phoneNumbers, "'phoneNumbers' cannot be null.");
 
         List<String> phoneNumberStrings = phoneNumbers.stream().map(PhoneNumber::getValue).collect(Collectors.toList());
