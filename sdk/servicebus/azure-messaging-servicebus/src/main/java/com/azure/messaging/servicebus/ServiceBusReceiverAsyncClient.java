@@ -589,19 +589,14 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return An <b>infinite</b> stream of messages from the Service Bus entity.
      */
     public Flux<ServiceBusReceivedMessageContext> receiveMessages() {
-        if (sessionManager != null) {
-            return sessionManager.receive();
-        } else {
-            final Flux<ServiceBusReceivedMessageContext> messageFlux = getOrCreateConsumer().receive()
-                .map(ServiceBusReceivedMessageContext::new);
-
-            if (receiverOptions.isAutoLockRenewEnabled()) {
-                return new FluxAutoLockRenew(messageFlux, receiverOptions.getMaxLockRenewDuration(), renewalContainer,
-                    this::renewMessageLock);
-            } else {
-                return messageFlux;
-            }
-        }
+        return receiveMessagesInternal()
+            .onErrorMap(throwable -> {
+                if ( throwable instanceof AmqpException) {
+                    return new ServiceBusException((AmqpException)throwable, ServiceBusErrorSource.RECEIVE);
+                } else {
+                    return throwable;
+                }
+            });
     }
 
     /**
@@ -989,7 +984,64 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return managementNodeLocks.containsUnexpired(lockToken);
     }
 
+    /**
+     * Returns source of messages based on how this receiver is configured.
+     */
+    Flux<ServiceBusReceivedMessageContext> receiveMessagesInternal() {
+        if (sessionManager != null) {
+            return sessionManager.receive();
+        } else {
+            final Flux<ServiceBusReceivedMessageContext> messageFlux = getOrCreateConsumer().receive()
+                .map(ServiceBusReceivedMessageContext::new);
+
+            if (receiverOptions.isAutoLockRenewEnabled()) {
+                return new FluxAutoLockRenew(messageFlux, receiverOptions.getMaxLockRenewDuration(), renewalContainer,
+                    this::renewMessageLock);
+            } else {
+                return messageFlux;
+            }
+        }
+    }
+
+    /*
+     *Update Disposition with additional error handling logic.
+     */
     private Mono<Void> updateDisposition(ServiceBusReceivedMessage message, DispositionStatus dispositionStatus,
+        String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify,
+        ServiceBusTransactionContext transactionContext) {
+        return updateDispositionInternal(message, dispositionStatus, deadLetterReason, deadLetterErrorDescription,
+            propertiesToModify, transactionContext)
+            .onErrorMap(throwable -> {
+                ServiceBusErrorSource errorSource;
+                if ( throwable instanceof AmqpException) {
+                    switch (dispositionStatus) {
+                        case COMPLETED:
+                            errorSource = ServiceBusErrorSource.COMPLETE;
+                            break;
+                        case DEFERRED:
+                            errorSource = ServiceBusErrorSource.DEFER;
+                            break;
+                        case SUSPENDED:
+                            errorSource = ServiceBusErrorSource.DEAD_LETTER;
+                            break;
+                        case ABANDONED:
+                            errorSource = ServiceBusErrorSource.APPEND;
+                            break;
+                        default:
+                            throw logger.logExceptionAsError(new UnsupportedOperationException(String.format(
+                                "'%s' is not supported.", dispositionStatus)));
+                    }
+
+                    return new ServiceBusException((AmqpException)throwable, errorSource);
+
+                } else {
+                    return throwable;
+                }
+
+            });
+    }
+
+    private Mono<Void> updateDispositionInternal(ServiceBusReceivedMessage message, DispositionStatus dispositionStatus,
         String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify,
         ServiceBusTransactionContext transactionContext) {
 

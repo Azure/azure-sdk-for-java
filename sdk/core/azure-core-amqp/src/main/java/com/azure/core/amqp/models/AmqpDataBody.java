@@ -25,6 +25,11 @@ public final class AmqpDataBody implements AmqpMessageBody {
         this.data = new IterableStream<>(data);
     }
 
+    public AmqpDataBody(List<BinaryData> data) {
+        Objects.requireNonNull(data, "'data' cannot be null.");
+        this.data = new IterableStream<>(data);
+    }
+
     @Override
     public AmqpBodyType getBodyType() {
         return AmqpBodyType.DATA;
@@ -38,4 +43,6 @@ public final class AmqpDataBody implements AmqpMessageBody {
     public IterableStream<byte[]> getData() {
         return data;
     }
+
+    public BianryData getBinaryData()
 }

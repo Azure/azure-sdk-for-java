@@ -44,7 +44,7 @@ public class ServiceBusReceivedMessageContext {
      * @param errorSource the source of the error.
      */
     ServiceBusReceivedMessageContext(String sessionId, Throwable error, ServiceBusErrorSource errorSource) {
-        this(sessionId,error);
+        this(sessionId, error);
         this.errorSource = Objects.requireNonNull(errorSource, "'errorSource' cannot be null.");
     }
 
