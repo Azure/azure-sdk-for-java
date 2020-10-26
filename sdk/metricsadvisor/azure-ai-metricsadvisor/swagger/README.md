@@ -195,7 +195,7 @@ directive:
 ``` yaml
 directive:
 - from: swagger-document
-  where: $["paths"]["/alert/anomaly/configurations/{configurationId}/alerts/query"]
+  where: $["paths"]["/anomalyAlert/anomaly/configurations/{configurationId}/alerts/query"]
   transform: >
     let pageExt = $.post["x-ms-pageable"];
     if (!pageExt) {
@@ -555,7 +555,7 @@ directive:
 ``` yaml
 directive:
 - from: swagger-document
-  where: $["paths"]["/metrics/{metricId}/series/query"]
+  where: $["paths"]["/dataFeedMetrics/{metricId}/series/query"]
   transform: >
     let pageExt = $.post["x-ms-pageable"];
     if (!pageExt) {
@@ -627,7 +627,7 @@ directive:
 ``` yaml
 directive:
 - from: swagger-document
-  where: $["paths"]["/metrics/{metricId}/dimension/query"]
+  where: $["paths"]["/dataFeedMetrics/{metricId}/dimension/query"]
   transform: >
     let pageExt = $.post["x-ms-pageable"];
     if (!pageExt) {
@@ -699,7 +699,7 @@ directive:
 ``` yaml
 directive:
 - from: swagger-document
-  where: $["paths"]["/metrics/{metricId}/status/enrichment/anomalyDetection/query"]
+  where: $["paths"]["/dataFeedMetrics/{metricId}/status/enrichment/anomalyDetection/query"]
   transform: >
     let pageExt = $.post["x-ms-pageable"];
     if (!pageExt) {

@@ -3,13 +3,7 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.implementation.util.AnomalyTransforms;
 import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl;
-import com.azure.ai.metricsadvisor.implementation.util.DetectionConfigurationTransforms;
-import com.azure.ai.metricsadvisor.implementation.util.IncidentHelper;
-import com.azure.ai.metricsadvisor.implementation.util.IncidentRootCauseTransforms;
-import com.azure.ai.metricsadvisor.implementation.util.IncidentTransforms;
-import com.azure.ai.metricsadvisor.implementation.util.MetricEnrichedSeriesDataTransformations;
 import com.azure.ai.metricsadvisor.implementation.models.AlertingResultQuery;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyDimensionQuery;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyFeedback;
@@ -33,15 +27,21 @@ import com.azure.ai.metricsadvisor.implementation.models.MetricSeriesQueryOption
 import com.azure.ai.metricsadvisor.implementation.models.PeriodFeedback;
 import com.azure.ai.metricsadvisor.implementation.models.PeriodFeedbackValue;
 import com.azure.ai.metricsadvisor.implementation.models.SeriesIdentity;
+import com.azure.ai.metricsadvisor.implementation.util.AnomalyTransforms;
+import com.azure.ai.metricsadvisor.implementation.util.DetectionConfigurationTransforms;
+import com.azure.ai.metricsadvisor.implementation.util.IncidentHelper;
+import com.azure.ai.metricsadvisor.implementation.util.IncidentRootCauseTransforms;
+import com.azure.ai.metricsadvisor.implementation.util.IncidentTransforms;
+import com.azure.ai.metricsadvisor.implementation.util.MetricEnrichedSeriesDataTransformations;
 import com.azure.ai.metricsadvisor.implementation.util.MetricFeedbackTransforms;
 import com.azure.ai.metricsadvisor.implementation.util.MetricSeriesDataTransforms;
 import com.azure.ai.metricsadvisor.implementation.util.MetricSeriesDefinitionTransforms;
-import com.azure.ai.metricsadvisor.models.Alert;
-import com.azure.ai.metricsadvisor.models.Anomaly;
+import com.azure.ai.metricsadvisor.models.AnomalyAlert;
+import com.azure.ai.metricsadvisor.models.AnomalyIncident;
+import com.azure.ai.metricsadvisor.models.DataPointAnomaly;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.models.EnrichmentStatus;
 import com.azure.ai.metricsadvisor.models.ErrorCodeException;
-import com.azure.ai.metricsadvisor.models.Incident;
 import com.azure.ai.metricsadvisor.models.IncidentRootCause;
 import com.azure.ai.metricsadvisor.models.ListAlertOptions;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesAlertedOptions;
@@ -52,7 +52,6 @@ import com.azure.ai.metricsadvisor.models.ListIncidentsDetectedOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricDimensionValuesOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricEnrichmentStatusOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricFeedbackOptions;
-import com.azure.ai.metricsadvisor.models.ListMetricSeriesDataOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricSeriesDefinitionOptions;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyFeedback;
 import com.azure.ai.metricsadvisor.models.MetricChangePointFeedback;
@@ -198,7 +197,7 @@ public class MetricsAdvisorAsyncClient {
      * Get time series data from metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricSeriesData#String-List-ListMetricSeriesDataOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricSeriesData#String-List-OffsetDateTime-OffsetDateTime}
      *
      * @param metricId metric unique id.
      * @param seriesKeys the series key to filter.
@@ -206,7 +205,8 @@ public class MetricsAdvisorAsyncClient {
      * For example, let's say we've the dimensions 'category' and 'city',
      * so the api can query value of the dimension 'category', with series key as 'city=redmond'.
      * </p>
-     * @param options query time series data condition.
+     * @param startTime The start time for querying the time series data.
+     * @param endTime The end time for querying the time series data.
      *
      * @return A {@link PagedFlux} of the {@link MetricSeriesData metric series data points}.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
@@ -216,10 +216,10 @@ public class MetricsAdvisorAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MetricSeriesData> listMetricSeriesData(
-        String metricId, List<DimensionKey> seriesKeys, ListMetricSeriesDataOptions options) {
+        String metricId, List<DimensionKey> seriesKeys, OffsetDateTime startTime, OffsetDateTime endTime) {
         try {
             return new PagedFlux<>(() -> withContext(context -> listMetricSeriesDataInternal(metricId, seriesKeys,
-                options, context)),
+                startTime, endTime, context)),
                 null);
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
@@ -227,25 +227,28 @@ public class MetricsAdvisorAsyncClient {
     }
 
     PagedFlux<MetricSeriesData> listMetricSeriesData(String metricId, List<DimensionKey> seriesKeys,
-        ListMetricSeriesDataOptions options, Context context) {
-        return new PagedFlux<>(() -> listMetricSeriesDataInternal(metricId, seriesKeys, options, context), null);
+        OffsetDateTime startTime, OffsetDateTime endTime, Context context) {
+        return new PagedFlux<>(() -> listMetricSeriesDataInternal(metricId, seriesKeys, startTime, endTime, context),
+            null);
     }
 
     private Mono<PagedResponse<MetricSeriesData>> listMetricSeriesDataInternal(String metricId,
-        List<DimensionKey> seriesKeys, ListMetricSeriesDataOptions options,
-        Context context) {
+        List<DimensionKey> seriesKeys, OffsetDateTime startTime,
+        OffsetDateTime endTime, Context context) {
         Objects.requireNonNull(metricId, "'metricId' cannot be null.");
-        Objects.requireNonNull(options, "'options' cannot be null.");
-        Objects.requireNonNull(options.getStartTime(), "'options.startTime' cannot be null.");
-        Objects.requireNonNull(options.getEndTime(), "'options.endTime' cannot be null.");
+        Objects.requireNonNull(startTime, "'startTime' cannot be null.");
+        Objects.requireNonNull(endTime, "'endTime' cannot be null.");
         if (CoreUtils.isNullOrEmpty(seriesKeys)) {
             Objects.requireNonNull(seriesKeys, "'seriesKeys' cannot be null or empty.");
         }
 
         List<Map<String, String>> dimensionList =
             seriesKeys.stream().map(DimensionKey::asMap).collect(Collectors.toList());
-        final MetricDataQueryOptions metricDataQueryOptions = new MetricDataQueryOptions()
-            .setStartTime(options.getStartTime()).setEndTime(options.getEndTime()).setSeries(dimensionList);
+        final MetricDataQueryOptions metricDataQueryOptions
+            = new MetricDataQueryOptions()
+            .setStartTime(startTime)
+            .setEndTime(startTime)
+            .setSeries(dimensionList);
 
         return service.getMetricDataWithResponseAsync(UUID.fromString(metricId), metricDataQueryOptions,
             context)
@@ -546,7 +549,7 @@ public class MetricsAdvisorAsyncClient {
      * Fetch the anomalies identified by an anomaly detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomaliesForDetectionConfiguration#String-ListAnomaliesDetectedOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomaliesForDetectionConfig#String-ListAnomaliesDetectedOptions}
      *
      * @param detectionConfigurationId The anomaly detection configuration id.
      * @param options The additional parameters.
@@ -558,32 +561,32 @@ public class MetricsAdvisorAsyncClient {
      *     or {@code options.startTime} or {@code options.endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Anomaly> listAnomaliesForDetectionConfiguration(
+    public PagedFlux<DataPointAnomaly> listAnomaliesForDetectionConfig(
         String detectionConfigurationId,
         ListAnomaliesDetectedOptions options) {
         try {
             return new PagedFlux<>(() ->
                 withContext(context ->
-                    listAnomaliesForDetectionConfigurationSinglePageAsync(detectionConfigurationId,
+                    listAnomaliesForDetectionConfigSinglePageAsync(detectionConfigurationId,
                         options, context)),
                 continuationToken ->
-                    withContext(context -> listAnomaliesForDetectionConfigurationNextPageAsync(continuationToken,
+                    withContext(context -> listAnomaliesForDetectionConfigNextPageAsync(continuationToken,
                         options, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> FluxUtil.monoError(logger, ex));
         }
     }
 
-    PagedFlux<Anomaly> listAnomaliesForDetectionConfiguration(
+    PagedFlux<DataPointAnomaly> listAnomaliesForDetectionConfig(
         String detectionConfigurationId,
         ListAnomaliesDetectedOptions options, Context context) {
         return new PagedFlux<>(() ->
-            listAnomaliesForDetectionConfigurationSinglePageAsync(detectionConfigurationId, options, context),
+            listAnomaliesForDetectionConfigSinglePageAsync(detectionConfigurationId, options, context),
             continuationToken ->
-                listAnomaliesForDetectionConfigurationNextPageAsync(continuationToken, options, context));
+                listAnomaliesForDetectionConfigNextPageAsync(continuationToken, options, context));
     }
 
-    private Mono<PagedResponse<Anomaly>> listAnomaliesForDetectionConfigurationSinglePageAsync(
+    private Mono<PagedResponse<DataPointAnomaly>> listAnomaliesForDetectionConfigSinglePageAsync(
         String detectionConfigurationId,
         ListAnomaliesDetectedOptions options,
         Context context) {
@@ -617,7 +620,7 @@ public class MetricsAdvisorAsyncClient {
             .map(response -> AnomalyTransforms.fromInnerPagedResponse(response));
     }
 
-    private Mono<PagedResponse<Anomaly>> listAnomaliesForDetectionConfigurationNextPageAsync(
+    private Mono<PagedResponse<DataPointAnomaly>> listAnomaliesForDetectionConfigNextPageAsync(
         String nextPageLink,
         ListAnomaliesDetectedOptions options,
         Context context) {
@@ -654,7 +657,7 @@ public class MetricsAdvisorAsyncClient {
      * Fetch the incidents identified by an anomaly detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidentsForDetectionConfiguration#String-ListIncidentsDetectedOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidentsForDetectionConfig#String-ListIncidentsDetectedOptions}
      *
      * @param detectionConfigurationId The anomaly detection configuration id.
      * @param options The additional parameters.
@@ -665,33 +668,33 @@ public class MetricsAdvisorAsyncClient {
      *     or {@code options.startTime} or {@code options.endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Incident> listIncidentsForDetectionConfiguration(
+    public PagedFlux<AnomalyIncident> listIncidentsForDetectionConfig(
         String detectionConfigurationId,
         ListIncidentsDetectedOptions options) {
         try {
             return new PagedFlux<>(() ->
                 withContext(context ->
-                    listIncidentsForDetectionConfigurationSinglePageAsync(detectionConfigurationId,
+                    listIncidentsForDetectionConfigSinglePageAsync(detectionConfigurationId,
                         options,
                         context)),
                 continuationToken ->
-                    withContext(context -> listIncidentsForDetectionConfigurationNextPageAsync(continuationToken,
+                    withContext(context -> listIncidentsForDetectionConfigNextPageAsync(continuationToken,
                         context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> FluxUtil.monoError(logger, ex));
         }
     }
 
-    PagedFlux<Incident> listIncidentsForDetectionConfiguration(
+    PagedFlux<AnomalyIncident> listIncidentsForDetectionConfig(
         String detectionConfigurationId,
         ListIncidentsDetectedOptions options, Context context) {
         return new PagedFlux<>(() ->
-            listIncidentsForDetectionConfigurationSinglePageAsync(detectionConfigurationId, options, context),
+            listIncidentsForDetectionConfigSinglePageAsync(detectionConfigurationId, options, context),
             continuationToken ->
-                listIncidentsForDetectionConfigurationNextPageAsync(continuationToken, context));
+                listIncidentsForDetectionConfigNextPageAsync(continuationToken, context));
     }
 
-    private Mono<PagedResponse<Incident>> listIncidentsForDetectionConfigurationSinglePageAsync(
+    private Mono<PagedResponse<AnomalyIncident>> listIncidentsForDetectionConfigSinglePageAsync(
         String detectionConfigurationId,
         ListIncidentsDetectedOptions options,
         Context context) {
@@ -727,7 +730,7 @@ public class MetricsAdvisorAsyncClient {
             .map(response -> IncidentTransforms.fromInnerPagedResponse(response));
     }
 
-    private Mono<PagedResponse<Incident>> listIncidentsForDetectionConfigurationNextPageAsync(
+    private Mono<PagedResponse<AnomalyIncident>> listIncidentsForDetectionConfigNextPageAsync(
         String nextPageLink,
         Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
@@ -762,12 +765,12 @@ public class MetricsAdvisorAsyncClient {
     public PagedFlux<IncidentRootCause> listIncidentRootCauses(
         String detectionConfigurationId,
         String incidentId) {
-        Incident incident = new Incident();
-        IncidentHelper.setId(incident, incidentId);
-        IncidentHelper.setDetectionConfigurationId(incident, detectionConfigurationId);
+        AnomalyIncident anomalyIncident = new AnomalyIncident();
+        IncidentHelper.setId(anomalyIncident, incidentId);
+        IncidentHelper.setDetectionConfigurationId(anomalyIncident, detectionConfigurationId);
         try {
             return new PagedFlux<>(() ->
-                withContext(context -> listIncidentRootCausesInternal(incident, context)),  null);
+                withContext(context -> listIncidentRootCausesInternal(anomalyIncident, context)),  null);
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
@@ -776,59 +779,61 @@ public class MetricsAdvisorAsyncClient {
     PagedFlux<IncidentRootCause> listIncidentRootCauses(
         String detectionConfigurationId,
         String incidentId, Context context) {
-        Incident incident = new Incident();
-        IncidentHelper.setId(incident, incidentId);
-        IncidentHelper.setDetectionConfigurationId(incident, detectionConfigurationId);
+        AnomalyIncident anomalyIncident = new AnomalyIncident();
+        IncidentHelper.setId(anomalyIncident, incidentId);
+        IncidentHelper.setDetectionConfigurationId(anomalyIncident, detectionConfigurationId);
         try {
-            return new PagedFlux<>(() -> listIncidentRootCausesInternal(incident, context), null);
+            return new PagedFlux<>(() -> listIncidentRootCausesInternal(anomalyIncident, context), null);
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
     }
 
     /**
-     * List the root causes for an incident.
+     * List the root causes for an anomalyIncident.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidentRootCauses#Incident}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidentRootCauses#AnomalyIncident}
      *
-     * @param incident the incident for which you want to query root causes for.
+     * @param anomalyIncident the anomalyIncident for which you want to query root causes for.
      *
-     * @return the list of root causes for that incident.
+     * @return the list of root causes for that anomalyIncident.
      * @throws IllegalArgumentException thrown if {@code detectionConfigurationId} fail the UUID format validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if the {@code detectionConfigurationId} or {@code incidentId} is null.
      **/
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<IncidentRootCause> listIncidentRootCauses(Incident incident) {
+    public PagedFlux<IncidentRootCause> listIncidentRootCauses(AnomalyIncident anomalyIncident) {
         try {
-            return new PagedFlux<>(() -> withContext(context -> listIncidentRootCausesInternal(incident, context)),
+            return new PagedFlux<>(() -> withContext(context ->
+                listIncidentRootCausesInternal(anomalyIncident, context)),
                  null);
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
     }
 
-    PagedFlux<IncidentRootCause> listIncidentRootCauses(Incident incident, Context context) {
-        return new PagedFlux<>(() -> listIncidentRootCausesInternal(incident, context), null);
+    PagedFlux<IncidentRootCause> listIncidentRootCauses(AnomalyIncident anomalyIncident, Context context) {
+        return new PagedFlux<>(() -> listIncidentRootCausesInternal(anomalyIncident, context), null);
     }
 
-    private Mono<PagedResponse<IncidentRootCause>> listIncidentRootCausesInternal(Incident incident, Context context) {
-        if (incident == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'incident' is required."));
+    private Mono<PagedResponse<IncidentRootCause>> listIncidentRootCausesInternal(AnomalyIncident anomalyIncident,
+        Context context) {
+        if (anomalyIncident == null) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'anomalyIncident' is required."));
         }
-        Objects.requireNonNull(incident.getDetectionConfigurationId(),
-            "'incident.detectionConfigurationId' is required.");
-        Objects.requireNonNull(incident.getId(), "'incident.id' is required");
+        Objects.requireNonNull(anomalyIncident.getDetectionConfigurationId(),
+            "'anomalyIncident.detectionConfigurationId' is required.");
+        Objects.requireNonNull(anomalyIncident.getId(), "'anomalyIncident.id' is required");
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
         return service.getRootCauseOfIncidentByAnomalyDetectionConfigurationWithResponseAsync(
-            UUID.fromString(incident.getDetectionConfigurationId()),
-            incident.getId(), withTracing)
+            UUID.fromString(anomalyIncident.getDetectionConfigurationId()),
+            anomalyIncident.getId(), withTracing)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieved the IncidentRootCauses - {}",
-                incident.getDetectionConfigurationId()))
+                anomalyIncident.getDetectionConfigurationId()))
             .doOnSuccess(response -> logger.info("Retrieved the IncidentRootCauses - {}", response))
             .doOnError(error -> logger.warning("Failed to retrieve the incident root causes - {}",
-                incident.getDetectionConfigurationId(), error))
+                anomalyIncident.getDetectionConfigurationId(), error))
             .map(res -> IncidentRootCauseTransforms.fromInnerResponse(res));
     }
 
@@ -855,12 +860,12 @@ public class MetricsAdvisorAsyncClient {
         try {
             return new PagedFlux<>(() ->
                 withContext(context ->
-                    listValuesOfDimensionWithAnomaliesSinglePageAsync(detectionConfigurationId,
+                    listDimensionValuesWithAnomaliesSinglePageAsync(detectionConfigurationId,
                         dimensionName,
                         options,
                         context)),
                 continuationToken ->
-                    withContext(context -> listValuesOfDimensionWithAnomaliesNextPageAsync(continuationToken,
+                    withContext(context -> listDimensionValuesWithAnomaliesNextPageAsync(continuationToken,
                         dimensionName,
                         options,
                         context)));
@@ -875,18 +880,18 @@ public class MetricsAdvisorAsyncClient {
         ListDimensionValuesWithAnomaliesOptions options,
         Context context) {
         return new PagedFlux<>(() ->
-            listValuesOfDimensionWithAnomaliesSinglePageAsync(detectionConfigurationId,
+            listDimensionValuesWithAnomaliesSinglePageAsync(detectionConfigurationId,
                 dimensionName,
                 options,
                 context),
             continuationToken ->
-                listValuesOfDimensionWithAnomaliesNextPageAsync(continuationToken,
+                listDimensionValuesWithAnomaliesNextPageAsync(continuationToken,
                     dimensionName,
                     options,
                     context));
     }
 
-    private Mono<PagedResponse<String>> listValuesOfDimensionWithAnomaliesSinglePageAsync(
+    private Mono<PagedResponse<String>> listDimensionValuesWithAnomaliesSinglePageAsync(
         String detectionConfigurationId,
         String dimensionName,
         ListDimensionValuesWithAnomaliesOptions options,
@@ -918,7 +923,7 @@ public class MetricsAdvisorAsyncClient {
             .doOnError(error -> logger.warning("Failed to list the dimension values with anomalies", error));
     }
 
-    private Mono<PagedResponse<String>> listValuesOfDimensionWithAnomaliesNextPageAsync(
+    private Mono<PagedResponse<String>> listDimensionValuesWithAnomaliesNextPageAsync(
         String nextPageLink,
         String dimensionName,
         ListDimensionValuesWithAnomaliesOptions options,
@@ -961,7 +966,7 @@ public class MetricsAdvisorAsyncClient {
      *     or {@code options.startTime} or {@code options.endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Alert> listAlerts(
+    public PagedFlux<AnomalyAlert> listAlerts(
         String alertConfigurationId,
         ListAlertOptions options) {
         try {
@@ -977,7 +982,7 @@ public class MetricsAdvisorAsyncClient {
         }
     }
 
-    PagedFlux<Alert> listAlerts(
+    PagedFlux<AnomalyAlert> listAlerts(
         String alertConfigurationId,
         ListAlertOptions options, Context context) {
         return new PagedFlux<>(() ->
@@ -988,7 +993,7 @@ public class MetricsAdvisorAsyncClient {
                     context));
     }
 
-    private Mono<PagedResponse<Alert>> listAlertsSinglePageAsync(
+    private Mono<PagedResponse<AnomalyAlert>> listAlertsSinglePageAsync(
         String alertConfigurationId,
         ListAlertOptions options,
         Context context) {
@@ -1014,7 +1019,7 @@ public class MetricsAdvisorAsyncClient {
             .doOnError(error -> logger.warning("Failed to list the alerts", error));
     }
 
-    private Mono<PagedResponse<Alert>> listAlertsNextPageAsync(
+    private Mono<PagedResponse<AnomalyAlert>> listAlertsNextPageAsync(
         String nextPageLink,
         ListAlertOptions options,
         Context context) {
@@ -1052,7 +1057,7 @@ public class MetricsAdvisorAsyncClient {
      * @throws NullPointerException thrown if the {@code alertConfigurationId} or {@code alertId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Anomaly> listAnomaliesForAlert(
+    public PagedFlux<DataPointAnomaly> listAnomaliesForAlert(
         String alertConfigurationId,
         String alertId) {
         return listAnomaliesForAlert(alertConfigurationId, alertId, null);
@@ -1074,7 +1079,7 @@ public class MetricsAdvisorAsyncClient {
      * @throws NullPointerException thrown if the {@code alertConfigurationId} or {@code alertId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Anomaly> listAnomaliesForAlert(
+    public PagedFlux<DataPointAnomaly> listAnomaliesForAlert(
         String alertConfigurationId,
         String alertId,
         ListAnomaliesAlertedOptions options) {
@@ -1090,7 +1095,7 @@ public class MetricsAdvisorAsyncClient {
         }
     }
 
-    PagedFlux<Anomaly> listAnomaliesForAlert(
+    PagedFlux<DataPointAnomaly> listAnomaliesForAlert(
         String alertConfigurationId,
         String alertId,
         ListAnomaliesAlertedOptions options,
@@ -1101,7 +1106,7 @@ public class MetricsAdvisorAsyncClient {
                 listAnomaliesForAlertNextPageAsync(continuationToken, context));
     }
 
-    private Mono<PagedResponse<Anomaly>> listAnomaliesForAlertSinglePageAsync(
+    private Mono<PagedResponse<DataPointAnomaly>> listAnomaliesForAlertSinglePageAsync(
         String alertConfigurationId,
         String alertId,
         ListAnomaliesAlertedOptions options,
@@ -1122,7 +1127,7 @@ public class MetricsAdvisorAsyncClient {
             .map(response -> AnomalyTransforms.fromInnerPagedResponse(response));
     }
 
-    private Mono<PagedResponse<Anomaly>> listAnomaliesForAlertNextPageAsync(
+    private Mono<PagedResponse<DataPointAnomaly>> listAnomaliesForAlertNextPageAsync(
         String nextPageLink,
         Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
@@ -1155,7 +1160,7 @@ public class MetricsAdvisorAsyncClient {
      * @throws NullPointerException thrown if the {@code alertConfigurationId} or {@code alertId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Incident> listIncidentsForAlert(
+    public PagedFlux<AnomalyIncident> listIncidentsForAlert(
         String alertConfigurationId,
         String alertId,
         ListIncidentsAlertedOptions options) {
@@ -1171,7 +1176,7 @@ public class MetricsAdvisorAsyncClient {
         }
     }
 
-    PagedFlux<Incident> listIncidentsForAlert(
+    PagedFlux<AnomalyIncident> listIncidentsForAlert(
         String alertConfigurationId,
         String alertId,
         ListIncidentsAlertedOptions options, Context context) {
@@ -1181,7 +1186,7 @@ public class MetricsAdvisorAsyncClient {
                 listIncidentsForAlertNextPageAsync(continuationToken, context));
     }
 
-    private Mono<PagedResponse<Incident>> listIncidentsForAlertSinglePageAsync(
+    private Mono<PagedResponse<AnomalyIncident>> listIncidentsForAlertSinglePageAsync(
         String alertConfigurationId,
         String alertId,
         ListIncidentsAlertedOptions options, Context context) {
@@ -1201,7 +1206,7 @@ public class MetricsAdvisorAsyncClient {
             .map(response -> IncidentTransforms.fromInnerPagedResponse(response));
     }
 
-    private Mono<PagedResponse<Incident>> listIncidentsForAlertNextPageAsync(
+    private Mono<PagedResponse<AnomalyIncident>> listIncidentsForAlertNextPageAsync(
         String nextPageLink,
         Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {

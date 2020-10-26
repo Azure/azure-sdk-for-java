@@ -5,34 +5,37 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.models.Incident;
+import com.azure.ai.metricsadvisor.models.DataPointAnomaly;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
-public class IncidentForAlertTest extends IncidentForAlertTestBase {
+public class DataPointAnomalyForAlertTest extends AnomalyForAlertTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Override
-    public void listIncidentsForAlert(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
+    public void listAnomaliesForAlert(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
 
-        PagedIterable<Incident> incidentsIterable
-            = client.listIncidentsForAlert(
-            ListIncidentsForAlertInput.INSTANCE.alertConfigurationId,
-            ListIncidentsForAlertInput.INSTANCE.alertId,
-            ListIncidentsForAlertInput.INSTANCE.options);
+        PagedIterable<DataPointAnomaly> anomaliesIterable
+            = client.listAnomaliesForAlert(
+            ListAnomaliesForAlertInput.INSTANCE.alertConfigurationId,
+            ListAnomaliesForAlertInput.INSTANCE.alertId,
+            ListAnomaliesForAlertInput.INSTANCE.options,
+            Context.NONE
+        );
 
         int[] cnt = new int[1];
-        for (Incident incident : incidentsIterable) {
+        for (DataPointAnomaly dataPointAnomaly : anomaliesIterable) {
             cnt[0]++;
-            assertListIncidentsForAlertOutput(incident);
+            assertListAnomaliesForAlertOutput(dataPointAnomaly);
         }
-        Assertions.assertEquals(ListIncidentsForAlertOutput.INSTANCE.expectedIncidents, cnt[0]);
+        Assertions.assertEquals(ListAnomaliesForAlertOutput.INSTANCE.expectedAnomalies, cnt[0]);
     }
 }

@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * Describes a Metric dimension name-value pairs.
+ * Describes a DataFeedMetric dimension name-value pairs.
  *
  * <p>
  * A metric advisor data feed schema {@link DataFeedSchema} defines dimension

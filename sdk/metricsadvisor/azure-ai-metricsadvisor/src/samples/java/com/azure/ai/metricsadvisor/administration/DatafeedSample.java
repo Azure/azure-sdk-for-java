@@ -6,13 +6,13 @@ package com.azure.ai.metricsadvisor.administration;
 import com.azure.ai.metricsadvisor.implementation.models.DataSourceType;
 import com.azure.ai.metricsadvisor.models.AzureAppInsightsDataFeedSource;
 import com.azure.ai.metricsadvisor.models.DataFeed;
+import com.azure.ai.metricsadvisor.models.DataFeedDimension;
 import com.azure.ai.metricsadvisor.models.DataFeedGranularity;
 import com.azure.ai.metricsadvisor.models.DataFeedGranularityType;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionSettings;
+import com.azure.ai.metricsadvisor.models.DataFeedMetric;
 import com.azure.ai.metricsadvisor.models.DataFeedOptions;
 import com.azure.ai.metricsadvisor.models.DataFeedSchema;
-import com.azure.ai.metricsadvisor.models.Dimension;
-import com.azure.ai.metricsadvisor.models.Metric;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 
 import java.time.OffsetDateTime;
@@ -38,12 +38,12 @@ public class DatafeedSample {
             .setSchema(
                 new DataFeedSchema(
                     Arrays.asList(
-                        new Metric().setName("cost"),
-                        new Metric().setName("revenue")
+                        new DataFeedMetric().setName("cost"),
+                        new DataFeedMetric().setName("revenue")
                     )).setDimensions(
                     Arrays.asList(
-                        new Dimension().setName("city"),
-                        new Dimension().setName("category")
+                        new DataFeedDimension().setName("city"),
+                        new DataFeedDimension().setName("category")
                     ))
             ).setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse("2020-07-01T00:00:00Z")));
 

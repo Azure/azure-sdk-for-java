@@ -8,22 +8,23 @@ import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationCl
 import com.azure.ai.metricsadvisor.models.AnomalyAlertConfiguration;
 import com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration;
 import com.azure.ai.metricsadvisor.models.AnomalyDetectorDirection;
+import com.azure.ai.metricsadvisor.models.AnomalySeverity;
 import com.azure.ai.metricsadvisor.models.ChangeThresholdCondition;
 import com.azure.ai.metricsadvisor.models.DataFeed;
 import com.azure.ai.metricsadvisor.models.DataFeedGranularity;
 import com.azure.ai.metricsadvisor.models.DataFeedGranularityType;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionSettings;
+import com.azure.ai.metricsadvisor.models.DataFeedMetric;
 import com.azure.ai.metricsadvisor.models.DataFeedOptions;
 import com.azure.ai.metricsadvisor.models.DataFeedRollupSettings;
 import com.azure.ai.metricsadvisor.models.DataFeedRollupType;
 import com.azure.ai.metricsadvisor.models.DataFeedSchema;
 import com.azure.ai.metricsadvisor.models.DetectionConditionsOperator;
-import com.azure.ai.metricsadvisor.models.EmailHook;
+import com.azure.ai.metricsadvisor.models.EmailNotificationHook;
 import com.azure.ai.metricsadvisor.models.HardThresholdCondition;
-import com.azure.ai.metricsadvisor.models.Hook;
+import com.azure.ai.metricsadvisor.models.NotificationHook;
 import com.azure.ai.metricsadvisor.models.ListAlertOptions;
 import com.azure.ai.metricsadvisor.models.ListDataFeedIngestionOptions;
-import com.azure.ai.metricsadvisor.models.Metric;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConditions;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConfiguration;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConfigurationsOperator;
@@ -32,11 +33,10 @@ import com.azure.ai.metricsadvisor.models.MetricWholeSeriesDetectionCondition;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.ai.metricsadvisor.models.MySqlDataFeedSource;
 import com.azure.ai.metricsadvisor.models.SQLServerDataFeedSource;
-import com.azure.ai.metricsadvisor.models.Severity;
 import com.azure.ai.metricsadvisor.models.SeverityCondition;
 import com.azure.ai.metricsadvisor.models.SmartDetectionCondition;
 import com.azure.ai.metricsadvisor.models.SuppressCondition;
-import com.azure.ai.metricsadvisor.models.TimeMode;
+import com.azure.ai.metricsadvisor.models.AlertQueryTimeMode;
 import com.azure.core.exception.HttpResponseException;
 
 import java.time.OffsetDateTime;
@@ -89,8 +89,8 @@ public class ReadmeSamples {
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
             .setSchema(new DataFeedSchema(
                 Arrays.asList(
-                    new Metric().setName("metric1"),
-                    new Metric().setName("metric2")
+                    new DataFeedMetric().setName("metric1"),
+                    new DataFeedMetric().setName("metric2")
                 )
             ))
             .setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse("2020-01-01T00:00:00Z")))
@@ -160,9 +160,9 @@ public class ReadmeSamples {
             .setSuppressCondition(new SuppressCondition().setMinNumber(1).setMinRatio(2));
 
         final AnomalyDetectionConfiguration anomalyDetectionConfiguration =
-            metricsAdvisorAdminClient.createMetricAnomalyDetectionConfiguration(
+            metricsAdvisorAdminClient.createMetricAnomalyDetectionConfig(
                 metricId,
-                new AnomalyDetectionConfiguration("My Anomaly detection configuration")
+                new AnomalyDetectionConfiguration("My dataPoint anomaly detection configuration")
                     .setDescription("anomaly detection config description")
                     .setWholeSeriesDetectionCondition(
                         new MetricWholeSeriesDetectionCondition()
@@ -177,18 +177,19 @@ public class ReadmeSamples {
      * Code snippet for creating an email hook alert.
      */
     public void createHook() {
-        Hook emailHook = new EmailHook("email hook")
-            .setDescription("my email hook")
+        NotificationHook emailNotificationHook = new EmailNotificationHook("email Hook")
+            .setDescription("my email Hook")
             .addEmailToAlert("alertme@alertme.com")
             .setExternalLink("https://adwiki.azurewebsites.net/articles/howto/alerts/create-hooks.html");
 
-        final Hook hook = metricsAdvisorAdminClient.createHook(emailHook);
-        EmailHook createdEmailHook = (EmailHook) hook;
-        System.out.printf("Hook Id: %s%n", createdEmailHook.getId());
-        System.out.printf("Hook Name: %s%n", createdEmailHook.getName());
-        System.out.printf("Hook Description: %s%n", createdEmailHook.getDescription());
-        System.out.printf("Hook External Link: %s%n", createdEmailHook.getExternalLink());
-        System.out.printf("Hook Emails: %s%n", String.join(",", createdEmailHook.getEmailsToAlert()));
+        final NotificationHook notificationHook = metricsAdvisorAdminClient.createHook(emailNotificationHook);
+        EmailNotificationHook createdEmailHook = (EmailNotificationHook) notificationHook;
+        System.out.printf("Email Hook Id: %s%n", createdEmailHook.getId());
+        System.out.printf("Email Hook name: %s%n", createdEmailHook.getName());
+        System.out.printf("Email Hook description: %s%n", createdEmailHook.getDescription());
+        System.out.printf("Email Hook external Link: %s%n", createdEmailHook.getExternalLink());
+        System.out.printf("Email Hook emails to alert: %s%n",
+            String.join(",", createdEmailHook.getEmailsToAlert()));
     }
 
     /**
@@ -201,8 +202,8 @@ public class ReadmeSamples {
         String hookId2 = "8i48er30-6e6e-4391-b78f-b00dfee1e6f5";
 
         final AnomalyAlertConfiguration anomalyAlertConfiguration
-            = metricsAdvisorAdminClient.createAnomalyAlertConfiguration(
-                new AnomalyAlertConfiguration("My Alert config name")
+            = metricsAdvisorAdminClient.createAnomalyAlertConfig(
+                new AnomalyAlertConfiguration("My anomaly alert config name")
                     .setDescription("alert config description")
                     .setMetricAlertConfigurations(
                         Arrays.asList(
@@ -212,7 +213,7 @@ public class ReadmeSamples {
                                 MetricAnomalyAlertScope.forWholeSeries())
                                 .setAlertConditions(new MetricAnomalyAlertConditions()
                                     .setSeverityRangeCondition(new SeverityCondition()
-                                        .setMaxAlertSeverity(Severity.HIGH)))
+                                        .setMaxAlertSeverity(AnomalySeverity.HIGH)))
                         ))
                     .setCrossMetricsOperator(MetricAnomalyAlertConfigurationsOperator.AND)
                     .setIdOfHooksToAlert(Arrays.asList(hookId1, hookId2)));
@@ -221,26 +222,26 @@ public class ReadmeSamples {
     /**
      * Code snippet for querying anomaly detection.
      */
-    public void queryAnomalyDetection() {
+    public void queryAlertsForDetection() {
         String alertConfigurationId = "9ol48er30-6e6e-4391-b78f-b00dfee1e6f5";
         metricsAdvisorClient.listAlerts(
             alertConfigurationId,
             new ListAlertOptions(OffsetDateTime.parse("2020-01-01T00:00:00Z"),
                 OffsetDateTime.now(),
-                TimeMode.ANOMALY_TIME))
+                AlertQueryTimeMode.ANOMALY_TIME))
             .forEach(alert -> {
-                System.out.printf("Alert Id: %s%n", alert.getId());
-                System.out.printf("Alert created on: %s%n", alert.getCreatedTime());
+                System.out.printf("AnomalyAlert Id: %s%n", alert.getId());
+                System.out.printf("AnomalyAlert created on: %s%n", alert.getCreatedTime());
 
                 // List anomalies for returned alerts
                 metricsAdvisorClient.listAnomaliesForAlert(
                     alertConfigurationId,
                     alert.getId())
                     .forEach(anomaly -> {
-                        System.out.printf("Anomaly was created on: %s%n", anomaly.getCreatedTime());
-                        System.out.printf("Anomaly severity: %s%n", anomaly.getSeverity().toString());
-                        System.out.printf("Anomaly status: %s%n", anomaly.getStatus());
-                        System.out.printf("Anomaly related series key: %s%n", anomaly.getSeriesKey().asMap());
+                        System.out.printf("DataPoint Anomaly was created on: %s%n", anomaly.getCreatedTime());
+                        System.out.printf("DataPoint Anomaly severity: %s%n", anomaly.getSeverity().toString());
+                        System.out.printf("DataPoint Anomaly status: %s%n", anomaly.getStatus());
+                        System.out.printf("DataPoint Anomaly related series key: %s%n", anomaly.getSeriesKey().asMap());
                     });
             });
     }

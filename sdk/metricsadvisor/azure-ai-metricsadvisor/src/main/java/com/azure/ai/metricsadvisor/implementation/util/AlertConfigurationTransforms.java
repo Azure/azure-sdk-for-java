@@ -93,11 +93,11 @@ public final class AlertConfigurationTransforms {
     }
 
     /**
-     * Internal helper method to get the service Metric alert configurations list.
+     * Internal helper method to get the service DataFeedMetric alert configurations list.
      *
      * @param metricAlertConfigurations the SDK level provided metric configurations list.
      *
-     * @return the service required Metric alert configurations list.
+     * @return the service required DataFeedMetric alert configurations list.
      */
     private static List<MetricAlertingConfiguration> getMetricAlertConfigList(
         List<MetricAnomalyAlertConfiguration> metricAlertConfigurations) {

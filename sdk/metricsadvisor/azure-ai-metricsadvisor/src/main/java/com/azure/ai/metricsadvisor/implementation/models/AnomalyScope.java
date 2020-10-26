@@ -13,8 +13,8 @@ public final class AnomalyScope extends ExpandableStringEnum<AnomalyScope> {
     /** Static value All for AnomalyScope. */
     public static final AnomalyScope ALL = fromString("All");
 
-    /** Static value Dimension for AnomalyScope. */
-    public static final AnomalyScope DIMENSION = fromString("Dimension");
+    /** Static value DataFeedDimension for AnomalyScope. */
+    public static final AnomalyScope DIMENSION = fromString("DataFeedDimension");
 
     /** Static value TopN for AnomalyScope. */
     public static final AnomalyScope TOPN = fromString("TopN");

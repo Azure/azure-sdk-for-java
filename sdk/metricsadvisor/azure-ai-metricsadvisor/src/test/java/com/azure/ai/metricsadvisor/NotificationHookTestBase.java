@@ -3,10 +3,10 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.models.EmailHook;
-import com.azure.ai.metricsadvisor.models.Hook;
+import com.azure.ai.metricsadvisor.models.EmailNotificationHook;
+import com.azure.ai.metricsadvisor.models.NotificationHook;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
-import com.azure.ai.metricsadvisor.models.WebHook;
+import com.azure.ai.metricsadvisor.models.WebNotificationHook;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.PagedResponse;
@@ -18,7 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class HookTestBase extends MetricsAdvisorAdministrationClientTestBase {
+public abstract class NotificationHookTestBase extends MetricsAdvisorAdministrationClientTestBase {
     @Test
     abstract void createEmailHook(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
 
@@ -29,17 +29,17 @@ public abstract class HookTestBase extends MetricsAdvisorAdministrationClientTes
         String email2 = "simpleuser1@hotmail.com";
         String description = "alert_us!";
         String externalLink = "https://github.com/Azure/azure-sdk-for-java/wiki";
-        EmailHook hook = new EmailHook(name)
+        EmailNotificationHook hook = new EmailNotificationHook(name)
             .addEmailToAlert(email1)
             .addEmailToAlert(email2)
             .setDescription(description)
             .setExternalLink(externalLink);
     }
 
-    protected void assertCreateEmailHookOutput(Hook hook) {
-        Assertions.assertNotNull(hook);
-        Assertions.assertTrue(hook instanceof EmailHook);
-        EmailHook emailHook = (EmailHook) hook;
+    protected void assertCreateEmailHookOutput(NotificationHook notificationHook) {
+        Assertions.assertNotNull(notificationHook);
+        Assertions.assertTrue(notificationHook instanceof EmailNotificationHook);
+        EmailNotificationHook emailHook = (EmailNotificationHook) notificationHook;
         Assertions.assertNotNull(emailHook.getId());
         Assertions.assertNotNull(emailHook.getAdminEmails());
         Assertions.assertNotNull(emailHook.getName());
@@ -68,17 +68,17 @@ public abstract class HookTestBase extends MetricsAdvisorAdministrationClientTes
         HttpHeaders httpHeaders = new HttpHeaders()
             .put("x-contoso-id", "123")
             .put("x-contoso-name", "contoso");
-        WebHook hook = new WebHook(name, endpoint)
+        WebNotificationHook hook = new WebNotificationHook(name, endpoint)
             .setDescription(description)
             .setExternalLink(externalLink)
             .setUserCredentials(userName, password)
             .setHttpHeaders(httpHeaders);
     }
 
-    protected void assertCreateWebHookOutput(Hook hook) {
-        Assertions.assertNotNull(hook);
-        Assertions.assertTrue(hook instanceof WebHook);
-        WebHook webHook = (WebHook) hook;
+    protected void assertCreateWebHookOutput(NotificationHook notificationHook) {
+        Assertions.assertNotNull(notificationHook);
+        Assertions.assertTrue(notificationHook instanceof WebNotificationHook);
+        WebNotificationHook webHook = (WebNotificationHook) notificationHook;
         Assertions.assertNotNull(webHook.getId());
         Assertions.assertNotNull(webHook.getAdminEmails());
         Assertions.assertNotNull(webHook.getName());
@@ -102,42 +102,42 @@ public abstract class HookTestBase extends MetricsAdvisorAdministrationClientTes
 
     protected static class ListHookInput {
         static final ListHookInput INSTANCE = new ListHookInput();
-        EmailHook emailHook = new EmailHook(UUID.randomUUID().toString())
+        EmailNotificationHook emailHook = new EmailNotificationHook(UUID.randomUUID().toString())
             .addEmailToAlert("simpleuser0@hotmail.com");
-        WebHook webHook = new WebHook(UUID.randomUUID().toString(),
+        WebNotificationHook webHook = new WebNotificationHook(UUID.randomUUID().toString(),
             "https://httpbin.org/post");
         int pageSize = 1;
     }
 
-    protected void assertListHookOutput(List<Hook> hooksList) {
+    protected void assertListHookOutput(List<NotificationHook> hooksList) {
         Assertions.assertTrue(hooksList.size() >= 2);
         if (getTestMode() == TestMode.PLAYBACK) {
             // assert random generated hook names only when hitting real service.
             return;
         }
-        Hook hook1 = null;
-        Hook hook2 = null;
-        for (Hook hook : hooksList) {
-            if (hook1 != null && hook2 != null) {
+        NotificationHook notificationHook1 = null;
+        NotificationHook notificationHook2 = null;
+        for (NotificationHook notificationHook : hooksList) {
+            if (notificationHook1 != null && notificationHook2 != null) {
                 break;
             }
-            Assertions.assertNotNull(hook.getName());
-            if (hook.getName().equals(ListHookInput.INSTANCE.emailHook.getName())) {
-                hook1 = hook;
-            } else if (hook.getName().equals(ListHookInput.INSTANCE.webHook.getName())) {
-                hook2 = hook;
+            Assertions.assertNotNull(notificationHook.getName());
+            if (notificationHook.getName().equals(ListHookInput.INSTANCE.emailHook.getName())) {
+                notificationHook1 = notificationHook;
+            } else if (notificationHook.getName().equals(ListHookInput.INSTANCE.webHook.getName())) {
+                notificationHook2 = notificationHook;
             }
         }
-        Assertions.assertNotNull(hook1);
-        Assertions.assertNotNull(hook2);
-        Assertions.assertTrue(hook1 instanceof EmailHook);
-        Assertions.assertTrue(hook2 instanceof WebHook);
+        Assertions.assertNotNull(notificationHook1);
+        Assertions.assertNotNull(notificationHook2);
+        Assertions.assertTrue(notificationHook1 instanceof EmailNotificationHook);
+        Assertions.assertTrue(notificationHook2 instanceof WebNotificationHook);
     }
 
-    protected void assertPagedListHookOutput(List<PagedResponse<Hook>> hookPageList) {
+    protected void assertPagedListHookOutput(List<PagedResponse<NotificationHook>> hookPageList) {
         Assertions.assertTrue(hookPageList.size() >= 2);
         int cnt = 0;
-        for (PagedResponse<Hook> hookPage : hookPageList) {
+        for (PagedResponse<NotificationHook> hookPage : hookPageList) {
             Assertions.assertNotNull(hookPage.getValue());
             cnt++;
             boolean isLastPage = (cnt == hookPageList.size());

@@ -4,7 +4,7 @@
 package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient;
-import com.azure.ai.metricsadvisor.models.Hook;
+import com.azure.ai.metricsadvisor.models.NotificationHook;
 import com.azure.ai.metricsadvisor.models.ListHookOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
-public final class HookTest extends HookTestBase {
+public final class NotificationHookTest extends NotificationHookTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Override
@@ -26,10 +26,10 @@ public final class HookTest extends HookTestBase {
         MetricsAdvisorAdministrationClient client
             = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
 
-        Hook createdHook  = client.createHook(CreateEmailHookInput.INSTANCE.hook);
-        Assertions.assertNotNull(createdHook);
-        assertCreateEmailHookOutput(createdHook);
-        client.deleteHook(createdHook.getId());
+        NotificationHook createdNotificationHook = client.createHook(CreateEmailHookInput.INSTANCE.hook);
+        Assertions.assertNotNull(createdNotificationHook);
+        assertCreateEmailHookOutput(createdNotificationHook);
+        client.deleteHook(createdNotificationHook.getId());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -39,10 +39,10 @@ public final class HookTest extends HookTestBase {
         MetricsAdvisorAdministrationClient client
             = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
 
-        Hook createdHook  = client.createHook(CreateWebHookInput.INSTANCE.hook);
-        Assertions.assertNotNull(createdHook);
-        assertCreateWebHookOutput(createdHook);
-        client.deleteHook(createdHook.getId());
+        NotificationHook createdNotificationHook = client.createHook(CreateWebHookInput.INSTANCE.hook);
+        Assertions.assertNotNull(createdNotificationHook);
+        assertCreateWebHookOutput(createdNotificationHook);
+        client.deleteHook(createdNotificationHook.getId());
     }
 
     // Track this with https://github.com/Azure/azure-sdk-for-java/issues/16932
@@ -54,22 +54,22 @@ public final class HookTest extends HookTestBase {
             = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
 
         String[] hookId = new String[2];
-        Hook hook1 = client.createHook(ListHookInput.INSTANCE.emailHook);
-        hookId[0] = hook1.getId();
+        NotificationHook notificationHook1 = client.createHook(ListHookInput.INSTANCE.emailHook);
+        hookId[0] = notificationHook1.getId();
 
-        Hook hook2 = client.createHook(ListHookInput.INSTANCE.webHook);
-        hookId[1] = hook2.getId();
+        NotificationHook notificationHook2 = client.createHook(ListHookInput.INSTANCE.webHook);
+        hookId[1] = notificationHook2.getId();
 
         Assertions.assertNotNull(hookId[0]);
         Assertions.assertNotNull(hookId[1]);
 
-        List<Hook> hookList = client.listHooks()
+        List<NotificationHook> notificationHookList = client.listHooks()
             .stream()
             .collect(Collectors.toList());
 
-        assertListHookOutput(hookList);
+        assertListHookOutput(notificationHookList);
 
-        List<PagedResponse<Hook>> hookPageList
+        List<PagedResponse<NotificationHook>> hookPageList
             = client.listHooks(new ListHookOptions().setTop(ListHookInput.INSTANCE.pageSize), Context.NONE)
             .streamByPage()
             .collect(Collectors.toList());

@@ -53,6 +53,7 @@ import com.azure.ai.metricsadvisor.models.DataFeedAutoRollUpMethod;
 import com.azure.ai.metricsadvisor.models.DataFeedGranularity;
 import com.azure.ai.metricsadvisor.models.DataFeedGranularityType;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionSettings;
+import com.azure.ai.metricsadvisor.models.DataFeedMetric;
 import com.azure.ai.metricsadvisor.models.DataFeedMissingDataPointFillSettings;
 import com.azure.ai.metricsadvisor.models.DataFeedOptions;
 import com.azure.ai.metricsadvisor.models.DataFeedRollupSettings;
@@ -65,7 +66,6 @@ import com.azure.ai.metricsadvisor.models.DataFeedMissingDataPointFillType;
 import com.azure.ai.metricsadvisor.models.ElasticsearchDataFeedSource;
 import com.azure.ai.metricsadvisor.models.HttpRequestDataFeedSource;
 import com.azure.ai.metricsadvisor.models.InfluxDBDataFeedSource;
-import com.azure.ai.metricsadvisor.models.Metric;
 import com.azure.ai.metricsadvisor.models.MongoDBDataFeedSource;
 import com.azure.ai.metricsadvisor.models.MySqlDataFeedSource;
 import com.azure.ai.metricsadvisor.models.PostgreSqlDataFeedSource;
@@ -128,7 +128,7 @@ public final class DataFeedTransforms {
         DataFeedHelper.setCreator(dataFeed, dataFeedDetail.getCreator());
         DataFeedHelper.setStatus(dataFeed, DataFeedStatus.fromString(dataFeedDetail.getStatus().toString()));
         DataFeedHelper.setMetricIds(dataFeed,
-            dataFeedDetail.getMetrics().stream().map(Metric::getId).collect(Collectors.toList()));
+            dataFeedDetail.getMetrics().stream().map(DataFeedMetric::getId).collect(Collectors.toList()));
         return dataFeed;
     }
 

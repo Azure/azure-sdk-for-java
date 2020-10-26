@@ -4,7 +4,6 @@
 package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.models.DimensionKey;
-import com.azure.ai.metricsadvisor.models.ListMetricSeriesDataOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 
 import java.time.OffsetDateTime;
@@ -26,7 +25,7 @@ public class ListSeriesDataForMetricSample {
 
         advisorClient.listMetricSeriesData(metricId,
             Arrays.asList(new DimensionKey().put("cost", "redmond")),
-            new ListMetricSeriesDataOptions(startTime, endTime))
+            startTime, endTime)
             .forEach(metricSeriesData -> {
                 System.out.println("List of data points for this series:");
                 System.out.println(metricSeriesData.getMetricValues());

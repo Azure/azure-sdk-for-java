@@ -11,6 +11,9 @@
 - Renamed model `DataSourceMissingDataPointFillType` to `DataFeedMissingDataPointFillType`.
 - Renamed properties on `MetricEnrichedSeriesData` and `MetricSeriesData` model.
 - Renamed method `setSeverity` to `setSeverityRangeCondition` on `MetricAnomalyAlertConditions` model.
+- Renamed property `confidenceScore` to `contributionScore` and its accessors on `IncidentRootCause` model.
+- Removed model `ListMetricSeriesData` as top and skip parameters are not valid for this API.
+Also, moved `startTime` and `endTime` to positional arguments on `listMetricSeriesData` method as they are required.
 
 ## 1.0.0-beta.1 (2020-10-07)
 Version 1.0.0-beta.1 is a preview of our efforts in creating a Azure Metrics Advisor client library that is developer-friendly

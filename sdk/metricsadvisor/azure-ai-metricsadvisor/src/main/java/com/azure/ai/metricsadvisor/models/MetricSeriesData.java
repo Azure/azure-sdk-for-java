@@ -43,13 +43,13 @@ public final class MetricSeriesData {
             }
 
             @Override
-            public void setTimestampList(MetricSeriesData seriesData, List<OffsetDateTime> timestampList) {
-                seriesData.setTimestampList(timestampList);
+            public void setTimestampList(MetricSeriesData seriesData, List<OffsetDateTime> timestamps) {
+                seriesData.setTimestampList(timestamps);
             }
 
             @Override
-            public void setValueList(MetricSeriesData seriesData, List<Double> valueList) {
-                seriesData.setValueList(valueList);
+            public void setValueList(MetricSeriesData seriesData, List<Double> metricValues) {
+                seriesData.setValueList(metricValues);
             }
         });
     }
@@ -78,7 +78,7 @@ public final class MetricSeriesData {
     /**
      * Get the timestamps of the data related to this time series.
      *
-     * @return the timestampList value.
+     * @return the timestamps value.
      */
     public List<OffsetDateTime> getTimestamps() {
         return this.timestamps;
@@ -87,7 +87,7 @@ public final class MetricSeriesData {
     /**
      * Get the values of the data related to this time series.
      *
-     * @return the valueList value.
+     * @return the metricValues value.
      */
     public List<Double> getMetricValues() {
         return this.metricValues;
@@ -101,11 +101,11 @@ public final class MetricSeriesData {
         this.seriesKey = seriesKey;
     }
 
-    void setTimestampList(List<OffsetDateTime> timestampList) {
-        this.timestampList = timestampList;
+    void setTimestampList(List<OffsetDateTime> timestamps) {
+        this.timestamps = timestamps;
     }
 
-    void setValueList(List<Double> valueList) {
-        this.valueList = valueList;
+    void setValueList(List<Double> metricValues) {
+        this.metricValues = metricValues;
     }
 }

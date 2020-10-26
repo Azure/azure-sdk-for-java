@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class DimensionKeyTests {
+public class DataFeedDimensionKeyTests {
     @Test
     public void equalityCheckTests() {
         DimensionKey dimensionKey1 = new DimensionKey();

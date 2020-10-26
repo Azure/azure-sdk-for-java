@@ -3,10 +3,10 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.models.Alert;
+import com.azure.ai.metricsadvisor.models.AlertQueryTimeMode;
+import com.azure.ai.metricsadvisor.models.AnomalyAlert;
 import com.azure.ai.metricsadvisor.models.ListAlertOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
-import com.azure.ai.metricsadvisor.models.TimeMode;
 import com.azure.core.http.rest.PagedIterable;
 
 import java.time.OffsetDateTime;
@@ -29,7 +29,7 @@ public class ListAlertsSample {
         //   - Each alert has 3 time attributes - anomaly-time, alert-created-time and alert-modified-time.
         //     The ANOMALY_TIME mode selects the time attribute anomaly-time of Alerts
         //     anomaly-time represents the time in which the anomaly occurred which triggered the alert.
-        final TimeMode timeMode = TimeMode.ANOMALY_TIME;
+        final AlertQueryTimeMode timeMode = AlertQueryTimeMode.ANOMALY_TIME;
         //   - The time period for the time attribute selected.
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
@@ -37,11 +37,11 @@ public class ListAlertsSample {
         final ListAlertOptions options = new ListAlertOptions(startTime, endTime, timeMode)
             .setTop(10);
 
-        PagedIterable<Alert> alertsIterable = advisorClient.listAlerts(alertConfigurationId, options);
-        for (Alert alert : alertsIterable) {
-            System.out.printf("Alert Id: %s%n", alert.getId());
-            System.out.printf("Created Time: %s%n", alert.getCreatedTime());
-            System.out.printf("Modified Time: %s%n", alert.getModifiedTime());
+        PagedIterable<AnomalyAlert> alertsIterable = advisorClient.listAlerts(alertConfigurationId, options);
+        for (AnomalyAlert anomalyAlert : alertsIterable) {
+            System.out.printf("AnomalyAlert Id: %s%n", anomalyAlert.getId());
+            System.out.printf("Created Time: %s%n", anomalyAlert.getCreatedTime());
+            System.out.printf("Modified Time: %s%n", anomalyAlert.getModifiedTime());
         }
     }
 }

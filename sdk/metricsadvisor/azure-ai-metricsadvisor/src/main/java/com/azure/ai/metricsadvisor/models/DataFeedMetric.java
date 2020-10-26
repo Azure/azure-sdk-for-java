@@ -7,9 +7,9 @@ package com.azure.ai.metricsadvisor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Metric model. */
+/** The DataFeedMetric model. */
 @Fluent
-public final class Metric {
+public final class DataFeedMetric {
     /*
      * metric id
      */
@@ -56,9 +56,9 @@ public final class Metric {
      * Set the name property: metric name.
      *
      * @param name the name value to set.
-     * @return the Metric object itself.
+     * @return the DataFeedMetric object itself.
      */
-    public Metric setName(String name) {
+    public DataFeedMetric setName(String name) {
         this.name = name;
         return this;
     }
@@ -76,9 +76,9 @@ public final class Metric {
      * Set the displayName property: metric display name.
      *
      * @param displayName the displayName value to set.
-     * @return the Metric object itself.
+     * @return the DataFeedMetric object itself.
      */
-    public Metric setDisplayName(String displayName) {
+    public DataFeedMetric setDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -96,9 +96,9 @@ public final class Metric {
      * Set the description property: metric description.
      *
      * @param description the description value to set.
-     * @return the Metric object itself.
+     * @return the DataFeedMetric object itself.
      */
-    public Metric setDescription(String description) {
+    public DataFeedMetric setDescription(String description) {
         this.description = description;
         return this;
     }

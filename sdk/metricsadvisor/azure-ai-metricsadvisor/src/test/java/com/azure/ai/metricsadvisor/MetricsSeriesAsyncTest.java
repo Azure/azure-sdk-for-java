@@ -6,7 +6,6 @@ package com.azure.ai.metricsadvisor;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.models.EnrichmentStatus;
 import com.azure.ai.metricsadvisor.models.ListMetricDimensionValuesOptions;
-import com.azure.ai.metricsadvisor.models.ListMetricSeriesDataOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricSeriesDefinitionOptions;
 import com.azure.ai.metricsadvisor.models.MetricSeriesDefinition;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
@@ -82,8 +81,7 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
         StepVerifier.create(client.listMetricSeriesData(METRIC_ID,
             Collections.singletonList(new DimensionKey(SERIES_KEY_FILTER)),
-            new ListMetricSeriesDataOptions(TIME_SERIES_START_TIME,
-                TIME_SERIES_END_TIME)))
+                TIME_SERIES_START_TIME, TIME_SERIES_END_TIME))
             .assertNext(metricSeriesData -> {
                 assertEquals(METRIC_ID, metricSeriesData.getMetricId());
                 assertNotNull(metricSeriesData.getSeriesKey());

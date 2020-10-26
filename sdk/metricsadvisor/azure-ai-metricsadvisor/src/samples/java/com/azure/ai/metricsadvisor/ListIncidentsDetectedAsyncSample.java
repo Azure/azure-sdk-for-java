@@ -3,7 +3,7 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.models.Incident;
+import com.azure.ai.metricsadvisor.models.AnomalyIncident;
 import com.azure.ai.metricsadvisor.models.ListIncidentsDetectedOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.core.http.rest.PagedFlux;
@@ -27,17 +27,17 @@ public class ListIncidentsDetectedAsyncSample {
         final ListIncidentsDetectedOptions options = new ListIncidentsDetectedOptions(startTime, endTime)
             .setTop(1000);
 
-        PagedFlux<Incident> incidentsFlux
-            = advisorAsyncClient.listIncidentsForDetectionConfiguration(detectionConfigurationId, options);
+        PagedFlux<AnomalyIncident> incidentsFlux
+            = advisorAsyncClient.listIncidentsForDetectionConfig(detectionConfigurationId, options);
 
         incidentsFlux.doOnNext(incident -> {
-            System.out.printf("Metric Id: %s%n", incident.getMetricId());
+            System.out.printf("DataFeedMetric Id: %s%n", incident.getMetricId());
             System.out.printf("Detection Configuration Id: %s%n", incident.getDetectionConfigurationId());
-            System.out.printf("Incident Id: %s%n", incident.getId());
-            System.out.printf("Incident Start Time: %s%n", incident.getStartTime());
-            System.out.printf("Incident Severity: %s%n", incident.getSeverity());
-            System.out.printf("Incident Status: %s%n", incident.getStatus());
-            System.out.printf("Root Dimension Key: %s%n", incident.getRootDimensionKey().asMap());
+            System.out.printf("Anomaly Incident Id: %s%n", incident.getId());
+            System.out.printf("Anomaly Incident Start Time: %s%n", incident.getStartTime());
+            System.out.printf("Anomaly Incident AnomalySeverity: %s%n", incident.getSeverity());
+            System.out.printf("Anomaly Incident Status: %s%n", incident.getStatus());
+            System.out.printf("Root DataFeedDimension Key: %s%n", incident.getRootDimensionKey().asMap());
         }).blockLast();
         /*
           'blockLast()' will block until the above operation s completed.

@@ -10,61 +10,61 @@ import java.util.List;
 /**
  * Describes a hook that receives anomaly incident alerts.
  */
-public abstract class Hook {
+public abstract class NotificationHook {
     private String id;
-    private List<String> admins;
+    private List<String> adminEmails;
 
     static {
         HookHelper.setAccessor(new HookHelper.HookAccessor() {
             @Override
-            public void setId(Hook hook, String id) {
+            public void setId(NotificationHook hook, String id) {
                 hook.setId(id);
             }
 
             @Override
-            public void setAdmins(Hook hook, List<String> admins) {
-                hook.setAdmins(admins);
+            public void setAdminEmails(NotificationHook hook, List<String> adminEmails) {
+                hook.setAdminEmails(adminEmails);
             }
         });
     }
 
     /**
-     * Gets the id.
+     * Gets the id of the NotificationHook.
      *
-     * @return The id.
+     * @return The id of the NotificationHook.
      */
     public String getId() {
         return this.id;
     }
 
     /**
-     * Gets the name for the email hook.
+     * Gets the name for the Notification hook.
      *
      * @return The name.
      */
     public abstract String getName();
 
     /**
-     * Gets the description for the email hook.
+     * Gets the description for the Notification hook.
      *
      * @return The description.
      */
     public abstract String getDescription();
 
     /**
-     * The admins for the hook.
+     * The list of admin emails for the Notification hook.
      *
-     * @return The admins.
+     * @return The emails of admins.
      */
-    public List<String> getAdmins() {
-        return this.admins;
+    public List<String> getAdminEmails() {
+        return this.adminEmails;
     }
 
     void setId(String id) {
         this.id = id;
     }
 
-    void setAdmins(List<String> admins) {
-        this.admins = admins;
+    void setAdminEmails(List<String> adminEmails) {
+        this.adminEmails = adminEmails;
     }
 }

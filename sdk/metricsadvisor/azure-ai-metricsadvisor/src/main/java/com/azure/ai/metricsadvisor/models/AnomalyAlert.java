@@ -10,7 +10,7 @@ import java.time.OffsetDateTime;
 
 /** The AlertResult model. */
 @Immutable
-public final class Alert {
+public final class AnomalyAlert {
     /*
      * alert id
      */

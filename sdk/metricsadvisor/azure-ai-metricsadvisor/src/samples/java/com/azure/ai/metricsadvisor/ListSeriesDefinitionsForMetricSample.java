@@ -33,7 +33,7 @@ public class ListSeriesDefinitionsForMetricSample {
 
         advisorClient.listMetricSeriesDefinitions(metricId, options)
             .forEach(metricSeriesDefinition -> {
-                System.out.printf("Metric Id : %s%n", metricSeriesDefinition.getMetricId());
+                System.out.printf("DataFeedMetric Id : %s%n", metricSeriesDefinition.getMetricId());
                 System.out.printf("Series Key: %s%n", metricSeriesDefinition.getSeriesKey().asMap());
             });
     }

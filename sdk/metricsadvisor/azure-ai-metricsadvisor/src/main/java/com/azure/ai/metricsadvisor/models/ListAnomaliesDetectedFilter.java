@@ -9,8 +9,8 @@ import java.util.List;
  * Describes additional conditions to filter the anomalies while listing.
  */
 public final class ListAnomaliesDetectedFilter {
-    private Severity minSeverity;
-    private Severity maxSeverity;
+    private AnomalySeverity minSeverity;
+    private AnomalySeverity maxSeverity;
     private List<DimensionKey> seriesKeys;
 
     /**
@@ -18,7 +18,7 @@ public final class ListAnomaliesDetectedFilter {
      *
      * @return The minimum severity.
      */
-    public Severity getMinSeverity() {
+    public AnomalySeverity getMinSeverity() {
         return this.minSeverity;
     }
 
@@ -27,7 +27,7 @@ public final class ListAnomaliesDetectedFilter {
      *
      * @return The max severity.
      */
-    public Severity getMaxSeverity() {
+    public AnomalySeverity getMaxSeverity() {
         return this.maxSeverity;
     }
 
@@ -48,7 +48,7 @@ public final class ListAnomaliesDetectedFilter {
      * @param max The maximum severity.
      * @return The ListAnomaliesDetectedFilter object itself.
      */
-    public ListAnomaliesDetectedFilter setSeverityRange(Severity min, Severity max) {
+    public ListAnomaliesDetectedFilter setSeverityRange(AnomalySeverity min, AnomalySeverity max) {
         this.minSeverity = min;
         this.maxSeverity = max;
         return this;
@@ -61,9 +61,21 @@ public final class ListAnomaliesDetectedFilter {
      * @param minSeverity The minimum severity.
      * @return The ListAnomaliesDetectedFilter object itself.
      */
-    public ListAnomaliesDetectedFilter setSeverity(Severity minSeverity) {
+    public ListAnomaliesDetectedFilter setSeverity(AnomalySeverity minSeverity) {
         this.minSeverity = minSeverity;
         this.maxSeverity = minSeverity;
+        return this;
+    }
+
+    /**
+     * Sets the time series keys, indicating that retrieve the anomalies occurred
+     * in these time series.
+     *
+     * @param seriesKeys The series keys.
+     * @return The ListAnomaliesDetectedFilter object itself.
+     */
+    public ListAnomaliesDetectedFilter setSeriesKeys(List<DimensionKey> seriesKeys) {
+        this.seriesKeys = seriesKeys;
         return this;
     }
 }

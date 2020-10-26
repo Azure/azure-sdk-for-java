@@ -26,9 +26,9 @@ public class ListEnrichmentStatusForMetricAsyncSample {
 
         advisorAsyncClient.listMetricEnrichmentStatus(metricId, options)
             .doOnNext(enrichmentStatus -> {
-                System.out.printf("Metric enrichment status : %s%n", enrichmentStatus.getStatus());
-                System.out.printf("Metric enrichment status message: %s%n", enrichmentStatus.getMessage());
-                System.out.printf("Metric enrichment status data slice timestamp : %s%n",
+                System.out.printf("DataFeedMetric enrichment status : %s%n", enrichmentStatus.getStatus());
+                System.out.printf("DataFeedMetric enrichment status message: %s%n", enrichmentStatus.getMessage());
+                System.out.printf("DataFeedMetric enrichment status data slice timestamp : %s%n",
                     enrichmentStatus.getTimestamp());
             })
             .blockLast();

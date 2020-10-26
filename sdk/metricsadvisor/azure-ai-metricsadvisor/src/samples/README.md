@@ -5,7 +5,7 @@ languages:
 products:
   - azure
   - azure-cognitive-services
-  - azure-metrics-advisor
+  - azure-dataFeedMetrics-advisor
 urlFragment: metricsadvisor-java-samples
 ---
 
@@ -52,11 +52,11 @@ Querying API's
 |[ListIncidentRootCausesSample][list_incident_root_causes_sample]
 & [ListIncidentRootCausesAsyncSample][list_incident_root_causes_async_sample] | List root causes for an incident|
 |[ListIncidentsAlertedSample][list_incidents_alerted_sample]
-& [ListIncidentsAlertedAsyncSample][list_incidents_alerted_async_sample] | List incidents in an alert|
+& [ListIncidentsAlertedAsyncSample][list_incidents_alerted_async_sample] | List incidents in an anomalyAlert|
 |[ListIncidentsDetectedSample][list_incidents_sample]
 & [ListIncidentsDetectedAsyncSample][list_incidents_async_sample] | List incidents detected by a detection configuration|
 |[ListsAnomaliesForAlertsSample][list_anomaly_alert_sample]
-& [ListsAnomaliesForAlertsAsyncSample][list_anomaly_alert_async_sample] | List anomalies triggered for an alert|
+& [ListsAnomaliesForAlertsAsyncSample][list_anomaly_alert_async_sample] | List anomalies triggered for an anomalyAlert|
 |[ListsAnomaliesForDetectionConfigSample][list_anomalies_detection_config_sample]
 & [ListsAnomaliesForDetectionConfigAsyncSample][list_anomalies_detection_config_async_sample] | List anomalies identified by a detection configuration|
 |[ListSeriesDataForMetricAsyncSample][list_series_data_sample]

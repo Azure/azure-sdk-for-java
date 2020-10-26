@@ -3,7 +3,7 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.models.Anomaly;
+import com.azure.ai.metricsadvisor.models.DataPointAnomaly;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedFlux;
@@ -19,7 +19,7 @@ import java.time.Duration;
 
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
-public class AnomalyForAlertAsyncTest extends AnomalyForAlertTestBase {
+public class DataPointAnomalyForAlertAsyncTest extends AnomalyForAlertTestBase {
     @BeforeAll
     static void beforeAll() {
         TestBase.setupClass();
@@ -37,7 +37,7 @@ public class AnomalyForAlertAsyncTest extends AnomalyForAlertTestBase {
     public void listAnomaliesForAlert(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorAsyncClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
 
-        PagedFlux<Anomaly> anomaliesFlux
+        PagedFlux<DataPointAnomaly> anomaliesFlux
             = client.listAnomaliesForAlert(
             ListAnomaliesForAlertInput.INSTANCE.alertConfigurationId,
             ListAnomaliesForAlertInput.INSTANCE.alertId,

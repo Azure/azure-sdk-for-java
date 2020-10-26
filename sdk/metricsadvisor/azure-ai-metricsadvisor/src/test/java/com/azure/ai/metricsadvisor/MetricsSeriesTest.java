@@ -6,7 +6,6 @@ package com.azure.ai.metricsadvisor;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.models.EnrichmentStatus;
 import com.azure.ai.metricsadvisor.models.ListMetricDimensionValuesOptions;
-import com.azure.ai.metricsadvisor.models.ListMetricSeriesDataOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricSeriesDefinitionOptions;
 import com.azure.ai.metricsadvisor.models.MetricSeriesDefinition;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
@@ -76,9 +75,8 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void listMetricSeriesData(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
-        client.listMetricSeriesData(METRIC_ID,  Collections.singletonList(new DimensionKey(SERIES_KEY_FILTER)),
-            new ListMetricSeriesDataOptions(TIME_SERIES_START_TIME,
-                TIME_SERIES_END_TIME))
+        client.listMetricSeriesData(METRIC_ID, Collections.singletonList(new DimensionKey(SERIES_KEY_FILTER)),
+            TIME_SERIES_START_TIME, TIME_SERIES_END_TIME)
             .forEach(metricSeriesData -> {
                 assertEquals(METRIC_ID, metricSeriesData.getMetricId());
                 assertEquals(SERIES_KEY_FILTER, metricSeriesData.getSeriesKey().asMap());

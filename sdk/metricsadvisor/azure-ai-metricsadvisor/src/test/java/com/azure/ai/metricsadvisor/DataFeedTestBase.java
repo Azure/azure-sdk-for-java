@@ -14,6 +14,7 @@ import com.azure.ai.metricsadvisor.models.DataFeedAutoRollUpMethod;
 import com.azure.ai.metricsadvisor.models.DataFeedGranularity;
 import com.azure.ai.metricsadvisor.models.DataFeedGranularityType;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionSettings;
+import com.azure.ai.metricsadvisor.models.DataFeedMetric;
 import com.azure.ai.metricsadvisor.models.DataFeedMissingDataPointFillSettings;
 import com.azure.ai.metricsadvisor.models.DataFeedOptions;
 import com.azure.ai.metricsadvisor.models.DataFeedRollupSettings;
@@ -21,11 +22,10 @@ import com.azure.ai.metricsadvisor.models.DataFeedRollupType;
 import com.azure.ai.metricsadvisor.models.DataFeedSchema;
 import com.azure.ai.metricsadvisor.models.DataFeedSourceType;
 import com.azure.ai.metricsadvisor.models.DataFeedMissingDataPointFillType;
-import com.azure.ai.metricsadvisor.models.Dimension;
+import com.azure.ai.metricsadvisor.models.DataFeedDimension;
 import com.azure.ai.metricsadvisor.models.ElasticsearchDataFeedSource;
 import com.azure.ai.metricsadvisor.models.HttpRequestDataFeedSource;
 import com.azure.ai.metricsadvisor.models.InfluxDBDataFeedSource;
-import com.azure.ai.metricsadvisor.models.Metric;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.ai.metricsadvisor.models.MongoDBDataFeedSource;
 import com.azure.ai.metricsadvisor.models.MySqlDataFeedSource;
@@ -171,11 +171,11 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
                 throw new IllegalStateException("Unexpected value: " + dataFeedSourceType);
         }
         testRunner.accept(dataFeed.setSchema(new DataFeedSchema(Arrays.asList(
-            new Metric().setName("cost").setDisplayName("cost"),
-            new Metric().setName("revenue").setDisplayName("revenue")))
+            new DataFeedMetric().setName("cost").setDisplayName("cost"),
+            new DataFeedMetric().setName("revenue").setDisplayName("revenue")))
             .setDimensions(Arrays.asList(
-                new Dimension().setName("city").setDisplayName("city"),
-                new Dimension().setName("category").setDisplayName("category"))))
+                new DataFeedDimension().setName("city").setDisplayName("city"),
+                new DataFeedDimension().setName("category").setDisplayName("category"))))
             .setName("java_create_data_feed_test_sample" + UUID.randomUUID())
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
             .setIngestionSettings(new DataFeedIngestionSettings(INGESTION_START_TIME)));
@@ -376,11 +376,11 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
 
     private void validateDataFeedSchema(DataFeedSchema expectedDataFeedSchema, DataFeedSchema actualDataFeedSchema) {
         assertEquals(expectedDataFeedSchema.getDimensions().size(), actualDataFeedSchema.getDimensions().size());
-        expectedDataFeedSchema.getDimensions().sort(Comparator.comparing(Dimension::getName));
-        actualDataFeedSchema.getDimensions().sort(Comparator.comparing(Dimension::getName));
+        expectedDataFeedSchema.getDimensions().sort(Comparator.comparing(DataFeedDimension::getName));
+        actualDataFeedSchema.getDimensions().sort(Comparator.comparing(DataFeedDimension::getName));
         for (int i = 0; i < expectedDataFeedSchema.getDimensions().size(); i++) {
-            Dimension expectedDimension = expectedDataFeedSchema.getDimensions().get(i);
-            Dimension actualDimension = actualDataFeedSchema.getDimensions().get(i);
+            DataFeedDimension expectedDimension = expectedDataFeedSchema.getDimensions().get(i);
+            DataFeedDimension actualDimension = actualDataFeedSchema.getDimensions().get(i);
             assertEquals(expectedDimension.getName(), actualDimension.getName());
             assertNotNull(actualDimension.getDisplayName());
             if (expectedDimension.getDisplayName() != null) {
@@ -391,11 +391,11 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
         }
 
         assertEquals(expectedDataFeedSchema.getMetrics().size(), actualDataFeedSchema.getMetrics().size());
-        expectedDataFeedSchema.getMetrics().sort(Comparator.comparing(Metric::getName));
-        actualDataFeedSchema.getMetrics().sort(Comparator.comparing(Metric::getName));
+        expectedDataFeedSchema.getMetrics().sort(Comparator.comparing(DataFeedMetric::getName));
+        actualDataFeedSchema.getMetrics().sort(Comparator.comparing(DataFeedMetric::getName));
         for (int i = 0; i < expectedDataFeedSchema.getMetrics().size(); i++) {
-            Metric expectedMetric = expectedDataFeedSchema.getMetrics().get(i);
-            Metric actualMetric = actualDataFeedSchema.getMetrics().get(i);
+            DataFeedMetric expectedMetric = expectedDataFeedSchema.getMetrics().get(i);
+            DataFeedMetric actualMetric = actualDataFeedSchema.getMetrics().get(i);
             assertNotNull(actualMetric.getId());
             assertEquals(expectedMetric.getName(), actualMetric.getName());
             if (expectedMetric.getDescription() != null) {

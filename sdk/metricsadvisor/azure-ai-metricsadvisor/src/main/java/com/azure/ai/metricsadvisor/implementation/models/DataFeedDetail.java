@@ -4,8 +4,8 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.ai.metricsadvisor.models.Dimension;
-import com.azure.ai.metricsadvisor.models.Metric;
+import com.azure.ai.metricsadvisor.models.DataFeedDimension;
+import com.azure.ai.metricsadvisor.models.DataFeedMetric;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -73,13 +73,13 @@ public class DataFeedDetail {
      * measure list
      */
     @JsonProperty(value = "metrics", required = true)
-    private List<Metric> metrics;
+    private List<DataFeedMetric> metrics;
 
     /*
      * dimension list
      */
     @JsonProperty(value = "dimension")
-    private List<Dimension> dimension;
+    private List<DataFeedDimension> dimension;
 
     /*
      * user-defined timestamp column. if timestampColumn is null, start time of
@@ -299,18 +299,18 @@ public class DataFeedDetail {
      *
      * @return the metrics value.
      */
-    public List<Metric> getMetrics() {
+    public List<DataFeedMetric> getMetrics() {
         return this.metrics;
     }
 
     /**
-     * Set the metrics property: measure list.
+     * Set the dataFeedMetrics property: measure list.
      *
-     * @param metrics the metrics value to set.
+     * @param dataFeedMetrics the dataFeedMetrics value to set.
      * @return the DataFeedDetail object itself.
      */
-    public DataFeedDetail setMetrics(List<Metric> metrics) {
-        this.metrics = metrics;
+    public DataFeedDetail setMetrics(List<DataFeedMetric> dataFeedMetrics) {
+        this.metrics = dataFeedMetrics;
         return this;
     }
 
@@ -319,7 +319,7 @@ public class DataFeedDetail {
      *
      * @return the dimension value.
      */
-    public List<Dimension> getDimension() {
+    public List<DataFeedDimension> getDimension() {
         return this.dimension;
     }
 
@@ -329,7 +329,7 @@ public class DataFeedDetail {
      * @param dimension the dimension value to set.
      * @return the DataFeedDetail object itself.
      */
-    public DataFeedDetail setDimension(List<Dimension> dimension) {
+    public DataFeedDetail setDimension(List<DataFeedDimension> dimension) {
         this.dimension = dimension;
         return this;
     }

@@ -51,7 +51,7 @@ public final class MetricAnomalyAlertConditions {
      * @param max The upper bound of severity range.
      * @return The MetricAnomalyAlertConditions object itself.
      */
-    public MetricAnomalyAlertConditions setSeverityCondition(Severity min, Severity max) {
+    public MetricAnomalyAlertConditions setSeverityCondition(AnomalySeverity min, AnomalySeverity max) {
         return setSeverityRangeCondition(new SeverityCondition()
             .setMinAlertSeverity(min)
             .setMaxAlertSeverity(max));

@@ -7,6 +7,7 @@ import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationCl
 import com.azure.ai.metricsadvisor.models.DataFeed;
 import com.azure.ai.metricsadvisor.models.DataFeedGranularity;
 import com.azure.ai.metricsadvisor.models.DataFeedGranularityType;
+import com.azure.ai.metricsadvisor.models.DataFeedMetric;
 import com.azure.ai.metricsadvisor.models.DataFeedSchema;
 import com.azure.ai.metricsadvisor.models.DataFeedSourceType;
 import com.azure.ai.metricsadvisor.models.DataFeedStatus;
@@ -14,7 +15,6 @@ import com.azure.ai.metricsadvisor.models.ErrorCode;
 import com.azure.ai.metricsadvisor.models.ErrorCodeException;
 import com.azure.ai.metricsadvisor.models.ListDataFeedFilter;
 import com.azure.ai.metricsadvisor.models.ListDataFeedOptions;
-import com.azure.ai.metricsadvisor.models.Metric;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.ai.metricsadvisor.models.PostgreSqlDataFeedSource;
 import com.azure.core.http.HttpClient;
@@ -704,14 +704,14 @@ public class DataFeedClientTest extends DataFeedTestBase {
                 new DataFeed()
                     .setName("name")
                     .setSource(new PostgreSqlDataFeedSource("conn-string", "query"))
-                    .setSchema(new DataFeedSchema(Collections.singletonList(new Metric().setName("name"))))));
+                    .setSchema(new DataFeedSchema(Collections.singletonList(new DataFeedMetric().setName("name"))))));
             assertEquals("'dataFeedGranularity.granularityType' is required and cannot be null.", ex.getMessage());
 
             ex = assertThrows(NullPointerException.class, () -> client.createDataFeed(
                 new DataFeed()
                     .setName("name")
                     .setSource(new PostgreSqlDataFeedSource("conn-string", "query"))
-                    .setSchema(new DataFeedSchema(Collections.singletonList(new Metric().setName("name"))))
+                    .setSchema(new DataFeedSchema(Collections.singletonList(new DataFeedMetric().setName("name"))))
                     .setGranularity(new DataFeedGranularity().setGranularityType(DAILY))));
             assertEquals("'dataFeedIngestionSettings.ingestionStartTime' cannot be null or empty.",
                 ex.getMessage());

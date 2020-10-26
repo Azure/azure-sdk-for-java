@@ -8,9 +8,9 @@ import com.azure.ai.metricsadvisor.models.DataFeed;
 import com.azure.ai.metricsadvisor.models.DataFeedGranularity;
 import com.azure.ai.metricsadvisor.models.DataFeedGranularityType;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionSettings;
+import com.azure.ai.metricsadvisor.models.DataFeedMetric;
 import com.azure.ai.metricsadvisor.models.DataFeedSchema;
-import com.azure.ai.metricsadvisor.models.Dimension;
-import com.azure.ai.metricsadvisor.models.Metric;
+import com.azure.ai.metricsadvisor.models.DataFeedDimension;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.ai.metricsadvisor.models.SQLServerDataFeedSource;
 import com.azure.core.http.HttpClient;
@@ -129,11 +129,11 @@ public final class TestUtils {
     static DataFeed getSQLDataFeedSample() {
         return new DataFeed().setSource(new SQLServerDataFeedSource(SQL_SERVER_CONNECTION_STRING,
             TEMPLATE_QUERY)).setSchema(new DataFeedSchema(Arrays.asList(
-            new Metric().setName("cost"),
-            new Metric().setName("revenue")))
+            new DataFeedMetric().setName("cost"),
+            new DataFeedMetric().setName("revenue")))
             .setDimensions(Arrays.asList(
-                new Dimension().setName("city"),
-                new Dimension().setName("category"))))
+                new DataFeedDimension().setName("city"),
+                new DataFeedDimension().setName("category"))))
             .setName("java_SQL_create_data_feed_test_sample" + UUID.randomUUID())
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
             .setIngestionSettings(new DataFeedIngestionSettings(INGESTION_START_TIME));
@@ -142,11 +142,11 @@ public final class TestUtils {
     static DataFeed getAzureBlobDataFeedSample() {
         return new DataFeed().setSource(new AzureBlobDataFeedSource(BLOB_CONNECTION_STRING,
             "BLOB_CONTAINER", "BLOB_TEMPLATE_NAME")).setSchema(new DataFeedSchema(Arrays.asList(
-            new Metric().setName("cost"),
-            new Metric().setName("revenue")))
+            new DataFeedMetric().setName("cost"),
+            new DataFeedMetric().setName("revenue")))
             .setDimensions(Arrays.asList(
-                new Dimension().setName("city"),
-                new Dimension().setName("category"))))
+                new DataFeedDimension().setName("city"),
+                new DataFeedDimension().setName("category"))))
             .setName("java_BLOB_create_data_feed_test_sample" + UUID.randomUUID())
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
             .setIngestionSettings(new DataFeedIngestionSettings(INGESTION_START_TIME));

@@ -10,11 +10,11 @@ import java.time.OffsetDateTime;
 /**
  * Describes an anomaly detected in a metric series.
  */
-public final class Anomaly {
+public final class DataPointAnomaly {
     private String metricId;
     private DimensionKey seriesKey;
     private String detectionConfigurationId;
-    private Severity severity;
+    private AnomalySeverity severity;
     private AnomalyStatus status;
     private OffsetDateTime timeStamp;
     private OffsetDateTime createdTime;
@@ -23,42 +23,42 @@ public final class Anomaly {
     static {
         AnomalyHelper.setAccessor(new AnomalyHelper.AnomalyAccessor() {
             @Override
-            public void setMetricId(Anomaly anomaly, String metricId) {
+            public void setMetricId(DataPointAnomaly anomaly, String metricId) {
                 anomaly.setMetricId(metricId);
             }
 
             @Override
-            public void setSeriesKey(Anomaly anomaly, DimensionKey seriesKey) {
+            public void setSeriesKey(DataPointAnomaly anomaly, DimensionKey seriesKey) {
                 anomaly.setSeriesKey(seriesKey);
             }
 
             @Override
-            public void setDetectionConfigurationId(Anomaly anomaly, String detectionConfigurationId) {
+            public void setDetectionConfigurationId(DataPointAnomaly anomaly, String detectionConfigurationId) {
                 anomaly.setDetectionConfigurationId(detectionConfigurationId);
             }
 
             @Override
-            public void setSeverity(Anomaly anomaly, Severity severity) {
+            public void setSeverity(DataPointAnomaly anomaly, AnomalySeverity severity) {
                 anomaly.setSeverity(severity);
             }
 
             @Override
-            public void setStatus(Anomaly anomaly, AnomalyStatus status) {
+            public void setStatus(DataPointAnomaly anomaly, AnomalyStatus status) {
                 anomaly.setStatus(status);
             }
 
             @Override
-            public void setTimeStamp(Anomaly anomaly, OffsetDateTime timeStamp) {
+            public void setTimeStamp(DataPointAnomaly anomaly, OffsetDateTime timeStamp) {
                 anomaly.setTimeStamp(timeStamp);
             }
 
             @Override
-            public void setCreatedTime(Anomaly anomaly, OffsetDateTime createdTime) {
+            public void setCreatedTime(DataPointAnomaly anomaly, OffsetDateTime createdTime) {
                 anomaly.setCreatedTime(createdTime);
             }
 
             @Override
-            public void setModifiedTime(Anomaly anomaly, OffsetDateTime modifiedTime) {
+            public void setModifiedTime(DataPointAnomaly anomaly, OffsetDateTime modifiedTime) {
                 anomaly.setModifiedTime(modifiedTime);
             }
         });
@@ -96,7 +96,7 @@ public final class Anomaly {
      *
      * @return The severity.
      */
-    public Severity getSeverity() {
+    public AnomalySeverity getSeverity() {
         return this.severity;
     }
 
@@ -149,7 +149,7 @@ public final class Anomaly {
         this.detectionConfigurationId = detectionConfigurationId;
     }
 
-    void setSeverity(Severity severity) {
+    void setSeverity(AnomalySeverity severity) {
         this.severity = severity;
     }
 
