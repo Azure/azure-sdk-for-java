@@ -453,18 +453,18 @@ SqlDatabase database = azure.sqlServers().databases().define("myNewDatabase")
     <td><ul style="list-style-type:circle">
 <li><a href="https://github.com/Azure-Samples/resources-java-manage-resource-group">Manage resource groups</a></li>
 <li><a href="https://github.com/Azure-Samples/resources-java-manage-resource">Manage resources</a></li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/locks/mgmt-v2016_09_01/src/main/java/com/microsoft/azure/management/locks/v2016_09_01/ManagementLocks.java">Manage resource locks</a></li>
-<li><a href="https://github.com/Azure-Samples/resources-java-deploy-using-arm-template">Deploy resources with ARM templates</a></li>
-<li><a href="https://github.com/Azure-Samples/resources-java-deploy-using-arm-template-async">Deploy resources with ARM templates asynchronously</a></li>
-<li><a href="https://github.com/Azure-Samples/resources-java-deploy-using-arm-template-with-deployment-operations">Deploy resources with ARM templates with deployment operations</a></li>
-<li><a href="https://github.com/Azure-Samples/resources-java-deploy-using-arm-template-with-progress">Deploy resources with ARM templates (with progress)</a></li>
+<li><a href="https://github.com/Azure-Samples/resources-java-deploy-using-arm-template">Deploy resources using ARM templates</a></li>
+<li><a href="https://github.com/Azure-Samples/resources-java-deploy-using-arm-template-async">Deploy resources using ARM templates asynchronously</a></li>
+<li><a href="https://github.com/Azure-Samples/resources-java-deploy-using-arm-template-with-deployment-operations">Deploy resources using ARM templates with deployment operations</a></li>
+<li><a href="https://github.com/Azure-Samples/resources-java-deploy-using-arm-template-with-progress">Deploy resources using ARM templates with progress</a></li>
+<li><a href="https://github.com/Azure-Samples/resources-java-deploy-using-arm-template-with-tags">Deploy resources using ARM templates with tags</a></li>
 <li><a href="https://github.com/Azure-Samples/resources-java-deploy-virtual-machine-with-managed-disks-using-arm-template">Deploy a virtual machine with managed disks using an ARM template</li></ul></td>
   </tr>
 
   <!--tr>
     <td>Redis Cache</td>
     <td><ul style="list-style-type:circle">
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-cloud-context/src/main/java/com/azure/spring/cloud/context/core/impl/RedisCacheManager.java">Manage Redis Cache</a></li>
+<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/rediscache/samples/ManageRedisCache.java">Manage Redis Cache</a></li>
 </ul></td>
 </tr-->
 
