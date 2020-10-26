@@ -11,10 +11,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * details on each Json property.
  */
 public interface IDigitalTwinRelationship {
-    public static String DIGITAL_TWIN_RELATIONSHIP_ID_JSON_PROPERTY_NAME = "$relationshipId";
-    public static String DIGITAL_TWIN_RELATIONSHIP_SOURCE_ID_JSON_PROPERTY_NAME = "$sourceId";
-    public static String DIGITAL_TWIN_RELATIONSHIP_TARGET_ID_JSON_PROPERTY_NAME = "$targetId";
-    public static String DIGITAL_TWIN_RELATIONSHIP_NAME_JSON_PROPERTY_NAME = "$relationshipName";
+    public static final String DIGITAL_TWIN_RELATIONSHIP_ID_JSON_PROPERTY_NAME = "$relationshipId";
+    public static final String DIGITAL_TWIN_RELATIONSHIP_SOURCE_ID_JSON_PROPERTY_NAME = "$sourceId";
+    public static final String DIGITAL_TWIN_RELATIONSHIP_TARGET_ID_JSON_PROPERTY_NAME = "$targetId";
+    public static final String DIGITAL_TWIN_RELATIONSHIP_NAME_JSON_PROPERTY_NAME = "$relationshipName";
 
     /**
      * Gets the unique Id of the relationship. This field is present on every relationship.

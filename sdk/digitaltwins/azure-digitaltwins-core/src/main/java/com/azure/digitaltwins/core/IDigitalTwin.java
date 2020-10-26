@@ -12,9 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * details on each Json property.
  */
 public interface IDigitalTwin {
-    public static String DIGITAL_TWIN_ID_JSON_PROPERTY_NAME = "$dtId";
-    public static String DIGITAL_TWIN_ETAG_JSON_PROPERTY_NAME = "$etag";
-    public static String DIGITAL_TWIN__METADATA_JSON_PROPERTY_NAME = "$metadata";
+    public static final String DIGITAL_TWIN_ID_JSON_PROPERTY_NAME = "$dtId";
+    public static final String DIGITAL_TWIN_ETAG_JSON_PROPERTY_NAME = "$etag";
+    public static final String DIGITAL_TWIN__METADATA_JSON_PROPERTY_NAME = "$metadata";
 
     /**
      * Gets the unique Id of the digital twin in a digital twins instance. This field is present on every digital twin.

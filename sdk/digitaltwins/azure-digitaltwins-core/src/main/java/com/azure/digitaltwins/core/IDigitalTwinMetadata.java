@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public interface IDigitalTwinMetadata {
 
-    public static String DIGITAL_TWIN_METADATA_MODEL_ID_JSON_PROPERTY_NAME = "$model";
+    public static final String DIGITAL_TWIN_METADATA_MODEL_ID_JSON_PROPERTY_NAME = "$model";
 
     /**
      * Gets the Id of the model that the digital twin or component is modeled by.
