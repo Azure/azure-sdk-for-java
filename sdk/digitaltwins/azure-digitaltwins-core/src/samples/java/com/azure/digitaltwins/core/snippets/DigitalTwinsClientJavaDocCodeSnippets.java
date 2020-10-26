@@ -969,7 +969,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
         // BEGIN: com.azure.digitaltwins.core.syncClient.listEventRoutes#Options-Context
         PagedIterable<EventRoute> listResponseWithOptions =  digitalTwinsSyncClient.listEventRoutes(
-            new ListEventRoutesOptions().setMaxItemsPerPage(5),
+            new ListEventRoutesOptions(),
             new Context("key", "value"));
 
         listResponseWithOptions
