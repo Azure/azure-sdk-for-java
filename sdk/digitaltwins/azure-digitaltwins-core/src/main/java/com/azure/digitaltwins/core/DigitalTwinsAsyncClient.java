@@ -113,9 +113,9 @@ public final class DigitalTwinsAsyncClient {
      * @return The deserialized application/json object representing the digital twin created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<T> createDigitalTwin(String digitalTwinId, T digitalTwin, Class<T> clazz)
+    public <T> Mono<T> createOrReplaceDigitalTwin(String digitalTwinId, T digitalTwin, Class<T> clazz)
     {
-        return createDigitalTwinWithResponse(digitalTwinId, digitalTwin, clazz, null)
+        return createOrReplaceDigitalTwinWithResponse(digitalTwinId, digitalTwin, clazz, null)
             .map(DigitalTwinsResponse::getValue);
     }
 
@@ -141,11 +141,11 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link DigitalTwinsResponse} containing the deserialized application/json object representing the digital twin created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<DigitalTwinsResponse<T>> createDigitalTwinWithResponse(String digitalTwinId, T digitalTwin, Class<T> clazz, CreateDigitalTwinOptions options) {
-        return withContext(context -> createDigitalTwinWithResponse(digitalTwinId, digitalTwin, clazz, options, context));
+    public <T> Mono<DigitalTwinsResponse<T>> createOrReplaceDigitalTwinWithResponse(String digitalTwinId, T digitalTwin, Class<T> clazz, CreateDigitalTwinOptions options) {
+        return withContext(context -> createOrReplaceDigitalTwinWithResponse(digitalTwinId, digitalTwin, clazz, options, context));
     }
 
-    <T> Mono<DigitalTwinsResponse<T>> createDigitalTwinWithResponse(String digitalTwinId, T digitalTwin, Class<T> clazz, CreateDigitalTwinOptions options, Context context) {
+    <T> Mono<DigitalTwinsResponse<T>> createOrReplaceDigitalTwinWithResponse(String digitalTwinId, T digitalTwin, Class<T> clazz, CreateDigitalTwinOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
             .addWithResponseAsync(digitalTwinId, digitalTwin, OptionsConverter.toProtocolLayerOptions(options), context)
@@ -167,7 +167,7 @@ public final class DigitalTwinsAsyncClient {
     /**
      * Gets a digital twin.
      *
-     <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Samples</strong></p>
      *
      * <p>
      * A Strongly typed object type such as {@link BasicDigitalTwin} can be provided as an input parameter for {@code clazz}
@@ -341,11 +341,11 @@ public final class DigitalTwinsAsyncClient {
      *
      * <p>A strongly typed digital twin object such as {@link BasicRelationship} can be provided as the input parameter to deserialize the response into.</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.asyncClient.createRelationship#String-String-Object-Class#BasicRelationship}
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.createOrReplaceRelationship#String-String-Object-Class#BasicRelationship}
      *
      * <p>Or alternatively String can be used as input and output deserialization type:</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.asyncClient.createRelationship#String-String-Object-Class#String}
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.createOrReplaceRelationship#String-String-Object-Class#String}
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be created.
@@ -355,8 +355,8 @@ public final class DigitalTwinsAsyncClient {
      * @return The relationship created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<T> createRelationship(String digitalTwinId, String relationshipId, T relationship, Class<T> clazz) {
-        return createRelationshipWithResponse(digitalTwinId, relationshipId, relationship, clazz, null)
+    public <T> Mono<T> createOrReplaceRelationship(String digitalTwinId, String relationshipId, T relationship, Class<T> clazz) {
+        return createOrReplaceRelationshipWithResponse(digitalTwinId, relationshipId, relationship, clazz, null)
             .map(DigitalTwinsResponse::getValue);
     }
 
@@ -368,11 +368,11 @@ public final class DigitalTwinsAsyncClient {
      *
      * <p>A strongly typed digital twin object such as {@link BasicRelationship} can be provided as the input parameter to deserialize the response into.</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.asyncClient.createRelationshipWithResponse#String-String-Object-Class-Options#BasicRelationship}
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.createOrReplaceRelationshipWithResponse#String-String-Object-Class-Options#BasicRelationship}
      *
      * <p>Or alternatively String can be used as input and output deserialization type:</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.asyncClient.createRelationshipWithResponse#String-String-Object-Class-Options#String}
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.createOrReplaceRelationshipWithResponse#String-String-Object-Class-Options#String}
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be created.
@@ -383,11 +383,11 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link DigitalTwinsResponse} containing the relationship created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<DigitalTwinsResponse<T>> createRelationshipWithResponse(String digitalTwinId, String relationshipId, T relationship, Class<T> clazz, CreateRelationshipOptions options) {
-        return withContext(context -> createRelationshipWithResponse(digitalTwinId, relationshipId, relationship, clazz, options, context));
+    public <T> Mono<DigitalTwinsResponse<T>> createOrReplaceRelationshipWithResponse(String digitalTwinId, String relationshipId, T relationship, Class<T> clazz, CreateRelationshipOptions options) {
+        return withContext(context -> createOrReplaceRelationshipWithResponse(digitalTwinId, relationshipId, relationship, clazz, options, context));
     }
 
-    <T> Mono<DigitalTwinsResponse<T>> createRelationshipWithResponse(String digitalTwinId, String relationshipId, T relationship, Class<T> clazz, CreateRelationshipOptions options, Context context) {
+    <T> Mono<DigitalTwinsResponse<T>> createOrReplaceRelationshipWithResponse(String digitalTwinId, String relationshipId, T relationship, Class<T> clazz, CreateRelationshipOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
             .addRelationshipWithResponseAsync(digitalTwinId, relationshipId, relationship, OptionsConverter.toProtocolLayerOptions(options), context)
@@ -1242,14 +1242,14 @@ public final class DigitalTwinsAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.asyncClient.createEventRoute#String-EventRoute}
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.createOrReplaceEventRoute#String-EventRoute}
      *
      * @param eventRouteId The Id of the event route to create.
      * @param eventRoute The event route to create.
      * @return An empty mono.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createEventRoute(String eventRouteId, EventRoute eventRoute)
+    public Mono<Void> createOrReplaceEventRoute(String eventRouteId, EventRoute eventRoute)
     {
         return createEventRouteWithResponse(eventRouteId, eventRoute, null)
             .flatMap(voidResponse -> Mono.empty());
@@ -1261,7 +1261,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.asyncClient.createEventRouteWithResponse#String-EventRoute-Options}
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.createOrReplaceEventRouteWithResponse#String-EventRoute-Options}
      *
      * @param eventRouteId The Id of the event route to create.
      * @param eventRoute The event route to create.

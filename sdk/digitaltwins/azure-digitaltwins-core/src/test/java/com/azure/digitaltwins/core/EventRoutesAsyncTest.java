@@ -33,7 +33,7 @@ public class EventRoutesAsyncTest extends EventRoutesTestBase {
         // CREATE
         EventRoute eventRouteToCreate = new EventRoute(EVENT_ROUTE_ENDPOINT_NAME);
         eventRouteToCreate.setFilter(FILTER);
-        StepVerifier.create(asyncClient.createEventRoute(eventRouteId, eventRouteToCreate))
+        StepVerifier.create(asyncClient.createOrReplaceEventRoute(eventRouteId, eventRouteToCreate))
             .verifyComplete();
 
         try {
@@ -82,7 +82,7 @@ public class EventRoutesAsyncTest extends EventRoutesTestBase {
         EventRoute eventRouteToCreate = new EventRoute(EVENT_ROUTE_ENDPOINT_NAME);
         eventRouteToCreate.setFilter("this is not a valid filter");
 
-        StepVerifier.create(asyncClient.createEventRoute(eventRouteId, eventRouteToCreate))
+        StepVerifier.create(asyncClient.createOrReplaceEventRoute(eventRouteId, eventRouteToCreate))
             .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_BAD_REQUEST));
     }
 
@@ -99,7 +99,7 @@ public class EventRoutesAsyncTest extends EventRoutesTestBase {
             String eventRouteId = testResourceNamer.randomUuid();
             EventRoute eventRouteToCreate = new EventRoute(EVENT_ROUTE_ENDPOINT_NAME);
             eventRouteToCreate.setFilter(FILTER);
-            StepVerifier.create(asyncClient.createEventRoute(eventRouteId, eventRouteToCreate))
+            StepVerifier.create(asyncClient.createOrReplaceEventRoute(eventRouteId, eventRouteToCreate))
                 .verifyComplete();
         }
 

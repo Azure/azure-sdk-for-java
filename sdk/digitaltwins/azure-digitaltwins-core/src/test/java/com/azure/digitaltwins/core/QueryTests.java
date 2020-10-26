@@ -44,7 +44,7 @@ public class QueryTests extends QueryTestBase{
             for (int i = 0; i < pageSize + 1; i++) {
                 String roomTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
                 roomTwinIds.add(roomTwinId);
-                client.createDigitalTwinWithResponse(roomTwinId, roomTwin, String.class, null, Context.NONE);
+                client.createOrReplaceDigitalTwinWithResponse(roomTwinId, roomTwin, String.class, null, Context.NONE);
             }
 
             String queryString = "SELECT * FROM digitaltwins where IsOccupied = true";

@@ -49,7 +49,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     //region DigitalTwinSnippets
 
     /**
-     * Generates code samples for using {@link DigitalTwinsClient#createDigitalTwin(String, Object, Class)}
+     * Generates code samples for using {@link DigitalTwinsClient#createOrReplaceDigitalTwin(String, Object, Class)}
      */
     @Override
     public void createDigitalTwin() {
@@ -64,7 +64,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
                     .setModelId(modelId)
             );
 
-        BasicDigitalTwin createdTwin = digitalTwinsClient.createDigitalTwin(
+        BasicDigitalTwin createdTwin = digitalTwinsClient.createOrReplaceDigitalTwin(
             basicTwin.getId(),
             basicTwin,
             BasicDigitalTwin.class);
@@ -75,7 +75,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         String digitalTwinStringPayload = getDigitalTwinPayload();
 
         // BEGIN: com.azure.digitaltwins.core.syncClient.createDigitalTwins#String-Object-Class#String
-        String stringResult = digitalTwinsClient.createDigitalTwin(
+        String stringResult = digitalTwinsClient.createOrReplaceDigitalTwin(
             "myDigitalTwinId",
             digitalTwinStringPayload,
             String.class);
@@ -85,7 +85,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsClient#createDigitalTwinWithResponse(String, Object, Class, CreateDigitalTwinOptions, Context)}
+     * {@link DigitalTwinsClient#createOrReplaceDigitalTwinWithResponse(String, Object, Class, CreateDigitalTwinOptions, Context)}
      */
     @Override
     public void createDigitalTwinWithResponse() {
@@ -100,7 +100,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
                     .setModelId(modelId)
             );
 
-        Response<BasicDigitalTwin> resultWithResponse = digitalTwinsClient.createDigitalTwinWithResponse(
+        Response<BasicDigitalTwin> resultWithResponse = digitalTwinsClient.createOrReplaceDigitalTwinWithResponse(
             basicDigitalTwin.getId(),
             basicDigitalTwin,
             BasicDigitalTwin.class,
@@ -116,7 +116,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         // BEGIN: com.azure.digitaltwins.core.syncClient.createDigitalTwinsWithResponse#String-Object-Class-Options-Context#String
         String stringPayload = getDigitalTwinPayload();
 
-        Response<String> stringResultWithResponse = digitalTwinsClient.createDigitalTwinWithResponse(
+        Response<String> stringResultWithResponse = digitalTwinsClient.createOrReplaceDigitalTwinWithResponse(
             basicDigitalTwin.getId(),
             stringPayload,
             String.class,
@@ -258,11 +258,11 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsClient#createRelationship(String, String, Object, Class)}
+     * {@link DigitalTwinsClient#createOrReplaceRelationship(String, String, Object, Class)}
      */
     @Override
     public void createRelationship() {
-        // BEGIN: com.azure.digitaltwins.core.syncClient.createRelationship#String-String-Object-Class#BasicRelationship
+        // BEGIN: com.azure.digitaltwins.core.syncClient.createOrReplaceRelationship#String-String-Object-Class#BasicRelationship
         BasicRelationship buildingToFloorBasicRelationship = new BasicRelationship(
                 "myRelationshipId",
                 "mySourceDigitalTwinId",
@@ -271,7 +271,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             .addProperty("Prop1", "Prop1 value")
             .addProperty("Prop2", 6);
 
-        BasicRelationship createdRelationship = digitalTwinsSyncClient.createRelationship(
+        BasicRelationship createdRelationship = digitalTwinsSyncClient.createOrReplaceRelationship(
             "mySourceDigitalTwinId",
             "myRelationshipId",
             buildingToFloorBasicRelationship,
@@ -282,28 +282,28 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             createdRelationship.getRelationshipId() +
             " from: " + createdRelationship.getSourceDigitalTwinId() +
             " to: " + createdRelationship.getTargetDigitalTwinId());
-        // END: com.azure.digitaltwins.core.syncClient.createRelationship#String-String-Object-Class#BasicRelationship
+        // END: com.azure.digitaltwins.core.syncClient.createOrReplaceRelationship#String-String-Object-Class#BasicRelationship
 
-        // BEGIN: com.azure.digitaltwins.core.syncClient.createRelationship#String-String-Object-Class#String
+        // BEGIN: com.azure.digitaltwins.core.syncClient.createOrReplaceRelationship#String-String-Object-Class#String
         String relationshipPayload = getRelationshipPayload();
 
-        String createdRelationshipString = digitalTwinsSyncClient.createRelationship(
+        String createdRelationshipString = digitalTwinsSyncClient.createOrReplaceRelationship(
             "mySourceDigitalTwinId",
             "myRelationshipId",
             relationshipPayload,
             String.class);
 
         System.out.println("Created relationship: " + createdRelationshipString);
-        // END: com.azure.digitaltwins.core.syncClient.createRelationship#String-String-Object-Class#String
+        // END: com.azure.digitaltwins.core.syncClient.createOrReplaceRelationship#String-String-Object-Class#String
     }
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsClient#createRelationshipWithResponse(String, String, Object, Class, CreateRelationshipOptions, Context)}
+     * {@link DigitalTwinsClient#createOrReplaceRelationshipWithResponse(String, String, Object, Class, CreateRelationshipOptions, Context)}
      */
     @Override
     public void createRelationshipWithResponse() {
-        // BEGIN: com.azure.digitaltwins.core.syncClient.createRelationshipWithResponse#String-String-Object-Class-Options-Context#BasicRelationship
+        // BEGIN: com.azure.digitaltwins.core.syncClient.createOrReplaceRelationshipWithResponse#String-String-Object-Class-Options-Context#BasicRelationship
         BasicRelationship buildingToFloorBasicRelationship = new BasicRelationship(
                 "myRelationshipId",
                 "mySourceDigitalTwinId",
@@ -313,7 +313,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             .addProperty("Prop2", 6);
 
         Response<BasicRelationship> createdRelationshipWithResponse =
-            digitalTwinsSyncClient.createRelationshipWithResponse(
+            digitalTwinsSyncClient.createOrReplaceRelationshipWithResponse(
                 "mySourceDigitalTwinId",
                 "myRelationshipId",
                 buildingToFloorBasicRelationship,
@@ -328,12 +328,12 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
                 " to: " + createdRelationshipWithResponse.getValue().getTargetDigitalTwinId() +
                 " Http status code: " +
                 createdRelationshipWithResponse.getStatusCode());
-        // END: com.azure.digitaltwins.core.syncClient.createRelationshipWithResponse#String-String-Object-Class-Options-Context#BasicRelationship
+        // END: com.azure.digitaltwins.core.syncClient.createOrReplaceRelationshipWithResponse#String-String-Object-Class-Options-Context#BasicRelationship
 
-        // BEGIN: com.azure.digitaltwins.core.syncClient.createRelationshipWithResponse#String-String-Object-Class-Options-Context#String
+        // BEGIN: com.azure.digitaltwins.core.syncClient.createOrReplaceRelationshipWithResponse#String-String-Object-Class-Options-Context#String
         String relationshipPayload = getRelationshipPayload();
 
-        Response<String> createdRelationshipStringWithResponse = digitalTwinsSyncClient.createRelationshipWithResponse(
+        Response<String> createdRelationshipStringWithResponse = digitalTwinsSyncClient.createOrReplaceRelationshipWithResponse(
             "mySourceDigitalTwinId",
             "myRelationshipId",
             relationshipPayload,
@@ -346,7 +346,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             createdRelationshipStringWithResponse +
             " With HTTP status code: " +
             createdRelationshipStringWithResponse.getStatusCode());
-        // END: com.azure.digitaltwins.core.syncClient.createRelationshipWithResponse#String-String-Object-Class-Options-Context#String
+        // END: com.azure.digitaltwins.core.syncClient.createOrReplaceRelationshipWithResponse#String-String-Object-Class-Options-Context#String
     }
 
     /**
@@ -862,38 +862,38 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     //region EventRouteSnippets
 
     /**
-     * Generates code samples for using {@link DigitalTwinsClient#createEventRoute(String, EventRoute)}
+     * Generates code samples for using {@link DigitalTwinsClient#createOrReplaceEventRoute(String, EventRoute)}
      */
     @Override
     public void createEventRoute() {
-        // BEGIN: com.azure.digitaltwins.core.syncClient.createEventRoute#String-EventRoute
+        // BEGIN: com.azure.digitaltwins.core.syncClient.createOrReplaceEventRoute#String-EventRoute
         String filter =
             "$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'";
 
         EventRoute eventRoute = new EventRoute("myEndpointName").setFilter(filter);
-        digitalTwinsSyncClient.createEventRoute("myEventRouteId", eventRoute);
-        // END: com.azure.digitaltwins.core.syncClient.createEventRoute#String-EventRoute
+        digitalTwinsSyncClient.createOrReplaceEventRoute("myEventRouteId", eventRoute);
+        // END: com.azure.digitaltwins.core.syncClient.createOrReplaceEventRoute#String-EventRoute
     }
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsClient#createEventRouteWithResponse(String, EventRoute, CreateEventRouteOptions, Context)}
+     * {@link DigitalTwinsClient#createOrReplaceEventRouteWithResponse(String, EventRoute, CreateEventRouteOptions, Context)}
      */
     @Override
     public void createEventRouteWithResponse() {
-        // BEGIN: com.azure.digitaltwins.core.syncClient.createEventRouteWithResponse#String-EventRoute-Options-Context
+        // BEGIN: com.azure.digitaltwins.core.syncClient.createOrReplaceEventRouteWithResponse#String-EventRoute-Options-Context
         String filter =
             "$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'";
 
         EventRoute eventRoute = new EventRoute("myEndpointName").setFilter(filter);
-        Response<Void> response = digitalTwinsSyncClient.createEventRouteWithResponse(
+        Response<Void> response = digitalTwinsSyncClient.createOrReplaceEventRouteWithResponse(
             "myEventRouteId",
             eventRoute,
             new CreateEventRouteOptions(),
             new Context("key", "value"));
 
         System.out.println("Created an event rout with HTTP status code: " + response.getStatusCode());
-        // END: com.azure.digitaltwins.core.syncClient.createEventRouteWithResponse#String-EventRoute-Options-Context
+        // END: com.azure.digitaltwins.core.syncClient.createOrReplaceEventRouteWithResponse#String-EventRoute-Options-Context
     }
 
     /**

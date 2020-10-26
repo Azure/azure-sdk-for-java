@@ -274,7 +274,7 @@ public class DigitalTwinsLifecycleAsyncSample {
 
         // Call APIs to create the twins. For each async operation, once the operation is completed successfully, a latch is counted down.
         twins
-            .forEach((twinId, twinContent) -> client.createDigitalTwin(twinId, twinContent, String.class)
+            .forEach((twinId, twinContent) -> client.createOrReplaceDigitalTwin(twinId, twinContent, String.class)
                 .subscribe(
                     twin -> ConsoleLogger.printSuccess("Created digital twin: " + twinId + "\n\t Body: " + twin),
                     throwable -> ConsoleLogger.printFatal("Could not create digital twin " + twinId + " due to " + throwable),
@@ -305,7 +305,7 @@ public class DigitalTwinsLifecycleAsyncSample {
                     relationships
                         .forEach(relationship -> {
                             try {
-                                client.createRelationship(relationship.getSourceDigitalTwinId(), relationship.getRelationshipId(), MAPPER.writeValueAsString(relationship), String.class)
+                                client.createOrReplaceRelationship(relationship.getSourceDigitalTwinId(), relationship.getRelationshipId(), MAPPER.writeValueAsString(relationship), String.class)
                                     .doOnSuccess(s -> ConsoleLogger.printSuccess("Linked twin " + relationship.getSourceDigitalTwinId() + " to twin " + relationship.getTargetDigitalTwinId() + " as " + relationship.getRelationshipName()))
                                     .doOnError(IgnoreConflictError)
                                     .doOnTerminate(connectTwinsLatch::countDown)

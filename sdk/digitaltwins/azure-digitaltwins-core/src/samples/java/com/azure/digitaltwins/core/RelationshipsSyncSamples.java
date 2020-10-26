@@ -87,7 +87,7 @@ public class RelationshipsSyncSamples {
             .setMetadata(new DigitalTwinMetadata()
                 .setModelId(sampleBuildingModelId));
 
-        client.createDigitalTwin(buildingTwinId, buildingDigitalTwin, BasicDigitalTwin.class);
+        client.createOrReplaceDigitalTwin(buildingTwinId, buildingDigitalTwin, BasicDigitalTwin.class);
 
         ConsoleLogger.print("Created twin" + buildingDigitalTwin.getId());
 
@@ -95,7 +95,7 @@ public class RelationshipsSyncSamples {
             .setMetadata(new DigitalTwinMetadata()
                 .setModelId(sampleFloorModelId));
 
-        BasicDigitalTwin createdTwin = client.createDigitalTwin(floorTwinId, floorDigitalTwin, BasicDigitalTwin.class);
+        BasicDigitalTwin createdTwin = client.createOrReplaceDigitalTwin(floorTwinId, floorDigitalTwin, BasicDigitalTwin.class);
 
         ConsoleLogger.print("Created twin with Id:" + createdTwin.getId());
 
@@ -105,7 +105,7 @@ public class RelationshipsSyncSamples {
             .addProperty("Prop1", "Prop1 value")
             .addProperty("Prop2", 6);
 
-        client.createRelationship(buildingTwinId, buildingFloorRelationshipId, buildingFloorRelationshipPayload, BasicRelationship.class);
+        client.createOrReplaceRelationship(buildingTwinId, buildingFloorRelationshipId, buildingFloorRelationshipPayload, BasicRelationship.class);
 
         ConsoleLogger.printSuccess("Created a digital twin relationship "+ buildingFloorRelationshipId + " from twin: " + buildingTwinId + " to twin: " + floorTwinId);
 

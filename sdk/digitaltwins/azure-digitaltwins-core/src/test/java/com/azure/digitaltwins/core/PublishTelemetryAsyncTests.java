@@ -96,7 +96,7 @@ public class PublishTelemetryAsyncTests extends PublishTelemetryTestBase {
         String roomWithWifiTwinPayload = TestAssetsHelper.getRoomWithWifiTwinPayload(roomWithWifiModelId, TestAssetDefaults.WIFI_COMPONENT_NAME);
 
         StepVerifier
-            .create(asyncClient.createDigitalTwin(roomWithWifiTwinId, roomWithWifiTwinPayload, String.class))
+            .create(asyncClient.createOrReplaceDigitalTwin(roomWithWifiTwinId, roomWithWifiTwinPayload, String.class))
             .assertNext(createResponse -> logger.info("Created {} digitalTwin successfully", createResponse))
             .verifyComplete();
     }
