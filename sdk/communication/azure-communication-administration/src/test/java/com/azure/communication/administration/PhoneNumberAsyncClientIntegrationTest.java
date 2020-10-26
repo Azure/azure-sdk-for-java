@@ -18,7 +18,6 @@ import com.azure.communication.administration.models.PhoneNumberSearch;
 import com.azure.communication.administration.models.PhonePlan;
 import com.azure.communication.administration.models.PhonePlanGroup;
 import com.azure.communication.administration.models.PstnConfiguration;
-import com.azure.communication.administration.models.ReleaseResponse;
 import com.azure.communication.administration.models.ReleaseStatus;
 import com.azure.communication.administration.models.SearchStatus;
 import com.azure.communication.administration.models.UpdateNumberCapabilitiesResponse;

@@ -306,7 +306,7 @@ res.waitForCompletion();
         phoneNumberClient.beginReleasePhoneNumbers(phoneNumbers, duration);
     res.waitForCompletion();
     PhoneNumberRelease result = res.getFinalResult();
-    System.out.println("Phone number status: " + result.getStatus());
+    System.out.println("Phone number release status: " + result.getStatus());
 }
 ```
 
