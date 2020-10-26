@@ -73,7 +73,7 @@
         },
         "selectionMarkTrainingDataContainer": {
             "type": "string",
-            "defaultValue": "selectionmark"
+            "defaultValue": "formselectionmark"
         },
         "testingDataSasProperties": {
             "type": "object",
