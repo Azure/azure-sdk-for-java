@@ -44,7 +44,7 @@ public class TwinTests extends TwinTestBase{
             Iterable<DigitalTwinsModelData> createdList = client.createModels(modelsList);
             logger.info("Created models successfully");
 
-            BasicDigitalTwin createdTwin = client.createDigitalTwin(roomTwinId, deserializeJsonString(roomTwin, BasicDigitalTwin.class), BasicDigitalTwin.class);
+            BasicDigitalTwin createdTwin = client.createOrReplaceDigitalTwin(roomTwinId, deserializeJsonString(roomTwin, BasicDigitalTwin.class), BasicDigitalTwin.class);
 
             logger.info("Created {} twin successfully", createdTwin.getId());
             assertEquals(createdTwin.getId(), roomTwinId);

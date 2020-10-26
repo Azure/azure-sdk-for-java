@@ -5,13 +5,12 @@ package com.azure.digitaltwins.core.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Context;
-import com.azure.digitaltwins.core.implementation.models.DigitalTwinsAddRelationshipOptions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The optional parameters for
- * {@link com.azure.digitaltwins.core.DigitalTwinsClient#createRelationshipWithResponse(String, String, Object, Class, CreateRelationshipOptions, Context)} and
- * {@link com.azure.digitaltwins.core.DigitalTwinsAsyncClient#createRelationshipWithResponse(String, String, Object, Class, CreateRelationshipOptions)}
+ * {@link com.azure.digitaltwins.core.DigitalTwinsClient#createOrReplaceRelationshipWithResponse(String, String, Object, Class, CreateRelationshipOptions, Context)} and
+ * {@link com.azure.digitaltwins.core.DigitalTwinsAsyncClient#createOrReplaceRelationshipWithResponse(String, String, Object, Class, CreateRelationshipOptions)}
  */
 @Fluent
 public final class CreateRelationshipOptions {

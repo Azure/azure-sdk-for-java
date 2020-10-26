@@ -46,7 +46,7 @@ public class TwinAsyncTests extends TwinTestBase
                 .verifyComplete();
 
             // Create a Twin
-            StepVerifier.create(asyncClient.createDigitalTwin(roomTwinId, deserializeJsonString(roomTwin, BasicDigitalTwin.class), BasicDigitalTwin.class))
+            StepVerifier.create(asyncClient.createOrReplaceDigitalTwin(roomTwinId, deserializeJsonString(roomTwin, BasicDigitalTwin.class), BasicDigitalTwin.class))
                 .assertNext(createdTwin -> {
                     assertEquals(createdTwin.getId(), roomTwinId);
                     logger.info("Created {} twin successfully", createdTwin.getId());

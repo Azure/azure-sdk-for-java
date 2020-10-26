@@ -99,7 +99,7 @@ public class ComponentSyncSamples {
 
         String basicDigitalTwinPayload = mapper.writeValueAsString(basicTwin);
 
-        BasicDigitalTwin basicTwinResponse = client.createDigitalTwin(basicDigitalTwinId, basicTwin, BasicDigitalTwin.class);
+        BasicDigitalTwin basicTwinResponse = client.createOrReplaceDigitalTwin(basicDigitalTwinId, basicTwin, BasicDigitalTwin.class);
 
         ConsoleLogger.print("Created digital twin " + basicTwinResponse.getId());
 

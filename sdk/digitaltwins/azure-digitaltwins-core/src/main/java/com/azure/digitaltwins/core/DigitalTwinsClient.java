@@ -69,9 +69,9 @@ public final class DigitalTwinsClient {
      * @return The deserialized application/json object representing the digital twin created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> T createDigitalTwin(String digitalTwinId, T digitalTwin, Class<T> clazz)
+    public <T> T createOrReplaceDigitalTwin(String digitalTwinId, T digitalTwin, Class<T> clazz)
     {
-        return createDigitalTwinWithResponse(digitalTwinId, digitalTwin, clazz, null, Context.NONE).getValue();
+        return createOrReplaceDigitalTwinWithResponse(digitalTwinId, digitalTwin, clazz, null, Context.NONE).getValue();
     }
 
     /**
@@ -97,9 +97,9 @@ public final class DigitalTwinsClient {
      * @return A {@link DigitalTwinsResponse} containing the deserialized application/json object representing the digital twin created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Response<T> createDigitalTwinWithResponse(String digitalTwinId, T digitalTwin, Class<T> clazz, CreateDigitalTwinOptions options, Context context)
+    public <T> Response<T> createOrReplaceDigitalTwinWithResponse(String digitalTwinId, T digitalTwin, Class<T> clazz, CreateDigitalTwinOptions options, Context context)
     {
-        return digitalTwinsAsyncClient.createDigitalTwinWithResponse(digitalTwinId, digitalTwin, clazz, options, context).block();
+        return digitalTwinsAsyncClient.createOrReplaceDigitalTwinWithResponse(digitalTwinId, digitalTwin, clazz, options, context).block();
     }
 
     /**
@@ -244,11 +244,11 @@ public final class DigitalTwinsClient {
      *
      * <p>A strongly typed digital twin object such as {@link BasicRelationship} can be provided as the input parameter to deserialize the response into.</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.syncClient.createRelationship#String-String-Object-Class#BasicRelationship}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.createOrReplaceRelationship#String-String-Object-Class#BasicRelationship}
      *
      * <p>Or alternatively String can be used as input and output deserialization type:</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.syncClient.createRelationship#String-String-Object-Class#String}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.createOrReplaceRelationship#String-String-Object-Class#String}
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be created.
@@ -258,8 +258,8 @@ public final class DigitalTwinsClient {
      * @return The relationship created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> T createRelationship(String digitalTwinId, String relationshipId, T relationship, Class<T> clazz) {
-        return createRelationshipWithResponse(digitalTwinId, relationshipId, relationship, clazz, null, Context.NONE).getValue();
+    public <T> T createOrReplaceRelationship(String digitalTwinId, String relationshipId, T relationship, Class<T> clazz) {
+        return createOrReplaceRelationshipWithResponse(digitalTwinId, relationshipId, relationship, clazz, null, Context.NONE).getValue();
     }
 
     /**
@@ -270,11 +270,11 @@ public final class DigitalTwinsClient {
      *
      * <p>A strongly typed digital twin object such as {@link BasicRelationship} can be provided as the input parameter to deserialize the response into.</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.syncClient.createRelationshipWithResponse#String-String-Object-Class-Options-Context#BasicRelationship}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.createOrReplaceRelationshipWithResponse#String-String-Object-Class-Options-Context#BasicRelationship}
      *
      * <p>Or alternatively String can be used as input and output deserialization type:</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.syncClient.createRelationshipWithResponse#String-String-Object-Class-Options-Context#String}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.createOrReplaceRelationshipWithResponse#String-String-Object-Class-Options-Context#String}
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be created.
@@ -286,8 +286,8 @@ public final class DigitalTwinsClient {
      * @return A {@link DigitalTwinsResponse} containing the relationship created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> DigitalTwinsResponse<T> createRelationshipWithResponse(String digitalTwinId, String relationshipId, T relationship, Class<T> clazz, CreateRelationshipOptions options, Context context) {
-        return digitalTwinsAsyncClient.createRelationshipWithResponse(digitalTwinId, relationshipId, relationship, clazz, options, context).block();
+    public <T> DigitalTwinsResponse<T> createOrReplaceRelationshipWithResponse(String digitalTwinId, String relationshipId, T relationship, Class<T> clazz, CreateRelationshipOptions options, Context context) {
+        return digitalTwinsAsyncClient.createOrReplaceRelationshipWithResponse(digitalTwinId, relationshipId, relationship, clazz, options, context).block();
     }
 
     /**
@@ -754,6 +754,10 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.query#String#String}
      *
+     * Note that there may be a delay between before changes in your instance are reflected in queries.
+     * For more details on query limitations, see
+     * <a href="https://docs.microsoft.com/en-us/azure/digital-twins/how-to-query-graph#query-limitations">Query limitations</a>
+     *
      * @param query The query string, in SQL-like syntax.
      * @param clazz The model class to deserialize each queried digital twin into. Since the queried twins may not all
      *              have the same model class, it is recommended to use a common denominator class such as {@link BasicDigitalTwin}.
@@ -778,6 +782,10 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.query#String-Options-Context#String}
      *
+     * Note that there may be a delay between before changes in your instance are reflected in queries.
+     * For more details on query limitations, see
+     * <a href="https://docs.microsoft.com/en-us/azure/digital-twins/how-to-query-graph#query-limitations">Query limitations</a>
+     *
      * @param query The query string, in SQL-like syntax.
      * @param clazz The model class to deserialize each queried digital twin into. Since the queried twins may not all
      *              have the same model class, it is recommended to use a common denominator class such as {@link BasicDigitalTwin}.
@@ -800,14 +808,14 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.syncClient.createEventRoute#String-EventRoute}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.createOrReplaceEventRoute#String-EventRoute}
      *
      * @param eventRouteId The id of the event route to create.
      * @param eventRoute The event route to create.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void createEventRoute(String eventRouteId, DigitalTwinsEventRoute eventRoute) {
-        createEventRouteWithResponse(eventRouteId, eventRoute, null, Context.NONE);
+        createOrReplaceEventRouteWithResponse(eventRouteId, eventRoute, null, Context.NONE);
     }
 
     /**
@@ -816,7 +824,7 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.syncClient.createEventRouteWithResponse#String-EventRoute-Options-Context}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.createOrReplaceEventRouteWithResponse#String-EventRoute-Options-Context}
      *
      * @param eventRouteId The id of the event route to create.
      * @param eventRoute The event route to create.
@@ -825,7 +833,7 @@ public final class DigitalTwinsClient {
      * @return A {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createEventRouteWithResponse(String eventRouteId, DigitalTwinsEventRoute eventRoute, CreateEventRouteOptions options, Context context) {
+    public Response<Void> createOrReplaceEventRouteWithResponse(String eventRouteId, DigitalTwinsEventRoute eventRoute, CreateEventRouteOptions options, Context context) {
         return this.digitalTwinsAsyncClient.createEventRouteWithResponse(eventRouteId, eventRoute, options, context).block();
     }
 

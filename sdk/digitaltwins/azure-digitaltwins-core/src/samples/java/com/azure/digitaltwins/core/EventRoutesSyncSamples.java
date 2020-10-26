@@ -92,7 +92,7 @@ public class EventRoutesSyncSamples {
 
             try {
                 ConsoleLogger.print(String.format("Creating new event route with Id %s and endpoint name %s", eventRouteId, eventRouteEndpointName));
-                client.createEventRoute(eventRouteId, eventRoute);
+                client.createOrReplaceEventRoute(eventRouteId, eventRoute);
                 ConsoleLogger.print(String.format("Successfully created event route with Id %s", eventRouteId));
             } catch (ErrorResponseException ex) {
                 ConsoleLogger.printFatal(String.format("Failed to create new event route with Id %s", eventRouteId));

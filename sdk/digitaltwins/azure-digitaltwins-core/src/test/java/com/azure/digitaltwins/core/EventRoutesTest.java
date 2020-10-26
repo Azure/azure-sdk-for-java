@@ -35,7 +35,7 @@ public class EventRoutesTest extends EventRoutesTestBase {
         // CREATE
         DigitalTwinsEventRoute eventRouteToCreate = new DigitalTwinsEventRoute(EVENT_ROUTE_ENDPOINT_NAME);
         eventRouteToCreate.setFilter(FILTER);
-        client.createEventRoute(eventRouteId, eventRouteToCreate);
+        client.createOrReplaceEventRoute(eventRouteId, eventRouteToCreate);
 
         try {
             // GET
@@ -78,7 +78,7 @@ public class EventRoutesTest extends EventRoutesTestBase {
         DigitalTwinsEventRoute eventRouteToCreate = new DigitalTwinsEventRoute(EVENT_ROUTE_ENDPOINT_NAME);
         eventRouteToCreate.setFilter("this is not a valid filter");
 
-        assertRestException(() -> client.createEventRoute(eventRouteId, eventRouteToCreate), HttpURLConnection.HTTP_BAD_REQUEST);
+        assertRestException(() -> client.createOrReplaceEventRoute(eventRouteId, eventRouteToCreate), HttpURLConnection.HTTP_BAD_REQUEST);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -94,7 +94,7 @@ public class EventRoutesTest extends EventRoutesTestBase {
             String eventRouteId = testResourceNamer.randomUuid();
             DigitalTwinsEventRoute eventRouteToCreate = new DigitalTwinsEventRoute(EVENT_ROUTE_ENDPOINT_NAME);
             eventRouteToCreate.setFilter(FILTER);
-            client.createEventRoute(eventRouteId, eventRouteToCreate);
+            client.createOrReplaceEventRoute(eventRouteId, eventRouteToCreate);
         }
 
         // list event routes by page, make sure that all non-final pages have the expected page size
