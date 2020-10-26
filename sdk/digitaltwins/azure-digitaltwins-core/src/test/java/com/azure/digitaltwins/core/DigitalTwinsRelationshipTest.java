@@ -92,7 +92,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
                     ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID,
                     floorTwinContainedInRelationshipPayload,
                     String.class,
-                    new CreateRelationshipOptions().setIfNoneMatch("*"),
+                    new CreateOrReplaceRelationshipOptions().setIfNoneMatch("*"),
                     Context.NONE),
                 HTTP_PRECON_FAILED
             );

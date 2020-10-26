@@ -7,7 +7,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.models.BasicDigitalTwin;
 import com.azure.digitaltwins.core.models.BasicRelationship;
-import com.azure.digitaltwins.core.models.CreateRelationshipOptions;
+import com.azure.digitaltwins.core.models.CreateOrReplaceRelationshipOptions;
 import com.azure.digitaltwins.core.models.IncomingRelationship;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -119,7 +119,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                 ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID,
                 floorTwinContainedInRelationshipPayload,
                 String.class,
-                new CreateRelationshipOptions().setIfNoneMatch("*")))
+                new CreateOrReplaceRelationshipOptions().setIfNoneMatch("*")))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HTTP_PRECON_FAILED));
 
             // Update relationships
