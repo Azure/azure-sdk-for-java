@@ -910,7 +910,6 @@ public final class DigitalTwinsAsyncClient {
         com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions protocolLayerOptions = null;
         if (options != null) {
             protocolLayerOptions = new com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions()
-                .setMaxItemsPerPage(options.getMaxItemsPerPage())
                 .setTraceparent(options.getTraceParent())
                 .setTracestate(options.getTraceState());
         }

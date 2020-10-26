@@ -56,8 +56,7 @@ public final class OptionsConverter {
 
         return new DigitalTwinModelsListOptions()
             .setTraceparent(options.getTraceParent())
-            .setTracestate(options.getTraceState())
-            .setMaxItemsPerPage(options.getMaxItemsPerPage());
+            .setTracestate(options.getTraceState());
     }
 
     public static DigitalTwinModelsGetByIdOptions toProtocolLayerOptions(GetModelOptions options) {
@@ -213,7 +212,6 @@ public final class OptionsConverter {
 
         return new QueryTwinsOptions()
             .setTraceparent(options.getTraceParent())
-            .setTracestate(options.getTraceState())
-            .setMaxItemsPerPage(options.getMaxItemsPerPage());
+            .setTracestate(options.getTraceState());
     }
 }

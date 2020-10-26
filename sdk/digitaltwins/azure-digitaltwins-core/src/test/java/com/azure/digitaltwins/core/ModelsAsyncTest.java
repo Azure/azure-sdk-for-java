@@ -124,7 +124,7 @@ public class ModelsAsyncTest extends ModelsTestBase {
         AtomicInteger pageCount = new AtomicInteger();
 
         // List models in multiple pages and verify more than one page was viewed.
-        StepVerifier.create(asyncClient.listModels(new ListModelsOptions().setMaxItemsPerPage(2)).byPage())
+        StepVerifier.create(asyncClient.listModels(new ListModelsOptions()).byPage(2))
             .thenConsumeWhile(
                 page -> {
                     pageCount.getAndIncrement();

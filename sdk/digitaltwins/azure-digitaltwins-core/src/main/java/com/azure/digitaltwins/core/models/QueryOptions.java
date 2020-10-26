@@ -23,13 +23,6 @@ public final class QueryOptions {
     @JsonProperty(value = "tracestate")
     private String tracestate;
 
-    /*
-     * The maximum number of items to retrieve per request. The server may
-     * choose to return less than the requested number.
-     */
-    @JsonProperty(value = "MaxItemsPerPage")
-    private Integer maxItemsPerPage;
-
     /**
      * Get the traceparent property: Identifies the request in a distributed tracing system.
      *
@@ -69,28 +62,6 @@ public final class QueryOptions {
      */
     public QueryOptions setTraceState(String tracestate) {
         this.tracestate = tracestate;
-        return this;
-    }
-
-    /**
-     * Get the maxItemsPerPage property: The maximum number of items to retrieve per request. The server may choose to
-     * return less than the requested number.
-     *
-     * @return the maxItemsPerPage value.
-     */
-    public Integer getMaxItemsPerPage() {
-        return this.maxItemsPerPage;
-    }
-
-    /**
-     * Set the maxItemsPerPage property: The maximum number of items to retrieve per request. The server may choose to
-     * return less than the requested number.
-     *
-     * @param maxItemsPerPage the maxItemsPerPage value to set.
-     * @return the QueryOptions object itself.
-     */
-    public QueryOptions setMaxItemsPerPage(Integer maxItemsPerPage) {
-        this.maxItemsPerPage = maxItemsPerPage;
         return this;
     }
 }

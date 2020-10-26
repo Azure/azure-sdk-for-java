@@ -73,7 +73,7 @@ public class QueryAsyncTests extends QueryTestBase{
             // Test that page size hint works, and that all returned pages either have the page size hint amount of
             // elements, or have no continuation token (signaling that it is the last page)
             AtomicInteger pageCount = new AtomicInteger(0);
-            StepVerifier.create(asyncClient.query(queryString, BasicDigitalTwin.class, new QueryOptions().setMaxItemsPerPage(pageSize)).byPage())
+            StepVerifier.create(asyncClient.query(queryString, BasicDigitalTwin.class, new QueryOptions()).byPage(pageSize))
                 .thenConsumeWhile(digitalTwinsPage ->  {
                     pageCount.incrementAndGet();
                     if (digitalTwinsPage.getContinuationToken() != null) {

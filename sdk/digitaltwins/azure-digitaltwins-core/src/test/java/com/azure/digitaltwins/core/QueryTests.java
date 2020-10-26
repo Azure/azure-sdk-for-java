@@ -49,7 +49,7 @@ public class QueryTests extends QueryTestBase{
 
             String queryString = "SELECT * FROM digitaltwins where IsOccupied = true";
 
-            PagedIterable<BasicDigitalTwin> pagedQueryResponse = client.query(queryString, BasicDigitalTwin.class, new QueryOptions().setMaxItemsPerPage(pageSize), Context.NONE);
+            PagedIterable<BasicDigitalTwin> pagedQueryResponse = client.query(queryString, BasicDigitalTwin.class, new QueryOptions(), Context.NONE);
 
             for(BasicDigitalTwin digitalTwin : pagedQueryResponse){
                 assertThat(digitalTwin.getProperties().get("IsOccupied"))
@@ -62,7 +62,7 @@ public class QueryTests extends QueryTestBase{
             // Test that page size hint works, and that all returned pages either have the page size hint amount of
             // elements, or have no continuation token (signaling that it is the last page)
             int pageCount = 0;
-            for (Page<BasicDigitalTwin> digitalTwinsPage : pagedQueryResponse.iterableByPage()){
+            for (Page<BasicDigitalTwin> digitalTwinsPage : pagedQueryResponse.iterableByPage(pageSize)){
                 pageCount++;
                 int elementsPerPage = 0;
                 for (BasicDigitalTwin basicDigitalTwin : digitalTwinsPage.getElements()) {

@@ -666,8 +666,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         // BEGIN: com.azure.digitaltwins.core.syncClient.listModels#Options
         PagedIterable<DigitalTwinsModelData> modelsListWithOptionsPagedIterable =  digitalTwinsSyncClient.listModels(
             new ListModelsOptions()
-                .setIncludeModelDefinition(true)
-                .setMaxItemsPerPage(5),
+                .setIncludeModelDefinition(true),
             new Context("key", "value"));
 
         modelsListWithOptionsPagedIterable.forEach(

@@ -120,8 +120,8 @@ public class ModelsTest extends ModelsTestBase {
         AtomicInteger pageCount = new AtomicInteger();
 
         // List models in multiple pages
-        client.listModels(new ListModelsOptions().setMaxItemsPerPage(2), Context.NONE)
-            .iterableByPage()
+        client.listModels(new ListModelsOptions(), Context.NONE)
+            .iterableByPage(2)
             .forEach(digitalTwinsModelDataPagedResponse -> {
                 pageCount.getAndIncrement();
                 logger.info("content for this page " + pageCount);

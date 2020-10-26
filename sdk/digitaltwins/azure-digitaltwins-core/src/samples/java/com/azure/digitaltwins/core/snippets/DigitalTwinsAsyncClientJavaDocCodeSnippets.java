@@ -609,7 +609,6 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
         // BEGIN: com.azure.digitaltwins.core.asyncClient.listModels#Options
         digitalTwinsAsyncClient.listModels(
             new ListModelsOptions()
-                .setMaxItemsPerPage(5)
                 .setIncludeModelDefinition(true))
             .doOnNext(model -> System.out.println("Retrieved model with Id: " + model.getModelId()))
             .subscribe();
@@ -778,7 +777,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
         digitalTwinsAsyncClient.query(
             "SELECT * FROM digitaltwins",
             BasicDigitalTwin.class,
-            new QueryOptions().setMaxItemsPerPage(5))
+            new QueryOptions())
             .doOnNext(
                 basicTwin -> System.out.println("Retrieved digitalTwin query result with Id: " + basicTwin.getId()))
             .subscribe();
@@ -788,7 +787,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
         digitalTwinsAsyncClient.query(
             "SELECT * FROM digitaltwins",
             String.class,
-            new QueryOptions().setMaxItemsPerPage(5))
+            new QueryOptions())
             .doOnNext(twinString -> System.out.println("Retrieved digitalTwin query result with Id: " + twinString))
             .subscribe();
         // END: com.azure.digitaltwins.core.asyncClient.query#String-Options#String
