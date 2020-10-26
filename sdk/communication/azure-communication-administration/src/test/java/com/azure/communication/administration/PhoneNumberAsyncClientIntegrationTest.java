@@ -13,11 +13,13 @@ import com.azure.communication.administration.models.NumberConfigurationResponse
 import com.azure.communication.administration.models.NumberUpdateCapabilities;
 import com.azure.communication.administration.models.PhoneNumberCountry;
 import com.azure.communication.administration.models.PhoneNumberEntity;
+import com.azure.communication.administration.models.PhoneNumberRelease;
 import com.azure.communication.administration.models.PhoneNumberSearch;
 import com.azure.communication.administration.models.PhonePlan;
 import com.azure.communication.administration.models.PhonePlanGroup;
 import com.azure.communication.administration.models.PstnConfiguration;
 import com.azure.communication.administration.models.ReleaseResponse;
+import com.azure.communication.administration.models.ReleaseStatus;
 import com.azure.communication.administration.models.SearchStatus;
 import com.azure.communication.administration.models.UpdateNumberCapabilitiesResponse;
 import com.azure.communication.administration.models.UpdatePhoneNumberCapabilitiesResponse;
@@ -523,6 +525,22 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
                 assertEquals(SearchStatus.SUCCESS, item.getStatus());
             })
             .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void beginReleasePhoneNumbers(HttpClient httpClient) {
+        PhoneNumber phoneNumber = new PhoneNumber(PHONENUMBER_TO_RELEASE);
+        List<PhoneNumber> phoneNumbers = new ArrayList<>();
+        phoneNumbers.add(phoneNumber);
+        Duration pollInterval = Duration.ofSeconds(5);
+        PollerFlux<PhoneNumberRelease, PhoneNumberRelease> poller =
+            this.getClient(httpClient).beginReleasePhoneNumbers(phoneNumbers, pollInterval);
+        AsyncPollResponse<PhoneNumberRelease, PhoneNumberRelease> asyncRes = 
+            poller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED).
+            blockLast();
+        PhoneNumberRelease testResult = asyncRes.getValue();
+        assertEquals(ReleaseStatus.COMPLETE, testResult.getStatus());
     }
 
     private PhoneNumberAsyncClient getClient(HttpClient httpClient) {
