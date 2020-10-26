@@ -4,7 +4,8 @@
 ### Breaking Changes 
  - Change configure item from `azure.keyvault.secret.keys` to `azure.keyvault.secret-keys`
  - Change configure item from `azure.keyvault.allow.telemetry` to `azure.keyvault.allow-telemetry`
-
+ - Change group id from `com.microsoft.azure` to `com.azure.spring`.
+ - Change artifact id from `azure-keyvault-secrets-spring-boot-starter` to `azure-spring-boot-starter-keyvault-secrets`.
 
 ## 2.3.5 (2020-09-14)
 ### Key Bug Fixes 

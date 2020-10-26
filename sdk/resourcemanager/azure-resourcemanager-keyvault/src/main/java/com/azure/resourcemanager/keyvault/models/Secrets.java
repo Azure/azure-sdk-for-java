@@ -20,7 +20,7 @@ public interface Secrets
         SupportsGettingByName<Secret>,
         SupportsListing<Secret> {
     /**
-     * Gets a Key Vault secret.
+     * Gets a Key Vault secret when the secret is enabled.
      *
      * @param name the name of the secret
      * @param version the version of the secret
@@ -29,11 +29,46 @@ public interface Secrets
     Secret getByNameAndVersion(String name, String version);
 
     /**
-     * Gets a Key Vault secret.
+     * Gets a Key Vault secret when the secret is enabled.
      *
      * @param name the name of the secret
      * @param version the version of the secret
      * @return the secret
      */
     Mono<Secret> getByNameAndVersionAsync(String name, String version);
+
+    /**
+     * Enables a secret.
+     *
+     * @param name the name of the secret
+     * @param version the version of the secret
+     * @return the secret
+     */
+    Secret enableByNameAndVersion(String name, String version);
+
+    /**
+     * Enables a secret.
+     *
+     * @param name the name of the secret
+     * @param version the version of the secret
+     * @return the secret
+     */
+    Mono<Secret> enableByNameAndVersionAsync(String name, String version);
+
+    /**
+     * Disables a secret.
+     *
+     * @param name the name of the secret
+     * @param version the version of the secret
+     */
+    void disableByNameAndVersion(String name, String version);
+
+    /**
+     * Disables a secret.
+     *
+     * @param name the name of the secret
+     * @param version the version of the secret
+     * @return completion
+     */
+    Mono<Void> disableByNameAndVersionAsync(String name, String version);
 }

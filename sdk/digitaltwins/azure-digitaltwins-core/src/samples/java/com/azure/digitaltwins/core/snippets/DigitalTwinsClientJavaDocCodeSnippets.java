@@ -56,10 +56,9 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         DigitalTwinsClient digitalTwinsClient = createDigitalTwinsClient();
 
         // BEGIN: com.azure.digitaltwins.core.syncClient.createDigitalTwins#String-Object-Class#BasicDigitalTwin
-        String modelId = "dtmi:samples:Building;1";
+        String modelId = "dtmi:com:samples:Building;1";
 
-        BasicDigitalTwin basicTwin = new BasicDigitalTwin()
-            .setId("myDigitalTwinId")
+        BasicDigitalTwin basicTwin = new BasicDigitalTwin("myDigitalTwinId")
             .setMetadata(
                 new DigitalTwinMetadata()
                     .setModelId(modelId)
@@ -86,17 +85,16 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsClient#createDigitalTwinWithResponse(String, Object, Class, DigitalTwinsAddOptions, Context)}
+     * {@link DigitalTwinsClient#createDigitalTwinWithResponse(String, Object, Class, CreateDigitalTwinOptions, Context)}
      */
     @Override
     public void createDigitalTwinWithResponse() {
         DigitalTwinsClient digitalTwinsClient = createDigitalTwinsClient();
 
         // BEGIN: com.azure.digitaltwins.core.syncClient.createDigitalTwinsWithResponse#String-Object-Class-Options-Context#BasicDigitalTwin
-        String modelId = "dtmi:samples:Building;1";
+        String modelId = "dtmi:com:samples:Building;1";
 
-        BasicDigitalTwin basicDigitalTwin = new BasicDigitalTwin()
-            .setId("myDigitalTwinId")
+        BasicDigitalTwin basicDigitalTwin = new BasicDigitalTwin("myDigitalTwinId")
             .setMetadata(
                 new DigitalTwinMetadata()
                     .setModelId(modelId)
@@ -106,7 +104,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             basicDigitalTwin.getId(),
             basicDigitalTwin,
             BasicDigitalTwin.class,
-            new DigitalTwinsAddOptions(),
+            new CreateDigitalTwinOptions(),
             new Context("Key", "Value"));
 
         System.out.println("Response http status: "
@@ -122,7 +120,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             basicDigitalTwin.getId(),
             stringPayload,
             String.class,
-            new DigitalTwinsAddOptions(),
+            new CreateDigitalTwinOptions(),
             new Context("Key", "Value"));
 
         System.out.println(
@@ -157,7 +155,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsClient#getDigitalTwinWithResponse(String, Class, DigitalTwinsGetByIdOptions, Context)}
+     * {@link DigitalTwinsClient#getDigitalTwinWithResponse(String, Class, GetDigitalTwinOptions, Context)}
      */
     @Override
     public void getDigitalTwinWithResponse() {
@@ -167,7 +165,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         Response<BasicDigitalTwin> basicTwinResultWithResponse = digitalTwinsClient.getDigitalTwinWithResponse(
             "myDigitalTwinId",
             BasicDigitalTwin.class,
-            new DigitalTwinsGetByIdOptions(),
+            new GetDigitalTwinOptions(),
             new Context("key", "value"));
 
         System.out.println("Http status code: " + basicTwinResultWithResponse.getStatusCode());
@@ -178,7 +176,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         Response<String> stringResultWithResponse = digitalTwinsClient.getDigitalTwinWithResponse(
             "myDigitalTwinId",
             String.class,
-            new DigitalTwinsGetByIdOptions(),
+            new GetDigitalTwinOptions(),
             new Context("key", "value"));
 
         System.out.println("Http response status: " + stringResultWithResponse.getStatusCode());
@@ -205,7 +203,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsClient#updateDigitalTwinWithResponse(String, List, DigitalTwinsUpdateOptions, Context)}
+     * {@link DigitalTwinsClient#updateDigitalTwinWithResponse(String, List, UpdateDigitalTwinOptions, Context)}
      */
     @Override
     public void updateDigitalTwinWithResponse() {
@@ -218,7 +216,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         Response<Void> response = digitalTwinsClient.updateDigitalTwinWithResponse(
             "myDigitalTwinId",
             updateOperationUtility.getUpdateOperations(),
-            new DigitalTwinsUpdateOptions(),
+            new UpdateDigitalTwinOptions(),
             new Context("key", "value"));
 
         System.out.println("Update completed with HTTP status code: " + response.getStatusCode());
@@ -239,7 +237,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
     /**
      * Generates code samples for using
-     * @link DigitalTwinsClient#deleteDigitalTwinWithResponse(String, DigitalTwinsDeleteOptions, Context)}
+     * @link DigitalTwinsClient#deleteDigitalTwinWithResponse(String, DeleteDigitalTwinOptions, Context)}
      */
     @Override
     public void deleteDigitalTwinWithResponse() {
@@ -248,7 +246,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         // BEGIN: com.azure.digitaltwins.core.syncClient.deleteDigitalTwinWithResponse#String-Options-Context
         Response<Void> response = digitalTwinsClient.deleteDigitalTwinWithResponse(
             "myDigitalTwinId",
-            new DigitalTwinsDeleteOptions(),
+            new DeleteDigitalTwinOptions(),
             new Context("key", "value"));
 
         System.out.println("Deleted digital twin HTTP response status code: " + response.getStatusCode());
@@ -265,11 +263,11 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     @Override
     public void createRelationship() {
         // BEGIN: com.azure.digitaltwins.core.syncClient.createRelationship#String-String-Object-Class#BasicRelationship
-        BasicRelationship buildingToFloorBasicRelationship = new BasicRelationship()
-            .setId("myRelationshipId")
-            .setSourceId("mySourceDigitalTwinId")
-            .setTargetId("myTargetDigitalTwinId")
-            .setName("contains")
+        BasicRelationship buildingToFloorBasicRelationship = new BasicRelationship(
+                "myRelationshipId",
+                "mySourceDigitalTwinId",
+                "myTargetDigitalTwinId",
+                "contains")
             .addCustomProperty("Prop1", "Prop1 value")
             .addCustomProperty("Prop2", 6);
 
@@ -281,9 +279,9 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
         System.out.println(
             "Created relationship with Id: " +
-            createdRelationship.getId() +
-            " from: " + createdRelationship.getSourceId() +
-            " to: " + createdRelationship.getTargetId());
+            createdRelationship.getRelationshipId() +
+            " from: " + createdRelationship.getSourceDigitalTwinId() +
+            " to: " + createdRelationship.getTargetDigitalTwinId());
         // END: com.azure.digitaltwins.core.syncClient.createRelationship#String-String-Object-Class#BasicRelationship
 
         // BEGIN: com.azure.digitaltwins.core.syncClient.createRelationship#String-String-Object-Class#String
@@ -301,16 +299,16 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsClient#createRelationshipWithResponse(String, String, Object, Class, DigitalTwinsAddRelationshipOptions, Context)}
+     * {@link DigitalTwinsClient#createRelationshipWithResponse(String, String, Object, Class, CreateRelationshipOptions, Context)}
      */
     @Override
     public void createRelationshipWithResponse() {
         // BEGIN: com.azure.digitaltwins.core.syncClient.createRelationshipWithResponse#String-String-Object-Class-Options-Context#BasicRelationship
-        BasicRelationship buildingToFloorBasicRelationship = new BasicRelationship()
-            .setId("myRelationshipId")
-            .setSourceId("mySourceDigitalTwinId")
-            .setTargetId("myTargetDigitalTwinId")
-            .setName("contains")
+        BasicRelationship buildingToFloorBasicRelationship = new BasicRelationship(
+                "myRelationshipId",
+                "mySourceDigitalTwinId",
+                "myTargetDigitalTwinId",
+                "contains")
             .addCustomProperty("Prop1", "Prop1 value")
             .addCustomProperty("Prop2", 6);
 
@@ -320,14 +318,14 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
                 "myRelationshipId",
                 buildingToFloorBasicRelationship,
                 BasicRelationship.class,
-                new DigitalTwinsAddRelationshipOptions(),
+                new CreateRelationshipOptions(),
                 new Context("key", "value"));
 
         System.out.println(
             "Created relationship with Id: " +
-                createdRelationshipWithResponse.getValue().getId() +
-                " from: " + createdRelationshipWithResponse.getValue().getSourceId() +
-                " to: " + createdRelationshipWithResponse.getValue().getTargetId() +
+                createdRelationshipWithResponse.getValue().getRelationshipId() +
+                " from: " + createdRelationshipWithResponse.getValue().getSourceDigitalTwinId() +
+                " to: " + createdRelationshipWithResponse.getValue().getTargetDigitalTwinId() +
                 " Http status code: " +
                 createdRelationshipWithResponse.getStatusCode());
         // END: com.azure.digitaltwins.core.syncClient.createRelationshipWithResponse#String-String-Object-Class-Options-Context#BasicRelationship
@@ -340,7 +338,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             "myRelationshipId",
             relationshipPayload,
             String.class,
-            new DigitalTwinsAddRelationshipOptions(),
+            new CreateRelationshipOptions(),
             new Context("key", "value"));
 
         System.out.println(
@@ -364,10 +362,10 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
         System.out.println(
             "Retrieved relationship with Id: "
-            + retrievedRelationship.getId() +
+            + retrievedRelationship.getRelationshipId() +
             " from: " +
-            retrievedRelationship.getSourceId() +
-            " to: " + retrievedRelationship.getTargetId());
+            retrievedRelationship.getSourceDigitalTwinId() +
+            " to: " + retrievedRelationship.getTargetDigitalTwinId());
         // END: com.azure.digitaltwins.core.syncClient.getRelationship#String#BasicRelationship
 
         // BEGIN: com.azure.digitaltwins.core.syncClient.getRelationship#String#String
@@ -382,7 +380,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsClient#getRelationshipWithResponse(String, String, Class, DigitalTwinsGetRelationshipByIdOptions, Context)}
+     * {@link DigitalTwinsClient#getRelationshipWithResponse(String, String, Class, GetRelationshipOptions, Context)}
      */
     @Override
     public void getRelationshipWithResponse() {
@@ -392,15 +390,15 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
                 "myDigitalTwinId",
                 "myRelationshipName",
                 BasicRelationship.class,
-                new DigitalTwinsGetRelationshipByIdOptions(),
+                new GetRelationshipOptions(),
                 new Context("key", "value"));
 
         System.out.println(
             "Retrieved relationship with Id: "
-                + retrievedRelationshipWithResponse.getValue().getId() +
+                + retrievedRelationshipWithResponse.getValue().getRelationshipId() +
                 " from: " +
-                retrievedRelationshipWithResponse.getValue().getSourceId() +
-                " to: " + retrievedRelationshipWithResponse.getValue().getTargetId() +
+                retrievedRelationshipWithResponse.getValue().getSourceDigitalTwinId() +
+                " to: " + retrievedRelationshipWithResponse.getValue().getTargetDigitalTwinId() +
                 "HTTP status code: " + retrievedRelationshipWithResponse.getStatusCode());
         // END: com.azure.digitaltwins.core.syncClient.getRelationshipWithResponse#String-String-Class-Options-Context#BasicRelationship
 
@@ -409,7 +407,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             "myDigitalTwinId",
             "myRelationshipName",
             String.class,
-            new DigitalTwinsGetRelationshipByIdOptions(),
+            new GetRelationshipOptions(),
             new Context("key", "value"));
 
         System.out.println(
@@ -438,7 +436,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsClient#updateRelationshipWithResponse(String, String, List, DigitalTwinsUpdateRelationshipOptions, Context)}
+     * {@link DigitalTwinsClient#updateRelationshipWithResponse(String, String, List, UpdateRelationshipOptions, Context)}
      */
     @Override
     public void updateRelationshipWithResponse() {
@@ -450,7 +448,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             "myDigitalTwinId",
             "myRelationshipId",
             updateOperationUtility.getUpdateOperations(),
-            new DigitalTwinsUpdateRelationshipOptions(),
+            new UpdateRelationshipOptions(),
             new Context("key", "value"));
 
         System.out.println("Relationship updated with status code: " + updateResponse.getStatusCode());
@@ -469,7 +467,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsClient#deleteRelationshipWithResponse(String, String, DigitalTwinsDeleteRelationshipOptions, Context)}
+     * {@link DigitalTwinsClient#deleteRelationshipWithResponse(String, String, DeleteRelationshipOptions, Context)}
      */
     @Override
     public void deleteRelationshipWithResponse() {
@@ -477,7 +475,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         Response<Void> deleteResponse = digitalTwinsSyncClient.deleteRelationshipWithResponse(
             "myDigitalTwinId",
             "myRelationshipId",
-            new DigitalTwinsDeleteRelationshipOptions(),
+            new DeleteRelationshipOptions(),
             new Context("key", "value"));
 
         System.out.println("Deleted relationship with HTTP status code: " + deleteResponse.getStatusCode());
@@ -486,7 +484,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
     /**
      * Generates code samples for using {@link DigitalTwinsClient#listRelationships(String, Class)}
-     * and {@link DigitalTwinsClient#listRelationships(String, String, Class, DigitalTwinsListRelationshipsOptions, Context)}
+     * and {@link DigitalTwinsClient#listRelationships(String, String, Class, ListRelationshipsOptions, Context)}
      */
     @Override
     public void listRelationships() {
@@ -496,7 +494,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             BasicRelationship.class);
 
         for (BasicRelationship rel : pagedRelationshipsByItem) {
-            System.out.println("Retrieved relationship with Id: " + rel.getId());
+            System.out.println("Retrieved relationship with Id: " + rel.getRelationshipId());
         }
         // END: com.azure.digitaltwins.core.syncClient.listRelationships#String-Class#BasicRelationship#IterateByItem
 
@@ -515,11 +513,11 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             "myDigitalTwinId",
             "myRelationshipName",
             BasicRelationship.class,
-            new DigitalTwinsListRelationshipsOptions(),
+            new ListRelationshipsOptions(),
             new Context("Key", "value"));
 
         for (BasicRelationship rel : pagedRelationshipByNameByItem) {
-            System.out.println("Retrieved relationship with Id: " + rel.getId());
+            System.out.println("Retrieved relationship with Id: " + rel.getRelationshipId());
         }
         // END: com.azure.digitaltwins.core.syncClient.listRelationships#String-String-Class-Options-Context#BasicRelationship#IterateByItem
 
@@ -528,7 +526,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             "myDigitalTwinId",
             "myRelationshipId",
             String.class,
-            new DigitalTwinsListRelationshipsOptions(),
+            new ListRelationshipsOptions(),
             new Context("key", "value"));
 
         for (String rel : pagedRelationshipsStringByNameByItem) {
@@ -539,7 +537,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsClient#listIncomingRelationships(String, DigitalTwinsListIncomingRelationshipsOptions, Context)}
+     * {@link DigitalTwinsClient#listIncomingRelationships(String, ListIncomingRelationshipsOptions, Context)}
      * and {@link DigitalTwinsClient#listIncomingRelationships(String)}
      */
     @Override
@@ -548,7 +546,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         PagedIterable<IncomingRelationship> pagedIncomingRelationships =
             digitalTwinsSyncClient.listIncomingRelationships(
                 "myDigitalTwinId",
-                new DigitalTwinsListIncomingRelationshipsOptions(),
+                new ListIncomingRelationshipsOptions(),
                 new Context("key", "value"));
 
         for (IncomingRelationship rel : pagedIncomingRelationships) {
@@ -556,7 +554,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
                 "Retrieved relationship with Id: " +
                     rel.getRelationshipId() +
                     " from: " +
-                    rel.getSourceId() +
+                    rel.getSourceDigitalTwinId() +
                     " to: myDigitalTwinId");
         }
         // END: com.azure.digitaltwins.core.syncClient.listIncomingRelationships#String
@@ -565,7 +563,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         PagedIterable<IncomingRelationship> pagedIncomingRelationshipsWithContext =
             digitalTwinsSyncClient.listIncomingRelationships(
                 "myDigitalTwinId",
-                new DigitalTwinsListIncomingRelationshipsOptions(),
+                new ListIncomingRelationshipsOptions(),
                 new Context("key", "value"));
 
         for (IncomingRelationship rel : pagedIncomingRelationshipsWithContext) {
@@ -573,7 +571,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
                 "Retrieved relationship with Id: " +
                 rel.getRelationshipId() +
                 " from: " +
-                rel.getSourceId() +
+                rel.getSourceDigitalTwinId() +
                 " to: myDigitalTwinId");
         }
         // END: com.azure.digitaltwins.core.syncClient.listIncomingRelationships#String-Options-Context
@@ -597,13 +595,13 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             Arrays.asList(model1, model2, model3));
 
         createdModels.forEach(model ->
-            System.out.println("Retrieved model with Id: " + model.getId()));
+            System.out.println("Retrieved model with Id: " + model.getModelId()));
         // END: com.azure.digitaltwins.core.syncClient.createModels#Iterable
     }
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsClient#createModelsWithResponse(Iterable, DigitalTwinModelsAddOptions, Context)}
+     * {@link DigitalTwinsClient#createModelsWithResponse(Iterable, CreateModelsOptions, Context)}
      */
     @Override
     public void createModelsWithResponse() {
@@ -614,13 +612,13 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         // BEGIN: com.azure.digitaltwins.core.syncClient.createModelsWithResponse#Iterable
         Response<Iterable<DigitalTwinsModelData>> createdModels = digitalTwinsSyncClient.createModelsWithResponse(
             Arrays.asList(model1, model2, model3),
-            new DigitalTwinModelsAddOptions(),
+            new CreateModelsOptions(),
             new Context("key", "value"));
 
         System.out.println("Received HTTP response of " + createdModels.getStatusCode());
 
         createdModels.getValue()
-            .forEach(model -> System.out.println("Retrieved model with Id: " + model.getId()));
+            .forEach(model -> System.out.println("Retrieved model with Id: " + model.getModelId()));
         // END: com.azure.digitaltwins.core.syncClient.createModelsWithResponse#Iterable
     }
 
@@ -630,50 +628,50 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     @Override
     public void getModel() {
         // BEGIN: com.azure.digitaltwins.core.syncClient.getModel#String
-        DigitalTwinsModelData model = digitalTwinsSyncClient.getModel("dtmi:samples:Building;1");
+        DigitalTwinsModelData model = digitalTwinsSyncClient.getModel("dtmi:com:samples:Building;1");
 
-        System.out.println("Retrieved model with Id: " + model.getId());
+        System.out.println("Retrieved model with Id: " + model.getModelId());
         // END: com.azure.digitaltwins.core.syncClient.getModel#String
     }
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsClient#getModelWithResponse(String, DigitalTwinModelsGetByIdOptions, Context)}
+     * {@link DigitalTwinsClient#getModelWithResponse(String, GetModelOptions, Context)}
      */
     @Override
     public void getModelWithResponse() {
         // BEGIN: com.azure.digitaltwins.core.syncClient.getModelWithResponse#String
         Response<DigitalTwinsModelData> modelWithResponse = digitalTwinsSyncClient.getModelWithResponse(
-            "dtmi:samples:Building;1",
-            new DigitalTwinModelsGetByIdOptions(),
+            "dtmi:com:samples:Building;1",
+            new GetModelOptions(),
             new Context("key", "value"));
 
         System.out.println("Received HTTP response with status code: " + modelWithResponse.getStatusCode());
-        System.out.println("Retrieved model with Id: " + modelWithResponse.getValue().getId());
+        System.out.println("Retrieved model with Id: " + modelWithResponse.getValue().getModelId());
         // END: com.azure.digitaltwins.core.syncClient.getModelWithResponse#String
     }
 
     /**
      * Generates code samples for using {@link DigitalTwinsClient#listModels()} and
-     * {@link DigitalTwinsClient#listModels(DigitalTwinModelsListOptions, Context)}
+     * {@link DigitalTwinsClient#listModels(ListModelsOptions, Context)}
      */
     @Override
     public void listModels() {
         // BEGIN: com.azure.digitaltwins.core.syncClient.listModels
         PagedIterable<DigitalTwinsModelData> modelsListPagedIterable =  digitalTwinsSyncClient.listModels();
 
-        modelsListPagedIterable.forEach(model -> System.out.println("Retrieved a model with Id: " + model.getId()));
+        modelsListPagedIterable.forEach(model -> System.out.println("Retrieved a model with Id: " + model.getModelId()));
         // END: com.azure.digitaltwins.core.syncClient.listModels
 
         // BEGIN: com.azure.digitaltwins.core.syncClient.listModels#Options
         PagedIterable<DigitalTwinsModelData> modelsListWithOptionsPagedIterable =  digitalTwinsSyncClient.listModels(
-            new DigitalTwinModelsListOptions()
+            new ListModelsOptions()
                 .setIncludeModelDefinition(true)
                 .setMaxItemsPerPage(5),
             new Context("key", "value"));
 
         modelsListWithOptionsPagedIterable.forEach(
-            model -> System.out.println("Retrieved a model with Id: " + model.getId()));
+            model -> System.out.println("Retrieved a model with Id: " + model.getModelId()));
         // END: com.azure.digitaltwins.core.syncClient.listModels#Options
     }
 
@@ -683,20 +681,20 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     @Override
     public void decommissionModel() {
         // BEGIN: com.azure.digitaltwins.core.syncClient.decommissionModel#String
-        digitalTwinsSyncClient.decommissionModel("dtmi:samples:Building;1");
+        digitalTwinsSyncClient.decommissionModel("dtmi:com:samples:Building;1");
         // END: com.azure.digitaltwins.core.syncClient.decommissionModel#String
     }
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsClient#decommissionModelWithResponse(String, DigitalTwinModelsUpdateOptions, Context)}
+     * {@link DigitalTwinsClient#decommissionModelWithResponse(String, DecommissionModelOptions, Context)}
      */
     @Override
     public void decommissionModelWithResponse() {
         // BEGIN: com.azure.digitaltwins.core.syncClient.decommissionModelWithResponse#String
         Response<Void> response = digitalTwinsSyncClient.decommissionModelWithResponse(
-            "dtmi:samples:Building;1",
-            new DigitalTwinModelsUpdateOptions(),
+            "dtmi:com:samples:Building;1",
+            new DecommissionModelOptions(),
             new Context("key", "value"));
 
         System.out.println("Received decommission operation HTTP response with status: " + response.getStatusCode());
@@ -709,20 +707,20 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     @Override
     public void deleteModel() {
         // BEGIN: com.azure.digitaltwins.core.syncClient.deleteModel#String
-        digitalTwinsSyncClient.deleteModel("dtmi:samples:Building;1");
+        digitalTwinsSyncClient.deleteModel("dtmi:com:samples:Building;1");
         // END: com.azure.digitaltwins.core.syncClient.deleteModel#String
     }
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsClient#deleteModelWithResponse(String, DigitalTwinModelsDeleteOptions, Context)}
+     * {@link DigitalTwinsClient#deleteModelWithResponse(String, DeleteModelOptions, Context)}
      */
     @Override
     public void deleteModelWithResponse() {
         // BEGIN: com.azure.digitaltwins.core.syncClient.deleteModelWithResponse#String
         Response<Void> response = digitalTwinsSyncClient.deleteModelWithResponse(
-            "dtmi:samples:Building;1",
-            new DigitalTwinModelsDeleteOptions(),
+            "dtmi:com:samples:Building;1",
+            new DeleteModelOptions(),
             new Context("key", "value"));
 
         System.out.println("Received delete model operation HTTP response with status: " + response.getStatusCode());
@@ -741,7 +739,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         // BEGIN: com.azure.digitaltwins.core.syncClient.getComponent#String-String-Class
         String componentString = digitalTwinsSyncClient.getComponent(
             "myDigitalTwinId",
-            "myComponentPath",
+            "myComponentName",
             String.class);
 
         System.out.println("Retrieved component: " + componentString);
@@ -750,16 +748,16 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsClient#getComponentWithResponse(String, String, Class, DigitalTwinsGetComponentOptions, Context)}
+     * {@link DigitalTwinsClient#getComponentWithResponse(String, String, Class, GetComponentOptions, Context)}
      */
     @Override
     public void getComponentWithResponse() {
         // BEGIN: com.azure.digitaltwins.core.syncClient.getComponentWithResponse#String-String-Class-Options-Context
         Response<String> componentStringWithResponse = digitalTwinsSyncClient.getComponentWithResponse(
             "myDigitalTwinId",
-            "myComponentPath",
+            "myComponentName",
             String.class,
-            new DigitalTwinsGetComponentOptions(),
+            new GetComponentOptions(),
             new Context("key", "value"));
 
         System.out.println(
@@ -786,7 +784,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsClient#updateComponentWithResponse(String, String, List, DigitalTwinsUpdateComponentOptions, Context)}
+     * {@link DigitalTwinsClient#updateComponentWithResponse(String, String, List, UpdateComponentOptions, Context)}
      */
     @Override
     public void updateComponentWithResponse() {
@@ -798,7 +796,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             "myDigitalTwinId",
             "myComponentName",
             updateOperationUtility.getUpdateOperations(),
-            new DigitalTwinsUpdateComponentOptions(),
+            new UpdateComponentOptions(),
             new Context("key", "value"));
 
         System.out.println(
@@ -812,7 +810,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     //region QuerySnippets
     /**
      * Generates code samples for using {@link DigitalTwinsClient#query(String, Class)} and
-     * {@link DigitalTwinsAsyncClient#query(String, Class, QueryTwinsOptions)}
+     * {@link DigitalTwinsAsyncClient#query(String, Class, QueryOptions)}
      */
     @Override
     public void query() {
@@ -839,7 +837,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         PagedIterable<BasicDigitalTwin> queryResultBasicDigitalTwinWithContext = digitalTwinsSyncClient.query(
             "SELECT * FROM digitaltwins",
             BasicDigitalTwin.class,
-            new QueryTwinsOptions(),
+            new QueryOptions(),
             new Context("key", "value"));
 
         queryResultBasicDigitalTwinWithContext
@@ -851,7 +849,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         PagedIterable<String> queryResultStringWithContext = digitalTwinsSyncClient.query(
             "SELECT * FROM digitaltwins",
             String.class,
-            new QueryTwinsOptions(),
+            new QueryOptions(),
             new Context("key", "value"));
 
         queryResultStringWithContext
@@ -879,7 +877,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsClient#createEventRouteWithResponse(String, EventRoute, EventRoutesAddOptions, Context)}
+     * {@link DigitalTwinsClient#createEventRouteWithResponse(String, EventRoute, CreateEventRouteOptions, Context)}
      */
     @Override
     public void createEventRouteWithResponse() {
@@ -891,7 +889,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         Response<Void> response = digitalTwinsSyncClient.createEventRouteWithResponse(
             "myEventRouteId",
             eventRoute,
-            new EventRoutesAddOptions(),
+            new CreateEventRouteOptions(),
             new Context("key", "value"));
 
         System.out.println("Created an event rout with HTTP status code: " + response.getStatusCode());
@@ -906,26 +904,26 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         // BEGIN: com.azure.digitaltwins.core.syncClient.getEventRoute#String
         EventRoute eventRoute = digitalTwinsSyncClient.getEventRoute("myEventRouteId");
 
-        System.out.println("Retrieved event route with Id: " + eventRoute.getId());
+        System.out.println("Retrieved event route with Id: " + eventRoute.getEventRouteId());
         // END: com.azure.digitaltwins.core.syncClient.getEventRoute#String
     }
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsClient#getEventRouteWithResponse(String, EventRoutesGetByIdOptions, Context)}
+     * {@link DigitalTwinsClient#getEventRouteWithResponse(String, GetEventRouteOptions, Context)}
      */
     @Override
     public void getEventRouteWithResponse() {
         // BEGIN: com.azure.digitaltwins.core.syncClient.getEventRouteWithResponse#String-Options-Context
         Response<EventRoute> eventRouteWithResponse = digitalTwinsSyncClient.getEventRouteWithResponse(
             "myEventRouteId",
-            new EventRoutesGetByIdOptions(),
+            new GetEventRouteOptions(),
             new Context("key", "value"));
 
         System.out.println(
             "Received get event route operation response with HTTP status code: " +
             eventRouteWithResponse.getStatusCode());
-        System.out.println("Retrieved event route with Id: " + eventRouteWithResponse.getValue().getId());
+        System.out.println("Retrieved event route with Id: " + eventRouteWithResponse.getValue().getEventRouteId());
         // END: com.azure.digitaltwins.core.syncClient.getEventRouteWithResponse#String-Options-Context
     }
 
@@ -941,14 +939,14 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsClient#deleteEventRouteWithResponse(String, EventRoutesDeleteOptions, Context)}
+     * {@link DigitalTwinsClient#deleteEventRouteWithResponse(String, DeleteEventRouteOptions, Context)}
      */
     @Override
     public void deleteEventRouteWithResponse() {
         // BEGIN: com.azure.digitaltwins.core.syncClient.deleteEventRouteWithResponse#String-Options-Context
         Response<Void> deleteResponse = digitalTwinsSyncClient.deleteEventRouteWithResponse(
             "myEventRouteId",
-            new EventRoutesDeleteOptions(),
+            new DeleteEventRouteOptions(),
             new Context("key", "value"));
 
         System.out.println(
@@ -959,23 +957,25 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
     /**
      * Generates code samples for using {@link DigitalTwinsClient#listEventRoutes()} and
-     * {@link DigitalTwinsClient#listEventRoutes(EventRoutesListOptions, Context)}
+     * {@link DigitalTwinsClient#listEventRoutes(ListEventRoutesOptions, Context)}
      */
     @Override
     public void listEventRoutes() {
         // BEGIN: com.azure.digitaltwins.core.syncClient.listEventRoutes
         PagedIterable<EventRoute> listResponse =  digitalTwinsSyncClient.listEventRoutes();
 
-        listResponse.forEach(eventRoute -> System.out.println("Retrieved event route with Id: " + eventRoute.getId()));
+        listResponse.forEach(
+            eventRoute -> System.out.println("Retrieved event route with Id: " + eventRoute.getEventRouteId()));
         // END: com.azure.digitaltwins.core.syncClient.listEventRoutes
 
         // BEGIN: com.azure.digitaltwins.core.syncClient.listEventRoutes#Options-Context
         PagedIterable<EventRoute> listResponseWithOptions =  digitalTwinsSyncClient.listEventRoutes(
-            new EventRoutesListOptions().setMaxItemsPerPage(5),
+            new ListEventRoutesOptions().setMaxItemsPerPage(5),
             new Context("key", "value"));
 
         listResponseWithOptions
-            .forEach(eventRoute -> System.out.println("Retrieved event route with Id: " + eventRoute.getId()));
+            .forEach(
+                eventRoute -> System.out.println("Retrieved event route with Id: " + eventRoute.getEventRouteId()));
         // END: com.azure.digitaltwins.core.syncClient.listEventRoutes#Options-Context
     }
 
@@ -1008,7 +1008,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsClient#publishTelemetryWithResponse(String, String, Object, DigitalTwinsSendTelemetryOptions, Context)}
+     * {@link DigitalTwinsClient#publishTelemetryWithResponse(String, String, Object, PublishTelemetryOptions, Context)}
      */
     @Override
     public void publishTelemetryWithResponse() {
@@ -1017,7 +1017,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             "myDigitalTwinId",
             UUID.randomUUID().toString(),
             "{\"Telemetry1\": 5}",
-            new DigitalTwinsSendTelemetryOptions().setTimestamp(OffsetDateTime.now(ZoneId.systemDefault())),
+            new PublishTelemetryOptions().setTimestamp(OffsetDateTime.now(ZoneId.systemDefault())),
             new Context("key", "value"));
 
         System.out.println(
@@ -1033,7 +1033,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             "myDigitalTwinId",
             UUID.randomUUID().toString(),
             telemetryPayload,
-            new DigitalTwinsSendTelemetryOptions().setTimestamp(OffsetDateTime.now(ZoneId.systemDefault())),
+            new PublishTelemetryOptions().setTimestamp(OffsetDateTime.now(ZoneId.systemDefault())),
             new Context("key", "value"));
 
         System.out.println(
@@ -1070,7 +1070,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsClient#publishComponentTelemetryWithResponse(String, String, String, Object, DigitalTwinsSendComponentTelemetryOptions, Context)}
+     * {@link DigitalTwinsClient#publishComponentTelemetryWithResponse(String, String, String, Object, PublishComponentTelemetryOptions, Context)}
      */
     @Override
     public void publishComponentTelemetryWithResponse() {
@@ -1080,7 +1080,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             "myComponentName",
             UUID.randomUUID().toString(),
             "{\"Telemetry1\": 5}",
-            new DigitalTwinsSendComponentTelemetryOptions().setTimestamp(OffsetDateTime.now(ZoneId.systemDefault())),
+            new PublishComponentTelemetryOptions().setTimestamp(OffsetDateTime.now(ZoneId.systemDefault())),
             new Context("key", "value"));
 
         System.out.println(
@@ -1097,7 +1097,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             "myComponentName",
             UUID.randomUUID().toString(),
             telemetryPayload,
-            new DigitalTwinsSendComponentTelemetryOptions().setTimestamp(OffsetDateTime.now(ZoneId.systemDefault())),
+            new PublishComponentTelemetryOptions().setTimestamp(OffsetDateTime.now(ZoneId.systemDefault())),
             new Context("key", "value"));
 
         System.out.println(

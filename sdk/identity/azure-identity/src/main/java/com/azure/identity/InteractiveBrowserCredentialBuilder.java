@@ -4,6 +4,7 @@
 package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.identity.implementation.AuthenticationRecord;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.util.HashMap;
@@ -40,7 +41,7 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      *
      * @return An updated instance of this builder.
      */
-    public InteractiveBrowserCredentialBuilder allowUnencryptedCache() {
+    InteractiveBrowserCredentialBuilder allowUnencryptedCache() {
         this.identityClientOptions.setAllowUnencryptedCache(true);
         return this;
     }
@@ -52,7 +53,7 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      *
      * @return An updated instance of this builder with if the shared token cache enabled specified.
      */
-    public InteractiveBrowserCredentialBuilder enablePersistentCache() {
+    InteractiveBrowserCredentialBuilder enablePersistentCache() {
         this.identityClientOptions.enablePersistentCache();
         return this;
     }
@@ -65,7 +66,7 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      *
      * @return An updated instance of this builder with the configured authentication record.
      */
-    public InteractiveBrowserCredentialBuilder authenticationRecord(AuthenticationRecord authenticationRecord) {
+    InteractiveBrowserCredentialBuilder authenticationRecord(AuthenticationRecord authenticationRecord) {
         this.identityClientOptions.setAuthenticationRecord(authenticationRecord);
         return this;
     }
@@ -95,7 +96,7 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      *
      * @return An updated instance of this builder with automatic authentication disabled.
      */
-    public InteractiveBrowserCredentialBuilder disableAutomaticAuthentication() {
+    InteractiveBrowserCredentialBuilder disableAutomaticAuthentication() {
         this.automaticAuthentication = false;
         return this;
     }

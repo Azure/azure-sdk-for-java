@@ -8,7 +8,7 @@ This repo is for Spring Boot Starters of Azure services. It helps Spring Boot de
 ### Prerequisites
 - [Java Development Kit (JDK)][jdk_link] with version 8 or above
 - [Azure Subscription][azure_subscription]
-- [Maven](http://maven.apache.org/) 3.0 and above
+- [Maven](https://maven.apache.org/) 3.0 and above
 
 ### Include the Package
 To start a new project using Azure, go on [start.spring.io](https://start.spring.io) and select "Azure
@@ -28,10 +28,10 @@ Note that there is no need to add a `version` as those are managed already by th
 
 Alternatively you may want to use the [starters](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter)
 
-[//]: # ({x-version-update-start;com.azure:azure-spring-boot-starter-keyvault-secrets;current})
+[//]: # ({x-version-update-start;com.azure.spring:azure-spring-boot-starter-keyvault-secrets;current})
 ```xml
 <dependency>
-    <groupId>com.azure</groupId>
+    <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
     <version>3.0.0-beta.1</version>
 </dependency>

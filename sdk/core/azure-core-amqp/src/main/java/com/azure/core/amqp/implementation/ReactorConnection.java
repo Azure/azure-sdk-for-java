@@ -311,7 +311,7 @@ public class ReactorConnection implements AmqpConnection {
 
         return createChannel.subscribeWith(new AmqpChannelProcessor<>(connectionId, entityPath,
             channel -> channel.getEndpointStates(), retryPolicy,
-            new ClientLogger(String.format("%s<%s>", RequestResponseChannel.class, sessionName))));
+            new ClientLogger(RequestResponseChannel.class)));
     }
 
     private boolean removeSession(String sessionName, ErrorCondition errorCondition) {

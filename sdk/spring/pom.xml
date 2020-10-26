@@ -4,7 +4,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.azure</groupId>
+  <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-service</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
@@ -15,8 +15,8 @@
     <module>azure-spring-boot-starter-active-directory-b2c</module>
     <module>azure-spring-boot-starter-cosmos</module>
     <module>azure-spring-boot-starter-data-gremlin</module>
+    <module>azure-spring-boot-starter-keyvault-certificates</module>
     <module>azure-spring-boot-starter-keyvault-secrets</module>
-    <module>azure-spring-boot-starter-metrics</module>
     <module>azure-spring-boot-starter-servicebus-jms</module>
     <module>azure-spring-boot-test-application</module>
     <module>azure-spring-boot-test-core</module>
@@ -25,6 +25,7 @@
     <module>azure-spring-boot-test-keyvault</module>
     <module>azure-spring-boot-test-servicebus-jms</module>
     <module>azure-spring-cloud-test-eventhubs</module>
+    <module>azure-spring-cloud-test-storage</module>
     <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory</module>
     <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc</module>
     <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend</module>
@@ -32,6 +33,7 @@
     <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-stateless</module>
     <module>azure-spring-boot-samples/azure-spring-boot-sample-cosmos</module>
     <module>azure-spring-boot-samples/azure-spring-boot-sample-data-gremlin</module>
+    <module>azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates</module>
     <module>azure-spring-boot-samples/azure-spring-boot-sample-keyvault-secrets</module>
     <module>azure-spring-boot-samples/azure-spring-boot-sample-mediaservices</module>
     <module>azure-spring-boot-samples/azure-spring-boot-sample-servicebus</module>
@@ -41,26 +43,26 @@
     <module>azure-spring-boot-samples/azure-spring-data-sample-gremlin</module>
     <module>azure-spring-boot-samples/azure-spring-data-sample-gremlin-web-service</module>
     <module>azure-spring-boot-samples/azure-cloud-foundry-service-sample</module>
-    <module>azure-spring-boot-samples/azure-spring-cloud-cache-sample</module>
-    <module>azure-spring-boot-samples/azure-spring-cloud-appconfiguration-conversion-sample-initial</module>
-    <module>azure-spring-boot-samples/azure-spring-cloud-appconfiguration-conversion-sample-complete</module>
-    <module>azure-spring-boot-samples/azure-spring-cloud-appconfiguration-sample</module>
-    <module>azure-spring-boot-samples/azure-spring-cloud-storage-resource-sample</module>
-    <module>azure-spring-boot-samples/azure-spring-cloud-eventhubs-operation-sample</module>
-    <module>azure-spring-boot-samples/azure-spring-cloud-eventhubs-integration-sample</module>
-    <module>azure-spring-boot-samples/azure-spring-cloud-eventhubs-binder-sample</module>
-    <module>azure-spring-boot-samples/azure-spring-cloud-eventhubs-multibinders-sample</module>
-    <module>azure-spring-boot-samples/azure-spring-cloud-eventhubs-kafka-sample</module>
-    <module>azure-spring-boot-samples/azure-spring-cloud-feature-management-sample</module>
-    <module>azure-spring-boot-samples/azure-spring-cloud-feature-management-web-sample</module>
-    <module>azure-spring-boot-samples/azure-spring-cloud-servicebus-operation-sample</module>
-    <module>azure-spring-boot-samples/azure-spring-cloud-servicebus-integration-sample</module>
-    <module>azure-spring-boot-samples/azure-spring-cloud-servicebus-queue-binder-sample</module>
-    <module>azure-spring-boot-samples/azure-spring-cloud-servicebus-topic-binder-sample</module>
-    <module>azure-spring-boot-samples/azure-spring-cloud-storage-queue-operation-sample</module>
-    <module>azure-spring-boot-samples/azure-spring-cloud-storage-queue-integration-sample</module>
-    <module>azure-spring-boot-samples/azure-spring-cloud-messaging-sample</module>
-    <module>azure-spring-boot-samples/azure-spring-cloud-servicebus-queue-multibinders-sample</module>
+    <module>azure-spring-boot-samples/azure-spring-cloud-sample-appconfiguration</module>
+    <module>azure-spring-boot-samples/azure-spring-cloud-sample-appconfiguration-conversion-complete</module>
+    <module>azure-spring-boot-samples/azure-spring-cloud-sample-appconfiguration-conversion-initial</module>
+    <module>azure-spring-boot-samples/azure-spring-cloud-sample-cache</module>
+    <module>azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-binder</module>
+    <module>azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-kafka</module>
+    <module>azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-multibinders</module>
+    <module>azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-operation</module>
+    <module>azure-spring-boot-samples/azure-spring-cloud-sample-feature-management</module>
+    <module>azure-spring-boot-samples/azure-spring-cloud-sample-feature-management-web</module>
+    <module>azure-spring-boot-samples/azure-spring-cloud-sample-messaging</module>
+    <module>azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-operation</module>
+    <module>azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-queue-binder</module>
+    <module>azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-queue-multibinders</module>
+    <module>azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-topic-binder</module>
+    <module>azure-spring-boot-samples/azure-spring-cloud-sample-storage-queue-operation</module>
+    <module>azure-spring-boot-samples/azure-spring-cloud-sample-storage-resource</module>
+    <module>azure-spring-boot-samples/azure-spring-integration-sample-eventhubs</module>
+    <module>azure-spring-boot-samples/azure-spring-integration-sample-servicebus</module>
+    <module>azure-spring-boot-samples/azure-spring-integration-sample-storage-queue</module>
     <module>azure-spring-cloud-autoconfigure</module>
     <module>azure-spring-cloud-context</module>
     <module>azure-spring-cloud-storage</module>

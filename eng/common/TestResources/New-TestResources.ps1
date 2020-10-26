@@ -325,7 +325,7 @@ $shell, $shellExportFormat = if (($parentProcessName = (Get-Process -Id $PID).Pa
 } elseif (@('bash', 'csh', 'tcsh', 'zsh') -contains $parentProcessName) {
     'shell', 'export {0}={1}'
 } else {
-    'PowerShell', '$env:{0} = ''{1}'''
+    'PowerShell', '${{env:{0}}} = ''{1}'''
 }
 
 # Deploy the templates
@@ -562,7 +562,7 @@ is based on the cloud to which the template is being deployed:
 
 .PARAMETER Environment
 Name of the cloud environment. The default is the Azure Public Cloud
-('PublicCloud')
+('AzureCloud')
 
 .PARAMETER AdditionalParameters
 Optional key-value pairs of parameters to pass to the ARM template(s).

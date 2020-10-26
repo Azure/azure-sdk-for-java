@@ -12,6 +12,7 @@ import com.azure.resourcemanager.appservice.models.ConnectionStringType;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlot;
 import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlotBasic;
+import com.azure.resourcemanager.appservice.models.FunctionRuntimeStack;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.PythonVersion;
 import com.azure.resourcemanager.test.utils.TestUtilities;
@@ -144,5 +145,29 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
         Assertions.assertEquals("slot2value", slot1AppSettings.get("slot2key").value());
         Assertions.assertEquals("sticky2value", slot3AppSettings.get("sticky2key").value());
         Assertions.assertEquals("stickyvalue", slot3AppSettings.get("stickykey").value());
+    }
+
+    private static final String FUNCTION_APP_PACKAGE_URL =
+        "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/java-functions.zip";
+
+    @Test
+    public void canCRUDFunctionSlots() {
+        FunctionApp functionApp1 = appServiceManager.functionApps().define(webappName1)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withNewLinuxAppServicePlan(PricingTier.STANDARD_S1)
+            .withBuiltInImage(FunctionRuntimeStack.JAVA_8)
+            .withHttpsOnly(true)
+            .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
+            .create();
+        Assertions.assertNotNull(functionApp1);
+
+        FunctionDeploymentSlot slot1 = functionApp1.deploymentSlots().define("slot1")
+            .withConfigurationFromParent()
+            .create();
+
+        slot1.update()
+            .withPublicDockerHubImage("wordpress")
+            .apply();
     }
 }

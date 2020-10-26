@@ -1,6 +1,7 @@
 parameters:
   SDKType: client
   ServiceDirectory: not-specified # Set a default that breaks in obvious ways.
+  TestPipeline: false
   Artifacts: []
   AdditionalModules: []
   PreTestSteps: []
@@ -53,13 +54,14 @@ jobs:
           ArtifactName: 'packages'
 
     steps:
-      - task: PowerShell@2
-        displayName: Prep template pipeline for release
-        condition: and(succeeded(),eq(variables['TestPipeline'],'true'))
-        inputs:
-          pwsh: true
-          workingDirectory: $(Build.SourcesDirectory)
-          filePath: eng/scripts/SetTestPipelineVersion.ps1
+      - ${{if eq(parameters.TestPipeline, 'true')}}:
+        - task: PowerShell@2
+          displayName: Prep template pipeline for release
+          condition: succeeded()
+          inputs:
+            pwsh: true
+            workingDirectory: $(Build.SourcesDirectory)
+            filePath: eng/scripts/SetTestPipelineVersion.ps1
 
       - script: |
           echo "##vso[build.addbuildtag]Scheduled"
@@ -162,17 +164,22 @@ jobs:
           ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
         displayName: 'Verify Readmes'
 
-      - template: ../../../common/pipelines/templates/steps/verify-links.yml
+      - template: /eng/common/pipelines/templates/steps/verify-links.yml
         parameters:
-          Directory: sdk/${{ parameters.ServiceDirectory }}
+          ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+            Directory: ''
+            Urls: (git diff origin/${env:SYSTEM_PULLREQUEST_TARGETBRANCH} HEAD --name-only -- '*.md')
+          ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
+            Directory: sdk/${{ parameters.ServiceDirectory }}
           CheckLinkGuidance: $true
 
-      - ${{ each artifact in parameters.Artifacts }}:
-        - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
-          parameters:
-            PackageName: ${{artifact.name}}
-            ServiceName: ${{parameters.ServiceDirectory}}
-            ForRelease: false
+      - ${{if ne(parameters.SDKType, 'data')}}:
+        - ${{ each artifact in parameters.Artifacts }}:
+          - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
+            parameters:
+              PackageName: ${{artifact.name}}
+              ServiceName: ${{parameters.ServiceDirectory}}
+              ForRelease: false
 
       # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
       # reports. This means it is available as part of that, but also so that this is not documented in the project report.
@@ -224,7 +231,12 @@ jobs:
       - template: ../variables/globals.yml
 
     strategy:
-      matrix: ${{ parameters.TestMatrix }}
+      matrix:
+        ${{ each matrixEntry in parameters.TestMatrix }}:
+          # Skip TestFromSource jobs for SDKType data
+          ${{ if not(and(eq(matrixEntry.value.TestFromSource, 'true'), eq(parameters.SDKType, 'data'))) }}:
+            ${{ matrixEntry.key }}:
+              ${{ insert }}: ${{ matrixEntry.value }}
 
     pool:
       vmImage: $(OSVmImage)

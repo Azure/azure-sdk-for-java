@@ -44,7 +44,7 @@ public abstract class EventRoutesTestBase extends DigitalTwinsTestBase {
         PagedIterable<EventRoute> listedEventRoutes = client.listEventRoutes();
         List<String> currentEventRouteIds = new ArrayList<>();
         for (EventRoute listedEventRoute : listedEventRoutes) {
-            currentEventRouteIds.add(listedEventRoute.getId());
+            currentEventRouteIds.add(listedEventRoute.getEventRouteId());
         }
 
         for (String eventRouteId : currentEventRouteIds) {
@@ -56,7 +56,7 @@ public abstract class EventRoutesTestBase extends DigitalTwinsTestBase {
     // Note that only service returned eventRoute instances have their Id field set. When a user builds an instance locally,
     // there is no way to assign an Id to it.
     protected static void assertEventRoutesEqual(EventRoute expected, String expectedId, EventRoute actual) {
-        assertEquals(expectedId, actual.getId());
+        assertEquals(expectedId, actual.getEventRouteId());
         assertEquals(expected.getEndpointName(), actual.getEndpointName());
         assertEquals(expected.getFilter(), actual.getFilter());
     }

@@ -43,6 +43,7 @@ import reactor.core.publisher.Flux;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -506,7 +507,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     private static InternalObjectNode getDocumentDefinition(int cnt) {
         String uuid = UUID.randomUUID().toString();
         boolean boolVal = cnt % 2 == 0;
-        InternalObjectNode doc = new InternalObjectNode(String.format("{ "
+        InternalObjectNode doc = new InternalObjectNode(String.format(Locale.ROOT, "{ "
                 + "\"id\": \"%s\", "
                 + "\"prop\" : %d, "
                 + "\"_value\" : %f, "
@@ -677,9 +678,6 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     //TODO: Fix the test for GW mode
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readManyWithItemOperations() throws Exception {
-        if (this.getConnectionPolicy().getConnectionMode() == ConnectionMode.GATEWAY) {
-            throw new SkipException("Skipping gateway mode. This needs to be fixed");
-        }
 
         List<Pair<String, PartitionKey>> pairList = new ArrayList<>();
         for (int i = 0; i < createdDocuments.size(); i = i + 3) {

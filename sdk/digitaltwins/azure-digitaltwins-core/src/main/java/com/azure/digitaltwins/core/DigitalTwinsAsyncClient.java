@@ -14,9 +14,10 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImpl;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImplBuilder;
+import com.azure.digitaltwins.core.implementation.converters.DigitalTwinsModelDataConverter;
 import com.azure.digitaltwins.core.implementation.converters.EventRouteConverter;
 import com.azure.digitaltwins.core.implementation.converters.IncomingRelationshipConverter;
-import com.azure.digitaltwins.core.implementation.converters.DigitalTwinsModelDataConverter;
+import com.azure.digitaltwins.core.implementation.converters.OptionsConverter;
 import com.azure.digitaltwins.core.implementation.models.QuerySpecification;
 import com.azure.digitaltwins.core.implementation.serializer.DeserializationHelpers;
 import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsStringSerializer;
@@ -92,7 +93,8 @@ public final class DigitalTwinsAsyncClient {
     //region Digital twin APIs
 
     /**
-     * Creates a digital twin.
+     * Creates a digital twin. If the provided digital twin Id is already in use, then this will attempt
+     * to replace the existing digital twin with the provided digital twin.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -104,7 +106,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.createDigitalTwins#String-Object-Class#String}
      *
-     * @param digitalTwinId The Id of the digital twin.
+     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param digitalTwin The application/json object representing the digital twin to create.
      * @param clazz The model class to serialize the request with and deserialize the response with.
      * @param <T> The generic type to serialize the request with and deserialize the response with.
@@ -118,7 +120,8 @@ public final class DigitalTwinsAsyncClient {
     }
 
     /**
-     * Creates a digital twin.
+     * Creates a digital twin. If the provided digital twin Id is already in use, then this will attempt
+     * to replace the existing digital twin with the provided digital twin.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -130,7 +133,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.createDigitalTwinsWithResponse#String-Object-Class-Options#String}
      *
-     * @param digitalTwinId The Id of the digital twin.
+     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param digitalTwin The application/json object representing the digital twin to create.
      * @param clazz The model class to serialize the request with and deserialize the response with.
      * @param <T> The generic type to serialize the request with and deserialize the response with.
@@ -138,14 +141,14 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link DigitalTwinsResponse} containing the deserialized application/json object representing the digital twin created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<DigitalTwinsResponse<T>> createDigitalTwinWithResponse(String digitalTwinId, T digitalTwin, Class<T> clazz, DigitalTwinsAddOptions options) {
+    public <T> Mono<DigitalTwinsResponse<T>> createDigitalTwinWithResponse(String digitalTwinId, T digitalTwin, Class<T> clazz, CreateDigitalTwinOptions options) {
         return withContext(context -> createDigitalTwinWithResponse(digitalTwinId, digitalTwin, clazz, options, context));
     }
 
-    <T> Mono<DigitalTwinsResponse<T>> createDigitalTwinWithResponse(String digitalTwinId, T digitalTwin, Class<T> clazz, DigitalTwinsAddOptions options, Context context) {
+    <T> Mono<DigitalTwinsResponse<T>> createDigitalTwinWithResponse(String digitalTwinId, T digitalTwin, Class<T> clazz, CreateDigitalTwinOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
-            .addWithResponseAsync(digitalTwinId, digitalTwin, options, context)
+            .addWithResponseAsync(digitalTwinId, digitalTwin, OptionsConverter.toProtocolLayerOptions(options), context)
             .flatMap(response -> {
                 T genericResponse;
                 try {
@@ -212,15 +215,15 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link DigitalTwinsResponse} containing the deserialized application/json object representing the digital twin.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<DigitalTwinsResponse<T>> getDigitalTwinWithResponse(String digitalTwinId, Class<T> clazz, DigitalTwinsGetByIdOptions options)
+    public <T> Mono<DigitalTwinsResponse<T>> getDigitalTwinWithResponse(String digitalTwinId, Class<T> clazz, GetDigitalTwinOptions options)
     {
         return withContext(context -> getDigitalTwinWithResponse(digitalTwinId, clazz, options, context));
     }
 
-    <T> Mono<DigitalTwinsResponse<T>> getDigitalTwinWithResponse(String digitalTwinId, Class<T> clazz, DigitalTwinsGetByIdOptions options, Context context) {
+    <T> Mono<DigitalTwinsResponse<T>> getDigitalTwinWithResponse(String digitalTwinId, Class<T> clazz, GetDigitalTwinOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
-            .getByIdWithResponseAsync(digitalTwinId, options, context)
+            .getByIdWithResponseAsync(digitalTwinId, OptionsConverter.toProtocolLayerOptions(options), context)
             .flatMap(response -> {
                 T genericResponse;
                 try {
@@ -243,7 +246,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.updateDigitalTwin#String-List}
      *
-     * @param digitalTwinId The Id of the digital twin.
+     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param jsonPatch The JSON patch to apply to the specified digital twin.
      *                                    This argument can be created using {@link UpdateOperationUtility}.
      * @return An empty Mono
@@ -264,22 +267,22 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.updateDigitalTwinWithResponse#String-List-Options}
      *
-     * @param digitalTwinId The Id of the digital twin.
+     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param jsonPatch The JSON patch to apply to the specified digital twin.
      *                                    This argument can be created using {@link UpdateOperationUtility}.
      * @param options The optional parameters for this request. If null, the default option values will be used.
      * @return A {@link DigitalTwinsResponse}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DigitalTwinsResponse<Void>> updateDigitalTwinWithResponse(String digitalTwinId, List<Object> jsonPatch, DigitalTwinsUpdateOptions options)
+    public Mono<DigitalTwinsResponse<Void>> updateDigitalTwinWithResponse(String digitalTwinId, List<Object> jsonPatch, UpdateDigitalTwinOptions options)
     {
         return withContext(context -> updateDigitalTwinWithResponse(digitalTwinId, jsonPatch, options, context));
     }
 
-    Mono<DigitalTwinsResponse<Void>> updateDigitalTwinWithResponse(String digitalTwinId, List<Object> jsonPatch, DigitalTwinsUpdateOptions options, Context context) {
+    Mono<DigitalTwinsResponse<Void>> updateDigitalTwinWithResponse(String digitalTwinId, List<Object> jsonPatch, UpdateDigitalTwinOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
-            .updateWithResponseAsync(digitalTwinId, jsonPatch, options, context)
+            .updateWithResponseAsync(digitalTwinId, jsonPatch, OptionsConverter.toProtocolLayerOptions(options), context)
             .map(response -> {
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
                 return new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue(), twinHeaders);
@@ -315,15 +318,15 @@ public final class DigitalTwinsAsyncClient {
      * @return The Http response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteDigitalTwinWithResponse(String digitalTwinId, DigitalTwinsDeleteOptions options)
+    public Mono<Response<Void>> deleteDigitalTwinWithResponse(String digitalTwinId, DeleteDigitalTwinOptions options)
     {
         return withContext(context -> deleteDigitalTwinWithResponse(digitalTwinId, options, context));
     }
 
-    Mono<Response<Void>> deleteDigitalTwinWithResponse(String digitalTwinId, DigitalTwinsDeleteOptions options, Context context) {
+    Mono<Response<Void>> deleteDigitalTwinWithResponse(String digitalTwinId, DeleteDigitalTwinOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
-            .deleteWithResponseAsync(digitalTwinId, options, context);
+            .deleteWithResponseAsync(digitalTwinId, OptionsConverter.toProtocolLayerOptions(options), context);
     }
 
     //endregion Digital twin APIs
@@ -331,7 +334,8 @@ public final class DigitalTwinsAsyncClient {
     //region Relationship APIs
 
     /**
-     * Creates a relationship on a digital twin.
+     * Creates a relationship on a digital twin. If the provided relationship Id is already in use, then this will
+     * attempt to replace the existing relationship with the provided relationship.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -357,7 +361,8 @@ public final class DigitalTwinsAsyncClient {
     }
 
     /**
-     * Creates a relationship on a digital twin.
+     * Creates a relationship on a digital twin. If the provided relationship Id is already in use, then this will
+     * attempt to replace the existing relationship with the provided relationship.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -378,14 +383,14 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link DigitalTwinsResponse} containing the relationship created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<DigitalTwinsResponse<T>> createRelationshipWithResponse(String digitalTwinId, String relationshipId, T relationship, Class<T> clazz, DigitalTwinsAddRelationshipOptions options) {
+    public <T> Mono<DigitalTwinsResponse<T>> createRelationshipWithResponse(String digitalTwinId, String relationshipId, T relationship, Class<T> clazz, CreateRelationshipOptions options) {
         return withContext(context -> createRelationshipWithResponse(digitalTwinId, relationshipId, relationship, clazz, options, context));
     }
 
-    <T> Mono<DigitalTwinsResponse<T>> createRelationshipWithResponse(String digitalTwinId, String relationshipId, T relationship, Class<T> clazz, DigitalTwinsAddRelationshipOptions options, Context context) {
+    <T> Mono<DigitalTwinsResponse<T>> createRelationshipWithResponse(String digitalTwinId, String relationshipId, T relationship, Class<T> clazz, CreateRelationshipOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
-            .addRelationshipWithResponseAsync(digitalTwinId, relationshipId, relationship, options, context)
+            .addRelationshipWithResponseAsync(digitalTwinId, relationshipId, relationship, OptionsConverter.toProtocolLayerOptions(options), context)
             .flatMap(response -> {
                 T genericResponse;
                 try {
@@ -445,14 +450,14 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link DigitalTwinsResponse} containing the deserialized relationship.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<DigitalTwinsResponse<T>> getRelationshipWithResponse(String digitalTwinId, String relationshipId, Class<T> clazz, DigitalTwinsGetRelationshipByIdOptions options) {
+    public <T> Mono<DigitalTwinsResponse<T>> getRelationshipWithResponse(String digitalTwinId, String relationshipId, Class<T> clazz, GetRelationshipOptions options) {
         return withContext(context -> getRelationshipWithResponse(digitalTwinId, relationshipId, clazz, options, context));
     }
 
-    <T> Mono<DigitalTwinsResponse<T>> getRelationshipWithResponse(String digitalTwinId, String relationshipId, Class<T> clazz, DigitalTwinsGetRelationshipByIdOptions options, Context context) {
+    <T> Mono<DigitalTwinsResponse<T>> getRelationshipWithResponse(String digitalTwinId, String relationshipId, Class<T> clazz, GetRelationshipOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
-            .getRelationshipByIdWithResponseAsync(digitalTwinId, relationshipId, options, context)
+            .getRelationshipByIdWithResponseAsync(digitalTwinId, relationshipId, OptionsConverter.toProtocolLayerOptions(options), context)
             .flatMap(response -> {
                 T genericResponse;
                 try {
@@ -500,14 +505,14 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link DigitalTwinsResponse} containing no parsed payload object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DigitalTwinsResponse<Void>> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, List<Object> jsonPatch, DigitalTwinsUpdateRelationshipOptions options) {
+    public Mono<DigitalTwinsResponse<Void>> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, List<Object> jsonPatch, UpdateRelationshipOptions options) {
         return withContext(context -> updateRelationshipWithResponse(digitalTwinId, relationshipId, jsonPatch, options, context));
     }
 
-    Mono<DigitalTwinsResponse<Void>> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, List<Object> jsonPatch, DigitalTwinsUpdateRelationshipOptions options, Context context) {
+    Mono<DigitalTwinsResponse<Void>> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, List<Object> jsonPatch, UpdateRelationshipOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
-            .updateRelationshipWithResponseAsync(digitalTwinId, relationshipId, jsonPatch, options, context)
+            .updateRelationshipWithResponseAsync(digitalTwinId, relationshipId, jsonPatch, OptionsConverter.toProtocolLayerOptions(options), context)
             .map(response -> {
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
                 return new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue(), twinHeaders);
@@ -544,14 +549,14 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link Response} containing no parsed payload object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteRelationshipWithResponse(String digitalTwinId, String relationshipId, DigitalTwinsDeleteRelationshipOptions options) {
+    public Mono<Response<Void>> deleteRelationshipWithResponse(String digitalTwinId, String relationshipId, DeleteRelationshipOptions options) {
         return withContext(context -> deleteRelationshipWithResponse(digitalTwinId, relationshipId, options, context));
     }
 
-    Mono<Response<Void>> deleteRelationshipWithResponse(String digitalTwinId, String relationshipId, DigitalTwinsDeleteRelationshipOptions options, Context context) {
+    Mono<Response<Void>> deleteRelationshipWithResponse(String digitalTwinId, String relationshipId, DeleteRelationshipOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
-            .deleteRelationshipWithResponseAsync(digitalTwinId, relationshipId, options, context);
+            .deleteRelationshipWithResponseAsync(digitalTwinId, relationshipId, OptionsConverter.toProtocolLayerOptions(options), context);
     }
 
     /**
@@ -594,22 +599,22 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link PagedFlux} of relationships belonging to the specified digital twin and the http response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public <T> PagedFlux<T> listRelationships(String digitalTwinId, String relationshipName, Class<T> clazz, DigitalTwinsListRelationshipsOptions options) {
+    public <T> PagedFlux<T> listRelationships(String digitalTwinId, String relationshipName, Class<T> clazz, ListRelationshipsOptions options) {
         return new PagedFlux<>(
             () -> withContext(context -> listRelationshipsFirstPage(digitalTwinId, relationshipName, clazz, options, context)),
             nextLink -> withContext(context -> listRelationshipsNextPage(nextLink, clazz, options, context)));
     }
 
-    <T> PagedFlux<T> listRelationships(String digitalTwinId, String relationshipName, Class<T> clazz, DigitalTwinsListRelationshipsOptions options, Context context) {
+    <T> PagedFlux<T> listRelationships(String digitalTwinId, String relationshipName, Class<T> clazz, ListRelationshipsOptions options, Context context) {
         return new PagedFlux<>(
             () -> listRelationshipsFirstPage(digitalTwinId, relationshipName, clazz, options, context),
             nextLink -> listRelationshipsNextPage(nextLink, clazz, options, context));
     }
 
-    <T> Mono<PagedResponse<T>> listRelationshipsFirstPage(String digitalTwinId, String relationshipName, Class<T> clazz, DigitalTwinsListRelationshipsOptions options, Context context) {
+    <T> Mono<PagedResponse<T>> listRelationshipsFirstPage(String digitalTwinId, String relationshipName, Class<T> clazz, ListRelationshipsOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
-            .listRelationshipsSinglePageAsync(digitalTwinId, relationshipName, options, context)
+            .listRelationshipsSinglePageAsync(digitalTwinId, relationshipName, OptionsConverter.toProtocolLayerOptions(options), context)
             .map(
                 objectPagedResponse -> {
                     List<T> list = objectPagedResponse.getValue().stream()
@@ -634,10 +639,10 @@ public final class DigitalTwinsAsyncClient {
             );
     }
 
-    <T> Mono<PagedResponse<T>> listRelationshipsNextPage(String nextLink, Class<T> clazz, DigitalTwinsListRelationshipsOptions options, Context context) {
+    <T> Mono<PagedResponse<T>> listRelationshipsNextPage(String nextLink, Class<T> clazz, ListRelationshipsOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
-            .listRelationshipsNextSinglePageAsync(nextLink, options, context)
+            .listRelationshipsNextSinglePageAsync(nextLink, OptionsConverter.toProtocolLayerOptions(options), context)
             .map(objectPagedResponse -> {
                 List<T> stringList = objectPagedResponse.getValue().stream()
                     .map(object -> {
@@ -665,6 +670,23 @@ public final class DigitalTwinsAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.listIncomingRelationships#String}
+     *
+     * @param digitalTwinId The Id of the target digital twin.
+     * @return A {@link PagedFlux} of relationships directed towards the specified digital twin and the http response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<IncomingRelationship> listIncomingRelationships(String digitalTwinId) {
+        return new PagedFlux<>(
+            () -> withContext(context -> listIncomingRelationshipsFirstPageAsync(digitalTwinId, null, context)),
+            nextLink -> withContext(context -> listIncomingRelationshipsNextSinglePageAsync(nextLink, null, context)));
+    }
+
+    /**
+     * Gets all the relationships referencing a digital twin as a target by iterating through a collection.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.listIncomingRelationships#String-Options}
      *
      * @param digitalTwinId The Id of the target digital twin.
@@ -672,25 +694,25 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link PagedFlux} of relationships directed towards the specified digital twin and the http response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<IncomingRelationship> listIncomingRelationships(String digitalTwinId, DigitalTwinsListIncomingRelationshipsOptions options) {
+    public PagedFlux<IncomingRelationship> listIncomingRelationships(String digitalTwinId, ListIncomingRelationshipsOptions options) {
         return new PagedFlux<>(
             () -> withContext(context -> listIncomingRelationshipsFirstPageAsync(digitalTwinId, options, context)),
             nextLink -> withContext(context -> listIncomingRelationshipsNextSinglePageAsync(nextLink, options, context)));
     }
 
-    PagedFlux<IncomingRelationship> listIncomingRelationships(String digitalTwinId, DigitalTwinsListIncomingRelationshipsOptions options, Context context) {
+    PagedFlux<IncomingRelationship> listIncomingRelationships(String digitalTwinId, ListIncomingRelationshipsOptions options, Context context) {
         return new PagedFlux<>(
             () -> listIncomingRelationshipsFirstPageAsync(digitalTwinId, options, context),
             nextLink -> listIncomingRelationshipsNextSinglePageAsync(nextLink, options, context));
     }
 
-    Mono<PagedResponse<IncomingRelationship>> listIncomingRelationshipsFirstPageAsync(String digitalTwinId, DigitalTwinsListIncomingRelationshipsOptions options, Context context){
-        return protocolLayer.getDigitalTwins().listIncomingRelationshipsSinglePageAsync(digitalTwinId, options, context)
+    Mono<PagedResponse<IncomingRelationship>> listIncomingRelationshipsFirstPageAsync(String digitalTwinId, ListIncomingRelationshipsOptions options, Context context){
+        return protocolLayer.getDigitalTwins().listIncomingRelationshipsSinglePageAsync(digitalTwinId, OptionsConverter.toProtocolLayerOptions(options), context)
             .map(pagedIncomingRelationshipMappingFunction);
     }
 
-    Mono<PagedResponse<IncomingRelationship>> listIncomingRelationshipsNextSinglePageAsync(String nextLink, DigitalTwinsListIncomingRelationshipsOptions options, Context context){
-        return protocolLayer.getDigitalTwins().listIncomingRelationshipsNextSinglePageAsync(nextLink, options, context)
+    Mono<PagedResponse<IncomingRelationship>> listIncomingRelationshipsNextSinglePageAsync(String nextLink, ListIncomingRelationshipsOptions options, Context context){
+        return protocolLayer.getDigitalTwins().listIncomingRelationshipsNextSinglePageAsync(nextLink, OptionsConverter.toProtocolLayerOptions(options), context)
             .map(pagedIncomingRelationshipMappingFunction);
     }
 
@@ -719,13 +741,13 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.createModels#Iterable}
      *
-     * @param models The list of models to create. Each string corresponds to exactly one model.
+     * @param dtdlModels The list of models to create. Each string corresponds to exactly one model.
      * @return A List of created models. Each {@link DigitalTwinsModelData} instance in this list
      * will contain metadata about the created model, but will not contain the model itself.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<Iterable<DigitalTwinsModelData>> createModels(Iterable<String> models) {
-        return createModelsWithResponse(models, null)
+    public Mono<Iterable<DigitalTwinsModelData>> createModels(Iterable<String> dtdlModels) {
+        return createModelsWithResponse(dtdlModels, null)
             .map(Response::getValue);
     }
 
@@ -736,19 +758,19 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.createModelsWithResponse#Iterable-Options}
      *
-     * @param models The list of models to create. Each string corresponds to exactly one model.
+     * @param dtdlModels The list of models to create. Each string corresponds to exactly one model.
      * @param options The optional parameters for this request. If null, the default option values will be used.
      * @return A {@link Response} containing the list of created models. Each {@link DigitalTwinsModelData} instance in this list
      * will contain metadata about the created model, but will not contain the model itself.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<Response<Iterable<DigitalTwinsModelData>>> createModelsWithResponse(Iterable<String> models, DigitalTwinModelsAddOptions options) {
-        return withContext(context -> createModelsWithResponse(models, options, context));
+    public Mono<Response<Iterable<DigitalTwinsModelData>>> createModelsWithResponse(Iterable<String> dtdlModels, CreateModelsOptions options) {
+        return withContext(context -> createModelsWithResponse(dtdlModels, options, context));
     }
 
-    Mono<Response<Iterable<DigitalTwinsModelData>>> createModelsWithResponse(Iterable<String> models, DigitalTwinModelsAddOptions options, Context context) {
+    Mono<Response<Iterable<DigitalTwinsModelData>>> createModelsWithResponse(Iterable<String> dtdlModels, CreateModelsOptions options, Context context) {
         List<Object> modelsPayload = new ArrayList<>();
-        for (String model : models) {
+        for (String model : dtdlModels) {
             try {
                 modelsPayload.add(mapper.readValue(model, Object.class));
             }
@@ -758,7 +780,7 @@ public final class DigitalTwinsAsyncClient {
             }
         }
 
-        return protocolLayer.getDigitalTwinModels().addWithResponseAsync(modelsPayload, options, context)
+        return protocolLayer.getDigitalTwinModels().addWithResponseAsync(modelsPayload, OptionsConverter.toProtocolLayerOptions(options), context)
             .map(listResponse -> {
                 Iterable<DigitalTwinsModelData> convertedList = listResponse.getValue().stream()
                     .map(DigitalTwinsModelDataConverter::map)
@@ -796,14 +818,14 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link Response} containing a {@link DigitalTwinsModelData} instance that contains the model and its metadata.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DigitalTwinsModelData>> getModelWithResponse(String modelId, DigitalTwinModelsGetByIdOptions options) {
+    public Mono<Response<DigitalTwinsModelData>> getModelWithResponse(String modelId, GetModelOptions options) {
         return withContext(context -> getModelWithResponse(modelId, options, context));
     }
 
-    Mono<Response<DigitalTwinsModelData>> getModelWithResponse(String modelId, DigitalTwinModelsGetByIdOptions options, Context context){
+    Mono<Response<DigitalTwinsModelData>> getModelWithResponse(String modelId, GetModelOptions options, Context context){
         return protocolLayer
             .getDigitalTwinModels()
-            .getByIdWithResponseAsync(modelId, includeModelDefinitionOnGet, options, context)
+            .getByIdWithResponseAsync(modelId, includeModelDefinitionOnGet, OptionsConverter.toProtocolLayerOptions(options), context)
             .map(response -> {
                 com.azure.digitaltwins.core.implementation.models.DigitalTwinsModelData modelData = response.getValue();
                 return new SimpleResponse<>(
@@ -839,29 +861,25 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link PagedFlux} containing the retrieved {@link DigitalTwinsModelData} instances.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DigitalTwinsModelData> listModels(DigitalTwinModelsListOptions options) {
+    public PagedFlux<DigitalTwinsModelData> listModels(ListModelsOptions options) {
         return new PagedFlux<>(
             () -> withContext(context -> listModelsSinglePageAsync(options, context)),
             nextLink -> withContext(context -> listModelsNextSinglePageAsync(nextLink, options, context)));
     }
 
-    PagedFlux<DigitalTwinsModelData> listModels(DigitalTwinModelsListOptions options, Context context){
+    PagedFlux<DigitalTwinsModelData> listModels(ListModelsOptions options, Context context){
         return new PagedFlux<>(
             () -> listModelsSinglePageAsync(options, context),
             nextLink -> listModelsNextSinglePageAsync(nextLink, options, context));
     }
 
-    Mono<PagedResponse<DigitalTwinsModelData>> listModelsSinglePageAsync(DigitalTwinModelsListOptions options, Context context){
+    Mono<PagedResponse<DigitalTwinsModelData>> listModelsSinglePageAsync(ListModelsOptions options, Context context){
         // default values for these options
         List<String> getDependenciesFor = null;
         boolean includeModelDefinition = true; //service default is false, but we expect customers to want the model definitions by default
-        com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions protocolLayerOptions = null;
+        com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions protocolLayerOptions = OptionsConverter.toProtocolLayerOptions(options);
 
         if (options != null) {
-            protocolLayerOptions = new com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions()
-                .setMaxItemsPerPage(options.getMaxItemsPerPage())
-                .setTraceparent(options.getTraceparent())
-                .setTracestate(options.getTracestate());
             getDependenciesFor = options.getDependenciesFor();
             includeModelDefinition = options.getIncludeModelDefinition();
         }
@@ -888,13 +906,13 @@ public final class DigitalTwinsAsyncClient {
             );
     }
 
-    Mono<PagedResponse<DigitalTwinsModelData>> listModelsNextSinglePageAsync(String nextLink, DigitalTwinModelsListOptions options, Context context){
+    Mono<PagedResponse<DigitalTwinsModelData>> listModelsNextSinglePageAsync(String nextLink, ListModelsOptions options, Context context){
         com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions protocolLayerOptions = null;
         if (options != null) {
             protocolLayerOptions = new com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions()
                 .setMaxItemsPerPage(options.getMaxItemsPerPage())
-                .setTraceparent(options.getTraceparent())
-                .setTracestate(options.getTracestate());
+                .setTraceparent(options.getTraceParent())
+                .setTracestate(options.getTraceState());
         }
 
         return protocolLayer.getDigitalTwinModels().listNextSinglePageAsync(
@@ -944,12 +962,12 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link Response} with no parsed payload object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteModelWithResponse(String modelId, DigitalTwinModelsDeleteOptions options) {
+    public Mono<Response<Void>> deleteModelWithResponse(String modelId, DeleteModelOptions options) {
         return withContext(context -> deleteModelWithResponse(modelId, options, context));
     }
 
-    Mono<Response<Void>> deleteModelWithResponse(String modelId, DigitalTwinModelsDeleteOptions options, Context context){
-        return protocolLayer.getDigitalTwinModels().deleteWithResponseAsync(modelId, options, context);
+    Mono<Response<Void>> deleteModelWithResponse(String modelId, DeleteModelOptions options, Context context){
+        return protocolLayer.getDigitalTwinModels().deleteWithResponseAsync(modelId, OptionsConverter.toProtocolLayerOptions(options), context);
     }
 
     /**
@@ -980,16 +998,16 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link Response} with no parsed payload object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> decommissionModelWithResponse(String modelId, DigitalTwinModelsUpdateOptions options) {
+    public Mono<Response<Void>> decommissionModelWithResponse(String modelId, DecommissionModelOptions options) {
         return withContext(context -> decommissionModelWithResponse(modelId, options, context));
     }
 
-    Mono<Response<Void>> decommissionModelWithResponse(String modelId, DigitalTwinModelsUpdateOptions options, Context context) {
+    Mono<Response<Void>> decommissionModelWithResponse(String modelId, DecommissionModelOptions options, Context context) {
         List<Object> updateOperation = new UpdateOperationUtility()
             .appendReplaceOperation("/decommissioned", true)
             .getUpdateOperations();
 
-        return protocolLayer.getDigitalTwinModels().updateWithResponseAsync(modelId, updateOperation, options, context);
+        return protocolLayer.getDigitalTwinModels().updateWithResponseAsync(modelId, updateOperation, OptionsConverter.toProtocolLayerOptions(options), context);
     }
 
     //endregion Model APIs
@@ -1004,14 +1022,14 @@ public final class DigitalTwinsAsyncClient {
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.getComponent#String-String-Class}
      *
      * @param digitalTwinId The Id of the digital twin to get the component from.
-     * @param componentPath The path of the component on the digital twin to retrieve.
+     * @param componentName The name of the component on the digital twin to retrieve.
      * @param clazz The class to deserialize the application/json component into.
      * @param <T> The generic type to deserialize application/json the component into.
      * @return The deserialized application/json object representing the component of the digital twin.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<T> getComponent(String digitalTwinId, String componentPath, Class<T> clazz) {
-        return getComponentWithResponse(digitalTwinId, componentPath, clazz, null)
+    public <T> Mono<T> getComponent(String digitalTwinId, String componentName, Class<T> clazz) {
+        return getComponentWithResponse(digitalTwinId, componentName, clazz, null)
             .map(DigitalTwinsResponse::getValue);
     }
 
@@ -1023,19 +1041,19 @@ public final class DigitalTwinsAsyncClient {
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.getComponentWithResponse#String-String-Class-Options}
      *
      * @param digitalTwinId The Id of the digital twin to get the component from.
-     * @param componentPath The path of the component on the digital twin to retrieve.
+     * @param componentName The name of the component on the digital twin to retrieve.
      * @param clazz The class to deserialize the application/json component into.
      * @param <T> The generic type to deserialize the application/json component into.
      * @param options The optional parameters for this request. If null, the default option values will be used.
      * @return A {@link DigitalTwinsResponse} containing the deserialized application/json object representing the component of the digital twin.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<DigitalTwinsResponse<T>> getComponentWithResponse(String digitalTwinId, String componentPath, Class<T> clazz, DigitalTwinsGetComponentOptions options) {
-        return withContext(context -> getComponentWithResponse(digitalTwinId, componentPath, clazz, options, context));
+    public <T> Mono<DigitalTwinsResponse<T>> getComponentWithResponse(String digitalTwinId, String componentName, Class<T> clazz, GetComponentOptions options) {
+        return withContext(context -> getComponentWithResponse(digitalTwinId, componentName, clazz, options, context));
     }
 
-    <T> Mono<DigitalTwinsResponse<T>> getComponentWithResponse(String digitalTwinId, String componentPath, Class<T> clazz, DigitalTwinsGetComponentOptions options, Context context) {
-        return protocolLayer.getDigitalTwins().getComponentWithResponseAsync(digitalTwinId, componentPath, options, context)
+    <T> Mono<DigitalTwinsResponse<T>> getComponentWithResponse(String digitalTwinId, String componentName, Class<T> clazz, GetComponentOptions options, Context context) {
+        return protocolLayer.getDigitalTwins().getComponentWithResponseAsync(digitalTwinId, componentName, OptionsConverter.toProtocolLayerOptions(options), context)
             .flatMap(response -> {
                 T genericResponse;
                 try {
@@ -1057,14 +1075,14 @@ public final class DigitalTwinsAsyncClient {
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.updateComponent#String-String-List}
      *
      * @param digitalTwinId The Id of the digital twin that has the component to patch.
-     * @param componentPath The path of the component on the digital twin.
+     * @param componentName The name of the component on the digital twin.
      * @param jsonPatch The JSON patch to apply to the specified digital twin's relationship.
      *                                  This argument can be created using {@link UpdateOperationUtility}.
      * @return An empty Mono.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateComponent(String digitalTwinId, String componentPath, List<Object> jsonPatch) {
-        return updateComponentWithResponse(digitalTwinId, componentPath, jsonPatch, null)
+    public Mono<Void> updateComponent(String digitalTwinId, String componentName, List<Object> jsonPatch) {
+        return updateComponentWithResponse(digitalTwinId, componentName, jsonPatch, null)
             .flatMap(voidResponse -> Mono.empty());
     }
 
@@ -1076,19 +1094,19 @@ public final class DigitalTwinsAsyncClient {
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.updateComponentWithResponse#String-String-List-Options}
      *
      * @param digitalTwinId The Id of the digital twin that has the component to patch.
-     * @param componentPath The path of the component on the digital twin.
+     * @param componentName The name of the component on the digital twin.
      * @param jsonPatch The JSON patch to apply to the specified digital twin's relationship.
      *                                  This argument can be created using {@link UpdateOperationUtility}.
      * @param options The optional parameters for this request. If null, the default option values will be used.
      * @return A {@link DigitalTwinsResponse} containing an empty Mono.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DigitalTwinsResponse<Void>> updateComponentWithResponse(String digitalTwinId, String componentPath, List<Object> jsonPatch, DigitalTwinsUpdateComponentOptions options) {
-        return withContext(context -> updateComponentWithResponse(digitalTwinId, componentPath, jsonPatch, options, context));
+    public Mono<DigitalTwinsResponse<Void>> updateComponentWithResponse(String digitalTwinId, String componentName, List<Object> jsonPatch, UpdateComponentOptions options) {
+        return withContext(context -> updateComponentWithResponse(digitalTwinId, componentName, jsonPatch, options, context));
     }
 
-    Mono<DigitalTwinsResponse<Void>> updateComponentWithResponse(String digitalTwinId, String componentPath, List<Object> jsonPatch, DigitalTwinsUpdateComponentOptions options, Context context) {
-        return protocolLayer.getDigitalTwins().updateComponentWithResponseAsync(digitalTwinId, componentPath, jsonPatch, options, context)
+    Mono<DigitalTwinsResponse<Void>> updateComponentWithResponse(String digitalTwinId, String componentName, List<Object> jsonPatch, UpdateComponentOptions options, Context context) {
+        return protocolLayer.getDigitalTwins().updateComponentWithResponseAsync(digitalTwinId, componentName, jsonPatch, OptionsConverter.toProtocolLayerOptions(options), context)
             .flatMap(response -> {
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
                 return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null, twinHeaders));
@@ -1098,6 +1116,30 @@ public final class DigitalTwinsAsyncClient {
     //endregion Component APIs
 
     //region Query APIs
+
+    /**
+     * Query digital twins.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>A strongly typed digital twin object such as {@link BasicDigitalTwin} can be provided as the input parameter to deserialize the response into.</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.query#String#BasicDigitalTwin}
+     *
+     * <p>Or alternatively String can be used as input and output deserialization type:</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.query#String#String}
+     *
+     * @param query The query string, in SQL-like syntax.
+     * @param clazz The model class to deserialize each queried digital twin into. Since the queried twins may not all
+     *              have the same model class, it is recommended to use a common denominator class such as {@link BasicDigitalTwin}.
+     * @param <T> The generic type to deserialize each queried digital twin into.
+     * @return A {@link PagedFlux} of deserialized digital twins.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public <T> PagedFlux<T> query(String query, Class<T> clazz) {
+        return query(query, clazz, null);
+    }
 
     /**
      * Query digital twins.
@@ -1120,24 +1162,24 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link PagedFlux} of deserialized digital twins.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public <T> PagedFlux<T> query(String query, Class<T> clazz, QueryTwinsOptions options) {
+    public <T> PagedFlux<T> query(String query, Class<T> clazz, QueryOptions options) {
         return new PagedFlux<T>(
             () -> withContext(context -> queryFirstPage(query, clazz, options, context)),
             nextLink -> withContext(context -> queryNextPage(nextLink, clazz, options, context)));
     }
 
-    <T> PagedFlux<T> query(String query, Class<T> clazz, QueryTwinsOptions options, Context context) {
+    <T> PagedFlux<T> query(String query, Class<T> clazz, QueryOptions options, Context context) {
         return new PagedFlux<T>(
             () -> queryFirstPage(query, clazz, options, context),
             nextLink -> queryNextPage(nextLink, clazz, options, context));
     }
 
-    <T> Mono<PagedResponse<T>> queryFirstPage(String query, Class<T> clazz, QueryTwinsOptions options, Context context) {
+    <T> Mono<PagedResponse<T>> queryFirstPage(String query, Class<T> clazz, QueryOptions options, Context context) {
         QuerySpecification querySpecification = new QuerySpecification().setQuery(query);
 
         return protocolLayer
             .getQueries()
-            .queryTwinsWithResponseAsync(querySpecification, options, context)
+            .queryTwinsWithResponseAsync(querySpecification, OptionsConverter.toProtocolLayerOptions(options), context)
             .map(objectPagedResponse -> new PagedResponseBase<>(
                 objectPagedResponse.getRequest(),
                 objectPagedResponse.getStatusCode(),
@@ -1157,12 +1199,12 @@ public final class DigitalTwinsAsyncClient {
                 objectPagedResponse.getDeserializedHeaders()));
     }
 
-    <T> Mono<PagedResponse<T>> queryNextPage(String nextLink, Class<T> clazz, QueryTwinsOptions options, Context context) {
+    <T> Mono<PagedResponse<T>> queryNextPage(String nextLink, Class<T> clazz, QueryOptions options, Context context) {
         QuerySpecification querySpecification = new QuerySpecification().setContinuationToken(nextLink);
 
         return protocolLayer
             .getQueries()
-            .queryTwinsWithResponseAsync(querySpecification, options, context)
+            .queryTwinsWithResponseAsync(querySpecification, OptionsConverter.toProtocolLayerOptions(options), context)
             .map(objectPagedResponse -> new PagedResponseBase<>(
                 objectPagedResponse.getRequest(),
                 objectPagedResponse.getStatusCode(),
@@ -1187,7 +1229,8 @@ public final class DigitalTwinsAsyncClient {
     //region Event Route APIs
 
     /**
-     * Create an event route.
+     * Create an event route. If the provided eventRouteId is already in use, then this will attempt to replace the
+     * existing event route with the provided event route.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1205,7 +1248,8 @@ public final class DigitalTwinsAsyncClient {
     }
 
     /**
-     * Create an event route.
+     * Create an event route. If the provided eventRouteId is already in use, then this will attempt to replace the
+     * existing event route with the provided event route.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1217,14 +1261,14 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link Response} containing an empty mono.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createEventRouteWithResponse(String eventRouteId, EventRoute eventRoute, EventRoutesAddOptions options)
+    public Mono<Response<Void>> createEventRouteWithResponse(String eventRouteId, EventRoute eventRoute, CreateEventRouteOptions options)
     {
         return withContext(context -> createEventRouteWithResponse(eventRouteId, eventRoute, options, context));
     }
 
-    Mono<Response<Void>> createEventRouteWithResponse(String eventRouteId, EventRoute eventRoute, EventRoutesAddOptions options, Context context)
+    Mono<Response<Void>> createEventRouteWithResponse(String eventRouteId, EventRoute eventRoute, CreateEventRouteOptions options, Context context)
     {
-        return this.protocolLayer.getEventRoutes().addWithResponseAsync(eventRouteId, EventRouteConverter.map(eventRoute), options, context);
+        return this.protocolLayer.getEventRoutes().addWithResponseAsync(eventRouteId, EventRouteConverter.map(eventRoute), OptionsConverter.toProtocolLayerOptions(options), context);
     }
 
     /**
@@ -1256,14 +1300,14 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link Response} containing the retrieved event route.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<EventRoute>> getEventRouteWithResponse(String eventRouteId, EventRoutesGetByIdOptions options)
+    public Mono<Response<EventRoute>> getEventRouteWithResponse(String eventRouteId, GetEventRouteOptions options)
     {
         return withContext(context -> getEventRouteWithResponse(eventRouteId, options, context));
     }
 
-    Mono<Response<EventRoute>> getEventRouteWithResponse(String eventRouteId, EventRoutesGetByIdOptions options, Context context)
+    Mono<Response<EventRoute>> getEventRouteWithResponse(String eventRouteId, GetEventRouteOptions options, Context context)
     {
-        return this.protocolLayer.getEventRoutes().getByIdWithResponseAsync(eventRouteId, options, context)
+        return this.protocolLayer.getEventRoutes().getByIdWithResponseAsync(eventRouteId, OptionsConverter.toProtocolLayerOptions(options), context)
             .map(eventRouteResponse -> new SimpleResponse<>(
                 eventRouteResponse.getRequest(),
                 eventRouteResponse.getStatusCode(),
@@ -1300,14 +1344,14 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link Response} containing an empty mono.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteEventRouteWithResponse(String eventRouteId, EventRoutesDeleteOptions options)
+    public Mono<Response<Void>> deleteEventRouteWithResponse(String eventRouteId, DeleteEventRouteOptions options)
     {
         return withContext(context -> deleteEventRouteWithResponse(eventRouteId, options, context));
     }
 
-    Mono<Response<Void>> deleteEventRouteWithResponse(String eventRouteId, EventRoutesDeleteOptions options, Context context)
+    Mono<Response<Void>> deleteEventRouteWithResponse(String eventRouteId, DeleteEventRouteOptions options, Context context)
     {
-        return this.protocolLayer.getEventRoutes().deleteWithResponseAsync(eventRouteId, options, context);
+        return this.protocolLayer.getEventRoutes().deleteWithResponseAsync(eventRouteId, OptionsConverter.toProtocolLayerOptions(options), context);
     }
 
     /**
@@ -1333,37 +1377,37 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.listEventRoutes#Options}
      *
-     * @param options The optional parameters to use when listing event routes. See {@link EventRoutesListOptions} for more details
+     * @param options The optional parameters to use when listing event routes. See {@link ListEventRoutesOptions} for more details
      * on what optional parameters can be set.
      * @return A {@link PagedFlux} that contains all the event routes that exist in your digital twins instance.
      * This PagedFlux may take multiple service requests to iterate over all event routes.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<EventRoute> listEventRoutes(EventRoutesListOptions options)
+    public PagedFlux<EventRoute> listEventRoutes(ListEventRoutesOptions options)
     {
         return new PagedFlux<>(
             () -> withContext(context -> listEventRoutesFirstPage(options, context)),
             nextLink -> withContext(context -> listEventRoutesNextPage(nextLink, options, context)));
     }
 
-    PagedFlux<EventRoute> listEventRoutes(EventRoutesListOptions options, Context context)
+    PagedFlux<EventRoute> listEventRoutes(ListEventRoutesOptions options, Context context)
     {
         return new PagedFlux<>(
             () -> listEventRoutesFirstPage(options, context),
             nextLink -> listEventRoutesNextPage(nextLink, options, context));
     }
 
-    Mono<PagedResponse<EventRoute>> listEventRoutesFirstPage(EventRoutesListOptions options, Context context) {
+    Mono<PagedResponse<EventRoute>> listEventRoutesFirstPage(ListEventRoutesOptions options, Context context) {
         return protocolLayer
             .getEventRoutes()
-            .listSinglePageAsync(options, context)
+            .listSinglePageAsync(OptionsConverter.toProtocolLayerOptions(options), context)
             .map(pagedEventRouteMappingFunction);
     }
 
-    Mono<PagedResponse<EventRoute>> listEventRoutesNextPage(String nextLink, EventRoutesListOptions options, Context context) {
+    Mono<PagedResponse<EventRoute>> listEventRoutesNextPage(String nextLink, ListEventRoutesOptions options, Context context) {
         return protocolLayer
             .getEventRoutes()
-            .listNextSinglePageAsync(nextLink, options, context)
+            .listNextSinglePageAsync(nextLink, OptionsConverter.toProtocolLayerOptions(options), context)
             .map(pagedEventRouteMappingFunction);
     }
 
@@ -1434,24 +1478,24 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link Response} containing an empty mono.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> publishTelemetryWithResponse(String digitalTwinId, String messageId, Object payload, DigitalTwinsSendTelemetryOptions options) {
+    public Mono<Response<Void>> publishTelemetryWithResponse(String digitalTwinId, String messageId, Object payload, PublishTelemetryOptions options) {
         return withContext(context -> publishTelemetryWithResponse(digitalTwinId, messageId, payload, options, context));
     }
 
-    Mono<Response<Void>> publishTelemetryWithResponse(String digitalTwinId, String messageId, Object payload, DigitalTwinsSendTelemetryOptions options, Context context) {
+    Mono<Response<Void>> publishTelemetryWithResponse(String digitalTwinId, String messageId, Object payload, PublishTelemetryOptions options, Context context) {
         if (messageId == null || messageId.isEmpty()) {
             messageId = UUID.randomUUID().toString();
         }
 
         com.azure.digitaltwins.core.implementation.models.DigitalTwinsSendTelemetryOptions protocolLayerOptions;
         if (options == null) {
-            options = new DigitalTwinsSendTelemetryOptions();
+            options = new PublishTelemetryOptions();
             protocolLayerOptions = null;
         }
         else {
             protocolLayerOptions = new com.azure.digitaltwins.core.implementation.models.DigitalTwinsSendTelemetryOptions()
-                .setTraceparent(options.getTraceparent())
-                .setTracestate(options.getTracestate());
+                .setTraceparent(options.getTraceParent())
+                .setTracestate(options.getTraceState());
         }
 
         return protocolLayer.getDigitalTwins().sendTelemetryWithResponseAsync(
@@ -1513,24 +1557,24 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link Response} containing an empty mono.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName, String messageId, Object payload, DigitalTwinsSendComponentTelemetryOptions options) {
+    public Mono<Response<Void>> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName, String messageId, Object payload, PublishComponentTelemetryOptions options) {
         return withContext(context -> publishComponentTelemetryWithResponse(digitalTwinId, componentName, messageId, payload, options, context));
     }
 
-    Mono<Response<Void>> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName, String messageId, Object payload, DigitalTwinsSendComponentTelemetryOptions options, Context context) {
+    Mono<Response<Void>> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName, String messageId, Object payload, PublishComponentTelemetryOptions options, Context context) {
         if (messageId == null || messageId.isEmpty()) {
             messageId = UUID.randomUUID().toString();
         }
 
         com.azure.digitaltwins.core.implementation.models.DigitalTwinsSendComponentTelemetryOptions protocolLayerOptions;
         if (options == null) {
-            options = new DigitalTwinsSendComponentTelemetryOptions();
+            options = new PublishComponentTelemetryOptions();
             protocolLayerOptions = null;
         }
         else {
             protocolLayerOptions = new com.azure.digitaltwins.core.implementation.models.DigitalTwinsSendComponentTelemetryOptions()
-                .setTraceparent(options.getTraceparent())
-                .setTracestate(options.getTracestate());
+                .setTraceparent(options.getTraceParent())
+                .setTracestate(options.getTraceState());
         }
 
         return protocolLayer.getDigitalTwins().sendComponentTelemetryWithResponseAsync(

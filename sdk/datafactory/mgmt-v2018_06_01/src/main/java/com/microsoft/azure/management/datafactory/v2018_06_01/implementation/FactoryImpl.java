@@ -17,6 +17,7 @@ import com.microsoft.azure.management.datafactory.v2018_06_01.FactoryIdentity;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.datafactory.v2018_06_01.FactoryRepoConfiguration;
 import com.microsoft.azure.management.datafactory.v2018_06_01.GlobalParameterSpecification;
+import com.microsoft.azure.management.datafactory.v2018_06_01.PublicNetworkAccess;
 import rx.functions.Func1;
 
 class FactoryImpl extends GroupableResourceCoreImpl<Factory, FactoryInner, FactoryImpl, DataFactoryManager> implements Factory, Factory.Definition, Factory.Update {
@@ -101,6 +102,11 @@ class FactoryImpl extends GroupableResourceCoreImpl<Factory, FactoryInner, Facto
     }
 
     @Override
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.inner().publicNetworkAccess();
+    }
+
+    @Override
     public FactoryRepoConfiguration repoConfiguration() {
         return this.inner().repoConfiguration();
     }
@@ -125,6 +131,12 @@ class FactoryImpl extends GroupableResourceCoreImpl<Factory, FactoryInner, Facto
     @Override
     public FactoryImpl withGlobalParameters(Map<String, GlobalParameterSpecification> globalParameters) {
         this.inner().withGlobalParameters(globalParameters);
+        return this;
+    }
+
+    @Override
+    public FactoryImpl withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.inner().withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 

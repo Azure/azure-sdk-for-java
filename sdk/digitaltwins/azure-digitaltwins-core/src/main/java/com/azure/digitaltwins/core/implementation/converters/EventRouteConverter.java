@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.digitaltwins.core.implementation.converters;
 
 import com.azure.digitaltwins.core.models.EventRoute;
@@ -19,7 +22,7 @@ public final class EventRouteConverter {
 
         EventRoute mappedEventRoute = new EventRoute(input.getEndpointName());
         mappedEventRoute.setFilter(input.getFilter());
-        mappedEventRoute.setId(input.getId());
+        mappedEventRoute.setEventRouteId(input.getId());
         return mappedEventRoute;
     }
 

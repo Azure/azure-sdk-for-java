@@ -7,14 +7,15 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+// This class exists so that the public APIs don't directly consume a generated type and so that we can avoid exposing a validate() method
+// that the generated type comes with when client side validation is enabled.
+
 /**
  * The EventRoute model. Event routes are used for defining where published telemetry gets sent to. As an example, an
  * event route can point towards an Azure EventHub as a consumer of published telemetry.
  */
-// This class exists so that the public APIs don't directly consume a generated type and so that we can avoid exposing a validate() method
-// that the generated type comes with when client side validation is enabled.
 @Fluent
-public class EventRoute {
+public final class EventRoute {
     /*
      * The id of the event route.
      */
@@ -44,11 +45,11 @@ public class EventRoute {
     }
 
     /**
-     * Get the id property: The id of the event route.
+     * Get this event route's id property: The id of the event route.
      *
      * @return the id value.
      */
-    public String getId() {
+    public String getEventRouteId() {
         return this.id;
     }
 
@@ -82,12 +83,12 @@ public class EventRoute {
     }
 
     /**
-     * Sets the event route's Id.
+     * Sets this event route's Id.
      *
      * @param id The event route's Id to set.
      * @return the EventRoute object itself.
      */
-    public EventRoute setId(String id) {
+    public EventRoute setEventRouteId(String id) {
         this.id = id;
         return this;
     }

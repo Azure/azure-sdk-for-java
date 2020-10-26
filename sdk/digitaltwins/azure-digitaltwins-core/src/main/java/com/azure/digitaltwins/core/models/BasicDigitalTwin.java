@@ -32,6 +32,18 @@ public final class BasicDigitalTwin {
     private final Map<String, Object> customProperties = new HashMap<>();
 
     /**
+     * Construct a basic digital twin.
+     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
+     */
+    public BasicDigitalTwin(String digitalTwinId) {
+        this.id = digitalTwinId;
+    }
+
+    // Empty constructor for json deserialization purposes
+    private BasicDigitalTwin() {
+    }
+
+    /**
      * Gets the unique Id of the digital twin in a digital twins instance. This field is present on every digital twin.
      * @return The unique Id of the digital twin in a digital twins instance. This field is present on every digital twin.
      */
@@ -40,20 +52,10 @@ public final class BasicDigitalTwin {
     }
 
     /**
-     * Sets the unique Id of the digital twin in a digital twins instance. This field is present on every digital twin.
-     * @param id The unique Id of the digital twin in a digital twins instance. This field is present on every digital twin.
-     * @return The BasicDigitalTwin object itself.
-     */
-    public BasicDigitalTwin setId(String id) {
-        this.id =id;
-        return this;
-    }
-
-    /**
      * Gets a string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.
      * @return A string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.
      */
-    public String getTwinETag() {
+    public String getEtag() {
         return twinETag;
     }
 
@@ -62,7 +64,7 @@ public final class BasicDigitalTwin {
      * @param twinETag A string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.
      * @return The BasicDigitalTwin object itself.
      */
-    public BasicDigitalTwin setTwinETag(String twinETag) {
+    public BasicDigitalTwin setDigitalTwinEtag(String twinETag) {
         this.twinETag = twinETag;
         return this;
     }

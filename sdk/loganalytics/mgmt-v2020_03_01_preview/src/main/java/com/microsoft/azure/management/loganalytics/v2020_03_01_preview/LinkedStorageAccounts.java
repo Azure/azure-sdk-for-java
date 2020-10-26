@@ -23,7 +23,7 @@ public interface LinkedStorageAccounts extends SupportsCreating<LinkedStorageAcc
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
-     * @param dataSourceType Linked storage accounts type. Possible values include: 'CustomLogs', 'AzureWatson'
+     * @param dataSourceType Linked storage accounts type. Possible values include: 'CustomLogs', 'AzureWatson', 'Query', 'Ingestion', 'Alerts'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -44,7 +44,7 @@ public interface LinkedStorageAccounts extends SupportsCreating<LinkedStorageAcc
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
-     * @param dataSourceType Linked storage accounts type. Possible values include: 'CustomLogs', 'AzureWatson'
+     * @param dataSourceType Linked storage accounts type. Possible values include: 'CustomLogs', 'AzureWatson', 'Query', 'Ingestion', 'Alerts'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */

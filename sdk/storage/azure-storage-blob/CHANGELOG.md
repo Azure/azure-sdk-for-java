@@ -1,5 +1,8 @@
 # Release History
 
+## 12.9.0-beta.3 (Unreleased)
+- Fixed a bug where interspersed element types returned by page listing would deserialize incorrectly.
+
 ## 12.9.0-beta.2 (2020-10-08)
 - Added support to specify whether or not a pipeline policy should be added per call or per retry.
 
