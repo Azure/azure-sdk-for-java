@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpMessageConstant;
+import com.azure.core.experimental.util.BinaryData;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.message.Message;
@@ -36,8 +37,14 @@ public class ServiceBusReceivedMessageTest {
     private static final byte[] PAYLOAD_BYTES = PAYLOAD.getBytes(UTF_8);
 
     @Test
-    public void byteArrayNotNull() {
-        assertThrows(NullPointerException.class, () -> new ServiceBusReceivedMessage(null));
+    public void nullDataConstructor() {
+        // Arrange
+        byte[] byteArray = null;
+        BinaryData binaryData = null;
+
+        // Act & Assert
+        assertThrows(NullPointerException.class, () -> new ServiceBusReceivedMessage(byteArray));
+        assertThrows(NullPointerException.class, () -> new ServiceBusReceivedMessage(binaryData));
     }
 
     @Test

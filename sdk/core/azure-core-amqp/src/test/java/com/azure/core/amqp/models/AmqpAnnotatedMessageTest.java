@@ -3,6 +3,7 @@
 
 package com.azure.core.amqp.models;
 
+import com.azure.core.experimental.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -36,8 +37,8 @@ public class AmqpAnnotatedMessageTest {
     public void copyConstructorTest() {
         // Arrange
         final int expectedBinaryDataSize = 1;
-        List<byte[]> expectedBinaryData = new ArrayList<>();
-        expectedBinaryData.add(CONTENTS_BYTES);
+        List<BinaryData> expectedBinaryData = new ArrayList<>();
+        expectedBinaryData.add(BinaryData.fromBytes(CONTENTS_BYTES));
 
         final AmqpDataBody amqpDataBody = new AmqpDataBody(expectedBinaryData);
         final AmqpAnnotatedMessage expected = new AmqpAnnotatedMessage(amqpDataBody);
@@ -112,7 +113,8 @@ public class AmqpAnnotatedMessageTest {
     @Test
     public void constructorValidValues() {
         // Arrange
-        final List<byte[]> expectedBinaryData = Collections.singletonList(CONTENTS_BYTES);
+        final List<BinaryData> expectedBinaryData = new ArrayList<>();
+        expectedBinaryData.add(BinaryData.fromBytes(CONTENTS_BYTES));
         final AmqpDataBody amqpDataBody = new AmqpDataBody(expectedBinaryData);
 
         // Act
@@ -128,7 +130,7 @@ public class AmqpAnnotatedMessageTest {
     @Test
     public void constructorAmqpValidValues() {
         // Arrange
-        final List<byte[]> expectedBinaryData = Collections.singletonList(CONTENTS_BYTES);
+        final List<BinaryData> expectedBinaryData = Collections.singletonList(BinaryData.fromBytes(CONTENTS_BYTES));
         final AmqpDataBody amqpDataBody = new AmqpDataBody(expectedBinaryData);
         final AmqpAnnotatedMessage expected = new AmqpAnnotatedMessage(amqpDataBody);
 

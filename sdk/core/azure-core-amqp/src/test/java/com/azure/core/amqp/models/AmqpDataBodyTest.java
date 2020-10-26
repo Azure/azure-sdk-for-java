@@ -3,6 +3,7 @@
 
 package com.azure.core.amqp.models;
 
+import com.azure.core.experimental.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -24,9 +25,9 @@ public class AmqpDataBodyTest {
     @Test
     public void constructorValidValues() {
         // Arrange
-        final List<byte[]> expectedDataList = new ArrayList<>();
-        expectedDataList.add("some data 1".getBytes());
-        expectedDataList.add("some data 2".getBytes());
+        final List<BinaryData> expectedDataList = new ArrayList<>();
+        expectedDataList.add(BinaryData.fromString("some data 1"));
+        expectedDataList.add(BinaryData.fromString("some data 2"));
 
         // Act
         final AmqpDataBody actual = new AmqpDataBody(expectedDataList);
@@ -46,7 +47,7 @@ public class AmqpDataBodyTest {
     @Test
     public void constructorNullValidValues() {
         // Arrange
-        final List<byte[]> listBinaryData = null;
+        final List<BinaryData> listBinaryData = null;
 
         // Act & Assert
         Assertions.assertThrows(NullPointerException.class, () -> new AmqpDataBody(listBinaryData));

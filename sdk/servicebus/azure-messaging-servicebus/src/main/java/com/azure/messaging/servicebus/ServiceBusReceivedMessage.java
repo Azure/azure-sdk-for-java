@@ -18,13 +18,13 @@ import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpBodyType;
 import com.azure.core.amqp.models.AmqpDataBody;
+import com.azure.core.experimental.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
@@ -37,8 +37,7 @@ import java.util.UUID;
 public final class ServiceBusReceivedMessage {
     private final ClientLogger logger = new ClientLogger(ServiceBusReceivedMessage.class);
 
-    private final AmqpAnnotatedMessage amqpAnnotatedMessage;
-    private final byte[] binaryData;
+    private AmqpAnnotatedMessage amqpAnnotatedMessage;
     private UUID lockToken;
 
     /**
@@ -54,9 +53,15 @@ public final class ServiceBusReceivedMessage {
     }
 
     ServiceBusReceivedMessage(byte[] body) {
-        binaryData = Objects.requireNonNull(body, "'body' cannot be null.");
+        Objects.requireNonNull(body, "'body' cannot be null.");
+        amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(BinaryData
+            .fromBytes(body))));
+    }
+
+    public ServiceBusReceivedMessage(BinaryData body) {
+        Objects.requireNonNull(body, "'body' cannot be null.");
         amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(
-            binaryData)));
+            body)));
     }
 
     /**
@@ -74,7 +79,8 @@ public final class ServiceBusReceivedMessage {
         final AmqpBodyType bodyType = amqpAnnotatedMessage.getBody().getBodyType();
         switch (bodyType) {
             case DATA:
-                return Arrays.copyOf(binaryData, binaryData.length);
+                return ((AmqpDataBody) amqpAnnotatedMessage.getBody()).getData().stream().findFirst().get();
+
             case SEQUENCE:
             case VALUE:
                 throw logger.logExceptionAsError(new UnsupportedOperationException("Body type not supported yet "

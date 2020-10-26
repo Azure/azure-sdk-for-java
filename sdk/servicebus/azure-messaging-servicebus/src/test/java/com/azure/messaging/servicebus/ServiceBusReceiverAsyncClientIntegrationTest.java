@@ -7,6 +7,7 @@ import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpDataBody;
 import com.azure.core.amqp.models.AmqpMessageHeader;
 import com.azure.core.amqp.models.AmqpMessageProperties;
+import com.azure.core.experimental.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
@@ -1015,7 +1016,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         setSenderAndReceiver(entityType, TestUtils.USE_CASE_VALIDATE_AMQP_PROPERTIES, isSessionEnabled);
 
         final String messageId = UUID.randomUUID().toString();
-        final AmqpAnnotatedMessage expectedAmqpProperties = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(CONTENTS_BYTES)));
+        final AmqpAnnotatedMessage expectedAmqpProperties = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(BinaryData.fromBytes(CONTENTS_BYTES))));
         expectedAmqpProperties.getProperties().setSubject(subject);
         expectedAmqpProperties.getProperties().setReplyToGroupId("r-gid");
         expectedAmqpProperties.getProperties().setReplyTo("replyto");

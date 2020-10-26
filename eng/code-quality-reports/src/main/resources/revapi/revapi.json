@@ -241,6 +241,12 @@
         "old": "class com.azure.messaging.eventhubs.EventHubClientBuilder",
         "new": "class com.azure.messaging.eventhubs.EventHubClientBuilder",
         "justification": "Setting protocol to AMQP in @ServiceClientBuilder annotation is not a breaking change"
+      },
+      {
+        "code": "java.method.parameterTypeParameterChanged",
+        "old": "parameter void com.azure.core.amqp.models.AmqpDataBody::<init>(===java.lang.Iterable<byte[]>===)",
+        "new": "parameter void com.azure.core.amqp.models.AmqpDataBody::<init>(===java.lang.Iterable<com.azure.core.experimental.util.BinaryData>===)",
+        "justification": "Replacing with BinaryData."
       }
     ]
   }
