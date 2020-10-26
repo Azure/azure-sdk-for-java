@@ -90,8 +90,7 @@ public final class OptionsConverter {
 
         return new EventRoutesListOptions()
             .setTraceparent(options.getTraceParent())
-            .setTracestate(options.getTraceState())
-            .setMaxItemsPerPage(options.getMaxItemsPerPage());
+            .setTracestate(options.getTraceState());
     }
 
     public static EventRoutesGetByIdOptions toProtocolLayerOptions(GetEventRouteOptions options) {
