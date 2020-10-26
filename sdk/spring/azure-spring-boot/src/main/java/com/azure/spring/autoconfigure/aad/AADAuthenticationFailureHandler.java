@@ -34,7 +34,7 @@ public class AADAuthenticationFailureHandler implements AuthenticationFailureHan
     public void onAuthenticationFailure(HttpServletRequest request,
                                         HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
-        // Handle conditional access policy
+        // Handle conditional access policy, step 3.
         MsalServiceException msalServiceException = (MsalServiceException)
             Optional.of(exception)
                     .filter(e -> e instanceof OAuth2AuthenticationException)
@@ -50,7 +50,9 @@ public class AADAuthenticationFailureHandler implements AuthenticationFailureHan
             // Put claims into session
             Optional.of(msalServiceException)
                     .map(MsalServiceException::claims)
-                    .ifPresent(claims -> request.getSession().setAttribute(Constants.CAP_CLAIMS, claims));
+                    .ifPresent(claims ->
+                        request.getSession().setAttribute(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS, claims)
+                    );
             // Redirect
             response.setStatus(302);
             String redirectUrl = Optional.of(request)
