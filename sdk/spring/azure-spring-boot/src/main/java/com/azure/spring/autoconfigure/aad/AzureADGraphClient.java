@@ -122,22 +122,22 @@ public class AzureADGraphClient {
         String aadMembershipRestUri = serviceEndpoints.getAadMembershipRestUri();
         while (aadMembershipRestUri != null) {
             String membershipsJson = getUserMemberships(graphApiToken, aadMembershipRestUri);
-            MemberShips memberShips = objectMapper.readValue(membershipsJson, MemberShips.class);
-            memberShips.getValue()
+            Memberships memberships = objectMapper.readValue(membershipsJson, Memberships.class);
+            memberships.getValue()
                        .stream()
                        .filter(this::isGroupObject)
-                       .map(MemberShip::getDisplayName)
+                       .map(Membership::getDisplayName)
                        .forEach(groups::add);
-            aadMembershipRestUri = Optional.of(memberShips)
-                                           .map(MemberShips::getOdataNextLink)
+            aadMembershipRestUri = Optional.of(memberships)
+                                           .map(Memberships::getOdataNextLink)
                                            .map(this::getUrlStringFromODataNextLink)
                                            .orElse(null);
         }
         return groups;
     }
 
-    private boolean isGroupObject(final MemberShip memberShip) {
-        return memberShip.getObjectType().equals(aadAuthenticationProperties.getUserGroup().getValue());
+    private boolean isGroupObject(final Membership membership) {
+        return membership.getObjectType().equals(aadAuthenticationProperties.getUserGroup().getValue());
     }
 
     /**

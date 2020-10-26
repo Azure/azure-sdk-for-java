@@ -3,15 +3,12 @@
 
 package com.azure.ai.formrecognizer.models;
 
-import com.azure.core.annotation.Immutable;
-
 import java.util.Collections;
 import java.util.List;
 
 /**
  * The FormPage model.
  */
-@Immutable
 public final class FormPage {
 
     /*
@@ -28,6 +25,11 @@ public final class FormPage {
      * List of data tables extracted from the page.
      */
     private final List<FormTable> tables;
+
+    /*
+     * List of selection marks extracted from the page.
+     */
+    private List<FormSelectionMark> selectionMarks;
 
     /*
      * The general orientation of the text in clockwise direction, measured in
@@ -139,6 +141,15 @@ public final class FormPage {
      */
     public Integer getPageNumber() {
         return this.pageNumber;
+    }
+
+    /**
+     * Get the selection marks in the input document.
+     *
+     * @return the selection marks.
+     */
+    public List<FormSelectionMark> getSelectionMarks() {
+        return Collections.unmodifiableList(this.selectionMarks);
     }
 }
 

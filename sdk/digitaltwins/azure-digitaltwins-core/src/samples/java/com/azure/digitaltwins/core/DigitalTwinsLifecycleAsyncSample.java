@@ -164,12 +164,12 @@ public class DigitalTwinsLifecycleAsyncSample {
             // Call APIs to delete all relationships.
             if (listRelationshipSemaphore.await(MAX_WAIT_TIME_ASYNC_OPERATIONS_IN_SECONDS, TimeUnit.SECONDS)) {
                 relationshipList
-                    .forEach(relationship -> client.deleteRelationship(relationship.getSourceId(), relationship.getId())
+                    .forEach(relationship -> client.deleteRelationship(relationship.getSourceDigitalTwinId(), relationship.getRelationshipId())
                         .doOnSuccess(aVoid -> {
-                            if (twinId.equals(relationship.getSourceId())) {
-                                ConsoleLogger.printSuccess("Found and deleted relationship: " + relationship.getId());
+                            if (twinId.equals(relationship.getSourceDigitalTwinId())) {
+                                ConsoleLogger.printSuccess("Found and deleted relationship: " + relationship.getRelationshipId());
                             } else {
-                                ConsoleLogger.printSuccess("Found and deleted incoming relationship: " + relationship.getId());
+                                ConsoleLogger.printSuccess("Found and deleted incoming relationship: " + relationship.getRelationshipId());
                             }
                         })
                         .doOnError(IgnoreNotFoundError)
@@ -232,7 +232,7 @@ public class DigitalTwinsLifecycleAsyncSample {
         // Call API to create the models. For each async operation, once the operation is completed successfully, a latch is counted down.
         client.createModels(modelsToCreate)
             .doOnNext(listOfModelData -> listOfModelData.forEach(
-                modelData -> ConsoleLogger.printSuccess("Created model: " + modelData.getId())
+                modelData -> ConsoleLogger.printSuccess("Created model: " + modelData.getModelId())
             ))
             .doOnError(IgnoreConflictError)
             .doOnTerminate(createModelsLatch::countDown)
@@ -252,8 +252,8 @@ public class DigitalTwinsLifecycleAsyncSample {
 
         // Call API to list the models. For each async operation, once the operation is completed successfully, a latch is counted down.
         client.listModels()
-            .doOnNext(modelData -> ConsoleLogger.printSuccess("Retrieved model: " + modelData.getId() + ", display name '" + modelData.getDisplayName().get("en") + "'," +
-                    " upload time '" + modelData.getUploadTime() + "' and decommissioned '" + modelData.isDecommissioned() + "'"))
+            .doOnNext(modelData -> ConsoleLogger.printSuccess("Retrieved model: " + modelData.getModelId() + ", display name '" + modelData.getDisplayNameLanguageMap().get("en") + "'," +
+                    " upload time '" + modelData.getUploadedOn() + "' and decommissioned '" + modelData.isDecommissioned() + "'"))
             .doOnError(throwable -> ConsoleLogger.printFatal("List models error: " + throwable))
             .doOnTerminate(listModelsLatch::countDown)
             .subscribe();
@@ -305,8 +305,8 @@ public class DigitalTwinsLifecycleAsyncSample {
                     relationships
                         .forEach(relationship -> {
                             try {
-                                client.createRelationship(relationship.getSourceId(), relationship.getId(), MAPPER.writeValueAsString(relationship), String.class)
-                                    .doOnSuccess(s -> ConsoleLogger.printSuccess("Linked twin " + relationship.getSourceId() + " to twin " + relationship.getTargetId() + " as " + relationship.getName()))
+                                client.createRelationship(relationship.getSourceDigitalTwinId(), relationship.getRelationshipId(), MAPPER.writeValueAsString(relationship), String.class)
+                                    .doOnSuccess(s -> ConsoleLogger.printSuccess("Linked twin " + relationship.getSourceDigitalTwinId() + " to twin " + relationship.getTargetDigitalTwinId() + " as " + relationship.getRelationshipName()))
                                     .doOnError(IgnoreConflictError)
                                     .doOnTerminate(connectTwinsLatch::countDown)
                                     .subscribe();

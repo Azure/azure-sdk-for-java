@@ -413,10 +413,10 @@ Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [maven]: https://maven.apache.org/
 [message-sessions]: https://docs.microsoft.com/azure/service-bus-messaging/message-sessions
-[oasis_amqp_v1_error]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-error
+[oasis_amqp_v1_error]: https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-error
 [oasis_amqp_v1]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
 [product_docs]: https://docs.microsoft.com/azure/service-bus-messaging
-[qpid_proton_j_apache]: http://qpid.apache.org/proton/
+[qpid_proton_j_apache]: https://qpid.apache.org/proton/
 [queue_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview#queues
 [ReceiveMode]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/main/java/com/azure/messaging/servicebus/models/ReceiveMode.java
 [RetryOptions]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-amqp/src/main/java/com/azure/core/amqp/AmqpRetryOptions.java

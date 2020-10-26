@@ -62,7 +62,7 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.createDigitalTwins#String-Object-Class#String}
      *
-     * @param digitalTwinId The Id of the digital twin.
+     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param clazz The model class to serialize the request with and deserialize the response with.
      * @param <T> The generic type to serialize the request with and deserialize the response with.
      * @param digitalTwin The application/json object representing the digital twin to create.
@@ -88,7 +88,7 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.createDigitalTwins#String-Object-Class#String}
      *
-     * @param digitalTwinId The Id of the digital twin.
+     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param digitalTwin The application/json object representing the digital twin to create.
      * @param clazz The model class to serialize the request with and deserialize the response with.
      * @param <T> The generic type to serialize the request with and deserialize the response with.
@@ -167,7 +167,7 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.updateDigitalTwin#String-List}
      *
-     * @param digitalTwinId The Id of the digital twin.
+     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param jsonPatch The JSON patch to apply to the specified digital twin.
      *                                    This argument can be created using {@link UpdateOperationUtility}.
      */
@@ -186,7 +186,7 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.updateDigitalTwinWithResponse#String-List-Options-Context}
      *
-     * @param digitalTwinId The Id of the digital twin.
+     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param jsonPatch The JSON patch to apply to the specified digital twin.
      *                                    This argument can be created using {@link UpdateOperationUtility}.
      * @param options The optional parameters for this request. If null, the default option values will be used.
@@ -506,13 +506,13 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.createModels#Iterable}
      *
-     * @param models The list of models to create. Each string corresponds to exactly one model.
+     * @param dtdlModels The list of models to create. Each string corresponds to exactly one model.
      * @return A List of created models. Each {@link DigitalTwinsModelData} instance in this list
      * will contain metadata about the created model, but will not contain the model itself.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Iterable<DigitalTwinsModelData> createModels(Iterable<String> models) {
-        return createModelsWithResponse(models, null, Context.NONE).getValue();
+    public Iterable<DigitalTwinsModelData> createModels(Iterable<String> dtdlModels) {
+        return createModelsWithResponse(dtdlModels, null, Context.NONE).getValue();
     }
 
     /**
@@ -522,15 +522,15 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.createModelsWithResponse#Iterable}
      *
-     * @param models The list of models to create. Each string corresponds to exactly one model.
+     * @param dtdlModels The list of models to create. Each string corresponds to exactly one model.
      * @param options The optional parameters for this request. If null, the default option values will be used.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} containing the list of created models. Each {@link DigitalTwinsModelData} instance in this list
      * will contain metadata about the created model, but will not contain the model itself.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Response<Iterable<DigitalTwinsModelData>> createModelsWithResponse(Iterable<String> models, CreateModelsOptions options, Context context) {
-        return digitalTwinsAsyncClient.createModelsWithResponse(models, options, context).block();
+    public Response<Iterable<DigitalTwinsModelData>> createModelsWithResponse(Iterable<String> dtdlModels, CreateModelsOptions options, Context context) {
+        return digitalTwinsAsyncClient.createModelsWithResponse(dtdlModels, options, context).block();
     }
 
     /**
@@ -654,7 +654,7 @@ public final class DigitalTwinsClient {
      * @return A {@link Response} with no parsed payload object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> decommissionModelWithResponse(String modelId, UpdateModelOptions options, Context context) {
+    public Response<Void> decommissionModelWithResponse(String modelId, DecommissionModelOptions options, Context context) {
         return digitalTwinsAsyncClient.decommissionModelWithResponse(modelId, options, context).block();
     }
 

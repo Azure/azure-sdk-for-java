@@ -20,12 +20,11 @@ public final class IncomingRelationshipConverter {
             return null;
         }
         
-        IncomingRelationship mappedIncomingRelationship = new IncomingRelationship();
-        mappedIncomingRelationship.setRelationshipId(input.getRelationshipId());
-        mappedIncomingRelationship.setSourceId(input.getSourceId());
-        mappedIncomingRelationship.setRelationshipName(input.getRelationshipName());
-        mappedIncomingRelationship.setRelationshipLink(input.getRelationshipLink());
-        return mappedIncomingRelationship;
+        return new IncomingRelationship(
+            input.getRelationshipId(),
+            input.getSourceId(),
+            input.getRelationshipName(),
+            input.getRelationshipLink());
     }
 
     /**
@@ -39,7 +38,7 @@ public final class IncomingRelationshipConverter {
 
         com.azure.digitaltwins.core.implementation.models.IncomingRelationship mappedIncomingRelationship = new com.azure.digitaltwins.core.implementation.models.IncomingRelationship();
         mappedIncomingRelationship.setRelationshipId(input.getRelationshipId());
-        mappedIncomingRelationship.setSourceId(input.getSourceId());
+        mappedIncomingRelationship.setSourceId(input.getSourceDigitalTwinId());
         mappedIncomingRelationship.setRelationshipName(input.getRelationshipName());
         mappedIncomingRelationship.setRelationshipLink(input.getRelationshipLink());
         return mappedIncomingRelationship;
