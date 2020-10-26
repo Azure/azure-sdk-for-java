@@ -138,7 +138,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsAsyncClient#getDigitalTwinWithResponse(String, Class, GetDigitalTwinOptions)}
+     * {@link DigitalTwinsAsyncClient#getDigitalTwinWithResponse(String, Class)}
      */
     @Override
     public void getDigitalTwinWithResponse() {
@@ -147,8 +147,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
         // BEGIN: com.azure.digitaltwins.core.asyncClient.getDigitalTwinWithResponse#String-Class-Options#BasicDigitalTwin
         digitalTwinsAsyncClient.getDigitalTwinWithResponse(
             "myDigitalTwinId",
-            BasicDigitalTwin.class,
-            new GetDigitalTwinOptions())
+            BasicDigitalTwin.class)
             .subscribe(
                 basicDigitalTwinWithResponse -> System.out.println(
                     "Retrieved digital twin with Id: " + basicDigitalTwinWithResponse.getValue().getId() +
@@ -158,8 +157,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
         // BEGIN: com.azure.digitaltwins.core.asyncClient.getDigitalTwinWithResponse#String-Class-Options#String
         digitalTwinsAsyncClient.getDigitalTwinWithResponse(
             "myDigitalTwinId",
-            String.class,
-            new GetDigitalTwinOptions())
+            String.class)
             .subscribe(
                 basicDigitalTwinWithResponse -> System.out.println(
                     "Retrieved digital twin: " + basicDigitalTwinWithResponse.getValue() +
@@ -357,7 +355,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsAsyncClient#getRelationshipWithResponse(String, String, Class, GetRelationshipOptions)}
+     * {@link DigitalTwinsAsyncClient#getRelationshipWithResponse(String, String, Class)}
      */
     @Override
     public void getRelationshipWithResponse() {
@@ -365,8 +363,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
         digitalTwinsAsyncClient.getRelationshipWithResponse(
             "myDigitalTwinId",
             "myRelationshipName",
-            BasicRelationship.class,
-            new GetRelationshipOptions())
+            BasicRelationship.class)
         .subscribe(retrievedRelationshipWithResponse -> System.out.println(
             "Retrieved relationship with Id: "
                 + retrievedRelationshipWithResponse.getValue().getRelationshipId() +
@@ -380,8 +377,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
         digitalTwinsAsyncClient.getRelationshipWithResponse(
             "myDigitalTwinId",
             "myRelationshipName",
-            String.class,
-            new GetRelationshipOptions())
+            String.class)
         .subscribe(retrievedRelationshipStringWithResponse -> System.out.println(
             "Retrieved relationship: " +
             retrievedRelationshipStringWithResponse +
@@ -460,7 +456,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
 
     /**
      * Generates code samples for using {@link DigitalTwinsAsyncClient#listRelationships(String, Class)}
-     * and {@link DigitalTwinsAsyncClient#listRelationships(String, String, Class, ListRelationshipsOptions)}
+     * and {@link DigitalTwinsAsyncClient#listRelationships(String, String, Class)}
      */
     @Override
     public void listRelationships() {
@@ -478,8 +474,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
         digitalTwinsAsyncClient.listRelationships(
             "myDigitalTwinId",
             "myRelationshipName",
-            BasicRelationship.class,
-            new ListRelationshipsOptions())
+            BasicRelationship.class)
             .doOnNext(rel -> System.out.println("Retrieved relationship with Id: " + rel.getRelationshipId()));
         // END: com.azure.digitaltwins.core.asyncClient.listRelationships#String-String-Class-Options#BasicRelationship#IterateByItem
 
@@ -487,16 +482,14 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
         digitalTwinsAsyncClient.listRelationships(
             "myDigitalTwinId",
             "myRelationshipId",
-            String.class,
-            new ListRelationshipsOptions())
+            String.class)
             .doOnNext(rel -> System.out.println("Retrieved relationship: " + rel));
         // END: com.azure.digitaltwins.core.asyncClient.listRelationships#String-String-Class-Options#String#IterateByItem
     }
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsAsyncClient#listIncomingRelationships(String)} and
-     * {@link DigitalTwinsAsyncClient#listIncomingRelationships(String, ListIncomingRelationshipsOptions)}
+     * {@link DigitalTwinsAsyncClient#listIncomingRelationships(String)}
      */
     @Override
     public void listIncomingRelationships() {
@@ -512,8 +505,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
 
         // BEGIN: com.azure.digitaltwins.core.asyncClient.listIncomingRelationships#String-Options
         digitalTwinsAsyncClient.listIncomingRelationships(
-            "myDigitalTwinId",
-            new ListIncomingRelationshipsOptions())
+            "myDigitalTwinId")
             .doOnNext(incomingRel -> System.out.println(
                 "Retrieved relationship with Id: " +
                 incomingRel.getRelationshipId() +
@@ -545,7 +537,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsAsyncClient#createModelsWithResponse(Iterable, CreateModelsOptions)}
+     * {@link DigitalTwinsAsyncClient#createModelsWithResponse(Iterable)}
      */
     @Override
     public void createModelsWithResponse() {
@@ -555,8 +547,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
 
         // BEGIN: com.azure.digitaltwins.core.asyncClient.createModelsWithResponse#Iterable-Options
         digitalTwinsAsyncClient.createModelsWithResponse(
-            Arrays.asList(model1, model2, model3),
-            new CreateModelsOptions())
+            Arrays.asList(model1, model2, model3))
             .subscribe(createdModels -> {
                 System.out.println("Received a response with HTTP status code: " + createdModels.getStatusCode());
                 createdModels.getValue().forEach(
@@ -578,14 +569,13 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsAsyncClient#getModelWithResponse(String, GetModelOptions)}
+     * {@link DigitalTwinsAsyncClient#getModelWithResponse(String)}
      */
     @Override
     public void getModelWithResponse() {
         // BEGIN: com.azure.digitaltwins.core.asyncClient.getModelWithResponse#String-Options
         digitalTwinsAsyncClient.getModelWithResponse(
-            "dtmi:com:samples:Building;1",
-            new GetModelOptions())
+            "dtmi:com:samples:Building;1")
             .subscribe(modelWithResponse -> {
                 System.out.println("Received HTTP response with status code: " + modelWithResponse.getStatusCode());
                 System.out.println("Retrieved model with Id: " + modelWithResponse.getValue().getModelId());
@@ -629,13 +619,13 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsAsyncClient#decommissionModelWithResponse(String, DecommissionModelOptions)}
+     * {@link DigitalTwinsAsyncClient#decommissionModelWithResponse(String)}
      */
     @Override
     public void decommissionModelWithResponse() {
         // BEGIN: com.azure.digitaltwins.core.asyncClient.decommissionModelWithResponse#String-Options
         digitalTwinsAsyncClient.decommissionModelWithResponse(
-            "dtmi:com:samples:Building;1", new DecommissionModelOptions())
+            "dtmi:com:samples:Building;1")
         .subscribe(response ->
             System.out.println(
                 "Received decommission model HTTP response with status:" +
@@ -656,14 +646,13 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsAsyncClient#deleteModelWithResponse(String, DeleteModelOptions)}
+     * {@link DigitalTwinsAsyncClient#deleteModelWithResponse(String)}
      */
     @Override
     public void deleteModelWithResponse() {
         // BEGIN: com.azure.digitaltwins.core.asyncClient.deleteModelWithResponse#String-Options
         digitalTwinsAsyncClient.deleteModelWithResponse(
-            "dtmi:com:samples:Building;1",
-            new DeleteModelOptions())
+            "dtmi:com:samples:Building;1")
         .subscribe(response ->
             System.out.println(
                 "Received delete model operation response with HTTP status code:" +
@@ -691,7 +680,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsAsyncClient#getComponentWithResponse(String, String, Class, GetComponentOptions)}
+     * {@link DigitalTwinsAsyncClient#getComponentWithResponse(String, String, Class)}
      */
     @Override
     public void getComponentWithResponse() {
@@ -699,8 +688,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
         digitalTwinsAsyncClient.getComponentWithResponse(
             "myDigitalTwinId",
             "myComponentName",
-            String.class,
-            new GetComponentOptions())
+            String.class)
         .subscribe(response ->
             System.out.println(
                 "Received component get operation response with HTTP status code: " +
@@ -814,7 +802,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsAsyncClient#createOrReplaceEventRouteWithResponse(String, DigitalTwinsEventRoute, CreateOrReplaceEventRouteOptions)}
+     * {@link DigitalTwinsAsyncClient#createOrReplaceEventRouteWithResponse(String, DigitalTwinsEventRoute)}
      */
     @Override
     public void createEventRouteWithResponse() {
@@ -825,8 +813,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
         DigitalTwinsEventRoute eventRoute = new DigitalTwinsEventRoute("myEndpointName").setFilter(filter);
         digitalTwinsAsyncClient.createOrReplaceEventRouteWithResponse(
             "myEventRouteId",
-            eventRoute,
-            new CreateOrReplaceEventRouteOptions())
+            eventRoute)
             .subscribe(response ->
                 System.out.println("Created an event rout with HTTP status code: " + response.getStatusCode()));
         // END: com.azure.digitaltwins.core.asyncClient.createOrReplaceEventRouteWithResponse#String-EventRoute-Options
@@ -845,14 +832,13 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsAsyncClient#getEventRouteWithResponse(String, GetDigitalTwinsEventRouteOptions)}
+     * {@link DigitalTwinsAsyncClient#getEventRouteWithResponse(String)}
      */
     @Override
     public void getEventRouteWithResponse() {
         // BEGIN: com.azure.digitaltwins.core.asyncClient.getEventRouteWithResponse#String-Options
         digitalTwinsAsyncClient.getEventRouteWithResponse(
-            "myEventRouteId",
-            new GetDigitalTwinsEventRouteOptions())
+            "myEventRouteId")
         .subscribe(eventRouteWithResponse -> {
             System.out.println(
                 "Received get event route operation response with HTTP status code: " +
@@ -877,14 +863,13 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsAsyncClient#deleteEventRouteWithResponse(String, DeleteEventRouteOptions)}
+     * {@link DigitalTwinsAsyncClient#deleteEventRouteWithResponse(String)}
      */
     @Override
     public void deleteEventRouteWithResponse() {
         // BEGIN: com.azure.digitaltwins.core.asyncClient.deleteEventRouteWithResponse#String-Options
         digitalTwinsAsyncClient.deleteEventRouteWithResponse(
-            "myEventRouteId",
-            new DeleteEventRouteOptions())
+            "myEventRouteId")
             .subscribe(deleteResponse ->
                 System.out.println(
                     "Received delete event route operation response with HTTP status code: " +
