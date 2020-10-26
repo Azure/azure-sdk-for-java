@@ -294,6 +294,22 @@ SyncPoller<Void, Void> res =
 res.waitForCompletion();
 ```
 
+### Release Phone Numbers
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L399-L409 -->
+```java
+    PhoneNumber phoneNumber = new PhoneNumber("PHONE_NUMBER_TO_RELEASE");
+    List<PhoneNumber> phoneNumbers = new ArrayList<>();
+    phoneNumbers.add(phoneNumber);
+    PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+
+    SyncPoller<PhoneNumberRelease, PhoneNumberRelease> res = 
+        phoneNumberClient.beginReleasePhoneNumbers(phoneNumbers, duration);
+    res.waitForCompletion();
+    PhoneNumberRelease result = res.getFinalResult();
+    System.out.println("Phone number status: " + result.getStatus());
+}
+```
+
 ## Contributing
 
 This project welcomes contributions and suggestions. Most contributions require you to agree to a [Contributor License Agreement (CLA)][cla] declaring that you have the right to, and actually do, grant us the rights to use your contribution.

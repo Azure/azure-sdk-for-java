@@ -15,6 +15,7 @@ import com.azure.communication.administration.models.LocationOptions;
 import com.azure.communication.administration.models.LocationOptionsDetails;
 import com.azure.communication.administration.models.LocationOptionsQuery;
 import com.azure.communication.administration.models.PhoneNumberCountry;
+import com.azure.communication.administration.models.PhoneNumberRelease;
 import com.azure.communication.administration.models.PhoneNumberSearch;
 import com.azure.communication.administration.models.PhonePlan;
 import com.azure.communication.administration.models.PhonePlanGroup;
@@ -27,7 +28,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.polling.SyncPoller;
 
 public class ReadmeSamples {
-    
     /**
      * Sample code for creating a sync Communication Identity Client.
      *
@@ -380,5 +380,22 @@ public class ReadmeSamples {
         SyncPoller<Void, Void> res = 
             phoneNumberClient.beginPurchaseSearch(phoneNumberSearchId, duration);
         res.waitForCompletion();
+    }
+
+    /**
+     * Sample code to release a phone number as a long running operation
+     */
+    public void beginReleasePhoneNumbers() {
+        Duration duration = Duration.ofSeconds(1);
+        PhoneNumber phoneNumber = new PhoneNumber("PHONE_NUMBER_TO_RELEASE");
+        List<PhoneNumber> phoneNumbers = new ArrayList<>();
+        phoneNumbers.add(phoneNumber);
+        PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+
+        SyncPoller<PhoneNumberRelease, PhoneNumberRelease> res = 
+            phoneNumberClient.beginReleasePhoneNumbers(phoneNumbers, duration);
+        res.waitForCompletion();
+        PhoneNumberRelease result = res.getFinalResult();
+        System.out.println("Phone number status: " + result.getStatus());
     }
 }

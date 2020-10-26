@@ -331,30 +331,6 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
         assertEquals(200, response.getStatusCode());
     }
 
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void releasePhoneNumbers(HttpClient httpClient) {
-        List<PhoneNumber> phoneNumbers = new ArrayList<>();
-        phoneNumbers.add(new PhoneNumber(PHONENUMBER_TO_RELEASE));
-
-        ReleaseResponse releaseResponse = this.getClient(httpClient).releasePhoneNumbers(phoneNumbers);
-
-        assertNotNull(releaseResponse.getReleaseId());
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void releasePhoneNumbersWithResponse(HttpClient httpClient) {
-        List<PhoneNumber> phoneNumbers = new ArrayList<>();
-        phoneNumbers.add(new PhoneNumber(PHONENUMBER_TO_RELEASE));
-
-        Response<ReleaseResponse> response =
-            this.getClient(httpClient).releasePhoneNumbersWithResponse(phoneNumbers, Context.NONE);
-
-        assertEquals(200, response.getStatusCode());
-        assertNotNull(response.getValue().getReleaseId());
-    }
-
     private PhoneNumberClient getClient(HttpClient httpClient) {
         return super.getClientBuilder(httpClient).buildClient();
     }
