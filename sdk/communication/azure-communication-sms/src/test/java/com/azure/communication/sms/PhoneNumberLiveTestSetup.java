@@ -90,7 +90,7 @@ public class PhoneNumberLiveTestSetup implements BeforeAllCallback, ExtensionCon
             System.out.println("The Phone Number Search error code is: " + searchResult.getErrorCode());
             System.out.println("The Phone Number Search status is: " + phoneNumberClient.getSearchById(searchResult.getSearchId()).getStatus());
 
-            assertEquals(SearchStatus.SUCCESS, phoneNumberClient.getSearchById(searchResult.getSearchId()).getStatus(),);
+            assertEquals(SearchStatus.SUCCESS, phoneNumberClient.getSearchById(searchResult.getSearchId()).getStatus());
             System.out.println("Finished Running Phone Number Setup for Live Tests");
             System.out.println("Using phone number: " + phoneNumbers.get(0));
         }
