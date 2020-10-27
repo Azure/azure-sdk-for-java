@@ -87,7 +87,6 @@ public class ServiceBusReceivedMessageTest {
         // Assert
         assertNotNull(serviceBusMessageData.getBody());
         assertEquals(PAYLOAD, new String(serviceBusMessageData.getBody(), UTF_8));
-        assertEquals(PAYLOAD, serviceBusMessageData.getBodyAsString());
         assertEquals(PAYLOAD, serviceBusMessageData.getBodyAsBinaryData().toString());
     }
 
@@ -129,7 +128,6 @@ public class ServiceBusReceivedMessageTest {
         assertNotNull(actual);
         assertNotNull(actual.getBody());
         assertEquals(PAYLOAD, new String(actual.getBody(), UTF_8));
-        assertEquals(PAYLOAD, actual.getBodyAsString());
         assertArrayEquals(PAYLOAD.getBytes(), actual.getBodyAsBinaryData().toBytes());
         assertEquals(originalMessage.getMessageId(), actual.getMessageId());
         assertEquals(originalMessage.getContentType(), actual.getContentType());

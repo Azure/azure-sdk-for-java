@@ -22,7 +22,6 @@ import com.azure.core.experimental.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -105,21 +104,6 @@ public final class ServiceBusReceivedMessage {
                 throw logger.logExceptionAsError(new IllegalStateException("Body type not valid "
                     + bodyType.toString()));
         }
-    }
-
-    /**
-     * Gets the actual payload/data wrapped by the {@link ServiceBusReceivedMessage}.
-     *
-     * <p>
-     * If the means for deserializing the raw data is not apparent to consumers, a common technique is to make use of
-     * {@link #getApplicationProperties()} when creating the event, to associate serialization hints as an aid to
-     * consumers who wish to deserialize the binary data.
-     * </p>
-     *
-     * @return A {@link String} representing the data.
-     */
-    public String getBodyAsString() {
-        return new String(getBody(), StandardCharsets.UTF_8);
     }
 
     /**

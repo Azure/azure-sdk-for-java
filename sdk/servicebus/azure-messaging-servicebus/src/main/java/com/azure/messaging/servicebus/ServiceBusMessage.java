@@ -15,7 +15,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
@@ -170,16 +169,6 @@ public class ServiceBusMessage {
                 throw logger.logExceptionAsError(new IllegalStateException("Body type not valid "
                     + bodyType.toString()));
         }
-    }
-
-    /**
-     * * Gets the actual payload/data wrapped by the {@link ServiceBusMessage}. The default {@link Charset} used is
-     * UTF_8.
-     *
-     * @return A {@link String} representing the data.
-     */
-    public String getBodyAsString() {
-        return new String(getBody(), StandardCharsets.UTF_8);
     }
 
     /**
