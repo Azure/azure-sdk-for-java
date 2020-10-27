@@ -86,24 +86,25 @@ public class AADOAuth2AutoConfiguration {
                                              .orElse("{baseUrl}/login/oauth2/code/{registrationId}");
 
         List<String> scopes = aadAuthenticationProperties.getScope();
-        List<String> graphApiScopes = scopes.stream()
-                                            .map(String::trim)
-                                            .map(String::toLowerCase)
-                                            .filter(this::isGraphApiScope)
-                                            .collect(Collectors.toList());
-        if (!graphApiScopes.toString().contains(".default")) {
+
+        if (!scopes.toString().contains(".default")) {
+            scopes = scopes.stream()
+                           .map(String::trim)
+                           .map(String::toLowerCase)
+                           .filter(this::isGraphApiScope)
+                           .collect(Collectors.toList());
             if (aadAuthenticationProperties.allowedGroupsConfigured()
-                && !graphApiScopes.contains("https://graph.microsoft.com/user.read")
+                && !scopes.contains("https://graph.microsoft.com/user.read")
             ) {
-                graphApiScopes.add("https://graph.microsoft.com/user.read");
+                scopes.add("https://graph.microsoft.com/user.read");
                 LOGGER.warn("scope 'https://graph.microsoft.com/user.read' has been added.");
             }
-            if (!graphApiScopes.contains("openid")) {
-                graphApiScopes.add("openid");
+            if (!scopes.contains("openid")) {
+                scopes.add("openid");
                 LOGGER.warn("scope 'openid' has been added.");
             }
-            if (!graphApiScopes.contains("profile")) {
-                graphApiScopes.add("profile");
+            if (!scopes.contains("profile")) {
+                scopes.add("profile");
                 LOGGER.warn("scope 'profile' has been added.");
             }
         }
@@ -114,7 +115,7 @@ public class AADOAuth2AutoConfiguration {
                                  .clientAuthenticationMethod(ClientAuthenticationMethod.POST)
                                  .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                                  .redirectUriTemplate(redirectUriTemplate)
-                                 .scope(graphApiScopes)
+                                 .scope(scopes)
                                  .authorizationUri(
                                      String.format(
                                          "https://login.microsoftonline.com/%s/oauth2/v2.0/authorize",

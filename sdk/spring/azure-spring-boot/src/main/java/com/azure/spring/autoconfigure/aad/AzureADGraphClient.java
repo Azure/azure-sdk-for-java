@@ -239,8 +239,9 @@ public class AzureADGraphClient {
     }
 
     private Set<String> convertToScope(String applicationIdUri, Set<String> permissions) {
+        Set<String> openidPermissions = new HashSet<>(Arrays.asList("openid", "profile", "email", "offline_access"));
         return permissions.stream()
-                          .map(scope -> applicationIdUri + scope)
+                          .map(scope -> openidPermissions.contains(scope) ? scope : applicationIdUri + scope)
                           .collect(Collectors.toSet());
     }
 
