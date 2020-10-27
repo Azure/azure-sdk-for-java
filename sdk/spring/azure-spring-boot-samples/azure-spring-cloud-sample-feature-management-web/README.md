@@ -8,7 +8,7 @@ This sample describes how to use [spring-cloud-feature-management](https://githu
 ### Prerequisite
 
 * A [Java Development Kit (JDK)][jdk_link], version 8.
-* [Apache Maven](http://maven.apache.org/), version 3.0 or later.
+* [Apache Maven](https://maven.apache.org/), version 3.0 or later.
 
 ### How to run without Azure Configuration Service
 Start the application and check the resulting console output to check the returned value.

@@ -857,5 +857,20 @@ directive:
     delete $["x-ms-parameter-grouping"];
 ```
 
+### Add the ShareFileRangeListDeserializer attribute
+``` yaml
+directive:
+- from: ShareFileRangeList.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "import com.fasterxml.jackson.annotation.JsonProperty;",
+        "import com.fasterxml.jackson.annotation.JsonProperty;\nimport com.fasterxml.jackson.databind.annotation.JsonDeserialize;").
+      replace(
+        "public final class ShareFileRangeList {",
+        "@JsonDeserialize(using = ShareFileRangeListDeserializer.class)\npublic final class ShareFileRangeList {");
+```
+
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-file-share%2Fswagger%2FREADME.png)
 

@@ -32,8 +32,8 @@ class AppServiceMsiCredential {
      */
     AppServiceMsiCredential(String clientId, IdentityClient identityClient) {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
-        this.identityEndpoint = configuration.get(ManagedIdentityCredential.PROPERTY_IDENTITY_ENDPOINT);
-        this.identityHeader = configuration.get(ManagedIdentityCredential.PROPERTY_IDENTITY_HEADER);
+        this.identityEndpoint = configuration.get(Configuration.PROPERTY_IDENTITY_ENDPOINT);
+        this.identityHeader = configuration.get(Configuration.PROPERTY_IDENTITY_HEADER);
         this.msiEndpoint = configuration.get(Configuration.PROPERTY_MSI_ENDPOINT);
         this.msiSecret = configuration.get(Configuration.PROPERTY_MSI_SECRET);
         this.identityClient = identityClient;

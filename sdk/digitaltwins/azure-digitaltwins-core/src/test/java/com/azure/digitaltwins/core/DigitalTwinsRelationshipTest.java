@@ -58,28 +58,28 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
             List<Object> floorContainsRoomUpdatePayload = getRelationshipUpdatePayload("/isAccessRestricted", false);
 
             // Create relationship from Floor -> Room
-            BasicRelationship floorRoomRelationship = client.createRelationship(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, deserializeJsonString(floorContainsRoomPayload, BasicRelationship.class), BasicRelationship.class);
+            BasicRelationship floorRoomRelationship = client.createOrReplaceRelationship(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, deserializeJsonString(floorContainsRoomPayload, BasicRelationship.class), BasicRelationship.class);
             assertThat(floorRoomRelationship.getId())
                 .isEqualTo(FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID)
                 .as("Created relationship from floor -> room");
             logger.info("Created {} relationship between source = {} and target = {}", floorRoomRelationship.getId(), floorRoomRelationship.getSourceId(), floorRoomRelationship.getTargetId());
 
             // Create relationship from Floor -> Hvac
-            BasicRelationship floorHvacRelationship = client.createRelationship(floorTwinId, FLOOR_COOLED_BY_HVAC_RELATIONSHIP_ID, deserializeJsonString(floorCooledByHvacPayload, BasicRelationship.class), BasicRelationship.class);
+            BasicRelationship floorHvacRelationship = client.createOrReplaceRelationship(floorTwinId, FLOOR_COOLED_BY_HVAC_RELATIONSHIP_ID, deserializeJsonString(floorCooledByHvacPayload, BasicRelationship.class), BasicRelationship.class);
             assertThat(floorHvacRelationship.getId())
                 .isEqualTo(FLOOR_COOLED_BY_HVAC_RELATIONSHIP_ID)
                 .as("Created relationship from floor -> hvac");
             logger.info("Created {} relationship between source = {} and target = {}", floorHvacRelationship.getId(), floorHvacRelationship.getSourceId(), floorHvacRelationship.getTargetId());
 
             // Create relationship from Hvac -> Floor
-            BasicRelationship hvacFloorRelationship = client.createRelationship(hvacTwinId, HVAC_COOLS_FLOOR_RELATIONSHIP_ID, deserializeJsonString(floorTwinCoolsRelationshipPayload, BasicRelationship.class), BasicRelationship.class);
+            BasicRelationship hvacFloorRelationship = client.createOrReplaceRelationship(hvacTwinId, HVAC_COOLS_FLOOR_RELATIONSHIP_ID, deserializeJsonString(floorTwinCoolsRelationshipPayload, BasicRelationship.class), BasicRelationship.class);
             assertThat(hvacFloorRelationship.getId())
                 .isEqualTo(HVAC_COOLS_FLOOR_RELATIONSHIP_ID)
                 .as("Created relationship from hvac -> floor");
             logger.info("Created {} relationship between source = {} and target = {}", hvacFloorRelationship.getId(), hvacFloorRelationship.getSourceId(), hvacFloorRelationship.getTargetId());
 
             // Create relationship from Room -> Floor
-            BasicRelationship roomFloorRelationship = client.createRelationship(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID, deserializeJsonString(floorTwinContainedInRelationshipPayload, BasicRelationship.class), BasicRelationship.class);
+            BasicRelationship roomFloorRelationship = client.createOrReplaceRelationship(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID, deserializeJsonString(floorTwinContainedInRelationshipPayload, BasicRelationship.class), BasicRelationship.class);
             assertThat(roomFloorRelationship.getId())
                 .isEqualTo(ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID)
                 .as("Created relationship from room -> floor");
@@ -87,7 +87,13 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
 
             // Create a relation which already exists - should return status code 409 (Conflict).
             assertRestException(
-                () -> client.createRelationship(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID, floorTwinContainedInRelationshipPayload, String.class),
+                () -> client.createOrReplaceRelationshipWithResponse(
+                    roomTwinId,
+                    ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID,
+                    floorTwinContainedInRelationshipPayload,
+                    String.class,
+                    new CreateOrReplaceRelationshipOptions().setIfNoneMatch("*"),
+                    Context.NONE),
                 HTTP_PRECON_FAILED
             );
 
@@ -109,7 +115,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
 
             // LIST incoming relationships
             List<String> incomingRelationshipsSourceIds = new ArrayList<>();
-            PagedIterable<IncomingRelationship> listIncomingRelationships = client.listIncomingRelationships(floorTwinId, new ListIncomingRelationshipsOptions(), Context.NONE);
+            PagedIterable<IncomingRelationship> listIncomingRelationships = client.listIncomingRelationships(floorTwinId, Context.NONE);
             listIncomingRelationships.forEach(incomingRelationship -> incomingRelationshipsSourceIds.add(incomingRelationship.getSourceId()));
             assertThat(incomingRelationshipsSourceIds)
                 .as("Floor has incoming relationships from room and hvac")
@@ -127,7 +133,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
 
             // LIST relationship by name
             List<String> containedInRelationshipsTargetIds = new ArrayList<>();
-            PagedIterable<BasicRelationship> listContainedInRelationship = client.listRelationships(roomTwinId, CONTAINED_IN_RELATIONSHIP, BasicRelationship.class, null, Context.NONE);
+            PagedIterable<BasicRelationship> listContainedInRelationship = client.listRelationships(roomTwinId, CONTAINED_IN_RELATIONSHIP, BasicRelationship.class, Context.NONE);
             listContainedInRelationship.forEach(basicRelationship -> {
                 containedInRelationshipsTargetIds.add(basicRelationship.getTargetId());
                 logger.info("Retrieved relationship {} for twin {}", basicRelationship.getId(), roomTwinId);
@@ -220,7 +226,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
             // Create relationships from Floor -> Room
             for (int i = 0; i < BULK_RELATIONSHIP_COUNT; i++) {
                 String relationshipId = FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID + this.testResourceNamer.randomUuid();
-                client.createRelationship(floorTwinId, relationshipId, deserializeJsonString(floorContainsRoomPayload, BasicRelationship.class), BasicRelationship.class);
+                client.createOrReplaceRelationship(floorTwinId, relationshipId, deserializeJsonString(floorContainsRoomPayload, BasicRelationship.class), BasicRelationship.class);
                 createdOutgoingRelationshipIds.add(relationshipId);
             }
 
@@ -229,7 +235,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
             // to the same floor.
             for (int i = 0; i < BULK_RELATIONSHIP_COUNT; i++) {
                 String relationshipId = ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID + this.testResourceNamer.randomUuid();
-                client.createRelationship(roomTwinId, relationshipId, deserializeJsonString(roomContainedInFloorPayload, BasicRelationship.class), BasicRelationship.class);
+                client.createOrReplaceRelationship(roomTwinId, relationshipId, deserializeJsonString(roomContainedInFloorPayload, BasicRelationship.class), BasicRelationship.class);
                 createdIncomingRelationshipIds.add(relationshipId);
             }
 
@@ -311,7 +317,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
             floorTwinId,
             floorModelId,
             (twinId, twin) -> {
-                BasicDigitalTwin createdTwin = client.createDigitalTwin(twinId, twin, BasicDigitalTwin.class);
+                BasicDigitalTwin createdTwin = client.createOrReplaceDigitalTwin(twinId, twin, BasicDigitalTwin.class);
                 logger.info("Created {} twin successfully", createdTwin.getId());
             }
         );
@@ -321,7 +327,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
             roomTwinId,
             roomModelId,
             (twinId, twin) -> {
-                BasicDigitalTwin createdTwin = client.createDigitalTwin(twinId, twin, BasicDigitalTwin.class);
+                BasicDigitalTwin createdTwin = client.createOrReplaceDigitalTwin(twinId, twin, BasicDigitalTwin.class);
                 logger.info("Created {} twin successfully", createdTwin.getId());
             }
         );
@@ -331,7 +337,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
             hvacTwinId,
             hvacModelId,
             (twinId, twin) -> {
-                BasicDigitalTwin createdTwin = client.createDigitalTwin(twinId, twin, BasicDigitalTwin.class);
+                BasicDigitalTwin createdTwin = client.createOrReplaceDigitalTwin(twinId, twin, BasicDigitalTwin.class);
                 logger.info("Created {} twin successfully", createdTwin.getId());
             }
         );

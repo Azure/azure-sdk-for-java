@@ -144,7 +144,7 @@ public final class DeployUsingARMTemplateWithTags {
         final String hostingPlanName = Utils.randomResourceName(azureResourceManager, "hpRSAT", 24);
         final String webappName = Utils.randomResourceName(azureResourceManager, "wnRSAT", 24);
 
-        try (InputStream embeddedTemplate = DeployUsingARMTemplateWithProgress.class.getResourceAsStream("/templateValue.json")) {
+        try (InputStream embeddedTemplate = DeployUsingARMTemplateWithTags.class.getResourceAsStream("/templateValue.json")) {
 
             final ObjectMapper mapper = new ObjectMapper();
             final JsonNode tmp = mapper.readTree(embeddedTemplate);
