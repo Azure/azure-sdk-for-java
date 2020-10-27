@@ -24,31 +24,34 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface ApplicationDefinitions extends SupportsCreating<ApplicationDefinition.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<ApplicationDefinition>, SupportsListingByResourceGroup<ApplicationDefinition>, HasInner<ApplicationDefinitionsInner> {
     /**
-     * Gets the managed application definition.
-     *
-     * @param applicationDefinitionId The fully qualified ID of the managed application definition, including the managed application name and the managed application definition resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applicationDefinitions/{applicationDefinition-name}
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<ApplicationDefinition> getByIdAsync(String applicationDefinitionId);
-
-    /**
      * Deletes the managed application definition.
      *
-     * @param applicationDefinitionId The fully qualified ID of the managed application definition, including the managed application name and the managed application definition resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applicationDefinitions/{applicationDefinition-name}
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationDefinitionName The name of the managed application definition to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable deleteByIdAsync(String applicationDefinitionId);
+    Completable deleteAsync(String resourceGroupName, String applicationDefinitionName);
+
+    /**
+     * Gets the managed application definition.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationDefinitionName The name of the managed application definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ApplicationDefinition> getByIdAsync(String resourceGroupName, String applicationDefinitionName);
 
     /**
      * Creates a new managed application definition.
      *
-     * @param applicationDefinitionId The fully qualified ID of the managed application definition, including the managed application name and the managed application definition resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applicationDefinitions/{applicationDefinition-name}
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationDefinitionName The name of the managed application definition.
      * @param parameters Parameters supplied to the create or update a managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<ApplicationDefinition> createOrUpdateByIdAsync(String applicationDefinitionId, ApplicationDefinitionInner parameters);
+    Observable<ApplicationDefinition> createOrUpdateByIdAsync(String resourceGroupName, String applicationDefinitionName, ApplicationDefinitionInner parameters);
 
 }
