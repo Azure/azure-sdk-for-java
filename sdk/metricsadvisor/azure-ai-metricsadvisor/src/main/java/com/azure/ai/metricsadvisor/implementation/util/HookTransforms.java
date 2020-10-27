@@ -119,17 +119,13 @@ public final class HookTransforms {
             emailHook.setDescription(innerEmailHook.getDescription());
             emailHook.setExternalLink(innerEmailHook.getExternalLink());
 
-            PrivateFieldAccessHelper.set((Hook) emailHook,
-                "id",
-                innerEmailHook.getHookId().toString());
+            HookHelper.setId(emailHook, innerEmailHook.getHookId().toString());
 
             List<String> adminList = innerEmailHook.getAdmins();
             if (adminList == null) {
                 adminList = new ArrayList<>();
             }
-            PrivateFieldAccessHelper.set((Hook) emailHook,
-                "admins",
-                Collections.unmodifiableList(adminList));
+            HookHelper.setAdmins(emailHook, Collections.unmodifiableList(adminList));
 
             return emailHook;
         } else if (innerHook instanceof WebhookHookInfo) {
@@ -151,17 +147,13 @@ public final class HookTransforms {
             }
             webHook.setHttpHeaders(new HttpHeaders(innerHeaders));
 
-            PrivateFieldAccessHelper.set(webHook,
-                "id",
-                innerWebHook.getHookId().toString());
+            HookHelper.setId(webHook, innerWebHook.getHookId().toString());
 
             List<String> adminList = innerWebHook.getAdmins();
             if (adminList == null) {
                 adminList = new ArrayList<>();
             }
-            PrivateFieldAccessHelper.set(webHook,
-                "admins",
-                Collections.unmodifiableList(adminList));
+            HookHelper.setAdmins(webHook, Collections.unmodifiableList(adminList));
 
             return webHook;
         } else {
