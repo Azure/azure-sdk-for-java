@@ -38,6 +38,7 @@ public final class BasicDigitalTwinComponent {
 
     /**
      * Sets the model metadata.
+     * @param key The key that maps to the metadata
      * @param metadata Model metadata.
      * @return The BasicDigitalTwinComponent object itself.
      */
