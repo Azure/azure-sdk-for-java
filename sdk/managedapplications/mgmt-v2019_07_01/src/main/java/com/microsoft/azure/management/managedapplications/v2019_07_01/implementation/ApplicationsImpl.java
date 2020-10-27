@@ -126,6 +126,18 @@ class ApplicationsImpl extends GroupableResourcesCoreImpl<Application, Applicati
     }
 
     @Override
+    public Observable<Application> getByIdAsync(String applicationId) {
+        ApplicationsInner client = this.inner();
+        return client.getByIdAsync(applicationId)
+        .map(new Func1<ApplicationInner, Application>() {
+            @Override
+            public Application call(ApplicationInner inner) {
+                return new ApplicationImpl(inner.name(), inner, manager());
+            }
+        });
+    }
+
+    @Override
     public Completable deleteByIdAsync(String applicationId) {
         ApplicationsInner client = this.inner();
         return client.deleteByIdAsync(applicationId).toCompletable();

@@ -44,7 +44,7 @@ class ApplicationDefinitionImpl extends GroupableResourceCoreImpl<ApplicationDef
     @Override
     protected Observable<ApplicationDefinitionInner> getInnerAsync() {
         ApplicationDefinitionsInner client = this.manager().inner().applicationDefinitions();
-        return client.getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return client.getAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
