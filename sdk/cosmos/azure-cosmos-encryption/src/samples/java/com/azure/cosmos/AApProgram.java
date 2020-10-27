@@ -65,9 +65,10 @@ public class AApProgram {
             // These values are available from the Azure Management Portal on the Cosmos Account Blade under "Keys".
             // Keep these values in a safe and secure location. Together they provide administrative access to your
             // Cosmos account.
-            String cfgPath = "/Users/moderakh/github/azure-sdk-for-java/sdk/cosmos/azure-cosmos-encryption/src/samples/resources/settings.properties.orig";
-//            Properties configuration = args.length > 0 ? loadConfig(args[0]) : loadConfig();
-            Properties configuration = loadConfig(cfgPath);
+            // String cfgPath sample = "/Users/moderakh/github/azure-sdk-for-java/sdk/cosmos/azure-cosmos-encryption/src/samples/resources/settings.properties.orig";
+            // Properties configuration = loadConfig(cfgPath);
+            
+            Properties configuration = args.length > 0 ? loadConfig(args[0]) : loadConfig();
 
             AApProgram.client = AApProgram.createClientInstance(configuration);
             AApProgram.initialize(client, configuration);
