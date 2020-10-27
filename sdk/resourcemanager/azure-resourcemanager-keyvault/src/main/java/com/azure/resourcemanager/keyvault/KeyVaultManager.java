@@ -53,7 +53,7 @@ public final class KeyVaultManager extends Manager<KeyVaultManagementClient> {
      * @param profile the profile to use
      * @return the KeyVaultManager
      */
-    public static KeyVaultManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    private static KeyVaultManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new KeyVaultManager(httpPipeline, profile);
     }
 
@@ -88,7 +88,9 @@ public final class KeyVaultManager extends Manager<KeyVaultManagementClient> {
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
-        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
+        authorizationManager = AzureConfigurableImpl
+            .configureHttpPipeline(httpPipeline, AuthorizationManager.configure())
+            .authenticate(null, profile);
         this.tenantId = profile.getTenantId();
     }
 

@@ -46,7 +46,7 @@ public class TwinAsyncTests extends TwinTestBase
                 .verifyComplete();
 
             // Create a Twin
-            StepVerifier.create(asyncClient.createDigitalTwin(roomTwinId, deserializeJsonString(roomTwin, BasicDigitalTwin.class), BasicDigitalTwin.class))
+            StepVerifier.create(asyncClient.createOrReplaceDigitalTwin(roomTwinId, deserializeJsonString(roomTwin, BasicDigitalTwin.class), BasicDigitalTwin.class))
                 .assertNext(createdTwin -> {
                     assertEquals(createdTwin.getId(), roomTwinId);
                     logger.info("Created {} twin successfully", createdTwin.getId());
@@ -54,7 +54,7 @@ public class TwinAsyncTests extends TwinTestBase
                 .verifyComplete();
 
             // Get a Twin
-            StepVerifier.create(asyncClient.getDigitalTwinWithResponse(roomTwinId, String.class))
+            StepVerifier.create(asyncClient.getDigitalTwinWithResponse(roomTwinId, String.class, null))
                 .assertNext(getResponse -> {
                     assertEquals(getResponse.getStatusCode(), HttpURLConnection.HTTP_OK);
                     logger.info("Got Twin successfully");
@@ -63,7 +63,7 @@ public class TwinAsyncTests extends TwinTestBase
                 .verifyComplete();
 
             // Update Twin
-            StepVerifier.create(asyncClient.updateDigitalTwinWithResponse(roomTwinId, TestAssetsHelper.getRoomTwinUpdatePayload(), new UpdateDigitalTwinRequestOptions()))
+            StepVerifier.create(asyncClient.updateDigitalTwinWithResponse(roomTwinId, TestAssetsHelper.getRoomTwinUpdatePayload(), null))
                 .assertNext(updateResponse -> {
                     assertEquals(updateResponse.getStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
                     logger.info("Updated the twin successfully");
@@ -73,10 +73,10 @@ public class TwinAsyncTests extends TwinTestBase
             // Get Twin and verify update was successful
             StepVerifier.create(asyncClient.getDigitalTwin(roomTwinId, BasicDigitalTwin.class))
                 .assertNext(response -> {
-                    assertThat(response.getCustomProperties().get("Humidity"))
+                    assertThat(response.getProperties().get("Humidity"))
                         .as("Humidity is added")
                         .isEqualTo(30);
-                    assertThat(response.getCustomProperties().get("Temperature"))
+                    assertThat(response.getProperties().get("Temperature"))
                         .as("Temperature is updated")
                         .isEqualTo(70);
                     })

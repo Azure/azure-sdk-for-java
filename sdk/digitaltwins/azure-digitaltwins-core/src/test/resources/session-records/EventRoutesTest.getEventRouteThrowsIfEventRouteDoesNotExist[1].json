@@ -1,0 +1,38 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/eventroutes?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.0.0 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1a09676d-eb08-41e6-b106-1e2c37635ac2"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "retry-after" : "0",
+      "Content-Length" : "28",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[],\"nextLink\":null}",
+      "Date" : "Mon, 26 Oct 2020 18:32:15 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/eventroutes/3db80c29-ed07-4d1c-95ac-5b5636d4fedd?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.0.0 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3907c61d-2a92-4fb1-a33e-78853d5baa7d"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "retry-after" : "0",
+      "Content-Length" : "222",
+      "StatusCode" : "404",
+      "Body" : "{\"error\":{\"code\":\"EventRouteNotFound\",\"message\":\"There is no route available that matches the provided input. Check for all valid event routes by calling EventRoute_List. See Swagger example (http://aka.ms/RouteSwSmpl).\"}}",
+      "Date" : "Mon, 26 Oct 2020 18:32:14 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "3db80c29-ed07-4d1c-95ac-5b5636d4fedd" ]
+}

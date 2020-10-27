@@ -10,11 +10,11 @@ import java.util.function.Function;
 
 public class UniqueIdHelper {
     public static String getUniqueModelId(String baseName, DigitalTwinsAsyncClient client, Function<Integer, String> randomIntegerStringGenerator) {
-        return getUniqueId(baseName, (modelId -> Objects.requireNonNull(client.getModel(modelId).block()).getId()), randomIntegerStringGenerator);
+        return getUniqueId(baseName, (modelId -> Objects.requireNonNull(client.getModel(modelId).block()).getModelId()), randomIntegerStringGenerator);
     }
 
     public static String getUniqueModelId(String baseName, DigitalTwinsClient client, Function<Integer, String> randomIntegerStringGenerator) {
-        return getUniqueId(baseName, (modelId -> client.getModel(modelId).getId()), randomIntegerStringGenerator);
+        return getUniqueId(baseName, (modelId -> client.getModel(modelId).getModelId()), randomIntegerStringGenerator);
     }
 
     public static String getUniqueDigitalTwinId(String baseName, DigitalTwinsAsyncClient client, Function<Integer, String> randomIntegerStringGenerator) {

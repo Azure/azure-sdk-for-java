@@ -1,6 +1,9 @@
 # Release History
 
-## 2.0.0-beta.5 (2020-09-27)
+## 2.0.0-beta.6 (Unreleased)
+
+
+## 2.0.0-beta.5 (2020-10-19)
 
 - Added `withSku(SkuName)` in SpringService
 

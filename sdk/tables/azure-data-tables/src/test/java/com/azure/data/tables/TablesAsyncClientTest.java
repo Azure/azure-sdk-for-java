@@ -10,6 +10,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.UpdateMode;
@@ -352,6 +353,10 @@ public class TablesAsyncClientTest extends TestBase {
 
     @Test
     void getEntityWithResponseAsync() {
+        getEntityWithResponseAsyncImpl(this.tableClient, this.testResourceNamer);
+    }
+
+    static void getEntityWithResponseAsyncImpl(TableAsyncClient tableClient, TestResourceNamer testResourceNamer) {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);

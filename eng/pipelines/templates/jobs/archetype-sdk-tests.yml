@@ -131,6 +131,7 @@ jobs:
             ServiceDirectory: '${{ parameters.ServiceDirectory }}'
             SubscriptionConfiguration: $(SubscriptionConfiguration)
 
+      - template: ../steps/upload-repository-on-failure.yml
 
       - task: PublishTestResults@2
         condition: always()

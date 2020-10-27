@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.digitaltwins.core.models;
 
 import com.azure.core.annotation.Fluent;
@@ -23,7 +26,7 @@ public final class ModelProperties {
      * The additional properties of the model. This field will contain any properties of the digital twin that are not already defined by the other strong types of this class.
      */
     @JsonIgnore
-    private final Map<String, Object> customProperties = new HashMap<>();
+    private final Map<String, Object> properties = new HashMap<>();
 
     /**
      * Gets the metadata about the model.
@@ -48,8 +51,8 @@ public final class ModelProperties {
      * @return The custom properties
      */
     @JsonAnyGetter
-    public Map<String, Object> getCustomProperties() {
-        return customProperties;
+    public Map<String, Object> getProperties() {
+        return properties;
     }
 
     /**
@@ -59,8 +62,8 @@ public final class ModelProperties {
      * @return The ModelProperties object itself.
      */
     @JsonAnySetter
-    public ModelProperties addCustomProperties(String key, Object value) {
-        this.customProperties.put(key, value);
+    public ModelProperties addProperty(String key, Object value) {
+        this.properties.put(key, value);
         return this;
     }
 }

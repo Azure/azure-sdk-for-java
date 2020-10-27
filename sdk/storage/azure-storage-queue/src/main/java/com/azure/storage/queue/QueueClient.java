@@ -583,7 +583,7 @@ public final class QueueClient {
      * @param popReceipt Unique identifier that must match for the message to be updated
      * @param messageText Updated value for the message
      * @param visibilityTimeout The timeout period for how long the message is invisible in the queue in seconds. The
-     * timeout period must be between 1 second and 7 days.
+     * timeout period must be between 1 second and 7 days. The default value is Duration.ZERO.
      * @return A {@link UpdateMessageResult} that contains the new
      * {@link UpdateMessageResult#getPopReceipt() popReceipt} to interact with the message,
      * additionally contains the updated metadata about the message.
@@ -612,7 +612,7 @@ public final class QueueClient {
      * @param popReceipt Unique identifier that must match for the message to be updated
      * @param messageText Updated value for the message
      * @param visibilityTimeout The timeout period for how long the message is invisible in the queue in seconds. The
-     * timeout period must be between 1 second and 7 days.
+     * timeout period must be between 1 second and 7 days. The default value is Duration.ZERO.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.

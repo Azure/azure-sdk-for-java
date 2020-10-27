@@ -12,7 +12,6 @@ import com.azure.communication.chat.models.*;
 import com.azure.communication.common.CommunicationUserCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
@@ -41,40 +40,34 @@ public class ChatClientTestBase extends TestBase {
     protected static final String CONNSTRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_SERVICES_CONNECTION_STRING", "pw==");
 
-    protected ChatClientBuilder getChatClientBuilder(String token) {
+    protected ChatClientBuilder getChatClientBuilder(String token, HttpClient httpClient) {
         ChatClientBuilder builder = new ChatClientBuilder();
 
-        builder.endpoint(ENDPOINT);
+        builder
+            .endpoint(ENDPOINT)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(interceptorManager.getPlaybackClient())
-                .credential(new CommunicationUserCredential(generateRawToken()));
+            builder.credential(new CommunicationUserCredential(generateRawToken()));
             return builder;
         } else {
-            HttpClient client = new NettyAsyncHttpClientBuilder().build();
-            builder.httpClient(client)
-                .credential(new CommunicationUserCredential(token));
+            builder.credential(new CommunicationUserCredential(token));
         }
 
-        if (!interceptorManager.isLiveMode()) {
+        if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
         return builder;
     }
 
-    protected CommunicationIdentityClientBuilder getCommunicationIdentityClientBuilder() {
+    protected CommunicationIdentityClientBuilder getCommunicationIdentityClientBuilder(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder.endpoint(ENDPOINT)
-            .accessKey(CONNSTRING);
-        if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(interceptorManager.getPlaybackClient());
-            return builder;
-        } else {
-            HttpClient client = new NettyAsyncHttpClientBuilder().build();
-            builder.httpClient(client);
-        }
-        if (!interceptorManager.isLiveMode()) {
+            .accessKey(CONNSTRING)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+
+        if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
         return builder;

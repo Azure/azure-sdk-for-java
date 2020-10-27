@@ -74,8 +74,6 @@ class FunctionAppImpl
 
     private final ClientLogger logger = new ClientLogger(getClass());
 
-    private static final String SETTING_FUNCTIONS_WORKER_RUNTIME = "FUNCTIONS_WORKER_RUNTIME";
-    private static final String SETTING_FUNCTIONS_EXTENSION_VERSION = "FUNCTIONS_EXTENSION_VERSION";
     private static final String SETTING_WEBSITE_CONTENTAZUREFILECONNECTIONSTRING =
         "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING";
     private static final String SETTING_WEBSITE_CONTENTSHARE = "WEBSITE_CONTENTSHARE";
@@ -393,6 +391,9 @@ class FunctionAppImpl
     protected void cleanUpContainerSettings() {
         if (siteConfig != null && siteConfig.linuxFxVersion() != null) {
             siteConfig.withLinuxFxVersion(null);
+        }
+        if (siteConfig != null && siteConfig.windowsFxVersion() != null) {
+            siteConfig.withWindowsFxVersion(null);
         }
         // Docker Hub
         withoutAppSetting(SETTING_DOCKER_IMAGE);

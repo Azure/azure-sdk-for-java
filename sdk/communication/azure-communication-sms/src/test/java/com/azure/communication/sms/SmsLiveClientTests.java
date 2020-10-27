@@ -6,6 +6,7 @@ import com.azure.communication.common.PhoneNumber;
 import com.azure.communication.sms.models.SendSmsOptions;
 import com.azure.communication.sms.models.SendSmsResponse;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
@@ -17,7 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 public class SmsLiveClientTests extends SmsLiveTestBase {
 
@@ -36,43 +38,48 @@ public class SmsLiveClientTests extends SmsLiveTestBase {
         smsOptions.setEnableDeliveryReport(true);        
     }
 
-    @Test
-    public void sendSmsRequest() throws NoSuchAlgorithmException {
-        SendSmsResponse response = getTestSmsClient().sendMessage(from, to, body, smsOptions);
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendSmsRequest(HttpClient httpClient) throws NoSuchAlgorithmException {
+        SendSmsResponse response = getTestSmsClient(httpClient).sendMessage(from, to, body, smsOptions);
         verifyResponse(response);
     }
 
-    @Test
-    public void sendSmsMessageWithResponse() throws NoSuchAlgorithmException {
-        Response<SendSmsResponse> response = getTestSmsClient()
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendSmsMessageWithResponse(HttpClient httpClient) throws NoSuchAlgorithmException {
+        Response<SendSmsResponse> response = getTestSmsClient(httpClient)
             .sendMessageWithResponse(from, to, body, smsOptions, Context.NONE);
         
         verifyResponse(response);  
     }
 
-    @Test
-    public void sendSmsMessageWithResponseNullContext() throws NoSuchAlgorithmException {
-        Response<SendSmsResponse> response = getTestSmsClient()
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendSmsMessageWithResponseNullContext(HttpClient httpClient) throws NoSuchAlgorithmException {
+        Response<SendSmsResponse> response = getTestSmsClient(httpClient)
             .sendMessageWithResponse(from, to, body, smsOptions, null);
 
         verifyResponse(response);           
     }
 
-    @Test
-    public void sendSmsRequestNoDeliverReport() throws NoSuchAlgorithmException {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendSmsRequestNoDeliverReport(HttpClient httpClient) throws NoSuchAlgorithmException {
         smsOptions.setEnableDeliveryReport(false); 
 
-        SendSmsResponse response = getTestSmsClient().sendMessage(from, to, body);
+        SendSmsResponse response = getTestSmsClient(httpClient).sendMessage(from, to, body);
         verifyResponse(response);
     }
 
-    @Test
-    public void sendSmsRequestBadSignature() throws NoSuchAlgorithmException {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendSmsRequestBadSignature(HttpClient httpClient) throws NoSuchAlgorithmException {
         smsOptions.setEnableDeliveryReport(false); 
         boolean http401ExceptionThrown = false;
 
         try {
-            SmsClientBuilder builder = getSmsClientBuilder();
+            SmsClientBuilder builder = getSmsClientBuilder(httpClient);
             builder.accessKey(DEFAULT_ACCESS_KEY);
             builder.buildClient().sendMessage(from, to, body);
         } catch (HttpResponseException ex) {
@@ -83,14 +90,15 @@ public class SmsLiveClientTests extends SmsLiveTestBase {
         assertTrue(http401ExceptionThrown);
     }
 
-    @Test
-    public void sendSmsRequestUnownedNumber() throws NoSuchAlgorithmException {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendSmsRequestUnownedNumber(HttpClient httpClient) throws NoSuchAlgorithmException {
         from = new PhoneNumber("+18885555555");        
         smsOptions.setEnableDeliveryReport(false); 
         boolean http404ExceptionThrown = false;
 
         try {
-            getTestSmsClient().sendMessage(from, to, body);
+            getTestSmsClient(httpClient).sendMessage(from, to, body);
         } catch (HttpResponseException ex) {
             assertEquals(404, ex.getResponse().getStatusCode());
             http404ExceptionThrown = true;
@@ -99,14 +107,15 @@ public class SmsLiveClientTests extends SmsLiveTestBase {
         assertTrue(http404ExceptionThrown);
     }
 
-    @Test
-    public void sendSmsRequestMalformedNumber() throws NoSuchAlgorithmException {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendSmsRequestMalformedNumber(HttpClient httpClient) throws NoSuchAlgorithmException {
         from = new PhoneNumber("+1888");        
         smsOptions.setEnableDeliveryReport(false); 
         boolean http400ExceptionThrown = false;
 
         try {
-            getTestSmsClient().sendMessage(from, to, body);
+            getTestSmsClient(httpClient).sendMessage(from, to, body);
         } catch (HttpResponseException ex) {
             assertEquals(400, ex.getResponse().getStatusCode());
             http400ExceptionThrown = true;
@@ -115,9 +124,9 @@ public class SmsLiveClientTests extends SmsLiveTestBase {
         assertTrue(http400ExceptionThrown);
     }
 
-    private SmsClient getTestSmsClient() {
+    private SmsClient getTestSmsClient(HttpClient httpClient) {
   
-        return getSmsClientBuilder()
+        return getSmsClientBuilder(httpClient)
             .buildClient();
     }    
 }

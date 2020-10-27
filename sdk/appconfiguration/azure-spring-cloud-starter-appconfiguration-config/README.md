@@ -11,13 +11,13 @@ This package helps Spring Application to load properties from Azure Configuratio
 - [Maven][maven] 3.0 and above
 
 ### Include the package
-There are two libraries that can be used spring-cloud-azure-appconfiguration-config and spring-cloud-azure-appconfiguration-config-web. There are two differences between them the first being the web version takes on spring-web as a dependency, and the web version will attempt a refresh when the application is active when the cache expires. For more information on refresh see the [Configuration Refresh](#Configuration-Refresh) section.
+There are two libraries that can be used azure-spring-cloud-appconfiguration-config and azure-spring-cloud-appconfiguration-config-web. There are two differences between them the first being the web version takes on spring-web as a dependency, and the web version will attempt a refresh when the application is active when the cache expires. For more information on refresh see the [Configuration Refresh](#configuration-refresh) section.
 
-[//]: # ({x-version-update-start;com.microsoft.azure:spring-cloud-azure-appconfiguration-config;current})
+[//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-appconfiguration-config;current})
 ```xml
 <dependency>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
+    <groupId>com.azure.spring</groupId>
+    <artifactId>azure-spring-cloud-appconfiguration-config</artifactId>
     <version>1.2.8-beta.1</version>
 </dependency>
 ```
@@ -25,11 +25,11 @@ There are two libraries that can be used spring-cloud-azure-appconfiguration-con
 
 or
 
-[//]: # ({x-version-update-start;com.microsoft.azure:spring-cloud-azure-appconfiguration-config-web;current})
+[//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-appconfiguration-config;current})
 ```xml
 <dependency>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>spring-cloud-azure-appconfiguration-config-web</artifactId>
+    <groupId>com.azure.spring</groupId>
+    <artifactId>azure-spring-cloud-appconfiguration-config-web</artifactId>
     <version>1.2.8-beta.1</version>
 </dependency>
 ```
@@ -295,14 +295,14 @@ Please follow [instructions here][contributing_md] to build from source or contr
 <!-- Link -->
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-cloud-azure-appconfiguration-config
 [refdocs]: https://azure.github.io/azure-sdk-for-java/spring.html#spring-cloud-starter-azure-appconfiguration-config
-[app_configuration_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-appconfiguration-sample
-[app_configuration_conversation_complete_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-appconfiguration-conversion-sample-complete
-[app_configuration_conversation_initail_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-appconfiguration-conversion-sample-initial
+[app_configuration_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-appconfiguration
+[app_configuration_conversation_complete_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-appconfiguration-conversion-complete
+[app_configuration_conversation_initail_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-appconfiguration-conversion-initial
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [azure_subscription]: https://azure.microsoft.com/free
 [logging_doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
-[maven]: http://maven.apache.org/
+[maven]: https://maven.apache.org/
 [spring_conversion_duration]: https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html#boot-features-external-config-conversion-duration
 [azure_managed_identity]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
 [enable_managed_identities]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview#how-can-i-use-managed-identities-for-azure-resources

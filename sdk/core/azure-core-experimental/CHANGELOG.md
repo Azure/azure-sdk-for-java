@@ -1,11 +1,14 @@
 # Release History
 
-## 1.0.0-beta.7 (Unreleased)
+## 1.0.0-beta.7 (2020-10-08)
 
+- Added API `fromObject()` in `BinaryData` which uses `JsonSerializer` present in the classpath.
+- Added APIs to `JsonPatchDocument` which accept pre-serialized JSON.
+- Updated `azure-core` dependency to released version. 
 
 ## 1.0.0-beta.6 (2020-10-06)
 
-- Added : `BinaryData` abstraction to represent binary data and supports serialization through `ObjectSerializer`.
+- Added `BinaryData` abstraction to represent binary data and supports serialization through `ObjectSerializer`.
 
 ## 1.0.0-beta.5 (2020-10-01)
 

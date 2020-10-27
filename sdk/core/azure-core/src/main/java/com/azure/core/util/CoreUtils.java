@@ -3,6 +3,7 @@
 
 package com.azure.core.util;
 
+import com.azure.core.annotation.Telemetry;
 import com.azure.core.http.policy.AzureTelemetryPolicy;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.logging.ClientLogger;
@@ -267,6 +268,7 @@ public final class CoreUtils {
      * @param rawTelemetry Raw telemetry data in its key-value form.
      * @return A formatted telemetry string.
      */
+    // Another option would be using String... and for each tuple add a telemetry value
     public static String createTelemetryValue(Map<String, String> rawTelemetry) {
         if (CoreUtils.isNullOrEmpty(rawTelemetry)) {
             return null;
@@ -284,6 +286,35 @@ public final class CoreUtils {
         });
 
         return telemetryBuilder.toString();
+    }
+
+    public static String createTelemetryValue(Telemetry telemetry) {
+        if (telemetry == null) {
+            return "";
+        }
+
+        StringBuilder builder = new StringBuilder("class=")
+            .append(telemetry.className())
+            .append(";method=")
+            .append(telemetry.methodName());
+
+        String[] additionalTelemetry = telemetry.additionalTelemetry();
+        if (CoreUtils.isNullOrEmpty(additionalTelemetry)) {
+            return builder.toString();
+        }
+
+        for (int i = 0; i < additionalTelemetry.length; i += 2) {
+            if (i > 0) {
+                builder.append(";");
+            }
+
+            String telemetryValueKey = additionalTelemetry[i];
+            String telemetryValue = (i + 1 >= additionalTelemetry.length) ? null : additionalTelemetry[i + 1];
+
+            builder.append(telemetryValueKey).append("=").append(telemetryValue);
+        }
+
+        return builder.toString();
     }
 
     /**

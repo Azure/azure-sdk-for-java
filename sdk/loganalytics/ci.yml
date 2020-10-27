@@ -26,8 +26,9 @@ pr:
       - sdk/loganalytics/mgmt-v2015_03_20
 
 extends:
-  template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
+    SDKType: data
     ServiceDirectory: loganalytics
     Artifacts:
       - name: azure-loganalytics

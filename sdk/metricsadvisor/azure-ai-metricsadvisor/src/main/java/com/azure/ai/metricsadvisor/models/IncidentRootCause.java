@@ -3,6 +3,8 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.implementation.util.IncidentRootCauseHelper;
+
 import java.util.List;
 
 /**
@@ -13,6 +15,31 @@ public final class IncidentRootCause {
     private List<String> paths;
     private double confidenceScore;
     private String description;
+
+    static {
+        IncidentRootCauseHelper.setAccessor(new IncidentRootCauseHelper.IncidentRootCauseAccessor() {
+            @Override
+            public void setSeriesKey(IncidentRootCause rootCause, DimensionKey seriesKey) {
+                rootCause.setSeriesKey(seriesKey);
+            }
+
+            @Override
+            public void setPaths(IncidentRootCause rootCause, List<String> paths) {
+                rootCause.setPaths(paths);
+
+            }
+
+            @Override
+            public void setConfidenceScore(IncidentRootCause rootCause, double confidenceScore) {
+                rootCause.setConfidenceScore(confidenceScore);
+            }
+
+            @Override
+            public void setDescription(IncidentRootCause rootCause, String description) {
+                rootCause.setDescription(description);
+            }
+        });
+    }
 
     /**
      * Get the dimension name and value pair.
@@ -52,5 +79,21 @@ public final class IncidentRootCause {
      */
     public String getDescription() {
         return this.description;
+    }
+
+    void setSeriesKey(DimensionKey seriesKey) {
+        this.seriesKey = seriesKey;
+    }
+
+    void setPaths(List<String> paths) {
+        this.paths = paths;
+    }
+
+    void setConfidenceScore(double confidenceScore) {
+        this.confidenceScore = confidenceScore;
+    }
+
+    void setDescription(String description) {
+        this.description = description;
     }
 }

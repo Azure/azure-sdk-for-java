@@ -75,6 +75,17 @@ public class GoneException extends CosmosException {
         this(message, null, new HashMap<>(), requestUri);
     }
 
+    /**
+     * Instantiates a new {@link GoneException Gone exception}.
+     *
+     * @param message    the message
+     * @param requestUri the request uri
+     * @param cause      the cause of this (client-side) {@link GoneException}
+     */
+    public GoneException(String message, URI requestUri, Exception cause) {
+        this(message, cause, null, requestUri);
+    }
+
     GoneException(Exception innerException) {
         this(RMResources.Gone, innerException, new HashMap<>(), null);
     }

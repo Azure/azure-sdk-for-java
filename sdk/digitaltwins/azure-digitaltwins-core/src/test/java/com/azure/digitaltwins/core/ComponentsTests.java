@@ -8,7 +8,6 @@ import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
 import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
 import com.azure.digitaltwins.core.models.BasicDigitalTwin;
 import com.azure.digitaltwins.core.models.DigitalTwinsResponse;
-import com.azure.digitaltwins.core.models.UpdateComponentRequestOptions;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -49,7 +48,7 @@ public class ComponentsTests extends ComponentsTestBase {
             Iterable<DigitalTwinsModelData> createdList = client.createModels(modelsList);
             logger.info("Created models successfully");
 
-            BasicDigitalTwin createdTwin = client.createDigitalTwin(roomWithWifiTwinId, deserializeJsonString(roomWithWifiTwin, BasicDigitalTwin.class), BasicDigitalTwin.class);
+            BasicDigitalTwin createdTwin = client.createOrReplaceDigitalTwin(roomWithWifiTwinId, deserializeJsonString(roomWithWifiTwin, BasicDigitalTwin.class), BasicDigitalTwin.class);
 
             logger.info("Created {} twin successfully", createdTwin.getId());
             assertEquals(createdTwin.getId(), roomWithWifiTwinId);
@@ -63,7 +62,7 @@ public class ComponentsTests extends ComponentsTestBase {
                 roomWithWifiTwinId,
                 wifiComponentName,
                 TestAssetsHelper.getWifiComponentUpdatePayload(),
-                new UpdateComponentRequestOptions(),
+                null,
                 Context.NONE);
 
             assertEquals(updateComponentResponse.getStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);

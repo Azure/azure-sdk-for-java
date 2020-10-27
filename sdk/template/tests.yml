@@ -1,0 +1,12 @@
+trigger: none
+
+jobs:
+  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: appconfiguration
+      Artifacts:
+        - name: azure-sdk-template
+          groupId: com.azure
+          safeName: azuresdktemplate
+      EnvVars:
+        AZURE_TEST_MODE: RECORD

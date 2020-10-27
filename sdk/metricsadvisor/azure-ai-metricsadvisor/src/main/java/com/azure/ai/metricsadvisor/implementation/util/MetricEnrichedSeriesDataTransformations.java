@@ -31,57 +31,49 @@ public class MetricEnrichedSeriesDataTransformations {
         } else {
             seriesKey = new DimensionKey();
         }
-        PrivateFieldAccessHelper.set(enrichedSeriesData,
-            "seriesKey", seriesKey);
+        MetricEnrichedSeriesDataHelper.setSeriesKey(enrichedSeriesData, seriesKey);
 
         List<OffsetDateTime> timestampList = innerEnrichedSeriesData.getTimestampList();
         if (timestampList == null) {
             timestampList = new ArrayList<>();
         }
-        PrivateFieldAccessHelper.set(enrichedSeriesData,
-            "timestampList", timestampList);
+        MetricEnrichedSeriesDataHelper.setTimestampList(enrichedSeriesData, timestampList);
 
         List<Double> valueList = innerEnrichedSeriesData.getValueList();
         if (valueList == null) {
             valueList = new ArrayList<>();
         }
-        PrivateFieldAccessHelper.set(enrichedSeriesData,
-            "valueList", valueList);
+        MetricEnrichedSeriesDataHelper.setValueList(enrichedSeriesData, valueList);
 
         List<Boolean> isAnomalyList = innerEnrichedSeriesData.getIsAnomalyList();
         if (isAnomalyList == null) {
             isAnomalyList = new ArrayList<>();
         }
-        PrivateFieldAccessHelper.set(enrichedSeriesData,
-            "isAnomalyList", isAnomalyList);
+        MetricEnrichedSeriesDataHelper.setIsAnomalyList(enrichedSeriesData, isAnomalyList);
 
         List<Integer> periodList = innerEnrichedSeriesData.getPeriodList();
         if (periodList == null) {
             periodList = new ArrayList<>();
         }
-        PrivateFieldAccessHelper.set(enrichedSeriesData,
-            "periodList", periodList);
+        MetricEnrichedSeriesDataHelper.setPeriodList(enrichedSeriesData, periodList);
 
         List<Double> expectedValueList = innerEnrichedSeriesData.getExpectedValueList();
         if (expectedValueList == null) {
             expectedValueList = new ArrayList<>();
         }
-        PrivateFieldAccessHelper.set(enrichedSeriesData,
-            "expectedValueList", expectedValueList);
+        MetricEnrichedSeriesDataHelper.setExpectedValueList(enrichedSeriesData, expectedValueList);
 
         List<Double> lowerBoundList = innerEnrichedSeriesData.getLowerBoundaryList();
         if (lowerBoundList == null) {
             lowerBoundList = new ArrayList<>();
         }
-        PrivateFieldAccessHelper.set(enrichedSeriesData,
-            "lowerBoundaryList", lowerBoundList);
+        MetricEnrichedSeriesDataHelper.setLowerBoundaryList(enrichedSeriesData, lowerBoundList);
 
         List<Double> upperBoundList = innerEnrichedSeriesData.getUpperBoundaryList();
         if (upperBoundList == null) {
             upperBoundList = new ArrayList<>();
         }
-        PrivateFieldAccessHelper.set(enrichedSeriesData,
-            "upperBoundaryList", upperBoundList);
+        MetricEnrichedSeriesDataHelper.setUpperBoundaryList(enrichedSeriesData, upperBoundList);
 
         return enrichedSeriesData;
     }

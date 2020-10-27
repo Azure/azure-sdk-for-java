@@ -20,7 +20,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = ExportSettings.class)
 @JsonTypeName("ExportSettings")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "SnowflakeExportCopyCommand", value = SnowflakeExportCopyCommand.class)
+    @JsonSubTypes.Type(name = "SnowflakeExportCopyCommand", value = SnowflakeExportCopyCommand.class),
+    @JsonSubTypes.Type(name = "AzureDatabricksDeltaLakeExportCommand", value = AzureDatabricksDeltaLakeExportCommand.class)
 })
 public class ExportSettings {
     /**

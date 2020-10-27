@@ -27,6 +27,9 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
+
+import java.time.Duration;
 
 import java.util.List;
 import java.util.Map;
@@ -520,5 +523,35 @@ public final class PhoneNumberClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> purchaseSearchWithResponse(String searchId, Context context) {
         return phoneNumberAsyncClient.purchaseSearchWithResponse(searchId, context).block();
+    }
+
+    /**
+     * Initiates a search and returns a {@link PhoneNumberSearch} usable by other functions
+     * This function returns a Long Running Operation poller.
+     * 
+     * @param options A {@link CreateSearchOptions} with the search options
+     * @param pollInterval The time our long running operation will keep on polling 
+     * until it gets a result from the server
+     * @return A {@link SyncPoller} object with the search result
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<PhoneNumberSearch, PhoneNumberSearch> beginCreateSearch(
+        CreateSearchOptions options, Duration pollInterval) {
+        return phoneNumberAsyncClient.beginCreateSearch(options, pollInterval).getSyncPoller();
+    }
+
+    /**
+     * Initiates a purchase process and polls until a terminal state is reached
+     * This function returns a Long Running Operation poller
+     * 
+     * @param searchId ID of the search     
+     * @param pollInterval The time our long running operation will keep on polling 
+     * until it gets a result from the server
+     * @return A {@link SyncPoller} object with the search result
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<Void, Void> beginPurchaseSearch(
+        String searchId, Duration pollInterval) {
+        return phoneNumberAsyncClient.beginPurchaseSearch(searchId, pollInterval).getSyncPoller();
     }
 }

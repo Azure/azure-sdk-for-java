@@ -240,22 +240,6 @@ for (String areaCode
 }
 ```
 
-### Create Search
-
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L315-L324 -->
-```java
-PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
-CreateSearchResponse createSearchResponse = phoneNumberClient.createSearch(createSearchOptions);
-
-System.out.println("SearchId: " + createSearchResponse.getSearchId());
-PhoneNumberSearch phoneNumberSearch = phoneNumberClient.getSearchById(createSearchResponse.getSearchId());
-
-for (String phoneNumber
-    : phoneNumberSearch.getPhoneNumbers()) {
-    System.out.println("Phone Number: " + phoneNumber);
-}
-```
-
 ### Purchase Search
 
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L334-L335 -->
@@ -270,6 +254,53 @@ phoneNumberClient.purchaseSearch(phoneNumberSearchId);
 ```java
 PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 phoneNumberClient.configureNumber(phoneNumber, pstnConfiguration);
+```
+
+## Long Running Operations
+
+The Phone Number Client supports a variety of long running operations that allow indefinite polling time to the functions listed down below.
+
+### Create Search
+
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L354-L378 -->
+```java
+String phonePlanId = "PHONE_PLAN_ID";
+
+List<String> phonePlanIds = new ArrayList<>();
+phonePlanIds.add(phonePlanId);
+
+CreateSearchOptions createSearchOptions = new CreateSearchOptions();
+createSearchOptions
+    .setAreaCode("AREA_CODE_FOR_SEARCH")
+    .setDescription("DESCRIPTION_FOR_SEARCH")
+    .setDisplayName("NAME_FOR_SEARCH")
+    .setPhonePlanIds(phonePlanIds)
+    .setQuantity(2);
+
+Duration duration = Duration.ofSeconds(1);
+PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+
+SyncPoller<PhoneNumberSearch, PhoneNumberSearch> res = 
+    phoneNumberClient.beginCreateSearch(createSearchOptions, duration);
+res.waitForCompletion();
+PhoneNumberSearch result = res.getFinalResult();
+
+System.out.println("Search Id: " + result.getSearchId());
+for (String phoneNumber: result.getPhoneNumbers()) {
+    System.out.println("Phone Number: " + phoneNumber);
+}
+```
+
+### Purchase Search
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L385-L391 -->
+```java
+Duration duration = Duration.ofSeconds(1);
+String phoneNumberSearchId = "SEARCH_ID_TO_PURCHASE";
+PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+
+SyncPoller<Void, Void> res = 
+    phoneNumberClient.beginPurchaseSearch(phoneNumberSearchId, duration);
+res.waitForCompletion();
 ```
 
 ## Contributing

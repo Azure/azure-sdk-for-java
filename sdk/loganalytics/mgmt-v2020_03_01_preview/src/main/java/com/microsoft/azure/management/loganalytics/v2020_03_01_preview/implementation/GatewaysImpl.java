@@ -27,6 +27,6 @@ class GatewaysImpl extends WrapperImpl<GatewaysInner> implements Gateways {
 
     @Override
     public Completable deleteAsync(String resourceGroupName, String workspaceName, String gatewayId) {
-        return manager().gateways().deleteAsync(resourceGroupName, workspaceName, gatewayId);
+        return this.inner().deleteAsync(resourceGroupName, workspaceName, gatewayId).toCompletable();
     }
 }

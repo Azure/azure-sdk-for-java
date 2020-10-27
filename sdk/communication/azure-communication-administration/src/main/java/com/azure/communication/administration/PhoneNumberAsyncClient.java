@@ -25,6 +25,7 @@ import com.azure.communication.administration.models.ReleaseResponse;
 import com.azure.communication.administration.models.UpdateNumberCapabilitiesResponse;
 import com.azure.communication.administration.models.NumberConfiguration;
 import com.azure.communication.administration.models.PhoneNumberSearch;
+import com.azure.communication.administration.models.SearchStatus;
 import com.azure.communication.administration.models.UpdateNumberCapabilitiesRequest;
 import com.azure.communication.administration.models.UpdatePhoneNumberCapabilitiesResponse;
 import com.azure.communication.common.PhoneNumber;
@@ -36,12 +37,19 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.PollingContext;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -53,7 +61,6 @@ import static com.azure.core.util.FluxUtil.pagedFluxError;
 @ServiceClient(builder = PhoneNumberClientBuilder.class, isAsync = true)
 public final class PhoneNumberAsyncClient {
     private final ClientLogger logger = new ClientLogger(PhoneNumberAsyncClient.class);
-
     private final PhoneNumberAdministrationsImpl phoneNumberAdministrations;
 
     PhoneNumberAsyncClient(PhoneNumberAdminClientImpl phoneNumberAdminClient) {
@@ -756,5 +763,133 @@ public final class PhoneNumberAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    /**
+     * Initiates a search and returns a {@link PhoneNumberSearch} usable by other functions
+     * This function returns a Long Running Operation poller that allows you to 
+     * wait indefinitely until the operation is complete.
+     * 
+     * @param options A {@link CreateSearchOptions} with the search options
+     * @param pollInterval The time our long running operation will keep on polling 
+     * until it gets a result from the server
+     * @return A {@link PollerFlux} object with the search result
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<PhoneNumberSearch, PhoneNumberSearch> beginCreateSearch(
+        CreateSearchOptions options, Duration pollInterval) {
+        Objects.requireNonNull(options, "'options' cannot be null.");
+        Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
+        return new PollerFlux<PhoneNumberSearch, PhoneNumberSearch>(pollInterval,
+            createSearchActivationOperation(options),
+            createSearchPollOperation(),
+            cancelSearchOperation(),
+            createSearchFetchResultOperation());
+    }
+
+    private Function<PollingContext<PhoneNumberSearch>, Mono<PhoneNumberSearch>> 
+        createSearchActivationOperation(CreateSearchOptions options) {
+        return (pollingContext) -> {
+            Mono<PhoneNumberSearch> response = createSearch(options).flatMap(createSearchResponse -> {
+                String searchId = createSearchResponse.getSearchId();
+                Mono<PhoneNumberSearch> phoneNumberSearch = getSearchById(searchId);
+                return phoneNumberSearch;
+            });
+            return response;
+        };
+    }
+
+    private Function<PollingContext<PhoneNumberSearch>, Mono<PollResponse<PhoneNumberSearch>>> 
+        createSearchPollOperation() {
+        return pollingContext ->
+            getSearchById(pollingContext.getLatestResponse().getValue().getSearchId())
+                .flatMap(getSearchResponse -> {
+                    SearchStatus status = getSearchResponse.getStatus();
+                    if (status.equals(SearchStatus.EXPIRED) 
+                        || status.equals(SearchStatus.CANCELLED) 
+                        || status.equals(SearchStatus.RESERVED)) {
+                        return Mono.just(new PollResponse<>(
+                        LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, getSearchResponse));
+                    }
+                    if (status.equals(SearchStatus.ERROR)) {
+                        return Mono.just(new PollResponse<>(
+                        LongRunningOperationStatus.FAILED, getSearchResponse));
+                    }
+                    return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, getSearchResponse));
+                });
+    }
+
+    private BiFunction<PollingContext<PhoneNumberSearch>,
+        PollResponse<PhoneNumberSearch>, Mono<PhoneNumberSearch>> 
+        cancelSearchOperation() {
+        return (pollingContext, firstResponse) -> {
+            cancelSearch(pollingContext.getLatestResponse().getValue().getSearchId());
+            return Mono.just(pollingContext.getLatestResponse().getValue());
+        };
+    }
+
+    private Function<PollingContext<PhoneNumberSearch>,
+        Mono<PhoneNumberSearch>> createSearchFetchResultOperation() {
+        return pollingContext -> {
+            return Mono.just(pollingContext.getLatestResponse().getValue());
+        };
+    }
+
+    /**
+     * Initiates a purchase process and polls until a terminal state is reached
+     * This function returns a Long Running Operation poller that allows you to 
+     * wait indefinitely until the operation is complete.
+     *
+     * @param searchId ID of the search
+     * @param pollInterval The time our long running operation will keep on polling 
+     * until it gets a result from the server
+     * @return A {@link PollerFlux} object.
+     */
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<Void, Void> beginPurchaseSearch(String searchId, Duration pollInterval) {
+        Objects.requireNonNull(searchId, "'searchId' can not be null.");
+        Objects.requireNonNull(pollInterval, "'pollInterval' can not be null.");
+
+        return new PollerFlux<Void, Void>(pollInterval,
+            purchaseSearchActivationOperation(searchId),
+            purchaseSearchPollOperation(searchId),
+            (activationResponse, pollingContext) -> Mono.error(new RuntimeException("Cancellation is not supported")),
+            purchaseSearchFetchResultOperation());
+    }
+
+    private Function<PollingContext<Void>, Mono<Void>> purchaseSearchActivationOperation(String searchId) {
+
+        return (pollingContext) -> {
+            Mono<Void> response = purchaseSearch(searchId);
+            return response;
+        };
+    }
+
+    private Function<PollingContext<Void>, Mono<PollResponse<Void>>>
+        purchaseSearchPollOperation(String searchId) {
+        return (pollingContext) -> getSearchById(searchId)
+            .flatMap(getSearchResponse -> {
+                SearchStatus statusResponse = getSearchResponse.getStatus();
+                if (statusResponse.equals(SearchStatus.RESERVED) 
+                    || statusResponse.equals(SearchStatus.EXPIRED)
+                    || statusResponse.equals(SearchStatus.SUCCESS)) {
+                    return Mono.just(new PollResponse<>(
+                    LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null));
+                }
+                if (statusResponse.equals(SearchStatus.ERROR)) {
+                    return Mono.just(new PollResponse<>(
+                    LongRunningOperationStatus.FAILED, null));
+                }
+                return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, null));
+            });
+    }
+
+    private Function<PollingContext<Void>,
+        Mono<Void>> purchaseSearchFetchResultOperation() {
+        return pollingContext -> {
+            return Mono.empty();
+        };
+
     }
 }
