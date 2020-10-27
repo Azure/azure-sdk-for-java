@@ -50,6 +50,9 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        if (profile.getSubscriptionId() == null) {
+            return next.process();
+        }
         return next.process().flatMap(
             response -> {
                 if (!isResponseSuccessful(response)) {
