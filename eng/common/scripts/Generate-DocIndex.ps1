@@ -7,11 +7,6 @@ Param (
 )
 . (Join-Path $PSScriptRoot common.ps1)
 
-# function Get-CSVMetadata ([string]$MetadataUri) {
-#     $metadataResponse = Invoke-RestMethod -Uri $MetadataUri -method "GET" -MaximumRetryCount 3 -RetryIntervalSec 10 | ConvertFrom-Csv
-#     return $metadataResponse
-# }
-
 function Get-TocMapping { 
     Param (
         [Parameter(Mandatory = $true)]  [Object[]] $metadata,
@@ -49,9 +44,9 @@ function GenerateDocfxTocContent([Hashtable]$tocContent, [String]$lang) {
     $DocOutDir = "${RepoRoot}/docfx_project"
 
     LogDebug "Initializing Default DocFx Site..."
-    #& $($DocFx) init -q -o "${DocOutDir}"
+    & $($DocFx) init -q -o "${DocOutDir}"
     # The line below is used for testing in local
-    docfx init -q -o "${DocOutDir}"
+    # docfx init -q -o "${DocOutDir}"
     LogDebug "Copying template and configuration..."
     New-Item -Path "${DocOutDir}" -Name "templates" -ItemType "directory" -Force
     Copy-Item "${DocGenDir}/templates/*" -Destination "${DocOutDir}/templates" -Force -Recurse
@@ -75,6 +70,7 @@ function GenerateDocfxTocContent([Hashtable]$tocContent, [String]$lang) {
         }
     }
 
+    # Generate toc homepage.
     LogDebug "Creating Site Title and Navigation..."
     New-Item -Path "${DocOutDir}" -Name "toc.yml" -Force
     Add-Content -Path "${DocOutDir}/toc.yml" -Value "- name: Azure SDK for $lang APIs`r`n  href: api/`r`n  homepage: api/index.md"
@@ -84,9 +80,9 @@ function GenerateDocfxTocContent([Hashtable]$tocContent, [String]$lang) {
     Copy-Item "$($RepoRoot)/CONTRIBUTING.md" -Destination "${DocOutDir}/api/CONTRIBUTING.md" -Force
 
     LogDebug "Building site..."
-    #& $($DocFx) build "${DocOutDir}/docfx.json"
+    & $($DocFx) build "${DocOutDir}/docfx.json"
     # The line below is used for testing in local
-    docfx build "${DocOutDir}/docfx.json"
+    # docfx build "${DocOutDir}/docfx.json"
     Copy-Item "${DocGenDir}/assets/logo.svg" -Destination "${DocOutDir}/_site/" -Force    
 }
 
