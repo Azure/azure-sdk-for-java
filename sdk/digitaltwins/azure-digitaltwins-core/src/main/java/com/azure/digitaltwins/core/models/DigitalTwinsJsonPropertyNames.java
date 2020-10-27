@@ -19,12 +19,12 @@ public class DigitalTwinsJsonPropertyNames {
     public static final String DIGITAL_TWIN_ETAG = "$etag";
 
     /**
-     * The JSON property name for the metadata field on a digital twin.%
+     * The JSON property name for the metadata field on a digital twin and for the metadata field on a component.
      */
     public static final String DIGITAL_TWIN_METADATA = "$metadata";
 
     /**
-     * The JSON property name for the model field on a digital twin metadata or component metadata.
+     * The JSON property name for the model field on a digital twin metadata.
      */
     public static final String METADATA_MODEL = "$model";
 
