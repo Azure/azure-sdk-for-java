@@ -201,7 +201,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<Void> abandon(ServiceBusReceivedMessage message) {
         return updateDisposition(message, DispositionStatus.ABANDONED, null, null,
-            null, null);
+            null, null, ServiceBusErrorSource.ABANDONED);
     }
 
     /**
@@ -233,7 +233,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
 
         return updateDisposition(message, DispositionStatus.ABANDONED, null, null,
-            options.getPropertiesToModify(), options.getTransactionContext());
+            options.getPropertiesToModify(), options.getTransactionContext(), ServiceBusErrorSource.ABANDONED);
     }
 
     /**
@@ -248,7 +248,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<Void> complete(ServiceBusReceivedMessage message) {
         return updateDisposition(message, DispositionStatus.COMPLETED, null, null,
-            null, null);
+            null, null, ServiceBusErrorSource.COMPLETE);
     }
 
     /**
@@ -277,7 +277,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
 
         return updateDisposition(message, DispositionStatus.COMPLETED, null, null,
-            null, options.getTransactionContext());
+            null, options.getTransactionContext(), ServiceBusErrorSource.COMPLETE);
     }
 
     /**
@@ -292,7 +292,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<Void> defer(ServiceBusReceivedMessage message) {
         return updateDisposition(message, DispositionStatus.DEFERRED, null, null,
-            null, null);
+            null, null, ServiceBusErrorSource.DEFER);
     }
 
     /**
@@ -323,7 +323,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
 
         return updateDisposition(message, DispositionStatus.DEFERRED, null, null,
-            options.getPropertiesToModify(), options.getTransactionContext());
+            options.getPropertiesToModify(), options.getTransactionContext(), ServiceBusErrorSource.DEFER);
     }
 
     /**
@@ -370,7 +370,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
         return  updateDisposition(message, DispositionStatus.SUSPENDED, options.getDeadLetterReason(),
             options.getDeadLetterErrorDescription(), options.getPropertiesToModify(),
-            options.getTransactionContext());
+            options.getTransactionContext(), ServiceBusErrorSource.DEAD_LETTER);
     }
 
     /**
@@ -1015,35 +1015,14 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
     private Mono<Void> updateDisposition(ServiceBusReceivedMessage message, DispositionStatus dispositionStatus,
         String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify,
-        ServiceBusTransactionContext transactionContext) {
+        ServiceBusTransactionContext transactionContext, ServiceBusErrorSource errorSource) {
         return updateDispositionInternal(message, dispositionStatus, deadLetterReason, deadLetterErrorDescription,
             propertiesToModify, transactionContext)
             .onErrorMap(throwable -> {
-                ServiceBusErrorSource errorSource;
                 if (throwable instanceof AmqpException) {
-                    switch (dispositionStatus) {
-                        case COMPLETED:
-                            errorSource = ServiceBusErrorSource.COMPLETE;
-                            break;
-                        case DEFERRED:
-                            errorSource = ServiceBusErrorSource.DEFER;
-                            break;
-                        case SUSPENDED:
-                            errorSource = ServiceBusErrorSource.DEAD_LETTER;
-                            break;
-                        case ABANDONED:
-                            errorSource = ServiceBusErrorSource.ABANDONED;
-                            break;
-                        default:
-                            throw logger.logExceptionAsError(new UnsupportedOperationException(String.format(
-                                "'%s' is not supported.", dispositionStatus)));
-                    }
-
                     return new ServiceBusException((AmqpException) throwable, errorSource);
-
-                } else {
-                    return throwable;
                 }
+                return throwable;
 
             });
     }
