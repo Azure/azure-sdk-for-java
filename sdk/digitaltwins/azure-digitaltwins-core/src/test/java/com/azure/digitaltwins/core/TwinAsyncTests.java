@@ -73,10 +73,10 @@ public class TwinAsyncTests extends TwinTestBase
             // Get Twin and verify update was successful
             StepVerifier.create(asyncClient.getDigitalTwin(roomTwinId, BasicDigitalTwin.class))
                 .assertNext(response -> {
-                    assertThat(response.getProperties().get("Humidity"))
+                    assertThat(response.getContents().get("Humidity"))
                         .as("Humidity is added")
                         .isEqualTo(30);
-                    assertThat(response.getProperties().get("Temperature"))
+                    assertThat(response.getContents().get("Temperature"))
                         .as("Temperature is updated")
                         .isEqualTo(70);
                     })

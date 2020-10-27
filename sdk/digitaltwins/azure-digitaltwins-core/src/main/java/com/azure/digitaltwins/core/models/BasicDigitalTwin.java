@@ -31,10 +31,10 @@ public final class BasicDigitalTwin {
     private String twinETag;
 
     @JsonProperty(value = DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_METADATA, required = true)
-    private DigitalTwinMetadata metadata;
+    private BasicDigitalTwinMetadata metadata;
 
     @JsonIgnore
-    private final Map<String, Object> properties = new HashMap<>();
+    private final Map<String, Object> contents = new HashMap<>();
 
     /**
      * Construct a basic digital twin.
@@ -69,7 +69,7 @@ public final class BasicDigitalTwin {
      * @param twinETag A string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.
      * @return The BasicDigitalTwin object itself.
      */
-    public BasicDigitalTwin setDigitalTwinEtag(String twinETag) {
+    public BasicDigitalTwin setEtag(String twinETag) {
         this.twinETag = twinETag;
         return this;
     }
@@ -78,7 +78,7 @@ public final class BasicDigitalTwin {
      * Gets the information about the model a digital twin conforms to. This field is present on every digital twin.
      * @return The information about the model a digital twin conforms to. This field is present on every digital twin.
      */
-    public DigitalTwinMetadata getMetadata() {
+    public BasicDigitalTwinMetadata getMetadata() {
         return metadata;
     }
 
@@ -87,29 +87,30 @@ public final class BasicDigitalTwin {
      * @param metadata The information about the model a digital twin conforms to. This field is present on every digital twin.
      * @return The BasicDigitalTwin object itself.
      */
-    public BasicDigitalTwin setMetadata(DigitalTwinMetadata metadata) {
+    public BasicDigitalTwin setMetadata(BasicDigitalTwinMetadata metadata) {
         this.metadata = metadata;
         return this;
     }
 
     /**
-     * Gets the additional custom properties of the digital twin. This field will contain any properties of the digital twin that are not already defined by the other strong types of this class.
-     * @return The additional properties of the digital twin. This field will contain any properties of the digital twin that are not already defined by the other strong types of this class.
+     * Gets the additional custom contents of the digital twin. This field will contain any contents of the digital twin that are not already defined by the other strong types of this class.
+     * @return The additional contents of the digital twin. This field will contain any contents of the digital twin that are not already defined by the other strong types of this class.
      */
     @JsonAnyGetter
-    public Map<String, Object> getProperties() {
-        return properties;
+    public Map<String, Object> getContents() {
+        return contents;
     }
 
     /**
-     * Adds an additional custom property to the digital twin. This field will contain any properties of the digital twin that are not already defined by the other strong types of this class.
+     * Adds an additional custom property to the digital twin contents. This field will contain any contents of the
+     * digital twin that are not already defined by the other strong types of this class.
      * @param key The key of the additional property to be added to the digital twin.
      * @param value The value of the additional property to be added to the digital twin.
      * @return The BasicDigitalTwin object itself.
      */
     @JsonAnySetter
-    public BasicDigitalTwin addProperty(String key, Object value) {
-        this.properties.put(key, value);
+    public BasicDigitalTwin addToContents(String key, Object value) {
+        this.contents.put(key, value);
         return this;
     }
 }

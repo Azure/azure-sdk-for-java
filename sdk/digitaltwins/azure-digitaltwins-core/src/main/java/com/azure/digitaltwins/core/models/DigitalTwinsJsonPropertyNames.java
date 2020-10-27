@@ -47,4 +47,9 @@ public class DigitalTwinsJsonPropertyNames {
      * The JSON property name for the name field on a relationship.
      */
     public static final String RELATIONSHIP_NAME = "$relationshipName";
+
+    /**
+     * The JSON property name for the lastUpdateTime field on a digital twin component's property metadata.
+     */
+    public static final String METADATA_PROPERTY_LAST_UPDATE_TIME = "lastUpdateTime";
 }

@@ -18,18 +18,18 @@ import static com.fasterxml.jackson.annotation.JsonInclude.*;
  */
 @Fluent
 @JsonInclude(Include.NON_NULL)
-public final class DigitalTwinMetadata {
+public final class BasicDigitalTwinMetadata {
 
     @JsonProperty(value = DigitalTwinsJsonPropertyNames.METADATA_MODEL, required = true)
     private String modelId;
 
     @JsonIgnore
-    private final Map<String, Object> writableProperties = new HashMap<>();
+    private final Map<String, Object> propertyMetadata = new HashMap<>();
 
     /**
      * Creates an instance of digital twin metadata.
      */
-    public DigitalTwinMetadata() {
+    public BasicDigitalTwinMetadata() {
     }
 
     /**
@@ -43,32 +43,32 @@ public final class DigitalTwinMetadata {
     /**
      * Sets the Id of the model that the digital twin or component is modeled by.
      * @param modelId The Id of the model that the digital twin or component is modeled by.
-     * @return The DigitalTwinMetadata object itself.
+     * @return The BasicDigitalTwinMetadata object itself.
      */
-    public DigitalTwinMetadata setModelId(String modelId) {
+    public BasicDigitalTwinMetadata setModelId(String modelId) {
         this.modelId = modelId;
         return this;
     }
 
     /**
-     * Gets the model-defined writable properties' request state.
-     * For your convenience, the value of each map can be turned into an instance of {@link WritableProperty}.
-     * @return The model-defined writable properties' request state.
+     * Gets the metadata about changes on properties on a component. The values can be deserialized into {@link BasicDigitalTwinPropertyMetadata}
+     * @return
      */
     @JsonAnyGetter
-    public Map<String, Object> getWritableProperties() {
-        return writableProperties;
+    public Map<String, Object> getPropertyMetadata() {
+        return propertyMetadata;
     }
 
     /**
-     * Adds additional writable properties to the model-defined writable properties' request state.
-     * @param key The key of the additional property to be added to the component metadata.
-     * @param value The value of the additional property to be added to the component metadata.
-     * @return The DigitalTwinMetadata object itself.
+     * Adds an additional custom property to the digital twin. This field will contain any property
+     * of the digital twin that is not already defined by the other strong types of this class.
+     * @param key The key of the additional property to be added to the digital twin.
+     * @param value The value of the additional property to be added to the digital twin.
+     * @return The BasicDigitalTwin object itself.
      */
     @JsonAnySetter
-    public DigitalTwinMetadata addWritableProperties(String key, Object value) {
-        this.writableProperties.put(key, value);
+    public BasicDigitalTwinMetadata addPropertyMetadata(String key, Object value) {
+        this.propertyMetadata.put(key, value);
         return this;
     }
 }

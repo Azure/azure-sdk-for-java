@@ -63,7 +63,7 @@ public class QueryAsyncTests extends QueryTestBase{
 
             StepVerifier.create(asyncClient.query(queryString, BasicDigitalTwin.class, null))
                 .thenConsumeWhile(dt ->  {
-                    assertThat(dt.getProperties().get("IsOccupied"))
+                    assertThat(dt.getContents().get("IsOccupied"))
                         .as("IsOccupied should be true")
                         .isEqualTo(true);
                     return true;
