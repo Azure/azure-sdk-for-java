@@ -143,8 +143,12 @@ public class ComponentSyncSamples {
         ConsoleLogger.print("Updated component for digital twin: " + basicDigitalTwinId);
 
         ConsoleLogger.printHeader("Get Component");
-        String getComponentResponse = client.getComponent(basicDigitalTwinId, "Component1", String.class);
-        ConsoleLogger.print("Retrieved component for digital twin " + basicDigitalTwinId + " :\n" + getComponentResponse);
+        BasicDigitalTwinComponent getComponentResponse = client.getComponent(basicDigitalTwinId, "Component1", BasicDigitalTwinComponent.class);
+
+        ConsoleLogger.print("Retrieved component for digital twin " + basicDigitalTwinId + " :");
+        for (String key : getComponentResponse.getContents().keySet()) {
+            ConsoleLogger.print("\t" + key + " : " + getComponentResponse.getContents().get(key));
+        }
 
         // Clean up
         try {
