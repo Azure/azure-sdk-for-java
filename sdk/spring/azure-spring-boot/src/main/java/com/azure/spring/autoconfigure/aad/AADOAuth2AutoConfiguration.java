@@ -93,7 +93,7 @@ public class AADOAuth2AutoConfiguration {
 
         List<String> scopes = aadAuthenticationProperties.getScope();
 
-        if (!scopes.toString().contains(".default")) {
+        if (!scopes.toString().contains("/.default")) {
             scopes = scopes.stream()
                            .map(String::trim)
                            .map(s -> s.toLowerCase(Locale.ENGLISH))
