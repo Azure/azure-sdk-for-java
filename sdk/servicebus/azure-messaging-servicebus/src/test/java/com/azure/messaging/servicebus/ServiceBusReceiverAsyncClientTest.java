@@ -926,7 +926,7 @@ class ServiceBusReceiverAsyncClientTest {
                 .expectNextCount(numberOfEvents)
                 .verifyComplete();
         } finally {
-          receiver2.close();
+            receiver2.close();
         }
 
         verify(amqpReceiveLink, times(numberOfEvents)).updateDisposition(lockToken, Accepted.getInstance());
