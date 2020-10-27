@@ -7,6 +7,9 @@ import com.azure.spring.integration.core.AbstractInboundChannelAdapter;
 import com.azure.spring.integration.core.api.SubscribeOperation;
 import org.springframework.lang.NonNull;
 
+/**
+ * Inbound channel adapter for Service Bus Queue.
+ */
 public class ServiceBusQueueInboundChannelAdapter extends AbstractInboundChannelAdapter {
 
     public ServiceBusQueueInboundChannelAdapter(String destination, @NonNull SubscribeOperation subscribeOperation) {

@@ -9,6 +9,9 @@ import com.microsoft.azure.management.servicebus.Topic;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.util.Tuple;
 
+/**
+ * Resource manager for Service Bus topic.
+ */
 public class ServiceBusTopicManager extends AzureManager<Topic, Tuple<ServiceBusNamespace, String>> {
 
     public ServiceBusTopicManager(Azure azure, AzureProperties azureProperties) {

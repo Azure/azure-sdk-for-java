@@ -6,11 +6,12 @@ package com.azure.spring.integration.core.api;
 import java.time.Duration;
 
 /**
- * Checkpoint related config
+ * Checkpoint related config.
  *
  * @author Warren Zhu
  */
 public class CheckpointConfig {
+
     private final CheckpointMode checkpointMode;
     /**
      * The count of message to trigger checkpoint. Only used when {@link CheckpointMode#PARTITION_COUNT}
@@ -51,6 +52,9 @@ public class CheckpointConfig {
             + ", checkpointInterval=" + checkpointInterval + '}';
     }
 
+    /**
+     * Builder class for {@link CheckpointConfig}.
+     */
     public static class CheckpointConfigBuilder {
         private CheckpointMode checkpointMode;
         private int checkpointCount;

@@ -10,6 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.util.StringUtils;
 
+/**
+ * Send telemetry data to collecting server at fixed rate (per hour).
+ */
 public class TelemetrySender {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TelemetrySender.class);

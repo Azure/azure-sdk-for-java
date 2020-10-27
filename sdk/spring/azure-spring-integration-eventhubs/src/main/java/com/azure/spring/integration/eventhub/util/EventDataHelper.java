@@ -8,6 +8,9 @@ import com.azure.messaging.eventhubs.EventData;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * Helper class to process {@link EventData}.
+ */
 public class EventDataHelper {
 
     public static String toString(EventData eventData) {
