@@ -1201,7 +1201,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Send the three messages.
         Mono.when(messages.stream().map(this::sendMessage)
-            .collect(Collectors.toUnmodifiableList()))
+            .collect(Collectors.toList()))
             .block(TIMEOUT);
 
         // Act
