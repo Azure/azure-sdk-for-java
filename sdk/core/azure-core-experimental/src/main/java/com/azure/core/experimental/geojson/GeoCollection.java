@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.experimental.spatial;
+package com.azure.core.experimental.geojson;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,44 +10,49 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Represents a heterogeneous collection of {@link Geometry geometries}.
+ * Represents a heterogeneous collection of {@link GeoObject GeoObjects}.
  */
-public final class CollectionGeometry extends Geometry {
-    private final List<Geometry> geometries;
+public final class GeoCollection extends GeoObject {
+    private final List<GeoObject> geometries;
 
     /**
-     * Constructs a geometry collection.
+     * Constructs a {@link GeoCollection}.
      *
      * @param geometries The geometries in the collection.
      * @throws NullPointerException If {@code geometries} is {@code null}.
      */
-    public CollectionGeometry(List<Geometry> geometries) {
+    public GeoCollection(List<GeoObject> geometries) {
         this(geometries, null, null);
     }
 
     /**
-     * Constructs a geometry collection.
+     * Constructs a {@link GeoCollection}.
      *
      * @param geometries The geometries in the collection.
-     * @param boundingBox Bounding box for the geometry collection.
-     * @param properties Additional properties of the geometry collection.
+     * @param boundingBox Bounding box for the {@link GeoCollection}.
+     * @param customProperties Additional properties of the {@link GeoCollection}.
      * @throws NullPointerException If {@code geometries} is {@code null}.
      */
-    public CollectionGeometry(List<Geometry> geometries, GeometryBoundingBox boundingBox,
-        Map<String, Object> properties) {
-        super(boundingBox, properties);
+    public GeoCollection(List<GeoObject> geometries, GeoBoundingBox boundingBox,
+        Map<String, Object> customProperties) {
+        super(boundingBox, customProperties);
 
         Objects.requireNonNull(geometries, "'geometries' cannot be null.");
         this.geometries = Collections.unmodifiableList(new ArrayList<>(geometries));
     }
 
     /**
-     * Unmodifiable representation of the {@link Geometry geometries} contained in this collection.
+     * Unmodifiable representation of the {@link GeoObject geometries} contained in this collection.
      *
-     * @return An unmodifiable representation of the {@link Geometry geometries} in this collection.
+     * @return An unmodifiable representation of the {@link GeoObject geometries} in this collection.
      */
-    public List<Geometry> getGeometries() {
+    public List<GeoObject> getGeometries() {
         return geometries;
+    }
+
+    @Override
+    public GeoObjectType getType() {
+        return GeoObjectType.GEOMETRY_COLLECTION;
     }
 
     @Override
@@ -57,7 +62,7 @@ public final class CollectionGeometry extends Geometry {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof CollectionGeometry)) {
+        if (!(obj instanceof GeoCollection)) {
             return false;
         }
 
@@ -65,7 +70,7 @@ public final class CollectionGeometry extends Geometry {
             return true;
         }
 
-        CollectionGeometry other = (CollectionGeometry) obj;
+        GeoCollection other = (GeoCollection) obj;
 
         return super.equals(other) && Objects.equals(geometries, other.geometries);
     }

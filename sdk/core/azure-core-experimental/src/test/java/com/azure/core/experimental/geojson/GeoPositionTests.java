@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.experimental.spatial;
+package com.azure.core.experimental.geojson;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -11,17 +11,17 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static com.azure.core.experimental.spatial.GeometryTestHelpers.MT_RAINIER_POSITION;
-import static com.azure.core.experimental.spatial.GeometryTestHelpers.PIKES_PLACE_POSITION;
+import static com.azure.core.experimental.geojson.GeoTestHelpers.MT_RAINIER_POSITION;
+import static com.azure.core.experimental.geojson.GeoTestHelpers.PIKES_PLACE_POSITION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class GeometryPositionTests {
+public class GeoPositionTests {
     @Test
     public void simpleConstructor() {
         double expectedLongitude = -180;
         double expectedLatitude = -90;
 
-        GeometryPosition position = new GeometryPosition(expectedLongitude, expectedLatitude);
+        GeoPosition position = new GeoPosition(expectedLongitude, expectedLatitude);
 
         assertEquals(expectedLongitude, position.getLongitude());
         assertEquals(expectedLatitude, position.getLatitude());
@@ -35,7 +35,7 @@ public class GeometryPositionTests {
         double expectedLatitude = -90;
         double expectedAltitude = 1000;
 
-        GeometryPosition position = new GeometryPosition(expectedLongitude, expectedLatitude, expectedAltitude);
+        GeoPosition position = new GeoPosition(expectedLongitude, expectedLatitude, expectedAltitude);
 
         assertEquals(expectedLongitude, position.getLongitude());
         assertEquals(expectedLatitude, position.getLatitude());
@@ -47,7 +47,7 @@ public class GeometryPositionTests {
         double expectedLongitude = -200;
         double expectedLatitude = -100;
 
-        GeometryPosition position = new GeometryPosition(expectedLongitude, expectedLatitude);
+        GeoPosition position = new GeoPosition(expectedLongitude, expectedLatitude);
 
         assertEquals(expectedLongitude, position.getLongitude());
         assertEquals(expectedLatitude, position.getLatitude());
@@ -55,13 +55,13 @@ public class GeometryPositionTests {
 
     @ParameterizedTest
     @MethodSource("equalsSupplier")
-    public void geometryPositionEquals(GeometryPosition position, Object obj, boolean expected) {
+    public void geoPositionEquals(GeoPosition position, Object obj, boolean expected) {
         assertEquals(expected, position.equals(obj));
     }
 
     private static Stream<Arguments> equalsSupplier() {
-        GeometryPosition pikePlacePosition = PIKES_PLACE_POSITION.get();
-        GeometryPosition mtRainierPosition = MT_RAINIER_POSITION.get();
+        GeoPosition pikePlacePosition = PIKES_PLACE_POSITION.get();
+        GeoPosition mtRainierPosition = MT_RAINIER_POSITION.get();
 
         return Stream.of(
             // Other is null.

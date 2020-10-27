@@ -4,4 +4,4 @@
 /**
  * Package containing GeoJSON classes.
  */
-package com.azure.core.experimental.spatial;
+package com.azure.core.experimental.geojson;

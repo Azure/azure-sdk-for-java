@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.experimental.spatial;
+package com.azure.core.experimental.geojson;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -16,55 +16,55 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static com.azure.core.experimental.spatial.GeometryTestHelpers.RECTANGLE_LINE;
-import static com.azure.core.experimental.spatial.GeometryTestHelpers.RECTANGLE_POLYGON;
-import static com.azure.core.experimental.spatial.GeometryTestHelpers.SQUARE_LINE;
-import static com.azure.core.experimental.spatial.GeometryTestHelpers.SQUARE_POLYGON;
-import static com.azure.core.experimental.spatial.GeometryTestHelpers.TRIANGLE_LINE;
+import static com.azure.core.experimental.geojson.GeoTestHelpers.RECTANGLE_LINE;
+import static com.azure.core.experimental.geojson.GeoTestHelpers.RECTANGLE_POLYGON;
+import static com.azure.core.experimental.geojson.GeoTestHelpers.SQUARE_LINE;
+import static com.azure.core.experimental.geojson.GeoTestHelpers.SQUARE_POLYGON;
+import static com.azure.core.experimental.geojson.GeoTestHelpers.TRIANGLE_LINE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 /**
- * Tests {@link CollectionGeometry}.
+ * Tests {@link GeoCollection}.
  */
-public class CollectionGeometryTests {
+public class GeoCollectionTests {
     @Test
     public void nullGeometriesThrows() {
-        Assertions.assertThrows(NullPointerException.class, () -> new CollectionGeometry(null));
+        Assertions.assertThrows(NullPointerException.class, () -> new GeoCollection(null));
     }
 
     @Test
     public void simpleConstructor() {
-        List<Geometry> geometries = Arrays.asList(SQUARE_LINE.get(), SQUARE_POLYGON.get());
+        List<GeoObject> geometries = Arrays.asList(SQUARE_LINE.get(), SQUARE_POLYGON.get());
 
-        CollectionGeometry collection = new CollectionGeometry(geometries);
+        GeoCollection collection = new GeoCollection(geometries);
 
         assertEquals(geometries, collection.getGeometries());
 
         Assertions.assertNull(collection.getBoundingBox());
-        Assertions.assertNull(collection.getProperties());
+        Assertions.assertNull(collection.getCustomProperties());
     }
 
     @Test
     public void complexConstructor() {
-        List<Geometry> geometries = Arrays.asList(SQUARE_LINE.get(), SQUARE_POLYGON.get());
-        GeometryBoundingBox boundingBox = new GeometryBoundingBox(0, 0, 1, 1);
+        List<GeoObject> geometries = Arrays.asList(SQUARE_LINE.get(), SQUARE_POLYGON.get());
+        GeoBoundingBox boundingBox = new GeoBoundingBox(0, 0, 1, 1);
         Map<String, Object> properties = Collections.singletonMap("key", "value");
 
-        CollectionGeometry collection = new CollectionGeometry(geometries, boundingBox, properties);
+        GeoCollection collection = new GeoCollection(geometries, boundingBox, properties);
 
         assertEquals(geometries, collection.getGeometries());
         assertEquals(boundingBox, collection.getBoundingBox());
-        assertEquals(properties, collection.getProperties());
+        assertEquals(properties, collection.getCustomProperties());
     }
 
     @Test
     public void constructorCopiesGeometries() {
-        List<Geometry> geometries = new ArrayList<>();
+        List<GeoObject> geometries = new ArrayList<>();
         geometries.add(SQUARE_LINE.get());
         geometries.add(SQUARE_POLYGON.get());
 
-        CollectionGeometry collection = new CollectionGeometry(geometries);
+        GeoCollection collection = new GeoCollection(geometries);
         assertEquals(geometries, collection.getGeometries());
 
         geometries.add(TRIANGLE_LINE.get());
@@ -73,19 +73,19 @@ public class CollectionGeometryTests {
 
     @ParameterizedTest
     @MethodSource("equalsSupplier")
-    public void collectionGeometriesEquals(CollectionGeometry collection, Object obj, boolean expected) {
+    public void collectionGeometriesEquals(GeoCollection collection, Object obj, boolean expected) {
         assertEquals(expected, collection.equals(obj));
     }
 
     private static Stream<Arguments> equalsSupplier() {
-        List<Geometry> geometries = Arrays.asList(SQUARE_LINE.get(), SQUARE_POLYGON.get());
-        List<Geometry> geometries1 = Arrays.asList(RECTANGLE_LINE.get(), RECTANGLE_POLYGON.get());
+        List<GeoObject> geometries = Arrays.asList(SQUARE_LINE.get(), SQUARE_POLYGON.get());
+        List<GeoObject> geometries1 = Arrays.asList(RECTANGLE_LINE.get(), RECTANGLE_POLYGON.get());
 
-        GeometryBoundingBox boundingBox = new GeometryBoundingBox(0, 0, 2, 2);
+        GeoBoundingBox boundingBox = new GeoBoundingBox(0, 0, 2, 2);
         Map<String, Object> properties = Collections.singletonMap("key", "value");
 
-        CollectionGeometry collection = new CollectionGeometry(geometries);
-        CollectionGeometry collection1 = new CollectionGeometry(geometries1, boundingBox, properties);
+        GeoCollection collection = new GeoCollection(geometries);
+        GeoCollection collection1 = new GeoCollection(geometries1, boundingBox, properties);
 
         return Stream.of(
             // Other is null.
@@ -103,8 +103,8 @@ public class CollectionGeometryTests {
             Arguments.of(collection1, collection, false),
 
             // Other is the same value.
-            Arguments.of(collection, new CollectionGeometry(geometries), true),
-            Arguments.of(collection1, new CollectionGeometry(geometries1, boundingBox, properties), true)
+            Arguments.of(collection, new GeoCollection(geometries), true),
+            Arguments.of(collection1, new GeoCollection(geometries1, boundingBox, properties), true)
         );
     }
 }

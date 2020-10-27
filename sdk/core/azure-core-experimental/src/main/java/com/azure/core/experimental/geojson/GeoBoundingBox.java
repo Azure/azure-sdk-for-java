@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.experimental.spatial;
+package com.azure.core.experimental.geojson;
 
 import java.util.Objects;
 
 /**
  * Represents a geometric bounding box.
  */
-public final class GeometryBoundingBox {
+public final class GeoBoundingBox {
     private final double west;
     private final double south;
     private final double east;
@@ -25,7 +25,7 @@ public final class GeometryBoundingBox {
      * @param east East longitudinal boundary.
      * @param north North latitudinal boundary.
      */
-    public GeometryBoundingBox(double west, double south, double east, double north) {
+    public GeoBoundingBox(double west, double south, double east, double north) {
         this(west, south, east, north, null, null);
     }
 
@@ -39,7 +39,7 @@ public final class GeometryBoundingBox {
      * @param minAltitude Minimum altitude boundary.
      * @param maxAltitude Maximum altitude boundary.
      */
-    public GeometryBoundingBox(double west, double south, double east, double north, Double minAltitude,
+    public GeoBoundingBox(double west, double south, double east, double north, Double minAltitude,
         Double maxAltitude) {
         this.west = west;
         this.south = south;
@@ -110,7 +110,7 @@ public final class GeometryBoundingBox {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof GeometryBoundingBox)) {
+        if (!(obj instanceof GeoBoundingBox)) {
             return false;
         }
 
@@ -118,7 +118,7 @@ public final class GeometryBoundingBox {
             return true;
         }
 
-        GeometryBoundingBox other = (GeometryBoundingBox) obj;
+        GeoBoundingBox other = (GeoBoundingBox) obj;
         return west == other.west
             && south == other.south
             && east == other.east

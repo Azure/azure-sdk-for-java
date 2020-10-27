@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.experimental.spatial;
+package com.azure.core.experimental.geojson;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.core.JsonParser;
@@ -18,13 +18,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Deserializes a JSON object into a {@link Geometry}.
+ * Deserializes a JSON object into a {@link GeoObject}.
  */
-final class GeometryDeserializer extends JsonDeserializer<Geometry> {
-    private static final ClientLogger LOGGER = new ClientLogger(GeometryDeserializer.class);
+final class GeoJsonDeserializer extends JsonDeserializer<GeoObject> {
+    private static final ClientLogger LOGGER = new ClientLogger(GeoJsonDeserializer.class);
 
     /*
-     * GeoJSON geometry types.
+     * GeoJSON types.
      */
     static final String POINT_TYPE = "Point";
     static final String LINE_STRING_TYPE = "LineString";
@@ -50,78 +50,78 @@ final class GeometryDeserializer extends JsonDeserializer<Geometry> {
 
     static {
         MODULE = new SimpleModule()
-            .addDeserializer(Geometry.class, new GeometryDeserializer())
-            .addDeserializer(PointGeometry.class, geometrySubclassDeserializer(PointGeometry.class))
-            .addDeserializer(LineGeometry.class, geometrySubclassDeserializer(LineGeometry.class))
-            .addDeserializer(PolygonGeometry.class, geometrySubclassDeserializer(PolygonGeometry.class))
-            .addDeserializer(MultiPointGeometry.class, geometrySubclassDeserializer(MultiPointGeometry.class))
-            .addDeserializer(MultiLineGeometry.class, geometrySubclassDeserializer(MultiLineGeometry.class))
-            .addDeserializer(MultiPolygonGeometry.class, geometrySubclassDeserializer(MultiPolygonGeometry.class))
-            .addDeserializer(CollectionGeometry.class, geometrySubclassDeserializer(CollectionGeometry.class));
+            .addDeserializer(GeoObject.class, new GeoJsonDeserializer())
+            .addDeserializer(GeoPoint.class, geoSubclassDeserializer(GeoPoint.class))
+            .addDeserializer(GeoLine.class, geoSubclassDeserializer(GeoLine.class))
+            .addDeserializer(GeoPolygon.class, geoSubclassDeserializer(GeoPolygon.class))
+            .addDeserializer(GeoPointCollection.class, geoSubclassDeserializer(GeoPointCollection.class))
+            .addDeserializer(GeoLineCollection.class, geoSubclassDeserializer(GeoLineCollection.class))
+            .addDeserializer(GeoPolygonCollection.class, geoSubclassDeserializer(GeoPolygonCollection.class))
+            .addDeserializer(GeoCollection.class, geoSubclassDeserializer(GeoCollection.class));
     }
 
     @Override
-    public Geometry deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+    public GeoObject deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         return read(ctxt.readTree(p));
     }
 
-    private static Geometry read(JsonNode node) {
+    private static GeoObject read(JsonNode node) {
         String type = getRequiredProperty(node, TYPE_PROPERTY).asText();
 
         if (GEOMETRY_COLLECTION_TYPE.equalsIgnoreCase(type)) {
-            List<Geometry> geometries = new ArrayList<>();
-            for (JsonNode geometryNode : getRequiredProperty(node, GEOMETRIES_PROPERTY)) {
-                geometries.add(read(geometryNode));
+            List<GeoObject> geometries = new ArrayList<>();
+            for (JsonNode geoNode : getRequiredProperty(node, GEOMETRIES_PROPERTY)) {
+                geometries.add(read(geoNode));
             }
 
-            return new CollectionGeometry(geometries, readBoundingBox(node),
+            return new GeoCollection(geometries, readBoundingBox(node),
                 readProperties(node, GEOMETRIES_PROPERTY));
         }
 
         JsonNode coordinates = getRequiredProperty(node, COORDINATES_PROPERTY);
 
-        GeometryBoundingBox boundingBox = readBoundingBox(node);
+        GeoBoundingBox boundingBox = readBoundingBox(node);
         Map<String, Object> properties = readProperties(node);
 
         switch (type) {
             case POINT_TYPE:
-                return new PointGeometry(readCoordinate(coordinates), boundingBox, properties);
+                return new GeoPoint(readCoordinate(coordinates), boundingBox, properties);
             case LINE_STRING_TYPE:
-                return new LineGeometry(readCoordinates(coordinates), boundingBox, properties);
+                return new GeoLine(readCoordinates(coordinates), boundingBox, properties);
             case POLYGON_TYPE:
-                List<LineGeometry> rings = new ArrayList<>();
-                coordinates.forEach(ring -> rings.add(new LineGeometry(readCoordinates(ring))));
+                List<GeoLinearRing> rings = new ArrayList<>();
+                coordinates.forEach(ring -> rings.add(new GeoLinearRing(readCoordinates(ring))));
 
-                return new PolygonGeometry(rings, boundingBox, properties);
+                return new GeoPolygon(rings, boundingBox, properties);
             case MULTI_POINT_TYPE:
-                List<PointGeometry> points = new ArrayList<>();
-                readCoordinates(coordinates).forEach(position -> points.add(new PointGeometry(position)));
+                List<GeoPoint> points = new ArrayList<>();
+                readCoordinates(coordinates).forEach(position -> points.add(new GeoPoint(position)));
 
-                return new MultiPointGeometry(points, boundingBox, properties);
+                return new GeoPointCollection(points, boundingBox, properties);
             case MULTI_LINE_STRING_TYPE:
-                List<LineGeometry> lines = new ArrayList<>();
-                coordinates.forEach(line -> lines.add(new LineGeometry(readCoordinates(line))));
+                List<GeoLine> lines = new ArrayList<>();
+                coordinates.forEach(line -> lines.add(new GeoLine(readCoordinates(line))));
 
-                return new MultiLineGeometry(lines, boundingBox, properties);
+                return new GeoLineCollection(lines, boundingBox, properties);
             case MULTI_POLYGON_TYPE:
                 return readMultiPolygon(coordinates, boundingBox, properties);
             default:
                 throw LOGGER.logExceptionAsError(new IllegalStateException(
-                    String.format("Unsupported geometry type %s.", type)));
+                    String.format("Unsupported geo type %s.", type)));
         }
     }
 
-    private static MultiPolygonGeometry readMultiPolygon(JsonNode node, GeometryBoundingBox boundingBox,
+    private static GeoPolygonCollection readMultiPolygon(JsonNode node, GeoBoundingBox boundingBox,
         Map<String, Object> properties) {
-        List<PolygonGeometry> polygons = new ArrayList<>();
+        List<GeoPolygon> polygons = new ArrayList<>();
         for (JsonNode polygon : node) {
-            List<LineGeometry> rings = new ArrayList<>();
-            polygon.forEach(ring -> rings.add(new LineGeometry(readCoordinates(ring))));
+            List<GeoLinearRing> rings = new ArrayList<>();
+            polygon.forEach(ring -> rings.add(new GeoLinearRing(readCoordinates(ring))));
 
-            polygons.add(new PolygonGeometry(rings));
+            polygons.add(new GeoPolygon(rings));
         }
 
-        return new MultiPolygonGeometry(polygons, boundingBox, properties);
+        return new GeoPolygonCollection(polygons, boundingBox, properties);
     }
 
     /*
@@ -142,16 +142,16 @@ final class GeometryDeserializer extends JsonDeserializer<Geometry> {
         return requiredNode;
     }
 
-    private static GeometryBoundingBox readBoundingBox(JsonNode node) {
+    private static GeoBoundingBox readBoundingBox(JsonNode node) {
         JsonNode boundingBoxNode = node.get(BOUNDING_BOX_PROPERTY);
         if (boundingBoxNode != null) {
             switch (boundingBoxNode.size()) {
                 case 4:
-                    return new GeometryBoundingBox(boundingBoxNode.get(0).asDouble(),
+                    return new GeoBoundingBox(boundingBoxNode.get(0).asDouble(),
                         boundingBoxNode.get(1).asDouble(), boundingBoxNode.get(2).asDouble(),
                         boundingBoxNode.get(3).asDouble());
                 case 6:
-                    return new GeometryBoundingBox(boundingBoxNode.get(0).asDouble(),
+                    return new GeoBoundingBox(boundingBoxNode.get(0).asDouble(),
                         boundingBoxNode.get(1).asDouble(), boundingBoxNode.get(3).asDouble(),
                         boundingBoxNode.get(4).asDouble(), boundingBoxNode.get(2).asDouble(),
                         boundingBoxNode.get(5).asDouble());
@@ -226,15 +226,15 @@ final class GeometryDeserializer extends JsonDeserializer<Geometry> {
         }
     }
 
-    private static List<GeometryPosition> readCoordinates(JsonNode coordinates) {
-        List<GeometryPosition> positions = new ArrayList<>();
+    private static List<GeoPosition> readCoordinates(JsonNode coordinates) {
+        List<GeoPosition> positions = new ArrayList<>();
 
         coordinates.forEach(coordinate -> positions.add(readCoordinate(coordinate)));
 
         return positions;
     }
 
-    private static GeometryPosition readCoordinate(JsonNode coordinate) {
+    private static GeoPosition readCoordinate(JsonNode coordinate) {
         int coordinateCount = coordinate.size();
 
         if (coordinateCount < 2 || coordinateCount > 3) {
@@ -249,10 +249,10 @@ final class GeometryDeserializer extends JsonDeserializer<Geometry> {
             altitude = coordinate.get(2).asDouble();
         }
 
-        return new GeometryPosition(longitude, latitude, altitude);
+        return new GeoPosition(longitude, latitude, altitude);
     }
 
-    private static <T extends Geometry> JsonDeserializer<T> geometrySubclassDeserializer(Class<T> subclass) {
+    private static <T extends GeoObject> JsonDeserializer<T> geoSubclassDeserializer(Class<T> subclass) {
         return new JsonDeserializer<T>() {
             @Override
             public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {

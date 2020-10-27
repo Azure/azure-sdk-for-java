@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.experimental.spatial;
+package com.azure.core.experimental.geojson;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -16,54 +16,54 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static com.azure.core.experimental.spatial.GeometryTestHelpers.RECTANGLE_POLYGON;
-import static com.azure.core.experimental.spatial.GeometryTestHelpers.SQUARE_POLYGON;
-import static com.azure.core.experimental.spatial.GeometryTestHelpers.TRIANGLE_POLYGON;
+import static com.azure.core.experimental.geojson.GeoTestHelpers.RECTANGLE_POLYGON;
+import static com.azure.core.experimental.geojson.GeoTestHelpers.SQUARE_POLYGON;
+import static com.azure.core.experimental.geojson.GeoTestHelpers.TRIANGLE_POLYGON;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 /**
- * Tests {@link MultiPolygonGeometry}.
+ * Tests {@link GeoPolygonCollection}.
  */
-public class MultiPolygonGeometryTests {
+public class GeoPolygonCollectionTests {
     @Test
     public void nullPolygonsThrows() {
-        Assertions.assertThrows(NullPointerException.class, () -> new MultiPolygonGeometry(null));
+        Assertions.assertThrows(NullPointerException.class, () -> new GeoPolygonCollection(null));
     }
 
     @Test
     public void simpleConstructor() {
-        List<PolygonGeometry> polygons = Arrays.asList(TRIANGLE_POLYGON.get(), SQUARE_POLYGON.get());
+        List<GeoPolygon> polygons = Arrays.asList(TRIANGLE_POLYGON.get(), SQUARE_POLYGON.get());
 
-        MultiPolygonGeometry multiPolygon = new MultiPolygonGeometry(polygons);
+        GeoPolygonCollection multiPolygon = new GeoPolygonCollection(polygons);
 
         assertEquals(polygons, multiPolygon.getPolygons());
 
         Assertions.assertNull(multiPolygon.getBoundingBox());
-        Assertions.assertNull(multiPolygon.getProperties());
+        Assertions.assertNull(multiPolygon.getCustomProperties());
     }
 
     @Test
     public void complexConstructor() {
-        List<PolygonGeometry> polygons = Arrays.asList(TRIANGLE_POLYGON.get(), SQUARE_POLYGON.get());
+        List<GeoPolygon> polygons = Arrays.asList(TRIANGLE_POLYGON.get(), SQUARE_POLYGON.get());
 
-        GeometryBoundingBox boundingBox = new GeometryBoundingBox(0, 0, 1, 1);
+        GeoBoundingBox boundingBox = new GeoBoundingBox(0, 0, 1, 1);
         Map<String, Object> properties = Collections.singletonMap("key", "value");
 
-        MultiPolygonGeometry multiPolygon = new MultiPolygonGeometry(polygons, boundingBox, properties);
+        GeoPolygonCollection multiPolygon = new GeoPolygonCollection(polygons, boundingBox, properties);
 
         assertEquals(polygons, multiPolygon.getPolygons());
         assertEquals(boundingBox, multiPolygon.getBoundingBox());
-        assertEquals(properties, multiPolygon.getProperties());
+        assertEquals(properties, multiPolygon.getCustomProperties());
     }
 
     @Test
     public void constructorCopiesPolygons() {
-        List<PolygonGeometry> polygons = new ArrayList<>();
+        List<GeoPolygon> polygons = new ArrayList<>();
         polygons.add(TRIANGLE_POLYGON.get());
         polygons.add(SQUARE_POLYGON.get());
 
-        MultiPolygonGeometry multiPolygon = new MultiPolygonGeometry(polygons);
+        GeoPolygonCollection multiPolygon = new GeoPolygonCollection(polygons);
         assertEquals(polygons, multiPolygon.getPolygons());
 
         polygons.add(RECTANGLE_POLYGON.get());
@@ -73,19 +73,19 @@ public class MultiPolygonGeometryTests {
 
     @ParameterizedTest
     @MethodSource("equalsSupplier")
-    public void multiPolygonGeometriesEquals(MultiPolygonGeometry multiPolygon, Object obj, boolean expected) {
+    public void multiPolygonGeometriesEquals(GeoPolygonCollection multiPolygon, Object obj, boolean expected) {
         assertEquals(expected, multiPolygon.equals(obj));
     }
 
     private static Stream<Arguments> equalsSupplier() {
-        List<PolygonGeometry> polygons = Arrays.asList(TRIANGLE_POLYGON.get(), SQUARE_POLYGON.get());
-        List<PolygonGeometry> polygons1 = Arrays.asList(TRIANGLE_POLYGON.get(), RECTANGLE_POLYGON.get());
+        List<GeoPolygon> polygons = Arrays.asList(TRIANGLE_POLYGON.get(), SQUARE_POLYGON.get());
+        List<GeoPolygon> polygons1 = Arrays.asList(TRIANGLE_POLYGON.get(), RECTANGLE_POLYGON.get());
 
-        GeometryBoundingBox boundingBox = new GeometryBoundingBox(0, 0, 2, 2);
+        GeoBoundingBox boundingBox = new GeoBoundingBox(0, 0, 2, 2);
         Map<String, Object> properties = Collections.singletonMap("key", "value");
 
-        MultiPolygonGeometry multiPolygon = new MultiPolygonGeometry(polygons);
-        MultiPolygonGeometry multiPolygon1 = new MultiPolygonGeometry(polygons1, boundingBox, properties);
+        GeoPolygonCollection multiPolygon = new GeoPolygonCollection(polygons);
+        GeoPolygonCollection multiPolygon1 = new GeoPolygonCollection(polygons1, boundingBox, properties);
 
         return Stream.of(
             // Other is null.
@@ -103,8 +103,8 @@ public class MultiPolygonGeometryTests {
             Arguments.of(multiPolygon1, multiPolygon, false),
 
             // Other is the same value.
-            Arguments.of(multiPolygon, new MultiPolygonGeometry(polygons), true),
-            Arguments.of(multiPolygon1, new MultiPolygonGeometry(polygons1, boundingBox, properties), true)
+            Arguments.of(multiPolygon, new GeoPolygonCollection(polygons), true),
+            Arguments.of(multiPolygon1, new GeoPolygonCollection(polygons1, boundingBox, properties), true)
         );
     }
 }
