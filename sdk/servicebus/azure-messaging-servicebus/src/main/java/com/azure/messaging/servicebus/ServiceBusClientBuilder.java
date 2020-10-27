@@ -767,7 +767,7 @@ public final class ServiceBusClientBuilder {
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusSessionReceiverClient buildClient() {
-            return new ServiceBusSessionReceiverClient(this.buildAsyncClient(), retryOptions.getTryTimeout());
+            return new ServiceBusSessionReceiverClient(this.buildAsyncClient());
         }
     }
 

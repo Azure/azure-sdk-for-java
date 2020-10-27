@@ -53,6 +53,13 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         this.operationTimeout = Objects.requireNonNull(operationTimeout, "'operationTimeout' cannot be null.");
     }
 
+    // TODO: ServiceBusReceiverClient will remove the above constructor that accepts operationTimeout.
+    //  This one is added because ServiceBusSessionReceiverClient need this constructor right now.
+    ServiceBusReceiverClient(ServiceBusReceiverAsyncClient asyncClient) {
+        this.asyncClient = Objects.requireNonNull(asyncClient, "'asyncClient' cannot be null.");
+        this.operationTimeout = Duration.ofDays(Long.MAX_VALUE); // TODO: remove after ServiceBusReceiverClient update
+    }
+
     /**
      * Gets the fully qualified Service Bus namespace that the connection is associated with. This is likely similar to
      * {@code {yournamespace}.servicebus.windows.net}.

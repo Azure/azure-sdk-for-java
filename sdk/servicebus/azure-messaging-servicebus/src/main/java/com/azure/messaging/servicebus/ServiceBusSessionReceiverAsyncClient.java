@@ -17,15 +17,26 @@ import java.util.Objects;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
- * The builder that creates session-related {@link ServiceBusReceiverAsyncClient} instances.
- * Use {@link #acceptSession(String)} to create a {@link ServiceBusReceiverAsyncClient} that is tied to a known specific
- * session id.
- * Use {@link #acceptNextSession()} to create a {@link ServiceBusReceiverAsyncClient} that is tied to an unknown
- * available session.
- * Use {@link #getReceiverClient(int)} to create a {@link ServiceBusReceiverAsyncClient} that
- * process events from up to maxConcurrentSessions number of sessions.
+ * This session receiver client is used to acquire session locks from a queue or topic and create
+ * {@link ServiceBusReceiverAsyncClient} instances that are tied to the locked sessions.
+ * <ul>
+ *     <li>
+ *         Use {@link #acceptSession(String)} to acquire the lock of a session if you know the session id.
+ *         <p>
+ *         {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#nextsession}
+ *         </p>
+ *    </li>
+ *    <li>
+ *        Use {@link #acceptNextSession()} to acquire the lock of the next availabe session
+ *        without specifying the session id.
+ *        <p>
+ *        {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#sessionId}
+ *        </p>
+ *    </li>
+ * </ul>
+ *
  */
-public class ServiceBusSessionReceiverAsyncClient implements AutoCloseable {
+public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable {
     private final String fullyQualifiedNamespace;
     private final String entityPath;
     private final MessagingEntityType entityType;
@@ -50,73 +61,60 @@ public class ServiceBusSessionReceiverAsyncClient implements AutoCloseable {
         this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
-        this.unNamedSessionManager = new ServiceBusSessionManager(entityPath, entityType,
-            connectionProcessor, tracerProvider,
-            messageSerializer, receiverOptions);
+        this.unNamedSessionManager = new ServiceBusSessionManager(entityPath, entityType, connectionProcessor,
+            tracerProvider, messageSerializer, receiverOptions);
     }
 
     /**
-     * Create a link for the next available session and use the link to create a {@link ServiceBusReceiverAsyncClient}
-     * to receive messages from that session.
+     * Acquires a session lock for the next available session and create a {@link ServiceBusReceiverAsyncClient}
+     * to receive messages from the session.
+     * <p>Accept next available session</p>
+     * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#nextsession}
+     * </p>
      * @return A {@link ServiceBusReceiverAsyncClient} that is tied to the available session.
+     * @throws UnsupportedOperationException if the queue or topic subscription is not session-enabled.
      */
     public Mono<ServiceBusReceiverAsyncClient> acceptNextSession() {
         return unNamedSessionManager.getActiveLink().flatMap(receiveLink -> receiveLink.getSessionId()
             .map(sessionId -> {
-                ReceiverOptions newReceiverOptions = new ReceiverOptions(receiverOptions.getReceiveMode(),
+                final ReceiverOptions newReceiverOptions = new ReceiverOptions(receiverOptions.getReceiveMode(),
                     receiverOptions.getPrefetchCount(), sessionId, null, receiverOptions.getMaxLockRenewDuration());
                 final ServiceBusSessionManager sessionSpecificManager = new ServiceBusSessionManager(entityPath,
                     entityType, connectionProcessor, tracerProvider, messageSerializer, newReceiverOptions,
                     receiveLink);
                 return new ServiceBusReceiverAsyncClient(fullyQualifiedNamespace, entityPath,
                     entityType, newReceiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
-                    tracerProvider, messageSerializer, onClientClose, sessionSpecificManager);
+                    tracerProvider, messageSerializer, () -> { }, sessionSpecificManager);
             }));
     }
 
     /**
-     * Create a link for the "sessionId" and use the link to create a {@link ServiceBusReceiverAsyncClient}
+     * Acquires a session lock for {@code sessionId} and create a {@link ServiceBusReceiverAsyncClient}
      * to receive messages from the session.
+     * <p>
+     * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#sessionId}
+     * </p>
      * @param sessionId The session Id.
      * @return A {@link ServiceBusReceiverAsyncClient} that is tied to the specified session.
-     * @throws IllegalArgumentException if {@code sessionId} is null or empty.
+     * @throws NullPointerException if {@code sessionId} is null.
+     * @throws IllegalArgumentException if {@code sessionId} is empty.
+     * @throws UnsupportedOperationException if the queue or topic subscription is not session-enabled.
+     * @throws com.azure.core.amqp.exception.AmqpException if the session has been locked by another session receiver.
      */
     public Mono<ServiceBusReceiverAsyncClient> acceptSession(String sessionId) {
+        sessionId = Objects.requireNonNull(sessionId, "'sessionId' cannot be null");
         if (CoreUtils.isNullOrEmpty(sessionId)) {
-            return monoError(logger, new IllegalArgumentException("sessionId can not be null or empty"));
+            return monoError(logger, new IllegalArgumentException("'sessionId' cannot be empty"));
         }
-        ReceiverOptions newReceiverOptions = new ReceiverOptions(receiverOptions.getReceiveMode(),
+        final ReceiverOptions newReceiverOptions = new ReceiverOptions(receiverOptions.getReceiveMode(),
             receiverOptions.getPrefetchCount(), sessionId, null, receiverOptions.getMaxLockRenewDuration());
         final ServiceBusSessionManager sessionSpecificManager = new ServiceBusSessionManager(entityPath, entityType,
             connectionProcessor, tracerProvider, messageSerializer, newReceiverOptions);
 
-        return sessionSpecificManager.getActiveLink().thenReturn(new ServiceBusReceiverAsyncClient(
+        return sessionSpecificManager.getActiveLink().map(receiveLink -> new ServiceBusReceiverAsyncClient(
             fullyQualifiedNamespace, entityPath, entityType, newReceiverOptions, connectionProcessor,
-            ServiceBusConstants.OPERATION_TIMEOUT, tracerProvider, messageSerializer, onClientClose,
+            ServiceBusConstants.OPERATION_TIMEOUT, tracerProvider, messageSerializer, () -> { },
             sessionSpecificManager));
-    }
-
-    /**
-     * Create a {@link ServiceBusReceiverAsyncClient} that processes at most {@code maxConcurrentSessions} sessions.
-     *
-     * @param maxConcurrentSessions Maximum number of concurrent sessions to process at any given time.
-     *
-     * @return The {@link ServiceBusReceiverAsyncClient} object that will be used to receive messages.
-     * @throws IllegalArgumentException if {@code maxConcurrentSessions} is less than 1.
-     */
-    public ServiceBusReceiverAsyncClient getReceiverClient(int maxConcurrentSessions) {
-        if (maxConcurrentSessions < 1) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("Maximum number of concurrent sessions must be positive."));
-        }
-        ReceiverOptions newReceiverOptions = new ReceiverOptions(receiverOptions.getReceiveMode(),
-            receiverOptions.getPrefetchCount(), null, maxConcurrentSessions,
-            receiverOptions.getMaxLockRenewDuration());
-        ServiceBusSessionManager newSessionManager = new ServiceBusSessionManager(entityPath, entityType,
-            connectionProcessor, tracerProvider, messageSerializer, newReceiverOptions);
-        return new ServiceBusReceiverAsyncClient(fullyQualifiedNamespace, entityPath,
-            entityType, newReceiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
-            tracerProvider, messageSerializer, onClientClose, newSessionManager);
     }
 
     @Override

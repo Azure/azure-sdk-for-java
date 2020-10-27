@@ -15,7 +15,6 @@ class ReceiverOptions {
     private final int prefetchCount;
     private final String sessionId;
     private final Integer maxConcurrentSessions;
-    private final boolean isSessionReceiver;
     private final Duration maxLockRenewDuration;
 
     ReceiverOptions(ReceiveMode receiveMode, int prefetchCount, Duration maxLockRenewDuration) {
@@ -24,7 +23,6 @@ class ReceiverOptions {
         this.maxLockRenewDuration = maxLockRenewDuration;
         this.sessionId = null;
         this.maxConcurrentSessions = null;
-        this.isSessionReceiver = false;
     }
 
     ReceiverOptions(ReceiveMode receiveMode, int prefetchCount, String sessionId,
@@ -34,7 +32,6 @@ class ReceiverOptions {
         this.sessionId = sessionId;
         this.maxConcurrentSessions = maxConcurrentSessions;
         this.maxLockRenewDuration = maxLockRenewDuration;
-        this.isSessionReceiver = true;
     }
 
     /**
@@ -87,7 +84,7 @@ class ReceiverOptions {
      * @return true if it is a session-aware receiver; false otherwise.
      */
     boolean isSessionReceiver() {
-        return isSessionReceiver;
+        return sessionId != null || maxConcurrentSessions != null;
     }
 
     /**

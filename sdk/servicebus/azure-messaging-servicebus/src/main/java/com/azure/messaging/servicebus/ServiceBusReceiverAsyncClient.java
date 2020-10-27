@@ -72,15 +72,7 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
  * <p>To process messages from the first available session, switch to {@link ServiceBusSessionReceiverClientBuilder} and
  * build the session receiver client. Use {@link ServiceBusSessionReceiverAsyncClient#acceptNextSession()} to
  * find the first available session to process messages from.</p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#singlesession}
- *
- * <p><strong>Process messages from multiple sessions</strong></p>
- * <p>To process messages from multiple sessions, switch to {@link ServiceBusSessionReceiverClientBuilder} and
- * build the session receiver client, then use {@link ServiceBusSessionReceiverAsyncClient#getReceiverClient(int)}
- * to create an receiver client that processes events from multiple sessions in parallel.
- * In addition, when all the messages in a session have been consumed, it will find the
- * next available session to process.</p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#multiplesessions}
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#nextsession}
  *
  * <p><strong>Rate limiting consumption of messages from Service Bus resource</strong></p>
  * <p>For message receivers that need to limit the number of messages they receive at a given time, they can use
@@ -393,6 +385,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
 
         if (sessionManager != null) {
+            if (validateSessionId(sessionId)) {
+                return monoError(logger, new IllegalArgumentException(String.format(
+                    "This receiver client is tied to session %s. It can't be used for another session(%s).",
+                    receiverOptions.getSessionId(), sessionId)));
+            }
             return sessionManager.getSessionState(sessionId);
         } else {
             return connectionProcessor
@@ -429,7 +426,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return monoError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "peek")));
         }
-
+        if (validateSessionId(sessionId)) {
+            return monoError(logger, new IllegalArgumentException(String.format(
+                "This receiver client is tied to session %s. It can't be used for another session(%s).",
+                receiverOptions.getSessionId(), sessionId)));
+        }
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(channel -> {
@@ -475,7 +476,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return monoError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "peekAt")));
         }
-
+        if (validateSessionId(sessionId)) {
+            return monoError(logger, new IllegalArgumentException(String.format(
+                "This receiver client is tied to session %s. It can't be used for another session(%s).",
+                receiverOptions.getSessionId(), sessionId)));
+        }
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(node -> node.peek(sequenceNumber, sessionId, getLinkName(sessionId)));
@@ -509,7 +514,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return fluxError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "peekBatch")));
         }
-
+        if (validateSessionId(sessionId)) {
+            return fluxError(logger, new IllegalArgumentException(String.format(
+                "This receiver client is tied to session %s. It can't be used for another session(%s).",
+                receiverOptions.getSessionId(), sessionId)));
+        }
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMapMany(node -> {
@@ -572,7 +581,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return fluxError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "peekBatchAt")));
         }
-
+        if (validateSessionId(sessionId)) {
+            return fluxError(logger, new IllegalArgumentException(String.format(
+                "This receiver client is tied to session %s. It can't be used for another session(%s).",
+                receiverOptions.getSessionId(), sessionId)));
+        }
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMapMany(node -> node.peek(sequenceNumber, sessionId, getLinkName(sessionId), maxMessages));
@@ -632,6 +645,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return A deferred message with the matching {@code sequenceNumber}.
      */
     public Mono<ServiceBusReceivedMessage> receiveDeferredMessage(long sequenceNumber, String sessionId) {
+        if (validateSessionId(sessionId)) {
+            return monoError(logger, new IllegalArgumentException(String.format(
+                "This receiver client is tied to session %s. It can't be used for another session(%s).",
+                receiverOptions.getSessionId(), sessionId)));
+        }
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(node -> node.receiveDeferredMessages(receiverOptions.getReceiveMode(),
@@ -677,7 +695,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return fluxError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "receiveDeferredMessageBatch")));
         }
-
+        if (validateSessionId(sessionId)) {
+            return fluxError(logger, new IllegalArgumentException(String.format(
+                "This receiver client is tied to session %s. It can't be used for another session(%s).",
+                receiverOptions.getSessionId(), sessionId)));
+        }
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMapMany(node -> node.receiveDeferredMessages(receiverOptions.getReceiveMode(),
@@ -802,7 +824,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         } else if (!receiverOptions.isSessionReceiver()) {
             return monoError(logger, new IllegalStateException("Cannot renew session lock on a non-session receiver."));
         }
-
+        if (validateSessionId(sessionId)) {
+            return monoError(logger, new IllegalArgumentException(String.format(
+                "This receiver client is tied to session %s. It can't be used for another session(%s).",
+                receiverOptions.getSessionId(), sessionId)));
+        }
         final String linkName = sessionManager != null
             ? sessionManager.getLinkName(sessionId)
             : null;
@@ -840,7 +866,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         } else if (sessionId.isEmpty()) {
             return monoError(logger, new IllegalArgumentException("'sessionId' cannot be empty."));
         }
-
+        if (validateSessionId(sessionId)) {
+            return monoError(logger, new IllegalArgumentException(String.format(
+                "This receiver client is tied to session %s. It can't be used for another session(%s).",
+                receiverOptions.getSessionId(), sessionId)));
+        }
         final LockRenewalOperation operation = new LockRenewalOperation(sessionId, maxLockRenewalDuration, true,
             this::renewSessionLock);
 
@@ -864,7 +894,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         } else if (!receiverOptions.isSessionReceiver()) {
             return monoError(logger, new IllegalStateException("Cannot set session state on a non-session receiver."));
         }
-
+        if (validateSessionId(sessionId)) {
+            return monoError(logger, new IllegalArgumentException(String.format(
+                "This receiver client is tied to session %s. It can't be used for another session(%s).",
+                receiverOptions.getSessionId(), sessionId)));
+        }
         final String linkName = sessionManager != null
             ? sessionManager.getLinkName(sessionId)
             : null;
@@ -1124,15 +1158,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
     }
 
-    //TODO: discuss whether we should disallow session id call on peek, receiveDeferred.
-//    private Mono<Boolean> validateSession(String sessionId) {
-//        String optionSessionId = receiverOptions.getSessionId();
-//        if (optionSessionId != null && !optionSessionId.equals(sessionId)) {
-//            return monoError(logger, new IllegalArgumentException(String.format(
-//                "This receiver client is tied to session %s. It can't be used for another %s.",
-//                optionSessionId, sessionId)));
-//        } else {
-//            return Mono.just(true);
-//        }
-//    }
+    private boolean validateSessionId(String sessionId) {
+        String optionSessionId = receiverOptions.getSessionId();
+        return optionSessionId != null && !optionSessionId.equals(sessionId);
+    }
 }

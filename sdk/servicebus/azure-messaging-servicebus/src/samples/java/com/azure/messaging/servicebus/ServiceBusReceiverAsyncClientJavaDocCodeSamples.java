@@ -145,7 +145,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
      * Demonstrates how to create a session receiver for a single, first available session.
      */
     public void sessionReceiverSingleInstantiation() {
-        // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#singlesession
+        // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#nextsession
         ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
             .connectionString("Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
                 + "SharedAccessKey={key};EntityPath={eh-name}")
@@ -153,44 +153,24 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             .queueName("<< QUEUE NAME >>")
             .buildAsyncClient();
         Mono<ServiceBusReceiverAsyncClient> receiverMono = sessionReceiver.acceptNextSession();
-        // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#singlesession
+        // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#nextsession
 
         sessionReceiver.close();
     }
 
     /**
-     * Demonstrates how to create a session receiver for a specific session.
+     * Demonstrates how to create a session receiver for a single know session id.
      */
-    public void sessionReceiverNamedInstantiation() {
+    public void sessionReceiverSessionIdInstantiation() {
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#sessionId
         ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
             .connectionString("Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
                 + "SharedAccessKey={key};EntityPath={eh-name}")
             .sessionReceiver()
-            .topicName("<< TOPIC NAME >>")
-            .subscriptionName("<< SUBSCRIPTION NAME >>")
-            //.sessionId("<< my-session-id >>")
+            .queueName("<< QUEUE NAME >>")
             .buildAsyncClient();
         Mono<ServiceBusReceiverAsyncClient> receiverMono = sessionReceiver.acceptSession("<< my-session-id >>");
         // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#sessionId
-
-        sessionReceiver.close();
-    }
-
-    /**
-     * Demonstrates how to create a session receiver for processing multiple sessions.
-     */
-    public void sessionReceiverMultipleInstantiation() {
-        // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#multiplesessions
-        ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
-            .connectionString("Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
-                + "SharedAccessKey={key};EntityPath={eh-name}")
-            .sessionReceiver()
-            .topicName("<< TOPIC NAME >>")
-            .subscriptionName("<< SUBSCRIPTION NAME >>")
-            .buildAsyncClient();
-        ServiceBusReceiverAsyncClient receiver = sessionReceiver.getReceiverClient(3);
-        // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#multiplesessions
 
         sessionReceiver.close();
     }
