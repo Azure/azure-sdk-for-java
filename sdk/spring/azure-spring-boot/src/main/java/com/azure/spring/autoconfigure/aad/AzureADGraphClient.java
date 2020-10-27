@@ -221,21 +221,18 @@ public class AzureADGraphClient {
                                                         .collect(Collectors.toSet());
 
         boolean isScopeSupported = Optional.of(applicationIdUri)
-                                           .filter(supportedPermissions::containsKey)
-                                           .filter(uri -> supportedPermissions.get(uri)
-                                                                              .containsAll(uniformedPermissionSet))
-                                           .isPresent();
+                                           .map(uri -> supportedPermissions.getOrDefault(uri, null))
+                                           .map(permissionSet -> permissionSet.containsAll(uniformedPermissionSet))
+                                           .orElse(false);
         if (isScopeSupported) {
             AccessToken accessToken = oboTokenMap.get(applicationIdUri);
-            if (accessToken.isExpired()) {
+            if (accessToken.needRefresh()) {
                 accessToken.refresh(idToken, tenantId, applicationIdUri, uniformedPermissionSet);
             }
             return accessToken.getAccessToken();
         } else {
             // TODO: incremental consent.
-            IAuthenticationResult result = acquireTokenForScope(idToken, tenantId, applicationIdUri,
-                uniformedPermissionSet);
-            return result.accessToken();
+            return getAccessToken(idToken, tenantId, applicationIdUri, uniformedPermissionSet);
         }
     }
 
@@ -265,9 +262,29 @@ public class AzureADGraphClient {
      * @throws ServiceUnavailableException If fail to acquire the token.
      * @throws MsalServiceException If {@link MsalServiceException} has occurred.
      */
-    public IAuthenticationResult acquireTokenForScope(String idToken, String tenantId, String applicationIdUri,
-                                                      Set<String> permissions)
-        throws ServiceUnavailableException {
+    public String getAccessToken(String idToken,
+                                 String tenantId,
+                                 String applicationIdUri,
+                                 Set<String> permissions) throws ServiceUnavailableException {
+        return getIAuthenticationResult(idToken, tenantId, applicationIdUri, permissions).accessToken();
+    }
+
+    /**
+     * Acquire IAuthenticationResult for a web-hosted resource.
+     *
+     * @param idToken The token used to perform an OBO request.
+     * @param tenantId The tenant id.
+     * @param applicationIdUri The Application ID URI of web-hosted resource, e.g., https://graph.microsoft.com for
+     * Microsoft Graph API.
+     * @param permissions The permissions of resources to be authorized with, need to be formatted as lowercase.
+     * @return The access token for Graph service.
+     * @throws ServiceUnavailableException If fail to acquire the token.
+     * @throws MsalServiceException If {@link MsalServiceException} has occurred.
+     */
+    public IAuthenticationResult getIAuthenticationResult(String idToken,
+                                                          String tenantId,
+                                                          String applicationIdUri,
+                                                          Set<String> permissions) throws ServiceUnavailableException {
         final IClientCredential clientCredential =
             ClientCredentialFactory.createFromSecret(aadAuthenticationProperties.getClientSecret());
         final UserAssertion assertion = new UserAssertion(idToken);
@@ -315,9 +332,11 @@ public class AzureADGraphClient {
     @SuppressWarnings("unchecked")
     private void loadOBOTokenFromSession() {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        oboTokenMap = (Map<String, AccessToken>) attr.getRequest().getSession(false)
+        oboTokenMap = (Map<String, AccessToken>) attr.getRequest()
+                                                     .getSession(false)
                                                      .getAttribute(OBO_TOKEN_MAP);
-        supportedPermissions = (Map<String, Set<String>>) attr.getRequest().getSession(false)
+        supportedPermissions = (Map<String, Set<String>>) attr.getRequest()
+                                                              .getSession(false)
                                                               .getAttribute(SUPPORTED_PERMISSIONS);
     }
 
@@ -328,41 +347,31 @@ public class AzureADGraphClient {
     }
 
     private class AccessToken {
-        private Date expiredTime;
         private String accessToken;
+        private Date expiredTime;
 
         AccessToken(Date expiredTime, String accessToken) {
             this.expiredTime = expiredTime;
             this.accessToken = accessToken;
         }
 
-        public boolean isExpired() {
+        public boolean needRefresh() {
             Date currentTime = new Date();
             return expiredTime.getTime() - currentTime.getTime() < TIME_INTERNAL_FOR_OBO_TOKEN_EXPIRATION;
         }
 
-        public void refresh(String idToken, String tenantId, String applicationIdUri, Set<String> permissions)
-            throws ServiceUnavailableException {
-            IAuthenticationResult result = acquireTokenForScope(idToken, tenantId, applicationIdUri, permissions);
-            setAccessToken(result.accessToken());
-            setExpiredTime(result.expiresOnDate());
+        public void refresh(String idToken,
+                            String tenantId,
+                            String applicationIdUri,
+                            Set<String> permissions) throws ServiceUnavailableException {
+            IAuthenticationResult result = getIAuthenticationResult(idToken, tenantId, applicationIdUri, permissions);
+            accessToken = result.accessToken();
+            expiredTime = result.expiresOnDate();
             storeOBOTokenInSession();
-        }
-
-        public Date getExpiredTime() {
-            return expiredTime;
-        }
-
-        public void setExpiredTime(Date expiredDate) {
-            this.expiredTime = expiredDate;
         }
 
         public String getAccessToken() {
             return accessToken;
-        }
-
-        public void setAccessToken(String accessToken) {
-            this.accessToken = accessToken;
         }
     }
 }

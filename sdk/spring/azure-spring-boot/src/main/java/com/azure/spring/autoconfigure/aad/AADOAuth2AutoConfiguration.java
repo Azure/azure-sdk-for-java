@@ -146,10 +146,10 @@ public class AADOAuth2AutoConfiguration {
                                  .build();
     }
 
-    private boolean isGraphApiScope(String scopes) {
-        return OPENID_PERMISSIONS.contains(scopes)
-            || scopes.startsWith(MICROSOFT_GRAPH_URI)
-            || scopes.startsWith(AAD_GRAPH_API_URI);
+    private boolean isGraphApiScope(String scope) {
+        return OPENID_PERMISSIONS.contains(scope)
+            || scope.startsWith(MICROSOFT_GRAPH_URI)
+            || scope.startsWith(AAD_GRAPH_API_URI);
     }
 
     @PostConstruct

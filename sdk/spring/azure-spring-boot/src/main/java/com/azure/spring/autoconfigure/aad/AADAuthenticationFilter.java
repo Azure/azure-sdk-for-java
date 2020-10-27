@@ -112,13 +112,12 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
                 userPrincipal = userPrincipalManager.buildUserPrincipal(aadIssuedBearerToken);
                 String tenantId = userPrincipal.getClaim(AADTokenClaim.TID).toString();
                 String accessTokenForGraphApi = azureADGraphClient
-                    .acquireTokenForScope(
+                    .getAccessToken(
                         aadIssuedBearerToken,
                         tenantId,
                         azureADGraphClient.getGraphApiUri(),
                         GRAPH_API_PERMISSIONS
-                    )
-                    .accessToken();
+                    );
                 userPrincipal.setAccessTokenForGraphApi(accessTokenForGraphApi);
                 userPrincipal.setGroups(azureADGraphClient.getGroups(accessTokenForGraphApi));
                 httpSession.setAttribute(CURRENT_USER_PRINCIPAL, userPrincipal);

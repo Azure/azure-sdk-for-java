@@ -57,13 +57,12 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
             );
 
             String graphApiToken = azureADGraphClient
-                .acquireTokenForScope(
+                .getAccessToken(
                     userRequest.getIdToken().getTokenValue(),
                     aadAuthenticationProperties.getTenantId(),
                     azureADGraphClient.getGraphApiUri(),
                     GRAPH_API_PERMISSIONS
-                )
-                .accessToken();
+                );
             mappedAuthorities = azureADGraphClient.getGrantedAuthorities(graphApiToken);
         } catch (MalformedURLException e) {
             throw toOAuth2AuthenticationException(INVALID_REQUEST, "Failed to acquire token for Graph API.", e);
