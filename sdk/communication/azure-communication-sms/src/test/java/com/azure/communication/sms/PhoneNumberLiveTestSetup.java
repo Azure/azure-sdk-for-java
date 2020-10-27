@@ -38,8 +38,9 @@ public class PhoneNumberLiveTestSetup implements BeforeAllCallback, ExtensionCon
 
     @Override
     public void beforeAll(ExtensionContext context) {
-        System.out.println("Begin Running Phone Number Setup for Live Tests");
-        if (!started && Configuration.getGlobalConfiguration().get("AZURE_TEST_MODE").equals(TestMode.LIVE.name())) {
+        System.out.println("Test Mode is: " + Configuration.getGlobalConfiguration().get("AZURE_TEST_MODE"));
+        if (!started && TestMode.LIVE.name().equals(Configuration.getGlobalConfiguration().get("AZURE_TEST_MODE"))) {
+            System.out.println("Begin Running Phone Number Setup for Live Tests");
             started = true;
 
             // Set up for creating phone number search
