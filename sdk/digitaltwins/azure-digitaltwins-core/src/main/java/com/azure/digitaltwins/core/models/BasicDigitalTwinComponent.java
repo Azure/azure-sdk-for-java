@@ -41,7 +41,7 @@ public final class BasicDigitalTwinComponent {
      * @param metadata Model metadata.
      * @return The BasicDigitalTwinComponent object itself.
      */
-    public BasicDigitalTwinComponent addToMetadata(String key, DigitalTwinPropertyMetadata metadata) {
+    public BasicDigitalTwinComponent addMetadata(String key, DigitalTwinPropertyMetadata metadata) {
         this.metadata.put(key, metadata);
         return this;
     }
