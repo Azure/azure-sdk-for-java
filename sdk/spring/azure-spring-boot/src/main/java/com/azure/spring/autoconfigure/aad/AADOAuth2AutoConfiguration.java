@@ -59,6 +59,8 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
 public class AADOAuth2AutoConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADOAuth2AutoConfiguration.class);
+    private static final List<String> OPENID_PERMISSIONS =
+        Arrays.asList("openid", "profile", "email", "offline_access");
     private final AADAuthenticationProperties aadAuthenticationProperties;
     private final ServiceEndpointsProperties serviceEndpointsProperties;
 
@@ -145,8 +147,7 @@ public class AADOAuth2AutoConfiguration {
     }
 
     private boolean isGraphApiScope(String scopes) {
-        List<String> openidPermissions = Arrays.asList("openid", "profile", "email", "offline_access");
-        return openidPermissions.contains(scopes) || scopes.startsWith("https://graph.microsoft.com/");
+        return OPENID_PERMISSIONS.contains(scopes) || scopes.startsWith("https://graph.microsoft.com/");
     }
 
     @PostConstruct
