@@ -184,7 +184,7 @@ public class AzureADGraphClient {
      * Acquire OBO token for a web-hosted resource with expected permissions.
      *
      * @param permissions The expected permissions of Graph API, only support permissions of {openid, profile, email,
-     *                    offline_access}.
+     * offline_access}.
      * @return The OBO token for Graph service.
      * @throws ServiceUnavailableException If fail to acquire the token.
      */
@@ -282,8 +282,8 @@ public class AzureADGraphClient {
             result = application.acquireToken(onBehalfOfParameters).get();
 
             Set<String> acquiredPermissions = Arrays.stream(result.scopes().toLowerCase().split(" "))
-                                                    .map(s -> s.startsWith(applicationIdUri) ?
-                                                        s.split(applicationIdUri)[1] : s)
+                                                    .map(s -> s.startsWith(applicationIdUri)
+                                                        ? s.split(applicationIdUri)[1] : s)
                                                     .collect(Collectors.toSet());
             AccessToken accessToken = new AccessToken(result.expiresOnDate(), result.accessToken());
             oboTokenMap.put(applicationIdUri, accessToken);
@@ -310,7 +310,7 @@ public class AzureADGraphClient {
         }
         return result;
     }
-    
+
     @SuppressWarnings("unchecked")
     private void loadOBOTokenFromSession() {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
@@ -330,7 +330,7 @@ public class AzureADGraphClient {
         private Date expiredTime;
         private String accessToken;
 
-        public AccessToken(Date expiredTime, String accessToken) {
+        AccessToken(Date expiredTime, String accessToken) {
             this.expiredTime = expiredTime;
             this.accessToken = accessToken;
         }
