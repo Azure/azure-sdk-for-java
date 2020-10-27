@@ -14,22 +14,27 @@ import static com.fasterxml.jackson.annotation.JsonInclude.*;
 /**
  * An optional, helper class for deserializing a digital twin.
  * Only properties with non-null values are included.
+ * <p>
+ * Note that this class uses {@link JsonProperty} from the Jackson serialization library. Because of this, this type
+ * will only work if the default json serializer is used by the digital twins client or if the custom json
+ * serializer uses Jackson as well. In order to use a different json library, a new BasicDigitalTwin class must
+ * be constructed and have its json properties tagged by the annotation used by that json library.
  */
 @Fluent
 @JsonInclude(Include.NON_NULL)
 public final class BasicDigitalTwin {
 
-    @JsonProperty(value = "$dtId", required = true)
+    @JsonProperty(value = DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_ID, required = true)
     private String id;
 
-    @JsonProperty(value = "$etag", required = true)
+    @JsonProperty(value = DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_ETAG, required = true)
     private String twinETag;
 
-    @JsonProperty(value = "$metadata", required = true)
+    @JsonProperty(value = DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_METADATA, required = true)
     private DigitalTwinMetadata metadata;
 
     @JsonIgnore
-    private final Map<String, Object> customProperties = new HashMap<>();
+    private final Map<String, Object> properties = new HashMap<>();
 
     /**
      * Construct a basic digital twin.
@@ -88,23 +93,23 @@ public final class BasicDigitalTwin {
     }
 
     /**
-     * Gets the additional properties of the digital twin. This field will contain any properties of the digital twin that are not already defined by the other strong types of this class.
+     * Gets the additional custom properties of the digital twin. This field will contain any properties of the digital twin that are not already defined by the other strong types of this class.
      * @return The additional properties of the digital twin. This field will contain any properties of the digital twin that are not already defined by the other strong types of this class.
      */
     @JsonAnyGetter
-    public Map<String, Object> getCustomProperties() {
-        return customProperties;
+    public Map<String, Object> getProperties() {
+        return properties;
     }
 
     /**
-     * Adds an additional property to the digital twin. This field will contain any properties of the digital twin that are not already defined by the other strong types of this class.
+     * Adds an additional custom property to the digital twin. This field will contain any properties of the digital twin that are not already defined by the other strong types of this class.
      * @param key The key of the additional property to be added to the digital twin.
      * @param value The value of the additional property to be added to the digital twin.
      * @return The BasicDigitalTwin object itself.
      */
     @JsonAnySetter
-    public BasicDigitalTwin addCustomProperty(String key, Object value) {
-        this.customProperties.put(key, value);
+    public BasicDigitalTwin addProperty(String key, Object value) {
+        this.properties.put(key, value);
         return this;
     }
 }

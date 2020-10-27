@@ -20,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.*;
 @JsonInclude(Include.NON_NULL)
 public final class DigitalTwinMetadata {
 
-    @JsonProperty(value = "$model", required = true)
+    @JsonProperty(value = DigitalTwinsJsonPropertyNames.METADATA_MODEL, required = true)
     private String modelId;
 
     @JsonIgnore

@@ -62,19 +62,19 @@ public final class DigitalTwinsModelData {
      * @param dtdlModel The contents of the model.
      * @param displayName The language map of the localized display names.
      * @param description The language map of the localized descriptions.
-     * @param uploadTime The time when this model was uploaded.
+     * @param uploadedOn The time when this model was uploaded.
      * @param decommissioned If this model has been decommissioned.
      */
     public DigitalTwinsModelData(String modelId,
                                  String dtdlModel,
                                  Map<String, String> displayName,
                                  Map<String, String> description,
-                                 OffsetDateTime uploadTime,
+                                 OffsetDateTime uploadedOn,
                                  boolean decommissioned) {
         this.displayName = displayName;
         this.description = description;
         this.id = modelId;
-        this.uploadTime = uploadTime;
+        this.uploadTime = uploadedOn;
         this.decommissioned = decommissioned;
         this.dtdlModel = dtdlModel;
     }
@@ -109,11 +109,11 @@ public final class DigitalTwinsModelData {
     }
 
     /**
-     * Get the uploadTime property: The time the model was uploaded to the service.
+     * Get the time the model was uploaded to the service.
      *
      * @return the uploadTime value.
      */
-    public OffsetDateTime getUploadTime() {
+    public OffsetDateTime getUploadedOn() {
         return this.uploadTime;
     }
 

@@ -262,19 +262,45 @@ The Phone Number Client supports a variety of long running operations that allow
 
 ### Create Search
 
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L370-L380 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L354-L378 -->
 ```java
-        SyncPoller<PhoneNumberSearch, PhoneNumberSearch> res = 
-            phoneNumberClient.beginCreateSearch(createSearchOptions, duration);
-        res.waitForCompletion();
-        PhoneNumberSearch result = res.getFinalResult();
+String phonePlanId = "PHONE_PLAN_ID";
 
-        System.out.println("Search Id: " + result.getSearchId());
-        for (String phoneNumber: result.getPhoneNumbers()) {
-            System.out.println("Phone Number: " + phoneNumber);
-        }
-    }
+List<String> phonePlanIds = new ArrayList<>();
+phonePlanIds.add(phonePlanId);
+
+CreateSearchOptions createSearchOptions = new CreateSearchOptions();
+createSearchOptions
+    .setAreaCode("AREA_CODE_FOR_SEARCH")
+    .setDescription("DESCRIPTION_FOR_SEARCH")
+    .setDisplayName("NAME_FOR_SEARCH")
+    .setPhonePlanIds(phonePlanIds)
+    .setQuantity(2);
+
+Duration duration = Duration.ofSeconds(1);
+PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+
+SyncPoller<PhoneNumberSearch, PhoneNumberSearch> res = 
+    phoneNumberClient.beginCreateSearch(createSearchOptions, duration);
+res.waitForCompletion();
+PhoneNumberSearch result = res.getFinalResult();
+
+System.out.println("Search Id: " + result.getSearchId());
+for (String phoneNumber: result.getPhoneNumbers()) {
+    System.out.println("Phone Number: " + phoneNumber);
 }
+```
+
+### Purchase Search
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L385-L391 -->
+```java
+Duration duration = Duration.ofSeconds(1);
+String phoneNumberSearchId = "SEARCH_ID_TO_PURCHASE";
+PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+
+SyncPoller<Void, Void> res = 
+    phoneNumberClient.beginPurchaseSearch(phoneNumberSearchId, duration);
+res.waitForCompletion();
 ```
 
 ## Contributing

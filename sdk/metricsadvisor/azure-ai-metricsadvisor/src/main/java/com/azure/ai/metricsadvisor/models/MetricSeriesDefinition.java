@@ -4,6 +4,8 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.implementation.util.MetricSeriesDefinitionHelper;
+
 /** The MetricSeriesDefinition model. */
 public final class MetricSeriesDefinition {
     /*
@@ -15,6 +17,20 @@ public final class MetricSeriesDefinition {
      * dimension name and value pair
      */
     private DimensionKey seriesKey;
+
+    static {
+        MetricSeriesDefinitionHelper.setAccessor(new MetricSeriesDefinitionHelper.MetricSeriesDefinitionAccessor() {
+            @Override
+            public void setMetricId(MetricSeriesDefinition seriesDefinition, String metricId) {
+                seriesDefinition.setMetricId(metricId);
+            }
+
+            @Override
+            public void setSeriesKey(MetricSeriesDefinition seriesDefinition, DimensionKey seriesKey) {
+                seriesDefinition.setSeriesKey(seriesKey);
+            }
+        });
+    }
 
     /**
      * Get the metricId property: metric unique id.
@@ -32,5 +48,13 @@ public final class MetricSeriesDefinition {
      */
     public DimensionKey getSeriesKey() {
         return this.seriesKey;
+    }
+
+    void setMetricId(String metricId) {
+        this.metricId = metricId;
+    }
+
+    void setSeriesKey(DimensionKey seriesKey) {
+        this.seriesKey = seriesKey;
     }
 }

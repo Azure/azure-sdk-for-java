@@ -73,6 +73,7 @@ org.apache.tinkerpop:gremlin-driver;3.2.4
 org.asynchttpclient:async-http-client;2.12.1
 org.codehaus.groovy:groovy-eclipse-batch;2.5.8-01
 org.codehaus.groovy:groovy-eclipse-compiler;3.4.0-01
+org.conscrypt:conscrypt-openjdk-uber;2.2.1
 org.hibernate.validator:hibernate-validator;6.1.5.Final
 org.javatuples:javatuples;1.2
 org.linguafranca.pwdb:KeePassJava2;2.1.4
