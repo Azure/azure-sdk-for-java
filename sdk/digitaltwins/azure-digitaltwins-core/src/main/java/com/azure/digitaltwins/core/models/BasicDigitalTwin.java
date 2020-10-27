@@ -14,18 +14,23 @@ import static com.fasterxml.jackson.annotation.JsonInclude.*;
 /**
  * An optional, helper class for deserializing a digital twin.
  * Only properties with non-null values are included.
+ * <p>
+ * Note that this class uses {@link JsonProperty} from the Jackson serialization library. Because of this, this type
+ * will only work if the default json serializer is used by the digital twins client or if the custom json
+ * serializer uses Jackson as well. In order to use a different json library, a new BasicDigitalTwin class must
+ * be constructed and have its json properties tagged by the annotation used by that json library.
  */
 @Fluent
 @JsonInclude(Include.NON_NULL)
 public final class BasicDigitalTwin {
 
-    @JsonProperty(value = "$dtId", required = true)
+    @JsonProperty(value = DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_ID, required = true)
     private String id;
 
-    @JsonProperty(value = "$etag", required = true)
+    @JsonProperty(value = DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_E_TAG, required = true)
     private String twinETag;
 
-    @JsonProperty(value = "$metadata", required = true)
+    @JsonProperty(value = DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_METADATA, required = true)
     private DigitalTwinMetadata metadata;
 
     @JsonIgnore

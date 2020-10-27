@@ -8,12 +8,18 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * An optional helper class for deserializing a digital twin
+ * <p>
+ * Note that this class uses {@link JsonProperty} from the Jackson serialization library. Because of this, this type
+ * will only work if the default json serializer is used by the digital twins client or if the custom json
+ * serializer uses Jackson as well. In order to use a different json library, a new ComponentMetadata class must
+ * be constructed and have its json properties tagged by the annotation used by that json library.
  */
 @Fluent
 @JsonInclude(JsonInclude.Include.NON_NULL)

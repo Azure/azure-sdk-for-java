@@ -14,21 +14,26 @@ import static com.fasterxml.jackson.annotation.JsonInclude.*;
 /**
  * Although relationships have a user-defined schema, these properties should exist on every instance.
  * This is useful to use as a base class to ensure your custom relationships have the necessary properties.
+ * <p>
+ * Note that this class uses {@link JsonProperty} from the Jackson serialization library. Because of this, this type
+ * will only work if the default json serializer is used by the digital twins client or if the custom json
+ * serializer uses Jackson as well. In order to use a different json library, a new BasicRelationship class must
+ * be constructed and have its json properties tagged by the annotation used by that json library.
  */
 @Fluent
 @JsonInclude(Include.NON_NULL)
 public final class BasicRelationship {
 
-    @JsonProperty(value = "$relationshipId", required = true)
+    @JsonProperty(value = DigitalTwinsJsonPropertyNames.RELATIONSHIP_ID, required = true)
     private String id;
 
-    @JsonProperty(value = "$sourceId", required = true)
+    @JsonProperty(value = DigitalTwinsJsonPropertyNames.RELATIONSHIP_SOURCE_ID, required = true)
     private String sourceId;
 
-    @JsonProperty(value = "$targetId", required = true)
+    @JsonProperty(value = DigitalTwinsJsonPropertyNames.RELATIONSHIP_TARGET_ID, required = true)
     private String targetId;
 
-    @JsonProperty(value = "$relationshipName", required = true)
+    @JsonProperty(value = DigitalTwinsJsonPropertyNames.RELATIONSHIP_NAME, required = true)
     private String name;
 
     @JsonIgnore
