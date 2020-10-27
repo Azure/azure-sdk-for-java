@@ -55,7 +55,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
 
         BasicDigitalTwin basicTwin = new BasicDigitalTwin("myDigitalTwinId")
             .setMetadata(
-                new DigitalTwinMetadata()
+                new BasicDigitalTwinMetadata()
                     .setModelId(modelId)
             );
 
@@ -84,7 +84,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
 
         BasicDigitalTwin basicDigitalTwin = new BasicDigitalTwin("myDigitalTwinId")
             .setMetadata(
-                new DigitalTwinMetadata()
+                new BasicDigitalTwinMetadata()
                     .setModelId(modelId)
             );
 

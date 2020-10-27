@@ -84,7 +84,7 @@ public class RelationshipsSyncSamples {
 
         // Create a building digital twin
         BasicDigitalTwin buildingDigitalTwin = new BasicDigitalTwin(buildingTwinId)
-            .setMetadata(new DigitalTwinMetadata()
+            .setMetadata(new BasicDigitalTwinMetadata()
                 .setModelId(sampleBuildingModelId));
 
         client.createOrReplaceDigitalTwin(buildingTwinId, buildingDigitalTwin, BasicDigitalTwin.class);
@@ -92,7 +92,7 @@ public class RelationshipsSyncSamples {
         ConsoleLogger.print("Created twin" + buildingDigitalTwin.getId());
 
         BasicDigitalTwin floorDigitalTwin = new BasicDigitalTwin(floorTwinId)
-            .setMetadata(new DigitalTwinMetadata()
+            .setMetadata(new BasicDigitalTwinMetadata()
                 .setModelId(sampleFloorModelId));
 
         BasicDigitalTwin createdTwin = client.createOrReplaceDigitalTwin(floorTwinId, floorDigitalTwin, BasicDigitalTwin.class);
