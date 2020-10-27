@@ -13,7 +13,7 @@ import rx.Completable;
 import rx.Observable;
 import com.microsoft.azure.management.resources.v2016_09_01.implementation.ResourceGroupsInner;
 import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.management.resources.v2016_09_01.ResourcegroupSubscriptionGenericResource;
+import com.microsoft.azure.management.resources.v2016_09_01.ResourcegroupSubscriptionGenericResourceExpanded;
 
 /**
  * Type representing ResourceGroups.
@@ -26,7 +26,7 @@ public interface ResourceGroups extends SupportsCreating<ResourceGroup.Definitio
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable checkExistenceAsync(String resourceGroupName);
+    Observable<Boolean> checkExistenceAsync(String resourceGroupName);
 
     /**
      * Captures the specified resource group as a template.
@@ -72,6 +72,6 @@ public interface ResourceGroups extends SupportsCreating<ResourceGroup.Definitio
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<ResourcegroupSubscriptionGenericResource> listByResourceGroupAsync(final String resourceGroupName);
+    Observable<ResourcegroupSubscriptionGenericResourceExpanded> listByResourceGroupAsync(final String resourceGroupName);
 
 }
