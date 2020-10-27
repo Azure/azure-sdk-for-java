@@ -19,14 +19,13 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import javax.naming.ServiceUnavailableException;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
 import static com.azure.spring.autoconfigure.aad.AADOAuth2ErrorCode.CONDITIONAL_ACCESS_POLICY;
 import static com.azure.spring.autoconfigure.aad.AADOAuth2ErrorCode.INVALID_REQUEST;
 import static com.azure.spring.autoconfigure.aad.AADOAuth2ErrorCode.SERVER_SERVER;
+import static com.azure.spring.autoconfigure.aad.AzureADGraphClient.GRAPH_API_PERMISSIONS;
 
 /**
  * This implementation will retrieve group info of user from Microsoft Graph and map groups to {@link
@@ -62,7 +61,7 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
                     userRequest.getIdToken().getTokenValue(),
                     aadAuthenticationProperties.getTenantId(),
                     azureADGraphClient.getGraphApiUri(),
-                    new HashSet<>(Arrays.asList("user.read"))
+                    GRAPH_API_PERMISSIONS
                 )
                 .accessToken();
             mappedAuthorities = azureADGraphClient.getGrantedAuthorities(graphApiToken);

@@ -33,6 +33,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -53,6 +54,8 @@ import static com.azure.spring.autoconfigure.aad.Constants.ROLE_PREFIX;
  * Microsoft Graph client encapsulation.
  */
 public class AzureADGraphClient {
+
+    public static final Set<String> GRAPH_API_PERMISSIONS = Collections.singleton("user.read");
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureADGraphClient.class);
     private static final String MICROSOFT_GRAPH_URI = "https://graph.microsoft.com/";

@@ -15,8 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.naming.ServiceUnavailableException;
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.Collections;
 
 @Controller
 public class AADOAuth2LoginAcquireTokenHomeControllerSample {
@@ -34,7 +33,7 @@ public class AADOAuth2LoginAcquireTokenHomeControllerSample {
             serviceEndpointsProperties);
 
         String accessToken = graphClient.getOboToken("https://graph.microsoft.com/",
-            new HashSet<>(Arrays.asList("User.Read")));
+            Collections.singleton("user.read"));
 
         final OAuth2AuthorizedClient authorizedClient =
             this.authorizedClientService.loadAuthorizedClient(

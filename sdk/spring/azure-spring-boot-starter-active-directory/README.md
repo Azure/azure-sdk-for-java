@@ -244,7 +244,7 @@ Note, if you don't configure the 3 mentioned permissions, this starter will add 
 
 Now, `azure-active-directory-spring-boot-starter` has supported acquiring access tokens for a web-hosted resource of previously consented permissions.
 To use this feature, you can creat a instance of `AzureADGraphClient` and use `getOboToken` function as needed.
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/AADOAuth2LoginAcquireTokenHomeControllerSample.java#L21-L47 -->
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/AADOAuth2LoginAcquireTokenHomeControllerSample.java#L20-L46 -->
 
 ```java
 @Controller
@@ -263,7 +263,7 @@ public class AADOAuth2LoginAcquireTokenHomeControllerSample {
             serviceEndpointsProperties);
 
         String accessToken = graphClient.getOboToken("https://graph.microsoft.com/",
-            new HashSet<>(Arrays.asList("User.Read")));
+            Collections.singleton("user.read"));
 
         final OAuth2AuthorizedClient authorizedClient =
             this.authorizedClientService.loadAuthorizedClient(

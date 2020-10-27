@@ -32,6 +32,7 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
+import static com.azure.spring.autoconfigure.aad.AzureADGraphClient.GRAPH_API_PERMISSIONS;
 import static com.azure.spring.autoconfigure.aad.Constants.BEARER_PREFIX;
 
 /**
@@ -42,7 +43,6 @@ import static com.azure.spring.autoconfigure.aad.Constants.BEARER_PREFIX;
 public class AADAuthenticationFilter extends OncePerRequestFilter {
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationFilter.class);
     private static final String CURRENT_USER_PRINCIPAL = "CURRENT_USER_PRINCIPAL";
-    private static final Set<String> GRAPH_API_PERMISSIONS = Collections.singleton("user.read");
 
     private final UserPrincipalManager userPrincipalManager;
     private final AzureADGraphClient azureADGraphClient;
