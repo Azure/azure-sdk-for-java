@@ -533,13 +533,16 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
     public void beginPurchaseSearch(HttpClient httpClient) {
         Duration pollInterval = Duration.ofSeconds(1);
         PhoneNumberAsyncClient client = this.getClient(httpClient);
-        PollerFlux<PhoneNumberSearch, PhoneNumberSearch> poller =
-            client.beginPurchaseSearch(SEARCH_ID, pollInterval);
-        AsyncPollResponse<PhoneNumberSearch, PhoneNumberSearch> asyncRes = 
-            poller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+        PollerFlux<Void, Void> poller =
+            client.beginPurchaseSearch(SEARCH_ID, pollInterval); 
+        poller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
             .blockLast();
-        PhoneNumberSearch testResult = asyncRes.getValue();
-        assertEquals(SearchStatus.SUCCESS, testResult.getStatus());
+        Mono<PhoneNumberSearch> testResult = client.getSearchById(SEARCH_ID);
+        StepVerifier.create(testResult)
+            .assertNext(item -> {
+                assertEquals(SearchStatus.SUCCESS, item.getStatus());
+            })
+            .verifyComplete();
     }
 
     private PhoneNumberAsyncClient getClient(HttpClient httpClient) {

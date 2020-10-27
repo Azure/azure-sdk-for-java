@@ -386,12 +386,8 @@ public class ReadmeSamples {
         String phoneNumberSearchId = "SEARCH_ID_TO_PURCHASE";
         PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
-        SyncPoller<PhoneNumberSearch, PhoneNumberSearch> res = 
+        SyncPoller<Void, Void> res = 
             phoneNumberClient.beginPurchaseSearch(phoneNumberSearchId, duration);
         res.waitForCompletion();
-        PhoneNumberSearch result = res.getFinalResult();
-
-        System.out.println("Search Id: " + result.getSearchId());
-        System.out.println("Purchase status: " + result.getStatus());
     }
 }
