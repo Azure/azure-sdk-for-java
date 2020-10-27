@@ -26,7 +26,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 
 import javax.annotation.PostConstruct;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -34,6 +33,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.azure.spring.autoconfigure.aad.Scopes.AAD_GRAPH_API_URI;
+import static com.azure.spring.autoconfigure.aad.Scopes.MICROSOFT_GRAPH_URI;
+import static com.azure.spring.autoconfigure.aad.Scopes.OPENID_PERMISSIONS;
 import static com.azure.spring.telemetry.TelemetryData.SERVICE_NAME;
 import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
 
@@ -59,8 +61,6 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
 public class AADOAuth2AutoConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADOAuth2AutoConfiguration.class);
-    private static final List<String> OPENID_PERMISSIONS =
-        Arrays.asList("openid", "profile", "email", "offline_access");
     private final AADAuthenticationProperties aadAuthenticationProperties;
     private final ServiceEndpointsProperties serviceEndpointsProperties;
 
@@ -147,7 +147,9 @@ public class AADOAuth2AutoConfiguration {
     }
 
     private boolean isGraphApiScope(String scopes) {
-        return OPENID_PERMISSIONS.contains(scopes) || scopes.startsWith("https://graph.microsoft.com/");
+        return OPENID_PERMISSIONS.contains(scopes)
+            || scopes.startsWith(MICROSOFT_GRAPH_URI)
+            || scopes.startsWith(AAD_GRAPH_API_URI);
     }
 
     @PostConstruct

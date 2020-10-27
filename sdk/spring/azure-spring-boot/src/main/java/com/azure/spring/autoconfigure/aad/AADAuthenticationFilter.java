@@ -28,12 +28,10 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.text.ParseException;
-import java.util.Collections;
 import java.util.Optional;
-import java.util.Set;
 
-import static com.azure.spring.autoconfigure.aad.AzureADGraphClient.GRAPH_API_PERMISSIONS;
 import static com.azure.spring.autoconfigure.aad.Constants.BEARER_PREFIX;
+import static com.azure.spring.autoconfigure.aad.Scopes.GRAPH_API_PERMISSIONS;
 
 /**
  * A stateful authentication filter which uses Microsoft Graph groups to authorize. Both ID token and access token are

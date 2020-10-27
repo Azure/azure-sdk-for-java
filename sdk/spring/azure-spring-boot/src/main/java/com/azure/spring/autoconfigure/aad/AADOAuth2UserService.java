@@ -25,7 +25,7 @@ import java.util.Set;
 import static com.azure.spring.autoconfigure.aad.AADOAuth2ErrorCode.CONDITIONAL_ACCESS_POLICY;
 import static com.azure.spring.autoconfigure.aad.AADOAuth2ErrorCode.INVALID_REQUEST;
 import static com.azure.spring.autoconfigure.aad.AADOAuth2ErrorCode.SERVER_SERVER;
-import static com.azure.spring.autoconfigure.aad.AzureADGraphClient.GRAPH_API_PERMISSIONS;
+import static com.azure.spring.autoconfigure.aad.Scopes.GRAPH_API_PERMISSIONS;
 
 /**
  * This implementation will retrieve group info of user from Microsoft Graph and map groups to {@link

@@ -33,10 +33,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Map;
@@ -48,6 +46,9 @@ import java.util.stream.Collectors;
 
 import static com.azure.spring.autoconfigure.aad.Constants.DEFAULT_AUTHORITY_SET;
 import static com.azure.spring.autoconfigure.aad.Constants.ROLE_PREFIX;
+import static com.azure.spring.autoconfigure.aad.Scopes.AAD_GRAPH_API_URI;
+import static com.azure.spring.autoconfigure.aad.Scopes.MICROSOFT_GRAPH_URI;
+import static com.azure.spring.autoconfigure.aad.Scopes.OPENID_PERMISSIONS;
 
 
 /**
@@ -55,19 +56,13 @@ import static com.azure.spring.autoconfigure.aad.Constants.ROLE_PREFIX;
  */
 public class AzureADGraphClient {
 
-    public static final Set<String> GRAPH_API_PERMISSIONS = Collections.singleton("user.read");
-
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureADGraphClient.class);
-    private static final String MICROSOFT_GRAPH_URI = "https://graph.microsoft.com/";
-    private static final String AAD_GRAPH_API_URI = "https://graph.windows.net/";
     // We use "aadfeed5" as suffix when client library is ADAL, upgrade to "aadfeed6" for MSAL
     private static final String REQUEST_ID_SUFFIX = "aadfeed6";
     private static final String V2_VERSION_ENV_FLAG = "v2-graph";
     private static final String OBO_TOKEN_MAP = "oboTokenMap";
     private static final String SUPPORTED_PERMISSIONS = "supportedPermissions";
     private static final long TIME_INTERNAL_FOR_OBO_TOKEN_EXPIRATION = 60 * 1000;
-    private static final Set<String> OPENID_PERMISSIONS = new HashSet<>(Arrays.asList("openid", "profile", "email",
-        "offline_access"));
 
     private final ServiceEndpoints serviceEndpoints;
     private final AADAuthenticationProperties aadAuthenticationProperties;
