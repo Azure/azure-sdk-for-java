@@ -26,6 +26,10 @@ public class ClientTelemetrySerializer extends StdSerializer<ClientTelemetryInfo
             generator.writeStringField("processId", telemetry.getProcessId());
         }
 
+        if (telemetry.getUserAgent() != null) {
+            generator.writeStringField("userAgent", telemetry.getUserAgent());
+        }
+
         generator.writeStringField("connectionMode", telemetry.getConnectionMode().toString());
         generator.writeStringField("globalDatabaseAccountName",
             telemetry.getGlobalDatabaseAccountName());
