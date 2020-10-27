@@ -60,7 +60,7 @@ public final class BasicRelationship {
      * Gets the unique Id of the relationship. This field is present on every relationship.
      * @return The unique Id of the relationship. This field is present on every relationship.
      */
-    public String getRelationshipId() {
+    public String getId() {
         return id;
     }
 
@@ -68,7 +68,7 @@ public final class BasicRelationship {
      * Gets the unique Id of the source digital twin. This field is present on every relationship.
      * @return The unique Id of the source digital twin. This field is present on every relationship.
      */
-    public String getSourceDigitalTwinId() {
+    public String getSourceId() {
         return sourceId;
     }
 
@@ -76,7 +76,7 @@ public final class BasicRelationship {
      * Gets the unique Id of the target digital twin. This field is present on every relationship.
      * @return The unique Id of the target digital twin. This field is present on every relationship.
      */
-    public String getTargetDigitalTwinId() {
+    public String getTargetId() {
         return targetId;
     }
 
@@ -84,7 +84,7 @@ public final class BasicRelationship {
      * Gets the name of the relationship, which defines the type of link (e.g. Contains). This field is present on every relationship.
      * @return The name of the relationship, which defines the type of link (e.g. Contains). This field is present on every relationship.
      */
-    public String getRelationshipName() {
+    public String getName() {
         return name;
     }
 

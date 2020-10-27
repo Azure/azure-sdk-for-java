@@ -75,7 +75,7 @@ public final class IncomingRelationship {
      *
      * @return the sourceId value.
      */
-    public String getSourceDigitalTwinId() {
+    public String getSourceId() {
         return this.sourceId;
     }
 

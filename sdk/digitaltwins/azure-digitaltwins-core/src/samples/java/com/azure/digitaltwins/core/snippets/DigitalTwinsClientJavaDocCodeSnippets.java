@@ -277,9 +277,9 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
         System.out.println(
             "Created relationship with Id: " +
-            createdRelationship.getRelationshipId() +
-            " from: " + createdRelationship.getSourceDigitalTwinId() +
-            " to: " + createdRelationship.getTargetDigitalTwinId());
+            createdRelationship.getId() +
+            " from: " + createdRelationship.getSourceId() +
+            " to: " + createdRelationship.getTargetId());
         // END: com.azure.digitaltwins.core.syncClient.createOrReplaceRelationship#String-String-Object-Class#BasicRelationship
 
         // BEGIN: com.azure.digitaltwins.core.syncClient.createOrReplaceRelationship#String-String-Object-Class#String
@@ -321,9 +321,9 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
         System.out.println(
             "Created relationship with Id: " +
-                createdRelationshipWithResponse.getValue().getRelationshipId() +
-                " from: " + createdRelationshipWithResponse.getValue().getSourceDigitalTwinId() +
-                " to: " + createdRelationshipWithResponse.getValue().getTargetDigitalTwinId() +
+                createdRelationshipWithResponse.getValue().getId() +
+                " from: " + createdRelationshipWithResponse.getValue().getSourceId() +
+                " to: " + createdRelationshipWithResponse.getValue().getTargetId() +
                 " Http status code: " +
                 createdRelationshipWithResponse.getStatusCode());
         // END: com.azure.digitaltwins.core.syncClient.createOrReplaceRelationshipWithResponse#String-String-Object-Class-Options-Context#BasicRelationship
@@ -360,10 +360,10 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
         System.out.println(
             "Retrieved relationship with Id: "
-            + retrievedRelationship.getRelationshipId() +
+            + retrievedRelationship.getId() +
             " from: " +
-            retrievedRelationship.getSourceDigitalTwinId() +
-            " to: " + retrievedRelationship.getTargetDigitalTwinId());
+            retrievedRelationship.getSourceId() +
+            " to: " + retrievedRelationship.getTargetId());
         // END: com.azure.digitaltwins.core.syncClient.getRelationship#String#BasicRelationship
 
         // BEGIN: com.azure.digitaltwins.core.syncClient.getRelationship#String#String
@@ -392,10 +392,10 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
         System.out.println(
             "Retrieved relationship with Id: "
-                + retrievedRelationshipWithResponse.getValue().getRelationshipId() +
+                + retrievedRelationshipWithResponse.getValue().getId() +
                 " from: " +
-                retrievedRelationshipWithResponse.getValue().getSourceDigitalTwinId() +
-                " to: " + retrievedRelationshipWithResponse.getValue().getTargetDigitalTwinId() +
+                retrievedRelationshipWithResponse.getValue().getSourceId() +
+                " to: " + retrievedRelationshipWithResponse.getValue().getTargetId() +
                 "HTTP status code: " + retrievedRelationshipWithResponse.getStatusCode());
         // END: com.azure.digitaltwins.core.syncClient.getRelationshipWithResponse#String-String-Class-Options-Context#BasicRelationship
 
@@ -490,7 +490,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             BasicRelationship.class);
 
         for (BasicRelationship rel : pagedRelationshipsByItem) {
-            System.out.println("Retrieved relationship with Id: " + rel.getRelationshipId());
+            System.out.println("Retrieved relationship with Id: " + rel.getId());
         }
         // END: com.azure.digitaltwins.core.syncClient.listRelationships#String-Class#BasicRelationship#IterateByItem
 
@@ -512,7 +512,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             new Context("Key", "value"));
 
         for (BasicRelationship rel : pagedRelationshipByNameByItem) {
-            System.out.println("Retrieved relationship with Id: " + rel.getRelationshipId());
+            System.out.println("Retrieved relationship with Id: " + rel.getId());
         }
         // END: com.azure.digitaltwins.core.syncClient.listRelationships#String-String-Class-Options-Context#BasicRelationship#IterateByItem
 
@@ -547,7 +547,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
                 "Retrieved relationship with Id: " +
                     rel.getRelationshipId() +
                     " from: " +
-                    rel.getSourceDigitalTwinId() +
+                    rel.getSourceId() +
                     " to: myDigitalTwinId");
         }
         // END: com.azure.digitaltwins.core.syncClient.listIncomingRelationships#String
@@ -563,7 +563,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
                 "Retrieved relationship with Id: " +
                 rel.getRelationshipId() +
                 " from: " +
-                rel.getSourceDigitalTwinId() +
+                rel.getSourceId() +
                 " to: myDigitalTwinId");
         }
         // END: com.azure.digitaltwins.core.syncClient.listIncomingRelationships#String-Options-Context

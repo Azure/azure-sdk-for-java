@@ -118,7 +118,7 @@ public class RelationshipsSyncSamples {
 
         if (getRelationshipResponse.getStatusCode() == HttpURLConnection.HTTP_OK) {
             BasicRelationship retrievedRelationship = getRelationshipResponse.getValue();
-            ConsoleLogger.printSuccess("Retrieved relationship: " + retrievedRelationship.getRelationshipId() + " from twin: " + retrievedRelationship.getSourceDigitalTwinId() + "\n\t" +
+            ConsoleLogger.printSuccess("Retrieved relationship: " + retrievedRelationship.getId() + " from twin: " + retrievedRelationship.getSourceId() + "\n\t" +
                 "Prop1: " + retrievedRelationship.getProperties().get("Prop1") + "\n\t" +
                 "Prop2: " + retrievedRelationship.getProperties().get("Prop2"));
         }
@@ -128,7 +128,7 @@ public class RelationshipsSyncSamples {
         PagedIterable<BasicRelationship> relationshipPages = client.listRelationships(buildingTwinId, BasicRelationship.class);
 
         for (BasicRelationship relationship : relationshipPages) {
-            ConsoleLogger.printSuccess("Retrieved relationship: " + relationship.getRelationshipId() + " with source: " + relationship.getSourceDigitalTwinId() + " and target: " + relationship.getTargetDigitalTwinId());
+            ConsoleLogger.printSuccess("Retrieved relationship: " + relationship.getId() + " with source: " + relationship.getSourceId() + " and target: " + relationship.getTargetId());
         }
 
         ConsoleLogger.printHeader("List incoming relationships");
@@ -137,7 +137,7 @@ public class RelationshipsSyncSamples {
         PagedIterable<IncomingRelationship> incomingRelationships = client.listIncomingRelationships(floorTwinId, Context.NONE);
 
         for (IncomingRelationship incomingRelationship : incomingRelationships) {
-            ConsoleLogger.printSuccess("Found an incoming relationship: " + incomingRelationship.getRelationshipId() + " from: " + incomingRelationship.getSourceDigitalTwinId());
+            ConsoleLogger.printSuccess("Found an incoming relationship: " + incomingRelationship.getRelationshipId() + " from: " + incomingRelationship.getSourceId());
         }
 
         // Delete the contains relationship, created earlier in the sample code, from building to floor.
