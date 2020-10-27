@@ -40,9 +40,12 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Azure Active Authentication OAuth 2.0.
  * <p>
- * The configuration will be activated when configured: 1. {@literal azure.activedirectory.client-id} 2. {@literal
- * azure.activedirectory.client-secret} 3. {@literal azure.activedirectory.tenant-id} client-id, client-secret,
- * tenant-id used in ClientRegistration. client-id, client-secret also used to get graphApiToken, then get groups.
+ * The configuration will be activated when configured:
+ * 1. {@literal azure.activedirectory.client-id}
+ * 2. {@literal azure.activedirectory.client-secret}
+ * 3. {@literal azure.activedirectory.tenant-id}
+ * client-id, client-secret, tenant-id used in ClientRegistration.
+ * client-id, client-secret also used to get graphApiToken, then get groups.
  * <p>
  * A OAuth2 user service {@link AADOAuth2UserService} will be auto-configured by specifying {@literal
  * azure.activedirectory.user-group.allowed-groups} property.
