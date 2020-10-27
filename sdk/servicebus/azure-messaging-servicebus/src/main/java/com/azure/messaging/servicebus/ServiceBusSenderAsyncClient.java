@@ -503,6 +503,12 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         return createBatch().flatMap(messageBatch -> {
             messages.forEach(message -> messageBatch.tryAdd(message));
             return sendInternal(messageBatch, transaction);
+        }).onErrorMap(throwable -> {
+            if (throwable instanceof AmqpException) {
+                return new ServiceBusException((AmqpException) throwable, ServiceBusErrorSource.SEND);
+            } else {
+                return throwable;
+            }
         });
     }
 
@@ -607,6 +613,12 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                 if (isTracingEnabled) {
                     tracerProvider.endSpan(parentContext.get(), signal);
                 }
+            }).onErrorMap(throwable -> {
+                if (throwable instanceof AmqpException) {
+                    return new ServiceBusException((AmqpException) throwable, ServiceBusErrorSource.SEND);
+                } else {
+                    return throwable;
+                }
             });
 
     }
@@ -621,8 +633,14 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                     return messages.collect(new AmqpMessageCollector(batchOptions, 1,
                         link::getErrorContext, tracerProvider, messageSerializer, entityName,
                         link.getHostname()));
-                })
-                .flatMap(list -> sendInternalBatch(Flux.fromIterable(list), transactionContext)));
+                }).flatMap(list -> sendInternalBatch(Flux.fromIterable(list), transactionContext)))
+            .onErrorMap(throwable -> {
+                if (throwable instanceof AmqpException) {
+                    return new ServiceBusException((AmqpException) throwable, ServiceBusErrorSource.SEND);
+                } else {
+                    return throwable;
+                }
+            });
     }
 
     private Mono<Void> sendInternalBatch(Flux<ServiceBusMessageBatch> eventBatches,

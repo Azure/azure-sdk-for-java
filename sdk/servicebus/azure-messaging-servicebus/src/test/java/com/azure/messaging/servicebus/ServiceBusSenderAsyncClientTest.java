@@ -186,6 +186,73 @@ class ServiceBusSenderAsyncClientTest {
     }
 
     /**
+     * Verifies that sending multiple message which does not fit in single batch will throw exception.
+     */
+    @Test
+    void errorSourceSendMessagesIterable() {
+        // Arrange
+        final int count = 4;
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString());
+
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))
+            .thenReturn(Mono.error(new AmqpException(false, "link error", null)));
+
+        // Act & Assert
+        StepVerifier.create(sender.sendMessages(messages))
+            .verifyErrorMatches(error -> error instanceof ServiceBusException
+                && ((ServiceBusException) error).getErrorSource() == ServiceBusErrorSource.SEND);
+
+        verify(sendLink, never()).send(anyList());
+    }
+
+    /**
+     * Verifies that sending multiple message which does not fit in single batch will throw exception.
+     */
+    @Test
+    void errorSourceSendMessagesBatch() {
+        // Arrange
+        final int count = 4;
+        final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
+        final Mono<Integer> linkMaxSize = Mono.just(1);
+        final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(256 * 1024,
+            errorContextProvider, tracerProvider, serializer, null, null);
+
+        IntStream.range(0, count).forEach(index -> {
+            final ServiceBusMessage message = new ServiceBusMessage(contents);
+            Assertions.assertTrue(batch.tryAdd(message));
+        });
+
+        when(sendLink.getLinkSize()).thenReturn(linkMaxSize);
+
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))
+            .thenReturn(Mono.error(new AmqpException(false, "link error", null)));
+
+        // Act & Assert
+        StepVerifier.create(sender.sendMessages(batch))
+            .verifyErrorMatches(error -> error instanceof ServiceBusException
+                && ((ServiceBusException) error).getErrorSource() == ServiceBusErrorSource.SEND);
+
+        verify(sendLink, never()).send(anyList());
+    }
+
+    @Test
+    void errorSourceSendMessage() {
+        // Arrange
+        final Mono<Integer> linkMaxSize = Mono.just(1);
+        final ServiceBusMessage message = new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))
+            .thenReturn(Mono.error(new AmqpException(false, "link error", null)));
+        when(sendLink.getLinkSize()).thenReturn(linkMaxSize);
+
+        // Act & Assert
+        StepVerifier.create(sender.sendMessage(message))
+            .verifyErrorMatches(error -> error instanceof ServiceBusException
+                && ((ServiceBusException) error).getErrorSource() == ServiceBusErrorSource.SEND);
+
+        verify(sendLink, never()).send(anyList());
+    }
+
+    /**
      * Verifies that the correct Service Bus properties are set.
      */
     @Test

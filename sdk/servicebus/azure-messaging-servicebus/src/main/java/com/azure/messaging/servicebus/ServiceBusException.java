@@ -16,7 +16,8 @@ public class ServiceBusException extends AmqpException {
      * @param errorSource indicating which api caused the error.
      */
     ServiceBusException(AmqpException amqpException, ServiceBusErrorSource errorSource) {
-        super(amqpException.isTransient(), amqpException.getErrorCondition(), amqpException.getMessage(), amqpException.getCause(), amqpException.getContext());
+        super(amqpException.isTransient(), amqpException.getErrorCondition(), amqpException.getMessage(),
+            amqpException.getCause(), amqpException.getContext());
         this.errorSource = errorSource;
     }
 

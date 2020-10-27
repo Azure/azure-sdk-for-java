@@ -9,9 +9,8 @@ package com.azure.messaging.servicebus;
 public enum ServiceBusErrorSource {
     SEND,
     RECEIVE,
-    APPEND,
+    ABANDONED,
     COMPLETE,
     DEFER,
-    DEAD_LETTER,
-    PEEK;
+    DEAD_LETTER;
 }

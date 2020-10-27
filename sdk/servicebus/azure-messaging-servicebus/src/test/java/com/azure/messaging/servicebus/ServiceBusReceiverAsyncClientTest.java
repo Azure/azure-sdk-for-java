@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -28,6 +29,7 @@ import com.azure.messaging.servicebus.implementation.ServiceBusReactorReceiver;
 import com.azure.messaging.servicebus.models.DeferOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
+import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.DeliveryState.DeliveryStateType;
 import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.message.Message;
@@ -39,7 +41,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -64,6 +68,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static com.azure.messaging.servicebus.TestUtils.getMessage;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -433,6 +438,92 @@ class ServiceBusReceiverAsyncClientTest {
             .verifyComplete();
 
         verify(amqpReceiveLink).updateDisposition(eq(lockToken1), isA(Rejected.class));
+    }
+
+    /**
+     * Verifies that error source is populated when there is any error during message settlement.
+     */
+    @ParameterizedTest
+    @MethodSource
+    void errorSourceOnSettlement(DispositionStatus dispositionStatus, ServiceBusErrorSource expectedErrorSource,
+        DeliveryStateType expectedDeliveryState) {
+        final String lockToken1 = UUID.randomUUID().toString();
+
+        final OffsetDateTime expiration = OffsetDateTime.now().plus(Duration.ofMinutes(5));
+
+        final MessageWithLockToken message = mock(MessageWithLockToken.class);
+
+        when(messageSerializer.deserialize(message, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage);
+
+        when(receivedMessage.getLockToken()).thenReturn(lockToken1);
+        when(receivedMessage.getLockedUntil()).thenReturn(expiration);
+
+        when(amqpReceiveLink.updateDisposition(eq(lockToken1), argThat(e -> e.getType() == expectedDeliveryState)))
+            .thenReturn(Mono.error(new AmqpException(false, "some error occured.", null)));
+
+        // Act & Assert
+        StepVerifier.create(receiver.receiveMessages().take(1)
+            .flatMap(context -> {
+                final Mono<Void> operation;
+                switch (dispositionStatus) {
+                    case DEFERRED:
+                        operation = receiver.defer(receivedMessage);
+                        break;
+                    case ABANDONED:
+                        operation = receiver.abandon(receivedMessage);
+                        break;
+                    case COMPLETED:
+                        operation = receiver.complete(receivedMessage);
+                        break;
+                    case SUSPENDED:
+                        operation = receiver.deadLetter(receivedMessage);
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Unrecognized operation: " + dispositionStatus);
+                }
+                return operation;
+            }))
+            .then(() -> messageSink.next(message))
+            .expectNext()
+            .verifyErrorMatches(throwable -> {
+                Assertions.assertTrue(throwable instanceof  ServiceBusException);
+                final ServiceBusErrorSource actual = ((ServiceBusException) throwable).getErrorSource();
+                Assertions.assertEquals(expectedErrorSource, actual);
+                return true;
+            });
+
+        verify(amqpReceiveLink).updateDisposition(eq(lockToken1), any(DeliveryState.class));
+    }
+
+    /**
+     * Verifies that error source is populated when there is any error during receiving of message.
+     */
+    @Test
+    void errorSourceOnReceiveMessage() {
+        final String lockToken1 = UUID.randomUUID().toString();
+
+        final OffsetDateTime expiration = OffsetDateTime.now().plus(Duration.ofMinutes(5));
+
+        final MessageWithLockToken message = mock(MessageWithLockToken.class);
+
+        when(messageSerializer.deserialize(message, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage);
+
+        when(receivedMessage.getLockToken()).thenReturn(lockToken1);
+        when(receivedMessage.getLockedUntil()).thenReturn(expiration);
+
+        when(connection.createReceiveLink(anyString(), anyString(), any(ReceiveMode.class), any(),
+            any(MessagingEntityType.class))).thenReturn(Mono.error(new AmqpException(false, "some receive link Error.", null)));
+
+        // Act & Assert
+        StepVerifier.create(receiver.receiveMessages().take(1))
+            .verifyErrorMatches(throwable -> {
+                Assertions.assertTrue(throwable instanceof  ServiceBusException);
+                final ServiceBusErrorSource actual = ((ServiceBusException) throwable).getErrorSource();
+                Assertions.assertEquals(ServiceBusErrorSource.RECEIVE, actual);
+                return true;
+            });
+
+        verify(amqpReceiveLink, never()).updateDisposition(eq(lockToken1), any(DeliveryState.class));
     }
 
     /**
@@ -902,5 +993,13 @@ class ServiceBusReceiverAsyncClientTest {
         return IntStream.range(0, 10)
             .mapToObj(index -> getMessage(PAYLOAD_BYTES, messageTrackingUUID, map))
             .collect(Collectors.toList());
+    }
+
+    private static Stream<Arguments> errorSourceOnSettlement() {
+        return Stream.of(
+            Arguments.of(DispositionStatus.DEFERRED, ServiceBusErrorSource.DEFER, DeliveryStateType.Modified),
+            Arguments.of(DispositionStatus.COMPLETED, ServiceBusErrorSource.COMPLETE, DeliveryStateType.Accepted),
+            Arguments.of(DispositionStatus.SUSPENDED, ServiceBusErrorSource.DEAD_LETTER, DeliveryStateType.Rejected),
+            Arguments.of(DispositionStatus.ABANDONED, ServiceBusErrorSource.ABANDONED, DeliveryStateType.Modified));
     }
 }

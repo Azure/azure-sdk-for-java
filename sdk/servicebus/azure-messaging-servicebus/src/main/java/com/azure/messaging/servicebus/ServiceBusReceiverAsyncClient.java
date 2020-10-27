@@ -591,8 +591,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     public Flux<ServiceBusReceivedMessageContext> receiveMessages() {
         return receiveMessagesInternal()
             .onErrorMap(throwable -> {
-                if ( throwable instanceof AmqpException) {
-                    return new ServiceBusException((AmqpException)throwable, ServiceBusErrorSource.RECEIVE);
+                if (throwable instanceof AmqpException) {
+                    return new ServiceBusException((AmqpException) throwable, ServiceBusErrorSource.RECEIVE);
                 } else {
                     return throwable;
                 }
@@ -993,7 +993,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         } else {
             final Flux<ServiceBusReceivedMessageContext> messageFlux = getOrCreateConsumer().receive()
                 .map(ServiceBusReceivedMessageContext::new);
-
             if (receiverOptions.isAutoLockRenewEnabled()) {
                 return new FluxAutoLockRenew(messageFlux, receiverOptions.getMaxLockRenewDuration(), renewalContainer,
                     this::renewMessageLock);
@@ -1013,7 +1012,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             propertiesToModify, transactionContext)
             .onErrorMap(throwable -> {
                 ServiceBusErrorSource errorSource;
-                if ( throwable instanceof AmqpException) {
+                if (throwable instanceof AmqpException) {
                     switch (dispositionStatus) {
                         case COMPLETED:
                             errorSource = ServiceBusErrorSource.COMPLETE;
@@ -1025,14 +1024,14 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                             errorSource = ServiceBusErrorSource.DEAD_LETTER;
                             break;
                         case ABANDONED:
-                            errorSource = ServiceBusErrorSource.APPEND;
+                            errorSource = ServiceBusErrorSource.ABANDONED;
                             break;
                         default:
                             throw logger.logExceptionAsError(new UnsupportedOperationException(String.format(
                                 "'%s' is not supported.", dispositionStatus)));
                     }
 
-                    return new ServiceBusException((AmqpException)throwable, errorSource);
+                    return new ServiceBusException((AmqpException) throwable, errorSource);
 
                 } else {
                     return throwable;
@@ -1044,7 +1043,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private Mono<Void> updateDispositionInternal(ServiceBusReceivedMessage message, DispositionStatus dispositionStatus,
         String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify,
         ServiceBusTransactionContext transactionContext) {
-
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, dispositionStatus.getValue())));
