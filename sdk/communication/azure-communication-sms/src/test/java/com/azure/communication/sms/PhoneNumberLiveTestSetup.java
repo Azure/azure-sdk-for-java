@@ -87,6 +87,8 @@ public class PhoneNumberLiveTestSetup implements BeforeAllCallback, ExtensionCon
             SyncPoller<Void, Void> result = phoneNumberClient.beginPurchaseSearch(searchResult.getSearchId(), duration);
             result.waitForCompletion();
 
+            System.out.println("The connection string is: " +  Configuration.getGlobalConfiguration().get("COMMUNICATION_CONNECTION_STRING"));
+            System.out.println("The Phone Number Search id is: " + searchResult.getSearchId());
             System.out.println("The Phone Number Search error code is: " + searchResult.getErrorCode());
             System.out.println("The Phone Number Search status is: " + phoneNumberClient.getSearchById(searchResult.getSearchId()).getStatus());
 
