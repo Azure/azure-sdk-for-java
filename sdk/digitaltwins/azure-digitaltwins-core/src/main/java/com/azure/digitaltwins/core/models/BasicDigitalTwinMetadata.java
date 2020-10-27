@@ -51,7 +51,7 @@ public final class BasicDigitalTwinMetadata {
     }
 
     /**
-     * Gets the metadata about changes on properties on a component. The values can be deserialized into {@link BasicDigitalTwinPropertyMetadata}
+     * Gets the metadata about changes on properties on a component. The values can be deserialized into {@link DigitalTwinPropertyMetadata}
      * @return The metadata about changes on properties on a component.
      */
     @JsonAnyGetter
