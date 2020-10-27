@@ -30,7 +30,7 @@ public final class BasicDigitalTwinComponentMetadata {
 
     /**
      * Gets the metadata about changes on properties on a component. The values can be deserialized into {@link BasicDigitalTwinPropertyMetadata}
-     * @return
+     * @return The metadata about changes on properties on a component.
      */
     @JsonAnyGetter
     public Map<String, Object> getPropertyMetadata() {
