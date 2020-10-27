@@ -292,15 +292,19 @@ for (String phoneNumber: result.getPhoneNumbers()) {
 ```
 
 ### Purchase Search
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L385-L391 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L385-L395 -->
 ```java
 Duration duration = Duration.ofSeconds(1);
 String phoneNumberSearchId = "SEARCH_ID_TO_PURCHASE";
 PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
-SyncPoller<Void, Void> res = 
+SyncPoller<PhoneNumberSearch, PhoneNumberSearch> res = 
     phoneNumberClient.beginPurchaseSearch(phoneNumberSearchId, duration);
 res.waitForCompletion();
+PhoneNumberSearch result = res.getFinalResult();
+
+System.out.println("Search Id: " + result.getSearchId());
+System.out.println("Purchase status: " + result.getStatus());
 ```
 
 ## Contributing

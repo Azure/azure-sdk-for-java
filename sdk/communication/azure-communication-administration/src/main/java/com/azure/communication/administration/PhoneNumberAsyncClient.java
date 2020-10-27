@@ -847,48 +847,52 @@ public final class PhoneNumberAsyncClient {
      */
 
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<Void, Void> beginPurchaseSearch(String searchId, Duration pollInterval) {
+    public PollerFlux<PhoneNumberSearch, PhoneNumberSearch> beginPurchaseSearch(String searchId, Duration pollInterval) {
         Objects.requireNonNull(searchId, "'searchId' can not be null.");
-        Objects.requireNonNull(pollInterval, "'pollInterval' can not be null.");
+        
+        if(pollInterval == null){
+            pollInterval = Duration.ofSeconds(5);
+        }
 
-        return new PollerFlux<Void, Void>(pollInterval,
+        return new PollerFlux<PhoneNumberSearch, PhoneNumberSearch>(pollInterval,
             purchaseSearchActivationOperation(searchId),
             purchaseSearchPollOperation(searchId),
             (activationResponse, pollingContext) -> Mono.error(new RuntimeException("Cancellation is not supported")),
             purchaseSearchFetchResultOperation());
     }
 
-    private Function<PollingContext<Void>, Mono<Void>> purchaseSearchActivationOperation(String searchId) {
-
+    private Function<PollingContext<PhoneNumberSearch>, 
+        Mono<PhoneNumberSearch>> purchaseSearchActivationOperation(String searchId) {
         return (pollingContext) -> {
-            Mono<Void> response = purchaseSearch(searchId);
-            return response;
+            Mono<PhoneNumberSearch> res = purchaseSearch(searchId).flatMap(agh -> {
+                return getSearchById(searchId);
+            });
+            return res;
         };
     }
 
-    private Function<PollingContext<Void>, Mono<PollResponse<Void>>>
+    private Function<PollingContext<PhoneNumberSearch>, Mono<PollResponse<PhoneNumberSearch>>>
         purchaseSearchPollOperation(String searchId) {
         return (pollingContext) -> getSearchById(searchId)
             .flatMap(getSearchResponse -> {
                 SearchStatus statusResponse = getSearchResponse.getStatus();
-                if (statusResponse.equals(SearchStatus.RESERVED) 
-                    || statusResponse.equals(SearchStatus.EXPIRED)
+                if (statusResponse.equals(SearchStatus.EXPIRED)
                     || statusResponse.equals(SearchStatus.SUCCESS)) {
                     return Mono.just(new PollResponse<>(
-                    LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null));
+                    LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, getSearchResponse));
                 }
                 if (statusResponse.equals(SearchStatus.ERROR)) {
                     return Mono.just(new PollResponse<>(
-                    LongRunningOperationStatus.FAILED, null));
+                    LongRunningOperationStatus.FAILED, getSearchResponse));
                 }
-                return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, null));
+                return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, getSearchResponse));
             });
     }
 
-    private Function<PollingContext<Void>,
-        Mono<Void>> purchaseSearchFetchResultOperation() {
+    private Function<PollingContext<PhoneNumberSearch>,
+        Mono<PhoneNumberSearch>> purchaseSearchFetchResultOperation() {
         return pollingContext -> {
-            return Mono.empty();
+            return Mono.just(pollingContext.getLatestResponse().getValue());
         };
 
     }

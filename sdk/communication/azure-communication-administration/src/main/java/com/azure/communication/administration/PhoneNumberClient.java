@@ -550,7 +550,7 @@ public final class PhoneNumberClient {
      * @return A {@link SyncPoller} object with the search result
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<Void, Void> beginPurchaseSearch(
+    public SyncPoller<PhoneNumberSearch, PhoneNumberSearch> beginPurchaseSearch(
         String searchId, Duration pollInterval) {
         return phoneNumberAsyncClient.beginPurchaseSearch(searchId, pollInterval).getSyncPoller();
     }
