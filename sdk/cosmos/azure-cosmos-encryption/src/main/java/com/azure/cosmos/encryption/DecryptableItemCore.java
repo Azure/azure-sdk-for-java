@@ -8,7 +8,9 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.encryption.Constants;
 import com.azure.cosmos.implementation.encryption.EncryptionProcessor;
+import com.azure.cosmos.implementation.encryption.EncryptionUtils;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Mono;
@@ -19,6 +21,7 @@ class DecryptableItemCore extends DecryptableItem {
      * The encrypted content which is yet to be decrypted.
      */
     private final JsonNode decryptableContent;
+    private final Decryptor decryptor;
     private final Encryptor encryptor;
     private final ItemDeserializer cosmosSerializer;
 
@@ -32,6 +35,20 @@ class DecryptableItemCore extends DecryptableItem {
         this.decryptableContent = decryptableContent;
         this.encryptor = encryptor;
         this.cosmosSerializer = cosmosSerializer;
+        this.decryptor = null;
+    }
+
+    public DecryptableItemCore(byte[] decryptableContent,
+                               Decryptor decryptor,
+                               ItemDeserializer cosmosSerializer) {
+        Preconditions.checkNotNull(decryptableContent, "decryptableContent");
+        Preconditions.checkNotNull(decryptor, "decryptor");
+        Preconditions.checkNotNull(cosmosSerializer, "cosmosSerializer");
+        this.decryptableContent = cosmosSerializer.parseFrom(JsonNode.class, decryptableContent);
+
+        this.decryptor = decryptor;
+        this.cosmosSerializer = cosmosSerializer;
+        this.encryptor = null;
     }
 
     @Override
@@ -43,8 +60,21 @@ class DecryptableItemCore extends DecryptableItem {
             return Mono.just(new DecryptionResult<>(Utils.getSimpleObjectMapper().convertValue(this.decryptableContent, classType), null));
         }
 
-        Mono<Pair<ObjectNode, DecryptionContext>> decryptedItemAndContextPairMono =
-            EncryptionProcessor.decrypt(decryptableContentAsObjectNode, this.encryptor);
+        Mono<Pair<ObjectNode, DecryptionContext>> decryptedItemAndContextPairMono;
+
+        if (this.decryptor != null) {
+            byte[] bytes = EncryptionUtils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(), decryptableContentAsObjectNode);
+            Mono<byte[]> decryptedMono = decryptor.decrypt(bytes);
+            decryptedItemAndContextPairMono = decryptedMono.map(
+                decryptedBytes -> {
+                    ObjectNode objNod = Utils.parse(decryptedBytes, ObjectNode.class);
+                    DecryptionContext decryptionContext = new DecryptionContext(ImmutableList.of());
+                    return Pair.of(objNod, decryptionContext);
+                }
+            );
+        } else {
+            decryptedItemAndContextPairMono = EncryptionProcessor.decrypt(decryptableContentAsObjectNode, this.encryptor);
+        }
 
         return decryptedItemAndContextPairMono.map(
             decryptedItemAndContextPair -> {

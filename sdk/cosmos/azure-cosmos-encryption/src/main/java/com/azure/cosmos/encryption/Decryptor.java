@@ -3,11 +3,8 @@
 
 package com.azure.cosmos.encryption;
 
+import reactor.core.publisher.Mono;
 
-/**
- * Encryption types that may be supported.
- */
-public enum EncryptionType {
-    DETERMINISTIC,
-    RANDOMIZED
+interface Decryptor {
+    Mono<byte[]> decrypt(byte[] cipherText);
 }

@@ -23,7 +23,7 @@ public final class AzureKeyVaultKeyWrapMetadata extends EncryptionKeyWrapMetadat
      */
     public AzureKeyVaultKeyWrapMetadata(URL masterKeyUri) {
         // masterKeyUri.AbsoluteUri
-        super(AzureKeyVaultKeyWrapMetadata.TYPE_CONSTANT, masterKeyUri.toString());
+        super(AzureKeyVaultKeyWrapMetadata.TYPE_CONSTANT, masterKeyUri.toString(), "RSA-OAEP-256");
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////

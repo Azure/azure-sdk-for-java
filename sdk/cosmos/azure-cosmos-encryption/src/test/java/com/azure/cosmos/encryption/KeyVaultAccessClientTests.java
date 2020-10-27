@@ -30,6 +30,8 @@ import org.mockito.stubbing.Answer;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.net.URI;
@@ -165,7 +167,6 @@ public class KeyVaultAccessClientTests {
         byte[] iv = new byte[] { (byte) 0x99, (byte) 0x99, (byte) 0x88, (byte) 0x88, 0x77, 0x77, 0x66, 0x66, 0x55,
             0x55, 0x44, 0x44, 0x33, 0x33, 0x22, 0x22 };
 
-
         //                /// <summary>
         //                /// Simulates WrapKeyAsync method of KeyVault SDK.
         //                /// </summary>
@@ -279,7 +280,7 @@ public class KeyVaultAccessClientTests {
                 String algoName = "AES/CBC/NoPadding";
                 SecretKeySpec secretKeySpec;
                 Cipher cipher = Cipher.getInstance(algoName);
-                secretKeySpec = new SecretKeySpec(key, algoName);
+                secretKeySpec = new SecretKeySpec(key, "AES");
 
                 cipher.init(mode, secretKeySpec, new IvParameterSpec(iv));
                 return new AesCryptoServiceProvider.ICryptoTransform(cipher);
@@ -287,7 +288,6 @@ public class KeyVaultAccessClientTests {
                 throw new RuntimeException(e);
             }
         }
-
     }
 
 

@@ -114,10 +114,7 @@ class AeadAes256CbcHmac256Algorithm implements DataEncryptionKey {
 
         // Validate encryption type for this algorithm
         // This algorithm can only provide randomized or deterministic encryption types.
-        // Right now, we support only randomized encryption for Cosmos DB client side encryption.
-        assert encryptionType == EncryptionType.RANDOMIZED : "Invalid Encryption Type detected in AeadAes256CbcHmac256Algorithm";
-        this.isDeterministic = false;
-
+        this.isDeterministic = (EncryptionType.DETERMINISTIC == encryptionType);
         this.cryptoProviderPool = new ConcurrentLinkedQueue<>();
     }
 

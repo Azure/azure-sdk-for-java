@@ -49,4 +49,25 @@ abstract class AbstractEncryptableItem {
             encryptor,
             cosmosSerializer);
     }
+
+    /**
+     * Populates the DecryptableItem that can be used getting the decryption result.
+     *
+     * @param decryptableContent The encrypted content which is yet to be decrypted.
+     * @param decryptor Encryptor instance which will be used for decryption.
+     * @param cosmosSerializer serializer instance which will be used for deserializing the content after decryption
+     */
+    void setDecryptableItem(
+        byte[] decryptableContent,
+        Decryptor decryptor,
+        ItemDeserializer cosmosSerializer) {
+        if (this.decryptableItem != null) {
+            throw new IllegalStateException("already initialized");
+        }
+
+        this.decryptableItem = new DecryptableItemCore(
+            decryptableContent,
+            decryptor,
+            cosmosSerializer);
+    }
 }

@@ -21,7 +21,7 @@ import java.util.Objects;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({"id", "encryptionAlgorithm", "wrappedDataEncryptionKey", "keyWrapMetadata", "createTime", "_rid", "_self", "_etag", "_ts"})
-class DataEncryptionKeyProperties {
+public class DataEncryptionKeyProperties {
 
     /**
      * Initializes a new instance of {@link DataEncryptionKeyProperties}
