@@ -9,5 +9,8 @@ module com.azure.messaging.servicebus {
     exports com.azure.messaging.servicebus.administration.models;
     exports com.azure.messaging.servicebus.models;
 
+    opens com.azure.messaging.servicebus.administration.models to com.fasterxml.jackson.databind;
+    opens com.azure.messaging.servicebus.implementation.models to com.fasterxml.jackson.databind;
+
     uses com.azure.core.util.tracing.Tracer;
 }
