@@ -247,11 +247,18 @@ public class BlobClientBase {
      */
     public BlobInputStream openInputStream(BlobInputStreamOptions options) {
         options = options == null ? new BlobInputStreamOptions() : options;
+
+        BlobProperties properties = getProperties();
+
         BlobRange range = options.getRange() == null ? new BlobRange(0) : options.getRange();
         int chunkSize = options.getBlockSize() == null ? 4 * Constants.MB : options.getBlockSize();
 
+        BlobRequestConditions requestConditions = options.getRequestConditions() == null
+            ? new BlobRequestConditions() : options.getRequestConditions();
+        requestConditions.setIfMatch(properties.getETag());
+
         return new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize,
-            options.getRequestConditions(), getProperties());
+            requestConditions, properties);
     }
 
     /**
