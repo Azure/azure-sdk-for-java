@@ -21,6 +21,11 @@ import org.joda.time.DateTime;
  */
 public interface NetAppAccountBackup extends HasInner<BackupInner>, Indexable, Refreshable<NetAppAccountBackup>, HasManager<NetAppManager> {
     /**
+     * @return the backupId value.
+     */
+    String backupId();
+
+    /**
      * @return the backupType value.
      */
     String backupType();

@@ -48,38 +48,50 @@ public class SnapshotPolicyDetails {
     private Map<String, String> tags;
 
     /**
+     * Snapshot policy name.
+     */
+    @JsonProperty(value = "properties.name", access = JsonProperty.Access.WRITE_ONLY)
+    private String name1;
+
+    /**
      * hourlySchedule.
      * Schedule for hourly snapshots.
      */
     @JsonProperty(value = "properties.hourlySchedule")
-    private Object hourlySchedule;
+    private HourlySchedule hourlySchedule;
 
     /**
      * dailySchedule.
      * Schedule for daily snapshots.
      */
     @JsonProperty(value = "properties.dailySchedule")
-    private Object dailySchedule;
+    private DailySchedule dailySchedule;
 
     /**
      * weeklySchedule.
      * Schedule for weekly snapshots.
      */
     @JsonProperty(value = "properties.weeklySchedule")
-    private Object weeklySchedule;
+    private WeeklySchedule weeklySchedule;
 
     /**
      * monthlySchedule.
      * Schedule for monthly snapshots.
      */
     @JsonProperty(value = "properties.monthlySchedule")
-    private Object monthlySchedule;
+    private MonthlySchedule monthlySchedule;
 
     /**
      * The property to decide policy is enabled or not.
      */
     @JsonProperty(value = "properties.enabled")
     private Boolean enabled;
+
+    /**
+     * Azure lifecycle management.
+     */
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private String provisioningState;
 
     /**
      * Get resource location.
@@ -149,11 +161,20 @@ public class SnapshotPolicyDetails {
     }
 
     /**
+     * Get snapshot policy name.
+     *
+     * @return the name1 value
+     */
+    public String name1() {
+        return this.name1;
+    }
+
+    /**
      * Get schedule for hourly snapshots.
      *
      * @return the hourlySchedule value
      */
-    public Object hourlySchedule() {
+    public HourlySchedule hourlySchedule() {
         return this.hourlySchedule;
     }
 
@@ -163,7 +184,7 @@ public class SnapshotPolicyDetails {
      * @param hourlySchedule the hourlySchedule value to set
      * @return the SnapshotPolicyDetails object itself.
      */
-    public SnapshotPolicyDetails withHourlySchedule(Object hourlySchedule) {
+    public SnapshotPolicyDetails withHourlySchedule(HourlySchedule hourlySchedule) {
         this.hourlySchedule = hourlySchedule;
         return this;
     }
@@ -173,7 +194,7 @@ public class SnapshotPolicyDetails {
      *
      * @return the dailySchedule value
      */
-    public Object dailySchedule() {
+    public DailySchedule dailySchedule() {
         return this.dailySchedule;
     }
 
@@ -183,7 +204,7 @@ public class SnapshotPolicyDetails {
      * @param dailySchedule the dailySchedule value to set
      * @return the SnapshotPolicyDetails object itself.
      */
-    public SnapshotPolicyDetails withDailySchedule(Object dailySchedule) {
+    public SnapshotPolicyDetails withDailySchedule(DailySchedule dailySchedule) {
         this.dailySchedule = dailySchedule;
         return this;
     }
@@ -193,7 +214,7 @@ public class SnapshotPolicyDetails {
      *
      * @return the weeklySchedule value
      */
-    public Object weeklySchedule() {
+    public WeeklySchedule weeklySchedule() {
         return this.weeklySchedule;
     }
 
@@ -203,7 +224,7 @@ public class SnapshotPolicyDetails {
      * @param weeklySchedule the weeklySchedule value to set
      * @return the SnapshotPolicyDetails object itself.
      */
-    public SnapshotPolicyDetails withWeeklySchedule(Object weeklySchedule) {
+    public SnapshotPolicyDetails withWeeklySchedule(WeeklySchedule weeklySchedule) {
         this.weeklySchedule = weeklySchedule;
         return this;
     }
@@ -213,7 +234,7 @@ public class SnapshotPolicyDetails {
      *
      * @return the monthlySchedule value
      */
-    public Object monthlySchedule() {
+    public MonthlySchedule monthlySchedule() {
         return this.monthlySchedule;
     }
 
@@ -223,7 +244,7 @@ public class SnapshotPolicyDetails {
      * @param monthlySchedule the monthlySchedule value to set
      * @return the SnapshotPolicyDetails object itself.
      */
-    public SnapshotPolicyDetails withMonthlySchedule(Object monthlySchedule) {
+    public SnapshotPolicyDetails withMonthlySchedule(MonthlySchedule monthlySchedule) {
         this.monthlySchedule = monthlySchedule;
         return this;
     }
@@ -246,6 +267,15 @@ public class SnapshotPolicyDetails {
     public SnapshotPolicyDetails withEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
+    }
+
+    /**
+     * Get azure lifecycle management.
+     *
+     * @return the provisioningState value
+     */
+    public String provisioningState() {
+        return this.provisioningState;
     }
 
 }

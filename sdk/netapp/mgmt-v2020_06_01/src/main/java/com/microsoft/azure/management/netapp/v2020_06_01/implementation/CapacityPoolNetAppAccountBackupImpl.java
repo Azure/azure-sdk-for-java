@@ -98,6 +98,11 @@ class CapacityPoolNetAppAccountBackupImpl extends CreatableUpdatableImpl<Capacit
     }
 
     @Override
+    public String backupId() {
+        return this.inner().backupId();
+    }
+
+    @Override
     public String backupType() {
         return this.inner().backupType();
     }
