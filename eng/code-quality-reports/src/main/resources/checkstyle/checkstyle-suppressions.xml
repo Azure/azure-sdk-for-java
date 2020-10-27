@@ -395,6 +395,18 @@
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy.java"/>
 
+  <!-- Fields tenantId, clientId and clientSecret are not set in all constructors. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.KeyVaultClient"/>
+
+  <!-- Fields defaultTrustManager and keyStore might be set more than once. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.KeyVaultTrustManager"/>
+
+  <!-- The KeyVault JCA library has to be as lightweight as possible and thus, does not use Azure Core or its loggers. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.security.keyvault.jca.*"/>
+
+  <!-- This class overrides a method that throws, so it cannot be avoided. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.security.keyvault.jca.KeyVaultTrustManager"/>
+
   <!-- Empty while loop waiting for Reactor stream completion -->
   <suppress checks="EmptyBlock" files="com.azure.storage.blob.batch.BlobBatch.java"/>
 
