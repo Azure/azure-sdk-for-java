@@ -23,6 +23,7 @@ import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATI
 import static com.azure.core.amqp.AmqpMessageConstant.LOCKED_UNTIL_KEY_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -86,6 +87,8 @@ public class ServiceBusReceivedMessageTest {
         // Assert
         assertNotNull(serviceBusMessageData.getBody());
         assertEquals(PAYLOAD, new String(serviceBusMessageData.getBody(), UTF_8));
+        assertEquals(PAYLOAD, serviceBusMessageData.getBodyAsString());
+        assertEquals(PAYLOAD, serviceBusMessageData.getBodyAsBinaryData().toString());
     }
 
     @Test
@@ -126,6 +129,8 @@ public class ServiceBusReceivedMessageTest {
         assertNotNull(actual);
         assertNotNull(actual.getBody());
         assertEquals(PAYLOAD, new String(actual.getBody(), UTF_8));
+        assertEquals(PAYLOAD, actual.getBodyAsString());
+        assertArrayEquals(PAYLOAD.getBytes(), actual.getBodyAsBinaryData().toBytes());
         assertEquals(originalMessage.getMessageId(), actual.getMessageId());
         assertEquals(originalMessage.getContentType(), actual.getContentType());
         assertEquals(originalMessage.getCorrelationId(), actual.getCorrelationId());

@@ -15,7 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Arrays;
+import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
@@ -55,7 +55,6 @@ public class ServiceBusMessage {
     private final AmqpAnnotatedMessage amqpAnnotatedMessage;
     private final ClientLogger logger = new ClientLogger(ServiceBusMessage.class);
 
-    private final byte[] binaryData;
     private Context context;
 
     /**
@@ -77,10 +76,10 @@ public class ServiceBusMessage {
      * @throws NullPointerException if {@code body} is {@code null}.
      */
     public ServiceBusMessage(byte[] body) {
-        this.binaryData = Objects.requireNonNull(body, "'body' cannot be null.");
+        Objects.requireNonNull(body, "'body' cannot be null.");
         this.context = Context.NONE;
         this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections
-            .singletonList(BinaryData.fromBytes(binaryData))));
+            .singletonList(BinaryData.fromBytes(body))));
     }
 
     /**
@@ -96,7 +95,6 @@ public class ServiceBusMessage {
 
         this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(receivedMessage.getAmqpAnnotatedMessage());
         this.context = Context.NONE;
-        this.binaryData = receivedMessage.getBody();
 
         // clean up data which user is not allowed to set.
         amqpAnnotatedMessage.getHeader().setDeliveryCount(null);
@@ -143,18 +141,45 @@ public class ServiceBusMessage {
      * @return A byte array representing the data.
      */
     public byte[] getBody() {
-        final AmqpBodyType type = amqpAnnotatedMessage.getBody().getBodyType();
-        switch (type) {
+        return getBodyAsBinaryData().toBytes();
+    }
+
+    /**
+     * Gets the actual payload/data wrapped by the {@link ServiceBusMessage}.
+     *
+     * <p>
+     * If the means for deserializing the raw data is not apparent to consumers, a common technique is to make use of
+     * {@link #getApplicationProperties()} when creating the event, to associate serialization hints as an aid to
+     * consumers who wish to deserialize the binary data.
+     * </p>
+     *
+     * @return A {@link BinaryData} representing the data.
+     */
+    public BinaryData getBodyAsBinaryData() {
+        final AmqpBodyType bodyType = amqpAnnotatedMessage.getBody().getBodyType();
+        switch (bodyType) {
             case DATA:
-                return Arrays.copyOf(binaryData, binaryData.length);
+                return ((AmqpDataBody) amqpAnnotatedMessage.getBody()).getDataAsBinaryData().stream().findFirst().get();
+
             case SEQUENCE:
             case VALUE:
-                throw logger.logExceptionAsError(new UnsupportedOperationException("Not supported AmqpBodyType: "
-                    + type.toString()));
+                throw logger.logExceptionAsError(new UnsupportedOperationException("Body type not supported yet "
+                    + bodyType.toString()));
             default:
-                throw logger.logExceptionAsError(new IllegalArgumentException("Unknown AmqpBodyType: "
-                    + type.toString()));
+                logger.warning("Invalid body type {}.", bodyType);
+                throw logger.logExceptionAsError(new IllegalStateException("Body type not valid "
+                    + bodyType.toString()));
         }
+    }
+
+    /**
+     * * Gets the actual payload/data wrapped by the {@link ServiceBusMessage}. The default {@link Charset} used is
+     * UTF_8.
+     *
+     * @return A {@link String} representing the data.
+     */
+    public String getBodyAsString() {
+        return new String(getBody(), StandardCharsets.UTF_8);
     }
 
     /**

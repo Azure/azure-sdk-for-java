@@ -22,6 +22,7 @@ import com.azure.core.experimental.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -37,7 +38,7 @@ import java.util.UUID;
 public final class ServiceBusReceivedMessage {
     private final ClientLogger logger = new ClientLogger(ServiceBusReceivedMessage.class);
 
-    private AmqpAnnotatedMessage amqpAnnotatedMessage;
+    private final AmqpAnnotatedMessage amqpAnnotatedMessage;
     private UUID lockToken;
 
     /**
@@ -58,10 +59,9 @@ public final class ServiceBusReceivedMessage {
             .fromBytes(body))));
     }
 
-    public ServiceBusReceivedMessage(BinaryData body) {
+    ServiceBusReceivedMessage(BinaryData body) {
         Objects.requireNonNull(body, "'body' cannot be null.");
-        amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(
-            body)));
+        amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(body)));
     }
 
     /**
@@ -76,10 +76,25 @@ public final class ServiceBusReceivedMessage {
      * @return A byte array representing the data.
      */
     public byte[] getBody() {
+        return getBodyAsBinaryData().toBytes();
+    }
+
+    /**
+     * Gets the actual payload/data wrapped by the {@link ServiceBusReceivedMessage}.
+     *
+     * <p>
+     * If the means for deserializing the raw data is not apparent to consumers, a common technique is to make use of
+     * {@link #getApplicationProperties()} when creating the event, to associate serialization hints as an aid to
+     * consumers who wish to deserialize the binary data.
+     * </p>
+     *
+     * @return A {@link BinaryData} representing the data.
+     */
+    public BinaryData getBodyAsBinaryData() {
         final AmqpBodyType bodyType = amqpAnnotatedMessage.getBody().getBodyType();
         switch (bodyType) {
             case DATA:
-                return ((AmqpDataBody) amqpAnnotatedMessage.getBody()).getData().stream().findFirst().get();
+                return ((AmqpDataBody) amqpAnnotatedMessage.getBody()).getDataAsBinaryData().stream().findFirst().get();
 
             case SEQUENCE:
             case VALUE:
@@ -90,6 +105,21 @@ public final class ServiceBusReceivedMessage {
                 throw logger.logExceptionAsError(new IllegalStateException("Body type not valid "
                     + bodyType.toString()));
         }
+    }
+
+    /**
+     * Gets the actual payload/data wrapped by the {@link ServiceBusReceivedMessage}.
+     *
+     * <p>
+     * If the means for deserializing the raw data is not apparent to consumers, a common technique is to make use of
+     * {@link #getApplicationProperties()} when creating the event, to associate serialization hints as an aid to
+     * consumers who wish to deserialize the binary data.
+     * </p>
+     *
+     * @return A {@link String} representing the data.
+     */
+    public String getBodyAsString() {
+        return new String(getBody(), StandardCharsets.UTF_8);
     }
 
     /**

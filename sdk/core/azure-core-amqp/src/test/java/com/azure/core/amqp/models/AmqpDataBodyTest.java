@@ -20,14 +20,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class AmqpDataBodyTest {
 
     /**
-     * Verifies we correctly set values via constructor for {@link AmqpAnnotatedMessage}.
+     * Verifies we correctly set {@link BinaryData} values via constructor for {@link AmqpAnnotatedMessage}.
      */
     @Test
-    public void constructorValidValues() {
+    public void constructorValidBinaryDataValues() {
         // Arrange
+        final byte[] expectedData = "some data".getBytes();
         final List<BinaryData> expectedDataList = new ArrayList<>();
-        expectedDataList.add(BinaryData.fromString("some data 1"));
-        expectedDataList.add(BinaryData.fromString("some data 2"));
+        expectedDataList.add(BinaryData.fromBytes(expectedData));
 
         // Act
         final AmqpDataBody actual = new AmqpDataBody(expectedDataList);
@@ -36,20 +36,61 @@ public class AmqpDataBodyTest {
         assertEquals(AmqpBodyType.DATA, actual.getBodyType());
 
         // Validate Message Body
-        final List<byte[]> dataList = actual.getData().stream().collect(Collectors.toList());
-        assertEquals(expectedDataList.size(), dataList.size());
-        assertArrayEquals(expectedDataList.toArray(), dataList.toArray());
+        final List<BinaryData> dataList = actual.getDataAsBinaryData().stream().collect(Collectors.toList());
+        assertEquals(1, dataList.size());
+        assertArrayEquals(expectedData, dataList.get(0).toBytes());
     }
 
     /**
-     * Verifies {@link AmqpDataBody} constructor for null values.
+     * Verifies we correctly set byte array values via constructor for {@link AmqpAnnotatedMessage}.
      */
     @Test
-    public void constructorNullValidValues() {
+    public void constructorValidByteArrayValues() {
+        // Arrange
+        final byte[] expectedData = "some data".getBytes();
+
+        List<byte[]> byteArrayList = new ArrayList<>();
+        byteArrayList.add(expectedData);
+        final Iterable<byte[]> expectedByteArrayIterable = byteArrayList;
+
+        // Act
+        final AmqpDataBody actual = new AmqpDataBody(expectedByteArrayIterable);
+
+        // Assert
+        assertEquals(AmqpBodyType.DATA, actual.getBodyType());
+
+        // Validate Message Body
+        final List<byte[]> dataList = actual.getData().stream().collect(Collectors.toList());
+        assertEquals(1, dataList.size());
+        assertArrayEquals(expectedData, dataList.get(0));
+
+        final List<BinaryData> dataListBinaryData = actual.getDataAsBinaryData().stream().collect(Collectors.toList());
+        assertEquals(dataListBinaryData.size(), dataList.size());
+        assertArrayEquals(dataListBinaryData.get(0).toBytes(), dataList.get(0));
+    }
+
+    /**
+     * Verifies {@link AmqpDataBody} constructor for various invalid/cases.
+     */
+    @Test
+    public void constructorInvalidValues() {
         // Arrange
         final List<BinaryData> listBinaryData = null;
+        final Iterable<byte[]> byteArrayData = null;
+
+        final byte[] expectedData = "some data".getBytes();
+        final List<BinaryData> unexpectedLargeDataList = new ArrayList<>();
+        unexpectedLargeDataList.add(BinaryData.fromBytes(expectedData));
+        unexpectedLargeDataList.add(BinaryData.fromBytes(expectedData));
+
+        final List<BinaryData> unexpectedEmptyDataList = new ArrayList<>();
+        final Iterable<byte[]> unexpectedEmptyByteArrayIterable = new ArrayList<>();
 
         // Act & Assert
         Assertions.assertThrows(NullPointerException.class, () -> new AmqpDataBody(listBinaryData));
+        Assertions.assertThrows(NullPointerException.class, () -> new AmqpDataBody(byteArrayData));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new AmqpDataBody(unexpectedLargeDataList));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new AmqpDataBody(unexpectedEmptyDataList));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new AmqpDataBody(unexpectedEmptyByteArrayIterable));
     }
 }

@@ -8,6 +8,7 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -15,32 +16,56 @@ import java.util.Objects;
  */
 public final class AmqpDataBody implements AmqpMessageBody {
     private final ClientLogger logger = new ClientLogger(AmqpDataBody.class);
-    private final BinaryData data;
+    private final BinaryData binaryData;
 
     /**
-     * Creates instance of {@link AmqpDataBody} with given {@link Iterable} of byte array.
+     * Creates instance of {@link AmqpDataBody} with given {@link Iterable} of byte array. As of now,  We support
+     * only one element in the given iterable.
      *
      * @param data to be set on amqp body.
      *
      * @throws NullPointerException if {@code data} is null.
+     * @throws IllegalArgumentException if elements in 'data' is zero or greater than one.
      */
-    public AmqpDataBody(Iterable<BinaryData> data) {
+    public AmqpDataBody(Iterable<byte[]> data) {
         Objects.requireNonNull(data, "'data' cannot be null.");
-
         BinaryData payload = null;
-        for (BinaryData binaryData : data) {
+        for (byte[] bytes : data) {
             if (payload != null) {
                 throw logger.logExceptionAsError(new IllegalArgumentException(
-                    "Only one instance of 'data' is allowed in iterator."));
+                    "Only one instance of byte array is allowed in 'data'."));
             }
-            payload = binaryData;
+            payload = BinaryData.fromBytes(bytes);
         }
 
         if (payload == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'data' can not be empty."));
         } else {
-            this.data = payload;
+            this.binaryData = payload;
         }
+    }
+
+    /**
+     * Creates instance of {@link AmqpDataBody} with given {@link List} of {@link BinaryData}. As of now,  We support
+     * only one element in the given collection.
+     *
+     * @param data to be set on amqp body.
+     *
+     * @throws NullPointerException if {@code data} is null.
+     * @throws IllegalArgumentException if size of 'data' is zero or greater than one.
+     */
+    public AmqpDataBody(List<BinaryData> data) {
+        Objects.requireNonNull(data, "'data' cannot be null.");
+
+        if (data.size() < 1) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "'data' can not be empty."));
+        } else if (data.size() > 1) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Only one element is supported in 'data'."));
+        }
+
+        this.binaryData = data.get(0);
     }
 
     @Override
@@ -54,15 +79,15 @@ public final class AmqpDataBody implements AmqpMessageBody {
      * @return data set on {@link AmqpDataBody}.
      */
     public IterableStream<byte[]> getData() {
-        return new IterableStream<>(Collections.singleton(data.toBytes()));
+        return new IterableStream<>(Collections.singleton(binaryData.toBytes()));
     }
 
     /**
-     * Gets byte array set on this {@link AmqpDataBody}.
+     * Gets {@link IterableStream} of {@link BinaryData} set on this {@link AmqpDataBody}.
      *
      * @return data set on {@link AmqpDataBody}.
      */
-    public IterableStream<BinaryData> getBinaryData() {
-        return new IterableStream<>(Collections.singleton(data));
+    public IterableStream<BinaryData> getDataAsBinaryData() {
+        return new IterableStream<>(Collections.singleton(binaryData));
     }
 }
