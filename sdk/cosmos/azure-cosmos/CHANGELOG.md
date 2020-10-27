@@ -2,7 +2,7 @@
 
 ### 4.8.0 (2020-10-27)
 #### New Features
-* Added "Content Response on Write Enabled" feature to CosmosItemRequestOptions
+* Added `contentResponseOnWriteEnabled` feature to `CosmosItemRequestOptions`.
 #### Key Bug Fixes
 * Fixed an issue which may affect query behaviour when resuming from a continuation token.
 
