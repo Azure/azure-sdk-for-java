@@ -9,6 +9,11 @@ import java.io.Serializable;
  * The CertificateItem REST model.
  */
 public class CertificateItem implements Serializable {
+    
+    /**
+     * Stores the serial version UID.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Stores the id.

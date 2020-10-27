@@ -127,7 +127,7 @@
                 <artifactId>spotbugs-maven-plugin</artifactId>
                 <version>3.1.12.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
                 <configuration>
-                    <skip>true</skip>
+                    <!--<skip>true</skip>-->
                 </configuration>
             </plugin>
             <plugin>
@@ -151,9 +151,8 @@
         <dependency>
             <groupId>org.conscrypt</groupId>
             <artifactId>conscrypt-openjdk-uber</artifactId>
-            <scope>compile</scope>
+            <scope>provided</scope>
             <version>2.2.1</version> <!-- {x-version-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
-            <optional>true</optional>
         </dependency>
         <!-- Jackson Databind -->
         <dependency>
