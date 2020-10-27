@@ -7,7 +7,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -19,7 +18,6 @@ import java.util.Objects;
 /**
  * Represents a JSON Patch document.
  */
-@JsonSerialize(using = JsonPatchDocumentSerializer.class)
 public final class JsonPatchDocument {
     private static final Object SERIALIZER_INSTANTIATION_SYNCHRONIZER = new Object();
     private static volatile JsonSerializer defaultSerializer;

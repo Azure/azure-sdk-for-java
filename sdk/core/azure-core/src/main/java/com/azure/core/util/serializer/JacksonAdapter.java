@@ -296,6 +296,8 @@ public class JacksonAdapter implements SerializerAdapter {
             .registerModule(DateTimeRfc1123Serializer.getModule())
             .registerModule(DurationSerializer.getModule())
             .registerModule(HttpHeadersSerializer.getModule())
+            .registerModule(JsonPatchDocumentSerializer.getModule())
+            .registerModule(JsonPatchOperationSerializer.getModule())
             .registerModule(UnixTimeSerializer.getModule());
         mapper.setVisibility(mapper.getSerializationConfig().getDefaultVisibilityChecker()
             .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
