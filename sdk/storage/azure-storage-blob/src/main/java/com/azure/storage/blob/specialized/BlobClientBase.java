@@ -255,7 +255,10 @@ public class BlobClientBase {
 
         BlobRequestConditions requestConditions = options.getRequestConditions() == null
             ? new BlobRequestConditions() : options.getRequestConditions();
-        requestConditions.setIfMatch(properties.getETag());
+        // Target the user specified version by default. If not provided, target the latest version.
+        if (requestConditions.getIfMatch() == null) {
+            requestConditions.setIfMatch(properties.getETag());
+        }
 
         return new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize,
             requestConditions, properties);
