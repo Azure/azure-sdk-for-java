@@ -3,12 +3,19 @@
 
 package com.azure.core.serializer.json.jackson;
 
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Fluent builder class that configures and instantiates instances of {@link JacksonJsonSerializer}.
  */
 public final class JacksonJsonSerializerBuilder {
+    private static final ObjectMapper DEFAULT_MAPPER = new JacksonAdapter().serializer()
+        .setSerializationInclusion(JsonInclude.Include.USE_DEFAULTS)
+        .setDefaultVisibility(JsonAutoDetect.Value.defaultVisibility());
+
     private ObjectMapper objectMapper;
 
     /**
@@ -17,16 +24,16 @@ public final class JacksonJsonSerializerBuilder {
      * @return A new instance of {@link JacksonJsonSerializer}.
      */
     public JacksonJsonSerializer build() {
-        if (objectMapper == null) {
-            return new JacksonJsonSerializer(new ObjectMapper());
-        }
-        return new JacksonJsonSerializer(objectMapper);
+        return (objectMapper == null)
+            ? new JacksonJsonSerializer(DEFAULT_MAPPER)
+            : new JacksonJsonSerializer(objectMapper);
     }
 
     /**
      * Sets the {@link ObjectMapper} that will be used during serialization.
      * <p>
-     * If this is set to {@code null} the default {@link ObjectMapper} will be used.
+     * If this is set to {@code null} {@link JacksonAdapter#serializer()} with default visibility and non-null inclusion
+     * will be used as the default.
      *
      * @param objectMapper {@link ObjectMapper} that will be used during serialization.
      * @return The updated JacksonJsonSerializerBuilder class.
