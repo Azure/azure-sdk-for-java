@@ -48,13 +48,13 @@ public class ComponentsTests extends ComponentsTestBase {
             Iterable<DigitalTwinsModelData> createdList = client.createModels(modelsList);
             logger.info("Created models successfully");
 
-            BasicDigitalTwin createdTwin = client.createDigitalTwin(roomWithWifiTwinId, deserializeJsonString(roomWithWifiTwin, BasicDigitalTwin.class), BasicDigitalTwin.class);
+            BasicDigitalTwin createdTwin = client.createOrReplaceDigitalTwin(roomWithWifiTwinId, deserializeJsonString(roomWithWifiTwin, BasicDigitalTwin.class), BasicDigitalTwin.class);
 
             logger.info("Created {} twin successfully", createdTwin.getId());
             assertEquals(createdTwin.getId(), roomWithWifiTwinId);
 
             // Get the component
-            Response<String> getComponentResponse = client.getComponentWithResponse(roomWithWifiTwinId, wifiComponentName, String.class, null, Context.NONE);
+            Response<String> getComponentResponse = client.getComponentWithResponse(roomWithWifiTwinId, wifiComponentName, String.class, Context.NONE);
             assertEquals(getComponentResponse.getStatusCode(), HttpURLConnection.HTTP_OK);
 
             // Update component

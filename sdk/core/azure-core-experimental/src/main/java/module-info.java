@@ -5,11 +5,10 @@ module com.azure.core.experimental {
     requires transitive com.azure.core;
 
     exports com.azure.core.experimental.geojson;
-    exports com.azure.core.experimental.jsonpatch;
     exports com.azure.core.experimental.serializer;
     exports com.azure.core.experimental.util;
 
-    opens com.azure.core.experimental.jsonpatch to com.fasterxml.jackson.databind;
+    opens com.azure.core.experimental.geojson to com.fasterxml.jackson.databind;
 
     uses com.azure.core.experimental.serializer.AvroSerializerProvider;
 }

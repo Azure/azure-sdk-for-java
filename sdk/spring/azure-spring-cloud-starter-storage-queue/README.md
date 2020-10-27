@@ -12,10 +12,10 @@ The Spring Cloud Storage Queue starter helps developers to finish the auto-confi
 - [Maven][maven] 3.0 and above
 
 ### Include the package
-[//]: # ({x-version-update-start;com.azure:azure-spring-cloud-starter-storage-queue;current})
+[//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-starter-storage-queue;current})
 ```xml
 <dependency>
-    <groupId>com.azure</groupId>
+    <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-cloud-starter-storage-queue</artifactId>
     <version>2.0.0-beta.1</version>
 </dependency>
@@ -66,5 +66,5 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [azure_subscription]: https://azure.microsoft.com/free
 [logging_doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
-[maven]: http://maven.apache.org/
+[maven]: https://maven.apache.org/
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable

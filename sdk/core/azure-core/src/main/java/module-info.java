@@ -37,9 +37,6 @@ module com.azure.core {
     opens com.azure.core.implementation.logging to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation.serializer to com.fasterxml.jackson.databind;
 
-    // Exports HttpProviders#getAllHttpClients API to azure-core-test module
-    exports com.azure.core.implementation.http to com.azure.core.test;
-
     // Service Provider Interfaces
     uses com.azure.core.http.HttpClientProvider;
     uses com.azure.core.http.policy.BeforeRetryPolicyProvider;

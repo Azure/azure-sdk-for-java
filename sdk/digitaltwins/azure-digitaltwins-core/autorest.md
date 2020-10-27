@@ -40,5 +40,14 @@ java:
     context-client-method-parameter: true
     custom-types-subpackage: models
     required-fields-as-ctor-args: true
-    custom-types: DigitalTwinModelsAddOptions,DigitalTwinModelsDeleteOptions,DigitalTwinModelsGetByIdOptions,DigitalTwinModelsUpdateOptions,DigitalTwinsAddOptions,DigitalTwinsAddRelationshipOptions,DigitalTwinsDeleteOptions,DigitalTwinsDeleteRelationshipOptions,DigitalTwinsGetByIdOptions,DigitalTwinsGetComponentOptions,DigitalTwinsGetRelationshipByIdOptions,DigitalTwinsListIncomingRelationshipsOptions,DigitalTwinsListRelationshipsOptions,DigitalTwinsUpdateComponentOptions,DigitalTwinsUpdateOptions,DigitalTwinsUpdateRelationshipOptions,EventRoutesAddOptions,EventRoutesDeleteOptions,EventRoutesGetByIdOptions,EventRoutesListOptions,QueryTwinsOptions
+```
+
+## This directive removes the specified enum values from the swagger so the code generator will expose IfNonMatch header as an option instead of always attaching it to requests with its only default value.
+``` yaml
+
+directive:
+- from: swagger-document
+  where: $..[?(@.name=='If-None-Match')]
+  transform: delete $.enum;
+
 ```

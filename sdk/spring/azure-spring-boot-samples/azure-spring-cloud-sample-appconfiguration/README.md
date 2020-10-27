@@ -1,13 +1,13 @@
 # Spring Cloud Azure Config Sample client library for Java
 
-This sample describes how to use [spring-cloud-starter-azure-appconfiguration-config](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config) to load configuration properties from Azure Configuration Service to Spring Environment.
+This sample describes how to use [azure-spring-cloud-starter-appconfiguration-config](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config) to load configuration properties from Azure Configuration Service to Spring Environment.
 
 ## Key concepts
 ## Getting started
 ### Prerequisite
 
 * A [Java Development Kit (JDK)][jdk_link], version 8.
-* [Apache Maven](http://maven.apache.org/), version 3.0 or later.
+* [Apache Maven](https://maven.apache.org/), version 3.0 or later.
 
 ### How to run
 
@@ -22,6 +22,7 @@ This sample describes how to use [spring-cloud-starter-azure-appconfiguration-co
 Change the connection-string value with the Access Key value of the Configuration Store created above.
 
 #### Run the application
+First, we need to ensure that this [instruction] is completed before run.
 
 Start the application and access http://localhost:8080 to check the returned value. Different commands for different scenarios are listed below.
 
@@ -60,3 +61,4 @@ Please refer to this [README](https://github.com/Azure/azure-sdk-for-java/blob/m
 
 <!-- LINKS -->
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[instruction]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source

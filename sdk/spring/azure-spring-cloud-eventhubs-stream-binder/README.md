@@ -12,10 +12,10 @@ microservice using **Spring Cloud Stream** based on [Azure Event Hub][azure_even
 - [Maven][maven] 3.0 and above
 
 ### Include the package
-[//]: # ({x-version-update-start;com.azure:azure-spring-cloud-eventhubs-stream-binder;current})
+[//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-eventhubs-stream-binder;current})
 ```xml
 <dependency>
-    <groupId>com.azure</groupId>
+    <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-cloud-eventhubs-stream-binder</artifactId>
     <version>2.0.0-beta.1</version>
 </dependency>
@@ -188,6 +188,6 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [logging_doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
 [eventhubs_multibinders_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-multibinders
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
-[maven]: http://maven.apache.org/
+[maven]: https://maven.apache.org/
 [azure_event_hub]: https://azure.microsoft.com/services/event-hubs/
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable

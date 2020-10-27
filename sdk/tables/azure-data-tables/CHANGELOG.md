@@ -2,6 +2,14 @@
 
 ## 12.0.0-beta.3 (Unreleased)
 
+### Key Bug Fixes
+
+- The table client returned from a service client's `getTableClient(tableName)` method was incorrectly configured,
+  causing operations to fail. [#16292](https://github.com/Azure/azure-sdk-for-java/issues/16292)
+- Calling `getApiVersion()` on any client no longer causes an exception.
+- Passing a `TokenCredential` to a client builder mistakenly assumed it was always a shared key credential.
+- Client methods that accept a `timeout` and/or `context` parameter will use default values if either parameter is set
+  to `null`. [#16386](https://github.com/Azure/azure-sdk-for-java/issues/16386)
 
 ## 12.0.0-beta.2 (2020-10-06)
 

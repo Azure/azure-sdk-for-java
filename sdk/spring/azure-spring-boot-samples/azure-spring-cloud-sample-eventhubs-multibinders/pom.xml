@@ -11,8 +11,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>azure-spring-cloud-sample-eventhubs-multibinders</artifactId>
-  <groupId>com.azure</groupId>
-  <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-spring-cloud-sample-eventhubs-multibinders;current} -->
+  <groupId>com.azure.spring</groupId>
+  <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-sample-eventhubs-multibinders;current} -->
   <name>Azure Spring Cloud Event Hub Multiple Binders Sample</name>
 
   <dependencyManagement>
@@ -20,7 +20,7 @@
       <dependency>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-dependencies</artifactId>
-        <version>Hoxton.SR7</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-dependencies;external_dependency} -->
+        <version>Hoxton.SR8</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-dependencies;external_dependency} -->
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -33,9 +33,9 @@
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.azure</groupId>
+      <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-eventhubs-stream-binder</artifactId>
-      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-cloud-eventhubs-stream-binder;current} -->
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-eventhubs-stream-binder;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

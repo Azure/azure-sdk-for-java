@@ -9,10 +9,10 @@ The project provides a Spring Boot Starter `spring-starter-azure-storage` to aut
 - [Maven][maven] 3.0 and above
 
 ### Include the package
-[//]: # ({x-version-update-start;com.azure:azure-spring-starter-storage;current})
+[//]: # ({x-version-update-start;com.azure.spring:azure-spring-starter-storage;current})
 ```xml
 <dependency>
-    <groupId>com.azure</groupId>
+    <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-starter-storage</artifactId>
     <version>2.0.0-beta.1</version>
 </dependency>
@@ -98,7 +98,7 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [azure_subscription]: https://azure.microsoft.com/free
 [logging_doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
-[maven]: http://maven.apache.org/
+[maven]: https://maven.apache.org/
 [azure_blob_storage]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-introduction
 [azure_storage]: https://azure.microsoft.com/services/storage/blobs/
 [other_operation]: https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#resources

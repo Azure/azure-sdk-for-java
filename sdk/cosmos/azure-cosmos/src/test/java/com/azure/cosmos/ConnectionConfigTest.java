@@ -214,7 +214,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
     private void validateDirectConfig(ConnectionPolicy connectionPolicy, DirectConnectionConfig directConnectionConfig) {
         assertThat(connectionPolicy.getConnectTimeout()).isEqualTo(directConnectionConfig.getConnectTimeout());
         assertThat(connectionPolicy.getIdleTcpConnectionTimeout()).isEqualTo(directConnectionConfig.getIdleConnectionTimeout());
-        assertThat(connectionPolicy.getIdleEndpointTimeout()).isEqualTo(directConnectionConfig.getIdleEndpointTimeout());
+        assertThat(connectionPolicy.getIdleTcpEndpointTimeout()).isEqualTo(directConnectionConfig.getIdleEndpointTimeout());
         assertThat(connectionPolicy.getMaxConnectionsPerEndpoint()).isEqualTo(directConnectionConfig.getMaxConnectionsPerEndpoint());
         assertThat(connectionPolicy.getMaxRequestsPerConnection()).isEqualTo(directConnectionConfig.getMaxRequestsPerConnection());
     }

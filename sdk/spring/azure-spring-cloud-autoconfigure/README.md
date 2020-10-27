@@ -17,10 +17,10 @@ Support": this will configure the project to make sure you can integrate easily 
 For instance, let's assume that you want to use Event Hubs starter, you can add the usual `spring-cloud-starter-azure-eventhubs`
 dependency to your project and the Spring Cloud auto-configuration will kick-in: 
 
-[//]: # ({x-version-update-start;com.microsoft.azure:spring-cloud-starter-azure-eventhubs;current})
+[//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-starter-eventhubs;current})
 ```xml
 <dependency>
-  <groupId>com.azure</groupId>
+  <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-starter-eventhubs</artifactId>
   <version>2.0.0-beta.1</version>
 </dependency>
@@ -99,7 +99,7 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [spring_io]: https://start.spring.io
 [logging_doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
-[maven]: http://maven.apache.org/
+[maven]: https://maven.apache.org/
 [app_configuration]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config
 [cache]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-cache
 [event_hubs]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-eventhubs

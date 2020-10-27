@@ -10,7 +10,7 @@
     <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
   </parent>
 
-  <groupId>com.azure</groupId>
+  <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-data-sample-gremlin-web-service</artifactId>
   <name>Spring Data gremlin - Web Service</name>
 
@@ -36,9 +36,9 @@
     </dependency>
 
     <dependency>
-      <groupId>com.azure</groupId>
+      <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-data-gremlin</artifactId>
-      <version>2.3.1-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-gremlin;current} -->
+      <version>2.3.1-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-data-gremlin;current} -->
     </dependency>
 
   </dependencies>

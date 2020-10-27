@@ -25,32 +25,32 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinsAddOptions;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinsAddRelationshipOptions;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsAddRelationshipResponse;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsAddResponse;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinsDeleteOptions;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinsDeleteRelationshipOptions;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinsGetByIdOptions;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsGetByIdResponse;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinsGetComponentOptions;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsGetComponentResponse;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinsGetRelationshipByIdOptions;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsGetRelationshipByIdResponse;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinsListIncomingRelationshipsOptions;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinsListRelationshipsOptions;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsSendComponentTelemetryOptions;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsSendTelemetryOptions;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinsUpdateComponentOptions;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsUpdateComponentResponse;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinsUpdateOptions;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinsUpdateRelationshipOptions;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsUpdateRelationshipResponse;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsUpdateResponse;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
 import com.azure.digitaltwins.core.implementation.models.IncomingRelationship;
 import com.azure.digitaltwins.core.implementation.models.IncomingRelationshipCollection;
 import com.azure.digitaltwins.core.implementation.models.RelationshipCollection;
-import com.azure.digitaltwins.core.models.DigitalTwinsAddOptions;
-import com.azure.digitaltwins.core.models.DigitalTwinsAddRelationshipOptions;
-import com.azure.digitaltwins.core.models.DigitalTwinsDeleteOptions;
-import com.azure.digitaltwins.core.models.DigitalTwinsDeleteRelationshipOptions;
-import com.azure.digitaltwins.core.models.DigitalTwinsGetByIdOptions;
-import com.azure.digitaltwins.core.models.DigitalTwinsGetComponentOptions;
-import com.azure.digitaltwins.core.models.DigitalTwinsGetRelationshipByIdOptions;
-import com.azure.digitaltwins.core.models.DigitalTwinsListIncomingRelationshipsOptions;
-import com.azure.digitaltwins.core.models.DigitalTwinsListRelationshipsOptions;
-import com.azure.digitaltwins.core.models.DigitalTwinsUpdateComponentOptions;
-import com.azure.digitaltwins.core.models.DigitalTwinsUpdateOptions;
-import com.azure.digitaltwins.core.models.DigitalTwinsUpdateRelationshipOptions;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
@@ -352,7 +352,6 @@ public final class DigitalTwinsImpl {
         if (digitalTwinsAddOptions != null) {
             digitalTwinsAddOptions.validate();
         }
-        final String ifNoneMatch = "*";
         String traceparentInternal = null;
         if (digitalTwinsAddOptions != null) {
             traceparentInternal = digitalTwinsAddOptions.getTraceparent();
@@ -363,6 +362,11 @@ public final class DigitalTwinsImpl {
             tracestateInternal = digitalTwinsAddOptions.getTracestate();
         }
         String tracestate = tracestateInternal;
+        String ifNoneMatchInternal = null;
+        if (digitalTwinsAddOptions != null) {
+            ifNoneMatchInternal = digitalTwinsAddOptions.getIfNoneMatch();
+        }
+        String ifNoneMatch = ifNoneMatchInternal;
         return service.add(
                 this.client.getHost(),
                 traceparent,
@@ -574,7 +578,6 @@ public final class DigitalTwinsImpl {
         if (digitalTwinsAddRelationshipOptions != null) {
             digitalTwinsAddRelationshipOptions.validate();
         }
-        final String ifNoneMatch = "*";
         String traceparentInternal = null;
         if (digitalTwinsAddRelationshipOptions != null) {
             traceparentInternal = digitalTwinsAddRelationshipOptions.getTraceparent();
@@ -585,6 +588,11 @@ public final class DigitalTwinsImpl {
             tracestateInternal = digitalTwinsAddRelationshipOptions.getTracestate();
         }
         String tracestate = tracestateInternal;
+        String ifNoneMatchInternal = null;
+        if (digitalTwinsAddRelationshipOptions != null) {
+            ifNoneMatchInternal = digitalTwinsAddRelationshipOptions.getIfNoneMatch();
+        }
+        String ifNoneMatch = ifNoneMatchInternal;
         return service.addRelationship(
                 this.client.getHost(),
                 traceparent,

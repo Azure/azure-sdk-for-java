@@ -50,6 +50,10 @@ public final class SearchIndexerConverter {
         if (obj.getOutputFieldMappings() != null) {
             searchIndexer.setOutputFieldMappings(obj.getOutputFieldMappings());
         }
+
+        if (obj.getEncryptionKey() != null) {
+            searchIndexer.setEncryptionKey(SearchResourceEncryptionKeyConverter.map(obj.getEncryptionKey()));
+        }
         return searchIndexer;
     }
 
@@ -95,6 +99,10 @@ public final class SearchIndexerConverter {
 
         if (obj.getOutputFieldMappings() != null) {
             searchIndexer.setOutputFieldMappings(obj.getOutputFieldMappings());
+        }
+
+        if (obj.getEncryptionKey() != null) {
+            searchIndexer.setEncryptionKey(SearchResourceEncryptionKeyConverter.map(obj.getEncryptionKey()));
         }
         return searchIndexer;
     }

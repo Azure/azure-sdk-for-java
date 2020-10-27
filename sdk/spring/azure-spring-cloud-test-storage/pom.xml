@@ -11,9 +11,9 @@
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
 
-  <groupId>com.azure</groupId>
+  <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-test-storage</artifactId>
-  <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-spring-cloud-test-storage;current} -->
+  <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-test-storage;current} -->
 
   <properties>
     <skipSpringITs>true</skipSpringITs>
@@ -21,9 +21,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.azure</groupId>
+      <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-storage</artifactId>
-      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-cloud-storage;current} -->
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-storage;current} -->
       <exclusions>
         <exclusion>
           <artifactId>gson</artifactId>
@@ -43,9 +43,9 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>com.azure</groupId>
+      <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-test-core</artifactId>
-      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-spring-boot-test-core;current} -->
+      <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-test-core;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -67,8 +67,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-starter-web:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter-actuator:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-web:[2.3.4.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-actuator:[2.3.4.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

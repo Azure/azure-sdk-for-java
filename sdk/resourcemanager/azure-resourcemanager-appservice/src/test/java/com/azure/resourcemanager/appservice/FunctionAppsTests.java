@@ -55,7 +55,7 @@ public class FunctionAppsTests extends AppServiceTest {
         rgName1 = generateRandomResourceName("javacsmrg", 20);
         rgName2 = generateRandomResourceName("javacsmrg", 20);
 
-        storageManager = StorageManager.authenticate(httpPipeline, profile);
+        storageManager = buildManager(StorageManager.class, httpPipeline, profile);
 
         super.initializeClients(httpPipeline, profile);
     }
