@@ -13,20 +13,23 @@ import reactor.core.publisher.Mono;
 import reactor.util.context.Context;
 
 import java.util.Objects;
+import java.util.concurrent.Semaphore;
 import java.util.function.Function;
 
 /**
  * Flux operator that auto-completes or auto-abandons messages when control is returned successfully.
  */
 final class FluxAutoComplete extends FluxOperator<ServiceBusReceivedMessageContext, ServiceBusReceivedMessageContext> {
+    private final Semaphore completionLock;
     private final Function<ServiceBusReceivedMessageContext, Mono<Void>> onComplete;
     private final Function<ServiceBusReceivedMessageContext, Mono<Void>> onAbandon;
     private final ClientLogger logger = new ClientLogger(FluxAutoComplete.class);
 
-    FluxAutoComplete(Flux<? extends ServiceBusReceivedMessageContext> upstream,
+    FluxAutoComplete(Flux<? extends ServiceBusReceivedMessageContext> upstream, Semaphore completionLock,
         Function<ServiceBusReceivedMessageContext, Mono<Void>> onComplete,
         Function<ServiceBusReceivedMessageContext, Mono<Void>> onAbandon) {
         super(upstream);
+        this.completionLock = completionLock;
         this.onComplete = Objects.requireNonNull(onComplete, "'onComplete' cannot be null.");
         this.onAbandon = Objects.requireNonNull(onAbandon, "'onAbandon' cannot be null.");
     }
@@ -41,7 +44,7 @@ final class FluxAutoComplete extends FluxOperator<ServiceBusReceivedMessageConte
         Objects.requireNonNull(coreSubscriber, "'coreSubscriber' cannot be null.");
 
         final AutoCompleteSubscriber subscriber =
-            new AutoCompleteSubscriber(coreSubscriber, onComplete, onAbandon, logger);
+            new AutoCompleteSubscriber(coreSubscriber, completionLock, onComplete, onAbandon, logger);
 
         source.subscribe(subscriber);
     }
@@ -50,14 +53,17 @@ final class FluxAutoComplete extends FluxOperator<ServiceBusReceivedMessageConte
         private final CoreSubscriber<? super ServiceBusReceivedMessageContext> downstream;
         private final Function<ServiceBusReceivedMessageContext, Mono<Void>> onComplete;
         private final Function<ServiceBusReceivedMessageContext, Mono<Void>> onAbandon;
+        private final Semaphore semaphore;
         private final ClientLogger logger;
 
         AutoCompleteSubscriber(CoreSubscriber<? super ServiceBusReceivedMessageContext> downstream,
+            Semaphore completionLock,
             Function<ServiceBusReceivedMessageContext, Mono<Void>> onComplete,
             Function<ServiceBusReceivedMessageContext, Mono<Void>> onAbandon, ClientLogger logger) {
             this.downstream = downstream;
             this.onComplete = onComplete;
             this.onAbandon = onAbandon;
+            this.semaphore = completionLock;
             this.logger = logger;
         }
 
@@ -73,7 +79,12 @@ final class FluxAutoComplete extends FluxOperator<ServiceBusReceivedMessageConte
             final ServiceBusReceivedMessage message = value.getMessage();
             final String sequenceNumber = message != null ? String.valueOf(message.getSequenceNumber()) : "n/a";
 
-            logger.verbose("Passing message downstream. sequenceNumber[{}]", sequenceNumber);
+            logger.verbose("ON NEXT: Passing message downstream. sequenceNumber[{}]", sequenceNumber);
+            try {
+                semaphore.acquire();
+            } catch (InterruptedException e) {
+                logger.info("Unable to acquire semaphore.", e);
+            }
 
             try {
                 downstream.onNext(value);
@@ -83,6 +94,9 @@ final class FluxAutoComplete extends FluxOperator<ServiceBusReceivedMessageConte
                     sequenceNumber, e);
 
                 applyWithCatch(onAbandon, value, "abandon");
+            } finally {
+                logger.verbose("ON NEXT: Finished. sequenceNumber[{}]", sequenceNumber);
+                semaphore.release();
             }
         }
 
@@ -120,9 +134,7 @@ final class FluxAutoComplete extends FluxOperator<ServiceBusReceivedMessageConte
         private void applyWithCatch(Function<ServiceBusReceivedMessageContext, Mono<Void>> function,
             ServiceBusReceivedMessageContext message, String operation) {
             try {
-                logger.warning("COMPLETE-OPERATION BEFORE.");
                 function.apply(message).block();
-                logger.warning("COMPLETE-OPERATION AFTER.");
             } catch (Exception e) {
                 logger.warning("Unable to '{}' message.", operation, e);
                 onError(e);

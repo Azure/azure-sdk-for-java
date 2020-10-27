@@ -35,6 +35,7 @@ import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
@@ -104,10 +105,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private final MessageSerializer messageSerializer;
     private final Runnable onClientClose;
     private final ServiceBusSessionManager sessionManager;
+    private final Semaphore completionLock = new Semaphore(1);
 
     // Starting at -1 because that is before the beginning of the stream.
     private final AtomicLong lastPeekedSequenceNumber = new AtomicLong(-1);
-
     private final AtomicReference<ServiceBusAsyncConsumer> consumer = new AtomicReference<>();
 
     /**
@@ -603,7 +604,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         final Flux<ServiceBusReceivedMessageContext> withAutoComplete;
         if (receiverOptions.isEnableAutoComplete()) {
-            withAutoComplete = new FluxAutoComplete(withAutoLockRenewal,
+            withAutoComplete = new FluxAutoComplete(withAutoLockRenewal, completionLock,
                 context -> context.getMessage() != null ? complete(context.getMessage()) : Mono.empty(),
                 context -> context.getMessage() != null ? abandon(context.getMessage()) : Mono.empty());
         } else {
@@ -965,6 +966,13 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return;
         }
 
+        try {
+            completionLock.acquire();
+        } catch (InterruptedException e) {
+            logger.info("Unable to obtain completion lock.", e);
+        }
+
+        // Blocking until the last message has been completed.
         logger.info("Removing receiver links.");
         final ServiceBusAsyncConsumer disposed = consumer.getAndSet(null);
         if (disposed != null) {

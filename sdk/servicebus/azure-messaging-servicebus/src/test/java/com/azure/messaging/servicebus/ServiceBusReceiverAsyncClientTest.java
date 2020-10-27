@@ -75,7 +75,6 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -920,16 +919,17 @@ class ServiceBusReceiverAsyncClientTest {
 
         when(amqpReceiveLink.updateDisposition(lockToken, Accepted.getInstance())).thenReturn(Mono.empty());
 
-        // Act & Assert
-        StepVerifier.create(receiver2.receiveMessages().take(numberOfEvents))
-            .then(() -> messages.forEach(m -> messageSink.next(m)))
-            .expectNextCount(numberOfEvents)
-            .verifyComplete();
+        try {
+            // Act & Assert
+            StepVerifier.create(receiver2.receiveMessages().take(numberOfEvents))
+                .then(() -> messages.forEach(m -> messageSink.next(m)))
+                .expectNextCount(numberOfEvents)
+                .verifyComplete();
+        } finally {
+          receiver2.close();
+        }
 
-        // Since the completion event is scheduled on another scheduler. the main thread can return control before
-        // the operation has actually completed. However, the event is already scheduled on the reactor.
-        verify(sessionReceiveLink, atLeast(numberOfEvents - 1))
-            .updateDisposition(lockToken, Accepted.getInstance());
+        verify(amqpReceiveLink, times(numberOfEvents)).updateDisposition(lockToken, Accepted.getInstance());
     }
 
     @Test
@@ -950,16 +950,17 @@ class ServiceBusReceiverAsyncClientTest {
 
         when(sessionReceiveLink.updateDisposition(lockToken, Accepted.getInstance())).thenReturn(Mono.empty());
 
-        // Act & Assert
-        StepVerifier.create(sessionReceiver2.receiveMessages().take(numberOfEvents))
-            .then(() -> messages.forEach(m -> messageSink.next(m)))
-            .expectNextCount(numberOfEvents)
-            .verifyComplete();
+        try {
+            // Act & Assert
+            StepVerifier.create(sessionReceiver2.receiveMessages().take(numberOfEvents))
+                .then(() -> messages.forEach(m -> messageSink.next(m)))
+                .expectNextCount(numberOfEvents)
+                .verifyComplete();
+        } finally {
+            sessionReceiver2.close();
+        }
 
-        // Since the completion event is scheduled on another scheduler. the main thread can return control before
-        // the operation has actually completed. However, the event is already scheduled on the reactor.
-        verify(sessionReceiveLink, atLeast(numberOfEvents - 1))
-            .updateDisposition(lockToken, Accepted.getInstance());
+        verify(sessionReceiveLink, times(numberOfEvents)).updateDisposition(lockToken, Accepted.getInstance());
     }
 
     private List<Message> getMessages() {
