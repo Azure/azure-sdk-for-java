@@ -37,6 +37,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -62,6 +63,9 @@ public class AzureADGraphClient {
     private static final String OBO_TOKEN_MAP = "oboTokenMap";
     private static final String SUPPORTED_PERMISSIONS = "supportedPermissions";
     private static final long TIME_INTERNAL_FOR_OBO_TOKEN_EXPIRATION = 60 * 1000;
+    private static final Set<String> OPENID_PERMISSIONS = new HashSet<>(Arrays.asList("openid", "profile", "email",
+        "offline_access"));
+
     private final ServiceEndpoints serviceEndpoints;
     private final AADAuthenticationProperties aadAuthenticationProperties;
     private final boolean graphApiVersionIsV2;
@@ -189,8 +193,7 @@ public class AzureADGraphClient {
      * @throws ServiceUnavailableException If fail to acquire the token.
      */
     public String getOboToken(Set<String> permissions) throws ServiceUnavailableException {
-        Set<String> openidPermissions = new HashSet<>(Arrays.asList("openid", "profile", "email", "offline_access"));
-        if (!openidPermissions.containsAll(permissions)) {
+        if (!OPENID_PERMISSIONS.containsAll(permissions)) {
             throw new IllegalArgumentException("Permissions should be a sub collection of {openid, profile, email, "
                 + "offline_access}");
         }
@@ -215,7 +218,7 @@ public class AzureADGraphClient {
 
         Set<String> uniformedPermissionSet = permissions.stream()
                                                         .map(String::trim)
-                                                        .map(String::toLowerCase)
+                                                        .map(s -> s.toLowerCase(Locale.ENGLISH))
                                                         .filter(s -> !s.isEmpty())
                                                         .collect(Collectors.toSet());
 
@@ -239,9 +242,8 @@ public class AzureADGraphClient {
     }
 
     private Set<String> convertToScope(String applicationIdUri, Set<String> permissions) {
-        Set<String> openidPermissions = new HashSet<>(Arrays.asList("openid", "profile", "email", "offline_access"));
         return permissions.stream()
-                          .map(scope -> openidPermissions.contains(scope) ? scope : applicationIdUri + scope)
+                          .map(scope -> OPENID_PERMISSIONS.contains(scope) ? scope : applicationIdUri + scope)
                           .collect(Collectors.toSet());
     }
 
@@ -282,7 +284,7 @@ public class AzureADGraphClient {
             final OnBehalfOfParameters onBehalfOfParameters = OnBehalfOfParameters.builder(scopes, assertion).build();
             result = application.acquireToken(onBehalfOfParameters).get();
 
-            Set<String> acquiredPermissions = Arrays.stream(result.scopes().toLowerCase().split(" "))
+            Set<String> acquiredPermissions = Arrays.stream(result.scopes().toLowerCase(Locale.ENGLISH).split(" "))
                                                     .map(s -> s.startsWith(applicationIdUri)
                                                         ? s.split(applicationIdUri)[1] : s)
                                                     .collect(Collectors.toSet());

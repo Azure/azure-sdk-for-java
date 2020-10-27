@@ -29,6 +29,7 @@ import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -90,7 +91,7 @@ public class AADOAuth2AutoConfiguration {
         if (!scopes.toString().contains(".default")) {
             scopes = scopes.stream()
                            .map(String::trim)
-                           .map(String::toLowerCase)
+                           .map(s -> s.toLowerCase(Locale.ENGLISH))
                            .filter(this::isGraphApiScope)
                            .collect(Collectors.toList());
             if (aadAuthenticationProperties.allowedGroupsConfigured()
