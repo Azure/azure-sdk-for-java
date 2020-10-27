@@ -154,10 +154,6 @@ function Publish-java-GithubIODocs ($DocLocation, $PublicArtifactLocation)
   }
 }
 
-function Get-java-CSVMetadata () {
-  return $uniquePackages
-}
-
 function Get-java-GenerateGithubIoDocIndex() {
   $metadata = Get-CSVMetadata -MetadataUri $MetadataUri
   $clientPackages = $metadata | Where-Object { $_.GroupId -eq 'com.azure' } 
