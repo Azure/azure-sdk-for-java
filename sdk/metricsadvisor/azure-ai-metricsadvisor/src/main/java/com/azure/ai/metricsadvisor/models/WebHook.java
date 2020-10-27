@@ -5,16 +5,12 @@ package com.azure.ai.metricsadvisor.models;
 
 import com.azure.core.http.HttpHeaders;
 
-import java.util.List;
-
 /**
  * A hook that describes web-hook based incident alerts notification.
  */
 public final class WebHook extends Hook {
-    private String id;
     private String name;
     private String description;
-    private List<String> admins;
     private String endpoint;
     private String externalLink;
     private String username;
@@ -36,11 +32,6 @@ public final class WebHook extends Hook {
     }
 
     @Override
-    public String getId() {
-        return this.id;
-    }
-
-    @Override
     public String getName() {
         return this.name;
     }
@@ -48,11 +39,6 @@ public final class WebHook extends Hook {
     @Override
     public String getDescription() {
         return this.description;
-    }
-
-    @Override
-    public List<String> getAdmins() {
-        return this.admins;
     }
 
     /**

@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.indexes.models.EdgeNGramTokenFilter;
 import com.azure.search.documents.indexes.models.EdgeNGramTokenFilterSide;
 
@@ -25,7 +24,7 @@ public final class EdgeNGramTokenFilterConverter {
             return null;
         }
         EdgeNGramTokenFilter edgeNGramTokenFilter = new EdgeNGramTokenFilter(obj.getName());
-        PrivateFieldAccessHelper.set(edgeNGramTokenFilter, ODATA_FIELD_NAME, V1_ODATA_TYPE);
+        EdgeNGramTokenFilterHelper.setODataType(edgeNGramTokenFilter, V1_ODATA_TYPE);
 
         Integer maxGram = obj.getMaxGram();
         edgeNGramTokenFilter.setMaxGram(maxGram);
@@ -48,7 +47,7 @@ public final class EdgeNGramTokenFilterConverter {
             return null;
         }
         EdgeNGramTokenFilter edgeNGramTokenFilter = new EdgeNGramTokenFilter(obj.getName());
-        PrivateFieldAccessHelper.set(edgeNGramTokenFilter, ODATA_FIELD_NAME, V2_ODATA_TYPE);
+        EdgeNGramTokenFilterHelper.setODataType(edgeNGramTokenFilter, V2_ODATA_TYPE);
 
         Integer maxGram = obj.getMaxGram();
         edgeNGramTokenFilter.setMaxGram(maxGram);
@@ -72,7 +71,7 @@ public final class EdgeNGramTokenFilterConverter {
             return null;
         }
 
-        String identifier = PrivateFieldAccessHelper.get(obj, ODATA_FIELD_NAME, String.class);
+        String identifier = EdgeNGramTokenFilterHelper.getODataType(obj);
         EdgeNGramTokenFilterSide side = obj.getSide() == null ? null : obj.getSide();
 
         if (V1_ODATA_TYPE.equals(identifier)) {

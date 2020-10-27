@@ -15,15 +15,15 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder;
-import com.azure.messaging.servicebus.models.AbandonOptions;
-import com.azure.messaging.servicebus.models.CompleteOptions;
-import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.LockContainer;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
+import com.azure.messaging.servicebus.models.AbandonOptions;
+import com.azure.messaging.servicebus.models.CompleteOptions;
+import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.BaseSubscriber;
@@ -35,6 +35,7 @@ import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
@@ -104,10 +105,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private final MessageSerializer messageSerializer;
     private final Runnable onClientClose;
     private final ServiceBusSessionManager sessionManager;
+    private final Semaphore completionLock = new Semaphore(1);
 
     // Starting at -1 because that is before the beginning of the stream.
     private final AtomicLong lastPeekedSequenceNumber = new AtomicLong(-1);
-
     private final AtomicReference<ServiceBusAsyncConsumer> consumer = new AtomicReference<>();
 
     /**
@@ -589,7 +590,28 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return An <b>infinite</b> stream of messages from the Service Bus entity.
      */
     public Flux<ServiceBusReceivedMessageContext> receiveMessages() {
-        return receiveMessagesInternal()
+        final Flux<ServiceBusReceivedMessageContext> messageFlux = sessionManager != null
+            ? sessionManager.receive()
+            : getOrCreateConsumer().receive().map(ServiceBusReceivedMessageContext::new);
+
+        final Flux<ServiceBusReceivedMessageContext> withAutoLockRenewal;
+        if (receiverOptions.isAutoLockRenewEnabled()) {
+            withAutoLockRenewal = new FluxAutoLockRenew(messageFlux, receiverOptions.getMaxLockRenewDuration(),
+                renewalContainer, this::renewMessageLock);
+        } else {
+            withAutoLockRenewal = messageFlux;
+        }
+
+        final Flux<ServiceBusReceivedMessageContext> withAutoComplete;
+        if (receiverOptions.isEnableAutoComplete()) {
+            withAutoComplete = new FluxAutoComplete(withAutoLockRenewal, completionLock,
+                context -> context.getMessage() != null ? complete(context.getMessage()) : Mono.empty(),
+                context -> context.getMessage() != null ? abandon(context.getMessage()) : Mono.empty());
+        } else {
+            withAutoComplete = withAutoLockRenewal;
+        }
+
+        return withAutoComplete
             .onErrorMap(throwable -> {
                 if (throwable instanceof AmqpException) {
                     return new ServiceBusException((AmqpException) throwable, ServiceBusErrorSource.RECEIVE);
@@ -951,6 +973,13 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return;
         }
 
+        try {
+            completionLock.acquire();
+        } catch (InterruptedException e) {
+            logger.info("Unable to obtain completion lock.", e);
+        }
+
+        // Blocking until the last message has been completed.
         logger.info("Removing receiver links.");
         final ServiceBusAsyncConsumer disposed = consumer.getAndSet(null);
         if (disposed != null) {
@@ -984,27 +1013,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return managementNodeLocks.containsUnexpired(lockToken);
     }
 
-    /**
-     * Returns source of messages based on how this receiver is configured.
-     */
-    Flux<ServiceBusReceivedMessageContext> receiveMessagesInternal() {
-        if (sessionManager != null) {
-            return sessionManager.receive();
-        } else {
-            final Flux<ServiceBusReceivedMessageContext> messageFlux = getOrCreateConsumer().receive()
-                .map(ServiceBusReceivedMessageContext::new);
-            if (receiverOptions.isAutoLockRenewEnabled()) {
-                return new FluxAutoLockRenew(messageFlux, receiverOptions.getMaxLockRenewDuration(), renewalContainer,
-                    this::renewMessageLock);
-            } else {
-                return messageFlux;
-            }
-        }
-    }
-
-    /*
-     *Update Disposition with additional error handling logic.
-     */
     private Mono<Void> updateDisposition(ServiceBusReceivedMessage message, DispositionStatus dispositionStatus,
         String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify,
         ServiceBusTransactionContext transactionContext) {
@@ -1065,7 +1073,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             sessionIdToUse = sessionId;
         }
 
-        logger.info("{}: Update started. Disposition: {}. Lock: {}. SessionId {}.", entityPath, dispositionStatus,
+        logger.info("{}: Update started. Disposition: {}. Lock: {}. SessionId: {}.", entityPath, dispositionStatus,
             lockToken, sessionIdToUse);
 
         // This operation is not kicked off until it is subscribed to.

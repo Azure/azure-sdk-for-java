@@ -19,8 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * The JUnit tests for the KeyVaultKeyStore class.
- *
- * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 public class KeyVaultKeyStoreTest {
 

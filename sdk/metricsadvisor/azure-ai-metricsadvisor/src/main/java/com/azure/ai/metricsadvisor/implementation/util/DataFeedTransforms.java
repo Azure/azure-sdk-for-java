@@ -90,8 +90,9 @@ public final class DataFeedTransforms {
     public static DataFeed fromInner(final DataFeedDetail dataFeedDetail) {
         final DataFeedGranularity dataFeedGranularity = new DataFeedGranularity()
             .setGranularityType(DataFeedGranularityType.fromString(dataFeedDetail.getGranularityName().toString()));
-        PrivateFieldAccessHelper.set(dataFeedGranularity, "customGranularityValue",
-            dataFeedDetail.getGranularityAmount());
+        if (dataFeedDetail.getGranularityAmount() != null) {
+            dataFeedGranularity.setCustomGranularityValue(dataFeedDetail.getGranularityAmount());
+        }
 
         final DataFeed dataFeed = setDataFeedSourceType(dataFeedDetail);
         dataFeed
@@ -121,13 +122,12 @@ public final class DataFeedTransforms {
                 .setActionLinkTemplate(dataFeedDetail.getActionLinkTemplate())
                 .setViewers(dataFeedDetail.getViewers()));
 
-        PrivateFieldAccessHelper.set(dataFeed, "id", dataFeedDetail.getDataFeedId().toString());
-        PrivateFieldAccessHelper.set(dataFeed, "createdTime", dataFeedDetail.getCreatedTime());
-        PrivateFieldAccessHelper.set(dataFeed, "isAdmin", dataFeedDetail.isAdmin());
-        PrivateFieldAccessHelper.set(dataFeed, "creator", dataFeedDetail.getCreator());
-        PrivateFieldAccessHelper.set(dataFeed, "dataFeedStatus",
-            DataFeedStatus.fromString(dataFeedDetail.getStatus().toString()));
-        PrivateFieldAccessHelper.set(dataFeed, "metricIds",
+        DataFeedHelper.setId(dataFeed, dataFeedDetail.getDataFeedId().toString());
+        DataFeedHelper.setCreatedTime(dataFeed, dataFeedDetail.getCreatedTime());
+        DataFeedHelper.setIsAdmin(dataFeed, dataFeedDetail.isAdmin());
+        DataFeedHelper.setCreator(dataFeed, dataFeedDetail.getCreator());
+        DataFeedHelper.setStatus(dataFeed, DataFeedStatus.fromString(dataFeedDetail.getStatus().toString()));
+        DataFeedHelper.setMetricIds(dataFeed,
             dataFeedDetail.getMetrics().stream().map(Metric::getId).collect(Collectors.toList()));
         return dataFeed;
     }
@@ -253,7 +253,7 @@ public final class DataFeedTransforms {
             throw LOGGER.logExceptionAsError(new RuntimeException(
                 String.format("Data feed source type %s not supported", dataFeedDetail.getClass().getCanonicalName())));
         }
-        PrivateFieldAccessHelper.set(dataFeed, "dataFeedSourceType", dataFeedSourceType);
+        DataFeedHelper.setSourceType(dataFeed, dataFeedSourceType);
         return dataFeed;
     }
 

@@ -187,19 +187,17 @@
 //                .withCNameRecordSet("ssl", gateway.fqdn())
 //                .apply();
 //
-//            System.out.printf("Purchasing a certificate for *.%s and save to %s in key vault named %s ...%n", domainName, certOrderName, vaultName);
-//            AppServiceCertificateOrder certificateOrder = azureResourceManager.appServiceCertificateOrders().define(certOrderName)
-//                .withExistingResourceGroup(rgName)
-//                .withHostName(String.format("*.%s", domainName))
-//                .withWildcardSku()
-//                .withDomainVerification(domain)
-//                .withNewKeyVault(vaultName, region)
-//                .withAutoRenew(true)
-//                .create();
-//            System.out.printf("Purchased certificate: *.%s ...%n", domain.name());
-//            Utils.print(certificateOrder);
+//            // Please use a trusted certificate for actual use
+//            System.out.printf("Generate a self-signed certificate for ssl.%s %n", domainName);
+//            allowAllSSL();
+//            String cerPassword = password();
+//            String cerPath = ManageSpringCloud.class.getResource("/").getPath() + domainName + ".cer";
+//            String pfxPath = ManageSpringCloud.class.getClass().getResource("/").getPath() + domainName + ".pfx";
+//            createCertificate(cerPath, pfxPath, domainName, cerPassword, "ssl." + domainName, "ssl." + domainName);
 //
-//            System.out.printf("Updating key vault %s with access from %s, %s%n", vaultName, clientId, SPRING_CLOUD_SERVICE_PRINCIPAL);
+//            byte[] certificate = readAllBytes(new FileInputStream(pfxPath));
+//
+//            System.out.printf("Creating key vault %s with access from %s, %s%n", vaultName, clientId, SPRING_CLOUD_SERVICE_PRINCIPAL);
 //            Vault vault = azureResourceManager.vaults().getByResourceGroup(rgName, vaultName);
 //            vault.update()
 //                .defineAccessPolicy()
@@ -213,20 +211,13 @@
 //                    .allowSecretPermissions(SecretPermissions.GET, SecretPermissions.LIST)
 //                    .attach()
 //                .apply();
-//            System.out.printf("Updated key vault %s%n", vault.name());
+//            System.out.printf("Created key vault %s%n", vault.name());
 //            Utils.print(vault);
 //
-//            Secret secret = vault.secrets().getByName(certOrderName);
-//
-//            byte[] certificate = Base64.getDecoder().decode(secret.getValue());
-//
-//            String thumbprint = secret.tags().get("Thumbprint");
-//            if (thumbprint == null || thumbprint.isEmpty()) {
-//                KeyStore store = KeyStore.getInstance("PKCS12");
-//                store.load(new ByteArrayInputStream(certificate), null);
-//                String alias = Collections.list(store.aliases()).get(0);
-//                thumbprint = DatatypeConverter.printHexBinary(MessageDigest.getInstance("SHA-1").digest(store.getCertificate(alias).getEncoded()));
-//            }
+//            KeyStore store = KeyStore.getInstance("PKCS12");
+//            store.load(new ByteArrayInputStream(certificate), cerPassword.toCharArray());
+//            String alias = Collections.list(store.aliases()).get(0);
+//            thumbprint = DatatypeConverter.printHexBinary(MessageDigest.getInstance("SHA-1").digest(store.getCertificate(alias).getEncoded()));
 //
 //            System.out.printf("Get certificate: %s%n", secret.getValue());
 //            System.out.printf("Certificate Thumbprint: %s%n", thumbprint);
@@ -240,6 +231,7 @@
 //            System.out.printf("Uploading certificate to %s in key vault ...%n", certName);
 //            certificateClient.importCertificate(
 //                new ImportCertificateOptions(certName, certificate)
+//                    .setPassword(cerPassword)
 //                    .setEnabled(true)
 //            );
 //
@@ -322,5 +314,24 @@
 //        } finally {
 //            connection.disconnect();
 //        }
+//    }
+//
+//    private static void allowAllSSL() throws NoSuchAlgorithmException, KeyManagementException {
+//        TrustManager[] trustAllCerts = new TrustManager[]{
+//            new X509TrustManager() {
+//                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+//                    return null;
+//                }
+//                public void checkClientTrusted(
+//                    java.security.cert.X509Certificate[] certs, String authType) {
+//                }
+//                public void checkServerTrusted(
+//                    java.security.cert.X509Certificate[] certs, String authType) {
+//                }
+//            }
+//        };
+//        SSLContext sslContext = SSLContext.getInstance("SSL");
+//        sslContext.init(null, trustAllCerts, new SecureRandom());
+//        HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
 //    }
 //}
