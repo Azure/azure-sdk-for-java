@@ -76,7 +76,9 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
                                         .withDefaultSubscription();
                                 Pattern providerPattern = Pattern.compile(".*'(.*)'");
                                 Matcher providerMatcher = providerPattern.matcher(cloudError.getMessage());
-                                providerMatcher.find();
+                                if (!providerMatcher.find()) {
+                                    return Mono.just(bufferedResponse);
+                                }
 
                                 // Retry after registration
                                 return registerProviderUntilSuccess(providerMatcher.group(1), resourceManager)
@@ -99,7 +101,7 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
                         return Mono.empty();
                     }
                     return resourceManager.providers().getByNameAsync(namespace)
-                            .flatMap(providerGet -> checkProviderRegistered(providerGet))
+                            .flatMap(this::checkProviderRegistered)
                             .retry(60, ProviderUnregisteredException.class::isInstance);
                 }
             );
