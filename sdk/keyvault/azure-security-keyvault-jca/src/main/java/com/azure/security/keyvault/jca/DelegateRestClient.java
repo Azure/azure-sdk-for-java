@@ -18,7 +18,7 @@ class DelegateRestClient implements RestClient {
     /**
      * Constructor.
      */
-    public DelegateRestClient(RestClient delegate) {
+    DelegateRestClient(RestClient delegate) {
         this.delegate = delegate;
     }
 

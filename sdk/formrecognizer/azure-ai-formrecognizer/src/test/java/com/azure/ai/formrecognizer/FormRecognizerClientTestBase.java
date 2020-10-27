@@ -13,6 +13,7 @@ import com.azure.ai.formrecognizer.implementation.models.KeyValuePair;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.implementation.models.PageResult;
 import com.azure.ai.formrecognizer.implementation.models.ReadResult;
+import com.azure.ai.formrecognizer.implementation.models.SelectionMark;
 import com.azure.ai.formrecognizer.implementation.models.TextLine;
 import com.azure.ai.formrecognizer.implementation.models.TextWord;
 import com.azure.ai.formrecognizer.models.FieldBoundingBox;
@@ -21,6 +22,7 @@ import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.FormLine;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormPageRange;
+import com.azure.ai.formrecognizer.models.FormSelectionMark;
 import com.azure.ai.formrecognizer.models.FormTable;
 import com.azure.ai.formrecognizer.models.FormTableCell;
 import com.azure.ai.formrecognizer.models.FormWord;
@@ -36,7 +38,6 @@ import com.azure.core.test.TestMode;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -62,15 +63,16 @@ import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltT
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_API_KEY;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL;
+import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.deserializeRawResponse;
-import static com.azure.ai.formrecognizer.TestUtils.DEFAULT_DURATION;
 import static com.azure.ai.formrecognizer.TestUtils.FAKE_ENCODED_EMPTY_SPACE_URL;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.ONE_NANO_DURATION;
 import static com.azure.ai.formrecognizer.TestUtils.TEST_DATA_PNG;
 import static com.azure.ai.formrecognizer.TestUtils.URL_TEST_FILE_FORMAT;
 import static com.azure.ai.formrecognizer.TestUtils.getSerializerAdapter;
+import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -132,7 +134,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             durationTestMode = ONE_NANO_DURATION;
         } else {
-            durationTestMode = DEFAULT_DURATION;
+            durationTestMode = DEFAULT_POLL_INTERVAL;
         }
     }
 
@@ -148,7 +150,9 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
         } else {
-            builder.credential(new DefaultAzureCredentialBuilder().build());
+            // TODO: (savaity) switch back to AAD once fixed on service - side.
+//            builder.credential(new DefaultAzureCredentialBuilder().build());
+            builder.credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_API_KEY")));
         }
         return builder;
     }
@@ -251,6 +255,19 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             assertEquals(expectedLine.getText(), actualLine.getText());
             validateBoundingBoxData(expectedLine.getBoundingBox(), actualLine.getBoundingBox());
             validateFormWordData(expectedLine.getWords(), actualLine.getWords());
+        }
+    }
+
+    private static void validateFormSelectionMarkData(List<SelectionMark> expectedMarks,
+        List<FormSelectionMark> actualMarks, int pageNumber) {
+        for (int i = 0; i < actualMarks.size(); i++) {
+            final SelectionMark expectedMark = expectedMarks.get(i);
+            final FormSelectionMark actualMark = actualMarks.get(i);
+            assertEquals(expectedMark.getState().toString(), actualMark.getState().toString());
+            validateBoundingBoxData(expectedMark.getBoundingBox(), actualMark.getBoundingBox());
+            // Currently, service has the null as the text value for layout.
+            assertNull(actualMark.getText());
+            assertEquals(pageNumber, actualMark.getPageNumber());
         }
     }
 
@@ -414,6 +431,10 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     @Test
     abstract void recognizeContentFromDataMultiPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
+    @Test
+    abstract void recognizeContentWithSelectionMarks(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
     // Content - URL
 
     @Test
@@ -427,6 +448,10 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
     @Test
     abstract void recognizeContentFromUrlMultiPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeContentWithSelectionMarksFromUrl(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
 
     // Custom form recognition
 
@@ -468,6 +493,10 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
     @Test
     abstract void recognizeCustomFormMultiPageLabeled(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeCustomFormLabeledDataWithSelectionMark(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
 
     // Custom form - non-URL - unlabeled data
@@ -527,6 +556,10 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
     @Test
     abstract void recognizeCustomFormUrlMultiPageLabeled(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeCustomFormUrlLabeledDataWithSelectionMark(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
 
     // Business Card - data
@@ -596,6 +629,9 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             if (includeFieldElements) {
                 validateFormLineData(readResult.getLines(), actualFormPage.getLines());
             }
+
+            validateFormSelectionMarkData(readResult.getSelectionMarks(), actualFormPage.getSelectionMarks(),
+                readResult.getPage());
             if (pageResults != null) {
                 validateFormTableData(pageResults.get(i).getTables(), actualFormPage.getTables(), readResults,
                     includeFieldElements, pageResults.get(i).getPage());
@@ -702,6 +738,10 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
     void beginTrainingLabeledRunner(BiConsumer<String, Boolean> testRunner) {
         testRunner.accept(getTrainingSasUri(), true);
+    }
+
+    void beginSelectionMarkTrainingLabeledRunner(BiConsumer<String, Boolean> testRunner) {
+        testRunner.accept(getSelectionMarkTrainingSasUri(), true);
     }
 
     void beginTrainingMultipageRunner(Consumer<String> testRunner) {
@@ -869,6 +909,14 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             return "https://isPlaybackmode";
         } else {
             return Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL);
+        }
+    }
+
+    private String getSelectionMarkTrainingSasUri() {
+        if (interceptorManager.isPlaybackMode()) {
+            return "https://isPlaybackmode";
+        } else {
+            return Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL);
         }
     }
 

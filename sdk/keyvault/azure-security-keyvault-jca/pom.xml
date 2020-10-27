@@ -16,7 +16,7 @@
     <artifactId>azure-security-keyvault-jca</artifactId>
     <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
     <name>JCA Provider for Azure Key Vault</name>
-    <description>The Java Crypto Architecture (JCA) Provider for Azure KeyVault</description>
+    <description>The Java Crypto Architecture (JCA) Provider for Azure Key Vault</description>
     <build>
         <plugins>
             <plugin>
@@ -122,14 +122,6 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
                 <version>3.1.12.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
@@ -195,7 +187,7 @@
       
               To run the integration tests pass in the following system properties
       
-              - azure.keyvault.uri    - the KeyVault URI
+              - azure.keyvault.uri    - the Azure Key Vault URI
               - azure.tenant.id       - your tenant ID
               - azure.client.id       - the (application) client ID
               - azure.client.secret   - the (application) client secret

@@ -276,7 +276,7 @@ If you encounter any bugs with these SDKs, please file issues via [Issues](https
 ## Next steps
 
 - [Azure Java SDKs](https://docs.microsoft.com/java/azure/)
-- If you don't have a Microsoft Azure subscription you can get a FREE trial account [here](http://go.microsoft.com/fwlink/?LinkId=330212)
+- If you don't have a Microsoft Azure subscription you can get a FREE trial account [here](https://go.microsoft.com/fwlink/?LinkId=330212)
 - Some additional sample code can be found [here][samples]
 - Additional Event Grid tutorials can be found [here][service_docs]
 

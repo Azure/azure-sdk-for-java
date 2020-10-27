@@ -5,7 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.models.CreateBatchOptions;
+import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
@@ -128,14 +128,14 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         setSenderAndReceiver(entityType, 0, false);
 
         final String messageId = UUID.randomUUID().toString();
-        final CreateBatchOptions options = new CreateBatchOptions().setMaximumSizeInBytes(1024);
+        final CreateMessageBatchOptions options = new CreateMessageBatchOptions().setMaximumSizeInBytes(1024);
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(3, messageId, CONTENTS_BYTES);
 
         // Assert & Act
-        StepVerifier.create(sender.createBatch(options)
+        StepVerifier.create(sender.createMessageBatch(options)
             .flatMap(batch -> {
                 for (ServiceBusMessage message : messages) {
-                    Assertions.assertTrue(batch.tryAdd(message));
+                    Assertions.assertTrue(batch.tryAddMessage(message));
                 }
 
                 return sender.sendMessages(batch).doOnSuccess(aVoid -> messagesPending.incrementAndGet());
@@ -370,9 +370,9 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(5, messageId, CONTENTS_BYTES);
 
         // Act & Assert
-        StepVerifier.create(sender.createBatch()
+        StepVerifier.create(sender.createMessageBatch()
             .flatMap(batch -> {
-                messages.forEach(m -> Assertions.assertTrue(batch.tryAdd(m)));
+                messages.forEach(m -> Assertions.assertTrue(batch.tryAddMessage(m)));
 
                 return sender.sendMessages(batch).doOnSuccess(aVoid -> messagesPending.incrementAndGet());
             }))
