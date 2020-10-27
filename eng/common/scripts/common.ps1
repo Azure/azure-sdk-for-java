@@ -32,5 +32,4 @@ if (-not $LanguageShort)
 $GetPackageInfoFromRepoFn = "Get-${Language}-PackageInfoFromRepo"
 $GetPackageInfoFromPackageFileFn = "Get-${Language}-PackageInfoFromPackageFile"
 $PublishGithubIODocsFn = "Publish-${Language}-GithubIODocs"
-$GetGitHubIOArtifactsFn = "Get-${Language}-GithubIOArtifacts"
-$GetCSVMetadataFn = "Get-${Language}-CSVMetadata"
+$GetGenerateGithubIoDocIndexFn = "Get-${Language}-GenerateGithubIoDocIndex"

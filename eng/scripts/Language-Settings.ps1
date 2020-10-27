@@ -155,17 +155,16 @@ function Publish-java-GithubIODocs ($DocLocation, $PublicArtifactLocation)
 }
 
 function Get-java-CSVMetadata () {
+  return $uniquePackages
+}
+
+function Get-java-GenerateGithubIoDocIndex() {
   $metadata = Get-CSVMetadata -MetadataUri $MetadataUri
   $clientPackages = $metadata | Where-Object { $_.GroupId -eq 'com.azure' } 
   $nonClientPackages = $metadata | Where-Object { $_.GroupId -ne 'com.azure' -and !$clientPackages.Package.Contains($_.Package) }
   $uniquePackages = $clientPackages + $nonClientPackages
-  return $uniquePackages
+  $artifacts =  Get-BlobStorage-Artifacts -blobStorageUrl $BlobStorageUrl -blobDirectoryRegex "^java/(.*)/$"
+  $tocContent = Get-TocMapping -metadata $uniquePackages -artifacts $artifacts
+  GenerateDocfxTocContent -tocContent $tocContent -lang "Java"
 }
 
-function Get-java-GithubIOArtifacts() {
-  return Get-BlobStorage-Artifacts -blobStorageUrl $BlobStorageUrl -blobDirectoryRegex "^java/(.*)/$"
-}
-
-function Generate-java-TocHomepageContent() {
-  return "- name: Azure SDK for Java APIs`r`n  href: api/`r`n  homepage: api/index.md"
-}
