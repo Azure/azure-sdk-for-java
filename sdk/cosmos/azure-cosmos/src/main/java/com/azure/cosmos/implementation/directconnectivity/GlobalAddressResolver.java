@@ -167,9 +167,9 @@ public class GlobalAddressResolver implements IAddressResolver {
             LinkedList<URI> endpoints = new LinkedList<>(allEndpoints);
             while (this.addressCacheByEndpoint.size() > this.maxEndpoints) {
                 if (endpoints.size() > 0) {
-                    URI dequeueEnpoint = endpoints.pop();
-                    if (this.addressCacheByEndpoint.get(dequeueEnpoint) != null) {
-                        this.addressCacheByEndpoint.remove(dequeueEnpoint);
+                    URI dequeueEndpoint = endpoints.pop();
+                    if (this.addressCacheByEndpoint.get(dequeueEndpoint) != null) {
+                        this.addressCacheByEndpoint.remove(dequeueEndpoint);
                     }
                 } else {
                     break;

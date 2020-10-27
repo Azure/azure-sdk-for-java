@@ -21,61 +21,6 @@ import java.time.ZoneOffset;
  */
 @Fluent
 public final class PublishTelemetryOptions {
-    /*
-     * Identifies the request in a distributed tracing system.
-     */
-    @JsonProperty(value = "traceparent")
-    private String traceparent;
-
-    /*
-     * Provides vendor-specific trace identification information and is a
-     * companion to traceparent.
-     */
-    @JsonProperty(value = "tracestate")
-    private String tracestate;
-
-    /**
-     * Get the traceparent property: Identifies the request in a distributed tracing system.
-     *
-     * @return the traceparent value.
-     */
-    public String getTraceparent() {
-        return this.traceparent;
-    }
-
-    /**
-     * Set the traceparent property: Identifies the request in a distributed tracing system.
-     *
-     * @param traceparent the traceparent value to set.
-     * @return the PublishTelemetryOptions object itself.
-     */
-    public PublishTelemetryOptions setTraceparent(String traceparent) {
-        this.traceparent = traceparent;
-        return this;
-    }
-
-    /**
-     * Get the tracestate property: Provides vendor-specific trace identification information and is a companion to
-     * traceparent.
-     *
-     * @return the tracestate value.
-     */
-    public String getTracestate() {
-        return this.tracestate;
-    }
-
-    /**
-     * Set the tracestate property: Provides vendor-specific trace identification information and is a companion to
-     * traceparent.
-     *
-     * @param tracestate the tracestate value to set.
-     * @return the PublishTelemetryOptions object itself.
-     */
-    public PublishTelemetryOptions setTracestate(String tracestate) {
-        this.tracestate = tracestate;
-        return this;
-    }
-
     /**
      * An RFC 3339 timestamp that identifies the time the telemetry was measured.
      * It defaults to the current date/time UTC.

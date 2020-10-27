@@ -11,8 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * The JUnit test for the AuthClient.
- *
- * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 public class AuthClientTest {
 

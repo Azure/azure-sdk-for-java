@@ -51,7 +51,7 @@ public class QueryAsyncTests extends QueryTestBase{
             for (int i = 0; i < pageSize + 1; i++) {
                 String roomTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
                 roomTwinIds.add(roomTwinId);
-                StepVerifier.create(asyncClient.createDigitalTwinWithResponse(roomTwinId, roomTwin, String.class, null))
+                StepVerifier.create(asyncClient.createOrReplaceDigitalTwinWithResponse(roomTwinId, roomTwin, String.class, null))
                     .assertNext(response ->
                         assertThat(response.getStatusCode())
                             .as("Created digitaltwin successfully")
@@ -63,7 +63,7 @@ public class QueryAsyncTests extends QueryTestBase{
 
             StepVerifier.create(asyncClient.query(queryString, BasicDigitalTwin.class, null))
                 .thenConsumeWhile(dt ->  {
-                    assertThat(dt.getCustomProperties().get("IsOccupied"))
+                    assertThat(dt.getProperties().get("IsOccupied"))
                         .as("IsOccupied should be true")
                         .isEqualTo(true);
                     return true;

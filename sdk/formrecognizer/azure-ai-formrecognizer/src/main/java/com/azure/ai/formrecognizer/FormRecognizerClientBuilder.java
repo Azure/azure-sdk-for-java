@@ -31,7 +31,6 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -99,7 +98,6 @@ public final class FormRecognizerClientBuilder {
     private FormRecognizerServiceVersion version;
 
     static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
-    static final Duration DEFAULT_DURATION = Duration.ofSeconds(5);
     /**
      * The constructor with defaults.
      */

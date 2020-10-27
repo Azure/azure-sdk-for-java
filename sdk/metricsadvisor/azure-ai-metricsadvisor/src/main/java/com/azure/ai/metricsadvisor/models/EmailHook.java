@@ -13,10 +13,8 @@ import java.util.stream.IntStream;
  * A hook that describes email based incident alerts notification.
  */
 public final class EmailHook extends Hook {
-    private String id;
     private String name;
     private String description;
-    private List<String> admins;
     private List<String> emailsToAlert;
     private String externalLink;
 
@@ -46,11 +44,6 @@ public final class EmailHook extends Hook {
     }
 
     @Override
-    public String getId() {
-        return this.id;
-    }
-
-    @Override
     public String getName() {
         return this.name;
     }
@@ -58,11 +51,6 @@ public final class EmailHook extends Hook {
     @Override
     public String getDescription() {
         return this.description;
-    }
-
-    @Override
-    public List<String> getAdmins() {
-        return this.admins;
     }
 
     /**

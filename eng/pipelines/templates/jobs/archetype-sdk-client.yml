@@ -1,6 +1,7 @@
 parameters:
   SDKType: client
   ServiceDirectory: not-specified # Set a default that breaks in obvious ways.
+  TestPipeline: false
   Artifacts: []
   AdditionalModules: []
   PreTestSteps: []
@@ -53,13 +54,14 @@ jobs:
           ArtifactName: 'packages'
 
     steps:
-      - task: PowerShell@2
-        displayName: Prep template pipeline for release
-        condition: and(succeeded(),eq(variables['TestPipeline'],'true'))
-        inputs:
-          pwsh: true
-          workingDirectory: $(Build.SourcesDirectory)
-          filePath: eng/scripts/SetTestPipelineVersion.ps1
+      - ${{if eq(parameters.TestPipeline, 'true')}}:
+        - task: PowerShell@2
+          displayName: Prep template pipeline for release
+          condition: succeeded()
+          inputs:
+            pwsh: true
+            workingDirectory: $(Build.SourcesDirectory)
+            filePath: eng/scripts/SetTestPipelineVersion.ps1
 
       - script: |
           echo "##vso[build.addbuildtag]Scheduled"
@@ -130,10 +132,7 @@ jobs:
         displayName: 'Publish Artifacts $(ArtifactName)'
         artifact: '$(ArtifactName)'
 
-      - publish: $(System.DefaultWorkingDirectory)
-        condition: and(eq(variables['CaptureRepositoryOnFailure'], 'true'), failed())
-        displayName: 'Capture repo state for analysis'
-        artifact: repository
+      - template: ../steps/upload-repository-on-failure.yml
 
   - job: 'Analyze'
     condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
@@ -162,12 +161,14 @@ jobs:
           ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
         displayName: 'Verify Readmes'
 
-      - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-        - template: /eng/common/pipelines/templates/steps/verify-links.yml
-          parameters:
+      - template: /eng/common/pipelines/templates/steps/verify-links.yml
+        parameters:
+          ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
             Directory: ''
             Urls: (git diff origin/${env:SYSTEM_PULLREQUEST_TARGETBRANCH} HEAD --name-only -- '*.md')
-            CheckLinkGuidance: $true
+          ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
+            Directory: sdk/${{ parameters.ServiceDirectory }}
+          CheckLinkGuidance: $true
 
       - ${{if ne(parameters.SDKType, 'data')}}:
         - ${{ each artifact in parameters.Artifacts }}:
@@ -219,6 +220,8 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: 'verify'
+
+      - template: ../steps/upload-repository-on-failure.yml
 
   - job: 'Test'
     condition: and(succeeded(), ne(variables['Skip.Test'], 'true'))
@@ -341,8 +344,11 @@ jobs:
           goals: 'surefire:test'
         condition: and(succeeded(), and(eq(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
 
+      - template: ../steps/upload-repository-on-failure.yml
+
       - task: PublishTestResults@2
         condition: and(always(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
         inputs:
           mergeTestResults: true
           testRunTitle: $(RunTitle)
+          
