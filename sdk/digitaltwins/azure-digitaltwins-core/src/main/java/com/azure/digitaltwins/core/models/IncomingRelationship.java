@@ -12,8 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Defines an incoming relationship on a digital twin. Unlike outgoing relationships, incoming relationships have no user-defined
- * properties when retrieved using {@link com.azure.digitaltwins.core.DigitalTwinsClient#listIncomingRelationships(String, ListIncomingRelationshipsOptions, Context)}
- * or {@link com.azure.digitaltwins.core.DigitalTwinsAsyncClient#listIncomingRelationships(String, ListIncomingRelationshipsOptions)}. Because of this, there is no
+ * properties when retrieved using {@link com.azure.digitaltwins.core.DigitalTwinsClient#listIncomingRelationships(String, Context)}
+ * or {@link com.azure.digitaltwins.core.DigitalTwinsAsyncClient#listIncomingRelationships(String)}. Because of this, there is no
  * need for user-defined types for deserialization. This class will capture the full service response when listing incoming relationships.
  */
 @Fluent
