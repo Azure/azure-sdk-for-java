@@ -9,11 +9,14 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.data.tables.implementation.AzureTableImpl;
 import com.azure.data.tables.implementation.BatchImpl;
+import com.azure.data.tables.implementation.TablesMultipartSerializer;
 import com.azure.data.tables.implementation.models.BatchRequestBody;
 import com.azure.data.tables.models.BatchOperation;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.UpdateMode;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -28,14 +31,21 @@ import static com.azure.core.util.FluxUtil.withContext;
 public final class TableAsyncBatch {
     private final ClientLogger logger = new ClientLogger(TableAsyncBatch.class);
     private final String partitionKey;
-    private final BatchImpl implementation;
+    private final TableAsyncClient operationClient;
+    private final BatchImpl batchImpl;
     private final HashSet<String> rowKeys = new HashSet<>();
     private final List<BatchOperation> operations = new ArrayList<>();
     private boolean frozen = false;
 
-    TableAsyncBatch(String partitionKey, BatchImpl implementation) {
+    TableAsyncBatch(String partitionKey, TableAsyncClient client) {
         this.partitionKey = partitionKey;
-        this.implementation = implementation;
+        this.batchImpl = new BatchImpl(client.getImplementation(), new TablesMultipartSerializer());
+        this.operationClient = new TableClientBuilder()
+            .tableName(client.getTableName())
+            .endpoint(client.getImplementation().getUrl())
+            .serviceVersion(client.getApiVersion())
+            .pipeline(BuilderHelper.buildNullClientPipeline())
+            .buildAsyncClient();
     }
 
     public TableAsyncBatch createEntity(TableEntity entity) {
@@ -97,12 +107,14 @@ public final class TableAsyncBatch {
         context = context == null ? Context.NONE : context;
 
         final BatchRequestBody body = new BatchRequestBody();
-        for (BatchOperation operation : operations) {
-            body.addChangeOperation(null); //TODO
-        }
+
+        Flux.fromIterable(operations)
+            .flatMapSequential(op -> op.prepareRequest(operationClient))
+            .doOnNext(body::addChangeOperation)
+            .blockLast();
 
         try {
-            return implementation.submitBatchWithRestResponseAsync(body, null, context)
+            return batchImpl.submitBatchWithRestResponseAsync(body, null, context)
                 .map(response -> new SimpleResponse<>(response, null));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

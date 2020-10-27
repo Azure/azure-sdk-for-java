@@ -55,9 +55,9 @@ public final class BatchImpl {
             @HeaderParam("Content-Type") String multipartContentType,
             @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
             @BodyParam("multipart/mixed") BatchRequestBody body,
             Context context);
-
     }
 
     /**
@@ -75,6 +75,7 @@ public final class BatchImpl {
         String requestId,
         Context context
     ) {
-        return service.submitBatch(this.client.getUrl(), body.getContentType(), this.client.getVersion(), requestId, body, context);
+        final String dataServiceVersion = "3.0";
+        return service.submitBatch(this.client.getUrl(), body.getContentType(), this.client.getVersion(), requestId, dataServiceVersion, body, context);
     }
 }

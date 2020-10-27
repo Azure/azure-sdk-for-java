@@ -7,9 +7,8 @@ import java.util.List;
 import java.util.UUID;
 
 @Fluent
-abstract class MultipartPart<T> {
-    protected static final String BOUNDARY_DELIMETER = "--";
-    protected static final String CONTENT_TYPE_PREFIX = "multipart/mixed; boundary=";
+public abstract class MultipartPart<T> {
+    private static final String CONTENT_TYPE_PREFIX = "multipart/mixed; boundary=";
 
     private final String boundary;
     private final List<T> contents = new ArrayList<>();
@@ -22,19 +21,16 @@ abstract class MultipartPart<T> {
         return CONTENT_TYPE_PREFIX + boundary;
     }
 
+    public String getBoundary() {
+        return boundary;
+    }
+
+    public List<T> getContents() {
+        return contents;
+    }
+
     protected MultipartPart<T> addContent(T content) {
         contents.add(content);
         return this;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for (Object content : contents) {
-            sb.append(BOUNDARY_DELIMETER).append(boundary).append("\n")
-                .append(content.toString()).append("\n");
-        }
-        sb.append(BOUNDARY_DELIMETER).append(boundary).append(BOUNDARY_DELIMETER).append("\n");
-        return sb.toString();
     }
 }

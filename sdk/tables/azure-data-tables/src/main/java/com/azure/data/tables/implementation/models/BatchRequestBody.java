@@ -16,7 +16,7 @@ public final class BatchRequestBody extends MultipartPart<Object> {
         if (changeSet != null) {
             throw new IllegalStateException("Cannot add a query operation to a BatchRequestBody containing a changeset.");
         }
-        addContent(new HttpOperation(queryRequest));
+        addContent(queryRequest);
         queryAdded = true;
         return this;
     }
@@ -29,7 +29,7 @@ public final class BatchRequestBody extends MultipartPart<Object> {
             changeSet = new BatchChangeSet();
             addContent(changeSet);
         }
-        changeSet.addContent(new HttpOperation(changeRequest));
+        changeSet.addContent(changeRequest);
         return this;
     }
 }

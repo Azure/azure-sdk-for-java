@@ -19,7 +19,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.AzureTableImpl;
 import com.azure.data.tables.implementation.AzureTableImplBuilder;
-import com.azure.data.tables.implementation.BatchImpl;
 import com.azure.data.tables.implementation.ModelHelper;
 import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
@@ -129,7 +128,11 @@ public final class TableAsyncClient {
     }
 
     public TableAsyncBatch createBatch(String partitionKey) {
-        return new TableAsyncBatch(partitionKey, new BatchImpl(implementation, serializerAdapter));
+        return new TableAsyncBatch(partitionKey, this);
+    }
+
+    AzureTableImpl getImplementation() {
+        return implementation;
     }
 
     /**

@@ -655,4 +655,24 @@ public class TablesAsyncClientTest extends TestBase {
             .expectComplete()
             .verify();
     }
+
+    @Test
+    void batchAsync() {
+        String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        String rowKeyValue2 = testResourceNamer.randomName("rowKey", 20);
+
+        TableAsyncBatch batch = tableClient.createBatch(partitionKeyValue);
+        batch.createEntity(new TableEntity(partitionKeyValue, rowKeyValue))
+            .createEntity(new TableEntity(partitionKeyValue, rowKeyValue2));
+
+        // Act & Assert
+        StepVerifier.create(batch.submitTransactionWithResponse())
+            .assertNext(response -> {
+                assertNotNull(response);
+            })
+            .expectComplete()
+            .verify();
+    }
+
 }

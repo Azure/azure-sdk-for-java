@@ -2,7 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.data.tables.models;
 
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.rest.Response;
+import com.azure.data.tables.TableAsyncClient;
+import reactor.core.publisher.Mono;
+
 public interface BatchOperation {
+
+    Mono<HttpRequest> prepareRequest(TableAsyncClient preparer);
+
     class CreateEntity implements BatchOperation {
         private final TableEntity entity;
 
@@ -12,6 +20,11 @@ public interface BatchOperation {
 
         public TableEntity getEntity() {
             return entity;
+        }
+
+        @Override
+        public Mono<HttpRequest> prepareRequest(TableAsyncClient client) {
+            return client.createEntityWithResponse(entity).map(Response::getRequest);
         }
     }
 
@@ -30,6 +43,11 @@ public interface BatchOperation {
 
         public UpdateMode getUpdateMode() {
             return updateMode;
+        }
+
+        @Override
+        public Mono<HttpRequest> prepareRequest(TableAsyncClient preparer) {
+            return preparer.upsertEntityWithResponse(entity, updateMode).map(Response::getRequest);
         }
     }
 
@@ -55,6 +73,11 @@ public interface BatchOperation {
         public boolean getIfUnchanged() {
             return ifUnchanged;
         }
+
+        @Override
+        public Mono<HttpRequest> prepareRequest(TableAsyncClient preparer) {
+            return preparer.updateEntityWithResponse(entity, updateMode, ifUnchanged).map(Response::getRequest);
+        }
     }
 
     class DeleteEntity implements BatchOperation {
@@ -78,6 +101,11 @@ public interface BatchOperation {
 
         public String getETag() {
             return eTag;
+        }
+
+        @Override
+        public Mono<HttpRequest> prepareRequest(TableAsyncClient preparer) {
+            return preparer.deleteEntityWithResponse(partitionKey, rowKey, eTag).map(Response::getRequest);
         }
     }
 
