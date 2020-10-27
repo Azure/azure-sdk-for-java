@@ -27,7 +27,6 @@ class RntbdContextDecoder extends ByteToMessageDecoder {
     @Override
     protected void decode(final ChannelHandlerContext context, final ByteBuf in, final List<Object> out) {
 
-        logger.info("coming to RntbdContext decode");
         if (RntbdFramer.canDecodeHead(in)) {
 
             Object result;

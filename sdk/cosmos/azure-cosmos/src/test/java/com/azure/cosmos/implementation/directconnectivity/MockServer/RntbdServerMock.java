@@ -20,25 +20,45 @@ import io.netty.handler.ssl.SslHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLEngine;
-import javax.net.ssl.SSLException;
-import java.io.File;
+import javax.net.ssl.TrustManagerFactory;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 
 public class RntbdServerMock {
     private final static Logger logger = LoggerFactory.getLogger(RntbdServerMock.class);
     private final int port;
    // private static EventExecutor requestExpirationExecutor = new DefaultEventExecutor();
+   private static final String STOREPASS = "tutorial123";
+
 
     public RntbdServerMock(int port) {
         this.port = port;
     }
 
-    public void start() throws InterruptedException, CertificateException, SSLException {
+    public void start() throws InterruptedException, CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, UnrecoverableKeyException, KeyManagementException {
 
-        SslContext sslContext = SslContextBuilder.forServer(
-           new File(RntbdServerMock.class.getClassLoader().getResource("testCert.pem").getFile()),
-           new File(RntbdServerMock.class.getClassLoader().getResource("testKey.pem").getFile())).build();
+        final ClassLoader classloader = RntbdServerMock.class.getClassLoader();
+        final InputStream inputStream = classloader.getResourceAsStream("server.jks");
+
+        final KeyStore trustStore = KeyStore.getInstance("jks");
+        trustStore.load(inputStream, STOREPASS.toCharArray());
+
+        final KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+        keyManagerFactory.init(trustStore, STOREPASS.toCharArray());
+
+        final TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+        trustManagerFactory.init(trustStore);
+
+        SslContext sslContext = SslContextBuilder.forServer(keyManagerFactory).trustManager(trustManagerFactory).build();
+
         EventLoopGroup parent = new NioEventLoopGroup();
         EventLoopGroup child = new NioEventLoopGroup();
 
@@ -60,7 +80,9 @@ public class RntbdServerMock {
                             new SslHandler(engine),
                             new RntbdRequestFramer(),
                             new RntbdRequestDecoder(),
-                            new RntbdContextRequestDecoder()
+                            new RntbdContextRequestDecoder(),
+                            new RntbdContextEncoder(),
+                            new RntbdServerRequestManager()
                         );
 
                         LogLevel logLevel = null;
@@ -77,6 +99,7 @@ public class RntbdServerMock {
                     }
                 })
                 .childOption(ChannelOption.SO_KEEPALIVE, true);
+               // .childOption(ChannelOption.SO_LINGER, 0);
 
             ChannelFuture channelFuture = bootstrap.bind(port).sync();
 
@@ -96,7 +119,6 @@ public class RntbdServerMock {
                 }
             });
         } finally {
-            logger.info("server got closed");
             parent.shutdownGracefully().sync();
             child.shutdownGracefully().sync();
         }

@@ -149,7 +149,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                 allEqualOrLowerConsistencies(accountConsistency)));
         preferredLocations = immutableListOrNull(parsePreferredLocation(TestConfigurations.PREFERRED_LOCATIONS));
         protocols = ObjectUtils.defaultIfNull(immutableListOrNull(parseProtocols(TestConfigurations.PROTOCOLS)),
-            ImmutableList.of(Protocol.HTTPS, Protocol.TCP));
+            ImmutableList.of(Protocol.TCP));
 
         //  Object mapper configurations
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -1024,13 +1024,13 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         switch (accountConsistency) {
 
             case STRONG:
-                testConsistencies.add(ConsistencyLevel.STRONG);
+                //testConsistencies.add(ConsistencyLevel.STRONG);
             case BOUNDED_STALENESS:
-                testConsistencies.add(ConsistencyLevel.BOUNDED_STALENESS);
+              //  testConsistencies.add(ConsistencyLevel.BOUNDED_STALENESS);
             case SESSION:
-                testConsistencies.add(ConsistencyLevel.SESSION);
+             //   testConsistencies.add(ConsistencyLevel.SESSION);
             case CONSISTENT_PREFIX:
-                testConsistencies.add(ConsistencyLevel.CONSISTENT_PREFIX);
+             //   testConsistencies.add(ConsistencyLevel.CONSISTENT_PREFIX);
             case EVENTUAL:
                 testConsistencies.add(ConsistencyLevel.EVENTUAL);
                 break;

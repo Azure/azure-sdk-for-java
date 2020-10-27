@@ -38,7 +38,7 @@ public class CosmosItemTest extends TestSuiteBase {
     private CosmosClient client;
     private CosmosContainer container;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "clientBuildersWithSessionConsistency")
     public CosmosItemTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.guava27.Strings;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.netty.buffer.ByteBuf;
 
@@ -58,16 +57,26 @@ public final class RntbdRequest {
         final int start = in.readerIndex();
         final int expectedLength = in.readIntLE();
 
-        final RntbdRequestFrame header = RntbdRequestFrame.decode(in);
-        final RntbdRequestHeaders metadata = RntbdRequestHeaders.decode(in);
-        final ByteBuf payloadBuf = in.readSlice(expectedLength - (in.readerIndex() - start));
+        final ByteBuf headerBuf = in.readSlice(expectedLength - (in.readerIndex() - start));
+        final RntbdRequestFrame header = RntbdRequestFrame.decode(headerBuf);
+        final RntbdRequestHeaders metadata = RntbdRequestHeaders.decode(headerBuf);
 
-        final int observedLength = in.readerIndex() - start;
-
-        if (observedLength != expectedLength) {
-            final String reason = Strings.lenientFormat("expectedLength=%s, observedLength=%s", expectedLength, observedLength);
-            throw new IllegalStateException(reason);
+        if (in.readableBytes() == 0) {
+            // the body is not here yet
+            return null;
         }
+
+        final int payloadStart = in.readerIndex();
+        final int payloadExpectedLength = in.readIntLE();
+        final ByteBuf payloadBuf = in.readSlice(payloadExpectedLength - (in.readerIndex() - payloadStart));
+//        final ByteBuf payloadBuf = in.readSlice(expectedLength - (in.readerIndex() - start));
+
+//        final int observedLength = in.readerIndex() - start;
+
+//        if (observedLength != expectedLength) {
+//            final String reason = Strings.lenientFormat("expectedLength=%s, observedLength=%s", expectedLength, observedLength);
+//            throw new IllegalStateException(reason);
+//        }
 
         final byte[] payload = new byte[payloadBuf.readableBytes()];
         payloadBuf.readBytes(payload);

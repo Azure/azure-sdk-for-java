@@ -28,7 +28,6 @@ public class RntbdContextRequestDecoder extends ByteToMessageDecoder {
     @Override
     public void channelRead(final ChannelHandlerContext context, final Object message) throws Exception {
 
-        logger.info("reached to channel read");
         if (message instanceof ByteBuf) {
 
             final ByteBuf in = (ByteBuf)message;
@@ -56,8 +55,6 @@ public class RntbdContextRequestDecoder extends ByteToMessageDecoder {
      */
     @Override
     protected void decode(final ChannelHandlerContext context, final ByteBuf in, final List<Object> out) throws IllegalStateException {
-        logger.info("reached to Decode");
-
         final RntbdContextRequest request;
         in.markReaderIndex();
 

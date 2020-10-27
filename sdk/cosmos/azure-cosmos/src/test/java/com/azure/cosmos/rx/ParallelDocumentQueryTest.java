@@ -283,7 +283,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         List<InternalObjectNode> expectedDocs = new ArrayList<>(createdDocuments);
         assertThat(expectedDocs).isNotEmpty();
 
-        this.queryWithContinuationTokensAndPageSizes(query, new int[] {1, 10, 100}, expectedDocs);
+        this.queryWithContinuationTokensAndPageSizes(query, new int[] {100}, expectedDocs);
     }
 
     @Test(groups = { "simple" })
@@ -486,13 +486,13 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
         List<InternalObjectNode> docDefList = new ArrayList<>();
 
-        for (int i = 0; i < 13; i++) {
+        for (int i = 0; i < 1; i++) {
             docDefList.add(getDocumentDefinition(i));
         }
-
-        for (int i = 0; i < 21; i++) {
-            docDefList.add(getDocumentDefinition(99));
-        }
+//
+//        for (int i = 0; i < 21; i++) {
+//            docDefList.add(getDocumentDefinition(99));
+//        }
 
         List<InternalObjectNode> items = bulkInsertBlocking(cosmosContainer, docDefList);
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
@@ -671,6 +671,23 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
             receivedDocuments.addAll(firstPage.getResults());
             continuationTokens.add(requestContinuation);
         } while (requestContinuation != null);
+
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+
+        options.setMaxDegreeOfParallelism(2);
+        CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(query, options, InternalObjectNode.class);
+
+        TestSubscriber<FeedResponse<InternalObjectNode>> testSubscriber = new TestSubscriber<>();
+        queryObservable.byPage(requestContinuation, pageSize).subscribe(testSubscriber);
+        testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+        testSubscriber.assertNoErrors();
+        testSubscriber.assertComplete();
+
+        @SuppressWarnings("unchecked")
+        FeedResponse<InternalObjectNode> firstPage = (FeedResponse<InternalObjectNode>) testSubscriber.getEvents().get(0).get(0);
+        requestContinuation = firstPage.getContinuationToken();
+        receivedDocuments.addAll(firstPage.getResults());
+        continuationTokens.add(requestContinuation);
 
         return receivedDocuments;
     }

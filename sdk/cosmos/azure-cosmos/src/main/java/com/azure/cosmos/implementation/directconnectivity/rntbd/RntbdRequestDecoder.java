@@ -6,10 +6,15 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public final class RntbdRequestDecoder extends ByteToMessageDecoder {
+
+    private final static Logger logger = LoggerFactory.getLogger(RntbdRequestDecoder.class);
+
     /**
      * Prepare for decoding an @{link RntbdRequest} or fire a channel readTree event to pass the input message along.
      *
@@ -57,12 +62,16 @@ public final class RntbdRequestDecoder extends ByteToMessageDecoder {
 
         try {
             request = RntbdRequest.decode(in);
+            if(request!= null) {
+                in.discardReadBytes();
+                out.add(request);
+            } else {
+                in.resetReaderIndex();
+                return;
+            }
         } catch (final IllegalStateException error) {
             in.resetReaderIndex();
             throw error;
         }
-
-        in.discardReadBytes();
-        out.add(request);
     }
 }

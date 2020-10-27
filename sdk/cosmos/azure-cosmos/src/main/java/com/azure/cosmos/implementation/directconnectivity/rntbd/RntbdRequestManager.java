@@ -147,7 +147,6 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     @Override
     public void channelActive(final ChannelHandlerContext context) {
         this.traceOperation(context, "channelActive");
-        logger.info("Channel active");
         context.fireChannelActive();
     }
 
@@ -511,7 +510,6 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     public void write(final ChannelHandlerContext context, final Object message, final ChannelPromise promise) {
 
         this.traceOperation(context, "write", message);
-        logger.info("write message to channel {}", message.getClass());
 
         if (message instanceof RntbdRequestRecord) {
 
