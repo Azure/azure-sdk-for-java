@@ -80,6 +80,6 @@ public interface DataEncryptionKey {
                 encryptionAlgorithm));
         }
 
-        return AeadAes256CbcHmac256AlgorithmProvider.createAlgorithm(rawKey, EncryptionType.RANDOMIZED, /**version*/ (byte) 1);
+        return AeadAes256CbcHmac256AlgorithmProvider.createAlgorithm(rawKey, EncryptionType.DETERMINISTIC, /**version*/ (byte) 1);
     }
 }

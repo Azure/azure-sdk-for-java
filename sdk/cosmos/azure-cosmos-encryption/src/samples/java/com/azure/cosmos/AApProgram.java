@@ -67,7 +67,7 @@ public class AApProgram {
             // Cosmos account.
             // String cfgPath sample = "/Users/moderakh/github/azure-sdk-for-java/sdk/cosmos/azure-cosmos-encryption/src/samples/resources/settings.properties.orig";
             // Properties configuration = loadConfig(cfgPath);
-            
+
             Properties configuration = args.length > 0 ? loadConfig(args[0]) : loadConfig();
 
             AApProgram.client = AApProgram.createClientInstance(configuration);

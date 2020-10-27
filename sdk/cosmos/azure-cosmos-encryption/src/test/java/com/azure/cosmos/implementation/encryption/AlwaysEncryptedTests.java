@@ -75,6 +75,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 import static com.azure.cosmos.encryption.KeyVaultAccessClientTests.CryptographyClientFactoryTestFactory;
 import static com.azure.cosmos.encryption.KeyVaultAccessClientTests.KeyClientTestFactory;
@@ -450,6 +451,27 @@ public class AlwaysEncryptedTests extends TestSuiteBase {
 //            AAPEncryptionTests.encryptionContainer,
 //            "SELECT c.id, c.PK, c.NonSensitive FROM c",
 //            expectedDoc);
+    }
+
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT * 100)
+    public void query_DeterministicEncryption()  throws Exception {
+        TestDoc testDoc = TestDoc.create(UUID.randomUUID().toString());
+        CosmosItemResponse<TestDoc> createResponse = encryptionContainer.createItem(
+            testDoc,
+            new PartitionKey(testDoc.pk),
+            new CosmosItemRequestOptions()).block();
+
+        TestDoc rawData =
+            itemContainer.readItem(testDoc.id, new PartitionKey(testDoc.pk), TestDoc.class).block().getItem();
+
+        SqlQuerySpec query = new SqlQuerySpec("SELECT * FROM r where r.Sensitive = @encryptedValue",
+            new SqlParameter("@encryptedValue", rawData.sensitive));
+
+        List<TestDoc> results = encryptionContainer.queryItems(query, new CosmosQueryRequestOptions(),
+            TestDoc.class).toStream().collect(Collectors.toList());
+
+        assertThat(results).hasSize(1);
+        assertThat(results.get(0)).isEqualTo(testDoc);
     }
 
     @Test(groups = {"encryption"}, enabled = false, timeOut = TIMEOUT)
