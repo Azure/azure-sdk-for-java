@@ -126,6 +126,7 @@
           <stopWait>20</stopWait>
           <waitForChild>false</waitForChild>
           <jettyXml>../../../jetty.xml</jettyXml>
+          <supportedPackagings>jar</supportedPackagings>
         </configuration>
         <executions>
           <execution>
@@ -134,10 +135,6 @@
             <goals>
               <goal>run-forked</goal>
             </goals>
-            <configuration>
-             <scanIntervalSeconds>0</scanIntervalSeconds>
-             <daemon>true</daemon>
-            </configuration>
           </execution>
           <execution>
             <id>stop-jetty</id>

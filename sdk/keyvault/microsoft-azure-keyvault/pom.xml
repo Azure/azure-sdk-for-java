@@ -162,6 +162,7 @@ the MIT License. See License.txt in the project root for license information. --
           <stopWait>20</stopWait>
           <waitForChild>false</waitForChild>
           <jettyXml>../../../jetty.xml</jettyXml>
+          <supportedPackagings>jar</supportedPackagings>
         </configuration>
         <executions>
           <execution>
@@ -170,10 +171,6 @@ the MIT License. See License.txt in the project root for license information. --
             <goals>
               <goal>run-forked</goal>
             </goals>
-            <configuration>
-             <scanIntervalSeconds>0</scanIntervalSeconds>
-             <daemon>true</daemon>
-            </configuration>
           </execution>
           <execution>
             <id>stop-jetty</id>
