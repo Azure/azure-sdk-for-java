@@ -847,10 +847,11 @@ public final class PhoneNumberAsyncClient {
      */
 
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<PhoneNumberSearch, PhoneNumberSearch> beginPurchaseSearch(String searchId, Duration pollInterval) {
+    public PollerFlux<PhoneNumberSearch, 
+        PhoneNumberSearch> beginPurchaseSearch(String searchId, Duration pollInterval) {
         Objects.requireNonNull(searchId, "'searchId' can not be null.");
         
-        if(pollInterval == null){
+        if (pollInterval == null) {
             pollInterval = Duration.ofSeconds(5);
         }
 
