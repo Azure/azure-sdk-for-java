@@ -302,7 +302,8 @@ public final class MessageUtils {
     }
 
     /*
-     * Starts a new process tracing span and attaches the returned context to the ServiceBusReceivedMessage object for users.
+     * Starts a new process tracing span and attaches the returned context to the ServiceBusReceivedMessage object for
+     * users.
      */
     public static Context startProcessTracingSpan(ServiceBusReceivedMessage receivedMessage,
         String hostname, String entityPath, TracerProvider tracerProvider, ProcessKind processKind) {
