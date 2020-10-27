@@ -15,19 +15,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CreateOrReplaceRelationshipOptions {
     /*
-     * Identifies the request in a distributed tracing system.
-     */
-    @JsonProperty(value = "traceparent")
-    private String traceparent;
-
-    /*
-     * Provides vendor-specific trace identification information and is a
-     * companion to traceparent.
-     */
-    @JsonProperty(value = "tracestate")
-    private String tracestate;
-
-    /*
      * If-Non-Match header that makes the request method conditional on a recipient cache or origin server either not having any current representation of the target resource.
      * Acceptable values are null or "*".
      * If IfNonMatch option is null the service will replace the existing entity with the new entity.
@@ -35,36 +22,6 @@ public final class CreateOrReplaceRelationshipOptions {
      */
     @JsonProperty(value = "If-None-Match")
     private String ifNoneMatch;
-
-    /**
-     * Get the traceparent property: Identifies the request in a distributed tracing system.
-     *
-     * @return the traceparent value.
-     */
-    public String getTraceParent() {
-        return this.traceparent;
-    }
-
-    /**
-     * Set the traceparent property: Identifies the request in a distributed tracing system.
-     *
-     * @param traceparent the traceparent value to set.
-     * @return the CreateOrReplaceRelationshipOptions object itself.
-     */
-    public CreateOrReplaceRelationshipOptions setTraceParent(String traceparent) {
-        this.traceparent = traceparent;
-        return this;
-    }
-
-    /**
-     * Get the tracestate property: Provides vendor-specific trace identification information and is a companion to
-     * traceparent.
-     *
-     * @return the tracestate value.
-     */
-    public String getTraceState() {
-        return this.tracestate;
-    }
 
     /**
      * Get the ifNoneMatch property
@@ -78,18 +35,6 @@ public final class CreateOrReplaceRelationshipOptions {
      */
     public String getIfNoneMatch() {
         return this.ifNoneMatch;
-    }
-
-    /**
-     * Set the tracestate property: Provides vendor-specific trace identification information and is a companion to
-     * traceparent.
-     *
-     * @param tracestate the tracestate value to set.
-     * @return the CreateOrReplaceRelationshipOptions object itself.
-     */
-    public CreateOrReplaceRelationshipOptions setTraceState(String tracestate) {
-        this.tracestate = tracestate;
-        return this;
     }
 
     /**

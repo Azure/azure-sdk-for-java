@@ -126,7 +126,7 @@ public final class DigitalTwinsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> T getDigitalTwin(String digitalTwinId, Class<T> clazz)
     {
-        return getDigitalTwinWithResponse(digitalTwinId, clazz, null, Context.NONE).getValue();
+        return getDigitalTwinWithResponse(digitalTwinId, clazz, Context.NONE).getValue();
     }
 
     /**
@@ -148,14 +148,13 @@ public final class DigitalTwinsClient {
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param clazz The model class to deserialize the response with.
      * @param <T> The generic type to deserialize the digital twin with.
-     * @param options The optional parameters for this request. If null, the default option values will be used.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link DigitalTwinsResponse} containing the deserialized application/json object representing the digital twin.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> DigitalTwinsResponse<T> getDigitalTwinWithResponse(String digitalTwinId, Class<T> clazz, GetDigitalTwinOptions options, Context context)
+    public <T> DigitalTwinsResponse<T> getDigitalTwinWithResponse(String digitalTwinId, Class<T> clazz, Context context)
     {
-        return digitalTwinsAsyncClient.getDigitalTwinWithResponse(digitalTwinId, clazz, options, context).block();
+        return digitalTwinsAsyncClient.getDigitalTwinWithResponse(digitalTwinId, clazz, context).block();
     }
 
     /**
@@ -311,7 +310,7 @@ public final class DigitalTwinsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> T getRelationship(String digitalTwinId, String relationshipId, Class<T> clazz) {
-        return getRelationshipWithResponse(digitalTwinId, relationshipId, clazz, null, Context.NONE).getValue();
+        return getRelationshipWithResponse(digitalTwinId, relationshipId, clazz, Context.NONE).getValue();
     }
 
     /**
@@ -331,13 +330,12 @@ public final class DigitalTwinsClient {
      * @param relationshipId The Id of the relationship to retrieve.
      * @param clazz The model class to deserialize the relationship into.
      * @param <T> The generic type to deserialize the relationship into.
-     * @param options The optional parameters for this request. If null, the default option values will be used.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link DigitalTwinsResponse} containing the deserialized relationship.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> DigitalTwinsResponse<T> getRelationshipWithResponse(String digitalTwinId, String relationshipId, Class<T> clazz, GetRelationshipOptions options, Context context) {
-        return digitalTwinsAsyncClient.getRelationshipWithResponse(digitalTwinId, relationshipId, clazz, options, context).block();
+    public <T> DigitalTwinsResponse<T> getRelationshipWithResponse(String digitalTwinId, String relationshipId, Class<T> clazz, Context context) {
+        return digitalTwinsAsyncClient.getRelationshipWithResponse(digitalTwinId, relationshipId, clazz, context).block();
     }
 
     /**
@@ -431,7 +429,7 @@ public final class DigitalTwinsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public <T> PagedIterable<T> listRelationships(String digitalTwinId, Class<T> clazz) {
-        return listRelationships(digitalTwinId, null, clazz, null, Context.NONE);
+        return listRelationships(digitalTwinId, null, clazz, Context.NONE);
     }
 
     /**
@@ -452,13 +450,12 @@ public final class DigitalTwinsClient {
      * @param clazz The model class to deserialize each relationship into. Since a digital twin might have relationships
      *              that conform to different models, it is advisable to convert them to a generic model like {@link BasicRelationship}.
      * @param <T> The generic type to deserialize each relationship into.
-     * @param options The optional parameters for this request. If null, the default option values will be used.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link PagedIterable} of relationships belonging to the specified digital twin.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public <T> PagedIterable<T> listRelationships(String digitalTwinId, String relationshipName, Class<T> clazz, ListRelationshipsOptions options, Context context) {
-        return new PagedIterable<>(digitalTwinsAsyncClient.listRelationships(digitalTwinId, relationshipName, clazz, options, context));
+    public <T> PagedIterable<T> listRelationships(String digitalTwinId, String relationshipName, Class<T> clazz, Context context) {
+        return new PagedIterable<>(digitalTwinsAsyncClient.listRelationships(digitalTwinId, relationshipName, clazz, context));
     }
 
     /**
@@ -474,7 +471,7 @@ public final class DigitalTwinsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IncomingRelationship> listIncomingRelationships(String digitalTwinId) {
-        return listIncomingRelationships(digitalTwinId, null, Context.NONE);
+        return listIncomingRelationships(digitalTwinId, Context.NONE);
     }
 
     /**
@@ -485,14 +482,13 @@ public final class DigitalTwinsClient {
      * {@codesnippet com.azure.digitaltwins.core.syncClient.listIncomingRelationships#String-Options-Context}
      *
      * @param digitalTwinId The Id of the target digital twin.
-     * @param options The optional parameters for this request. If null, the default option values will be used.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link PagedIterable} of application/json strings representing the relationships directed towards the
      * specified digital twin.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IncomingRelationship> listIncomingRelationships(String digitalTwinId, ListIncomingRelationshipsOptions options, Context context) {
-        return new PagedIterable<>(digitalTwinsAsyncClient.listIncomingRelationships(digitalTwinId, options, context));
+    public PagedIterable<IncomingRelationship> listIncomingRelationships(String digitalTwinId, Context context) {
+        return new PagedIterable<>(digitalTwinsAsyncClient.listIncomingRelationships(digitalTwinId, context));
     }
 
     //endregion Relationship APIs
@@ -512,7 +508,7 @@ public final class DigitalTwinsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Iterable<DigitalTwinsModelData> createModels(Iterable<String> dtdlModels) {
-        return createModelsWithResponse(dtdlModels, null, Context.NONE).getValue();
+        return createModelsWithResponse(dtdlModels, Context.NONE).getValue();
     }
 
     /**
@@ -523,14 +519,13 @@ public final class DigitalTwinsClient {
      * {@codesnippet com.azure.digitaltwins.core.syncClient.createModelsWithResponse#Iterable}
      *
      * @param dtdlModels The list of models to create. Each string corresponds to exactly one model.
-     * @param options The optional parameters for this request. If null, the default option values will be used.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} containing the list of created models. Each {@link DigitalTwinsModelData} instance in this list
      * will contain metadata about the created model, but will not contain the model itself.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Response<Iterable<DigitalTwinsModelData>> createModelsWithResponse(Iterable<String> dtdlModels, CreateModelsOptions options, Context context) {
-        return digitalTwinsAsyncClient.createModelsWithResponse(dtdlModels, options, context).block();
+    public Response<Iterable<DigitalTwinsModelData>> createModelsWithResponse(Iterable<String> dtdlModels, Context context) {
+        return digitalTwinsAsyncClient.createModelsWithResponse(dtdlModels, context).block();
     }
 
     /**
@@ -545,7 +540,7 @@ public final class DigitalTwinsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DigitalTwinsModelData getModel(String modelId) {
-        return getModelWithResponse(modelId, null, Context.NONE).getValue();
+        return getModelWithResponse(modelId, Context.NONE).getValue();
     }
 
     /**
@@ -556,13 +551,12 @@ public final class DigitalTwinsClient {
      * {@codesnippet com.azure.digitaltwins.core.syncClient.getModelWithResponse#String}
      *
      * @param modelId The Id of the model.
-     * @param options The optional parameters for this request. If null, the default option values will be used.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} containing a {@link DigitalTwinsModelData} instance that contains the model and its metadata.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DigitalTwinsModelData> getModelWithResponse(String modelId, GetModelOptions options, Context context) {
-        return digitalTwinsAsyncClient.getModelWithResponse(modelId, options, context).block();
+    public Response<DigitalTwinsModelData> getModelWithResponse(String modelId, Context context) {
+        return digitalTwinsAsyncClient.getModelWithResponse(modelId, context).block();
     }
 
     /**
@@ -607,7 +601,7 @@ public final class DigitalTwinsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteModel(String modelId) {
-        deleteModelWithResponse(modelId, null, Context.NONE);
+        deleteModelWithResponse(modelId, Context.NONE);
     }
 
     /**
@@ -618,13 +612,12 @@ public final class DigitalTwinsClient {
      * {@codesnippet com.azure.digitaltwins.core.syncClient.deleteModelWithResponse#String}
      *
      * @param modelId The Id for the model. The Id is globally unique and case sensitive.
-     * @param options The optional parameters for this request. If null, the default option values will be used.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} with no parsed payload object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteModelWithResponse(String modelId, DeleteModelOptions options, Context context) {
-        return digitalTwinsAsyncClient.deleteModelWithResponse(modelId, options, context).block();
+    public Response<Void> deleteModelWithResponse(String modelId, Context context) {
+        return digitalTwinsAsyncClient.deleteModelWithResponse(modelId, context).block();
     }
 
     /**
@@ -638,7 +631,7 @@ public final class DigitalTwinsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void decommissionModel(String modelId) {
-        decommissionModelWithResponse(modelId, null, Context.NONE);
+        decommissionModelWithResponse(modelId, Context.NONE);
     }
 
     /**
@@ -649,13 +642,12 @@ public final class DigitalTwinsClient {
      * {@codesnippet com.azure.digitaltwins.core.syncClient.decommissionModelWithResponse#String}
      *
      * @param modelId The Id of the model to decommission.
-     * @param options The optional parameters for this request. If null, the default option values will be used.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} with no parsed payload object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> decommissionModelWithResponse(String modelId, DecommissionModelOptions options, Context context) {
-        return digitalTwinsAsyncClient.decommissionModelWithResponse(modelId, options, context).block();
+    public Response<Void> decommissionModelWithResponse(String modelId, Context context) {
+        return digitalTwinsAsyncClient.decommissionModelWithResponse(modelId, context).block();
     }
 
     //endregion Model APIs
@@ -677,7 +669,7 @@ public final class DigitalTwinsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> T getComponent(String digitalTwinId, String componentName, Class<T> clazz) {
-        return getComponentWithResponse(digitalTwinId, componentName, clazz, null, Context.NONE).getValue();
+        return getComponentWithResponse(digitalTwinId, componentName, clazz, Context.NONE).getValue();
     }
 
     /**
@@ -691,13 +683,12 @@ public final class DigitalTwinsClient {
      * @param componentName The name of the component on the digital twin to retrieve.
      * @param clazz The class to deserialize the application/json component into.
      * @param <T> The generic type to deserialize the application/json component into.
-     * @param options The optional parameters for this request. If null, the default option values will be used.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link DigitalTwinsResponse} containing the deserialized application/json object representing the component of the digital twin.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> DigitalTwinsResponse<T> getComponentWithResponse(String digitalTwinId, String componentName, Class<T> clazz, GetComponentOptions options, Context context) {
-        return digitalTwinsAsyncClient.getComponentWithResponse(digitalTwinId, componentName, clazz, options, context).block();
+    public <T> DigitalTwinsResponse<T> getComponentWithResponse(String digitalTwinId, String componentName, Class<T> clazz, Context context) {
+        return digitalTwinsAsyncClient.getComponentWithResponse(digitalTwinId, componentName, clazz, context).block();
     }
 
     /**
@@ -815,7 +806,7 @@ public final class DigitalTwinsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void createOrReplaceEventRoute(String eventRouteId, DigitalTwinsEventRoute eventRoute) {
-        createOrReplaceEventRouteWithResponse(eventRouteId, eventRoute, null, Context.NONE);
+        createOrReplaceEventRouteWithResponse(eventRouteId, eventRoute, Context.NONE);
     }
 
     /**
@@ -828,13 +819,12 @@ public final class DigitalTwinsClient {
      *
      * @param eventRouteId The id of the event route to create.
      * @param eventRoute The event route to create.
-     * @param options The optional parameters for this request. If null, the default option values will be used.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createOrReplaceEventRouteWithResponse(String eventRouteId, DigitalTwinsEventRoute eventRoute, CreateOrReplaceEventRouteOptions options, Context context) {
-        return this.digitalTwinsAsyncClient.createOrReplaceEventRouteWithResponse(eventRouteId, eventRoute, options, context).block();
+    public Response<Void> createOrReplaceEventRouteWithResponse(String eventRouteId, DigitalTwinsEventRoute eventRoute, Context context) {
+        return this.digitalTwinsAsyncClient.createOrReplaceEventRouteWithResponse(eventRouteId, eventRoute, context).block();
     }
 
     /**
@@ -849,7 +839,7 @@ public final class DigitalTwinsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DigitalTwinsEventRoute getEventRoute(String eventRouteId) {
-        return getEventRouteWithResponse(eventRouteId, null, Context.NONE).getValue();
+        return getEventRouteWithResponse(eventRouteId, Context.NONE).getValue();
     }
 
     /**
@@ -860,13 +850,12 @@ public final class DigitalTwinsClient {
      * {@codesnippet com.azure.digitaltwins.core.syncClient.getEventRouteWithResponse#String-Options-Context}
      *
      * @param eventRouteId The Id of the event route to get.
-     * @param options The optional parameters for this request. If null, the default option values will be used.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} containing the retrieved event route.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DigitalTwinsEventRoute> getEventRouteWithResponse(String eventRouteId, GetDigitalTwinsEventRouteOptions options, Context context) {
-        return this.digitalTwinsAsyncClient.getEventRouteWithResponse(eventRouteId, options, context).block();
+    public Response<DigitalTwinsEventRoute> getEventRouteWithResponse(String eventRouteId, Context context) {
+        return this.digitalTwinsAsyncClient.getEventRouteWithResponse(eventRouteId, context).block();
     }
 
     /**
@@ -881,7 +870,7 @@ public final class DigitalTwinsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteEventRoute(String eventRouteId)
     {
-        deleteEventRouteWithResponse(eventRouteId, null, Context.NONE);
+        deleteEventRouteWithResponse(eventRouteId, Context.NONE);
     }
 
     /**
@@ -892,14 +881,13 @@ public final class DigitalTwinsClient {
      * {@codesnippet com.azure.digitaltwins.core.syncClient.deleteEventRouteWithResponse#String-Options-Context}
      *
      * @param eventRouteId The Id of the event route to delete.
-     * @param options The optional parameters for this request. If null, the default option values will be used.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} containing no parsed value.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteEventRouteWithResponse(String eventRouteId, DeleteEventRouteOptions options, Context context)
+    public Response<Void> deleteEventRouteWithResponse(String eventRouteId, Context context)
     {
-        return this.digitalTwinsAsyncClient.deleteEventRouteWithResponse(eventRouteId, options, context).block();
+        return this.digitalTwinsAsyncClient.deleteEventRouteWithResponse(eventRouteId, context).block();
     }
 
     /**
