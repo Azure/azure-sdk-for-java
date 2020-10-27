@@ -8,7 +8,7 @@
 
 package com.microsoft.azure.management.netapp.v2020_02_01.implementation;
 
-import com.microsoft.azure.management.netapp.v2020_02_01.ServiceLevel;
+import com.microsoft.azure.management.netapp.v2020_02_01.PoolServiceLevel;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -39,7 +39,7 @@ public class CapacityPoolInner extends Resource {
      * 'Standard', 'Premium', 'Ultra'.
      */
     @JsonProperty(value = "properties.serviceLevel", required = true)
-    private ServiceLevel serviceLevel;
+    private PoolServiceLevel serviceLevel;
 
     /**
      * Azure lifecycle management.
@@ -81,7 +81,7 @@ public class CapacityPoolInner extends Resource {
      *
      * @return the serviceLevel value
      */
-    public ServiceLevel serviceLevel() {
+    public PoolServiceLevel serviceLevel() {
         return this.serviceLevel;
     }
 
@@ -91,7 +91,7 @@ public class CapacityPoolInner extends Resource {
      * @param serviceLevel the serviceLevel value to set
      * @return the CapacityPoolInner object itself.
      */
-    public CapacityPoolInner withServiceLevel(ServiceLevel serviceLevel) {
+    public CapacityPoolInner withServiceLevel(PoolServiceLevel serviceLevel) {
         this.serviceLevel = serviceLevel;
         return this;
     }
