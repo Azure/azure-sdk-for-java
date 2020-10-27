@@ -612,6 +612,32 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         asyncClient.rollbackTransaction(transactionContext).block(operationTimeout);
     }
 
+//    /**
+//     * Creates a processor client instance configured with the given functions to process message and handle errors.
+//     *
+//     * @param processMessage The function to call when a message is received.
+//     * @param processError The function to call when an error occurs.
+//     * @return A new instance of {@link ServiceBusProcessorClient}.
+//     */
+//    public ServiceBusProcessorClient createProcessorClient(Consumer<ServiceBusProcessorContext> processMessage,
+//                                                           Consumer<Throwable> processError) {
+//        return createProcessorClient(processMessage, processError, null);
+//    }
+//
+//    /**
+//     * Creates a processor client instance configured with the given functions to process message and handle errors.
+//     *
+//     * @param processMessage The function to call when a message is received.
+//     * @param processError The function to call when an error occurs.
+//     * @param processorClientOptions Additional client options to configure the processor.
+//     * @return A new instance of {@link ServiceBusProcessorClient}.
+//     */
+//    public ServiceBusProcessorClient createProcessorClient(Consumer<ServiceBusProcessorContext> processMessage,
+//                                                           Consumer<Throwable> processError,
+//                                                           ServiceBusProcessorClientOptions processorClientOptions) {
+//        return new ServiceBusProcessorClient(asyncClient, processMessage, processError, processorClientOptions);
+//    }
+
     /**
      * {@inheritDoc}
      */

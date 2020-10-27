@@ -46,6 +46,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 /**
@@ -252,6 +253,23 @@ public final class ServiceBusClientBuilder {
      */
     public ServiceBusReceiverClientBuilder receiver() {
         return new ServiceBusReceiverClientBuilder();
+    }
+
+    /**
+     * A new instance of {@link ServiceBusProcessorClientBuilder} used to configure Service Bus processor instance.
+     * @return A new instance of {@link ServiceBusProcessorClientBuilder}.
+     */
+    public ServiceBusProcessorClientBuilder processor() {
+        return new ServiceBusProcessorClientBuilder();
+    }
+
+    /**
+     * A new instance of {@link ServiceBusSessionProcessorClientBuilder} use to configure a Service Bus processor
+     * instance that processes sessions.
+     * @return A new instance of {@link ServiceBusSessionProcessorClientBuilder}.
+     */
+    public ServiceBusSessionProcessorClientBuilder sessionProcessor() {
+        return new ServiceBusSessionProcessorClientBuilder();
     }
 
     /**
@@ -619,6 +637,182 @@ public final class ServiceBusClientBuilder {
         }
     }
 
+
+    public final class ServiceBusSessionProcessorClientBuilder {
+
+        private Integer maxConcurrentSessions = null;
+        private int prefetchCount = DEFAULT_PREFETCH_COUNT;
+        private String queueName;
+        private ReceiveMode receiveMode = ReceiveMode.PEEK_LOCK;
+        private String sessionId;
+        private String subscriptionName;
+        private String topicName;
+
+        private ServiceBusSessionProcessorClientBuilder() {
+        }
+
+        /**
+         * Enables session processing roll-over by processing at most {@code maxConcurrentSessions}.
+         *
+         * @param maxConcurrentSessions Maximum number of concurrent sessions to process at any given time.
+         *
+         * @return The modified {@link ServiceBusSessionProcessorClientBuilder} object.
+         * @throws IllegalArgumentException if {@code maxConcurrentSessions} is less than 1.
+         */
+        public ServiceBusSessionProcessorClientBuilder maxConcurrentSessions(int maxConcurrentSessions) {
+            if (maxConcurrentSessions < 1) {
+                throw logger.logExceptionAsError(new IllegalArgumentException(
+                    "maxConcurrentSessions cannot be less than 1."));
+            }
+
+            this.maxConcurrentSessions = maxConcurrentSessions;
+            return this;
+        }
+
+        /**
+         * Sets the prefetch count of the receiver. For both {@link ReceiveMode#PEEK_LOCK PEEK_LOCK} and {@link
+         * ReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} modes the default value is 1.
+         *
+         * Prefetch speeds up the message flow by aiming to have a message readily available for local retrieval when
+         * and before the application asks for one using {@link ServiceBusReceiverAsyncClient#receiveMessages()}.
+         * Setting a non-zero value will prefetch that number of messages. Setting the value to zero turns prefetch off.
+         *
+         * @param prefetchCount The prefetch count.
+         *
+         * @return The modified {@link ServiceBusSessionProcessorClientBuilder} object.
+         */
+        public ServiceBusSessionProcessorClientBuilder prefetchCount(int prefetchCount) {
+            this.prefetchCount = prefetchCount;
+            return this;
+        }
+
+        /**
+         * Sets the name of the queue to create a receiver for.
+         *
+         * @param queueName Name of the queue.
+         *
+         * @return The modified {@link ServiceBusSessionProcessorClientBuilder} object.
+         */
+        public ServiceBusSessionProcessorClientBuilder queueName(String queueName) {
+            this.queueName = queueName;
+            return this;
+        }
+
+        /**
+         * Sets the receive mode for the receiver.
+         *
+         * @param receiveMode Mode for receiving messages.
+         *
+         * @return The modified {@link ServiceBusSessionProcessorClientBuilder} object.
+         */
+        public ServiceBusSessionProcessorClientBuilder receiveMode(ReceiveMode receiveMode) {
+            this.receiveMode = receiveMode;
+            return this;
+        }
+
+//        /**
+//         * Sets the session id.
+//         *
+//         * @param sessionId session id.
+//         *
+//         * @return The modified {@link ServiceBusSessionProcessorClientBuilder} object.
+//         */
+//        public ServiceBusSessionProcessorClientBuilder sessionId(String sessionId) {
+//            this.sessionId = sessionId;
+//            return this;
+//        }
+
+        /**
+         * Sets the name of the subscription in the topic to listen to. <b>{@link #topicName(String)} must also be set.
+         * </b>
+         *
+         * @param subscriptionName Name of the subscription.
+         *
+         * @return The modified {@link ServiceBusSessionProcessorClientBuilder} object.
+         * @see #topicName A topic name should be set as well.
+         */
+        public ServiceBusSessionProcessorClientBuilder subscriptionName(String subscriptionName) {
+            this.subscriptionName = subscriptionName;
+            return this;
+        }
+
+        /**
+         * Sets the name of the topic. <b>{@link #subscriptionName(String)} must also be set.</b>
+         *
+         * @param topicName Name of the topic.
+         *
+         * @return The modified {@link ServiceBusSessionProcessorClientBuilder} object.
+         * @see #subscriptionName A subscription name should be set as well.
+         */
+        public ServiceBusSessionProcessorClientBuilder topicName(String topicName) {
+            this.topicName = topicName;
+            return this;
+        }
+
+        /**
+         * The message processing callback for the processor
+         * @param processMessage The message processor.
+         * @return The updated {@link ServiceBusSessionProcessorClientBuilder} object.
+         */
+        public ServiceBusSessionProcessorClientBuilder processMessage(Consumer<ServiceBusProcessorContext> processMessage) {
+            return this;
+        }
+
+        /**
+         * The error handler for the processor.
+         *
+         * @param processError The error handler
+         * @return The updated {@link ServiceBusSessionProcessorClientBuilder} object
+         */
+        public ServiceBusSessionProcessorClientBuilder processError(Consumer<Throwable> processError) {
+            return this;
+        }
+
+        /**
+         * Max concurrent messages that this processor should process.
+         *
+         * @param maxConcurrentCalls max concurrent messages that this processor should process.
+         * @return The updated {@link ServiceBusSessionProcessorClientBuilder} object.
+         */
+        public ServiceBusSessionProcessorClientBuilder maxConcurrentCalls(int maxConcurrentCalls) {
+            return this;
+        }
+
+        /**
+         * Creates an <b>asynchronous</b>, <b>session-aware</b> Service Bus receiver responsible for reading
+         * {@link ServiceBusMessage messages} from a specific queue or topic.
+         *
+         * @return An new {@link ServiceBusReceiverAsyncClient} that receives messages from a queue or topic.
+         * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
+         *     topicName} are not set or, both of these fields are set. It is also thrown if the Service Bus {@link
+         *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
+         *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}. Lastly, if a {@link
+         *     #topicName(String) topicName} is set, but {@link #subscriptionName(String) subscriptionName} is not.
+         * @throws IllegalArgumentException Queue or topic name are not set via {@link #queueName(String)
+         *     queueName()} or {@link #topicName(String) topicName()}, respectively.
+         */
+        public ServiceBusProcessorClient buildProcessorClient() {
+            final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
+                queueName);
+            final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName,
+                SubQueue.NONE);
+
+            validateAndThrow(prefetchCount);
+
+            final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
+            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
+                sessionId, true, maxConcurrentSessions);
+
+
+            ServiceBusReceiverAsyncClient serviceBusReceiverAsyncClient = new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
+                entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
+                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose);
+
+            return new ServiceBusProcessorClient(serviceBusReceiverAsyncClient, null, null, null);
+
+        }
+    }
+
     /**
      * Builder for creating {@link ServiceBusReceiverClient} and {@link ServiceBusReceiverAsyncClient} to consume
      * messages from a <b>session aware</b> Service Bus entity.
@@ -814,6 +1008,162 @@ public final class ServiceBusClientBuilder {
             return CoreUtils.isNullOrEmpty(sessionId);
         }
     }
+
+
+    public final class ServiceBusProcessorClientBuilder {
+        private int prefetchCount = DEFAULT_PREFETCH_COUNT;
+        private String queueName;
+        private SubQueue subQueue;
+        private ReceiveMode receiveMode = ReceiveMode.PEEK_LOCK;
+        private String subscriptionName;
+        private String topicName;
+
+        private ServiceBusProcessorClientBuilder() {
+
+        }
+
+        /**
+         * Sets the prefetch count of the receiver. For both {@link ReceiveMode#PEEK_LOCK PEEK_LOCK} and {@link
+         * ReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} modes the default value is 1.
+         *
+         * Prefetch speeds up the message flow by aiming to have a message readily available for local retrieval when
+         * and before the application asks for one using {@link ServiceBusReceiverAsyncClient#receiveMessages()}.
+         * Setting a non-zero value will prefetch that number of messages. Setting the value to zero turns prefetch off.
+         *
+         * @param prefetchCount The prefetch count.
+         *
+         * @return The modified {@link ServiceBusProcessorClientBuilder} object.
+         */
+        public ServiceBusProcessorClientBuilder prefetchCount(int prefetchCount) {
+            this.prefetchCount = prefetchCount;
+            return this;
+        }
+
+        /**
+         * Sets the name of the queue to create a receiver for.
+         *
+         * @param queueName Name of the queue.
+         *
+         * @return The modified {@link ServiceBusProcessorClientBuilder} object.
+         */
+        public ServiceBusProcessorClientBuilder queueName(String queueName) {
+            this.queueName = queueName;
+            return this;
+        }
+
+        /**
+         * Sets the receive mode for the receiver.
+         *
+         * @param receiveMode Mode for receiving messages.
+         *
+         * @return The modified {@link ServiceBusProcessorClientBuilder} object.
+         */
+        public ServiceBusProcessorClientBuilder receiveMode(ReceiveMode receiveMode) {
+            this.receiveMode = receiveMode;
+            return this;
+        }
+
+        /**
+         * Sets the type of the {@link SubQueue} to connect to.
+         *
+         * @param subQueue The type of the sub queue.
+         *
+         * @return The modified {@link ServiceBusProcessorClientBuilder} object.
+         * @see #queueName A queuename or #topicName A topic name should be set as well.
+         */
+        public ServiceBusProcessorClientBuilder subQueue(SubQueue subQueue) {
+            this.subQueue = subQueue;
+            return this;
+        }
+
+        /**
+         * Sets the name of the subscription in the topic to listen to. <b>{@link #topicName(String)} must also be set.
+         * </b>
+         *
+         * @param subscriptionName Name of the subscription.
+         *
+         * @return The modified {@link ServiceBusProcessorClientBuilder} object.
+         * @see #topicName A topic name should be set as well.
+         */
+        public ServiceBusProcessorClientBuilder subscriptionName(String subscriptionName) {
+            this.subscriptionName = subscriptionName;
+            return this;
+        }
+
+        /**
+         * Sets the name of the topic. <b>{@link #subscriptionName(String)} must also be set.</b>
+         *
+         * @param topicName Name of the topic.
+         *
+         * @return The modified {@link ServiceBusProcessorClientBuilder} object.
+         * @see #subscriptionName A subscription name should be set as well.
+         */
+        public ServiceBusProcessorClientBuilder topicName(String topicName) {
+            this.topicName = topicName;
+            return this;
+        }
+
+
+        /**
+         * The message processing callback for the processor
+         * @param processMessage The message processor.
+         * @return The updated {@link ServiceBusProcessorClientBuilder} object.
+         */
+        public ServiceBusProcessorClientBuilder processMessage(Consumer<ServiceBusProcessorContext> processMessage) {
+            return this;
+        }
+
+        /**
+         * The error handler for the processor.
+         *
+         * @param processError The error handler
+         * @return The updated {@link ServiceBusProcessorClientBuilder} object
+         */
+        public ServiceBusProcessorClientBuilder processError(Consumer<Throwable> processError) {
+            return this;
+        }
+
+        /**
+         * Max concurrent messages that this processor should process.
+         *
+         * @param maxConcurrentCalls max concurrent messages that this processor should process.
+         * @return The updated {@link ServiceBusProcessorClientBuilder} object.
+         */
+        public ServiceBusProcessorClientBuilder maxConcurrentCalls(int maxConcurrentCalls) {
+            return this;
+        }
+
+        /**
+         * Creates an <b>asynchronous</b> Service Bus receiver responsible for reading {@link ServiceBusMessage
+         * messages} from a specific queue or topic.
+         *
+         * @return An new {@link ServiceBusReceiverAsyncClient} that receives messages from a queue or topic.
+         * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
+         *     topicName} are not set or, both of these fields are set. It is also thrown if the Service Bus {@link
+         *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
+         *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}. Lastly, if a {@link
+         *     #topicName(String) topicName} is set, but {@link #subscriptionName(String) subscriptionName} is not.
+         * @throws IllegalArgumentException Queue or topic name are not set via {@link #queueName(String)
+         *     queueName()} or {@link #topicName(String) topicName()}, respectively.
+         */
+        public ServiceBusProcessorClient buildProcessorClient() {
+            final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
+                queueName);
+            final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName,
+                subQueue);
+            validateAndThrow(prefetchCount);
+
+            final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
+            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount);
+
+            ServiceBusReceiverAsyncClient serviceBusReceiverAsyncClient = new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
+                entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
+                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose);
+
+            return new ServiceBusProcessorClient(serviceBusReceiverAsyncClient, null, null, null);
+        }
+    }
+
 
     /**
      * Builder for creating {@link ServiceBusReceiverClient} and {@link ServiceBusReceiverAsyncClient} to consume
