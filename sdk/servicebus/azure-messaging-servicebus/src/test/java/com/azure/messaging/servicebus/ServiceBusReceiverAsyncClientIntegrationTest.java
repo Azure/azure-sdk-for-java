@@ -42,11 +42,13 @@ import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 import static com.azure.messaging.servicebus.TestUtils.MESSAGE_POSITION_ID;
+import static com.azure.messaging.servicebus.TestUtils.getServiceBusMessages;
 import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -1178,6 +1180,69 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
+     * Verifies we can autocomplete for a queue.
+     *
+     * @param entityType Entity Type.
+     */
+    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
+    @ParameterizedTest
+    void autoComplete(MessagingEntityType entityType) {
+        // Arrange
+        final int index = TestUtils.USE_CASE_VALIDATE_AMQP_PROPERTIES;
+        setSenderAndReceiver(entityType, index, false);
+        final ServiceBusReceiverAsyncClient autoCompleteReceiver =
+            getReceiverBuilder(false, entityType, index, false)
+                .buildAsyncClient();
+
+        final int numberOfEvents = 3;
+        final String messageId = UUID.randomUUID().toString();
+        final List<ServiceBusMessage> messages = getServiceBusMessages(numberOfEvents, messageId);
+        final ServiceBusReceivedMessage lastMessage = receiver.peekMessage().block(TIMEOUT);
+
+        // Send the three messages.
+        Mono.when(messages.stream().map(this::sendMessage)
+            .collect(Collectors.toUnmodifiableList()))
+            .block(TIMEOUT);
+
+        // Act
+        // Expecting that as we receive these messages, they'll be completed.
+        try {
+            StepVerifier.create(autoCompleteReceiver.receiveMessages())
+                .assertNext(context -> {
+                    if (lastMessage != null) {
+                        assertEquals(lastMessage.getMessageId(), context.getMessage().getMessageId());
+                    } else {
+                        assertEquals(messageId, context.getMessage().getMessageId());
+                    }
+                })
+                .assertNext(context -> {
+                    if (lastMessage == null) {
+                        assertEquals(messageId, context.getMessage().getMessageId());
+                    }
+                })
+                .assertNext(context -> {
+                    if (lastMessage == null) {
+                        assertEquals(messageId, context.getMessage().getMessageId());
+                    }
+                })
+                .thenCancel()
+                .verify(TIMEOUT);
+        } finally {
+            autoCompleteReceiver.close();
+        }
+
+        // Assert
+        final ServiceBusReceivedMessage newLastMessage = receiver.peekMessage().block(TIMEOUT);
+        if (lastMessage == null) {
+            assertNull(newLastMessage,
+                String.format("Actual messageId[%s]", newLastMessage != null ? newLastMessage.getMessageId() : "n/a"));
+        } else {
+            assertNotNull(newLastMessage);
+            assertEquals(lastMessage.getSequenceNumber(), newLastMessage.getSequenceNumber());
+        }
+    }
+
+    /**
      * Asserts the length and values with in the map.
      */
     private void assertMapValues(Map<String, Object> expectedMap, Map<String, Object> actualMap) {
@@ -1210,8 +1275,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 .buildAsyncClient();
         } else {
             this.receiver = getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
+                .disableAutoComplete()
                 .buildAsyncClient();
             this.receiveAndDeleteReceiver = getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
+                .disableAutoComplete()
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildAsyncClient();
         }

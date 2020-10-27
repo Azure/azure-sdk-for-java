@@ -596,8 +596,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         final Flux<ServiceBusReceivedMessageContext> withAutoLockRenewal;
         if (receiverOptions.isAutoLockRenewEnabled()) {
-            return new FluxAutoLockRenew(messageFlux, receiverOptions.getMaxLockRenewDuration(), renewalContainer,
-                this::renewMessageLock);
+            withAutoLockRenewal = new FluxAutoLockRenew(messageFlux, receiverOptions.getMaxLockRenewDuration(),
+                renewalContainer, this::renewMessageLock);
         } else {
             withAutoLockRenewal = messageFlux;
         }
@@ -1032,7 +1032,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             sessionIdToUse = sessionId;
         }
 
-        logger.info("{}: Update started. Disposition: {}. Lock: {}. SessionId {}.", entityPath, dispositionStatus,
+        logger.info("{}: Update started. Disposition: {}. Lock: {}. SessionId: {}.", entityPath, dispositionStatus,
             lockToken, sessionIdToUse);
 
         // This operation is not kicked off until it is subscribed to.
