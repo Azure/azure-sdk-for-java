@@ -27,7 +27,7 @@ public final class BasicDigitalTwin {
     @JsonProperty(value = DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_ID, required = true)
     private String id;
 
-    @JsonProperty(value = DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_E_TAG, required = true)
+    @JsonProperty(value = DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_ETAG, required = true)
     private String twinETag;
 
     @JsonProperty(value = DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_METADATA, required = true)
