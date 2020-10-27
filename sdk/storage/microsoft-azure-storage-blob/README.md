@@ -170,7 +170,7 @@ Please refer to CONTRIBUTING.md for information on how to run the tests.
 
 # Need Help?
 
-Be sure to check out the Microsoft Azure [Developer Forums on MSDN](http://social.msdn.microsoft.com/Forums/windowsazure/home?forum=windowsazuredata) or the [Developer Forums on Stack Overflow](http://stackoverflow.com/questions/tagged/azure+windows-azure-storage) if you have trouble with the provided code.
+Be sure to check out the Microsoft Azure [Developer Forums on MSDN](https://social.msdn.microsoft.com/Forums/windowsazure/home?forum=windowsazuredata) or the [Developer Forums on Stack Overflow](https://stackoverflow.com/questions/tagged/azure+windows-azure-storage) if you have trouble with the provided code.
 
 # Contribute Code or Provide Feedback
 

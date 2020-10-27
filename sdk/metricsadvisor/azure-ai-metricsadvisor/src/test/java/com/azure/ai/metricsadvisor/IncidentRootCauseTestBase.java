@@ -3,8 +3,9 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.implementation.util.PrivateFieldAccessHelper;
-import com.azure.ai.metricsadvisor.models.DimensionKey;
+import com.azure.ai.metricsadvisor.implementation.models.DimensionGroupIdentity;
+import com.azure.ai.metricsadvisor.implementation.models.RootCause;
+import com.azure.ai.metricsadvisor.implementation.util.IncidentRootCauseTransforms;
 import com.azure.ai.metricsadvisor.models.IncidentRootCause;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
@@ -51,18 +52,18 @@ public abstract class IncidentRootCauseTestBase extends TestBase {
     }
 
     static IncidentRootCause getExpectedIncidentRootCause() {
-        IncidentRootCause incidentRootCause = new IncidentRootCause();
-        PrivateFieldAccessHelper.set(incidentRootCause, "seriesKey",
-            new DimensionKey(new HashMap<String, String>() {{
+        RootCause innerRootCause = new RootCause()
+            .setRootCause(new DimensionGroupIdentity().setDimension(new HashMap<String, String>() {
+                {
                     put("category", "Shoes Handbags & Sunglasses");
                     put("city", "Chicago");
-                }}));
-        PrivateFieldAccessHelper.set(incidentRootCause, "paths", Collections.singletonList("category"));
-        PrivateFieldAccessHelper.set(incidentRootCause, "confidenceScore", 0.23402075133615907);
-        PrivateFieldAccessHelper.set(incidentRootCause, "description",
-            "Increase on category = Shoes Handbags & Sunglasses | city = Chicago contributes "
-                + "the most to current incident.");
-        return incidentRootCause;
+                }
+            }))
+            .setPath(Collections.singletonList("category"))
+            .setScore(0.23402075133615907)
+            .setDescription("Increase on category = Shoes Handbags & Sunglasses | city = Chicago contributes "
+            + "the most to current incident.");
+        return IncidentRootCauseTransforms.fromInner(innerRootCause);
     }
 
     void validateIncidentRootCauses(IncidentRootCause expectedIncidentRootCause,

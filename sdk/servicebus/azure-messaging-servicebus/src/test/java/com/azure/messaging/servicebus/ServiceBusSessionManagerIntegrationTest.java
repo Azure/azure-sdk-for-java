@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder;
@@ -72,7 +71,7 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
         final int numberToSend = 5;
         final List<ServiceBusReceivedMessage> receivedMessages = new ArrayList<>();
 
-        setSenderAndReceiver(entityType, entityIndex, TIMEOUT, builder -> builder);
+        setSenderAndReceiver(entityType, entityIndex, Function.identity());
 
         final Disposable subscription = Flux.interval(Duration.ofMillis(500))
             .take(numberToSend)
@@ -128,7 +127,7 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
         final int maxConcurrency = 2;
         final Set<String> set = new HashSet<>();
 
-        setSenderAndReceiver(MessagingEntityType.SUBSCRIPTION, entityIndex, Duration.ofSeconds(20),
+        setSenderAndReceiver(MessagingEntityType.SUBSCRIPTION, entityIndex,
             builder -> builder.maxConcurrentSessions(maxConcurrency));
 
         final Disposable subscription = Flux.interval(Duration.ofMillis(500))
@@ -186,14 +185,13 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
     /**
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
      */
-    private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, Duration operationTimeout,
+    private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex,
         Function<ServiceBusSessionReceiverClientBuilder, ServiceBusSessionReceiverClientBuilder> onBuild) {
 
         this.sender = getSenderBuilder(false, entityType, entityIndex, true, false)
             .buildAsyncClient();
         ServiceBusSessionReceiverClientBuilder sessionBuilder = getSessionReceiverBuilder(false,
-            entityType, entityIndex,
-            builder -> builder.retryOptions(new AmqpRetryOptions().setTryTimeout(operationTimeout)), false);
+            entityType, entityIndex, false);
         this.receiver = onBuild.apply(sessionBuilder).buildAsyncClient();
     }
 

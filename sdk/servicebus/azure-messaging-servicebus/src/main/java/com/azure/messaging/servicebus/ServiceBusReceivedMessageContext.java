@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * Represents the result of a receive message operation with context from Service Bus.
  */
-public class ServiceBusReceivedMessageContext {
+public final class ServiceBusReceivedMessageContext {
     private final ServiceBusReceivedMessage message;
     private final String sessionId;
     private final Throwable error;
