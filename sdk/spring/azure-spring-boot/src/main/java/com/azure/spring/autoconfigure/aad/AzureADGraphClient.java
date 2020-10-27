@@ -227,7 +227,7 @@ public class AzureADGraphClient {
                                            .isPresent();
         if (isScopeSupported) {
             AccessToken accessToken = oboTokenMap.get(applicationIdUri);
-            if (accessToken.checkIfExpired()) {
+            if (accessToken.isExpired()) {
                 accessToken.refresh(idToken, tenantId, applicationIdUri, uniformedPermissionSet);
             }
             return accessToken.getAccessToken();
@@ -336,16 +336,17 @@ public class AzureADGraphClient {
             this.accessToken = accessToken;
         }
 
-        public boolean checkIfExpired() {
+        public boolean isExpired() {
             Date currentTime = new Date();
             return expiredTime.getTime() - currentTime.getTime() < TIME_INTERNAL_FOR_OBO_TOKEN_EXPIRATION;
         }
 
-        public void refresh(String idtoken, String tenantId, String applicationIdUri, Set<String> permissions)
+        public void refresh(String idToken, String tenantId, String applicationIdUri, Set<String> permissions)
             throws ServiceUnavailableException {
-            IAuthenticationResult result = acquireTokenForScope(idtoken, tenantId, applicationIdUri, permissions);
+            IAuthenticationResult result = acquireTokenForScope(idToken, tenantId, applicationIdUri, permissions);
             setAccessToken(result.accessToken());
             setExpiredTime(result.expiresOnDate());
+            storeOBOTokenInSession();
         }
 
         public Date getExpiredTime() {
