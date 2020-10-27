@@ -62,6 +62,7 @@ import static com.azure.core.util.FluxUtil.pagedFluxError;
 public final class PhoneNumberAsyncClient {
     private final ClientLogger logger = new ClientLogger(PhoneNumberAsyncClient.class);
     private final PhoneNumberAdministrationsImpl phoneNumberAdministrations;
+    private final Duration defaultPollInterval = Duration.ofSeconds(1);
 
     PhoneNumberAsyncClient(PhoneNumberAdminClientImpl phoneNumberAdminClient) {
         this.phoneNumberAdministrations = phoneNumberAdminClient.getPhoneNumberAdministrations();
@@ -779,7 +780,11 @@ public final class PhoneNumberAsyncClient {
     public PollerFlux<PhoneNumberSearch, PhoneNumberSearch> beginCreateSearch(
         CreateSearchOptions options, Duration pollInterval) {
         Objects.requireNonNull(options, "'options' cannot be null.");
-        Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
+
+        if (pollInterval == null) {
+            pollInterval = defaultPollInterval;
+        }
+
         return new PollerFlux<PhoneNumberSearch, PhoneNumberSearch>(pollInterval,
             createSearchActivationOperation(options),
             createSearchPollOperation(),
@@ -851,7 +856,7 @@ public final class PhoneNumberAsyncClient {
         Objects.requireNonNull(searchId, "'searchId' can not be null.");
         
         if (pollInterval == null) {
-            pollInterval = Duration.ofSeconds(5);
+            pollInterval = defaultPollInterval;
         }
 
         return new PollerFlux<Void, Void>(pollInterval,
