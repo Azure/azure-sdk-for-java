@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.experimental.spatial;
+package com.azure.core.experimental.geojson;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -11,14 +11,14 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static com.azure.core.experimental.spatial.GeometryTestHelpers.MT_RAINIER_BOUNDING_BOX;
-import static com.azure.core.experimental.spatial.GeometryTestHelpers.PIKES_PLACE_BOUNDING_BOX;
+import static com.azure.core.experimental.geojson.GeoTestHelpers.MT_RAINIER_BOUNDING_BOX;
+import static com.azure.core.experimental.geojson.GeoTestHelpers.PIKES_PLACE_BOUNDING_BOX;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Tests {@link GeometryBoundingBox}.
+ * Tests {@link GeoBoundingBox}.
  */
-public class GeometryBoundingBoxTests {
+public class GeoBoundingBoxTests {
     @Test
     public void simpleConstructor() {
         double expectedWest = -180;
@@ -26,7 +26,7 @@ public class GeometryBoundingBoxTests {
         double expectedEast = 180;
         double expectedNorth = 90;
 
-        GeometryBoundingBox boundingBox = new GeometryBoundingBox(expectedWest, expectedSouth, expectedEast,
+        GeoBoundingBox boundingBox = new GeoBoundingBox(expectedWest, expectedSouth, expectedEast,
             expectedNorth);
 
         assertEquals(expectedWest, boundingBox.getWest());
@@ -47,7 +47,7 @@ public class GeometryBoundingBoxTests {
         double expectedMinAltitude = -1000;
         double expectedMaxAltitude = 1000;
 
-        GeometryBoundingBox boundingBox = new GeometryBoundingBox(expectedWest, expectedSouth, expectedEast,
+        GeoBoundingBox boundingBox = new GeoBoundingBox(expectedWest, expectedSouth, expectedEast,
             expectedNorth, expectedMinAltitude, expectedMaxAltitude);
 
         assertEquals(expectedWest, boundingBox.getWest());
@@ -65,7 +65,7 @@ public class GeometryBoundingBoxTests {
         double expectedEast = 200;
         double expectedNorth = 100;
 
-        GeometryBoundingBox boundingBox = new GeometryBoundingBox(expectedWest, expectedSouth, expectedEast,
+        GeoBoundingBox boundingBox = new GeoBoundingBox(expectedWest, expectedSouth, expectedEast,
             expectedNorth);
 
         assertEquals(expectedWest, boundingBox.getWest());
@@ -76,13 +76,13 @@ public class GeometryBoundingBoxTests {
 
     @ParameterizedTest
     @MethodSource("equalsSupplier")
-    public void geometryBoundingBoxEquals(GeometryBoundingBox boundingBox, Object obj, boolean expected) {
+    public void geoBoundingBoxEquals(GeoBoundingBox boundingBox, Object obj, boolean expected) {
         assertEquals(expected, boundingBox.equals(obj));
     }
 
     private static Stream<Arguments> equalsSupplier() {
-        GeometryBoundingBox pikePlaceBoundingBox = PIKES_PLACE_BOUNDING_BOX.get();
-        GeometryBoundingBox mtRainierBoundingBox = MT_RAINIER_BOUNDING_BOX.get();
+        GeoBoundingBox pikePlaceBoundingBox = PIKES_PLACE_BOUNDING_BOX.get();
+        GeoBoundingBox mtRainierBoundingBox = MT_RAINIER_BOUNDING_BOX.get();
 
         return Stream.of(
             // Other is null.

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.experimental.spatial;
+package com.azure.core.experimental.geojson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
@@ -20,34 +20,32 @@ import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.stream.Stream;
 
-import static com.azure.core.experimental.spatial.GeometrySerializationTestHelpers.geometryToJson;
-
 /**
- * Tests {@link GeometryDeserializer}.
+ * Tests {@link GeoJsonDeserializer}.
  */
-public class GeometryDeserializerTests {
+public class GeoJsonDeserializerTests {
     private static final ObjectMapper MAPPER;
 
     static {
-        MAPPER = new ObjectMapper().registerModule(GeometryDeserializer.MODULE);
+        MAPPER = new ObjectMapper().registerModule(GeoJsonDeserializer.MODULE);
     }
 
     @Test
     public void jsonWithoutTypeThrows() {
         String missingType = "{\"coordinates\":[0,0]}";
-        Assertions.assertThrows(IllegalStateException.class, () -> MAPPER.readValue(missingType, Geometry.class));
+        Assertions.assertThrows(IllegalStateException.class, () -> MAPPER.readValue(missingType, GeoObject.class));
     }
 
     @Test
     public void jsonWithoutCoordinatesThrows() {
         String missingCoordinates = "{\"type\":\"Point\"}";
-        Assertions.assertThrows(IllegalStateException.class, () -> MAPPER.readValue(missingCoordinates, PointGeometry.class));
+        Assertions.assertThrows(IllegalStateException.class, () -> MAPPER.readValue(missingCoordinates, GeoPoint.class));
     }
 
     @Test
-    public void unknownGeometryTypeThrows() {
+    public void unknownGeoTypeThrows() {
         String unknownType = "{\"type\":\"Custom\",\"coordinates\":[0,0]}";
-        Assertions.assertThrows(IllegalStateException.class, () -> MAPPER.readValue(unknownType, Geometry.class));
+        Assertions.assertThrows(IllegalStateException.class, () -> MAPPER.readValue(unknownType, GeoObject.class));
     }
 
     @ParameterizedTest
@@ -56,7 +54,7 @@ public class GeometryDeserializerTests {
         "{\"type\":\"Point\",\"coordinates\":[4,4,4,4]}"
     })
     public void invalidCoordinateCountThrows(String invalidCoordinateCount) {
-        Assertions.assertThrows(IllegalStateException.class, () -> MAPPER.readValue(invalidCoordinateCount, PointGeometry.class));
+        Assertions.assertThrows(IllegalStateException.class, () -> MAPPER.readValue(invalidCoordinateCount, GeoPoint.class));
     }
 
     @ParameterizedTest
@@ -65,23 +63,23 @@ public class GeometryDeserializerTests {
         "{\"type\":\"Point\",\"coordinates\":[0,0],\"bbox\":[8,8,8,8,8,8,8,8]}"
     })
     public void invalidBoundBoxThrows(String invalidBoundBox) {
-        Assertions.assertThrows(IllegalStateException.class, () -> MAPPER.readValue(invalidBoundBox, PointGeometry.class));
+        Assertions.assertThrows(IllegalStateException.class, () -> MAPPER.readValue(invalidBoundBox, GeoPoint.class));
     }
 
     @Test
     public void collectionWithoutGeometriesThrows() {
         String invalidCollection = "{\"type\":\"GeometryCollection\"}";
-        Assertions.assertThrows(IllegalStateException.class, () -> MAPPER.readValue(invalidCollection, CollectionGeometry.class));
+        Assertions.assertThrows(IllegalStateException.class, () -> MAPPER.readValue(invalidCollection, GeoCollection.class));
     }
 
     @ParameterizedTest
     @MethodSource("deserializeSupplier")
-    public <T extends Geometry> void deserialize(String json, Class<T> type, T expectedGeometry) throws IOException {
-        Assertions.assertEquals(expectedGeometry, MAPPER.readValue(json, type));
+    public <T extends GeoObject> void deserialize(String json, Class<T> type, T expectedGeo) throws IOException {
+        Assertions.assertEquals(expectedGeo, MAPPER.readValue(json, type));
     }
 
     private static Stream<Arguments> deserializeSupplier() {
-        GeometryBoundingBox boundingBox = new GeometryBoundingBox(0, 0, 1, 1, 0D, 1D);
+        GeoBoundingBox boundingBox = new GeoBoundingBox(0, 0, 1, 1, 0D, 1D);
         Map<String, Object> simpleProperties = Collections.singletonMap("key", "value");
         Map<String, Object> arrayProperties = Collections.singletonMap("text", Arrays.asList("hello", "world"));
 
@@ -90,75 +88,75 @@ public class GeometryDeserializerTests {
         crs.put("properties", Collections.singletonMap("name", "EPSG:432"));
         Map<String, Object> objectProperties = Collections.singletonMap("crs", crs);
 
-        BiFunction<GeometryBoundingBox, Map<String, Object>, PointGeometry> pointSupplier =
-            (box, properties) -> new PointGeometry(new GeometryPosition(0, 0, 0D), box, properties);
+        BiFunction<GeoBoundingBox, Map<String, Object>, GeoPoint> pointSupplier =
+            (box, properties) -> new GeoPoint(new GeoPosition(0, 0, 0D), box, properties);
 
-        List<GeometryPosition> positions = Arrays.asList(new GeometryPosition(0, 0, 1D),
-            new GeometryPosition(1, 1, 1D));
-        BiFunction<GeometryBoundingBox, Map<String, Object>, LineGeometry> lineSupplier =
-            (box, properties) -> new LineGeometry(positions, box, properties);
+        List<GeoPosition> positions = Arrays.asList(new GeoPosition(0, 0, 1D),
+            new GeoPosition(1, 1, 1D));
+        BiFunction<GeoBoundingBox, Map<String, Object>, GeoLine> lineSupplier =
+            (box, properties) -> new GeoLine(positions, box, properties);
 
-        List<LineGeometry> rings = Collections.singletonList(new LineGeometry(Arrays.asList(
-            new GeometryPosition(0, 0, 1D), new GeometryPosition(0, 1, 1D),
-            new GeometryPosition(1, 1, 1D), new GeometryPosition(0, 0, 1D)
+        List<GeoLinearRing> rings = Collections.singletonList(new GeoLinearRing(Arrays.asList(
+            new GeoPosition(0, 0, 1D), new GeoPosition(0, 1, 1D),
+            new GeoPosition(1, 1, 1D), new GeoPosition(0, 0, 1D)
         )));
-        BiFunction<GeometryBoundingBox, Map<String, Object>, PolygonGeometry> polygonSupplier =
-            (box, properties) -> new PolygonGeometry(rings, box, properties);
+        BiFunction<GeoBoundingBox, Map<String, Object>, GeoPolygon> polygonSupplier =
+            (box, properties) -> new GeoPolygon(rings, box, properties);
 
-        BiFunction<GeometryBoundingBox, Map<String, Object>, MultiPointGeometry> multiPointSupplier =
-            (box, properties) -> new MultiPointGeometry(Arrays.asList(pointSupplier.apply(null, null),
+        BiFunction<GeoBoundingBox, Map<String, Object>, GeoPointCollection> multiPointSupplier =
+            (box, properties) -> new GeoPointCollection(Arrays.asList(pointSupplier.apply(null, null),
                 pointSupplier.apply(null, null)), box, properties);
 
-        BiFunction<GeometryBoundingBox, Map<String, Object>, MultiLineGeometry> multiLineSupplier =
-            (box, properties) -> new MultiLineGeometry(Arrays.asList(lineSupplier.apply(null, null),
+        BiFunction<GeoBoundingBox, Map<String, Object>, GeoLineCollection> multiLineSupplier =
+            (box, properties) -> new GeoLineCollection(Arrays.asList(lineSupplier.apply(null, null),
                 lineSupplier.apply(null, null)), box, properties);
 
-        BiFunction<GeometryBoundingBox, Map<String, Object>, MultiPolygonGeometry> multiPolygonSuppluer =
-            (box, properties) -> new MultiPolygonGeometry(Arrays.asList(polygonSupplier.apply(null, null),
+        BiFunction<GeoBoundingBox, Map<String, Object>, GeoPolygonCollection> multiPolygonSuppluer =
+            (box, properties) -> new GeoPolygonCollection(Arrays.asList(polygonSupplier.apply(null, null),
                 polygonSupplier.apply(null, null)), box, properties);
 
-        BiFunction<GeometryBoundingBox, Map<String, Object>, CollectionGeometry> collectionSupplier =
-            (box, properties) -> new CollectionGeometry(Arrays.asList(pointSupplier.apply(null, null),
+        BiFunction<GeoBoundingBox, Map<String, Object>, GeoCollection> collectionSupplier =
+            (box, properties) -> new GeoCollection(Arrays.asList(pointSupplier.apply(null, null),
                 multiLineSupplier.apply(box, properties), polygonSupplier.apply(box, properties)), box, properties);
 
         return Stream.of(
-            // Point geometry.
+            // GeoPoint
             Arguments.of(deserializerArgumentSupplier(null, null, pointSupplier)),
             Arguments.of(deserializerArgumentSupplier(boundingBox, simpleProperties, pointSupplier)),
             Arguments.of(deserializerArgumentSupplier(boundingBox, arrayProperties, pointSupplier)),
             Arguments.of(deserializerArgumentSupplier(boundingBox, objectProperties, pointSupplier)),
 
-            // Line geometry.
+            // GeoLine
             Arguments.of(deserializerArgumentSupplier(null, null, lineSupplier)),
             Arguments.of(deserializerArgumentSupplier(boundingBox, simpleProperties, lineSupplier)),
             Arguments.of(deserializerArgumentSupplier(boundingBox, arrayProperties, lineSupplier)),
             Arguments.of(deserializerArgumentSupplier(boundingBox, objectProperties, lineSupplier)),
 
-            // Polygon geometry.
+            // GeoPolygon
             Arguments.of(deserializerArgumentSupplier(null, null, polygonSupplier)),
             Arguments.of(deserializerArgumentSupplier(boundingBox, simpleProperties, polygonSupplier)),
             Arguments.of(deserializerArgumentSupplier(boundingBox, arrayProperties, polygonSupplier)),
             Arguments.of(deserializerArgumentSupplier(boundingBox, objectProperties, polygonSupplier)),
 
-            // Multi point geometry.
+            // GeoPointCollection
             Arguments.of(deserializerArgumentSupplier(null, null, multiPointSupplier)),
             Arguments.of(deserializerArgumentSupplier(boundingBox, simpleProperties, multiPointSupplier)),
             Arguments.of(deserializerArgumentSupplier(boundingBox, arrayProperties, multiPointSupplier)),
             Arguments.of(deserializerArgumentSupplier(boundingBox, objectProperties, multiPointSupplier)),
 
-            // Multi line geometry.
+            // GeoLineCollection
             Arguments.of(deserializerArgumentSupplier(null, null, multiLineSupplier)),
             Arguments.of(deserializerArgumentSupplier(boundingBox, simpleProperties, multiLineSupplier)),
             Arguments.of(deserializerArgumentSupplier(boundingBox, arrayProperties, multiLineSupplier)),
             Arguments.of(deserializerArgumentSupplier(boundingBox, objectProperties, multiLineSupplier)),
 
-            // Multi polygon geometry.
+            // GeoPolygonCollection
             Arguments.of(deserializerArgumentSupplier(null, null, multiPolygonSuppluer)),
             Arguments.of(deserializerArgumentSupplier(boundingBox, simpleProperties, multiPolygonSuppluer)),
             Arguments.of(deserializerArgumentSupplier(boundingBox, arrayProperties, multiPolygonSuppluer)),
             Arguments.of(deserializerArgumentSupplier(boundingBox, objectProperties, multiPolygonSuppluer)),
 
-            // Collection geometry.
+            // GeoCollection
             Arguments.of(deserializerArgumentSupplier(null, null, collectionSupplier)),
             Arguments.of(deserializerArgumentSupplier(boundingBox, simpleProperties, collectionSupplier)),
             Arguments.of(deserializerArgumentSupplier(boundingBox, arrayProperties, collectionSupplier)),
@@ -166,10 +164,10 @@ public class GeometryDeserializerTests {
         );
     }
 
-    private static Object[] deserializerArgumentSupplier(GeometryBoundingBox boundingBox,
+    private static Object[] deserializerArgumentSupplier(GeoBoundingBox boundingBox,
         Map<String, Object> properties,
-        BiFunction<GeometryBoundingBox, Map<String, Object>, ? extends Geometry> geometrySupplier) {
-        Geometry geometry = geometrySupplier.apply(boundingBox, properties);
-        return new Object[]{geometryToJson(geometry), geometry.getClass(), geometry};
+        BiFunction<GeoBoundingBox, Map<String, Object>, ? extends GeoObject> geoSupplier) {
+        GeoObject geoObject = geoSupplier.apply(boundingBox, properties);
+        return new Object[]{GeoSerializationTestHelpers.geoToJson(geoObject), geoObject.getClass(), geoObject};
     }
 }
