@@ -243,10 +243,9 @@
         "justification": "Setting protocol to AMQP in @ServiceClientBuilder annotation is not a breaking change"
       },
       {
-        "code": "java.method.parameterTypeParameterChanged",
-        "old": "parameter void com.azure.core.amqp.models.AmqpDataBody::<init>(===java.lang.Iterable<byte[]>===)",
-        "new": "parameter void com.azure.core.amqp.models.AmqpDataBody::<init>(===java.lang.Iterable<com.azure.core.experimental.util.BinaryData>===)",
-        "justification": "Replacing with BinaryData."
+        "code": "java.annotation.added",
+        "new": "class com.azure.storage.blob.models.PageList",
+        "justification": "Annotation required to resolve deserialization bug."
       }
     ]
   }
