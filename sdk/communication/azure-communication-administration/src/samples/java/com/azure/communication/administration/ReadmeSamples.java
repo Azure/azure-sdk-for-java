@@ -377,4 +377,17 @@ public class ReadmeSamples {
             System.out.println("Phone Number: " + phoneNumber);
         }
     }
+
+    /**
+     * Sample code to purchase a search as a long running operation
+     */
+    public void beginPurchaseSearch() {
+        Duration duration = Duration.ofSeconds(1);
+        String phoneNumberSearchId = "SEARCH_ID_TO_PURCHASE";
+        PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+
+        SyncPoller<Void, Void> res = 
+            phoneNumberClient.beginPurchaseSearch(phoneNumberSearchId, duration);
+        res.waitForCompletion();
+    }
 }

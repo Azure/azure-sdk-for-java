@@ -54,10 +54,15 @@ public abstract class AzureServiceClient {
 
     protected AzureServiceClient(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
                                  AzureEnvironment environment) {
-        sdkName = this.getClass().getPackage().getName();
-
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
+
+        String packageName = this.getClass().getPackage().getName();
+        String implementationSegment = ".implementation";
+        if (packageName.endsWith(implementationSegment)) {
+            packageName = packageName.substring(0, packageName.length() - implementationSegment.length());
+        }
+        this.sdkName = packageName;
     }
 
     /**

@@ -24,7 +24,7 @@ class LegacyRestClient implements RestClient {
     /**
      * Constructor.
      */
-    public LegacyRestClient() {
+    LegacyRestClient() {
     }
 
     @Override

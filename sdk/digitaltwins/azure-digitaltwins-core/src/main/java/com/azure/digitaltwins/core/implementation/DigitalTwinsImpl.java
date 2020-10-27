@@ -352,7 +352,6 @@ public final class DigitalTwinsImpl {
         if (digitalTwinsAddOptions != null) {
             digitalTwinsAddOptions.validate();
         }
-        final String ifNoneMatch = "*";
         String traceparentInternal = null;
         if (digitalTwinsAddOptions != null) {
             traceparentInternal = digitalTwinsAddOptions.getTraceparent();
@@ -363,6 +362,11 @@ public final class DigitalTwinsImpl {
             tracestateInternal = digitalTwinsAddOptions.getTracestate();
         }
         String tracestate = tracestateInternal;
+        String ifNoneMatchInternal = null;
+        if (digitalTwinsAddOptions != null) {
+            ifNoneMatchInternal = digitalTwinsAddOptions.getIfNoneMatch();
+        }
+        String ifNoneMatch = ifNoneMatchInternal;
         return service.add(
                 this.client.getHost(),
                 traceparent,
@@ -574,7 +578,6 @@ public final class DigitalTwinsImpl {
         if (digitalTwinsAddRelationshipOptions != null) {
             digitalTwinsAddRelationshipOptions.validate();
         }
-        final String ifNoneMatch = "*";
         String traceparentInternal = null;
         if (digitalTwinsAddRelationshipOptions != null) {
             traceparentInternal = digitalTwinsAddRelationshipOptions.getTraceparent();
@@ -585,6 +588,11 @@ public final class DigitalTwinsImpl {
             tracestateInternal = digitalTwinsAddRelationshipOptions.getTracestate();
         }
         String tracestate = tracestateInternal;
+        String ifNoneMatchInternal = null;
+        if (digitalTwinsAddRelationshipOptions != null) {
+            ifNoneMatchInternal = digitalTwinsAddRelationshipOptions.getIfNoneMatch();
+        }
+        String ifNoneMatch = ifNoneMatchInternal;
         return service.addRelationship(
                 this.client.getHost(),
                 traceparent,

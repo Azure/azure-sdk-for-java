@@ -186,9 +186,9 @@ public final class AlertConfigurationTransforms {
                     .getCrossMetricsOperator()
                     .toString()));
         }
-        PrivateFieldAccessHelper.set(alertConfiguration,
-            "id",
+        AnomalyAlertConfigurationHelper.setId(alertConfiguration,
             innerAlertConfiguration.getAnomalyAlertingConfigurationId().toString());
+
         alertConfiguration.setDescription(innerAlertConfiguration.getDescription());
         alertConfiguration.setIdOfHooksToAlert(innerAlertConfiguration
             .getHookIds()
@@ -228,23 +228,18 @@ public final class AlertConfigurationTransforms {
                     ValueCondition innerValueCondition = innerMetricAlertConfiguration.getValueFilter();
                     if (innerValueCondition != null) {
                         MetricBoundaryCondition boundaryCondition = new MetricBoundaryCondition();
-                        PrivateFieldAccessHelper.set(boundaryCondition,
-                            "lowerBoundary",
+                        MetricBoundaryConditionHelper.setLowerBoundary(boundaryCondition,
                             innerValueCondition.getLower());
-                        PrivateFieldAccessHelper.set(boundaryCondition,
-                            "upperBoundary",
+                        MetricBoundaryConditionHelper.setUpperBoundary(boundaryCondition,
                             innerValueCondition.getUpper());
                         if (innerValueCondition.getDirection() == Direction.DOWN) {
-                            PrivateFieldAccessHelper.set(boundaryCondition,
-                                "boundaryDirection",
+                            MetricBoundaryConditionHelper.setBoundaryDirection(boundaryCondition,
                                 BoundaryDirection.LOWER);
                         } else if (innerValueCondition.getDirection() == Direction.UP) {
-                            PrivateFieldAccessHelper.set(boundaryCondition,
-                                "boundaryDirection",
+                            MetricBoundaryConditionHelper.setBoundaryDirection(boundaryCondition,
                                 BoundaryDirection.UPPER);
                         } else if (innerValueCondition.getDirection() == Direction.BOTH) {
-                            PrivateFieldAccessHelper.set(boundaryCondition,
-                                "boundaryDirection",
+                            MetricBoundaryConditionHelper.setBoundaryDirection(boundaryCondition,
                                 BoundaryDirection.BOTH);
                         }
                         if (innerValueCondition.getMetricId() != null) {

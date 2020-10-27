@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Handles serialization of a {@link JsonPatchDocument}.
  */
-class JsonPatchDocumentSerializer extends JsonSerializer<JsonPatchDocument> {
+final class JsonPatchDocumentSerializer extends JsonSerializer<JsonPatchDocument> {
     @Override
     public void serialize(JsonPatchDocument value, JsonGenerator gen, SerializerProvider serializers)
         throws IOException {
