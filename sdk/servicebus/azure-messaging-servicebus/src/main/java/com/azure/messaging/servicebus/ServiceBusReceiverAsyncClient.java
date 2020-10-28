@@ -612,13 +612,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
 
         return withAutoComplete
-            .onErrorMap(throwable -> {
-                if (throwable instanceof AmqpException) {
-                    return new ServiceBusException((AmqpException) throwable, ServiceBusErrorSource.RECEIVE);
-                } else {
-                    return throwable;
-                }
-            });
+            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE));
     }
 
     /**
@@ -740,7 +734,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 String.format("Cannot renew message lock [%s] for a session receiver.", message.getLockToken())));
         }
 
-        return renewMessageLock(message.getLockToken());
+        return renewMessageLock(message.getLockToken())
+            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RENEW_LOCK));
     }
 
     /**
@@ -758,7 +753,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             .flatMap(serviceBusManagementNode ->
                 serviceBusManagementNode.renewMessageLock(lockToken, getLinkName(null)))
             .map(offsetDateTime -> managementNodeLocks.addOrUpdate(lockToken, offsetDateTime,
-                offsetDateTime));
+                offsetDateTime))
+            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RENEW_LOCK));
     }
 
     /**
@@ -797,7 +793,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         renewalContainer.addOrUpdate(message.getLockToken(), OffsetDateTime.now().plus(maxLockRenewalDuration),
             operation);
 
-        return operation.getCompletionOperation();
+        return operation.getCompletionOperation()
+            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RENEW_LOCK));
     }
 
     /**
@@ -822,7 +819,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(channel -> channel.renewSessionLock(sessionId, linkName));
+            .flatMap(channel -> channel.renewSessionLock(sessionId, linkName))
+            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RENEW_LOCK));
     }
 
     /**
@@ -858,7 +856,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             this::renewSessionLock);
 
         renewalContainer.addOrUpdate(sessionId, OffsetDateTime.now().plus(maxLockRenewalDuration), operation);
-        return operation.getCompletionOperation();
+        return operation
+            .getCompletionOperation()
+            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RENEW_LOCK));
     }
 
     /**
@@ -1170,6 +1170,17 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         } else {
             final ServiceBusAsyncConsumer existing = consumer.get();
             return existing != null ? existing.getLinkName() : null;
+        }
+    }
+
+    /**
+     * Map the error to ServiceBusException
+     */
+    private Throwable mapError(Throwable throwable, ServiceBusErrorSource errorSource) {
+        if (throwable instanceof AmqpException) {
+            return new ServiceBusException((AmqpException) throwable, errorSource);
+        } else {
+            return throwable;
         }
     }
 }

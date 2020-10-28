@@ -29,7 +29,10 @@ public final class ServiceBusErrorSource extends ExpandableStringEnum<ServiceBus
 
     /** Error while receiving the message(s).*/
     public static final ServiceBusErrorSource RECEIVE = fromString("RECEIVE", ServiceBusErrorSource.class);
-    
+
+    /** Error while renewing lock.*/
+    public static final ServiceBusErrorSource RENEW_LOCK = fromString("RENEW_LOCK", ServiceBusErrorSource.class);
+
     /** Error when we could not determine the source.*/
     public static final ServiceBusErrorSource UNKNOWN = fromString("UNKNOWN", ServiceBusErrorSource.class);
 
