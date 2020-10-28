@@ -256,20 +256,6 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void purchaseSearch(HttpClient httpClient) {
-        this.getClient(httpClient).purchaseSearch(SEARCH_ID_TO_PURCHASE);
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void purchaseSearchWithResponse(HttpClient httpClient) {
-        Response<Void> response = this.getClient(httpClient).purchaseSearchWithResponse(SEARCH_ID_TO_PURCHASE, Context.NONE);
-
-        assertEquals(202, response.getStatusCode());
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void cancelSearch(HttpClient httpClient) {
         this.getClient(httpClient).cancelSearch(SEARCH_ID_TO_CANCEL);
     }
