@@ -18,19 +18,31 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.security.keyvault.certificates.models.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.time.Duration;
 import java.util.stream.Stream;
+
+import com.azure.security.keyvault.certificates.models.CertificateContact;
+import com.azure.security.keyvault.certificates.models.CertificateIssuer;
+import com.azure.security.keyvault.certificates.models.CertificateContentType;
+import com.azure.security.keyvault.certificates.models.CertificatePolicy;
+import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
+import com.azure.security.keyvault.certificates.models.AdministratorContact;
+import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
+import com.azure.security.keyvault.certificates.models.WellKnownIssuerNames;
+import com.azure.security.keyvault.certificates.models.CertificateKeyUsage;
+import com.azure.security.keyvault.certificates.models.CertificateKeyType;
+import com.azure.security.keyvault.certificates.models.CertificateKeyCurveName;
+import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
+import com.azure.security.keyvault.certificates.models.LifetimeAction;
+import com.azure.security.keyvault.certificates.models.CertificatePolicyAction;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -38,7 +50,14 @@ import java.io.IOException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.*;
+import java.util.Objects;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.BiConsumer;
 import org.junit.jupiter.params.provider.Arguments;
@@ -281,7 +300,7 @@ public abstract class CertificateClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void listPropertyOfCertificates(HttpClient httpClient, CertificateServiceVersion serviceVersion);
+    public abstract void listPropertyOfCertificatesThroughPoller(HttpClient httpClient, CertificateServiceVersion serviceVersion);
 
     void listPropertyOfCertificatesRunner(Consumer<List<String>> testRunner){
         List<String> certificates = new ArrayList<>();

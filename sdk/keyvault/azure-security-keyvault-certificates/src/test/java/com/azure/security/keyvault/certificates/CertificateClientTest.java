@@ -12,7 +12,17 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.security.keyvault.certificates.models.*;
+import com.azure.security.keyvault.certificates.models.CertificateContact;
+import com.azure.security.keyvault.certificates.models.CertificateIssuer;
+import com.azure.security.keyvault.certificates.models.CertificateContentType;
+import com.azure.security.keyvault.certificates.models.CertificatePolicy;
+import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
+import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
+import com.azure.security.keyvault.certificates.models.CertificateOperation;
+import com.azure.security.keyvault.certificates.models.DeletedCertificate;
+import com.azure.security.keyvault.certificates.models.CertificateProperties;
+import com.azure.security.keyvault.certificates.models.IssuerProperties;
+import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -21,9 +31,16 @@ import java.net.HttpURLConnection;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.time.Duration;
-import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Arrays;
+import java.util.HashSet;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
@@ -432,7 +449,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void listPropertyOfCertificates(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
+    public void listPropertyOfCertificatesThroughPoller(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateClient(httpClient, serviceVersion);
         listPropertyOfCertificatesRunner((certificates) -> {
             HashSet<String> certificatesToList = new HashSet<>(certificates);
