@@ -34,8 +34,6 @@ public class UserPrincipal implements Serializable {
      */
     private Set<String> roles;
 
-    private String accessTokenForGraphApi;
-
     public UserPrincipal(String aadIssuedBearerToken, JWSObject jwsObject, JWTClaimsSet jwtClaimsSet) {
         this.aadIssuedBearerToken = aadIssuedBearerToken;
         this.jwsObject = jwsObject;
@@ -64,14 +62,6 @@ public class UserPrincipal implements Serializable {
 
     public void setRoles(Set<String> roles) {
         this.roles = roles;
-    }
-
-    public String getAccessTokenForGraphApi() {
-        return accessTokenForGraphApi;
-    }
-
-    public void setAccessTokenForGraphApi(String accessTokenForGraphApi) {
-        this.accessTokenForGraphApi = accessTokenForGraphApi;
     }
 
     public boolean isMemberOf(AADAuthenticationProperties aadAuthenticationProperties, String group) {

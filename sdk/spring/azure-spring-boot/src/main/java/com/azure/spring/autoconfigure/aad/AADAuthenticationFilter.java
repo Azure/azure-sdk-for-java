@@ -114,7 +114,6 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
             UserPrincipal userPrincipal = (UserPrincipal) httpSession.getAttribute(CURRENT_USER_PRINCIPAL);
             if (userPrincipal == null
                 || !userPrincipal.getAadIssuedBearerToken().equals(aadIssuedBearerToken)
-                || userPrincipal.getAccessTokenForGraphApi() == null
             ) {
                 userPrincipal = userPrincipalManager.buildUserPrincipal(aadIssuedBearerToken);
                 String accessTokenForGraphApi = accessTokenManager
@@ -124,7 +123,6 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
                         GRAPH_API_PERMISSIONS
                     )
                     .getAccessTokenWithRefreshAutomatically();
-                userPrincipal.setAccessTokenForGraphApi(accessTokenForGraphApi);
                 userPrincipal.setGroups(azureADGraphClient.getGroups(accessTokenForGraphApi));
                 httpSession.setAttribute(CURRENT_USER_PRINCIPAL, userPrincipal);
             }
