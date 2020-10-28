@@ -65,7 +65,6 @@ public final class AmqpAnnotatedMessage {
                 throw logger.logExceptionAsError(new UnsupportedOperationException("Body type not supported yet "
                     + bodyType.toString()));
             default:
-                logger.warning("Invalid body type {}.", bodyType);
                 throw logger.logExceptionAsError(new IllegalStateException("Body type not valid "
                     + bodyType.toString()));
         }
