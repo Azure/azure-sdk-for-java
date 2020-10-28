@@ -60,8 +60,9 @@ public class EventHubBinderConfiguration {
             return new EventHubChannelResourceManagerProvisioner(eventHubNamespaceManager, eventHubManager,
                     eventHubConsumerGroupManager, eventHubProperties.getNamespace());
         } else {
-            TelemetryCollector.getInstance().addProperty(EVENT_HUB_BINDER, NAMESPACE,
-                    EventHubUtils.getNamespace(eventHubProperties.getConnectionString()));
+            String namespace = eventHubProperties.getNamespace() != null ? eventHubProperties.getNamespace()
+                    : EventHubUtils.getNamespace(eventHubProperties.getConnectionString());
+            TelemetryCollector.getInstance().addProperty(EVENT_HUB_BINDER, NAMESPACE, namespace);
         }
 
         return new EventHubChannelProvisioner();
