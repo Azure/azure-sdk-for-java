@@ -504,28 +504,6 @@ public final class PhoneNumberClient {
     }
 
     /**
-     * Purchases the phone number search.
-     *
-     * @param searchId ID of the search
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void purchaseSearch(String searchId) {
-        phoneNumberAsyncClient.purchaseSearch(searchId).block();
-    }
-
-    /**
-     * Purchases the phone number search.
-     *
-     * @param searchId ID of the search
-     * @param context A {@link Context} representing the request context.
-     * @return A {@link Response} for the operation
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> purchaseSearchWithResponse(String searchId, Context context) {
-        return phoneNumberAsyncClient.purchaseSearchWithResponse(searchId, context).block();
-    }
-
-    /**
      * Initiates a search and returns a {@link PhoneNumberSearch} usable by other functions
      * This function returns a Long Running Operation poller.
      * 

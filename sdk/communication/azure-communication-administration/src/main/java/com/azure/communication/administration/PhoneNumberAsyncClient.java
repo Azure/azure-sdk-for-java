@@ -736,8 +736,7 @@ public final class PhoneNumberAsyncClient {
      * @param searchId ID of the search
      * @return A {@link Mono} for the asynchronous return
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> purchaseSearch(String searchId) {
+    private Mono<Void> purchaseSearch(String searchId) {
         return purchaseSearchWithResponse(searchId).flatMap(FluxUtil::toMono);
     }
 
@@ -747,12 +746,11 @@ public final class PhoneNumberAsyncClient {
      * @param searchId ID of the search
      * @return A {@link Mono} containing a {@link Response} for the operation
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> purchaseSearchWithResponse(String searchId) {
+    private Mono<Response<Void>> purchaseSearchWithResponse(String searchId) {
         return purchaseSearchWithResponse(searchId, null);
     }
 
-    Mono<Response<Void>> purchaseSearchWithResponse(String searchId, Context context) {
+    private Mono<Response<Void>> purchaseSearchWithResponse(String searchId, Context context) {
         Objects.requireNonNull(searchId, "'searchId' cannot be null.");
 
         try {

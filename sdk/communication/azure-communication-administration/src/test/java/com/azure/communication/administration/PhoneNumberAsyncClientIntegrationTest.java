@@ -348,26 +348,6 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void purchaseSearch(HttpClient httpClient) {
-        Mono<Void> mono = this.getClient(httpClient).purchaseSearch(SEARCH_ID_TO_PURCHASE);
-
-        StepVerifier.create(mono).verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void purchaseSearchWithResponse(HttpClient httpClient) {
-        Mono<Response<Void>> mono = this.getClient(httpClient).purchaseSearchWithResponse(SEARCH_ID_TO_PURCHASE, Context.NONE);
-
-        StepVerifier.create(mono)
-            .assertNext(item -> {
-                assertEquals(202, item.getStatusCode());
-            })
-            .verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void cancelSearch(HttpClient httpClient) {
         Mono<Void> mono = this.getClient(httpClient).cancelSearch(SEARCH_ID_TO_CANCEL);
 
