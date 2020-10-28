@@ -117,7 +117,7 @@ public interface VirtualMachineScaleSetVM extends HasInner<VirtualMachineScaleSe
     /**
      * @return the resources value.
      */
-    List<VirtualMachineVirtualMachineExtension> resources();
+    List<VirtualMachineExtension> resources();
 
     /**
      * @return the securityProfile value.

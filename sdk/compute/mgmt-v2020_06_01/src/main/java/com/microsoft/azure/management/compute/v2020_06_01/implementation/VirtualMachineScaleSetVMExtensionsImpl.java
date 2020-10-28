@@ -14,8 +14,8 @@ import com.microsoft.azure.management.compute.v2020_06_01.VirtualMachineScaleSet
 import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
-import com.microsoft.azure.management.compute.v2020_06_01.VirtualMachineExtensionsListResult;
-import com.microsoft.azure.management.compute.v2020_06_01.VirtualMachineScaleSetVirtualMachineExtension;
+import com.microsoft.azure.management.compute.v2020_06_01.VirtualMachineScaleSetVMExtensionsListResult;
+import com.microsoft.azure.management.compute.v2020_06_01.VirtualMachineScaleSetVMExtension;
 
 class VirtualMachineScaleSetVMExtensionsImpl extends WrapperImpl<VirtualMachineScaleSetVMExtensionsInner> implements VirtualMachineScaleSetVMExtensions {
     private final ComputeManager manager;
@@ -30,41 +30,41 @@ class VirtualMachineScaleSetVMExtensionsImpl extends WrapperImpl<VirtualMachineS
     }
 
     @Override
-    public VirtualMachineScaleSetVirtualMachineExtensionImpl define(String name) {
+    public VirtualMachineScaleSetVMExtensionImpl define(String name) {
         return wrapModel(name);
     }
 
-    private VirtualMachineScaleSetVirtualMachineExtensionImpl wrapModel(VirtualMachineExtensionInner inner) {
-        return  new VirtualMachineScaleSetVirtualMachineExtensionImpl(inner, manager());
+    private VirtualMachineScaleSetVMExtensionImpl wrapModel(VirtualMachineScaleSetVMExtensionInner inner) {
+        return  new VirtualMachineScaleSetVMExtensionImpl(inner, manager());
     }
 
-    private VirtualMachineScaleSetVirtualMachineExtensionImpl wrapModel(String name) {
-        return new VirtualMachineScaleSetVirtualMachineExtensionImpl(name, this.manager());
+    private VirtualMachineScaleSetVMExtensionImpl wrapModel(String name) {
+        return new VirtualMachineScaleSetVMExtensionImpl(name, this.manager());
     }
 
     @Override
-    public Observable<VirtualMachineExtensionsListResult> listAsync(String resourceGroupName, String vmScaleSetName, String instanceId) {
+    public Observable<VirtualMachineScaleSetVMExtensionsListResult> listAsync(String resourceGroupName, String vmScaleSetName, String instanceId) {
         VirtualMachineScaleSetVMExtensionsInner client = this.inner();
         return client.listAsync(resourceGroupName, vmScaleSetName, instanceId)
-        .map(new Func1<VirtualMachineExtensionsListResultInner, VirtualMachineExtensionsListResult>() {
+        .map(new Func1<VirtualMachineScaleSetVMExtensionsListResultInner, VirtualMachineScaleSetVMExtensionsListResult>() {
             @Override
-            public VirtualMachineExtensionsListResult call(VirtualMachineExtensionsListResultInner inner) {
-                return new VirtualMachineExtensionsListResultImpl(inner, manager());
+            public VirtualMachineScaleSetVMExtensionsListResult call(VirtualMachineScaleSetVMExtensionsListResultInner inner) {
+                return new VirtualMachineScaleSetVMExtensionsListResultImpl(inner, manager());
             }
         });
     }
 
     @Override
-    public Observable<VirtualMachineScaleSetVirtualMachineExtension> getAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName) {
+    public Observable<VirtualMachineScaleSetVMExtension> getAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName) {
         VirtualMachineScaleSetVMExtensionsInner client = this.inner();
         return client.getAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName)
-        .flatMap(new Func1<VirtualMachineExtensionInner, Observable<VirtualMachineScaleSetVirtualMachineExtension>>() {
+        .flatMap(new Func1<VirtualMachineScaleSetVMExtensionInner, Observable<VirtualMachineScaleSetVMExtension>>() {
             @Override
-            public Observable<VirtualMachineScaleSetVirtualMachineExtension> call(VirtualMachineExtensionInner inner) {
+            public Observable<VirtualMachineScaleSetVMExtension> call(VirtualMachineScaleSetVMExtensionInner inner) {
                 if (inner == null) {
                     return Observable.empty();
                 } else {
-                    return Observable.just((VirtualMachineScaleSetVirtualMachineExtension)wrapModel(inner));
+                    return Observable.just((VirtualMachineScaleSetVMExtension)wrapModel(inner));
                 }
             }
        });
