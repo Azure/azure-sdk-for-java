@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.autoconfigure.context;
 
-import java.util.Arrays;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +16,7 @@ import org.springframework.core.env.Environment;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.identity.spring.SpringEnvironmentTokenBuilder;
@@ -26,7 +24,7 @@ import com.microsoft.azure.spring.cloud.context.core.config.AzureProperties;
 
 @Configuration
 @EnableConfigurationProperties(AzureProperties.class)
-@ConditionalOnClass(Azure.class)
+@ConditionalOnClass(AzureResourceManager.class)
 @ConditionalOnProperty(prefix = "spring.cloud.azure", value = { "resource-group" })
 public class AzureResourceManager20AutoConfiguration {
 
@@ -37,14 +35,14 @@ public class AzureResourceManager20AutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public com.azure.resourcemanager.Azure.Authenticated azure20(TokenCredential tokenCredential,
+    public AzureResourceManager.Authenticated azure20(TokenCredential tokenCredential,
             AzureProperties azureProperties) {
         AzureEnvironment legacyEnvironment = azureProperties.getEnvironment();
-        com.azure.core.management.AzureEnvironment azureEnvironment = Arrays
-                .stream(com.azure.core.management.AzureEnvironment.knownEnvironments())
+        com.azure.core.management.AzureEnvironment azureEnvironment = 
+                com.azure.core.management.AzureEnvironment.knownEnvironments().stream()
                 .filter(env -> env.getManagementEndpoint().equals(legacyEnvironment.managementEndpoint())).findFirst()
                 .get();
-        return com.azure.resourcemanager.Azure.authenticate(tokenCredential, new AzureProfile(azureEnvironment));
+        return AzureResourceManager.authenticate(tokenCredential, new AzureProfile(azureEnvironment));
     }
 
     @Bean

@@ -28,6 +28,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
@@ -35,6 +36,7 @@ import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
 import com.microsoft.azure.spring.cloud.autoconfigure.context.AzureResourceManager20AutoConfiguration;
 import com.microsoft.azure.spring.cloud.context.core.api.EnvironmentProvider;
+import com.microsoft.azure.spring.cloud.context.core.config.AzureProperties;
 import com.microsoft.azure.spring.cloud.context.core.impl.StorageAccountManager;
 import com.microsoft.azure.spring.cloud.context.core.storage.StorageConnectionStringProvider;
 import com.microsoft.azure.spring.cloud.context.core.storage.StorageEndpointStringBuilder;
@@ -138,5 +140,11 @@ public class AzureStorageAutoConfiguration {
     @ConditionalOnClass(AzureStorageProtocolResolver.class)
     @Import(AzureStorageProtocolResolver.class)
     static class StorageResourceConfiguration {
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public StorageAccountManager storageAccountManager(AzureResourceManager azureResourceManagement, AzureProperties azureProperties) {
+        return new StorageAccountManager(azureResourceManagement, azureProperties);
     }
 }

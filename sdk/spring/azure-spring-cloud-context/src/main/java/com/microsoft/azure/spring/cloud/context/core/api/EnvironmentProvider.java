@@ -21,7 +21,7 @@ public interface EnvironmentProvider {
      *         <code>com.azure.core.management</code> SDK.
      */
     default com.azure.core.management.AzureEnvironment getCoreEnvironment() {
-        return Arrays.stream(com.azure.core.management.AzureEnvironment.knownEnvironments())
+        return com.azure.core.management.AzureEnvironment.knownEnvironments().stream()
                 .filter(coreEnvironment -> getEnvironment().managementEndpoint()
                         .equals(coreEnvironment.getManagementEndpoint()))
                 .findAny().get();

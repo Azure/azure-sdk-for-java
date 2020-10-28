@@ -5,17 +5,17 @@ package com.microsoft.azure.spring.cloud.context.core.impl;
 
 import javax.annotation.Nonnull;
 
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.microsoft.azure.spring.cloud.context.core.config.AzureProperties;
 
 public class StorageAccountManager extends AzureManager<StorageAccount, String> {
-    
-    private final Azure azure;
 
-    public StorageAccountManager(@Nonnull Azure azure, AzureProperties azureProperties) {
+    private final AzureResourceManager azureResourceManager;
+
+    public StorageAccountManager(@Nonnull AzureResourceManager azureResourceManager, AzureProperties azureProperties) {
         super(azureProperties);
-        this.azure = azure;
+        this.azureResourceManager = azureResourceManager;
     }
 
     @Override
@@ -30,13 +30,13 @@ public class StorageAccountManager extends AzureManager<StorageAccount, String> 
 
     @Override
     public StorageAccount internalGet(String key) {
-        
-        return azure.storageAccounts().getByResourceGroup(azureProperties.getResourceGroup(), key);
+
+        return azureResourceManager.storageAccounts().getByResourceGroup(azureProperties.getResourceGroup(), key);
     }
 
     @Override
     public StorageAccount internalCreate(String key) {
-        return azure.storageAccounts().define(key).withRegion(azureProperties.getRegion())
-            .withExistingResourceGroup(azureProperties.getResourceGroup()).create();
+        return azureResourceManager.storageAccounts().define(key).withRegion(azureProperties.getRegion())
+                .withExistingResourceGroup(azureProperties.getResourceGroup()).create();
     }
 }

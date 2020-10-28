@@ -17,9 +17,10 @@ import org.springframework.util.StringUtils;
 
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.resourcemanager.storage.models.StorageAccount;
+import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.eventhub.EventHubNamespace;
-import com.microsoft.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
 import com.microsoft.azure.spring.cloud.context.core.api.EnvironmentProvider;
+import com.microsoft.azure.spring.cloud.context.core.config.AzureProperties;
 import com.microsoft.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
 import com.microsoft.azure.spring.cloud.context.core.impl.StorageAccountManager;
 import com.microsoft.azure.spring.cloud.context.core.storage.StorageConnectionStringProvider;
@@ -36,7 +37,7 @@ import com.microsoft.azure.spring.integration.eventhub.impl.EventHubTemplate;
  * @author Warren Zhu
  */
 @Configuration
-@AutoConfigureAfter(AzureContextAutoConfiguration.class)
+@AutoConfigureAfter(name = {"com.microsoft.azure.spring.cloud.autoconfigure.storage.AzureStorageAutoConfiguration", "com.microsoft.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration"})
 @ConditionalOnClass(EventHubConsumerAsyncClient.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.eventhub.enabled", matchIfMissing = true)
 @EnableConfigurationProperties(AzureEventHubProperties.class)
@@ -100,4 +101,11 @@ public class AzureEventHubAutoConfiguration {
         return new DefaultEventHubClientFactory(connectionStringProvider, checkpointConnectionString,
                 eventHubProperties.getCheckpointContainer());
     }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public EventHubNamespaceManager eventHubNamespaceManager(Azure azure, AzureProperties azureProperties) {
+        return new EventHubNamespaceManager(azure, azureProperties);
+    }
+
 }
