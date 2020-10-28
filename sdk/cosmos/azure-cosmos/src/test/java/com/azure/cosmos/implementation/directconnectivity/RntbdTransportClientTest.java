@@ -926,7 +926,7 @@ public final class RntbdTransportClientTest {
         }
 
         @Override
-        public URI remoteURI() { return this.remoteURI; }
+        public URI serverKey() { return this.remoteURI; }
 
         @Override
         public int requestQueueLength() {

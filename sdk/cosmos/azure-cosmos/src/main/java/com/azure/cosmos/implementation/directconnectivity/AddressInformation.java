@@ -4,13 +4,11 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdUtils;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Locale;
 import java.util.Objects;
-
-import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 /**
  * Used internally to encapsulate a physical address information in the Azure Cosmos DB database service.
@@ -58,22 +56,7 @@ public class AddressInformation {
     }
 
     public URI getServerKey() {
-        URI uri = this.physicalUri.getURI();
-
-        try {
-            return new URI(
-                uri.getScheme(),
-                null,
-                uri.getHost(),
-                uri.getPort(),
-                null,
-                null,
-                null);
-        } catch (URISyntaxException error) {
-            throw new IllegalArgumentException(
-                lenientFormat("physicalAddress %s cannot be parsed as a server-based authority", uri),
-                error);
-        }
+        return RntbdUtils.getServerKey(this.physicalUri.getURI());
     }
 
     @Override

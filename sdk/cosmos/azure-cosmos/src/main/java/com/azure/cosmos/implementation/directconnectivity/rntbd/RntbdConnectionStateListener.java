@@ -92,7 +92,7 @@ public class RntbdConnectionStateListener {
                         RntbdObjectMapper.toJson(exception));
                 }
 
-                this.addressResolver.updateAddresses(request, this.endpoint.remoteURI());
+                this.addressResolver.updateAddresses(request, this.endpoint.serverKey());
             } else {
                 logger.warn("Endpoint closed while onConnectionEvent: {}", this.endpoint);
             }
