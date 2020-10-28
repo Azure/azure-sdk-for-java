@@ -28,9 +28,11 @@ import java.util.Objects;
  */
 public class ServiceBusSessionReceiverClient implements AutoCloseable {
     private final ServiceBusSessionReceiverAsyncClient sessionAsyncClient;
+    private final Duration operationTimeout;
 
-    ServiceBusSessionReceiverClient(ServiceBusSessionReceiverAsyncClient asyncClient) {
+    ServiceBusSessionReceiverClient(ServiceBusSessionReceiverAsyncClient asyncClient, Duration operationTimeout) {
         this.sessionAsyncClient = Objects.requireNonNull(asyncClient, "'asyncClient' cannot be null.");
+        this.operationTimeout = operationTimeout;
     }
 
     /**
@@ -41,25 +43,12 @@ public class ServiceBusSessionReceiverClient implements AutoCloseable {
      * </p>
      * @return A {@link ServiceBusReceiverClient} that is tied to the available session.
      * @throws UnsupportedOperationException if the queue or topic subscription is not session-enabled.
+     * @throws IllegalStateException if the operation times out.
      */
     public ServiceBusReceiverClient acceptNextSession() {
         return sessionAsyncClient.acceptNextSession()
-            .map(asyncClient -> new ServiceBusReceiverClient(asyncClient))
-            .block();
-    }
-
-    /**
-     * Create a link for the next available session and use the link to create a {@link ServiceBusReceiverClient}
-     * to receive messages from that session.
-     * @param timeout the call is cancelled after this duration.
-     * @return A {@link ServiceBusReceiverClient} that is tied to the available session.
-     * @throws IllegalStateException if the operation times out.
-     */
-    public ServiceBusReceiverClient acceptNextSession(Duration timeout) {
-        Objects.requireNonNull(timeout, "'timeout' can not be null.");
-        return sessionAsyncClient.acceptNextSession()
-            .map(asyncClient -> new ServiceBusReceiverClient(asyncClient))
-            .block(timeout);
+            .map(asyncClient -> new ServiceBusReceiverClient(asyncClient, operationTimeout))
+            .block(operationTimeout);
     }
 
     /**
@@ -74,32 +63,12 @@ public class ServiceBusSessionReceiverClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code sessionId} is empty.
      * @throws UnsupportedOperationException if the queue or topic subscription is not session-enabled.
      * @throws com.azure.core.amqp.exception.AmqpException if the session has been locked by another session receiver.
+     * @throws IllegalStateException if the operation times out.
      */
     public ServiceBusReceiverClient acceptSession(String sessionId) {
         return sessionAsyncClient.acceptSession(sessionId)
-            .map(asyncClient -> new ServiceBusReceiverClient(asyncClient))
-            .block();
-    }
-
-    /**
-     * Acquires a session lock for {@code sessionId} and create a {@link ServiceBusReceiverClient}
-     * to receive messages from the session.
-     *
-     * @param sessionId The session Id.
-     * @param timeout the call is cancelled after this duration.
-     *
-     * @return A {@link ServiceBusReceiverClient} that is tied to the specified session.
-     * @throws NullPointerException if {@code sessionId} is null.
-     * @throws IllegalArgumentException if {@code sessionId} is empty.
-     * @throws UnsupportedOperationException if the queue or topic subscription is not session-enabled.
-     * @throws com.azure.core.amqp.exception.AmqpException if the session has been locked by another session receiver.
-     * @throws IllegalStateException if the operation times out.
-     */
-    public ServiceBusReceiverClient acceptSession(String sessionId, Duration timeout) {
-        Objects.requireNonNull(timeout, "'timeout' can not be null.");
-        return sessionAsyncClient.acceptSession(sessionId)
-            .map(asyncClient -> new ServiceBusReceiverClient(asyncClient))
-            .block(timeout);
+            .map(asyncClient -> new ServiceBusReceiverClient(asyncClient, operationTimeout))
+            .block(operationTimeout);
     }
 
     @Override
