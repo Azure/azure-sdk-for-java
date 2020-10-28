@@ -24,6 +24,7 @@ import org.springframework.util.Assert;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
 import java.util.function.Consumer;
 
 /**
@@ -40,7 +41,7 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
 
     private static final String MSG_SUCCESS_CHECKPOINT = "Consumer group '%s' of topic '%s' checkpointed %s in %s mode";
 
-    private Set<Tuple<String, String>> nameAndConsumerGroups = Sets.newConcurrentHashSet();
+    private final Set<Tuple<String, String>> nameAndConsumerGroups = Sets.newConcurrentHashSet();
 
     public ServiceBusTopicTemplate(ServiceBusTopicClientFactory clientFactory) {
         super(clientFactory);
@@ -70,6 +71,15 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
         return nameAndConsumerGroups.remove(Tuple.of(destination, consumerGroup));
     }
 
+    /**
+     * Register a message handler to receive message from the topic. A session handler will be registered if session is
+     * enabled.
+     * @param name The topic name.
+     * @param consumerGroup The consumer group.
+     * @param consumer The consumer method.
+     * @param payloadType The type of the message payload.
+     * @throws ServiceBusRuntimeException If fail to register the topic message handler.
+     */
     @SuppressWarnings({"rawtypes", "unchecked"})
     protected void internalSubscribe(String name, String consumerGroup, Consumer<Message<?>> consumer,
                                      Class<?> payloadType) {
@@ -82,15 +92,13 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
 
             // Register SessionHandler id sessions are enabled.
             // Handlers are mutually exclusive.
+            final TopicMessageHandler msgHandler = new TopicMessageHandler(consumer, payloadType, subscriptionClient);
+            final ExecutorService executors = buildHandlerExecutors(threadPrefix);
+
             if (this.clientConfig.isSessionsEnabled()) {
-                subscriptionClient.registerSessionHandler(
-                    new TopicMessageHandler(consumer, payloadType, subscriptionClient),
-                    buildSessionHandlerOptions(),
-                    buildHandlerExecutors(threadPrefix));
+                subscriptionClient.registerSessionHandler(msgHandler, buildSessionHandlerOptions(), executors);
             } else {
-                subscriptionClient.registerMessageHandler(
-                    new TopicMessageHandler(consumer, payloadType, subscriptionClient), buildHandlerOptions(),
-                    buildHandlerExecutors(threadPrefix));
+                subscriptionClient.registerMessageHandler(msgHandler, buildHandlerOptions(), executors);
             }
         } catch (ServiceBusException | InterruptedException e) {
             LOG.error("Failed to register topic message handler", e);

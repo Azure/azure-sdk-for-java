@@ -28,16 +28,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Creates the necessary {@link MessageListenerContainer} instances for the
- * registered {@linkplain AzureListenerEndpoint endpoints}. Also manages the
- * lifecycle of the listener containers, in particular within the lifecycle
- * of the application context.
+ * Creates the necessary {@link MessageListenerContainer} instances for the registered {@linkplain AzureListenerEndpoint
+ * endpoints}. Also manages the lifecycle of the listener containers, in particular within the lifecycle of the
+ * application context.
  *
  * <p>Contrary to {@link MessageListenerContainer MessageListenerContainers}
- * created manually, listener containers managed by registry are not beans
- * in the application context and are not candidates for autowiring.
- * Use {@link #getListenerContainers()} if you need to access this registry's
- * listener containers for management purposes.
+ * created manually, listener containers managed by registry are not beans in the application context and are not
+ * candidates for autowiring. Use {@link #getListenerContainers()} if you need to access this registry's listener
+ * containers for management purposes.
  *
  * @author Warren Zhu
  * @see AzureListenerEndpoint
@@ -45,7 +43,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @see ListenerContainerFactory
  */
 class AzureListenerEndpointRegistry
-        implements DisposableBean, SmartLifecycle, ApplicationContextAware, ApplicationListener<ContextRefreshedEvent> {
+    implements DisposableBean, SmartLifecycle, ApplicationContextAware, ApplicationListener<ContextRefreshedEvent> {
     private static final Logger LOG = LoggerFactory.getLogger(AzureListenerEndpointRegistry.class);
 
     private final Map<String, MessageListenerContainer> listenerContainers = new ConcurrentHashMap<>();
@@ -84,10 +82,12 @@ class AzureListenerEndpointRegistry
      * @param endpoint the endpoint to add
      * @param factory the listener factory to use
      * @param startImmediately start the container immediately if necessary
+     * @throws IllegalStateException If another endpoint with the same id has already been registered.
      * @see #getListenerContainers()
      */
-    public void registerListenerContainer(AzureListenerEndpoint endpoint, ListenerContainerFactory<?> factory,
-            boolean startImmediately) {
+    public void registerListenerContainer(AzureListenerEndpoint endpoint,
+                                          ListenerContainerFactory<?> factory,
+                                          boolean startImmediately) {
 
         Assert.notNull(endpoint, "Endpoint must not be null");
         Assert.notNull(factory, "Factory must not be null");
@@ -108,8 +108,7 @@ class AzureListenerEndpointRegistry
 
     /**
      * Create a message listener container for the given {@link AzureListenerEndpoint}.
-     * <p>This create the necessary infrastructure to honor that endpoint
-     * with regards to its configuration.
+     * <p>This create the necessary infrastructure to honor that endpoint with regards to its configuration.
      *
      * @param endpoint the endpoint to add
      * @param factory the listener factory to use
@@ -121,9 +120,15 @@ class AzureListenerEndpointRegistry
 
     /**
      * Create and start a new container using the specified factory.
+     *
+     * @param endpoint The given endpoint.
+     * @param factory The listener factory to use.
+     * @return The created {@link MessageListenerContainer}.
+     * @throws BeanInitializationException If fail to initialize the message listener container.
+     * @throws IllegalStateException If phase mismatch is encountered between container factory and conta
      */
     protected MessageListenerContainer createListenerContainer(AzureListenerEndpoint endpoint,
-            ListenerContainerFactory<?> factory) {
+                                                               ListenerContainerFactory<?> factory) {
 
         MessageListenerContainer listenerContainer = factory.createListenerContainer(endpoint);
 
@@ -138,9 +143,8 @@ class AzureListenerEndpointRegistry
         int containerPhase = listenerContainer.getPhase();
         if (containerPhase < Integer.MAX_VALUE) {  // a custom phase value
             if (this.getPhase() < Integer.MAX_VALUE && this.getPhase() != containerPhase) {
-                throw new IllegalStateException(
-                    "Encountered phase mismatch between container factory definitions: " + this.getPhase()
-                        + " vs " + containerPhase);
+                throw new IllegalStateException("Encountered phase mismatch between container factory definitions: "
+                    + this.getPhase() + " vs " + containerPhase);
             }
         }
 
@@ -186,8 +190,8 @@ class AzureListenerEndpointRegistry
     }
 
     /**
-     * Start the specified {@link MessageListenerContainer} if it should be started
-     * on startup or when start is called explicitly after startup.
+     * Start the specified {@link MessageListenerContainer} if it should be started on startup or when start is called
+     * explicitly after startup.
      *
      * @see MessageListenerContainer#isAutoStartup()
      */
@@ -211,8 +215,7 @@ class AzureListenerEndpointRegistry
     }
 
     /**
-     * Return the {@link MessageListenerContainer} with the specified id or
-     * {@code null} if no such container exists.
+     * Return the {@link MessageListenerContainer} with the specified id or {@code null} if no such container exists.
      *
      * @param id the id of the container
      * @return the container or {@code null} if no container with that id exists

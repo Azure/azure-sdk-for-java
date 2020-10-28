@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * The builder class to build the storage connection string.
+ */
 public class StorageConnectionStringBuilder {
 
     private static final String HTTP = "http";

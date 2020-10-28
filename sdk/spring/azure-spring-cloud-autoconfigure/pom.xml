@@ -14,7 +14,7 @@
   <artifactId>azure-spring-cloud-autoconfigure</artifactId>
   <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-autoconfigure;current} -->
 
-  <name>Spring Cloud Azure Autoconfigure</name>
+  <name>Azure Spring Cloud Autoconfigure</name>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <properties>

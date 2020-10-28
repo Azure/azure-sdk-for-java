@@ -14,7 +14,7 @@
   <artifactId>azure-spring-boot-starter-data-gremlin</artifactId>
   <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-data-gremlin;current} -->
 
-  <name>Spring Data Gremlin Boot Starter</name>
+  <name>Azure Spring Boot Starter for Azure Spring Data Gremlin</name>
   <description>Spring Boot Starter for Spring Data Gremlin</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 

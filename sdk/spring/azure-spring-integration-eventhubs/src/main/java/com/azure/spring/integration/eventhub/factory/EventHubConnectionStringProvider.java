@@ -3,15 +3,18 @@
 
 package com.azure.spring.integration.eventhub.factory;
 
+import com.azure.spring.integration.eventhub.impl.EventHubRuntimeException;
 import com.microsoft.azure.management.eventhub.AuthorizationRule;
 import com.microsoft.azure.management.eventhub.EventHubAuthorizationKey;
 import com.microsoft.azure.management.eventhub.EventHubNamespace;
-import com.azure.spring.integration.eventhub.impl.EventHubRuntimeException;
 import org.springframework.lang.NonNull;
 
+/**
+ * Get connection string for Event Hub namespace.
+ */
 public class EventHubConnectionStringProvider {
 
-    private String connectionString;
+    private final String connectionString;
 
     public EventHubConnectionStringProvider(@NonNull EventHubNamespace eventHubNamespace) {
         this(toConnectionString(eventHubNamespace));
@@ -21,13 +24,16 @@ public class EventHubConnectionStringProvider {
         this.connectionString = connectionString;
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings("rawtypes")
     private static String toConnectionString(EventHubNamespace eventHubNamespace) {
-        return eventHubNamespace.listAuthorizationRules().stream().findFirst().map(AuthorizationRule::getKeys)
-            .map(EventHubAuthorizationKey::primaryConnectionString).orElseThrow(
-                () -> new EventHubRuntimeException(
-                    String.format("Failed to fetch connection string of namespace '%s'",
-                        eventHubNamespace.name()), null));
+        return eventHubNamespace.listAuthorizationRules()
+                                .stream()
+                                .findFirst()
+                                .map(AuthorizationRule::getKeys)
+                                .map(EventHubAuthorizationKey::primaryConnectionString)
+                                .orElseThrow(() -> new EventHubRuntimeException(
+                                    String.format("Failed to fetch connection string of namespace '%s'",
+                                        eventHubNamespace.name()), null));
     }
 
     public String getConnectionString() {

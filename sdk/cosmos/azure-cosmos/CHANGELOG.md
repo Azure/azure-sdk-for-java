@@ -1,5 +1,8 @@
 ## Release History
 
+## 4.9.0-beta.1 (Unreleased)
+
+
 ### 4.8.0 (2020-10-27)
 #### New Features
 * Added `contentResponseOnWriteEnabled` feature to `CosmosItemRequestOptions`.

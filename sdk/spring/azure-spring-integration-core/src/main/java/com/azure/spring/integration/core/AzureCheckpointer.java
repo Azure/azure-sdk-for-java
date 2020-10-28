@@ -9,6 +9,9 @@ import org.springframework.lang.NonNull;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
+/**
+ * Azure implementation for check point callback.
+ */
 public class AzureCheckpointer implements Checkpointer {
     private final Supplier<CompletableFuture<Void>> success;
     private final Supplier<CompletableFuture<Void>> fail;

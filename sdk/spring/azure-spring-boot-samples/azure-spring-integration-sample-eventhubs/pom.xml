@@ -12,7 +12,7 @@
   <artifactId>azure-spring-integration-sample-eventhubs</artifactId>
   <groupId>com.azure.spring</groupId>
   <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-sample-eventhubs;current} -->
-  <name>Azure Spring Cloud Event Hub Integration Sample</name>
+  <name>Azure Spring Integration Sample Event Hubs</name>
 
   <dependencyManagement>
     <dependencies>
