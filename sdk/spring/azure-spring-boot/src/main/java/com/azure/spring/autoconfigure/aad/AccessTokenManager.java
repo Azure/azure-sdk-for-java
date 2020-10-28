@@ -61,7 +61,7 @@ public class AccessTokenManager {
      * @throws ServiceUnavailableException If fail to acquire the token.
      */
     public AccessToken getAccessToken(String applicationIdUri,
-                                                         Set<String> permissions) throws ServiceUnavailableException {
+                                      Set<String> permissions) throws ServiceUnavailableException {
         AccessToken accessToken = loadAccessTokenFromSession(applicationIdUri);
         Set<String> uniformedPermissions = permissions.stream()
                                                       .map(String::trim)
@@ -99,8 +99,8 @@ public class AccessTokenManager {
      * @throws MsalServiceException If {@link MsalServiceException} has occurred.
      */
     public AccessToken getAccessToken(String idToken,
-                                                         String applicationIdUri,
-                                                         Set<String> permissions) throws ServiceUnavailableException {
+                                      String applicationIdUri,
+                                      Set<String> permissions) throws ServiceUnavailableException {
         IAuthenticationResult result = getIAuthenticationResult(idToken, applicationIdUri, permissions);
         Set<String> uniformedPermissions =
             Arrays.stream(result.scopes().toLowerCase(Locale.ENGLISH).split(" "))
@@ -125,7 +125,7 @@ public class AccessTokenManager {
      * @throws ServiceUnavailableException If fail to acquire the token.
      * @throws MsalServiceException If {@link MsalServiceException} has occurred.
      */
-    public IAuthenticationResult getIAuthenticationResult(String idToken,
+    private IAuthenticationResult getIAuthenticationResult(String idToken,
                                                           String applicationIdUri,
                                                           Set<String> permissions) throws ServiceUnavailableException {
         final IClientCredential clientCredential =
@@ -183,7 +183,7 @@ public class AccessTokenManager {
                                      );
     }
 
-    public void saveAccessTokenToSession(AccessToken accessToken) {
+    private void saveAccessTokenToSession(AccessToken accessToken) {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         attr.getRequest().getSession(false).setAttribute(accessToken.applicationIdUri, accessToken);
     }
