@@ -93,7 +93,7 @@ public final class ServiceBusReceivedMessage {
         final AmqpBodyType bodyType = amqpAnnotatedMessage.getBody().getBodyType();
         switch (bodyType) {
             case DATA:
-                return ((AmqpDataBody) amqpAnnotatedMessage.getBody()).getDataAsBinaryData().stream().findFirst().get();
+                return ((AmqpDataBody) amqpAnnotatedMessage.getBody()).getData().stream().findFirst().get();
 
             case SEQUENCE:
             case VALUE:

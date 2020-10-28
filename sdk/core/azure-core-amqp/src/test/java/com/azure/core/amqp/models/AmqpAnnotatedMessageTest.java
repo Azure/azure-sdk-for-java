@@ -70,16 +70,18 @@ public class AmqpAnnotatedMessageTest {
 
         final AmqpAnnotatedMessage actual = new AmqpAnnotatedMessage(expected);
 
+        expected.getApplicationProperties().put("ap-10", "ap-value10");
+
         // Act
         // Now update the values after we have created AmqpAnnotatedMessage using copy constructor.
         expectedDeliveryAnnotations.remove("da-1");
         expectedApplicationProperties.put("ap-2", "ap-value2");
         expectedFooter.remove("foo-1");
         expected.getHeader().setDeliveryCount(Long.valueOf(100));
-        expectedBinaryData = new ArrayList<>();
 
         // Assert
         // Ensure the memory references are not same.
+        assertNotSame(expected.getBody(), actual.getBody());
         assertNotSame(expected.getProperties(), actual.getProperties());
         assertNotSame(expected.getApplicationProperties(), actual.getApplicationProperties());
         assertNotSame(expected.getDeliveryAnnotations(), actual.getDeliveryAnnotations());
@@ -172,9 +174,9 @@ public class AmqpAnnotatedMessageTest {
         final AmqpBodyType actualType = actual.getBody().getBodyType();
         switch (actualType) {
             case DATA:
-                List<byte[]> actualData = ((AmqpDataBody) actual.getBody()).getData().stream().collect(Collectors.toList());
+                List<BinaryData> actualData = ((AmqpDataBody) actual.getBody()).getData().stream().collect(Collectors.toList());
                 assertEquals(expectedMessageSize, actualData.size());
-                assertArrayEquals(expectedbody, actualData.get(0));
+                assertArrayEquals(expectedbody, actualData.get(0).toBytes());
                 break;
             case VALUE:
             case SEQUENCE:
