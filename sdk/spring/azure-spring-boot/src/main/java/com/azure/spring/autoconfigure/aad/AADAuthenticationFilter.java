@@ -112,11 +112,11 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
         try {
             HttpSession httpSession = httpServletRequest.getSession();
             UserPrincipal userPrincipal = (UserPrincipal) httpSession.getAttribute(CURRENT_USER_PRINCIPAL);
-            String tenantId = userPrincipal.getClaim(AADTokenClaim.TID).toString();
             if (userPrincipal == null
                 || !userPrincipal.getAadIssuedBearerToken().equals(aadIssuedBearerToken)
             ) {
                 userPrincipal = userPrincipalManager.buildUserPrincipal(aadIssuedBearerToken);
+                String tenantId = userPrincipal.getClaim(AADTokenClaim.TID).toString();
                 String accessTokenForGraphApi = accessTokenManager
                     .getAccessToken(
                         aadIssuedBearerToken,
