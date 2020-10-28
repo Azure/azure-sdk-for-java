@@ -503,8 +503,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         return createMessageBatch().flatMap(messageBatch -> {
             messages.forEach(message -> messageBatch.tryAddMessage(message));
             return sendInternal(messageBatch, transaction);
-        })
-            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.SEND));
+        });
     }
 
 
@@ -608,8 +607,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                 if (isTracingEnabled) {
                     tracerProvider.endSpan(parentContext.get(), signal);
                 }
-            })
-            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.SEND));
+            });
 
     }
 
@@ -623,8 +621,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                     return messages.collect(new AmqpMessageCollector(batchOptions, 1,
                         link::getErrorContext, tracerProvider, messageSerializer, entityName,
                         link.getHostname()));
-                }).flatMap(list -> sendInternalBatch(Flux.fromIterable(list), transactionContext)))
-            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.SEND));
+                })
+                .flatMap(list -> sendInternalBatch(Flux.fromIterable(list), transactionContext)));
     }
 
     private Mono<Void> sendInternalBatch(Flux<ServiceBusMessageBatch> eventBatches,
@@ -731,16 +729,4 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             return Collections.emptySet();
         }
     }
-
-    /**
-     * Maps the exception into ServiceBusException
-     */
-    private Throwable mapError(Throwable throwable, ServiceBusErrorSource errorSource) {
-        if (throwable instanceof AmqpException) {
-            return new ServiceBusException((AmqpException) throwable, errorSource);
-        } else {
-            return throwable;
-        }
-    }
-
 }
