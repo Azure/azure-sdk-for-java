@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.util.CoreUtils;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 
 import java.time.Duration;
@@ -21,12 +20,11 @@ class ReceiverOptions {
 
     ReceiverOptions(ReceiveMode receiveMode, int prefetchCount, Duration maxLockRenewDuration,
         boolean enableAutoComplete) {
-        this(receiveMode, prefetchCount, maxLockRenewDuration, enableAutoComplete, null, false, null);
+        this(receiveMode, prefetchCount, maxLockRenewDuration, enableAutoComplete, null, null);
     }
 
     ReceiverOptions(ReceiveMode receiveMode, int prefetchCount, Duration maxLockRenewDuration,
-        boolean enableAutoComplete, String sessionId, boolean isRollingSessionReceiver,
-        Integer maxConcurrentSessions) {
+        boolean enableAutoComplete, String sessionId, Integer maxConcurrentSessions) {
         this.receiveMode = receiveMode;
         this.prefetchCount = prefetchCount;
         this.enableAutoComplete = enableAutoComplete;

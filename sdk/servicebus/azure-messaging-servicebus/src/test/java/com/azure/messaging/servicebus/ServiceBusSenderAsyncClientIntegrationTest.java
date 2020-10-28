@@ -506,23 +506,10 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         final boolean isSessionAware = false;
         final boolean sharedConnection = true;
 
-    /**
-     * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created with
-     * shared connection as needed.
-     */
-    private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, boolean useCredentials,
-        boolean isSessionEnabled, boolean shareConnection) {
-        this.sender = getSenderBuilder(useCredentials, entityType, entityIndex, isSessionEnabled, shareConnection).buildAsyncClient();
-
-        if (isSessionEnabled) {
-            assertNotNull(sessionId, "'sessionId' should have been set.");
-            this.receiver = getSessionReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
-                .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
-                .buildAsyncClient().acceptSession(sessionId).block();
-        } else {
-            this.receiver = getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
-                .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
-                .buildAsyncClient();
-        }
+        this.sender = getSenderBuilder(useCredentials, entityType, entityIndex, isSessionAware, sharedConnection)
+            .buildAsyncClient();
+        this.receiver = getReceiverBuilder(useCredentials, entityType, entityIndex, sharedConnection)
+            .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+            .buildAsyncClient();
     }
 }

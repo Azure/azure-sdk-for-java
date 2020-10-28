@@ -78,7 +78,8 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
         return unNamedSessionManager.getActiveLink().flatMap(receiveLink -> receiveLink.getSessionId()
             .map(sessionId -> {
                 final ReceiverOptions newReceiverOptions = new ReceiverOptions(receiverOptions.getReceiveMode(),
-                    receiverOptions.getPrefetchCount(), sessionId, null, receiverOptions.getMaxLockRenewDuration());
+                    receiverOptions.getPrefetchCount(), receiverOptions.getMaxLockRenewDuration(),
+                    receiverOptions.isAutoLockRenewEnabled(), sessionId, null);
                 final ServiceBusSessionManager sessionSpecificManager = new ServiceBusSessionManager(entityPath,
                     entityType, connectionProcessor, tracerProvider, messageSerializer, newReceiverOptions,
                     receiveLink);
@@ -107,7 +108,8 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
             return monoError(logger, new IllegalArgumentException("'sessionId' cannot be empty"));
         }
         final ReceiverOptions newReceiverOptions = new ReceiverOptions(receiverOptions.getReceiveMode(),
-            receiverOptions.getPrefetchCount(), sessionId, null, receiverOptions.getMaxLockRenewDuration());
+            receiverOptions.getPrefetchCount(), receiverOptions.getMaxLockRenewDuration(),
+            receiverOptions.isAutoLockRenewEnabled(), sessionId, null);
         final ServiceBusSessionManager sessionSpecificManager = new ServiceBusSessionManager(entityPath, entityType,
             connectionProcessor, tracerProvider, messageSerializer, newReceiverOptions);
 

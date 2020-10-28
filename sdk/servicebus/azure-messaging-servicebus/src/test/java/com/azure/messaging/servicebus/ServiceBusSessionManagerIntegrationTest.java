@@ -126,7 +126,7 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
             .buildAsyncClient();
         ServiceBusSessionReceiverClientBuilder sessionBuilder = getSessionReceiverBuilder(false,
             entityType, entityIndex, false);
-        this.receiver = onBuild.apply(sessionBuilder).buildAsyncClient();
+        this.receiver = onBuild.apply(sessionBuilder).buildAsyncClient().acceptSession(sessionId).block();
     }
 
     private static void assertMessageEquals(String sessionId, String messageId, String contents,
