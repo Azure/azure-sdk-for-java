@@ -14,5 +14,5 @@ public class Scopes {
     public static final String MICROSOFT_GRAPH_URI = "https://graph.microsoft.com/";
     public static final Set<String> GRAPH_API_PERMISSIONS = Collections.singleton("user.read");
     public static final Set<String> OPENID_PERMISSIONS =
-        new HashSet<>(Arrays.asList("openid", "profile", "email", "offline_access"));
+        Collections.unmodifiableSet(new HashSet<>(Arrays.asList("openid", "profile", "email", "offline_access")));
 }
