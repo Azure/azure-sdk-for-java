@@ -27,7 +27,7 @@ public class RunCommandInputParameter {
     private String value;
 
     /**
-     * Get the name value.
+     * Get the run command parameter name.
      *
      * @return the name value
      */
@@ -36,7 +36,7 @@ public class RunCommandInputParameter {
     }
 
     /**
-     * Set the name value.
+     * Set the run command parameter name.
      *
      * @param name the name value to set
      * @return the RunCommandInputParameter object itself.
@@ -47,7 +47,7 @@ public class RunCommandInputParameter {
     }
 
     /**
-     * Get the value value.
+     * Get the run command parameter value.
      *
      * @return the value value
      */
@@ -56,7 +56,7 @@ public class RunCommandInputParameter {
     }
 
     /**
-     * Set the value value.
+     * Set the run command parameter value.
      *
      * @param value the value value to set
      * @return the RunCommandInputParameter object itself.
