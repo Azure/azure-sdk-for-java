@@ -273,7 +273,7 @@ public final class QueueProperties {
      *
      * @return the {@link QueueProperties} object itself.
      */
-    public QueueProperties setEnableBatchedOperations(boolean enableBatchedOperations) {
+    public QueueProperties setBatchedOperationsEnabled(boolean enableBatchedOperations) {
         this.enableBatchedOperations = enableBatchedOperations;
         return this;
     }
@@ -521,17 +521,17 @@ public final class QueueProperties {
         return this.updatedAt;
     }
 
-    QueueProperties setEnablePartitioning(boolean enablePartitioning) {
+    QueueProperties setPartitioningEnabled(boolean enablePartitioning) {
         this.enablePartitioning = enablePartitioning;
         return this;
     }
 
-    QueueProperties setRequiresDuplicateDetection(boolean requiresDuplicateDetection) {
+    QueueProperties setDuplicateDetectionRequired(boolean requiresDuplicateDetection) {
         this.requiresDuplicateDetection = requiresDuplicateDetection;
         return this;
     }
 
-    QueueProperties setRequiresSession(boolean requiresSession) {
+    QueueProperties setSessionRequired(boolean requiresSession) {
         this.requiresSession = requiresSession;
         return this;
     }

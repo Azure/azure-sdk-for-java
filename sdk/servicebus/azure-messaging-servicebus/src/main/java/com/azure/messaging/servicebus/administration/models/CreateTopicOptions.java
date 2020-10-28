@@ -49,12 +49,12 @@ public class CreateTopicOptions {
      *     <li>{@link #setDefaultMessageTimeToLive(Duration)} is max duration value.</li>
      *     <li>{@link #setDuplicateDetectionHistoryTimeWindow(Duration)} is max duration value, but duplication
      *     detection is disabled.</li>
-     *     <li>{@link #setRequiresDuplicateDetection(boolean)} is false.</li>
-     *     <li>{@link #setEnableBatchedOperations(boolean)} is true.</li>
+     *     <li>{@link #setDuplicateDetectionRequired(boolean)} is false.</li>
+     *     <li>{@link #setBatchedOperationsEnabled(boolean)} (boolean)} is true.</li>
      *     <li>{@link #setLockDuration(Duration)} is 1 minute.</li>
      *     <li>{@link #setMaxDeliveryCount(int)} is 10.</li>
      *     <li>{@link #setMaxSizeInMegabytes(long)} is 1024MB.</li>
-     *     <li>{@link #setRequiresSession(boolean)} is false.</li>
+     *     <li>{@link #setSessionRequired(boolean)} is false.</li>
      *     <li>{@link #setStatus(EntityStatus)} is {@link EntityStatus#ACTIVE}.</li>
      * </ul>
      *
@@ -196,7 +196,7 @@ public class CreateTopicOptions {
      *
      * @return the CreateTopicOptions object itself.
      */
-    public CreateTopicOptions setEnableBatchedOperations(boolean enableBatchedOperations) {
+    public CreateTopicOptions setBatchedOperationsEnabled(boolean enableBatchedOperations) {
         this.enableBatchedOperations = enableBatchedOperations;
         return this;
     }
@@ -219,7 +219,7 @@ public class CreateTopicOptions {
      *
      * @return the CreateTopicOptions object itself.
      */
-    public CreateTopicOptions setEnablePartitioning(boolean enablePartitioning) {
+    public CreateTopicOptions setPartitioningEnabled(boolean enablePartitioning) {
         this.enablePartitioning = enablePartitioning;
         return this;
     }
@@ -263,7 +263,7 @@ public class CreateTopicOptions {
      *
      * @return the CreateTopicOptions object itself.
      */
-    public CreateTopicOptions setSupportOrdering(boolean supportOrdering) {
+    public CreateTopicOptions setOrderingSupported(boolean supportOrdering) {
         this.supportOrdering = supportOrdering;
         return this;
     }
@@ -355,7 +355,7 @@ public class CreateTopicOptions {
      *
      * @return the CreateTopicOptions object itself.
      */
-    public CreateTopicOptions setRequiresDuplicateDetection(boolean requiresDuplicateDetection) {
+    public CreateTopicOptions setDuplicateDetectionRequired(boolean requiresDuplicateDetection) {
         this.requiresDuplicateDetection = requiresDuplicateDetection;
         return this;
     }
@@ -376,7 +376,7 @@ public class CreateTopicOptions {
      *
      * @return the CreateTopicOptions object itself.
      */
-    public CreateTopicOptions setRequiresSession(boolean requiresSession) {
+    public CreateTopicOptions setSessionRequired(boolean requiresSession) {
         this.requiresSession = requiresSession;
         return this;
     }

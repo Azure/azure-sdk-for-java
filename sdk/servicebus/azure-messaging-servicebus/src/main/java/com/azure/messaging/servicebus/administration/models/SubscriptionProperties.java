@@ -313,7 +313,7 @@ public final class SubscriptionProperties {
      * @param enableBatchedOperations the enableBatchedOperations value to set.
      * @return the SubscriptionProperties object itself.
      */
-    public SubscriptionProperties setEnableBatchedOperations(boolean enableBatchedOperations) {
+    public SubscriptionProperties setBatchedOperationsEnabled(boolean enableBatchedOperations) {
         this.enableBatchedOperations = enableBatchedOperations;
         return this;
     }

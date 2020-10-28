@@ -209,7 +209,7 @@ public final class TopicProperties {
      * @param requiresDuplicateDetection the requiresDuplicateDetection value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicProperties setRequiresDuplicateDetection(boolean requiresDuplicateDetection) {
+    public TopicProperties setDuplicateDetectionRequired(boolean requiresDuplicateDetection) {
         this.requiresDuplicateDetection = requiresDuplicateDetection;
         return this;
     }
@@ -290,7 +290,7 @@ public final class TopicProperties {
      * @param supportOrdering the supportOrdering value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicProperties setSupportOrdering(boolean supportOrdering) {
+    public TopicProperties setOrderingSupported(boolean supportOrdering) {
         this.supportOrdering = supportOrdering;
         return this;
     }

@@ -42,11 +42,11 @@ public class CreateSubscriptionOptions {
      *     <li>{@link #setAutoDeleteOnIdle(Duration)} is max duration value.</li>
      *     <li>{@link #setDeadLetteringOnMessageExpiration(boolean)} is false.</li>
      *     <li>{@link #setDefaultMessageTimeToLive(Duration)} is max duration value.</li>
-     *     <li>{@link #setEnableBatchedOperations(boolean)} is true.</li>
+     *     <li>{@link #setBatchedOperationsEnabled(boolean)} is true.</li>
      *     <li>{@link #setEnableDeadLetteringOnFilterEvaluationExceptions(boolean)} is true.</li>
      *     <li>{@link #setLockDuration(Duration)} is 1 minute.</li>
      *     <li>{@link #setMaxDeliveryCount(int)} is 10.</li>
-     *     <li>{@link #setRequiresSession(boolean)} is false.</li>
+     *     <li>{@link #setSessionRequired(boolean)} is false.</li>
      *     <li>{@link #setStatus(EntityStatus)} is {@link EntityStatus#ACTIVE}.</li>
      * </ul>
      *
@@ -130,7 +130,7 @@ public class CreateSubscriptionOptions {
      *
      * @return the CreateSubscriptionOptions object itself.
      */
-    public CreateSubscriptionOptions setRequiresSession(boolean requiresSession) {
+    public CreateSubscriptionOptions setSessionRequired(boolean requiresSession) {
         this.requiresSession = requiresSession;
         return this;
     }
@@ -248,7 +248,7 @@ public class CreateSubscriptionOptions {
      *
      * @return the CreateSubscriptionOptions object itself.
      */
-    public CreateSubscriptionOptions setEnableBatchedOperations(boolean enableBatchedOperations) {
+    public CreateSubscriptionOptions setBatchedOperationsEnabled(boolean enableBatchedOperations) {
         this.enableBatchedOperations = enableBatchedOperations;
         return this;
     }

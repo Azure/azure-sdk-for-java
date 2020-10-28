@@ -84,8 +84,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
             .setMaxSizeInMegabytes(1024)
             .setMaxDeliveryCount(7)
             .setLockDuration(Duration.ofSeconds(45))
-            .setRequiresSession(true)
-            .setRequiresDuplicateDetection(true)
+            .setSessionRequired(true)
+            .setDuplicateDetectionRequired(true)
             .setDuplicateDetectionHistoryTimeWindow(Duration.ofMinutes(2))
             .setUserMetadata("some-metadata-for-testing");
 
@@ -145,8 +145,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
             .setMaxSizeInMegabytes(1024)
             .setMaxDeliveryCount(7)
             .setLockDuration(Duration.ofSeconds(45))
-            .setRequiresSession(true)
-            .setRequiresDuplicateDetection(true)
+            .setSessionRequired(true)
+            .setDuplicateDetectionRequired(true)
             .setDuplicateDetectionHistoryTimeWindow(Duration.ofMinutes(2))
             .setUserMetadata("some-metadata-for-testing");
 
@@ -233,7 +233,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         final String topicName = testResourceNamer.randomName("test", 10);
         final CreateTopicOptions expected = new CreateTopicOptions()
             .setMaxSizeInMegabytes(2048L)
-            .setRequiresDuplicateDetection(true)
+            .setDuplicateDetectionRequired(true)
             .setDuplicateDetectionHistoryTimeWindow(Duration.ofMinutes(2))
             .setUserMetadata("some-metadata-for-testing-topic");
 

@@ -88,12 +88,12 @@ class ServiceBusManagementSerializerTest {
             .setDuplicateDetectionHistoryTimeWindow(null)
             .setLockDuration(Duration.ofMinutes(10))
             .setMaxSizeInMegabytes(1028)
-            .setRequiresDuplicateDetection(false)
-            .setRequiresSession(true)
+            .setDuplicateDetectionRequired(false)
+            .setSessionRequired(true)
             .setDeadLetteringOnMessageExpiration(false)
             .setMaxDeliveryCount(5)
-            .setEnableBatchedOperations(true)
-            .setEnablePartitioning(false);
+            .setBatchedOperationsEnabled(true)
+            .setPartitioningEnabled(false);
 
         expected.getAuthorizationRules().add(rule);
 
@@ -124,15 +124,15 @@ class ServiceBusManagementSerializerTest {
         final CreateQueueOptions expected = new CreateQueueOptions()
             .setLockDuration(Duration.ofMinutes(5))
             .setMaxSizeInMegabytes(1024)
-            .setRequiresDuplicateDetection(true)
-            .setRequiresSession(true)
+            .setDuplicateDetectionRequired(true)
+            .setSessionRequired(true)
             .setDefaultMessageTimeToLive(Duration.parse("PT3H20M10S"))
             .setDeadLetteringOnMessageExpiration(false)
             .setDuplicateDetectionHistoryTimeWindow(Duration.ofMinutes(10))
             .setMaxDeliveryCount(10)
-            .setEnableBatchedOperations(true)
+            .setBatchedOperationsEnabled(true)
             .setAutoDeleteOnIdle(Duration.ofHours(5))
-            .setEnablePartitioning(true);
+            .setPartitioningEnabled(true);
 
         // Act
         final QueueDescriptionEntry entry = serializer.deserialize(contents, QueueDescriptionEntry.class);
@@ -204,15 +204,15 @@ class ServiceBusManagementSerializerTest {
         final CreateQueueOptions options = new CreateQueueOptions()
             .setLockDuration(Duration.ofMinutes(10))
             .setMaxSizeInMegabytes(102)
-            .setRequiresDuplicateDetection(true)
-            .setRequiresSession(true)
+            .setDuplicateDetectionRequired(true)
+            .setSessionRequired(true)
             .setDefaultMessageTimeToLive(Duration.ofSeconds(10))
             .setDeadLetteringOnMessageExpiration(false)
             .setDuplicateDetectionHistoryTimeWindow(Duration.ofMinutes(10))
             .setMaxDeliveryCount(10)
-            .setEnableBatchedOperations(true)
+            .setBatchedOperationsEnabled(true)
             .setAutoDeleteOnIdle(Duration.ofSeconds(5))
-            .setEnablePartitioning(true);
+            .setPartitioningEnabled(true);
         final QueueDescription queueProperties = EntityHelper.getQueueDescription(options);
 
         final QueueDescriptionEntry entry1 = new QueueDescriptionEntry()
@@ -368,7 +368,7 @@ class ServiceBusManagementSerializerTest {
             new CreateSubscriptionOptions()
                 .setAutoDeleteOnIdle(Duration.parse("P10675199DT2H48M5.477S"))
                 .setDefaultMessageTimeToLive(Duration.parse("P10675199DT2H48M5.477S"))
-                .setRequiresSession(false)
+                .setSessionRequired(false)
                 .setLockDuration(Duration.ofSeconds(45))
                 .setMaxDeliveryCount(7));
 
@@ -446,12 +446,12 @@ class ServiceBusManagementSerializerTest {
                 .setAutoDeleteOnIdle(Duration.ofDays(1)));
         final SubscriptionDescription subscription2 = EntityHelper.getSubscriptionDescription(
             new CreateSubscriptionOptions()
-                .setRequiresSession(true)
+                .setSessionRequired(true)
                 .setLockDuration(Duration.ofSeconds(15))
                 .setMaxDeliveryCount(5));
         final SubscriptionDescription subscription3 = EntityHelper.getSubscriptionDescription(
             new CreateSubscriptionOptions()
-                .setRequiresSession(true)
+                .setSessionRequired(true)
                 .setLockDuration(Duration.ofSeconds(15))
                 .setMaxDeliveryCount(5));
         final List<SubscriptionDescription> expectedDescriptions = Arrays.asList(
