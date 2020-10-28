@@ -246,6 +246,12 @@
         "code": "java.annotation.added",
         "new": "class com.azure.storage.blob.models.PageList",
         "justification": "Annotation required to resolve deserialization bug."
+      },
+      {
+        "code": "java.method.parameterTypeParameterChanged",
+        "old": "parameter void com.azure.core.amqp.models.AmqpDataBody::<init>(===java.lang.Iterable<byte[]>===)",
+        "new": "parameter void com.azure.core.amqp.models.AmqpDataBody::<init>(===java.lang.Iterable<com.azure.core.experimental.util.BinaryData>===)",
+        "justification": "Constructor: Replacing with BinaryData."
       }
     ]
   }
