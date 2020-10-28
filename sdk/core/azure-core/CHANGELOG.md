@@ -1,7 +1,17 @@
 # Release History
 
-## 1.10.0-beta.1 (Unreleased)
+## 1.10.0 (2020-10-28)
 
+### New Features
+
+- Added `Option<T>` to represent the states of instantiated, null, and non-null for the wrapped value.
+- Added `JsonPatchDocument` to support `json-patch` functionality.
+- Added new Identity `Configuration` properties.
+
+### Bug Fixes
+
+- Modified `ContinuablePagedFlux` implementation to prevent `OutOfMemoryError` when retrieving many pages. [#12453](https://github.com/Azure/azure-sdk-for-java/issues/12453)
+- Fixed a bug where request retrying didn't consume the network response potentially leading to resource leaking.
 
 ## 1.9.0 (2020-10-01)
 
