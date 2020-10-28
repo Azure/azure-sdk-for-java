@@ -449,10 +449,10 @@ class ServiceBusReceiverAsyncClientTest {
     }
 
     /**
-     * Verifies that we can auto-renew a message lock.
+     * Verifies that error source is populated when any error happened while renewing lock.
      */
     @Test
-    void errorSourceRenewMessageLock() {
+    void errorSourceOnRenewMessageLock() {
         // Arrange
         final Duration maxDuration = Duration.ofSeconds(8);
         final String lockToken = "some-token";
@@ -474,10 +474,10 @@ class ServiceBusReceiverAsyncClientTest {
     }
 
     /**
-     * Verifies that error source is populated .
+     * Verifies that error source is populated when any error happened while renewing lock.
      */
     @Test
-    void errorSourceSessionLock() {
+    void errorSourceOnSessionLock() {
         // Arrange
         when(managementNode.renewSessionLock(SESSION_ID, null)).thenReturn(Mono.error(new AmqpException(false, "some error occurred.", null)));
 
