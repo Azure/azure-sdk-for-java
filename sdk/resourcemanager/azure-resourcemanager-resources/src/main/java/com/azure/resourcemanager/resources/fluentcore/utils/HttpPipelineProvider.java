@@ -18,6 +18,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.resourcemanager.resources.fluentcore.policy.AuthenticationPolicy;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.resourcemanager.resources.fluentcore.policy.ReturnRequestIdHeaderPolicy;
 import com.azure.resourcemanager.resources.fluentcore.policy.UserAgentPolicy;
 
@@ -72,6 +73,7 @@ public final class HttpPipelineProvider {
         if (credential != null) {
             policies.add(new AuthenticationPolicy(credential, profile.getEnvironment(), scopes));
         }
+        policies.add(new ProviderRegistrationPolicy());
         if (additionalPolicies != null && !additionalPolicies.isEmpty()) {
             policies.addAll(additionalPolicies);
         }
