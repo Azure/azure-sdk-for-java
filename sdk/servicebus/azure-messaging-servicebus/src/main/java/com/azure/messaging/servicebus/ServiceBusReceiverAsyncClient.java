@@ -201,7 +201,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<Void> abandon(ServiceBusReceivedMessage message) {
         return updateDisposition(message, DispositionStatus.ABANDONED, null, null,
-            null, null, ServiceBusErrorSource.ABANDONED);
+            null, null);
     }
 
     /**
@@ -233,7 +233,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
 
         return updateDisposition(message, DispositionStatus.ABANDONED, null, null,
-            options.getPropertiesToModify(), options.getTransactionContext(), ServiceBusErrorSource.ABANDONED);
+            options.getPropertiesToModify(), options.getTransactionContext());
     }
 
     /**
@@ -248,7 +248,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<Void> complete(ServiceBusReceivedMessage message) {
         return updateDisposition(message, DispositionStatus.COMPLETED, null, null,
-            null, null, ServiceBusErrorSource.COMPLETE);
+            null, null);
     }
 
     /**
@@ -277,7 +277,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
 
         return updateDisposition(message, DispositionStatus.COMPLETED, null, null,
-            null, options.getTransactionContext(), ServiceBusErrorSource.COMPLETE);
+            null, options.getTransactionContext());
     }
 
     /**
@@ -292,7 +292,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<Void> defer(ServiceBusReceivedMessage message) {
         return updateDisposition(message, DispositionStatus.DEFERRED, null, null,
-            null, null, ServiceBusErrorSource.DEFER);
+            null, null);
     }
 
     /**
@@ -323,7 +323,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
 
         return updateDisposition(message, DispositionStatus.DEFERRED, null, null,
-            options.getPropertiesToModify(), options.getTransactionContext(), ServiceBusErrorSource.DEFER);
+            options.getPropertiesToModify(), options.getTransactionContext());
     }
 
     /**
@@ -370,7 +370,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
         return  updateDisposition(message, DispositionStatus.SUSPENDED, options.getDeadLetterReason(),
             options.getDeadLetterErrorDescription(), options.getPropertiesToModify(),
-            options.getTransactionContext(), ServiceBusErrorSource.DEAD_LETTER);
+            options.getTransactionContext());
     }
 
     /**
@@ -1015,21 +1015,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
     private Mono<Void> updateDisposition(ServiceBusReceivedMessage message, DispositionStatus dispositionStatus,
         String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify,
-        ServiceBusTransactionContext transactionContext, ServiceBusErrorSource errorSource) {
-        return updateDispositionInternal(message, dispositionStatus, deadLetterReason, deadLetterErrorDescription,
-            propertiesToModify, transactionContext)
-            .onErrorMap(throwable -> {
-                if (throwable instanceof AmqpException) {
-                    return new ServiceBusException((AmqpException) throwable, errorSource);
-                }
-                return throwable;
-
-            });
-    }
-
-    private Mono<Void> updateDispositionInternal(ServiceBusReceivedMessage message, DispositionStatus dispositionStatus,
-        String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify,
         ServiceBusTransactionContext transactionContext) {
+
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, dispositionStatus.getValue())));
@@ -1068,9 +1055,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 renewalContainer.remove(lockToken);
             }));
 
+        Mono<Void> updateDispositionOperation;
         if (sessionManager != null) {
-            return sessionManager.updateDisposition(lockToken, sessionId, dispositionStatus, propertiesToModify,
-                deadLetterReason, deadLetterErrorDescription, transactionContext)
+            updateDispositionOperation =  sessionManager.updateDisposition(lockToken, sessionId, dispositionStatus,
+                propertiesToModify, deadLetterReason, deadLetterErrorDescription, transactionContext)
                 .flatMap(isSuccess -> {
                     if (isSuccess) {
                         renewalContainer.remove(lockToken);
@@ -1080,20 +1068,49 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                     logger.info("Could not perform on session manger. Performing on management node.");
                     return performOnManagement;
                 });
-        }
-
-        final ServiceBusAsyncConsumer existingConsumer = consumer.get();
-        if (isManagementToken(lockToken) || existingConsumer == null) {
-            return performOnManagement;
         } else {
-            return existingConsumer.updateDisposition(lockToken, dispositionStatus, deadLetterReason,
-                deadLetterErrorDescription, propertiesToModify, transactionContext)
-                .then(Mono.fromRunnable(() -> {
-                    logger.info("{}: Update completed. Disposition: {}. Lock: {}.",
-                        entityPath, dispositionStatus, lockToken);
-                    renewalContainer.remove(lockToken);
-                }));
+            final ServiceBusAsyncConsumer existingConsumer = consumer.get();
+            if (isManagementToken(lockToken) || existingConsumer == null) {
+                updateDispositionOperation = performOnManagement;
+            } else {
+                updateDispositionOperation = existingConsumer.updateDisposition(lockToken, dispositionStatus,
+                    deadLetterReason, deadLetterErrorDescription, propertiesToModify, transactionContext)
+                    .then(Mono.fromRunnable(() -> {
+                        logger.info("{}: Update completed. Disposition: {}. Lock: {}.",
+                            entityPath, dispositionStatus, lockToken);
+                        renewalContainer.remove(lockToken);
+                    }));
+            }
         }
+        return updateDispositionOperation
+            .onErrorMap(throwable -> {
+                ServiceBusErrorSource errorSource;
+                if (throwable instanceof AmqpException) {
+                    switch (dispositionStatus) {
+                        case COMPLETED:
+                            errorSource = ServiceBusErrorSource.COMPLETE;
+                            break;
+                        case DEFERRED:
+                            errorSource = ServiceBusErrorSource.DEFER;
+                            break;
+                        case SUSPENDED:
+                            errorSource = ServiceBusErrorSource.DEAD_LETTER;
+                            break;
+                        case ABANDONED:
+                            errorSource = ServiceBusErrorSource.ABANDONED;
+                            break;
+                        default:
+                            throw logger.logExceptionAsError(new UnsupportedOperationException(String.format(
+                                "'%s' is not supported.", dispositionStatus)));
+                    }
+
+                    return new ServiceBusException((AmqpException) throwable, errorSource);
+
+                } else {
+                    return throwable;
+                }
+
+            });
     }
 
     private ServiceBusAsyncConsumer getOrCreateConsumer() {
