@@ -79,7 +79,9 @@ public final class ServiceBusReceivedMessage {
     }
 
     /**
-     * Gets the actual payload/data wrapped by the {@link ServiceBusReceivedMessage}.
+     * Gets the actual payload/data wrapped by the {@link ServiceBusReceivedMessage}. The {@link BinaryData} provides
+     * various convenience API representing byte array data.
+     *
      *
      * <p>
      * If the means for deserializing the raw data is not apparent to consumers, a common technique is to make use of
@@ -88,6 +90,8 @@ public final class ServiceBusReceivedMessage {
      * </p>
      *
      * @return A {@link BinaryData} representing the data.
+     *
+     * @see BinaryData
      */
     public BinaryData getBodyAsBinaryData() {
         final AmqpBodyType bodyType = amqpAnnotatedMessage.getBody().getBodyType();

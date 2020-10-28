@@ -54,11 +54,7 @@ public class AmqpMessageProperties {
         replyTo = properties.getReplyTo();
         to = properties.getTo();
         subject = properties.getSubject();
-
-        final byte[] id = properties.getUserId();
-        if (id != null) {
-            userId = Arrays.copyOf(id, id.length);
-        }
+        userId = properties.getUserId();
     }
 
     /**
