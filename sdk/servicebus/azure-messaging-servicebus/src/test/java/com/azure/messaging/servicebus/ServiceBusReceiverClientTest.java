@@ -221,13 +221,13 @@ class ServiceBusReceiverClientTest {
             fail("On error should not have been invoked.");
             return null;
         }).when(onErrorConsumer).accept(any());
-        when(asyncClient.renewSessionLock(LOCK_TOKEN, maxDuration)).thenReturn(publisher.mono());
+        when(asyncClient.renewSessionLock(maxDuration)).thenReturn(publisher.mono());
 
         // Act
-        client.renewSessionLock(LOCK_TOKEN, maxDuration, onErrorConsumer);
+        client.renewSessionLock(maxDuration, onErrorConsumer);
 
         // Assert
-        verify(asyncClient).renewSessionLock(LOCK_TOKEN, maxDuration);
+        verify(asyncClient).renewSessionLock(maxDuration);
     }
 
     /**
@@ -240,15 +240,15 @@ class ServiceBusReceiverClientTest {
         final TestPublisher<Void> publisher = TestPublisher.create();
         final Throwable testError = new IllegalAccessException("Some exception");
 
-        when(asyncClient.renewSessionLock(LOCK_TOKEN, maxDuration)).thenReturn(publisher.mono());
+        when(asyncClient.renewSessionLock(maxDuration)).thenReturn(publisher.mono());
 
-        client.renewSessionLock(LOCK_TOKEN, maxDuration, onErrorConsumer);
+        client.renewSessionLock(maxDuration, onErrorConsumer);
 
         // Act
         publisher.error(testError);
 
         // Assert
-        verify(asyncClient).renewSessionLock(LOCK_TOKEN, maxDuration);
+        verify(asyncClient).renewSessionLock(maxDuration);
         verify(onErrorConsumer).accept(testError);
     }
 
@@ -262,15 +262,15 @@ class ServiceBusReceiverClientTest {
         final TestPublisher<Void> publisher = TestPublisher.create();
         final Throwable testError = new IllegalAccessException("Some exception");
 
-        when(asyncClient.renewSessionLock(LOCK_TOKEN, maxDuration)).thenReturn(publisher.mono());
+        when(asyncClient.renewSessionLock(maxDuration)).thenReturn(publisher.mono());
 
-        client.renewSessionLock(LOCK_TOKEN, maxDuration, null);
+        client.renewSessionLock(maxDuration, null);
 
         // Act
         publisher.error(testError);
 
         // Assert
-        verify(asyncClient).renewSessionLock(LOCK_TOKEN, maxDuration);
+        verify(asyncClient).renewSessionLock(maxDuration);
         verify(onErrorConsumer, never()).accept(testError);
     }
 
@@ -394,10 +394,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         final String sessionId = "a-session-id";
         final byte[] contents = new byte[]{10, 111, 23};
-        when(asyncClient.getSessionState(sessionId)).thenReturn(Mono.just(contents));
+        when(asyncClient.getSessionState()).thenReturn(Mono.just(contents));
 
         // Act
-        final byte[] actual = client.getSessionState(sessionId);
+        final byte[] actual = client.getSessionState();
 
         // Assert
         assertEquals(contents, actual);
@@ -407,10 +407,10 @@ class ServiceBusReceiverClientTest {
     void getSessionStateNull() {
         // Arrange
         final String sessionId = "a-session-id";
-        when(asyncClient.getSessionState(sessionId)).thenReturn(Mono.empty());
+        when(asyncClient.getSessionState()).thenReturn(Mono.empty());
 
         // Act
-        final byte[] actual = client.getSessionState(sessionId);
+        final byte[] actual = client.getSessionState();
 
         // Assert
         assertNull(actual);
@@ -809,10 +809,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         final String sessionId = "a-session-id";
         final OffsetDateTime response = Instant.ofEpochSecond(1585259339).atOffset(ZoneOffset.UTC);
-        when(asyncClient.renewSessionLock(sessionId)).thenReturn(Mono.just(response));
+        when(asyncClient.renewSessionLock()).thenReturn(Mono.just(response));
 
         // Act
-        final OffsetDateTime actual = client.renewSessionLock(sessionId);
+        final OffsetDateTime actual = client.renewSessionLock();
 
         // Assert
         assertEquals(response, actual);
@@ -823,12 +823,12 @@ class ServiceBusReceiverClientTest {
         // Arrange
         final String sessionId = "a-session-id";
         final byte[] contents = new byte[]{10, 111, 23};
-        when(asyncClient.setSessionState(sessionId, contents)).thenReturn(Mono.empty());
+        when(asyncClient.setSessionState(contents)).thenReturn(Mono.empty());
 
         // Act
-        client.setSessionState(sessionId, contents);
+        client.setSessionState(contents);
 
         // Assert
-        verify(asyncClient).setSessionState(sessionId, contents);
+        verify(asyncClient).setSessionState(contents);
     }
 }

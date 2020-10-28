@@ -741,11 +741,8 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         // cleanup
         final ServiceBusReceivedMessage deferred;
-        if (isSessionEnabled) {
-            deferred = receiver.receiveDeferredMessage(receivedMessage.getSequenceNumber(), sessionId);
-        } else {
-            deferred = receiver.receiveDeferredMessage(receivedMessage.getSequenceNumber());
-        }
+        deferred = receiver.receiveDeferredMessage(receivedMessage.getSequenceNumber());
+
         receiver.complete(deferred);
         messagesPending.addAndGet(-maxMessages);
     }

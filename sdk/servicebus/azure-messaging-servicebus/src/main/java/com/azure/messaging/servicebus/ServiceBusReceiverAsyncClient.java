@@ -370,33 +370,13 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Gets the state of a session given its identifier.
-     *
-     * @param sessionId Identifier of session to get.
+     * Gets the state of the session if this receiver is a session receiver.
      *
      * @return The session state or an empty Mono if there is no state set for the session.
      * @throws IllegalStateException if the receiver is a non-session receiver.
      */
-    public Mono<byte[]> getSessionState(String sessionId) {
-        if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
-                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "getSessionState")));
-        } else if (!receiverOptions.isSessionReceiver()) {
-            return monoError(logger, new IllegalStateException("Cannot get session state on a non-session receiver."));
-        }
-
-        if (sessionManager != null) {
-            if (validateSessionId(sessionId)) {
-                return monoError(logger, new IllegalArgumentException(String.format(
-                    "This receiver client is tied to session %s. It can't be used for another session(%s).",
-                    receiverOptions.getSessionId(), sessionId)));
-            }
-            return sessionManager.getSessionState(sessionId);
-        } else {
-            return connectionProcessor
-                .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-                .flatMap(channel -> channel.getSessionState(sessionId, getLinkName(sessionId)));
-        }
+    public Mono<byte[]> getSessionState() {
+        return getSessionState(receiverOptions.getSessionId());
     }
 
     /**
@@ -422,15 +402,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws IllegalStateException if the receiver is disposed.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public Mono<ServiceBusReceivedMessage> peekMessage(String sessionId) {
+    Mono<ServiceBusReceivedMessage> peekMessage(String sessionId) {
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "peek")));
-        }
-        if (validateSessionId(sessionId)) {
-            return monoError(logger, new IllegalArgumentException(String.format(
-                "This receiver client is tied to session %s. It can't be used for another session(%s).",
-                receiverOptions.getSessionId(), sessionId)));
         }
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
@@ -472,15 +447,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return A peeked {@link ServiceBusReceivedMessage}.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public Mono<ServiceBusReceivedMessage> peekMessageAt(long sequenceNumber, String sessionId) {
+    Mono<ServiceBusReceivedMessage> peekMessageAt(long sequenceNumber, String sessionId) {
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "peekAt")));
-        }
-        if (validateSessionId(sessionId)) {
-            return monoError(logger, new IllegalArgumentException(String.format(
-                "This receiver client is tied to session %s. It can't be used for another session(%s).",
-                receiverOptions.getSessionId(), sessionId)));
         }
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
@@ -510,16 +480,12 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public Flux<ServiceBusReceivedMessage> peekMessages(int maxMessages, String sessionId) {
+    Flux<ServiceBusReceivedMessage> peekMessages(int maxMessages, String sessionId) {
         if (isDisposed.get()) {
             return fluxError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "peekBatch")));
         }
-        if (validateSessionId(sessionId)) {
-            return fluxError(logger, new IllegalArgumentException(String.format(
-                "This receiver client is tied to session %s. It can't be used for another session(%s).",
-                receiverOptions.getSessionId(), sessionId)));
-        }
+
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMapMany(node -> {
@@ -577,16 +543,12 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public Flux<ServiceBusReceivedMessage> peekMessagesAt(int maxMessages, long sequenceNumber, String sessionId) {
+    Flux<ServiceBusReceivedMessage> peekMessagesAt(int maxMessages, long sequenceNumber, String sessionId) {
         if (isDisposed.get()) {
             return fluxError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "peekBatchAt")));
         }
-        if (validateSessionId(sessionId)) {
-            return fluxError(logger, new IllegalArgumentException(String.format(
-                "This receiver client is tied to session %s. It can't be used for another session(%s).",
-                receiverOptions.getSessionId(), sessionId)));
-        }
+
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMapMany(node -> node.peek(sequenceNumber, sessionId, getLinkName(sessionId), maxMessages));
@@ -654,12 +616,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *
      * @return A deferred message with the matching {@code sequenceNumber}.
      */
-    public Mono<ServiceBusReceivedMessage> receiveDeferredMessage(long sequenceNumber, String sessionId) {
-        if (validateSessionId(sessionId)) {
-            return monoError(logger, new IllegalArgumentException(String.format(
-                "This receiver client is tied to session %s. It can't be used for another session(%s).",
-                receiverOptions.getSessionId(), sessionId)));
-        }
+    Mono<ServiceBusReceivedMessage> receiveDeferredMessage(long sequenceNumber, String sessionId) {
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(node -> node.receiveDeferredMessages(receiverOptions.getReceiveMode(),
@@ -699,16 +656,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *
      * @return An {@link IterableStream} of deferred {@link ServiceBusReceivedMessage messages}.
      */
-    public Flux<ServiceBusReceivedMessage> receiveDeferredMessages(Iterable<Long> sequenceNumbers,
+    Flux<ServiceBusReceivedMessage> receiveDeferredMessages(Iterable<Long> sequenceNumbers,
         String sessionId) {
         if (isDisposed.get()) {
             return fluxError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "receiveDeferredMessageBatch")));
-        }
-        if (validateSessionId(sessionId)) {
-            return fluxError(logger, new IllegalArgumentException(String.format(
-                "This receiver client is tied to session %s. It can't be used for another session(%s).",
-                receiverOptions.getSessionId(), sessionId)));
         }
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
@@ -820,38 +772,18 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Renews the session lock.
-     *
-     * @param sessionId Identifier of session to get.
+     * Renews the session lock if this receiver is a session receiver.
      *
      * @return The next expiration time for the session lock.
      * @throws IllegalStateException if the receiver is a non-session receiver.
      */
-    public Mono<OffsetDateTime> renewSessionLock(String sessionId) {
-        if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
-                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "renewSessionLock")));
-        } else if (!receiverOptions.isSessionReceiver()) {
-            return monoError(logger, new IllegalStateException("Cannot renew session lock on a non-session receiver."));
-        }
-        if (validateSessionId(sessionId)) {
-            return monoError(logger, new IllegalArgumentException(String.format(
-                "This receiver client is tied to session %s. It can't be used for another session(%s).",
-                receiverOptions.getSessionId(), sessionId)));
-        }
-        final String linkName = sessionManager != null
-            ? sessionManager.getLinkName(sessionId)
-            : null;
-
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(channel -> channel.renewSessionLock(sessionId, linkName));
+    public Mono<OffsetDateTime> renewSessionLock() {
+        return renewSessionLock(receiverOptions.getSessionId());
     }
 
     /**
-     * Starts the auto lock renewal for a session id.
+     * Starts the auto lock renewal for the session this receiver works for.
      *
-     * @param sessionId Id for the session to renew.
      * @param maxLockRenewalDuration Maximum duration to keep renewing the session lock.
      *
      * @return A lock renewal operation for the message.
@@ -859,56 +791,26 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code sessionId} is an empty string.
      * @throws IllegalStateException if the receiver is a non-session receiver or the receiver is disposed.
      */
-    public Mono<Void> renewSessionLock(String sessionId, Duration maxLockRenewalDuration) {
-        if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
-                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "getAutoRenewSessionLock")));
-        } else if (!receiverOptions.isSessionReceiver()) {
-            return monoError(logger, new IllegalStateException(
-                "Cannot renew session lock on a non-session receiver."));
-        } else if (maxLockRenewalDuration == null) {
-            return monoError(logger, new NullPointerException("'maxLockRenewalDuration' cannot be null."));
-        } else if (maxLockRenewalDuration.isNegative()) {
-            return monoError(logger, new IllegalArgumentException(
-                "'maxLockRenewalDuration' cannot be negative."));
-        } else if (Objects.isNull(sessionId)) {
-            return monoError(logger, new NullPointerException("'sessionId' cannot be null."));
-        } else if (sessionId.isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'sessionId' cannot be empty."));
-        }
-        if (validateSessionId(sessionId)) {
-            return monoError(logger, new IllegalArgumentException(String.format(
-                "This receiver client is tied to session %s. It can't be used for another session(%s).",
-                receiverOptions.getSessionId(), sessionId)));
-        }
-        final LockRenewalOperation operation = new LockRenewalOperation(sessionId, maxLockRenewalDuration, true,
-            this::renewSessionLock);
-
-        renewalContainer.addOrUpdate(sessionId, OffsetDateTime.now().plus(maxLockRenewalDuration), operation);
-        return operation.getCompletionOperation();
+    public Mono<Void> renewSessionLock(Duration maxLockRenewalDuration) {
+        return this.renewSessionLock(receiverOptions.getSessionId(), maxLockRenewalDuration);
     }
 
     /**
-     * Sets the state of a session given its identifier.
+     * Sets the state of the session this receiver works for.
      *
-     * @param sessionId Identifier of session to get.
      * @param sessionState State to set on the session.
      *
      * @return A Mono that completes when the session is set
      * @throws IllegalStateException if the receiver is a non-session receiver.
      */
-    public Mono<Void> setSessionState(String sessionId, byte[] sessionState) {
+    public Mono<Void> setSessionState(byte[] sessionState) {
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "setSessionState")));
         } else if (!receiverOptions.isSessionReceiver()) {
             return monoError(logger, new IllegalStateException("Cannot set session state on a non-session receiver."));
         }
-        if (validateSessionId(sessionId)) {
-            return monoError(logger, new IllegalArgumentException(String.format(
-                "This receiver client is tied to session %s. It can't be used for another session(%s).",
-                receiverOptions.getSessionId(), sessionId)));
-        }
+        String sessionId = receiverOptions.getSessionId();
         final String linkName = sessionManager != null
             ? sessionManager.getLinkName(sessionId)
             : null;
@@ -1175,8 +1077,71 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
     }
 
-    private boolean validateSessionId(String sessionId) {
-        String optionSessionId = receiverOptions.getSessionId();
-        return optionSessionId != null && !optionSessionId.equals(sessionId);
+    Mono<OffsetDateTime> renewSessionLock(String sessionId) {
+        if (isDisposed.get()) {
+            return monoError(logger, new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "renewSessionLock")));
+        } else if (!receiverOptions.isSessionReceiver()) {
+            return monoError(logger, new IllegalStateException("Cannot renew session lock on a non-session receiver."));
+        }
+        final String linkName = sessionManager != null
+            ? sessionManager.getLinkName(sessionId)
+            : null;
+
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+            .flatMap(channel -> channel.renewSessionLock(sessionId, linkName));
+    }
+
+    Mono<Void> renewSessionLock(String sessionId, Duration maxLockRenewalDuration) {
+        if (isDisposed.get()) {
+            return monoError(logger, new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "getAutoRenewSessionLock")));
+        } else if (!receiverOptions.isSessionReceiver()) {
+            return monoError(logger, new IllegalStateException(
+                "Cannot renew session lock on a non-session receiver."));
+        } else if (maxLockRenewalDuration == null) {
+            return monoError(logger, new NullPointerException("'maxLockRenewalDuration' cannot be null."));
+        } else if (maxLockRenewalDuration.isNegative()) {
+            return monoError(logger, new IllegalArgumentException(
+                "'maxLockRenewalDuration' cannot be negative."));
+        }
+        final LockRenewalOperation operation = new LockRenewalOperation(sessionId,
+            maxLockRenewalDuration, true, this::renewSessionLock);
+
+        renewalContainer.addOrUpdate(sessionId, OffsetDateTime.now().plus(maxLockRenewalDuration), operation);
+        return operation.getCompletionOperation();
+    }
+
+    Mono<Void> setSessionState(String sessionId, byte[] sessionState) {
+        if (isDisposed.get()) {
+            return monoError(logger, new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "setSessionState")));
+        } else if (!receiverOptions.isSessionReceiver()) {
+            return monoError(logger, new IllegalStateException("Cannot set session state on a non-session receiver."));
+        }
+        final String linkName = sessionManager != null
+            ? sessionManager.getLinkName(sessionId)
+            : null;
+
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+            .flatMap(channel -> channel.setSessionState(sessionId, sessionState, linkName));
+    }
+
+    Mono<byte[]> getSessionState(String sessionId) {
+        if (isDisposed.get()) {
+            return monoError(logger, new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "getSessionState")));
+        } else if (!receiverOptions.isSessionReceiver()) {
+            return monoError(logger, new IllegalStateException("Cannot get session state on a non-session receiver."));
+        }
+        if (sessionManager != null) {
+            return sessionManager.getSessionState(sessionId);
+        } else {
+            return connectionProcessor
+                .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+                .flatMap(channel -> channel.getSessionState(sessionId, getLinkName(sessionId)));
+        }
     }
 }

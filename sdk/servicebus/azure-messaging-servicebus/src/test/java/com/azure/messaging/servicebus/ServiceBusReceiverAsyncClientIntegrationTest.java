@@ -942,12 +942,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 logger.info("SessionId: {}. LockToken: {}. LockedUntil: {}. Message received.",
                     m.getSessionId(), m.getMessage().getLockToken(), m.getMessage().getLockedUntil());
                 receivedMessage.set(m.getMessage());
-                return receiver.setSessionState(sessionId, sessionState);
+                return receiver.setSessionState(sessionState);
             }))
             .expectComplete()
             .verify();
 
-        StepVerifier.create(receiver.getSessionState(sessionId))
+        StepVerifier.create(receiver.getSessionState())
             .assertNext(state -> {
                 logger.info("State received: {}", new String(state, UTF_8));
                 assertArrayEquals(sessionState, state);
