@@ -16,6 +16,7 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.healthcareapis.v2020_03_30.CheckNameAvailabilityParameters;
+import com.microsoft.azure.management.healthcareapis.v2020_03_30.ErrorDetailsInnerException;
 import com.microsoft.azure.management.healthcareapis.v2020_03_30.ServicesPatchDescription;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
