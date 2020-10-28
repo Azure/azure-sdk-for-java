@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.util;
+package com.azure.core.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.Option;
 
 import java.util.Objects;
 import java.util.Optional;
