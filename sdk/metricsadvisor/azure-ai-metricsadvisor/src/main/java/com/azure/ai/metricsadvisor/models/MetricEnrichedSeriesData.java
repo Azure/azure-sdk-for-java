@@ -4,6 +4,8 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.implementation.util.MetricEnrichedSeriesDataHelper;
+
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -21,6 +23,51 @@ public final class MetricEnrichedSeriesData {
     private List<Double> expectedValueList;
     private List<Double> lowerBoundaryList;
     private List<Double> upperBoundaryList;
+
+    static {
+        MetricEnrichedSeriesDataHelper
+            .setAccessor(new MetricEnrichedSeriesDataHelper.MetricEnrichedSeriesDataAccessor() {
+                @Override
+                public void setSeriesKey(MetricEnrichedSeriesData seriesData, DimensionKey seriesKey) {
+                    seriesData.setSeriesKey(seriesKey);
+                }
+
+                @Override
+                public void setTimestampList(MetricEnrichedSeriesData seriesData, List<OffsetDateTime> timestampList) {
+                    seriesData.setTimestampList(timestampList);
+                }
+
+                @Override
+                public void setValueList(MetricEnrichedSeriesData seriesData, List<Double> valueList) {
+                    seriesData.setValueList(valueList);
+                }
+
+                @Override
+                public void setIsAnomalyList(MetricEnrichedSeriesData seriesData, List<Boolean> isAnomalyList) {
+                    seriesData.setIsAnomalyList(isAnomalyList);
+                }
+
+                @Override
+                public void setPeriodList(MetricEnrichedSeriesData seriesData, List<Integer> periodList) {
+                    seriesData.setPeriodList(periodList);
+                }
+
+                @Override
+                public void setExpectedValueList(MetricEnrichedSeriesData seriesData, List<Double> expectedValueList) {
+                    seriesData.setExpectedValueList(expectedValueList);
+                }
+
+                @Override
+                public void setLowerBoundaryList(MetricEnrichedSeriesData seriesData, List<Double> lowerBoundaryList) {
+                    seriesData.setLowerBoundaryList(lowerBoundaryList);
+                }
+
+                @Override
+                public void setUpperBoundaryList(MetricEnrichedSeriesData seriesData, List<Double> upperBoundaryList) {
+                    seriesData.setUpperBoundaryList(upperBoundaryList);
+                }
+            });
+    }
 
     /**
      * Gets the key of the time series.
@@ -92,5 +139,37 @@ public final class MetricEnrichedSeriesData {
      */
     public List<Double> getUpperBoundaryList() {
         return Collections.unmodifiableList(this.upperBoundaryList);
+    }
+
+    void setSeriesKey(DimensionKey seriesKey) {
+        this.seriesKey = seriesKey;
+    }
+
+    void setTimestampList(List<OffsetDateTime> timestampList) {
+        this.timestampList = timestampList;
+    }
+
+    void setValueList(List<Double> valueList) {
+        this.valueList = valueList;
+    }
+
+    void setIsAnomalyList(List<Boolean> isAnomalyList) {
+        this.isAnomalyList = isAnomalyList;
+    }
+
+    void setPeriodList(List<Integer> periodList) {
+        this.periodList = periodList;
+    }
+
+    void setExpectedValueList(List<Double> expectedValueList) {
+        this.expectedValueList = expectedValueList;
+    }
+
+    void setLowerBoundaryList(List<Double> lowerBoundaryList) {
+        this.lowerBoundaryList = lowerBoundaryList;
+    }
+
+    void setUpperBoundaryList(List<Double> upperBoundaryList) {
+        this.upperBoundaryList = upperBoundaryList;
     }
 }

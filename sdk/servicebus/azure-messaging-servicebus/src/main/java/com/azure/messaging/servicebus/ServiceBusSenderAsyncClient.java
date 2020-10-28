@@ -19,7 +19,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
-import com.azure.messaging.servicebus.models.CreateBatchOptions;
+import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;
@@ -36,7 +36,6 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
@@ -65,10 +64,10 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiateWithDefaultCredential}
  *
  * <p><strong>Send messages to a Service Bus resource</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.createBatch}
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch}
  *
  * <p><strong>Send messages using a size-limited {@link ServiceBusMessageBatch} to a Service Bus resource</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.createBatch#CreateBatchOptionsLimitedSize}
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch#CreateMessageBatchOptionsLimitedSize}
  *
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
@@ -82,7 +81,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     // for more information on Azure resource provider namespaces.
     private static final String AZ_TRACING_NAMESPACE_VALUE = "Microsoft.ServiceBus";
 
-    private static final CreateBatchOptions DEFAULT_BATCH_OPTIONS =  new CreateBatchOptions();
+    private static final CreateMessageBatchOptions DEFAULT_BATCH_OPTIONS =  new CreateMessageBatchOptions();
     private static final String SERVICE_BASE_NAME = "ServiceBus.";
 
     private final ClientLogger logger = new ClientLogger(ServiceBusSenderAsyncClient.class);
@@ -255,8 +254,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      *
      * @return A {@link ServiceBusMessageBatch} that can fit as many messages as the transport allows.
      */
-    public Mono<ServiceBusMessageBatch> createBatch() {
-        return createBatch(DEFAULT_BATCH_OPTIONS);
+    public Mono<ServiceBusMessageBatch> createMessageBatch() {
+        return createMessageBatch(DEFAULT_BATCH_OPTIONS);
     }
 
     /**
@@ -267,7 +266,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * @return A new {@link ServiceBusMessageBatch} configured with the given options.
      * @throws NullPointerException if {@code options} is null.
      */
-    public Mono<ServiceBusMessageBatch> createBatch(CreateBatchOptions options) {
+    public Mono<ServiceBusMessageBatch> createMessageBatch(CreateMessageBatchOptions options) {
         if (Objects.isNull(options)) {
             return monoError(logger, new NullPointerException("'options' cannot be null."));
         }
@@ -281,7 +280,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
             if (maxSize > maximumLinkSize) {
                 return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
-                    "CreateBatchOptions.getMaximumSizeInBytes (%s bytes) is larger than the link size"
+                    "CreateMessageBatchOptions.getMaximumSizeInBytes (%s bytes) is larger than the link size"
                         + " (%s bytes).", maxSize, maximumLinkSize)));
             }
 
@@ -372,35 +371,26 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             return fluxError(logger, new NullPointerException("'scheduledEnqueueTime' cannot be null."));
         }
 
-        return getSendLink().flatMapMany(link -> link.getLinkSize()
-            .flatMapMany(size -> {
-                int maxSize =  size > 0
-                    ? size
-                    : MAX_MESSAGE_LENGTH_BYTES;
-                final CreateBatchOptions batchOptions =  new CreateBatchOptions();
-                batchOptions.setMaximumSizeInBytes(maxSize);
+        return getSendLink().flatMapMany(link -> createMessageBatch()
+            .flatMapMany(messageBatch -> {
+                int index = 0;
+                for (ServiceBusMessage message : messages) {
+                    ++index;
+                    boolean added = messageBatch.tryAddMessage(message);
+                    if (!added) {
+                        final String error = String.format(Locale.US,
+                            "Messages exceed max allowed size for all the messages together. "
+                                + "Failed to add message at index '%s'.", index);
+                        throw logger.logExceptionAsError(new AmqpException(false,
+                            AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, error, link.getErrorContext()));
+                    }
+                }
 
-                return createBatch(batchOptions).flatMapMany(messageBatch ->  {
-                    AtomicInteger index = new AtomicInteger();
-                    messages.forEach(message -> {
-                        index.incrementAndGet();
-                        boolean added = messageBatch.tryAdd(message);
-                        if (!added) {
-                            final String error = String.format(Locale.US,
-                                "Messages exceed max allowed size '%s' bytes for all the messages together."
-                                    + " Failed to add message at index '%s'.",
-                                maxSize, index.get());
-                            throw logger.logExceptionAsError(new AmqpException(false,
-                                AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, error, link.getErrorContext()));
-                        }
-                    });
-
-                    return connectionProcessor
-                        .flatMap(connection -> connection.getManagementNode(entityName, entityType))
-                        .flatMapMany(managementNode -> managementNode.schedule(messageBatch.getMessages(),
-                            scheduledEnqueueTime, messageBatch.getMaxSizeInBytes(), link.getLinkName(),
-                            transactionContext));
-                });
+                return connectionProcessor
+                    .flatMap(connection -> connection.getManagementNode(entityName, entityType))
+                    .flatMapMany(managementNode -> managementNode.schedule(messageBatch.getMessages(),
+                        scheduledEnqueueTime, messageBatch.getMaxSizeInBytes(), link.getLinkName(),
+                        transactionContext));
             }));
     }
 
@@ -524,8 +514,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             return monoError(logger, new NullPointerException("'messages' cannot be null."));
         }
 
-        return createBatch().flatMap(messageBatch -> {
-            messages.forEach(message -> messageBatch.tryAdd(message));
+        return createMessageBatch().flatMap(messageBatch -> {
+            messages.forEach(message -> messageBatch.tryAddMessage(message));
             return sendInternal(messageBatch, transaction);
         });
     }
@@ -640,7 +630,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             .flatMap(link -> link.getLinkSize()
                 .flatMap(size -> {
                     final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
-                    final CreateBatchOptions batchOptions = new CreateBatchOptions()
+                    final CreateMessageBatchOptions batchOptions = new CreateMessageBatchOptions()
                         .setMaximumSizeInBytes(batchSize);
                     return messages.collect(new AmqpMessageCollector(batchOptions, 1,
                         link::getErrorContext, tracerProvider, messageSerializer, entityName,
@@ -682,7 +672,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
         private volatile ServiceBusMessageBatch currentBatch;
 
-        AmqpMessageCollector(CreateBatchOptions options, Integer maxNumberOfBatches,
+        AmqpMessageCollector(CreateMessageBatchOptions options, Integer maxNumberOfBatches,
             ErrorContextProvider contextProvider, TracerProvider tracerProvider, MessageSerializer serializer,
             String entityPath, String hostname) {
             this.maxNumberOfBatches = maxNumberOfBatches;
@@ -708,7 +698,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         public BiConsumer<List<ServiceBusMessageBatch>, ServiceBusMessage> accumulator() {
             return (list, event) -> {
                 ServiceBusMessageBatch batch = currentBatch;
-                if (batch.tryAdd(event)) {
+                if (batch.tryAddMessage(event)) {
                     return;
                 }
 
@@ -722,7 +712,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
                 currentBatch = new ServiceBusMessageBatch(maxMessageSize, contextProvider, tracerProvider, serializer,
                     entityPath, hostname);
-                currentBatch.tryAdd(event);
+                currentBatch.tryAddMessage(event);
                 list.add(batch);
             };
         }

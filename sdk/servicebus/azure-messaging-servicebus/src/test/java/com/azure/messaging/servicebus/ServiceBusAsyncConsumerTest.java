@@ -115,7 +115,9 @@ class ServiceBusAsyncConsumerTest {
         final int prefetch = 10;
         final Duration maxAutoLockRenewDuration = Duration.ofSeconds(0);
         final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(3);
-        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, prefetch, "sessionId", false, 1, maxAutoLockRenewDuration);
+        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, prefetch,
+            maxAutoLockRenewDuration, false, "sessionId", false,
+            1);
 
         final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
             receiverOptions);
@@ -161,7 +163,9 @@ class ServiceBusAsyncConsumerTest {
         final Duration maxAutoLockRenewDuration = Duration.ofSeconds(40);
         final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(3);
         final String lockToken = UUID.randomUUID().toString();
-        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, prefetch, "sessionId", false, 1, maxAutoLockRenewDuration);
+        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, prefetch,
+            maxAutoLockRenewDuration, false, "sessionId", false,
+            1);
 
         final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
             receiverOptions);
@@ -200,7 +204,9 @@ class ServiceBusAsyncConsumerTest {
         final Duration maxAutoLockRenewDuration = Duration.ofSeconds(40);
         final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(3);
         final String lockToken = UUID.randomUUID().toString();
-        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, prefetch, "sessionId", false, 1, maxAutoLockRenewDuration);
+        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, prefetch,
+            maxAutoLockRenewDuration, false, "sessionId", false,
+            1);
 
         final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
             receiverOptions);

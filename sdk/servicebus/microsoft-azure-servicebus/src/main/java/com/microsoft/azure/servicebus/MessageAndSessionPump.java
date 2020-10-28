@@ -32,7 +32,6 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(MessageAndSessionPump.class);
     private static final Duration MINIMUM_MESSAGE_LOCK_VALIDITY = Duration.ofSeconds(4);
     private static final Duration MAXIMUM_RENEW_LOCK_BUFFER = Duration.ofSeconds(10);
-    private static final Duration SLEEP_DURATION_ON_ACCEPT_SESSION_EXCEPTION = Duration.ofMinutes(1);
     private static final int UNSET_PREFETCH_COUNT = -1; // Means prefetch count not set
     private static final CompletableFuture<Void> COMPLETED_FUTURE = CompletableFuture.completedFuture(null);
 
@@ -259,11 +258,9 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
 
                     if (!(acceptSessionEx instanceof OperationCancelledException)) {
                         // don't retry if OperationCancelled by service.. may be entity itself is deleted
-                        // In case of any other exception, sleep and retry
-                        TRACE_LOGGER.debug("AcceptSession from entity '{}' will be retried after '{}'.", this.entityPath, SLEEP_DURATION_ON_ACCEPT_SESSION_EXCEPTION);
-                        Timer.schedule(() -> {
-                            MessageAndSessionPump.this.acceptSessionAndPumpMessages();
-                        }, SLEEP_DURATION_ON_ACCEPT_SESSION_EXCEPTION, TimerType.OneTimeRun);
+                        // In case of any other exception, retry
+                    	TRACE_LOGGER.debug("Retrying to acceptSession from entity '{}'.", this.entityPath);
+                    	this.acceptSessionAndPumpMessages();
                     }
                 } else {
                     // Received a session.. Now pump messages..
