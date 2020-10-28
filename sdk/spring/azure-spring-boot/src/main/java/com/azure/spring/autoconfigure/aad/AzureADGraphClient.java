@@ -189,7 +189,8 @@ public class AzureADGraphClient {
      * @return AccessToken
      * @throws ServiceUnavailableException If fail to acquire the token.
      */
-    public AccessToken getAccessToken(String applicationIdUri, Set<String> permissions) throws ServiceUnavailableException {
+    public AccessToken getAccessToken(String applicationIdUri,
+                                      Set<String> permissions) throws ServiceUnavailableException {
         AccessToken accessToken = loadAccessTokenFromSession(applicationIdUri);
         Set<String> uniformedPermissions = permissions.stream()
                                                       .map(String::trim)
