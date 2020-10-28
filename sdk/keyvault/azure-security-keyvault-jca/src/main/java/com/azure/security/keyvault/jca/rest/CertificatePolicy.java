@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.jca.rest;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 
 /**
@@ -13,6 +14,7 @@ public class CertificatePolicy implements Serializable {
     /**
      * Stores the key properties.
      */
+    @JsonProperty("key_props")
     private KeyProperties keyProperties;
 
     /**
@@ -20,7 +22,7 @@ public class CertificatePolicy implements Serializable {
      *
      * @return the key properties.
      */
-    public KeyProperties getKey_props() {
+    public KeyProperties getKeyProperties() {
         return keyProperties;
     }
 
@@ -29,7 +31,7 @@ public class CertificatePolicy implements Serializable {
      *
      * @param keyProperties the key properties.
      */
-    public void setKey_props(KeyProperties keyProperties) {
+    public void setKeyProperties(KeyProperties keyProperties) {
         this.keyProperties = keyProperties;
     }
 }

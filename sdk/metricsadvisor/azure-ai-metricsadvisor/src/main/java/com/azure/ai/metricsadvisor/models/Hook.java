@@ -3,18 +3,39 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.implementation.util.HookHelper;
+
 import java.util.List;
 
 /**
  * Describes a hook that receives anomaly incident alerts.
  */
 public abstract class Hook {
+    private String id;
+    private List<String> admins;
+
+    static {
+        HookHelper.setAccessor(new HookHelper.HookAccessor() {
+            @Override
+            public void setId(Hook hook, String id) {
+                hook.setId(id);
+            }
+
+            @Override
+            public void setAdmins(Hook hook, List<String> admins) {
+                hook.setAdmins(admins);
+            }
+        });
+    }
+
     /**
      * Gets the id.
      *
      * @return The id.
      */
-    public abstract String getId();
+    public String getId() {
+        return this.id;
+    }
 
     /**
      * Gets the name for the email hook.
@@ -35,5 +56,15 @@ public abstract class Hook {
      *
      * @return The admins.
      */
-    public abstract List<String> getAdmins();
+    public List<String> getAdmins() {
+        return this.admins;
+    }
+
+    void setId(String id) {
+        this.id = id;
+    }
+
+    void setAdmins(List<String> admins) {
+        this.admins = admins;
+    }
 }

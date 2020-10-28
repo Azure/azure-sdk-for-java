@@ -297,7 +297,7 @@ client.virtualMachines().listByResourceGroup(rgName);
 ## Troubleshooting
 
 If you encounter any bugs, please file issues via [GitHub Issues](https://github.com/Azure/azure-sdk-for-java/issues/new/choose) 
-or checkout [StackOverflow for Azure Java SDK](http://stackoverflow.com/questions/tagged/azure-java-sdk).
+or checkout [StackOverflow for Azure Java SDK](https://stackoverflow.com/questions/tagged/azure-java-sdk).
 
 ### HTTP client
 
@@ -332,7 +332,7 @@ For details, please refer to [Guidance on ARM throttling][throttling].
 ## Contributing
 
 If you would like to become an active contributor to this project please follow the instructions provided in
-[Microsoft Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
+[Microsoft Azure Projects Contribution Guidelines](https://azure.github.io/guidelines.html).
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
@@ -341,7 +341,7 @@ If you would like to become an active contributor to this project please follow 
 5. Create new Pull Request
 
 <!-- LINKS -->
-[docs]: http://azure.github.io/azure-sdk-for-java/resourcemanager.html
+[docs]: https://azure.github.io/azure-sdk-for-java/resourcemanager.html
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity

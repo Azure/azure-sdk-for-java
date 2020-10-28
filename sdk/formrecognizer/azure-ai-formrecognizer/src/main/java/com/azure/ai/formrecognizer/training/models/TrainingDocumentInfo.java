@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer.training.models;
 
+import com.azure.ai.formrecognizer.implementation.TrainingDocumentInfoHelper;
 import com.azure.ai.formrecognizer.models.FormRecognizerError;
 
 import java.util.Collections;
@@ -34,6 +35,15 @@ public final class TrainingDocumentInfo {
     private final List<FormRecognizerError> errors;
 
     private String modelId;
+
+    static {
+        TrainingDocumentInfoHelper.setAccessor(new TrainingDocumentInfoHelper.TrainingDocumentInfoAccessor() {
+            @Override
+            public void setModelId(TrainingDocumentInfo documentInfo, String modelId) {
+                documentInfo.setModelId(modelId);
+            }
+        });
+    }
 
     /**
      * Constructs a TrainingDocumentInfo object.
@@ -96,4 +106,13 @@ public final class TrainingDocumentInfo {
         return this.modelId;
     }
 
+    /**
+     * The private setter to set the modelId property
+     * via {@link TrainingDocumentInfoHelper.TrainingDocumentInfoAccessor}.
+     *
+     * @param modelId The the unique identifier of the model.
+     */
+    private void setModelId(String modelId) {
+        this.modelId = modelId;
+    }
 }

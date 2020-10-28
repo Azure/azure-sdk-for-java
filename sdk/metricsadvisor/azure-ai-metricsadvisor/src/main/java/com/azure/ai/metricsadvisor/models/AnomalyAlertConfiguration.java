@@ -3,6 +3,7 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.implementation.util.AnomalyAlertConfigurationHelper;
 import com.azure.core.annotation.Fluent;
 
 import java.util.ArrayList;
@@ -20,6 +21,12 @@ public final class AnomalyAlertConfiguration {
     private MetricAnomalyAlertConfigurationsOperator crossMetricsOperator;
     private List<MetricAnomalyAlertConfiguration> metricAnomalyAlertConfigurations;
     private List<String> hookIds;
+
+    static {
+        AnomalyAlertConfigurationHelper.setAccessor((configuration, id) -> {
+            configuration.setId(id);
+        });
+    }
 
     /**
      * Create a new instance of AnomalyAlertConfiguration.
@@ -191,5 +198,9 @@ public final class AnomalyAlertConfiguration {
             this.hookIds = hookIds;
         }
         return this;
+    }
+
+    void setId(String id) {
+        this.id = id;
     }
 }

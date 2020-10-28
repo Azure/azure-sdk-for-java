@@ -1,0 +1,74 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.communication.azure.com/administration/phonenumbers/searches/b78f406a-38c1-4cf1-af93-983d4d6bd166/purchase?api-version=2020-07-20-preview1",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-administration/1.0.0-beta.3 (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "X-Processing-Time" : "979ms",
+      "MS-CV" : "tD5R80A6i0OfVkWF18F0JQ.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0JkSTXwAAAAB8Q1m7u3OCRq1/RROLlhWUREVOMDJFREdFMDMxNwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "Date" : "Fri, 23 Oct 2020 20:59:19 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.communication.azure.com/administration/phonenumbers/searches/b78f406a-38c1-4cf1-af93-983d4d6bd166?api-version=2020-07-20-preview1",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-administration/1.0.0-beta.3 (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Processing-Time" : "265ms",
+      "MS-CV" : "emj4hxqTM0+d66L3++hheg.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0LUSTXwAAAAD7XD/WlF8gRrJbSLhlKhCBREVOMDJFREdFMDMxNwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "200",
+      "Body" : "{\"searchId\":\"b78f406a-38c1-4cf1-af93-983d4d6bd166\",\"displayName\":\"testsearch20200014\",\"createdAt\":\"2020-10-23T20:57:02.0409712+00:00\",\"description\":\"testsearch20200014\",\"phonePlanIds\":[\"01432411-5169-4665-b13e-3fa56c10e1d1\"],\"areaCode\":\"213\",\"quantity\":2,\"locationOptions\":[],\"status\":\"Completing\",\"phoneNumbers\":[\"+12134389285\",\"+12134389405\"],\"reservationExpiryDate\":\"2020-10-23T21:13:29.7369346+00:00\"}",
+      "Date" : "Fri, 23 Oct 2020 20:59:24 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.communication.azure.com/administration/phonenumbers/searches/b78f406a-38c1-4cf1-af93-983d4d6bd166?api-version=2020-07-20-preview1",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-administration/1.0.0-beta.3 (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Processing-Time" : "2890ms",
+      "MS-CV" : "wTgcfgHMa0G4LwWZSVy8zQ.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0d0STXwAAAAA07DyMAbGbTpNahiG84FKcREVOMDJFREdFMDMxNwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "200",
+      "Body" : "{\"searchId\":\"b78f406a-38c1-4cf1-af93-983d4d6bd166\",\"displayName\":\"testsearch20200014\",\"createdAt\":\"2020-10-23T20:57:02.0409712+00:00\",\"description\":\"testsearch20200014\",\"phonePlanIds\":[\"01432411-5169-4665-b13e-3fa56c10e1d1\"],\"areaCode\":\"213\",\"quantity\":2,\"locationOptions\":[],\"status\":\"PurchasePending\",\"phoneNumbers\":[\"+12134389285\",\"+12134389405\"],\"reservationExpiryDate\":\"2020-10-23T21:13:29.7369346+00:00\"}",
+      "Date" : "Fri, 23 Oct 2020 21:00:41 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.communication.azure.com/administration/phonenumbers/searches/b78f406a-38c1-4cf1-af93-983d4d6bd166?api-version=2020-07-20-preview1",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-administration/1.0.0-beta.3 (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Processing-Time" : "263ms",
+      "MS-CV" : "Ru1s65E59kO2sqi005DbGA.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0mkSTXwAAAAAA/WDv5/iQTLnd3QTnAcN/REVOMDJFREdFMDMxNwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "200",
+      "Body" : "{\"searchId\":\"b78f406a-38c1-4cf1-af93-983d4d6bd166\",\"displayName\":\"testsearch20200014\",\"createdAt\":\"2020-10-23T20:57:02.0409712+00:00\",\"description\":\"testsearch20200014\",\"phonePlanIds\":[\"01432411-5169-4665-b13e-3fa56c10e1d1\"],\"areaCode\":\"213\",\"quantity\":2,\"locationOptions\":[],\"status\":\"Success\",\"phoneNumbers\":[\"+12134389285\",\"+12134389405\"],\"reservationExpiryDate\":\"2020-10-23T21:13:29.7369346+00:00\"}",
+      "Date" : "Fri, 23 Oct 2020 21:01:14 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }],
+  "variables" : [ ]
+}
