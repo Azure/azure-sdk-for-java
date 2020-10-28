@@ -53,11 +53,6 @@ abstract class AppServiceBaseImpl<
 
     private final ClientLogger logger = new ClientLogger(getClass());
 
-    protected static final String SETTING_DOCKER_IMAGE = "DOCKER_CUSTOM_IMAGE_NAME";
-    protected static final String SETTING_REGISTRY_SERVER = "DOCKER_REGISTRY_SERVER_URL";
-    protected static final String SETTING_REGISTRY_USERNAME = "DOCKER_REGISTRY_SERVER_USERNAME";
-    protected static final String SETTING_REGISTRY_PASSWORD = "DOCKER_REGISTRY_SERVER_PASSWORD";
-
     AppServiceBaseImpl(
         String name,
         SiteInner innerObject,
@@ -450,7 +445,7 @@ abstract class AppServiceBaseImpl<
         if (siteConfig == null) {
             siteConfig = new SiteConfigResourceInner();
         }
-        siteConfig.withLinuxFxVersion(String.format("DOCKER|%s", imageAndTag));
+        setAppFrameworkVersion(String.format("DOCKER|%s", imageAndTag));
         withAppSetting(SETTING_DOCKER_IMAGE, imageAndTag);
         return (FluentImplT) this;
     }
@@ -467,7 +462,7 @@ abstract class AppServiceBaseImpl<
         if (siteConfig == null) {
             siteConfig = new SiteConfigResourceInner();
         }
-        siteConfig.withLinuxFxVersion(String.format("DOCKER|%s", imageAndTag));
+        setAppFrameworkVersion(String.format("DOCKER|%s", imageAndTag));
         withAppSetting(SETTING_DOCKER_IMAGE, imageAndTag);
         withAppSetting(SETTING_REGISTRY_SERVER, serverUrl);
         return (FluentImplT) this;

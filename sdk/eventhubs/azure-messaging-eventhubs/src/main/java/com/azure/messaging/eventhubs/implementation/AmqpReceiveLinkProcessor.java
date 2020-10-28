@@ -442,7 +442,6 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         if (!isTerminated()) {
             return false;
         }
-
         final CoreSubscriber<? super Message> subscriber = downstream.get();
         final Throwable error = lastError;
         if (error != null) {

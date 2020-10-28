@@ -19,10 +19,10 @@ Java 8 or later is required to use libraries under the `com.azure` package, for 
 
 Each service might have a number of libraries available from each of the following categories:
 
-- [Client: New Releases](#Client-New-Releases)
-- [Client: Previous Versions](#Client-Previous-Versions)
-- [Management: New Releases](#Management-New-Releases)
-- [Management: Previous Versions](#Management-Previous-Versions)
+- [Client: New Releases](#client-new-releases)
+- [Client: Previous Versions](#client-previous-versions)
+- [Management: New Releases](#management-new-releases)
+- [Management: Previous Versions](#management-previous-versions)
 
 ### Client: New Releases
 
@@ -50,7 +50,7 @@ Management libraries can be identified by namespaces that start with `azure-mgmt
 
 ## Need help?
 
-- For reference documentation visit the [Azure SDK for Java documentation](http://aka.ms/java-docs).
+- For reference documentation visit the [Azure SDK for Java documentation](https://aka.ms/java-docs).
 - For tutorials, samples, quick starts and other documentation, visit [Azure for Java Developers](https://docs.microsoft.com/java/azure/).
 - For build reports on code quality, test coverage, etc, visit [Azure Java SDK](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/index.html).
 - File an issue via [Github Issues](https://github.com/Azure/azure-sdk-for-java/issues/new/choose).
@@ -60,7 +60,7 @@ Management libraries can be identified by namespaces that start with `azure-mgmt
 
 ### Master branch
 
-The master branch has the most recent code with new features and bug fixes. It does **not** represent latest released **GA** SDK. See [above](#Client-New-Releases) for latest **GA** release.<br/>
+The master branch has the most recent code with new features and bug fixes. It does **not** represent latest released **GA** SDK. See [above](#client-new-releases) for latest **GA** release.<br/>
 
 ### Release branches (Release tagging)
 

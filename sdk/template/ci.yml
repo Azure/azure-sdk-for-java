@@ -9,7 +9,6 @@ trigger:
   paths:
     include:
       - sdk/template/
-      - eng/common/
 
 pr:
   branches:
@@ -26,6 +25,7 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: template
+    TestPipeline: true
     Artifacts:
       - name: azure-sdk-template
         groupId: com.azure

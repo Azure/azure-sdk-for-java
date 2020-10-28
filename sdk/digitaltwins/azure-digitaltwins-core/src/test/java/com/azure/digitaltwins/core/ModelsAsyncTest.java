@@ -3,7 +3,7 @@ package com.azure.digitaltwins.core;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
-import com.azure.digitaltwins.core.models.DigitalTwinModelsListOptions;
+import com.azure.digitaltwins.core.models.ListModelsOptions;
 import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -44,7 +44,7 @@ public class ModelsAsyncTest extends ModelsTestBase {
 
         for (final DigitalTwinsModelData expected : createdModels) {
             // Get the model
-            getModelRunner(expected.getId(), (modelId) -> {
+            getModelRunner(expected.getModelId(), (modelId) -> {
                 StepVerifier.create(asyncClient.getModelWithResponse(modelId, null))
                     .assertNext(retrievedModel -> assertModelDataAreEqual(expected, retrievedModel.getValue(), false))
                     .verifyComplete();
@@ -52,14 +52,14 @@ public class ModelsAsyncTest extends ModelsTestBase {
             });
 
             // Decommission the model
-            decommissionModelRunner(expected.getId(), (modelId) -> {
+            decommissionModelRunner(expected.getModelId(), (modelId) -> {
                 logger.info("Decommissioning model {}", modelId);
                 StepVerifier.create(asyncClient.decommissionModel(modelId))
                     .verifyComplete();
             });
 
             // Get the model again to see if it was decommissioned as expected
-            getModelRunner(expected.getId(), (modelId) -> {
+            getModelRunner(expected.getModelId(), (modelId) -> {
                 StepVerifier.create(asyncClient.getModel(modelId))
                     .assertNext(retrievedModel -> assertTrue(retrievedModel.isDecommissioned()))
                     .verifyComplete();
@@ -67,7 +67,7 @@ public class ModelsAsyncTest extends ModelsTestBase {
             });
 
             // Delete the model
-            deleteModelRunner(expected.getId(), (modelId) -> {
+            deleteModelRunner(expected.getModelId(), (modelId) -> {
                 logger.info("Deleting model {}", modelId);
                 StepVerifier.create(asyncClient.deleteModel(modelId))
                     .verifyComplete();
@@ -124,13 +124,13 @@ public class ModelsAsyncTest extends ModelsTestBase {
         AtomicInteger pageCount = new AtomicInteger();
 
         // List models in multiple pages and verify more than one page was viewed.
-        StepVerifier.create(asyncClient.listModels(new DigitalTwinModelsListOptions().setMaxItemsPerPage(2)).byPage())
+        StepVerifier.create(asyncClient.listModels(new ListModelsOptions().setMaxItemsPerPage(2)).byPage())
             .thenConsumeWhile(
                 page -> {
                     pageCount.getAndIncrement();
                     logger.info("content for this page " + pageCount);
                     for (DigitalTwinsModelData model : page.getValue()) {
-                        logger.info(model.getId());
+                        logger.info(model.getModelId());
                     }
                     return true;
                 })

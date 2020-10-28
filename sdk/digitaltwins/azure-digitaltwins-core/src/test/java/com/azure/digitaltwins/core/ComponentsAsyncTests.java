@@ -46,7 +46,7 @@ public class ComponentsAsyncTests extends ComponentsTestBase {
                 .assertNext(createResponseList -> logger.info("Created models successfully"))
                 .verifyComplete();
 
-            StepVerifier.create(asyncClient.createDigitalTwin(roomWithWifiTwinId, deserializeJsonString(roomWithWifiTwin, BasicDigitalTwin.class), BasicDigitalTwin.class))
+            StepVerifier.create(asyncClient.createOrReplaceDigitalTwin(roomWithWifiTwinId, deserializeJsonString(roomWithWifiTwin, BasicDigitalTwin.class), BasicDigitalTwin.class))
                 .assertNext(createdTwin -> {
                     assertEquals(createdTwin.getId(), roomWithWifiTwinId);
                     logger.info("Created {} twin successfully", createdTwin.getId());

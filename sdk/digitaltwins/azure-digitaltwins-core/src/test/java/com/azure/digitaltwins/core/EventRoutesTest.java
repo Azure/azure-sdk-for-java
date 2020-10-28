@@ -5,8 +5,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.digitaltwins.core.models.EventRoute;
-import com.azure.digitaltwins.core.models.EventRoutesListOptions;
+import com.azure.digitaltwins.core.models.DigitalTwinsEventRoute;
+import com.azure.digitaltwins.core.models.ListDigitalTwinsEventRoutesOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -33,22 +33,22 @@ public class EventRoutesTest extends EventRoutesTestBase {
         String eventRouteId = testResourceNamer.randomUuid();
 
         // CREATE
-        EventRoute eventRouteToCreate = new EventRoute(EVENT_ROUTE_ENDPOINT_NAME);
+        DigitalTwinsEventRoute eventRouteToCreate = new DigitalTwinsEventRoute(EVENT_ROUTE_ENDPOINT_NAME);
         eventRouteToCreate.setFilter(FILTER);
-        client.createEventRoute(eventRouteId, eventRouteToCreate);
+        client.createOrReplaceEventRoute(eventRouteId, eventRouteToCreate);
 
         try {
             // GET
-            EventRoute retrievedEventRoute = client.getEventRoute(eventRouteId);
+            DigitalTwinsEventRoute retrievedEventRoute = client.getEventRoute(eventRouteId);
             assertEventRoutesEqual(eventRouteToCreate, eventRouteId, retrievedEventRoute);
 
             // LIST
-            PagedIterable<EventRoute> listedEventRoutes = client.listEventRoutes();
-            for (EventRoute listedEventRoute : listedEventRoutes) {
+            PagedIterable<DigitalTwinsEventRoute> listedEventRoutes = client.listEventRoutes();
+            for (DigitalTwinsEventRoute listedEventRoute : listedEventRoutes) {
                 // There may be other event routes in place, so ignore them if they aren't the event route
                 // that was just created. We only need to see that the newly created event route is present in the
                 // list of all event routes.
-                if (listedEventRoute.getId().equals(retrievedEventRoute)) {
+                if (listedEventRoute.getEventRouteId().equals(retrievedEventRoute)) {
                     assertEventRoutesEqual(retrievedEventRoute, eventRouteId, listedEventRoute);
                     break;
                 }
@@ -75,10 +75,10 @@ public class EventRoutesTest extends EventRoutesTestBase {
     public void createEventRouteThrowsIfFilterIsMalformed(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
         String eventRouteId = testResourceNamer.randomUuid();
-        EventRoute eventRouteToCreate = new EventRoute(EVENT_ROUTE_ENDPOINT_NAME);
+        DigitalTwinsEventRoute eventRouteToCreate = new DigitalTwinsEventRoute(EVENT_ROUTE_ENDPOINT_NAME);
         eventRouteToCreate.setFilter("this is not a valid filter");
 
-        assertRestException(() -> client.createEventRoute(eventRouteId, eventRouteToCreate), HttpURLConnection.HTTP_BAD_REQUEST);
+        assertRestException(() -> client.createOrReplaceEventRoute(eventRouteId, eventRouteToCreate), HttpURLConnection.HTTP_BAD_REQUEST);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -92,22 +92,22 @@ public class EventRoutesTest extends EventRoutesTestBase {
         // create enough event routes so that the list API can have multiple pages
         for (int i = 0; i < eventRouteCountToCreate; i++) {
             String eventRouteId = testResourceNamer.randomUuid();
-            EventRoute eventRouteToCreate = new EventRoute(EVENT_ROUTE_ENDPOINT_NAME);
+            DigitalTwinsEventRoute eventRouteToCreate = new DigitalTwinsEventRoute(EVENT_ROUTE_ENDPOINT_NAME);
             eventRouteToCreate.setFilter(FILTER);
-            client.createEventRoute(eventRouteId, eventRouteToCreate);
+            client.createOrReplaceEventRoute(eventRouteId, eventRouteToCreate);
         }
 
         // list event routes by page, make sure that all non-final pages have the expected page size
-        EventRoutesListOptions eventRoutesListOptions = (new EventRoutesListOptions()).setMaxItemsPerPage(expectedPageSize);
-        PagedIterable<EventRoute> eventRoutes = client.listEventRoutes(eventRoutesListOptions, Context.NONE);
-        Iterable<PagedResponse<EventRoute>> eventRoutePages = eventRoutes.iterableByPage();
+        ListDigitalTwinsEventRoutesOptions listEventRoutesOptions = (new ListDigitalTwinsEventRoutesOptions()).setMaxItemsPerPage(expectedPageSize);
+        PagedIterable<DigitalTwinsEventRoute> eventRoutes = client.listEventRoutes(listEventRoutesOptions, Context.NONE);
+        Iterable<PagedResponse<DigitalTwinsEventRoute>> eventRoutePages = eventRoutes.iterableByPage();
         int pageCount = 0;
-        for (PagedResponse<EventRoute> eventRoutePagedResponse : eventRoutePages) {
+        for (PagedResponse<DigitalTwinsEventRoute> eventRoutePagedResponse : eventRoutePages) {
             pageCount++;
 
             // Any page of results with a continuation token should be a non-final page, and should have the exact page size that we specified above
             if (eventRoutePagedResponse.getContinuationToken() != null) {
-                assertEquals(expectedPageSize, eventRoutePagedResponse.getValue().size());
+                assertEquals(expectedPageSize, eventRoutePagedResponse.getValue().size(), "Unexpected page size for a non-terminal page");
             }
         }
 

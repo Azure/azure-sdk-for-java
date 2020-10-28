@@ -96,7 +96,7 @@ public class TableServiceAsyncClient {
      * @return The REST API version used by this client.
      */
     public TablesServiceVersion getApiVersion() {
-        return TablesServiceVersion.valueOf(implementation.getVersion());
+        return TablesServiceVersion.fromString(implementation.getVersion());
     }
 
     /**
@@ -104,10 +104,15 @@ public class TableServiceAsyncClient {
      *
      * @param tableName The name of the table.
      * @return A {@link TableAsyncClient} instance for the provided table in the account.
-     * @throws IllegalArgumentException if {@code tableName} is {@code null} or empty.
+     * @throws NullPointerException if {@code tableName} is {@code null} or empty.
      */
     public TableAsyncClient getTableClient(String tableName) {
-        return new TableAsyncClient(tableName, implementation);
+        return new TableClientBuilder()
+            .pipeline(this.implementation.getHttpPipeline())
+            .serviceVersion(this.getApiVersion())
+            .endpoint(this.getServiceUrl())
+            .tableName(tableName)
+            .buildAsyncClient();
     }
 
     /**
@@ -141,13 +146,9 @@ public class TableServiceAsyncClient {
         final TableProperties properties = new TableProperties().setTableName(tableName);
 
         try {
-            return implementation.getTables().createWithResponseAsync(properties,
-                null,
+            return implementation.getTables().createWithResponseAsync(properties, null,
                 ResponseFormat.RETURN_NO_CONTENT, null, context)
-                .map(response -> {
-                    return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), null);
-                });
+                .map(response -> new SimpleResponse<>(response, null));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -216,9 +217,8 @@ public class TableServiceAsyncClient {
 
     Mono<Response<Void>> deleteTableWithResponse(String tableName, Context context) {
         context = context == null ? Context.NONE : context;
-        return implementation.getTables().deleteWithResponseAsync(tableName, null, context).map(response -> {
-            return new SimpleResponse<>(response, null);
-        });
+        return implementation.getTables().deleteWithResponseAsync(tableName, null, context)
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -269,6 +269,7 @@ public class TableServiceAsyncClient {
 
     private Mono<PagedResponse<TableItem>> listTables(String nextTableName, Context context,
                                                       ListTablesOptions options) {
+        context = context == null ? Context.NONE : context;
         QueryOptions queryOptions = new QueryOptions()
             .setFilter(options.getFilter())
             .setTop(options.getTop())

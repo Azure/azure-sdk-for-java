@@ -1,0 +1,42 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.spring.cloud.context.core.impl;
+
+import com.microsoft.azure.management.Azure;
+import com.microsoft.azure.management.redis.RedisCache;
+import com.azure.spring.cloud.context.core.config.AzureProperties;
+
+/**
+ * Resource manager for Redis cache.
+ */
+public class RedisCacheManager extends AzureManager<RedisCache, String> {
+
+    private final Azure azure;
+
+    public RedisCacheManager(Azure azure, AzureProperties azureProperties) {
+        super(azureProperties);
+        this.azure = azure;
+    }
+
+    @Override
+    String getResourceName(String key) {
+        return key;
+    }
+
+    @Override
+    String getResourceType() {
+        return RedisCache.class.getSimpleName();
+    }
+
+    @Override
+    public RedisCache internalGet(String name) {
+        return azure.redisCaches().getByResourceGroup(azureProperties.getResourceGroup(), name);
+    }
+
+    @Override
+    public RedisCache internalCreate(String name) {
+        return azure.redisCaches().define(name).withRegion(azureProperties.getRegion())
+                .withExistingResourceGroup(azureProperties.getResourceGroup()).withBasicSku().create();
+    }
+}

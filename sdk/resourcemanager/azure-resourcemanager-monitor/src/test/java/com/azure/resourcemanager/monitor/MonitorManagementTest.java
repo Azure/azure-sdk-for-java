@@ -56,12 +56,11 @@ public class MonitorManagementTest extends ResourceManagerTestBase {
         ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         ResourceManagerUtils.InternalRuntimeContext internalContext = new ResourceManagerUtils.InternalRuntimeContext();
         internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
-        appServiceManager = AppServiceManager.authenticate(httpPipeline, profile);
-        resourceManager =
-            ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
-        monitorManager = MonitorManager.authenticate(httpPipeline, profile);
-        computeManager = ComputeManager.authenticate(httpPipeline, profile);
-        storageManager = StorageManager.authenticate(httpPipeline, profile);
+        appServiceManager = buildManager(AppServiceManager.class, httpPipeline, profile);
+        monitorManager = buildManager(MonitorManager.class, httpPipeline, profile);
+        computeManager = buildManager(ComputeManager.class, httpPipeline, profile);
+        storageManager = buildManager(StorageManager.class, httpPipeline, profile);
+        resourceManager = monitorManager.resourceManager();
         setInternalContext(internalContext, computeManager);
 
         //        eventHubManager = EventHubManager

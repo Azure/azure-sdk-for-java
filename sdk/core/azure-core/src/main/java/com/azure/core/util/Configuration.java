@@ -24,6 +24,16 @@ public class Configuration implements Cloneable {
     public static final String PROPERTY_HTTPS_PROXY = "HTTPS_PROXY";
 
     /**
+     * Endpoint to connect to when using Azure Active Directory managed service identity (MSI).
+     */
+    public static final String PROPERTY_IDENTITY_ENDPOINT = "IDENTITY_ENDPOINT";
+
+    /**
+     * Header when connecting to Azure Active Directory using managed service identity (MSI).
+     */
+    public static final String PROPERTY_IDENTITY_HEADER = "IDENTITY_HEADER";
+
+    /**
      * A list of hosts or CIDR to not use proxy HTTP/HTTPS connections through.
      */
     public static final String PROPERTY_NO_PROXY = "NO_PROXY";
@@ -109,6 +119,8 @@ public class Configuration implements Cloneable {
     private static final String[] DEFAULT_CONFIGURATIONS = {
         PROPERTY_HTTP_PROXY,
         PROPERTY_HTTPS_PROXY,
+        PROPERTY_IDENTITY_ENDPOINT,
+        PROPERTY_IDENTITY_HEADER,
         PROPERTY_NO_PROXY,
         PROPERTY_MSI_ENDPOINT,
         PROPERTY_MSI_SECRET,
