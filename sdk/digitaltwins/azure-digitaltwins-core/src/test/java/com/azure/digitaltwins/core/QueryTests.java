@@ -6,7 +6,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
-import com.azure.digitaltwins.core.models.BasicDigitalTwin;
 import com.azure.digitaltwins.core.models.QueryOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -52,7 +51,7 @@ public class QueryTests extends QueryTestBase{
             PagedIterable<BasicDigitalTwin> pagedQueryResponse = client.query(queryString, BasicDigitalTwin.class, new QueryOptions().setMaxItemsPerPage(pageSize), Context.NONE);
 
             for(BasicDigitalTwin digitalTwin : pagedQueryResponse){
-                assertThat(digitalTwin.getProperties().get("IsOccupied"))
+                assertThat(digitalTwin.getContents().get("IsOccupied"))
                     .as("IsOccupied should be true")
                     .isEqualTo(true);
             }

@@ -9,6 +9,9 @@ import com.microsoft.azure.management.eventhub.EventHubNamespace;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.util.Tuple;
 
+/**
+ * Resource manager for Event Hubs.
+ */
 public class EventHubManager extends AzureManager<EventHub, Tuple<EventHubNamespace, String>> {
 
     public EventHubManager(Azure azure, AzureProperties azureProperties) {

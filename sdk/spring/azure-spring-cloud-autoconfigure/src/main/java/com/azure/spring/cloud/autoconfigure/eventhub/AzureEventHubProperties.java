@@ -69,6 +69,11 @@ public class AzureEventHubProperties {
         this.checkpointContainer = checkpointContainer;
     }
 
+    /**
+     * Validate Event Hubs properties.
+     *
+     * @throws IllegalArgumentException If namespace or connectionString is empty.
+     */
     @PostConstruct
     public void validate() {
         if (!StringUtils.hasText(namespace) && !StringUtils.hasText(connectionString)) {

@@ -5,6 +5,9 @@ package com.azure.spring.integration.storage.queue;
 
 import org.springframework.core.NestedRuntimeException;
 
+/**
+ * Thrown when exception happens during storage queue client.
+ */
 public class StorageQueueRuntimeException extends NestedRuntimeException {
 
     public StorageQueueRuntimeException(String msg) {
