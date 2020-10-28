@@ -29,8 +29,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -46,21 +44,16 @@ import reactor.test.publisher.TestPublisher;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class ServiceBusSessionReceiverAsyncClientTest {
@@ -92,8 +85,6 @@ class ServiceBusSessionReceiverAsyncClientTest {
     private MessageSerializer messageSerializer;
     @Mock
     private ServiceBusManagementNode managementNode;
-    @Captor
-    private ArgumentCaptor<String> linkNameCaptor;
 
 
     @BeforeAll
@@ -153,25 +144,12 @@ class ServiceBusSessionReceiverAsyncClientTest {
     }
 
     @Test
-    void receiveNull() {
-        // Arrange
-        ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, 5, MAX_LOCK_RENEWAL);
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
-            tracerProvider, messageSerializer, receiverOptions);
-
-        // Act & Assert
-        StepVerifier.create(sessionManager.receive())
-            .expectError(NullPointerException.class)
-            .verify();
-    }
-
-    @Test
     void acceptSession() {
         // Arrange
         ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, null, MAX_LOCK_RENEWAL);
-        final String sessionId = "session-1";
         final String lockToken = "a-lock-token";
         final String linkName = "my-link-name";
+        final String sessionId = linkName;
         final OffsetDateTime sessionLockedUntil = OffsetDateTime.now().plus(Duration.ofSeconds(30));
 
         final Message message = mock(Message.class);
@@ -190,7 +168,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
         when(amqpReceiveLink.updateDisposition(lockToken, Accepted.getInstance())).thenReturn(Mono.empty());
 
         when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ReceiveMode.class), isNull(),
-            any(MessagingEntityType.class), isNull())).thenReturn(Mono.just(amqpReceiveLink));
+            any(MessagingEntityType.class), eq(sessionId))).thenReturn(Mono.just(amqpReceiveLink));
 
         ServiceBusSessionReceiverAsyncClient client = new ServiceBusSessionReceiverAsyncClient(
             NAMESPACE, ENTITY_PATH,
@@ -198,21 +176,24 @@ class ServiceBusSessionReceiverAsyncClientTest {
             connectionProcessor, tracerProvider,
             messageSerializer, () -> { }
         );
-        StepVerifier.create(client.acceptSession(sessionId))
-            .assertNext(x ->
-                assertNotNull(x))
+
+        // Act & Assert
+        StepVerifier.create(client.acceptSession(sessionId).flatMapMany(ServiceBusReceiverAsyncClient::receiveMessages))
+            .then(() -> {
+                for (int i = 0; i < numberOfMessages; i++) {
+                    messageSink.next(message);
+                }
+            })
+            .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
+            .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
+            .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
+            .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
+            .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
             .verifyComplete();
-//        StepVerifier.create(client.acceptSession(sessionId).flatMapMany(ServiceBusReceiverAsyncClient::receiveMessages))
-//            .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
-//            .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
-//            .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
-//            .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
-//            .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
-//            .verifyComplete();
     }
 
     @Test
-    void multipleSessions() {
+    void acceptNextSession() {
         // Arrange
         final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, 1, MAX_LOCK_RENEWAL);
         sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
@@ -278,121 +259,55 @@ class ServiceBusSessionReceiverAsyncClientTest {
         when(managementNode.renewSessionLock(sessionId, linkName)).thenReturn(Mono.fromCallable(onRenewal));
         when(managementNode.renewSessionLock(sessionId2, linkName2)).thenReturn(Mono.fromCallable(onRenewal));
 
+        ServiceBusSessionReceiverAsyncClient client = new ServiceBusSessionReceiverAsyncClient(
+            NAMESPACE, ENTITY_PATH,
+            MessagingEntityType.QUEUE, receiverOptions,
+            connectionProcessor, tracerProvider,
+            messageSerializer, () -> { }
+        );
+
         // Act & Assert
-        StepVerifier.create(sessionManager.receive())
+        StepVerifier.create(client.acceptNextSession().flatMapMany(ServiceBusReceiverAsyncClient::receiveMessages))
             .then(() -> {
                 for (int i = 0; i < numberOfMessages; i++) {
                     messageSink.next(message);
                 }
             })
             .assertNext(context -> {
-                System.out.println("1");
                 assertMessageEquals(sessionId, receivedMessage, context);
             })
             .assertNext(context -> {
-                System.out.println("2");
                 assertMessageEquals(sessionId, receivedMessage, context);
             })
             .assertNext(context -> {
-                System.out.println("3");
                 assertMessageEquals(sessionId, receivedMessage, context);
             })
             .assertNext(context -> {
-                System.out.println("4");
                 assertMessageEquals(sessionId, receivedMessage, context);
             })
             .assertNext(context -> {
-                System.out.println("5");
                 assertMessageEquals(sessionId, receivedMessage, context);
             })
-            .thenAwait(Duration.ofSeconds(13))
+            .thenAwait(Duration.ofSeconds(1)).thenCancel().verify();
+
+        StepVerifier.create(client.acceptNextSession().flatMapMany(ServiceBusReceiverAsyncClient::receiveMessages))
             .then(() -> {
                 for (int i = 0; i < 3; i++) {
                     messagePublisher2.next(message2);
                 }
             })
             .assertNext(context -> {
-                System.out.println("6");
                 assertMessageEquals(sessionId2, receivedMessage2, context);
             })
             .assertNext(context -> {
-                System.out.println("7");
                 assertMessageEquals(sessionId2, receivedMessage2, context);
             })
             .assertNext(context -> {
-                System.out.println("8");
                 assertMessageEquals(sessionId2, receivedMessage2, context);
             })
-            .thenAwait(Duration.ofSeconds(15))
+            .thenAwait(Duration.ofSeconds(1))
             .thenCancel()
             .verify();
-    }
-
-
-    /**
-     * Verify that when we can call multiple receive, it'll create a new link.
-     */
-    @Test
-    void multipleReceiveUnnamedSession() {
-        // Arrange
-        final int expectedLinksCreated = 2;
-        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, 1, Duration.ZERO);
-
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
-            tracerProvider, messageSerializer, receiverOptions);
-
-        final String sessionId = "session-1";
-        final String linkName = "my-link-name";
-
-        when(amqpReceiveLink.getLinkName()).thenReturn(linkName);
-        when(amqpReceiveLink.getSessionId()).thenReturn(Mono.just(sessionId));
-
-        // Session 2's
-        final ServiceBusReceiveLink amqpReceiveLink2 = mock(ServiceBusReceiveLink.class);
-        final String sessionId2 = "session-2";
-        final String linkName2 = "my-link-name-2";
-        final TestPublisher<Message> messagePublisher2 = TestPublisher.create();
-        final Flux<Message> messageFlux2 = messagePublisher2.flux();
-
-        when(amqpReceiveLink2.receive()).thenReturn(messageFlux2);
-        when(amqpReceiveLink2.getHostname()).thenReturn(NAMESPACE);
-        when(amqpReceiveLink2.getEntityPath()).thenReturn(ENTITY_PATH);
-        when(amqpReceiveLink2.getEndpointStates()).thenReturn(endpointProcessor);
-        when(amqpReceiveLink2.getLinkName()).thenReturn(linkName2);
-        when(amqpReceiveLink2.getSessionId()).thenReturn(Mono.just(sessionId2));
-
-        final AtomicInteger count = new AtomicInteger();
-        when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ReceiveMode.class), isNull(),
-            any(MessagingEntityType.class), isNull())).thenAnswer(invocation -> {
-                final int number = count.getAndIncrement();
-                switch (number) {
-                    case 0:
-                        return Mono.just(amqpReceiveLink);
-                    case 1:
-                        return Mono.just(amqpReceiveLink2);
-                    default:
-                        return Mono.empty();
-                }
-            });
-
-        // Act & Assert
-        StepVerifier.create(sessionManager.receive())
-            .thenAwait(Duration.ofSeconds(5))
-            .thenCancel()
-            .verify();
-
-        StepVerifier.create(sessionManager.receive())
-            .thenAwait(Duration.ofSeconds(5))
-            .thenCancel()
-            .verify();
-
-        verify(connection, times(2)).createReceiveLink(linkNameCaptor.capture(), eq(ENTITY_PATH), any(ReceiveMode.class), isNull(),
-            any(MessagingEntityType.class), isNull());
-
-        final List<String> actualLinksCreated = linkNameCaptor.getAllValues();
-        assertNotNull(actualLinksCreated);
-        assertEquals(expectedLinksCreated, actualLinksCreated.size());
-        assertFalse(actualLinksCreated.get(0).equalsIgnoreCase(actualLinksCreated.get(1)));
     }
 
     private static void assertMessageEquals(String sessionId, ServiceBusReceivedMessage expected,

@@ -93,6 +93,7 @@ public class ServiceBusSessionReceiverClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code sessionId} is empty.
      * @throws UnsupportedOperationException if the queue or topic subscription is not session-enabled.
      * @throws com.azure.core.amqp.exception.AmqpException if the session has been locked by another session receiver.
+     * @throws IllegalStateException if the operation times out.
      */
     public ServiceBusReceiverClient acceptSession(String sessionId, Duration timeout) {
         Objects.requireNonNull(timeout, "'timeout' can not be null.");
