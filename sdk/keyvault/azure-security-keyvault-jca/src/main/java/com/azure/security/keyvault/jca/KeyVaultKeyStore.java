@@ -258,10 +258,12 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     private String[] getFilenames(String path) throws IOException {
         List<String> filenames = new ArrayList<>();
         try (InputStream in = getClass().getResourceAsStream(path)) {
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(in, "UTF-8"))) {
-                String resource;
-                while ((resource = br.readLine()) != null) {
-                    filenames.add(resource);
+            if (in != null) {
+                try (BufferedReader br = new BufferedReader(new InputStreamReader(in, "UTF-8"))) {
+                    String resource;
+                    while ((resource = br.readLine()) != null) {
+                        filenames.add(resource);
+                    }
                 }
             }
         }
