@@ -34,6 +34,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import static com.azure.spring.autoconfigure.aad.Scopes.OPENID_PERMISSIONS;
+import static com.azure.spring.autoconfigure.aad.Scopes.MICROSOFT_GRAPH_URI;
 
 public class AccessTokenManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(AccessTokenManager.class);
@@ -57,8 +58,8 @@ public class AccessTokenManager {
      * @return AccessToken
      * @throws ServiceUnavailableException If fail to acquire the token.
      */
-    public AccessToken getAccessTokenForMicrosoftGraph(Set<String> permissions) throws ServiceUnavailableException {
-        return getAccessToken(aadAuthenticationProperties.getGraphApiUri(), permissions);
+    public AccessToken getAccessToken(Set<String> permissions) throws ServiceUnavailableException {
+        return getAccessToken(MICROSOFT_GRAPH_URI, permissions);
     }
 
     /**
@@ -83,7 +84,8 @@ public class AccessTokenManager {
         } else {
             // TODO: incremental consent.
             String idToken = getIdTokenFromSecurityContext();
-            return getAccessToken(idToken, applicationIdUri, uniformedPermissions);
+            return getAccessToken(idToken, aadAuthenticationProperties.getTenantId(), applicationIdUri,
+                uniformedPermissions);
         }
     }
 
@@ -98,23 +100,10 @@ public class AccessTokenManager {
     }
 
     /**
-     * Get AccessToken token for Microsoft Graph with expected permissions.
-     *
-     * @param idToken The token used to perform an get token request.
-     * @param permissions The permissions of resources to be authorized with, need to be formatted as lowercase.
-     * @return The access token for Microsoft Graph service.
-     * @throws ServiceUnavailableException If fail to acquire the token.
-     * @throws MsalServiceException If {@link MsalServiceException} has occurred.
-     */
-    public AccessToken getAccessTokenForMicrosoftGraph(String idToken,
-                                                       Set<String> permissions) throws ServiceUnavailableException {
-        return getAccessToken(idToken, aadAuthenticationProperties.getGraphApiUri(), permissions);
-    }
-
-    /**
      * Get AccessToken for a resource server.
      *
      * @param idToken The token used to perform an get token request.
+     * @param tenantId The tenantId of the current application.
      * @param applicationIdUri The Application ID URI of resource server, e.g., https://graph.microsoft.com for
      * Microsoft Graph API.
      * @param permissions The permissions of resources to be authorized with, need to be formatted as lowercase.
@@ -123,9 +112,11 @@ public class AccessTokenManager {
      * @throws MsalServiceException If {@link MsalServiceException} has occurred.
      */
     public AccessToken getAccessToken(String idToken,
+                                      String tenantId,
                                       String applicationIdUri,
                                       Set<String> permissions) throws ServiceUnavailableException {
-        IAuthenticationResult result = getIAuthenticationResult(idToken, applicationIdUri, permissions);
+        IAuthenticationResult result = getIAuthenticationResult(idToken, tenantId,
+            applicationIdUri, permissions);
         Set<String> uniformedPermissions =
             Arrays.stream(result.scopes().toLowerCase(Locale.ENGLISH).split(" "))
                   .map(s -> s.startsWith(applicationIdUri) ? s.split(applicationIdUri)[1] : s)
@@ -136,7 +127,7 @@ public class AccessTokenManager {
             result.expiresOnDate(),
             result.accessToken()
         );
-        accessToken.getAccessTokenWithRefreshAutomatically();
+        saveAccessTokenToSession(accessToken);
         return accessToken;
     }
 
@@ -151,9 +142,10 @@ public class AccessTokenManager {
      * @throws ServiceUnavailableException If fail to acquire the token.
      * @throws MsalServiceException If {@link MsalServiceException} has occurred.
      */
-    private IAuthenticationResult getIAuthenticationResult(String idToken,
-                                                           String applicationIdUri,
-                                                           Set<String> permissions) throws ServiceUnavailableException {
+    public IAuthenticationResult getIAuthenticationResult(String idToken,
+                                                          String tenantId,
+                                                          String applicationIdUri,
+                                                          Set<String> permissions) throws ServiceUnavailableException {
         final IClientCredential clientCredential =
             ClientCredentialFactory.createFromSecret(aadAuthenticationProperties.getClientSecret());
         final UserAssertion assertion = new UserAssertion(idToken);
@@ -161,7 +153,7 @@ public class AccessTokenManager {
         try {
             final ConfidentialClientApplication application = ConfidentialClientApplication
                 .builder(aadAuthenticationProperties.getClientId(), clientCredential)
-                .authority(serviceEndpoints.getAadSigninUri() + aadAuthenticationProperties.getTenantId() + "/")
+                .authority(serviceEndpoints.getAadSigninUri() + tenantId + "/")
                 .correlationId(getCorrelationId())
                 .build();
             Set<String> scopes = toScopeSet(applicationIdUri, permissions);
@@ -235,12 +227,13 @@ public class AccessTokenManager {
 
         public boolean needRefresh() {
             Date currentTime = new Date();
-            return expiredTime.getTime() - currentTime.getTime() < ACCESS_TOKEN_MIN_LIVE_TIME;
+            return expiredTime.getTime() - currentTime.getTime() > ACCESS_TOKEN_MIN_LIVE_TIME;
         }
 
         public void refresh() throws ServiceUnavailableException {
             String idToken = getIdTokenFromSecurityContext();
-            IAuthenticationResult result = getIAuthenticationResult(idToken, applicationIdUri, permissions);
+            IAuthenticationResult result = getIAuthenticationResult(idToken,
+                aadAuthenticationProperties.getTenantId(), applicationIdUri, permissions);
             accessToken = result.accessToken();
             expiredTime = result.expiresOnDate();
         }
@@ -250,6 +243,10 @@ public class AccessTokenManager {
                 refresh();
                 saveAccessTokenToSession(this);
             }
+            return accessToken;
+        }
+
+        public String getAccessToken() {
             return accessToken;
         }
     }

@@ -33,9 +33,12 @@ public class AADOAuth2LoginAcquireTokenHomeControllerSample {
             serviceEndpointsProperties.getServiceEndpoints(aadAuthenticationProperties.getEnvironment()),
             aadAuthenticationProperties);
 
-        AccessTokenManager.AccessToken accessToken = accessTokenManager.getAccessToken(
+        String accessToken1 = accessTokenManager.getAccessToken(
             "https://graph.microsoft.com/",
-            Collections.singleton("user.read"));
+            Collections.singleton("user.read")).getAccessTokenWithRefreshAutomatically();
+
+        String accessToken2 = accessTokenManager.getAccessToken(
+            Collections.singleton("openid")).getAccessTokenWithRefreshAutomatically();
 
         final OAuth2AuthorizedClient authorizedClient =
             this.authorizedClientService.loadAuthorizedClient(
