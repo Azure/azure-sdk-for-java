@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.azure.core.experimental.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -215,9 +216,18 @@ public class ServiceBusMessageTest {
     void canCreateWithBytePayload() {
         // Act
         final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage(PAYLOAD_BYTES);
+        final ServiceBusMessage serviceBusMessageData2 = new ServiceBusMessage(BinaryData.fromBytes(PAYLOAD_BYTES));
+        final ServiceBusMessage serviceBusMessageData3 = new ServiceBusMessage(new String(PAYLOAD_BYTES));
 
         // Assert
         Assertions.assertNotNull(serviceBusMessageData.getBody());
         Assertions.assertEquals(PAYLOAD, new String(serviceBusMessageData.getBody(), UTF_8));
+
+        Assertions.assertNotNull(serviceBusMessageData2.getBody());
+        Assertions.assertEquals(PAYLOAD, new String(serviceBusMessageData2.getBodyAsBinaryData().toBytes(), UTF_8));
+
+        Assertions.assertNotNull(serviceBusMessageData2.getBody());
+        Assertions.assertEquals(new String(PAYLOAD_BYTES), new String(serviceBusMessageData3.getBodyAsBinaryData().toString()));
+
     }
 }

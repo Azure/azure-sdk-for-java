@@ -82,6 +82,23 @@ public class ServiceBusMessage {
     }
 
     /**
+     * Creates a {@link ServiceBusMessage} containing the {@code body}.The {@link BinaryData} provides various
+     * convenience API representing byte array. It also provides a way to serialize {@link Object} into
+     * {@link BinaryData}.
+     *
+     * @param body The data to set for this {@link ServiceBusMessage}.
+     *
+     * @throws NullPointerException if {@code body} is {@code null}.
+     *
+     * @see BinaryData
+     */
+    public ServiceBusMessage(BinaryData body) {
+        Objects.requireNonNull(body, "'body' cannot be null.");
+        this.context = Context.NONE;
+        this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(body)));
+    }
+
+    /**
      * Creates a {@link ServiceBusMessage} using properties from {@code receivedMessage}. This is normally used when a
      * {@link ServiceBusReceivedMessage} needs to be sent to another entity.
      *
