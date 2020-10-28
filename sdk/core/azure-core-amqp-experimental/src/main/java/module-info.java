@@ -3,4 +3,6 @@
 
 module com.azure.core.amqp.experimental {
     requires transitive com.azure.core.amqp;
+
+    exports com.azure.core.amqp.experimental;
 }
