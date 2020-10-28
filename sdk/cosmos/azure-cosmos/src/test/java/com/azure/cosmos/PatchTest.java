@@ -9,7 +9,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.testng.Assert;
+import org.assertj.core.api.Assertions;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -52,12 +52,14 @@ public class PatchTest extends TestSuiteBase {
         int originalTaskNum = testItem.taskNum;
         int newTaskNum = originalTaskNum + 1;
 
-        Assert.assertNull(testItem.children[1].status);
+        assertThat(testItem.children[1].status).isNull();
 
-        CosmosPatch cosmosPatch = CosmosPatch.createCosmosPatch();
+        CosmosPatch cosmosPatch = CosmosPatch.create();
         cosmosPatch.add("/children/1/CamelCase", "patched");
         cosmosPatch.remove("/description");
         cosmosPatch.replace("/taskNum", newTaskNum);
+        cosmosPatch.set("/valid", false);
+        cosmosPatch.increment("/cost", -12.5);
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         CosmosItemResponse<ToDoActivity> response = this.container.patchItem(
@@ -70,7 +72,16 @@ public class PatchTest extends TestSuiteBase {
         assertThat(response.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
 
         ToDoActivity patchedItem = response.getItem();
-        Assert.assertNotNull(patchedItem);
+        assertThat(patchedItem).isNotNull();
+
+        assertThat(patchedItem.children[1].camelCase).isEqualTo("patched");
+        assertThat(patchedItem.description).isNull();
+        assertThat(patchedItem.taskNum).isEqualTo(newTaskNum);
+        assertThat(patchedItem.valid).isEqualTo(false);
+
+        // As cost is decreased
+        assertThat(patchedItem.cost).isEqualTo(testItem.cost - 12.5);
+
         // read resource to validate the patch operation
         response = this.container.readItem(
             testItem.id,
@@ -78,11 +89,6 @@ public class PatchTest extends TestSuiteBase {
             options, ToDoActivity.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
-        assertThat(response.getItem()).isNotNull();
-        assertThat(response.getItem().children[1].camelCase).isEqualTo("patched");
-        assertThat(response.getItem().description).isNull();
-        assertThat(response.getItem().taskNum).isEqualTo(newTaskNum);
-
         assertThat(response.getItem()).isEqualTo(patchedItem);
     }
 
@@ -90,7 +96,7 @@ public class PatchTest extends TestSuiteBase {
     public void itemPatchFailureTest() {
         // Create an item
         ToDoActivity testItem = ToDoActivity.createRandomItem(this.container);
-        CosmosPatch cosmosPatch = CosmosPatch.createCosmosPatch();
+        CosmosPatch cosmosPatch = CosmosPatch.create();
         cosmosPatch.add("/nonExistentParent/child", "bar");
         cosmosPatch.remove("/cost");
 
@@ -101,7 +107,7 @@ public class PatchTest extends TestSuiteBase {
                 new PartitionKey(testItem.status),
                 cosmosPatch,
                 ToDoActivity.class);
-            Assert.fail("Update operation should fail if the item doesn't exist.");
+            Assertions.fail("Update operation should fail if the item doesn't exist.");
         } catch (CosmosException ex) {
             assertThat(ex.getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
             assertThat(ex.getMessage()).contains("Resource Not Found");
@@ -115,7 +121,7 @@ public class PatchTest extends TestSuiteBase {
                 cosmosPatch,
                 ToDoActivity.class);
 
-            Assert.fail("Update operation should fail for malformed PatchSpecification.");
+            Assertions.fail("Update operation should fail for malformed PatchSpecification.");
         } catch (CosmosException ex) {
             assertThat(ex.getStatusCode()).isEqualTo(HttpResponseStatus.BAD_REQUEST.code());
             assertThat(ex.getMessage())
@@ -134,7 +140,7 @@ public class PatchTest extends TestSuiteBase {
                 requestOptions,
                 ToDoActivity.class);
 
-            Assert.fail("Update operation should fail in case of pre-condition failure.");
+            Assertions.fail("Update operation should fail in case of pre-condition failure.");
         } catch (CosmosException ex) {
             assertThat(ex.getStatusCode()).isEqualTo(HttpResponseStatus.PRECONDITION_FAILED.code());
             assertThat(ex.getMessage()).contains("One of the specified pre-condition is not met");
@@ -206,7 +212,7 @@ public class PatchTest extends TestSuiteBase {
 
             CosmosItemResponse<ToDoActivity> response = container.createItem(toDoActivity, new PartitionKey(toDoActivity.status), null);
 
-            Assert.assertEquals(response.getStatusCode(), HttpResponseStatus.CREATED.code());
+            assertThat(response.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
             return toDoActivity;
         }
 

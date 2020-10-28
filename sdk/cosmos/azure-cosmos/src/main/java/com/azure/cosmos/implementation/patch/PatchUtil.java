@@ -12,18 +12,18 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.util.List;
 
-public class PatchUtil {
+public final class PatchUtil {
 
     public static <T> JsonSerializable serializableBatchPatchOperation(T item) {
         if (item instanceof CosmosPatch) {
-            return patchOperationsToJsonSerializable((CosmosPatch) item, null);
+            return cosmosPatchToJsonSerializable((CosmosPatch) item);
         } else {
             throw new UnsupportedOperationException("Unknown Patch operations.");
         }
     }
 
-    public static byte[] serializeCosmosPatchToByteArray(CosmosPatch cosmosPatch, RequestOptions options) {
-        JsonSerializable jsonSerializable =  patchOperationsToJsonSerializable(cosmosPatch, options);
+    public static byte[] serializeCosmosPatchToByteArray(CosmosPatch cosmosPatch) {
+        JsonSerializable jsonSerializable =  cosmosPatchToJsonSerializable(cosmosPatch);
 
         byte[] serializedBody;
         try {
@@ -36,15 +36,15 @@ public class PatchUtil {
         return serializedBody;
     }
 
-    private static JsonSerializable patchOperationsToJsonSerializable(CosmosPatch cosmosPatch, RequestOptions options) {
+    private static JsonSerializable cosmosPatchToJsonSerializable(CosmosPatch cosmosPatch) {
         JsonSerializable jsonSerializable = new JsonSerializable();
-        ArrayNode operations =  Utils.getSimpleObjectMapper().createArrayNode();
+        ArrayNode operations = Utils.getSimpleObjectMapper().createArrayNode();
         List<PatchOperation> patchOperations = BridgeInternal.getPatchOperationsFromCosmosPatch(cosmosPatch);
 
         for (PatchOperation patchOperation : patchOperations) {
 
             JsonSerializable operationJsonSerializable = new JsonSerializable();
-            operationJsonSerializable.set(PatchConstants.PropertyNames_OperationType, patchOperation.getOperationType().getStringValue());
+            operationJsonSerializable.set(PatchConstants.PropertyNames_OperationType, patchOperation.getOperationType().getOperationValue());
 
             if (patchOperation instanceof PatchOperationCore) {
                 operationJsonSerializable.set(PatchConstants.PropertyNames_Path, ((PatchOperationCore)patchOperation).getPath());
@@ -57,6 +57,7 @@ public class PatchUtil {
         }
 
         jsonSerializable.set("operations", operations);
+
         return jsonSerializable;
     }
 }

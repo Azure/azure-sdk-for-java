@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -18,12 +21,12 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Contains a list of Patch operations to be applied on an item. It is applied in an atomic manner and the operations
  * grammar follows above RFC.
  */
-@Beta(Beta.SinceVersion.V4_7_0)
-public class CosmosPatch {
+@Beta(Beta.SinceVersion.V4_8_0)
+public final class CosmosPatch {
 
     private final List<PatchOperation> patchOperations;
 
-    CosmosPatch() {
+    private CosmosPatch() {
         this.patchOperations = new ArrayList<>();
     }
 
@@ -32,7 +35,7 @@ public class CosmosPatch {
      *
      * @return A new instance of {@link CosmosPatch}.
      */
-    public static CosmosPatch createCosmosPatch() {
+    public static CosmosPatch create() {
         return new CosmosPatch();
     }
 
@@ -41,6 +44,13 @@ public class CosmosPatch {
      *  1. Target location specifies an array index, a new value is inserted into the array at the specified index.
      *  2. Target location specifies an object member that does not already exist, a new member is added to the object.
      *  3. Target location specifies an object member that does exist, that member's value is replaced.
+     *
+     * @param <T> The type of item to be added.
+     *
+     * @param path the operation path.
+     * @param value the value which will be added.
+     *
+     * @return same instance of {@link CosmosPatch}
      */
     public <T> CosmosPatch add(String path, T value) {
 
@@ -58,6 +68,10 @@ public class CosmosPatch {
 
     /**
      * This removes the value at the target location.
+     *
+     * @param path the operation path.
+     *
+     * @return same instance of {@link CosmosPatch}
      */
     public CosmosPatch remove(String path) {
 
@@ -74,8 +88,18 @@ public class CosmosPatch {
 
     /**
      * This replaces the value at the target location with a new value.
+     *
+     * @param <T> The type of item to be replaced.
+     *
+     * @param path the operation path.
+     * @param value the value which will be replaced.
+     *
+     * @return same instance of {@link CosmosPatch}
      */
     public <T> CosmosPatch replace(String path, T value) {
+
+        checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
+
         this.patchOperations.add(
             new PatchOperationCore<>(
                 PatchOperationType.REPLACE,
@@ -87,8 +111,19 @@ public class CosmosPatch {
 
     /**
      * This sets the value at the target location with a new value.
+     *
+     * @param <T> The type of item to be set.
+     *
+     * @param path the operation path.
+     * @param value the value which will be set.
+     *
+     * @return same instance of {@link CosmosPatch}
      */
     public <T> CosmosPatch set(String path, T value) {
+
+        checkNotNull(value, "expected non-null value");
+        checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
+
         this.patchOperations.add(
             new PatchOperationCore<>(
                 PatchOperationType.SET,
@@ -100,8 +135,16 @@ public class CosmosPatch {
 
     /**
      * This increment the value at the target location.
+     *
+     * @param path the operation path.
+     * @param value the value which will be incremented.
+     *
+     * @return same instance of {@link CosmosPatch}
      */
     public CosmosPatch increment(String path, long value) {
+
+        checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
+
         this.patchOperations.add(
             new PatchOperationCore<>(
                 PatchOperationType.INCREMENT,
@@ -113,8 +156,16 @@ public class CosmosPatch {
 
     /**
      * This increment the value at the target location.
+     *
+     * @param path the operation path.
+     * @param value the value which will be incremented.
+     *
+     * @return same instance of {@link CosmosPatch}
      */
     public CosmosPatch increment(String path, double value) {
+
+        checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
+
         this.patchOperations.add(
             new PatchOperationCore<>(
                 PatchOperationType.INCREMENT,

@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.patch;
 
-class PatchConstants {
+final class PatchConstants {
 
     // Properties
     static final String PropertyNames_OperationType = "op";

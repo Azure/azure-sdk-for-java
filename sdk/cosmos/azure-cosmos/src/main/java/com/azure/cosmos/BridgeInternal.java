@@ -666,7 +666,6 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static List<PatchOperation> getPatchOperationsFromCosmosPatch(CosmosPatch cosmosPatch) {
-
         return cosmosPatch.getPatchOperations();
     }
 }

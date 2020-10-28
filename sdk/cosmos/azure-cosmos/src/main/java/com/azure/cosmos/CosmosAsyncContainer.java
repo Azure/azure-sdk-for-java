@@ -16,7 +16,6 @@ import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchExecutor;
-import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.models.CosmosConflictProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -771,7 +770,7 @@ public class CosmosAsyncContainer {
      * Run patch operations on an Item.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single Cosmos item response with the replaced item.
+     * The {@link Mono} upon successful completion will contain a single Cosmos item response with the patched item.
      *
      * @param <T> the type parameter.
      * @param itemId the item id.
@@ -779,13 +778,15 @@ public class CosmosAsyncContainer {
      * @param cosmosPatch Represents a container having list of operations to be sequentially applied to the referred Cosmos item.
      * @param itemType the item type.
      *
-     * @return an {@link Mono} containing the Cosmos item resource response with the replaced item or an error.
+     * @return an {@link Mono} containing the Cosmos item resource response with the patched item or an error.
      */
+    @Beta(Beta.SinceVersion.V4_8_0)
     public <T> Mono<CosmosItemResponse<T>> patchItem(
         String itemId,
         PartitionKey partitionKey,
         CosmosPatch cosmosPatch,
         Class<T> itemType) {
+
         return patchItem(itemId, partitionKey, cosmosPatch, new CosmosItemRequestOptions(), itemType);
     }
 
@@ -793,7 +794,7 @@ public class CosmosAsyncContainer {
      * Run patch operations on an Item.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single Cosmos item response with the replaced item.
+     * The {@link Mono} upon successful completion will contain a single Cosmos item response with the patched item.
      *
      * @param <T> the type parameter.
      * @param itemId the item id.
@@ -802,8 +803,9 @@ public class CosmosAsyncContainer {
      * @param options the request options.
      * @param itemType the item type.
      *
-     * @return an {@link Mono} containing the Cosmos item resource response with the replaced item or an error.
+     * @return an {@link Mono} containing the Cosmos item resource response with the patched item or an error.
      */
+    @Beta(Beta.SinceVersion.V4_8_0)
     public <T> Mono<CosmosItemResponse<T>> patchItem(
         String itemId,
         PartitionKey partitionKey,
@@ -811,7 +813,9 @@ public class CosmosAsyncContainer {
         CosmosItemRequestOptions options,
         Class<T> itemType) {
 
-        checkNotNull(partitionKey, "expected non-null partitionKey for patch operations");
+        checkNotNull(itemId, "expected non-null itemId");
+        checkNotNull(partitionKey, "expected non-null partitionKey for cosmosPatch");
+        checkNotNull(cosmosPatch, "expected non-null cosmosPatch");
 
         if (options == null) {
             options = new CosmosItemRequestOptions();

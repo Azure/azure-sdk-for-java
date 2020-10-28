@@ -11,13 +11,13 @@ public enum PatchOperationType {
     SET(PatchConstants.OperationTypeNames_Set),
     INCREMENT(PatchConstants.OperationTypeNames_Increment);
 
-    PatchOperationType(String stringValue) {
-        this.stringValue = stringValue;
+    PatchOperationType(String operationValue) {
+        this.operationValue = operationValue;
     }
 
-    public String getStringValue() {
-        return stringValue;
+    String getOperationValue() {
+        return operationValue;
     }
 
-    private final String stringValue;
+    private final String operationValue;
 }

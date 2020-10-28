@@ -10,6 +10,7 @@ import org.testng.annotations.Test;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,7 +23,7 @@ public class PatchUnitTest {
     public void throwsOnNullArguement() {
 
         try {
-            CosmosPatch.createCosmosPatch().add(null, "1");
+            CosmosPatch.create().add(null, "1");
             Assertions.fail("Should throw IllegalArgumentException");
 
         } catch(IllegalArgumentException ex) {
@@ -30,7 +31,7 @@ public class PatchUnitTest {
         }
 
         try {
-            CosmosPatch.createCosmosPatch().remove(null);
+            CosmosPatch.create().remove(null);
             Assertions.fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException ex) {
             assertThat(ex.getMessage()).contains("path empty");
@@ -39,27 +40,35 @@ public class PatchUnitTest {
 
     @Test(groups = { "unit" })
     public void constructPatchOperationTest() {
-        CosmosPatch cosmosPatch = CosmosPatch.createCosmosPatch().add(path, "string");
+        CosmosPatch cosmosPatch = CosmosPatch.create().add(path, "string");
         PatchUnitTest.validateOperations(cosmosPatch, PatchOperationType.ADD, "string");
 
         Instant current = Instant.now();
-        cosmosPatch = CosmosPatch.createCosmosPatch().add(path, current);
+        cosmosPatch = CosmosPatch.create().add(path, current);
         PatchUnitTest.validateOperations(cosmosPatch, PatchOperationType.ADD, current);
 
         Object object = new  Object();
-        cosmosPatch = CosmosPatch.createCosmosPatch().add(path, object);
+        cosmosPatch = CosmosPatch.create().add(path, object);
         PatchUnitTest.validateOperations(cosmosPatch, PatchOperationType.ADD, object);
 
-        cosmosPatch = CosmosPatch.createCosmosPatch().remove(path);
+        cosmosPatch = CosmosPatch.create().remove(path);
         PatchUnitTest.validateOperations(cosmosPatch, PatchOperationType.REMOVE, "value not required");
 
         int[] arrayObject = { 1, 2, 3 };
-        cosmosPatch = CosmosPatch.createCosmosPatch().replace(path, arrayObject);
+        cosmosPatch = CosmosPatch.create().replace(path, arrayObject);
         PatchUnitTest.validateOperations(cosmosPatch, PatchOperationType.REPLACE, arrayObject);
 
         UUID uuid = UUID.randomUUID();
-        cosmosPatch = CosmosPatch.createCosmosPatch().set(path, uuid);
+        cosmosPatch = CosmosPatch.create().set(path, uuid);
         PatchUnitTest.validateOperations(cosmosPatch, PatchOperationType.SET, uuid);
+
+        long incr = new Random().nextLong();
+        cosmosPatch = CosmosPatch.create().increment(path, incr);
+        PatchUnitTest.validateOperations(cosmosPatch, PatchOperationType.INCREMENT, incr);
+
+        double value = new Random().nextDouble();
+        cosmosPatch = CosmosPatch.create().increment(path, value);
+        PatchUnitTest.validateOperations(cosmosPatch, PatchOperationType.INCREMENT, value);
     }
 
     private static <T> void validateOperations(CosmosPatch cosmosPatch, PatchOperationType operationType, T value) {

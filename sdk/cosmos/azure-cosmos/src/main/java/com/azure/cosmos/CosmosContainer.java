@@ -3,7 +3,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -24,6 +23,8 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+
+import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
 
 /**
  * Provides synchronous methods for reading, deleting, and replacing existing Containers
@@ -446,11 +447,12 @@ public class CosmosContainer {
      * @param <T> the type parameter.
      * @param itemId the item id.
      * @param partitionKey the partition key.
-     * @param cosmosPatch patchOperations.
+     * @param cosmosPatch Represents a container having list of operations to be sequentially applied to the referred Cosmos item.
      * @param itemType the item type.
      *
-     * @return the Cosmos item response.
+     * @return the Cosmos item resource response with the patched item or an exception.
      */
+    @Beta(Beta.SinceVersion.V4_8_0)
     public <T> CosmosItemResponse<T> patchItem(
         String itemId,
         PartitionKey partitionKey,
@@ -466,12 +468,13 @@ public class CosmosContainer {
      * @param <T> the type parameter.
      * @param itemId the item id.
      * @param partitionKey the partition key.
-     * @param cosmosPatch patchOperations.
+     * @param cosmosPatch Represents a container having list of operations to be sequentially applied to the referred Cosmos item.
      * @param options the request options.
      * @param itemType the item type.
      *
-     * @return the Cosmos item response.
+     * @return the Cosmos item resource response with the patched item or an exception.
      */
+    @Beta(Beta.SinceVersion.V4_8_0)
     public <T> CosmosItemResponse<T> patchItem(
         String itemId,
         PartitionKey partitionKey,

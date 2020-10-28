@@ -5,7 +5,6 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
-import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.Beta;
 
@@ -324,13 +323,14 @@ public final class TransactionalBatch {
     }
 
     /**
-     * Adds an operation to patch an item into the batch.
+     * Adds a patch operations for an item into the batch.
      *
      * @param id  the item id.
      * @param cosmosPatch Represents a container having list of operations to be sequentially applied to the referred Cosmos item.
      *
      * @return The added operation.
      */
+    @Beta(Beta.SinceVersion.V4_8_0)
     public CosmosItemOperation patchItemOperation(String id, CosmosPatch cosmosPatch) {
         checkNotNull(id, "expected non-null id");
         checkNotNull(cosmosPatch, "expected non-null cosmosPatch");
@@ -339,7 +339,7 @@ public final class TransactionalBatch {
     }
 
     /**
-     * Adds an operation to patch an item into the batch.
+     * Adds a patch operations for an item into the batch.
      *
      * @param id  the item id.
      * @param cosmosPatch Represents a container having list of operations to be sequentially applied to the referred Cosmos item.
@@ -347,6 +347,7 @@ public final class TransactionalBatch {
      *
      * @return The added operation.
      */
+    @Beta(Beta.SinceVersion.V4_8_0)
     public CosmosItemOperation patchItemOperation(
         String id,
         CosmosPatch cosmosPatch,

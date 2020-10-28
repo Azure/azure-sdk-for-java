@@ -8,12 +8,12 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
 /**
- * @param <T> The type of item to be created.
+ * @param <T> The type of value for this patch operation.
  */
 public final class PatchOperationCore<T> extends PatchOperation {
 
-    private String path;
-    private T resource;
+    private final String path;
+    private final T resource;
 
     /**
      * Initializes a new instance of the {@link PatchOperationCore} class.
