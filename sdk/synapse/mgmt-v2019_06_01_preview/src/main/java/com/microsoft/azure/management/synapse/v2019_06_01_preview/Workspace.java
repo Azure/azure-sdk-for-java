@@ -58,6 +58,11 @@ public interface Workspace extends HasInner<WorkspaceInner>, Resource, Groupable
     String managedVirtualNetwork();
 
     /**
+     * @return the managedVirtualNetworkSettings value.
+     */
+    ManagedVirtualNetworkSettings managedVirtualNetworkSettings();
+
+    /**
      * @return the privateEndpointConnections value.
      */
     List<PrivateEndpointConnection> privateEndpointConnections();
@@ -165,6 +170,18 @@ public interface Workspace extends HasInner<WorkspaceInner>, Resource, Groupable
         }
 
         /**
+         * The stage of the workspace definition allowing to specify ManagedVirtualNetworkSettings.
+         */
+        interface WithManagedVirtualNetworkSettings {
+            /**
+             * Specifies managedVirtualNetworkSettings.
+             * @param managedVirtualNetworkSettings Managed Virtual Network Settings
+             * @return the next definition stage
+             */
+            WithCreate withManagedVirtualNetworkSettings(ManagedVirtualNetworkSettings managedVirtualNetworkSettings);
+        }
+
+        /**
          * The stage of the workspace definition allowing to specify PrivateEndpointConnections.
          */
         interface WithPrivateEndpointConnections {
@@ -217,13 +234,13 @@ public interface Workspace extends HasInner<WorkspaceInner>, Resource, Groupable
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Workspace>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithConnectivityEndpoints, DefinitionStages.WithDefaultDataLakeStorage, DefinitionStages.WithIdentity, DefinitionStages.WithManagedResourceGroupName, DefinitionStages.WithManagedVirtualNetwork, DefinitionStages.WithPrivateEndpointConnections, DefinitionStages.WithSqlAdministratorLogin, DefinitionStages.WithSqlAdministratorLoginPassword, DefinitionStages.WithVirtualNetworkProfile {
+        interface WithCreate extends Creatable<Workspace>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithConnectivityEndpoints, DefinitionStages.WithDefaultDataLakeStorage, DefinitionStages.WithIdentity, DefinitionStages.WithManagedResourceGroupName, DefinitionStages.WithManagedVirtualNetwork, DefinitionStages.WithManagedVirtualNetworkSettings, DefinitionStages.WithPrivateEndpointConnections, DefinitionStages.WithSqlAdministratorLogin, DefinitionStages.WithSqlAdministratorLoginPassword, DefinitionStages.WithVirtualNetworkProfile {
         }
     }
     /**
      * The template for a Workspace update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Workspace>, Resource.UpdateWithTags<Update>, UpdateStages.WithIdentity, UpdateStages.WithSqlAdministratorLoginPassword {
+    interface Update extends Appliable<Workspace>, Resource.UpdateWithTags<Update>, UpdateStages.WithIdentity, UpdateStages.WithManagedVirtualNetworkSettings, UpdateStages.WithSqlAdministratorLoginPassword {
     }
 
     /**
@@ -240,6 +257,18 @@ public interface Workspace extends HasInner<WorkspaceInner>, Resource, Groupable
              * @return the next update stage
              */
             Update withIdentity(ManagedIdentity identity);
+        }
+
+        /**
+         * The stage of the workspace update allowing to specify ManagedVirtualNetworkSettings.
+         */
+        interface WithManagedVirtualNetworkSettings {
+            /**
+             * Specifies managedVirtualNetworkSettings.
+             * @param managedVirtualNetworkSettings Managed Virtual Network Settings
+             * @return the next update stage
+             */
+            Update withManagedVirtualNetworkSettings(ManagedVirtualNetworkSettings managedVirtualNetworkSettings);
         }
 
         /**

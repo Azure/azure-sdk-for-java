@@ -15,6 +15,7 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
@@ -59,6 +60,10 @@ public class SqlPoolSchemasInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolSchemas list" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/schemas")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("sqlPoolName") String sqlPoolName, @Query("api-version") String apiVersion, @Query("$filter") String filter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolSchemas get" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/schemas/{schemaName}")
+        Observable<Response<ResponseBody>> get(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("sqlPoolName") String sqlPoolName, @Path("schemaName") String schemaName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolSchemas listNext" })
         @GET
@@ -333,6 +338,106 @@ public class SqlPoolSchemasInner {
     private ServiceResponse<PageImpl<SqlPoolSchemaInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<SqlPoolSchemaInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SqlPoolSchemaInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get Sql Pool schema.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param sqlPoolName SQL pool name
+     * @param schemaName The name of the schema.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SqlPoolSchemaInner object if successful.
+     */
+    public SqlPoolSchemaInner get(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName) {
+        return getWithServiceResponseAsync(resourceGroupName, workspaceName, sqlPoolName, schemaName).toBlocking().single().body();
+    }
+
+    /**
+     * Get Sql Pool schema.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param sqlPoolName SQL pool name
+     * @param schemaName The name of the schema.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SqlPoolSchemaInner> getAsync(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName, final ServiceCallback<SqlPoolSchemaInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, workspaceName, sqlPoolName, schemaName), serviceCallback);
+    }
+
+    /**
+     * Get Sql Pool schema.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param sqlPoolName SQL pool name
+     * @param schemaName The name of the schema.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SqlPoolSchemaInner object
+     */
+    public Observable<SqlPoolSchemaInner> getAsync(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName) {
+        return getWithServiceResponseAsync(resourceGroupName, workspaceName, sqlPoolName, schemaName).map(new Func1<ServiceResponse<SqlPoolSchemaInner>, SqlPoolSchemaInner>() {
+            @Override
+            public SqlPoolSchemaInner call(ServiceResponse<SqlPoolSchemaInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get Sql Pool schema.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param sqlPoolName SQL pool name
+     * @param schemaName The name of the schema.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SqlPoolSchemaInner object
+     */
+    public Observable<ServiceResponse<SqlPoolSchemaInner>> getWithServiceResponseAsync(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (workspaceName == null) {
+            throw new IllegalArgumentException("Parameter workspaceName is required and cannot be null.");
+        }
+        if (sqlPoolName == null) {
+            throw new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null.");
+        }
+        if (schemaName == null) {
+            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.get(this.client.subscriptionId(), resourceGroupName, workspaceName, sqlPoolName, schemaName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SqlPoolSchemaInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SqlPoolSchemaInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SqlPoolSchemaInner> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SqlPoolSchemaInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SqlPoolSchemaInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SqlPoolSchemaInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

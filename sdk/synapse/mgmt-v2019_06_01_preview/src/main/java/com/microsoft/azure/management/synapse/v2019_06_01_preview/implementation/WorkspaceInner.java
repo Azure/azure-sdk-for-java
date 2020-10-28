@@ -12,6 +12,7 @@ import com.microsoft.azure.management.synapse.v2019_06_01_preview.DataLakeStorag
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.VirtualNetworkProfile;
 import java.util.Map;
 import java.util.List;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.ManagedVirtualNetworkSettings;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.ManagedIdentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -86,6 +87,12 @@ public class WorkspaceInner extends Resource {
      */
     @JsonProperty(value = "properties.extraProperties", access = JsonProperty.Access.WRITE_ONLY)
     private Map<String, Object> extraProperties;
+
+    /**
+     * Managed Virtual Network Settings.
+     */
+    @JsonProperty(value = "properties.managedVirtualNetworkSettings")
+    private ManagedVirtualNetworkSettings managedVirtualNetworkSettings;
 
     /**
      * Identity of the workspace.
@@ -269,6 +276,26 @@ public class WorkspaceInner extends Resource {
      */
     public Map<String, Object> extraProperties() {
         return this.extraProperties;
+    }
+
+    /**
+     * Get managed Virtual Network Settings.
+     *
+     * @return the managedVirtualNetworkSettings value
+     */
+    public ManagedVirtualNetworkSettings managedVirtualNetworkSettings() {
+        return this.managedVirtualNetworkSettings;
+    }
+
+    /**
+     * Set managed Virtual Network Settings.
+     *
+     * @param managedVirtualNetworkSettings the managedVirtualNetworkSettings value to set
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withManagedVirtualNetworkSettings(ManagedVirtualNetworkSettings managedVirtualNetworkSettings) {
+        this.managedVirtualNetworkSettings = managedVirtualNetworkSettings;
+        return this;
     }
 
     /**
