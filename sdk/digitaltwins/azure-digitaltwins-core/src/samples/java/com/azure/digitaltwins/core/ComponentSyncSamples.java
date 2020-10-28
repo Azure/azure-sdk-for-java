@@ -122,7 +122,7 @@ public class ComponentSyncSamples {
             HashMap component1 = mapper.readValue(component1RawText, HashMap.class);
 
             ConsoleLogger.print("Retrieved digital twin using generic API to use built in deserialization into a BasicDigitalTwin with Id: " + basicDigitalTwin.getId() + ":\n\t"
-                + "Etag: " + basicDigitalTwin.getEtag() + "\n\t"
+                + "ETag: " + basicDigitalTwin.getETag() + "\n\t"
                 + "Prop1: " + basicDigitalTwin.getContents().get("Prop1") + "\n\t"
                 + "Prop2: " + basicDigitalTwin.getContents().get("Prop2") + "\n\t"
                 + "ComponentProp1: " + component1.get("ComponentProp1") + "\n\t"
