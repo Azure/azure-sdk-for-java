@@ -140,6 +140,7 @@
             <version>5.0.1</version> <!-- {x-version-update;org.apache.httpcomponents.client5:httpclient5;external_dependency} -->
             <optional>true</optional>
         </dependency>
+        <!-- Conscrypt -->
         <dependency>
             <groupId>org.conscrypt</groupId>
             <artifactId>conscrypt-openjdk-uber</artifactId>
