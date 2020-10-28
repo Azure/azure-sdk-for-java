@@ -143,6 +143,9 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
             LOGGER.error("Failed to acquire graph api token.", ex);
             throw new ServletException(ex);
         } catch (MsalServiceException ex) {
+            // Handle conditional access policy, step 2.
+            // No step 3 any more, because ServletException will not be caught.
+            // TODO: Do we need to return 401 instead of 500?
             if (ex.claims() != null && !ex.claims().isEmpty()) {
                 throw new ServletException("Handle conditional access policy", ex);
             } else {

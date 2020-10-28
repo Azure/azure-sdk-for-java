@@ -539,4 +539,19 @@ public final class PhoneNumberClient {
         CreateSearchOptions options, Duration pollInterval) {
         return phoneNumberAsyncClient.beginCreateSearch(options, pollInterval).getSyncPoller();
     }
+
+    /**
+     * Initiates a purchase process and polls until a terminal state is reached
+     * This function returns a Long Running Operation poller
+     * 
+     * @param searchId ID of the search     
+     * @param pollInterval The time our long running operation will keep on polling 
+     * until it gets a result from the server
+     * @return A {@link SyncPoller} object with the search result
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<Void, Void> beginPurchaseSearch(
+        String searchId, Duration pollInterval) {
+        return phoneNumberAsyncClient.beginPurchaseSearch(searchId, pollInterval).getSyncPoller();
+    }
 }

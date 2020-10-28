@@ -49,13 +49,12 @@ final class FluxAutoLockRenew extends FluxOperator<ServiceBusReceivedMessageCont
         this.messageLockContainer = Objects.requireNonNull(messageLockContainer,
             "'messageLockContainer' cannot be null.");
 
-        Objects.requireNonNull(maxAutoLockRenewDuration, "'maxAutoLockRenewDuration' cannot be null.");
+        this.maxAutoLockRenewal = Objects.requireNonNull(maxAutoLockRenewDuration,
+            "'maxAutoLockRenewDuration' cannot be null.");
         if (maxAutoLockRenewDuration.isNegative() || maxAutoLockRenewDuration.isZero()) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "'maxLockRenewalDuration' should not be zero or negative."));
         }
-        this.maxAutoLockRenewal = maxAutoLockRenewDuration;
-
     }
 
     @Override
@@ -154,9 +153,9 @@ final class FluxAutoLockRenew extends FluxOperator<ServiceBusReceivedMessageCont
                     logger.info("Exception occurred while updating lockContainer for token [{}].", lockToken, e);
                 }
 
-                lockCleanup = (ctx) -> {
+                lockCleanup = context -> {
                     renewOperation.close();
-                    messageLockContainer.remove(ctx.getMessage().getLockToken());
+                    messageLockContainer.remove(context.getMessage().getLockToken());
                 };
 
             } else {

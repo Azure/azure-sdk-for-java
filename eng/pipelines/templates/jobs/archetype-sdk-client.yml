@@ -132,10 +132,7 @@ jobs:
         displayName: 'Publish Artifacts $(ArtifactName)'
         artifact: '$(ArtifactName)'
 
-      - publish: $(System.DefaultWorkingDirectory)
-        condition: and(eq(variables['CaptureRepositoryOnFailure'], 'true'), failed())
-        displayName: 'Capture repo state for analysis'
-        artifact: repository
+      - template: ../steps/upload-repository-on-failure.yml
 
   - job: 'Analyze'
     condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
@@ -223,6 +220,8 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: 'verify'
+
+      - template: ../steps/upload-repository-on-failure.yml
 
   - job: 'Test'
     condition: and(succeeded(), ne(variables['Skip.Test'], 'true'))
@@ -345,8 +344,11 @@ jobs:
           goals: 'surefire:test'
         condition: and(succeeded(), and(eq(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
 
+      - template: ../steps/upload-repository-on-failure.yml
+
       - task: PublishTestResults@2
         condition: and(always(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
         inputs:
           mergeTestResults: true
           testRunTitle: $(RunTitle)
+          

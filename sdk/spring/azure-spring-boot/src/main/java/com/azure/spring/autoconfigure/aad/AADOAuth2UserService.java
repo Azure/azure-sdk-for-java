@@ -74,6 +74,8 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
         } catch (IOException e) {
             throw toOAuth2AuthenticationException(SERVER_SERVER, "Failed to map group to authorities.", e);
         } catch (MsalServiceException e) {
+            // Handle conditional access policy, step 2.
+            // OAuth2AuthenticationException will be caught by AADAuthenticationFailureHandler.
             if (e.claims() != null && !e.claims().isEmpty()) {
                 throw toOAuth2AuthenticationException(CONDITIONAL_ACCESS_POLICY, "Handle conditional access policy", e);
             } else {

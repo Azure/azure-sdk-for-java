@@ -38,7 +38,7 @@ public final class IncomingRelationshipConverter {
 
         com.azure.digitaltwins.core.implementation.models.IncomingRelationship mappedIncomingRelationship = new com.azure.digitaltwins.core.implementation.models.IncomingRelationship();
         mappedIncomingRelationship.setRelationshipId(input.getRelationshipId());
-        mappedIncomingRelationship.setSourceId(input.getSourceDigitalTwinId());
+        mappedIncomingRelationship.setSourceId(input.getSourceId());
         mappedIncomingRelationship.setRelationshipName(input.getRelationshipName());
         mappedIncomingRelationship.setRelationshipLink(input.getRelationshipLink());
         return mappedIncomingRelationship;

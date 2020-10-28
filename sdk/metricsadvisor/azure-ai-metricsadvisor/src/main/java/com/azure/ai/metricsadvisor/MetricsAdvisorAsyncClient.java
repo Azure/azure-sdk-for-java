@@ -6,6 +6,8 @@ package com.azure.ai.metricsadvisor;
 import com.azure.ai.metricsadvisor.implementation.util.AnomalyTransforms;
 import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl;
 import com.azure.ai.metricsadvisor.implementation.util.DetectionConfigurationTransforms;
+import com.azure.ai.metricsadvisor.implementation.util.IncidentHelper;
+import com.azure.ai.metricsadvisor.implementation.util.IncidentRootCauseTransforms;
 import com.azure.ai.metricsadvisor.implementation.util.IncidentTransforms;
 import com.azure.ai.metricsadvisor.implementation.util.MetricEnrichedSeriesDataTransformations;
 import com.azure.ai.metricsadvisor.implementation.models.AlertingResultQuery;
@@ -24,18 +26,16 @@ import com.azure.ai.metricsadvisor.implementation.models.DetectionSeriesQuery;
 import com.azure.ai.metricsadvisor.implementation.models.DimensionGroupIdentity;
 import com.azure.ai.metricsadvisor.implementation.models.EnrichmentStatusQueryOption;
 import com.azure.ai.metricsadvisor.implementation.models.FeedbackDimensionFilter;
-import com.azure.ai.metricsadvisor.implementation.models.MetricDataList;
 import com.azure.ai.metricsadvisor.implementation.models.MetricDataQueryOptions;
 import com.azure.ai.metricsadvisor.implementation.models.MetricDimensionQueryOptions;
 import com.azure.ai.metricsadvisor.implementation.models.MetricFeedbackFilter;
-import com.azure.ai.metricsadvisor.implementation.models.MetricSeriesItem;
 import com.azure.ai.metricsadvisor.implementation.models.MetricSeriesQueryOptions;
 import com.azure.ai.metricsadvisor.implementation.models.PeriodFeedback;
 import com.azure.ai.metricsadvisor.implementation.models.PeriodFeedbackValue;
-import com.azure.ai.metricsadvisor.implementation.models.RootCause;
 import com.azure.ai.metricsadvisor.implementation.models.SeriesIdentity;
 import com.azure.ai.metricsadvisor.implementation.util.MetricFeedbackTransforms;
-import com.azure.ai.metricsadvisor.implementation.util.PrivateFieldAccessHelper;
+import com.azure.ai.metricsadvisor.implementation.util.MetricSeriesDataTransforms;
+import com.azure.ai.metricsadvisor.implementation.util.MetricSeriesDefinitionTransforms;
 import com.azure.ai.metricsadvisor.models.Alert;
 import com.azure.ai.metricsadvisor.models.Anomaly;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
@@ -171,13 +171,7 @@ public class MetricsAdvisorAsyncClient {
             .doOnRequest(ignoredValue -> logger.info("Listing information metric series definitions"))
             .doOnSuccess(response -> logger.info("Listed metric series definitions - {}", response))
             .doOnError(error -> logger.warning("Failed to list metric series definitions information - {}", error))
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                toMetricSeriesDefinition(res.getValue()),
-                res.getContinuationToken(),
-                null));
+            .map(res -> MetricSeriesDefinitionTransforms.fromInnerResponse(res));
     }
 
     private Mono<PagedResponse<MetricSeriesDefinition>> listMetricSeriesDefinitionNextPageAsync(String nextPageLink,
@@ -197,34 +191,7 @@ public class MetricsAdvisorAsyncClient {
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error))
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                toMetricSeriesDefinition(res.getValue()),
-                res.getContinuationToken(),
-                null));
-    }
-
-    /**
-     * Helper method to convert service {@link com.azure.ai.metricsadvisor.implementation.models.MetricSeriesItem}
-     * to {@link MetricSeriesDefinition}.
-     *
-     * @param serviceSeriesDefinitions the
-     * service {@link com.azure.ai.metricsadvisor.implementation.models.MetricSeriesItem}
-     *
-     * @return {@link MetricSeriesDefinition}
-     */
-    private static List<MetricSeriesDefinition>
-        toMetricSeriesDefinition(List<MetricSeriesItem> serviceSeriesDefinitions) {
-        return serviceSeriesDefinitions.stream().map(serviceSeriesDefinition -> {
-            MetricSeriesDefinition seriesDefinition = new MetricSeriesDefinition();
-            PrivateFieldAccessHelper.set(seriesDefinition, "seriesKey",
-                new DimensionKey(serviceSeriesDefinition.getDimension()));
-            PrivateFieldAccessHelper.set(seriesDefinition, "metricId",
-                serviceSeriesDefinition.getMetricId().toString());
-            return seriesDefinition;
-        }).collect(Collectors.toList());
+            .map(res -> MetricSeriesDefinitionTransforms.fromInnerResponse(res));
     }
 
     /**
@@ -282,32 +249,7 @@ public class MetricsAdvisorAsyncClient {
 
         return service.getMetricDataWithResponseAsync(UUID.fromString(metricId), metricDataQueryOptions,
             context)
-            .map(response -> {
-                final MetricDataList result = response.getValue();
-                return new PagedResponseBase<>(response.getRequest(),
-                    response.getStatusCode(), response.getHeaders(), toMetricSeriesData(result.getValue()), null, null);
-            });
-    }
-
-    /**
-     * Transforms the service level metric series data to SDK model.
-     *
-     * @param serviceMetricSeriesData the service level metric series data
-     *
-     * @return the transformed SDK equivalent model for metric series data.
-     */
-    private List<MetricSeriesData> toMetricSeriesData(
-        List<com.azure.ai.metricsadvisor.implementation.models.MetricSeriesData> serviceMetricSeriesData) {
-        return serviceMetricSeriesData.stream().map(seriesData -> {
-            MetricSeriesData metricSeriesData = new MetricSeriesData();
-            PrivateFieldAccessHelper.set(metricSeriesData, "metricId",
-                seriesData.getId().getMetricId().toString());
-            PrivateFieldAccessHelper.set(metricSeriesData, "seriesKey",
-                new DimensionKey(seriesData.getId().getDimension()));
-            PrivateFieldAccessHelper.set(metricSeriesData, "timestampList", seriesData.getTimestampList());
-            PrivateFieldAccessHelper.set(metricSeriesData, "valueList", seriesData.getValueList());
-            return metricSeriesData;
-        }).collect(Collectors.toList());
+            .map(response -> MetricSeriesDataTransforms.fromInnerResponse(response));
     }
 
     /**
@@ -821,8 +763,8 @@ public class MetricsAdvisorAsyncClient {
         String detectionConfigurationId,
         String incidentId) {
         Incident incident = new Incident();
-        PrivateFieldAccessHelper.set(incident, "id", incidentId);
-        PrivateFieldAccessHelper.set(incident, "detectionConfigurationId", detectionConfigurationId);
+        IncidentHelper.setId(incident, incidentId);
+        IncidentHelper.setDetectionConfigurationId(incident, detectionConfigurationId);
         try {
             return new PagedFlux<>(() ->
                 withContext(context -> listIncidentRootCausesInternal(incident, context)),  null);
@@ -835,8 +777,8 @@ public class MetricsAdvisorAsyncClient {
         String detectionConfigurationId,
         String incidentId, Context context) {
         Incident incident = new Incident();
-        PrivateFieldAccessHelper.set(incident, "id", incidentId);
-        PrivateFieldAccessHelper.set(incident, "detectionConfigurationId", detectionConfigurationId);
+        IncidentHelper.setId(incident, incidentId);
+        IncidentHelper.setDetectionConfigurationId(incident, detectionConfigurationId);
         try {
             return new PagedFlux<>(() -> listIncidentRootCausesInternal(incident, context), null);
         } catch (RuntimeException ex) {
@@ -887,32 +829,7 @@ public class MetricsAdvisorAsyncClient {
             .doOnSuccess(response -> logger.info("Retrieved the IncidentRootCauses - {}", response))
             .doOnError(error -> logger.warning("Failed to retrieve the incident root causes - {}",
                 incident.getDetectionConfigurationId(), error))
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                toIncidentRootCause(res.getValue().getValue()),
-                null,
-                null));
-    }
-
-    /**
-     * Helper method to transform {@link RootCause service reponse} to SDK level {@link IncidentRootCause}
-     *
-     * @param rootCauseList the service returned root causes object list .
-     *
-     * @return the list of {@link IncidentRootCause root causes}.
-     */
-    private List<IncidentRootCause> toIncidentRootCause(List<RootCause> rootCauseList) {
-        return rootCauseList.stream().map(rootCause -> {
-            final IncidentRootCause incidentRootCause = new IncidentRootCause();
-            PrivateFieldAccessHelper.set(incidentRootCause, "seriesKey",
-                new DimensionKey(rootCause.getRootCause().getDimension()));
-            PrivateFieldAccessHelper.set(incidentRootCause, "paths", rootCause.getPath());
-            PrivateFieldAccessHelper.set(incidentRootCause, "confidenceScore", rootCause.getScore());
-            PrivateFieldAccessHelper.set(incidentRootCause, "description", rootCause.getDescription());
-            return incidentRootCause;
-        }).collect(Collectors.toList());
+            .map(res -> IncidentRootCauseTransforms.fromInnerResponse(res));
     }
 
     /**

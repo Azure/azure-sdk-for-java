@@ -94,6 +94,6 @@ public class PublishTelemetryTests extends PublishTelemetryTestBase{
 
         String roomWithWifiTwinPayload = TestAssetsHelper.getRoomWithWifiTwinPayload(roomWithWifiModelId, TestAssetDefaults.WIFI_COMPONENT_NAME);
 
-        client.createDigitalTwin(roomWithWifiTwinId, roomWithWifiTwinPayload, String.class);
+        client.createOrReplaceDigitalTwin(roomWithWifiTwinId, roomWithWifiTwinPayload, String.class);
     }
 }
