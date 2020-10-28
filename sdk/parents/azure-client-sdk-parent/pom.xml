@@ -546,7 +546,11 @@
               </group>
               <group>
                 <title>Azure Core - AMQP</title>
-                <packages>com.azure.core.amqp*</packages>
+                <packages>com.azure.core.amqp:com.azure.core.amqp.exception*:com.azure.core.amqp.models*</packages>
+              </group>
+              <group>
+                <title>Azure Core - AMQP Experimental</title>
+                <packages>com.azure.core.amqp.experimental*</packages>
               </group>
               <group>
                 <title>Azure Core - Authentication</title>
@@ -666,8 +670,8 @@
                 <packages>com.azure.ai.textanalytics*</packages>
               </group>
               <group>
-                  <title>Azure Resource Manager</title>
-                  <packages>com.azure.resourcemanager*</packages>
+                <title>Azure Resource Manager</title>
+                <packages>com.azure.resourcemanager*</packages>
               </group>
             </groups>
             <links>
