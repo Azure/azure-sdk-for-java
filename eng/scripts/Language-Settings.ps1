@@ -154,7 +154,7 @@ function Publish-java-GithubIODocs ($DocLocation, $PublicArtifactLocation)
   }
 }
 
-function Get-java-GenerateGithubIoDocIndex() {
+function Get-java-GithubIoDocIndex() {
   # Fetch out all package metadata from csv file.
   $metadata = Get-CSVMetadata -MetadataUri $MetadataUri
   # Leave the track 2 packages if multiple packages fetched out.
@@ -168,4 +168,3 @@ function Get-java-GenerateGithubIoDocIndex() {
   # Generate yml/md toc files and build site.
   GenerateDocfxTocContent -tocContent $tocContent -lang "Java"
 }
-
