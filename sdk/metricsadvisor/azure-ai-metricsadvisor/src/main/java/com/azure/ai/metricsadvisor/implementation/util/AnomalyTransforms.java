@@ -77,31 +77,23 @@ public class AnomalyTransforms {
     private static Anomaly fromInner(AnomalyResult innerAnomaly) {
         Anomaly anomaly = new Anomaly();
         if (innerAnomaly.getMetricId() != null) {
-            PrivateFieldAccessHelper.set(anomaly, "metricId",
-                innerAnomaly.getMetricId().toString());
+            AnomalyHelper.setMetricId(anomaly, innerAnomaly.getMetricId().toString());
         }
         if (innerAnomaly.getAnomalyDetectionConfigurationId() != null) {
-            PrivateFieldAccessHelper.set(anomaly, "detectionConfigurationId",
+            AnomalyHelper.setDetectionConfigurationId(anomaly,
                 innerAnomaly.getAnomalyDetectionConfigurationId().toString());
         }
         if (innerAnomaly.getDimension() != null) {
-            DimensionKey seriesId = new DimensionKey(innerAnomaly.getDimension());
-            PrivateFieldAccessHelper.set(anomaly, "seriesKey", seriesId);
+            AnomalyHelper.setSeriesKey(anomaly, new DimensionKey(innerAnomaly.getDimension()));
         }
         if (innerAnomaly.getProperty() != null) {
-            PrivateFieldAccessHelper.set(anomaly, "severity",
-                innerAnomaly.getProperty().getAnomalySeverity());
-            PrivateFieldAccessHelper.set(anomaly, "status",
-                innerAnomaly.getProperty().getAnomalyStatus());
+            AnomalyHelper.setSeverity(anomaly, innerAnomaly.getProperty().getAnomalySeverity());
+            AnomalyHelper.setStatus(anomaly, innerAnomaly.getProperty().getAnomalyStatus());
         }
 
-        PrivateFieldAccessHelper.set(anomaly, "timeStamp",
-            innerAnomaly.getTimestamp());
-        PrivateFieldAccessHelper.set(anomaly, "createdTime",
-            innerAnomaly.getCreatedTime());
-        PrivateFieldAccessHelper.set(anomaly, "modifiedTime",
-            innerAnomaly.getModifiedTime());
-
+        AnomalyHelper.setTimeStamp(anomaly, innerAnomaly.getTimestamp());
+        AnomalyHelper.setCreatedTime(anomaly, innerAnomaly.getCreatedTime());
+        AnomalyHelper.setModifiedTime(anomaly, innerAnomaly.getModifiedTime());
         return anomaly;
     }
 

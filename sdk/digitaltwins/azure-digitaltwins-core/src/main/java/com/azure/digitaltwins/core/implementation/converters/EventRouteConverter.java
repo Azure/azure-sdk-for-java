@@ -3,34 +3,34 @@
 
 package com.azure.digitaltwins.core.implementation.converters;
 
-import com.azure.digitaltwins.core.models.EventRoute;
+import com.azure.digitaltwins.core.models.DigitalTwinsEventRoute;
 
 /**
  * A converter between {@link com.azure.digitaltwins.core.implementation.models.EventRoute} and
- * {@link com.azure.digitaltwins.core.models.EventRoute}.
+ * {@link DigitalTwinsEventRoute}.
  */
 public final class EventRouteConverter {
 
     /**
      * Maps from {@link com.azure.digitaltwins.core.implementation.models.EventRoute} to
-     * {@link com.azure.digitaltwins.core.models.EventRoute}. If the input is null, then the output will be null as well.
+     * {@link DigitalTwinsEventRoute}. If the input is null, then the output will be null as well.
      */
-    public static com.azure.digitaltwins.core.models.EventRoute map(com.azure.digitaltwins.core.implementation.models.EventRoute input) {
+    public static DigitalTwinsEventRoute map(com.azure.digitaltwins.core.implementation.models.EventRoute input) {
         if (input == null) {
             return null;
         }
 
-        EventRoute mappedEventRoute = new EventRoute(input.getEndpointName());
+        DigitalTwinsEventRoute mappedEventRoute = new DigitalTwinsEventRoute(input.getEndpointName());
         mappedEventRoute.setFilter(input.getFilter());
         mappedEventRoute.setEventRouteId(input.getId());
         return mappedEventRoute;
     }
 
     /**
-     * Maps from {@link com.azure.digitaltwins.core.models.EventRoute} to
+     * Maps from {@link DigitalTwinsEventRoute} to
      * {@link com.azure.digitaltwins.core.implementation.models.EventRoute}. If the input is null, then the output will be null as well.
      */
-    public static com.azure.digitaltwins.core.implementation.models.EventRoute map(com.azure.digitaltwins.core.models.EventRoute input) {
+    public static com.azure.digitaltwins.core.implementation.models.EventRoute map(DigitalTwinsEventRoute input) {
         if (input == null) {
             return null;
         }

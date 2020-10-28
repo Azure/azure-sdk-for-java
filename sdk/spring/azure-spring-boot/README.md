@@ -8,7 +8,7 @@ This repo is for Spring Boot Starters of Azure services. It helps Spring Boot de
 ### Prerequisites
 - [Java Development Kit (JDK)][jdk_link] with version 8 or above
 - [Azure Subscription][azure_subscription]
-- [Maven](http://maven.apache.org/) 3.0 and above
+- [Maven](https://maven.apache.org/) 3.0 and above
 
 ### Include the Package
 To start a new project using Azure, go on [start.spring.io](https://start.spring.io) and select "Azure

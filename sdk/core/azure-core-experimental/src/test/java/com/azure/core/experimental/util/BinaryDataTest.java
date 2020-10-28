@@ -85,19 +85,6 @@ public class BinaryDataTest {
     }
 
     @Test
-    public void createFromStringCharSet() {
-        // Arrange
-        final String expected = "Doe";
-
-        // Act
-        final BinaryData data = BinaryData.fromString(expected, StandardCharsets.UTF_8);
-
-        // Assert
-        assertArrayEquals(expected.getBytes(), data.toBytes());
-        assertEquals(expected, data.toString(StandardCharsets.UTF_8));
-    }
-
-    @Test
     public void createFromByteArray() {
         // Arrange
         final byte[] expected = "Doe".getBytes(StandardCharsets.UTF_8);
@@ -110,9 +97,63 @@ public class BinaryDataTest {
     }
 
     @Test
+    public void createFromNullStream() throws IOException {
+        // Arrange
+        final byte[] expected = new byte[0];
+
+        // Act
+        BinaryData data = BinaryData.fromStream(null);
+        final byte[] actual = new byte[0];
+        (data.toStream()).read(actual, 0, expected.length);
+
+        // Assert
+        assertArrayEquals(expected, data.toBytes());
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void createFromNullByteArray() {
+        // Arrange
+        final byte[] expected = new byte[0];
+
+        // Act
+        BinaryData actual = BinaryData.fromBytes(null);
+
+        // Assert
+        assertArrayEquals(expected, actual.toBytes());
+    }
+
+    @Test
+    public void createFromNullObject() {
+        // Arrange
+        final byte[] expected = new byte[0];
+
+        // Act
+        BinaryData actual = BinaryData.fromObject(null);
+
+        // Assert
+        assertArrayEquals(expected, actual.toBytes());
+    }
+
+    @Test
     public void createFromStream() throws IOException {
         // Arrange
         final byte[] expected = "Doe".getBytes(StandardCharsets.UTF_8);
+
+        // Act
+        BinaryData data = BinaryData.fromStream(new ByteArrayInputStream(expected));
+        final byte[] actual = new byte[expected.length];
+        (data.toStream()).read(actual, 0, expected.length);
+
+        // Assert
+        assertArrayEquals(expected, data.toBytes());
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void createFromEmptyStream() throws IOException {
+        // Arrange
+        final byte[] expected = "".getBytes();
         final byte[] actual = new byte[expected.length];
 
         // Act
@@ -140,7 +181,7 @@ public class BinaryDataTest {
     }
 
     @Test
-    public void createFromStreamAsync() throws IOException {
+    public void createFromStreamAsync() {
         // Arrange
         final byte[] expected = "Doe".getBytes(StandardCharsets.UTF_8);
 
@@ -148,27 +189,6 @@ public class BinaryDataTest {
         StepVerifier.create(BinaryData.fromStreamAsync(new ByteArrayInputStream(expected)))
             .assertNext(actual -> {
                 Assertions.assertArrayEquals(expected, actual.toBytes());
-            })
-            .verifyComplete();
-    }
-
-    @Test
-    public void createToStreamAsync() {
-        // Arrange
-        final byte[] expected = "Doe".getBytes(StandardCharsets.UTF_8);
-        final BinaryData actual = BinaryData.fromStreamAsync(new ByteArrayInputStream(expected)).block();
-        // Act & Assert
-        StepVerifier.create(actual.toStreamAsync())
-            .assertNext(inutStream -> {
-                byte[] actualBytes = new byte[expected.length];
-
-                // Act
-                try {
-                    inutStream.read(actualBytes, 0, expected.length);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Assertions.assertArrayEquals(expected, actualBytes);
             })
             .verifyComplete();
     }
@@ -187,6 +207,58 @@ public class BinaryDataTest {
                 Assertions.assertEquals(expected, actual);
             })
             .verifyComplete();
+    }
+
+
+    @Test
+    public void createFromEmptyString() {
+        // Arrange
+        final String expected = "";
+
+        // Act
+        final BinaryData data = BinaryData.fromString(expected);
+
+        // Assert
+        assertArrayEquals(expected.getBytes(), data.toBytes());
+        assertEquals(expected, data.toString());
+    }
+
+    @Test
+    public void createFromEmptyByteArray() {
+        // Arrange
+        final byte[] expected = new byte[0];
+
+        // Act
+        final BinaryData data = BinaryData.fromBytes(expected);
+
+        // Assert
+        assertArrayEquals(expected, data.toBytes());
+    }
+
+    @Test
+    public void createFromNullString() {
+        // Arrange
+        final String expected = null;
+
+        // Arrange & Act
+        final BinaryData data = BinaryData.fromString(expected);
+
+        // Assert
+        assertArrayEquals(new byte[0], data.toBytes());
+        assertEquals("", data.toString());
+    }
+
+    @Test
+    public void createFromNullByte() {
+        // Arrange
+        final byte[] expected = null;
+
+        // Arrange & Act
+        final BinaryData data = BinaryData.fromBytes(expected);
+
+        // Assert
+        assertArrayEquals(new byte[0], data.toBytes());
+        assertEquals("", data.toString());
     }
 
     public static class MyJsonSerializer implements JsonSerializer {

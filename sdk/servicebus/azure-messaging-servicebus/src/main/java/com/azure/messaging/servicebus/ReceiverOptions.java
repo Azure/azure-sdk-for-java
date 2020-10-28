@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 
 import java.time.Duration;
@@ -13,22 +14,22 @@ import java.time.Duration;
 class ReceiverOptions {
     private final ReceiveMode receiveMode;
     private final int prefetchCount;
+    private final boolean enableAutoComplete;
     private final String sessionId;
     private final Integer maxConcurrentSessions;
     private final Duration maxLockRenewDuration;
 
-    ReceiverOptions(ReceiveMode receiveMode, int prefetchCount, Duration maxLockRenewDuration) {
-        this.receiveMode = receiveMode;
-        this.prefetchCount = prefetchCount;
-        this.maxLockRenewDuration = maxLockRenewDuration;
-        this.sessionId = null;
-        this.maxConcurrentSessions = null;
+    ReceiverOptions(ReceiveMode receiveMode, int prefetchCount, Duration maxLockRenewDuration,
+        boolean enableAutoComplete) {
+        this(receiveMode, prefetchCount, maxLockRenewDuration, enableAutoComplete, null, false, null);
     }
 
-    ReceiverOptions(ReceiveMode receiveMode, int prefetchCount, String sessionId,
-        Integer maxConcurrentSessions, Duration maxLockRenewDuration) {
+    ReceiverOptions(ReceiveMode receiveMode, int prefetchCount, Duration maxLockRenewDuration,
+        boolean enableAutoComplete, String sessionId, boolean isRollingSessionReceiver,
+        Integer maxConcurrentSessions) {
         this.receiveMode = receiveMode;
         this.prefetchCount = prefetchCount;
+        this.enableAutoComplete = enableAutoComplete;
         this.sessionId = sessionId;
         this.maxConcurrentSessions = maxConcurrentSessions;
         this.maxLockRenewDuration = maxLockRenewDuration;
@@ -104,5 +105,9 @@ class ReceiverOptions {
      */
     public Integer getMaxConcurrentSessions() {
         return maxConcurrentSessions;
+    }
+
+    public boolean isEnableAutoComplete() {
+        return enableAutoComplete;
     }
 }

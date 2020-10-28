@@ -155,7 +155,7 @@ class ServiceBusSessionManagerTest {
     @Test
     void receiveNull() {
         // Arrange
-        ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, 5, MAX_LOCK_RENEWAL);
+        ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null, 5);
         sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             tracerProvider, messageSerializer, receiverOptions);
 
@@ -171,7 +171,8 @@ class ServiceBusSessionManagerTest {
     @Test
     void singleUnnamedSession() {
         // Arrange
-        ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, null, MAX_LOCK_RENEWAL);
+        ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null,
+            5);
         sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             tracerProvider, messageSerializer, receiverOptions);
 
@@ -223,7 +224,8 @@ class ServiceBusSessionManagerTest {
     @Test
     void multipleSessions() {
         // Arrange
-        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, 1, MAX_LOCK_RENEWAL);
+        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, true,
+            null, 5);
         sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             tracerProvider, messageSerializer, receiverOptions);
 
@@ -345,7 +347,8 @@ class ServiceBusSessionManagerTest {
     void multipleReceiveUnnamedSession() {
         // Arrange
         final int expectedLinksCreated = 2;
-        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, 1, Duration.ZERO);
+        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, Duration.ZERO, false,
+            null, 1);
 
         sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             tracerProvider, messageSerializer, receiverOptions);

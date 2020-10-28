@@ -65,11 +65,11 @@ public class SendAndReceiveSessionMessageSample {
         // This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
         // event has been delivered to the Service queue or topic. It completes with an error if an exception occurred
         // while sending the message.
-        sender.createBatch().flatMap(batch -> {
+        sender.createMessageBatch().flatMap(batch -> {
             for (ServiceBusMessage message : messages) {
                 // There are only 3 messages, they should all fit in a batch. In a production case, we would send the
                 // full batch, and then create another one to add this message into.
-                if (!batch.tryAdd(message)) {
+                if (!batch.tryAddMessage(message)) {
                     return Mono.error(new IllegalStateException("Should have been able to add message to batch."));
                 }
             }

@@ -202,15 +202,15 @@ class ServiceBusSessionManager implements AutoCloseable {
             validateParameter(lockToken, "lockToken", operation),
             validateParameter(sessionId, "'sessionId'", operation)).then(
             Mono.defer(() -> {
-                final String lock = lockToken;
                 final ServiceBusSessionReceiver receiver = sessionReceivers.get(sessionId);
-                if (receiver == null || !receiver.containsLockToken(lock)) {
+                if (receiver == null || !receiver.containsLockToken(lockToken)) {
                     return Mono.just(false);
                 }
 
                 final DeliveryState deliveryState = MessageUtils.getDeliveryState(dispositionStatus, deadLetterReason,
                     deadLetterDescription, propertiesToModify, transactionContext);
-                return receiver.updateDisposition(lock, deliveryState).thenReturn(true);
+
+                return receiver.updateDisposition(lockToken, deliveryState).thenReturn(true);
             }));
     }
 

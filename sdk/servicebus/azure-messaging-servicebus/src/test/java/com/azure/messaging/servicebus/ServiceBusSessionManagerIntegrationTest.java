@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder;
@@ -69,8 +68,7 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
         final int numberToSend = 5;
         final List<ServiceBusReceivedMessage> receivedMessages = new ArrayList<>();
 
-        setSenderAndReceiver(entityType, entityIndex, TIMEOUT,
-            builder -> builder.buildAsyncClient().acceptSession(sessionId).block());
+        setSenderAndReceiver(entityType, entityIndex, Function.identity());
 
         final Disposable subscription = Flux.interval(Duration.ofMillis(500))
             .take(numberToSend)
@@ -121,15 +119,14 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
     /**
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
      */
-    private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, Duration operationTimeout,
-        Function<ServiceBusSessionReceiverClientBuilder, ServiceBusReceiverAsyncClient> onBuild) {
+    private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex,
+        Function<ServiceBusSessionReceiverClientBuilder, ServiceBusSessionReceiverClientBuilder> onBuild) {
 
         this.sender = getSenderBuilder(false, entityType, entityIndex, true, false)
             .buildAsyncClient();
         ServiceBusSessionReceiverClientBuilder sessionBuilder = getSessionReceiverBuilder(false,
-            entityType, entityIndex,
-            builder -> builder.retryOptions(new AmqpRetryOptions().setTryTimeout(operationTimeout)), false);
-        this.receiver = onBuild.apply(sessionBuilder);
+            entityType, entityIndex, false);
+        this.receiver = onBuild.apply(sessionBuilder).buildAsyncClient();
     }
 
     private static void assertMessageEquals(String sessionId, String messageId, String contents,

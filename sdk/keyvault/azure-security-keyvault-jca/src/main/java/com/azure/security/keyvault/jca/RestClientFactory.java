@@ -6,7 +6,7 @@ package com.azure.security.keyvault.jca;
 /**
  * The RestClientFactory.
  */
-class RestClientFactory {
+final class RestClientFactory {
 
     /**
      * Constructor.

@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.security.keyvault.jca;
 
 import com.azure.security.keyvault.jca.rest.CertificateBundle;
@@ -34,7 +33,7 @@ import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
 
 /**
- * The REST client specific to Azure KeyVault.
+ * The REST client specific to Azure Key Vault.
  */
 class KeyVaultClient extends DelegateRestClient {
 
@@ -49,9 +48,9 @@ class KeyVaultClient extends DelegateRestClient {
     private static final String API_VERSION_POSTFIX = "?api-version=7.1";
 
     /**
-     * Stores the KeyVault URI.
+     * Stores the Azure Key Vault URL.
      */
-    private final String keyVaultUri;
+    private final String keyVaultUrl;
 
     /**
      * Stores the tenant ID.
@@ -71,21 +70,21 @@ class KeyVaultClient extends DelegateRestClient {
     /**
      * Constructor.
      *
-     * @param keyVaultUri the KeyVault URI.
+     * @param keyVaultUri the Azure Key Vault URI.
      */
     KeyVaultClient(String keyVaultUri) {
         super(RestClientFactory.createClient());
-        LOGGER.log(INFO, "Using KeyVault: {0}", keyVaultUri);
+        LOGGER.log(INFO, "Using Azure Key Vault: {0}", keyVaultUri);
         if (!keyVaultUri.endsWith("/")) {
             keyVaultUri = keyVaultUri + "/";
         }
-        this.keyVaultUri = keyVaultUri;
+        this.keyVaultUrl = keyVaultUri;
     }
 
     /**
      * Constructor.
      *
-     * @param keyVaultUri the KeyVault URI.
+     * @param keyVaultUri the Azure Key Vault URI.
      * @param tenantId the tenant ID.
      * @param clientId the client ID.
      * @param clientSecret the client secret.
@@ -125,11 +124,11 @@ class KeyVaultClient extends DelegateRestClient {
      *
      * @return the list of aliases.
      */
-    public List<String> getAliases() {
+    List<String> getAliases() {
         ArrayList<String> result = new ArrayList<>();
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + getAccessToken());
-        String url = String.format("%scertificates%s", keyVaultUri, API_VERSION_POSTFIX);
+        String url = String.format("%scertificates%s", keyVaultUrl, API_VERSION_POSTFIX);
         String response = get(url, headers);
         CertificateListResult certificateListResult = null;
         if (response != null) {
@@ -156,7 +155,7 @@ class KeyVaultClient extends DelegateRestClient {
         CertificateBundle result = null;
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + getAccessToken());
-        String url = String.format("%scertificates/%s%s", keyVaultUri, alias, API_VERSION_POSTFIX);
+        String url = String.format("%scertificates/%s%s", keyVaultUrl, alias, API_VERSION_POSTFIX);
         String response = get(url, headers);
         if (response != null) {
             JsonConverter converter = JsonConverterFactory.createJsonConverter();
@@ -171,7 +170,7 @@ class KeyVaultClient extends DelegateRestClient {
      * @param alias the alias.
      * @return the certificate, or null if not found.
      */
-    public Certificate getCertificate(String alias) {
+    Certificate getCertificate(String alias) {
         LOGGER.entering("KeyVaultClient", "getCertificate", alias);
         LOGGER.log(INFO, "Getting certificate for alias: {0}", alias);
         X509Certificate certificate = null;
@@ -182,7 +181,7 @@ class KeyVaultClient extends DelegateRestClient {
                 try {
                     CertificateFactory cf = CertificateFactory.getInstance("X.509");
                     certificate = (X509Certificate) cf.generateCertificate(
-                        new ByteArrayInputStream(Base64.getDecoder().decode(certificateBundle.getCer()))
+                            new ByteArrayInputStream(Base64.getDecoder().decode(certificateString))
                     );
                 } catch (CertificateException ce) {
                     LOGGER.log(WARNING, "Certificate error", ce);
@@ -200,20 +199,22 @@ class KeyVaultClient extends DelegateRestClient {
      * @param password the password.
      * @return the key.
      */
-    public Key getKey(String alias, char[] password) {
-        LOGGER.entering("KeyVaultClient", "getKey", new Object[] { alias, password });
+    Key getKey(String alias, char[] password) {
+        LOGGER.entering("KeyVaultClient", "getKey", new Object[]{alias, password});
         LOGGER.log(INFO, "Getting key for alias: {0}", alias);
         Key key = null;
         CertificateBundle certificateBundle = getCertificateBundle(alias);
         boolean isExportable = Optional.ofNullable(certificateBundle)
-                                       .map(CertificateBundle::getPolicy)
-                                       .map(CertificatePolicy::getKey_props)
-                                       .map(KeyProperties::isExportable)
-                                       .orElse(false);
+                .map(CertificateBundle::getPolicy)
+                .map(CertificatePolicy::getKeyProperties)
+                .map(KeyProperties::isExportable)
+                .orElse(false);
         if (isExportable) {
+            //
             // Because the certificate is exportable the private key is
-            // available. So we'll use the KeyVault Secrets API to get the 
-            // private key.
+            // available. So we'll use the Azure Key Vault Secrets API to get
+            // the private key.
+            //
             String certificateSecretUri = certificateBundle.getSid();
             HashMap<String, String> headers = new HashMap<>();
             headers.put("Authorization", "Bearer " + getAccessToken());
@@ -224,8 +225,8 @@ class KeyVaultClient extends DelegateRestClient {
                 try {
                     KeyStore keyStore = KeyStore.getInstance("PKCS12");
                     keyStore.load(
-                        new ByteArrayInputStream(Base64.getDecoder().decode(secretBundle.getValue())),
-                        "".toCharArray()
+                            new ByteArrayInputStream(Base64.getDecoder().decode(secretBundle.getValue())),
+                            "".toCharArray()
                     );
                     alias = keyStore.aliases().nextElement();
                     key = keyStore.getKey(alias, "".toCharArray());
@@ -233,11 +234,14 @@ class KeyVaultClient extends DelegateRestClient {
                     LOGGER.log(WARNING, "Unable to decode key", ex);
                 }
             }
-        } else {
-            // The private key is not available so the certificate cannot be
-            // used for server side certificates or mTLS. Since we do not know
-            // the intent of the usage at this stage we skip this key.
         }
+        
+        // 
+        // If the private key is not available the certificate cannot be
+        // used for server side certificates or mTLS. Then we do not know
+        // the intent of the usage at this stage we skip this key.
+        //
+
         LOGGER.exiting("KeyVaultClient", "getKey", key);
         return key;
     }
