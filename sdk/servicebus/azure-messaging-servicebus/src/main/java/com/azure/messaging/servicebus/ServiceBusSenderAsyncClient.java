@@ -375,15 +375,14 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             .flatMapMany(messageBatch -> {
                 int index = 0;
                 for (ServiceBusMessage message : messages) {
-                    ++index;
-                    boolean added = messageBatch.tryAddMessage(message);
-                    if (!added) {
+                    if (!messageBatch.tryAddMessage(message)) {
                         final String error = String.format(Locale.US,
                             "Messages exceed max allowed size for all the messages together. "
                                 + "Failed to add message at index '%s'.", index);
                         throw logger.logExceptionAsError(new AmqpException(false,
                             AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, error, link.getErrorContext()));
                     }
+                    ++index;
                 }
 
                 return connectionProcessor
