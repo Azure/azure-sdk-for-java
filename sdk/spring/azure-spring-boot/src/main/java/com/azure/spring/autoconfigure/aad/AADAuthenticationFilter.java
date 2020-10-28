@@ -117,9 +117,8 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
             ) {
                 userPrincipal = userPrincipalManager.buildUserPrincipal(aadIssuedBearerToken);
                 String accessTokenForGraphApi = accessTokenManager
-                    .getAccessToken(
+                    .getAccessTokenForMicrosoftGraph(
                         aadIssuedBearerToken,
-                        aadAuthenticationProperties.getGraphApiUri(),
                         GRAPH_API_PERMISSIONS
                     )
                     .getAccessTokenWithRefreshAutomatically();

@@ -61,9 +61,8 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
             );
 
             String graphApiToken = accessTokenManager
-                .getAccessToken(
+                .getAccessTokenForMicrosoftGraph(
                     userRequest.getIdToken().getTokenValue(),
-                    aadAuthenticationProperties.getGraphApiUri(),
                     GRAPH_API_PERMISSIONS
                 )
                 .getAccessTokenWithRefreshAutomatically();

@@ -39,7 +39,7 @@ public class AccessTokenManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(AccessTokenManager.class);
     // We use "aadfeed5" as suffix when client library is ADAL, upgrade to "aadfeed6" for MSAL
     private static final String REQUEST_ID_SUFFIX = "aadfeed6";
-    private static final String ACCESS_TOKEN = "ACCESS_TOKEN";
+    private static final String ACCESS_TOKEN = "ACCESS_TOKEN_";
     private static final long ACCESS_TOKEN_MIN_LIVE_TIME = 60 * 1000;
     private final ServiceEndpoints serviceEndpoints;
     private final AADAuthenticationProperties aadAuthenticationProperties;
@@ -51,10 +51,20 @@ public class AccessTokenManager {
     }
 
     /**
-     * Acquire AccessToken token for a web-hosted resource with expected permissions. Only work for session supported
-     * web service.
+     * Acquire AccessToken token for Microsoft Graph with expected permissions.
      *
-     * @param applicationIdUri The Application ID URI of web-hosted resource, e.g., https://graph.microsoft.com for
+     * @param permissions The expected permissions of resources.
+     * @return AccessToken
+     * @throws ServiceUnavailableException If fail to acquire the token.
+     */
+    public AccessToken getAccessTokenForMicrosoftGraph(Set<String> permissions) throws ServiceUnavailableException {
+        return getAccessToken(aadAuthenticationProperties.getGraphApiUri(), permissions);
+    }
+
+    /**
+     * Acquire AccessToken token for a resource server with expected permissions.
+     *
+     * @param applicationIdUri The Application ID URI of resource server, e.g., https://graph.microsoft.com for
      * Microsoft Graph API.
      * @param permissions The expected permissions of resources.
      * @return AccessToken
@@ -88,13 +98,27 @@ public class AccessTokenManager {
     }
 
     /**
-     * Acquire access token for a web-hosted resource. Only work for session supported web service.
+     * Get AccessToken token for Microsoft Graph with expected permissions.
      *
      * @param idToken The token used to perform an get token request.
-     * @param applicationIdUri The Application ID URI of web-hosted resource, e.g., https://graph.microsoft.com for
+     * @param permissions The permissions of resources to be authorized with, need to be formatted as lowercase.
+     * @return The access token for Microsoft Graph service.
+     * @throws ServiceUnavailableException If fail to acquire the token.
+     * @throws MsalServiceException If {@link MsalServiceException} has occurred.
+     */
+    public AccessToken getAccessTokenForMicrosoftGraph(String idToken,
+                                                       Set<String> permissions) throws ServiceUnavailableException {
+        return getAccessToken(idToken, aadAuthenticationProperties.getGraphApiUri(), permissions);
+    }
+
+    /**
+     * Get AccessToken for a resource server.
+     *
+     * @param idToken The token used to perform an get token request.
+     * @param applicationIdUri The Application ID URI of resource server, e.g., https://graph.microsoft.com for
      * Microsoft Graph API.
      * @param permissions The permissions of resources to be authorized with, need to be formatted as lowercase.
-     * @return The access token for Graph service.
+     * @return The access token for resource server.
      * @throws ServiceUnavailableException If fail to acquire the token.
      * @throws MsalServiceException If {@link MsalServiceException} has occurred.
      */
@@ -106,19 +130,21 @@ public class AccessTokenManager {
             Arrays.stream(result.scopes().toLowerCase(Locale.ENGLISH).split(" "))
                   .map(s -> s.startsWith(applicationIdUri) ? s.split(applicationIdUri)[1] : s)
                   .collect(Collectors.toSet());
-        return new AccessToken(
+        AccessToken accessToken = new AccessToken(
             applicationIdUri,
             uniformedPermissions,
             result.expiresOnDate(),
             result.accessToken()
         );
+        accessToken.getAccessTokenWithRefreshAutomatically();
+        return accessToken;
     }
 
     /**
-     * Acquire IAuthenticationResult for a web-hosted resource. Only work for session supported web service.
+     * Acquire IAuthenticationResult for a resource server.
      *
      * @param idToken The token used to perform an get token request.
-     * @param applicationIdUri The Application ID URI of web-hosted resource, e.g., https://graph.microsoft.com for
+     * @param applicationIdUri The Application ID URI of resource server, e.g., https://graph.microsoft.com for
      * Microsoft Graph API.
      * @param permissions The permissions of resources to be authorized with, need to be formatted as lowercase.
      * @return The access token for Graph service.
@@ -126,8 +152,8 @@ public class AccessTokenManager {
      * @throws MsalServiceException If {@link MsalServiceException} has occurred.
      */
     private IAuthenticationResult getIAuthenticationResult(String idToken,
-                                                          String applicationIdUri,
-                                                          Set<String> permissions) throws ServiceUnavailableException {
+                                                           String applicationIdUri,
+                                                           Set<String> permissions) throws ServiceUnavailableException {
         final IClientCredential clientCredential =
             ClientCredentialFactory.createFromSecret(aadAuthenticationProperties.getClientSecret());
         final UserAssertion assertion = new UserAssertion(idToken);
@@ -185,7 +211,7 @@ public class AccessTokenManager {
 
     private void saveAccessTokenToSession(AccessToken accessToken) {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        attr.getRequest().getSession(false).setAttribute(accessToken.applicationIdUri, accessToken);
+        attr.getRequest().getSession(false).setAttribute(ACCESS_TOKEN + accessToken.applicationIdUri, accessToken);
     }
 
     /**
