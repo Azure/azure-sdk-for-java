@@ -454,12 +454,10 @@ class ServiceBusReceiverAsyncClientTest {
     @Test
     void errorSourceSessionLock() {
         // Arrange
-        final OffsetDateTime expiry = Instant.ofEpochSecond(1588011761L).atOffset(ZoneOffset.UTC);
-
         when(managementNode.renewSessionLock(SESSION_ID, null)).thenReturn(Mono.error(new AmqpException(false, "some error occured.", null)));
 
         // Act & Assert
-        StepVerifier.create(sessionReceiver.reneLock(SESSION_ID))
+        StepVerifier.create(sessionReceiver.renewSessionLock(SESSION_ID))
             .verifyErrorMatches(throwable -> {
                 Assertions.assertTrue(throwable instanceof ServiceBusException);
                 final ServiceBusErrorSource actual = ((ServiceBusException) throwable).getErrorSource();
