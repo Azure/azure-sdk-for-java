@@ -12,6 +12,9 @@ import com.microsoft.azure.storage.queue.CloudQueue;
 import com.microsoft.azure.storage.queue.CloudQueueClient;
 import java.net.URISyntaxException;
 
+/**
+ * Resource manager for Storage Queue.
+ */
 public class StorageQueueManager extends AzureManager<CloudQueue, Tuple<CloudStorageAccount, String>> {
 
     public StorageQueueManager(Azure azure, AzureProperties azureProperties) {

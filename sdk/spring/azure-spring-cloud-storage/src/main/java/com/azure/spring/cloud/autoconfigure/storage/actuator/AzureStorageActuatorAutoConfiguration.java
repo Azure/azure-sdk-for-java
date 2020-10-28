@@ -14,6 +14,9 @@ import org.springframework.context.annotation.Configuration;
 import com.azure.spring.cloud.autoconfigure.storage.AzureStorageAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.storage.AzureStorageQueueAutoConfiguration;
 
+/**
+ * Auto-configuration class for Azure Storage actuator.
+ */
 @Configuration
 @AutoConfigureAfter({ AzureStorageAutoConfiguration.class, AzureStorageQueueAutoConfiguration.class })
 @ConditionalOnClass(HealthIndicator.class)

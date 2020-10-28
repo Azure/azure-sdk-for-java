@@ -15,7 +15,7 @@
   <artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
   <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-keyvault-secrets;current} -->
 
-  <name>Azure Key Vault Secrets Spring Boot Starter</name>
+  <name>Azure Spring Boot Starter for Azure Key Vault Secrets</name>
   <description>Spring Boot Starter supporting Azure Key Vault Secrets as PropertySource</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
