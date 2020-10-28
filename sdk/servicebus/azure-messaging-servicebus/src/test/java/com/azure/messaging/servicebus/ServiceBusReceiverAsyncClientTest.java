@@ -449,12 +449,37 @@ class ServiceBusReceiverAsyncClientTest {
     }
 
     /**
+     * Verifies that we can auto-renew a message lock.
+     */
+    @Test
+    void errorSourceRenewMessageLock() {
+        // Arrange
+        final Duration maxDuration = Duration.ofSeconds(8);
+        final String lockToken = "some-token";
+
+        when(receivedMessage.getLockToken()).thenReturn(lockToken);
+        when(managementNode.renewMessageLock(lockToken, null))
+            .thenReturn(Mono.error(new AmqpException(false, "some error occurred.", null)));
+
+        // Act & Assert
+        StepVerifier.create(receiver.renewMessageLock(receivedMessage, maxDuration))
+            .verifyErrorMatches(throwable -> {
+                Assertions.assertTrue(throwable instanceof ServiceBusException);
+                final ServiceBusErrorSource actual = ((ServiceBusException) throwable).getErrorSource();
+                Assertions.assertEquals(ServiceBusErrorSource.RENEW_LOCK, actual);
+                return true;
+            });
+
+        verify(managementNode, times(1)).renewMessageLock(lockToken, null);
+    }
+
+    /**
      * Verifies that error source is populated .
      */
     @Test
     void errorSourceSessionLock() {
         // Arrange
-        when(managementNode.renewSessionLock(SESSION_ID, null)).thenReturn(Mono.error(new AmqpException(false, "some error occured.", null)));
+        when(managementNode.renewSessionLock(SESSION_ID, null)).thenReturn(Mono.error(new AmqpException(false, "some error occurred.", null)));
 
         // Act & Assert
         StepVerifier.create(sessionReceiver.renewSessionLock(SESSION_ID))
@@ -485,7 +510,7 @@ class ServiceBusReceiverAsyncClientTest {
         when(receivedMessage.getLockedUntil()).thenReturn(expiration);
 
         when(amqpReceiveLink.updateDisposition(eq(lockToken1), argThat(e -> e.getType() == expectedDeliveryState)))
-            .thenReturn(Mono.error(new AmqpException(false, "some error occured.", null)));
+            .thenReturn(Mono.error(new AmqpException(false, "some error occurred.", null)));
 
         // Act & Assert
         StepVerifier.create(receiver.receiveMessages().take(1)
