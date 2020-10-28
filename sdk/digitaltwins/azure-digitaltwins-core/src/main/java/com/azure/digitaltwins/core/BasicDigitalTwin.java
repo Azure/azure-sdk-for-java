@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.digitaltwins.core.models;
+package com.azure.digitaltwins.core;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.digitaltwins.core.models.DigitalTwinsJsonPropertyNames;
 import com.fasterxml.jackson.annotation.*;
 
 import java.util.HashMap;
