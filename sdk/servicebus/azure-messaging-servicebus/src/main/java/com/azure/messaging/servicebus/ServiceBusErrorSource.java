@@ -14,12 +14,6 @@ public final class ServiceBusErrorSource extends ExpandableStringEnum<ServiceBus
 
     private static final long serialVersionUID = -2819764417333954922L;
 
-    /** Error while sending the message(s).*/
-    public static final ServiceBusErrorSource SEND = fromString("SEND", ServiceBusErrorSource.class);
-
-    /** Error while receiving the message(s).*/
-    public static final ServiceBusErrorSource RECEIVE = fromString("RECEIVE", ServiceBusErrorSource.class);
-
     /** Error while abandoning the message.*/
     public static final ServiceBusErrorSource ABANDONED = fromString("ABANDONED", ServiceBusErrorSource.class);
 
@@ -33,6 +27,16 @@ public final class ServiceBusErrorSource extends ExpandableStringEnum<ServiceBus
     public static final ServiceBusErrorSource DEAD_LETTER = fromString("DEAD_LETTER",
         ServiceBusErrorSource.class);
 
+    /** Error while receiving the message(s).*/
+    public static final ServiceBusErrorSource RECEIVE = fromString("RECEIVE", ServiceBusErrorSource.class);
+
+    /** Error while sending the message(s).*/
+    public static final ServiceBusErrorSource SEND = fromString("SEND", ServiceBusErrorSource.class);
+
     /** Error when we could not determine the source.*/
     public static final ServiceBusErrorSource UNKNOWN = fromString("UNKNOWN", ServiceBusErrorSource.class);
+
+    /** Error while user's code is running for a message.*/
+    public static final ServiceBusErrorSource USER_CODE = fromString("USER_CODE", ServiceBusErrorSource.class);
+
 }
