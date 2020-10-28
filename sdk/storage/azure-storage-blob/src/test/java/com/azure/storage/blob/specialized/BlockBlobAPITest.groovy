@@ -1798,6 +1798,20 @@ class BlockBlobAPITest extends APISpec {
         file.delete()
     }
 
+    def "Buffered upload nonMarkableStream"() {
+        setup:
+        def file = getRandomFile(10)
+        def fileStream = new FileInputStream(file)
+        def outFile = getRandomFile(10)
+
+        when:
+        blobClient.upload(fileStream, file.size(), true)
+
+        then:
+        blobClient.downloadToFile(outFile.toPath().toString(), true)
+        compareFiles(file, outFile, 0, file.size())
+    }
+
     def "Get Container Name"() {
         expect:
         containerName == blockBlobClient.getContainerName()

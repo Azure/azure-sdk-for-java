@@ -341,7 +341,7 @@ public class DataLakeFileClient extends DataLakePathClient {
 
         Objects.requireNonNull(data);
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
-            BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
+            BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true);
         Mono<Response<Void>> response = dataLakeFileAsyncClient.appendWithResponse(
             fbb.subscribeOn(Schedulers.elastic()), fileOffset, length, contentMd5, leaseId, context);
 
