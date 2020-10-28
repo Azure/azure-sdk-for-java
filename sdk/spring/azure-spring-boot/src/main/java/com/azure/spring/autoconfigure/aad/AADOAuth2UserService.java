@@ -55,11 +55,15 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
                 aadAuthenticationProperties,
                 serviceEndpointsProperties
             );
+            final AccessTokenManager accessTokenManager = new AccessTokenManager(
+                serviceEndpointsProperties.getServiceEndpoints(aadAuthenticationProperties.getEnvironment()),
+                aadAuthenticationProperties
+            );
 
-            String graphApiToken = azureADGraphClient
+            String graphApiToken = accessTokenManager
                 .getAccessToken(
                     userRequest.getIdToken().getTokenValue(),
-                    azureADGraphClient.getGraphApiUri(),
+                    aadAuthenticationProperties.getGraphApiUri(),
                     GRAPH_API_PERMISSIONS
                 )
                 .getAccessTokenWithRefreshAutomatically();

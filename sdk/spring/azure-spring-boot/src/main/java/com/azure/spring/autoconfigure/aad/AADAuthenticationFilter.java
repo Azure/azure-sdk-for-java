@@ -42,8 +42,10 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationFilter.class);
     private static final String CURRENT_USER_PRINCIPAL = "CURRENT_USER_PRINCIPAL";
 
+    private final AADAuthenticationProperties aadAuthenticationProperties;
     private final UserPrincipalManager userPrincipalManager;
     private final AzureADGraphClient azureADGraphClient;
+    private final AccessTokenManager accessTokenManager;
 
     public AADAuthenticationFilter(AADAuthenticationProperties aadAuthenticationProperties,
                                    ServiceEndpointsProperties serviceEndpointsProperties,
@@ -80,10 +82,15 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
     public AADAuthenticationFilter(AADAuthenticationProperties aadAuthenticationProperties,
                                    ServiceEndpointsProperties serviceEndpointsProperties,
                                    UserPrincipalManager userPrincipalManager) {
+        this.aadAuthenticationProperties = aadAuthenticationProperties;
         this.userPrincipalManager = userPrincipalManager;
         this.azureADGraphClient = new AzureADGraphClient(
             aadAuthenticationProperties,
             serviceEndpointsProperties
+        );
+        this.accessTokenManager = new AccessTokenManager(
+            serviceEndpointsProperties.getServiceEndpoints(aadAuthenticationProperties.getEnvironment()),
+            aadAuthenticationProperties
         );
     }
 
@@ -110,10 +117,10 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
                 || userPrincipal.getAccessTokenForGraphApi() == null
             ) {
                 userPrincipal = userPrincipalManager.buildUserPrincipal(aadIssuedBearerToken);
-                String accessTokenForGraphApi = azureADGraphClient
+                String accessTokenForGraphApi = accessTokenManager
                     .getAccessToken(
                         aadIssuedBearerToken,
-                        azureADGraphClient.getGraphApiUri(),
+                        aadAuthenticationProperties.getGraphApiUri(),
                         GRAPH_API_PERMISSIONS
                     )
                     .getAccessTokenWithRefreshAutomatically();

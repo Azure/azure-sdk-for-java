@@ -20,6 +20,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import static com.azure.spring.autoconfigure.aad.Scopes.AAD_GRAPH_API_URI;
+import static com.azure.spring.autoconfigure.aad.Scopes.MICROSOFT_GRAPH_URI;
+
 /**
  * Configuration properties for Azure Active Directory Authentication.
  */
@@ -29,6 +32,7 @@ public class AADAuthenticationProperties {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationProperties.class);
     private static final String DEFAULT_SERVICE_ENVIRONMENT = "global";
+    private static final String V2_VERSION_ENV_FLAG = "v2-graph";
     private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
 
     /**
@@ -354,5 +358,16 @@ public class AADAuthenticationProperties {
                        .map(UserGroupProperties::getAllowedGroups)
                        .orElseGet(Collections::emptyList)
                        .contains(group);
+    }
+
+    public boolean graphApiVersionIsV2() {
+        return Optional.of(this)
+                       .map(AADAuthenticationProperties::getEnvironment)
+                       .map(environment -> environment.contains(V2_VERSION_ENV_FLAG))
+                       .orElse(false);
+    }
+
+    public String getGraphApiUri() {
+        return graphApiVersionIsV2() ? MICROSOFT_GRAPH_URI : AAD_GRAPH_API_URI;
     }
 }

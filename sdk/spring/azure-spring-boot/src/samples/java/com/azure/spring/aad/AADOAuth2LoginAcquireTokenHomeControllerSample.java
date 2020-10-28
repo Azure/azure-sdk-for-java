@@ -4,7 +4,7 @@
 package com.azure.spring.aad;
 
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
-import com.azure.spring.autoconfigure.aad.AzureADGraphClient;
+import com.azure.spring.autoconfigure.aad.AccessTokenManager;
 import com.azure.spring.autoconfigure.aad.ServiceEndpointsProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -29,10 +29,12 @@ public class AADOAuth2LoginAcquireTokenHomeControllerSample {
     @GetMapping("/")
     public String index(Model model, OAuth2AuthenticationToken authentication) throws ServiceUnavailableException {
 
-        AzureADGraphClient graphClient = new AzureADGraphClient(aadAuthenticationProperties,
-            serviceEndpointsProperties);
+        AccessTokenManager accessTokenManager = new AccessTokenManager(
+            serviceEndpointsProperties.getServiceEndpoints(aadAuthenticationProperties.getEnvironment()),
+            aadAuthenticationProperties);
 
-        AzureADGraphClient.AccessToken accessToken = graphClient.getAccessToken("https://graph.microsoft.com/",
+        AccessTokenManager.AccessToken accessToken = accessTokenManager.getAccessToken(
+            "https://graph.microsoft.com/",
             Collections.singleton("user.read"));
 
         final OAuth2AuthorizedClient authorizedClient =
