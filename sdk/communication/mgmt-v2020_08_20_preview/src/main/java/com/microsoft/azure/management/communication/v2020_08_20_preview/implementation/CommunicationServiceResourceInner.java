@@ -9,8 +9,6 @@
 package com.microsoft.azure.management.communication.v2020_08_20_preview.implementation;
 
 import java.util.Map;
-
-import com.microsoft.azure.Resource;
 import com.microsoft.azure.management.communication.v2020_08_20_preview.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -19,7 +17,39 @@ import com.microsoft.rest.serializer.JsonFlatten;
  * A class representing a CommunicationService resource.
  */
 @JsonFlatten
-public class CommunicationServiceResourceInner extends Resource {
+public class CommunicationServiceResourceInner {
+    /**
+     * Fully qualified resource ID for the resource.
+     */
+    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    private String id;
+
+    /**
+     * The name of the resource.
+     */
+    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
+    private String name;
+
+    /**
+     * The type of the service - e.g.
+     * "Microsoft.Communication/CommunicationServices".
+     */
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
+    private String type;
+
+    /**
+     * The Azure location where the CommunicationService is running.
+     */
+    @JsonProperty(value = "location")
+    private String location;
+
+    /**
+     * Tags of the service which is a list of key value pairs that describe the
+     * resource.
+     */
+    @JsonProperty(value = "tags")
+    private Map<String, String> tags;
+
     /**
      * Provisioning state of the resource. Possible values include: 'Unknown',
      * 'Succeeded', 'Failed', 'Canceled', 'Running', 'Creating', 'Updating',
@@ -58,6 +88,73 @@ public class CommunicationServiceResourceInner extends Resource {
      */
     @JsonProperty(value = "properties.immutableResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String immutableResourceId;
+
+    /**
+     * Get fully qualified resource ID for the resource.
+     *
+     * @return the id value
+     */
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name of the resource.
+     *
+     * @return the name value
+     */
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type of the service - e.g. "Microsoft.Communication/CommunicationServices".
+     *
+     * @return the type value
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the Azure location where the CommunicationService is running.
+     *
+     * @return the location value
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the Azure location where the CommunicationService is running.
+     *
+     * @param location the location value to set
+     * @return the CommunicationServiceResourceInner object itself.
+     */
+    public CommunicationServiceResourceInner withLocation(String location) {
+        this.location = location;
+        return this;
+    }
+
+    /**
+     * Get tags of the service which is a list of key value pairs that describe the resource.
+     *
+     * @return the tags value
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set tags of the service which is a list of key value pairs that describe the resource.
+     *
+     * @param tags the tags value to set
+     * @return the CommunicationServiceResourceInner object itself.
+     */
+    public CommunicationServiceResourceInner withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
 
     /**
      * Get provisioning state of the resource. Possible values include: 'Unknown', 'Succeeded', 'Failed', 'Canceled', 'Running', 'Creating', 'Updating', 'Deleting', 'Moving'.
