@@ -10,7 +10,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.core.util.JsonPatchDocument;
+import com.azure.core.models.JsonPatchDocument;
 import com.azure.digitaltwins.core.models.*;
 
 import java.util.List;

@@ -3,7 +3,7 @@ package com.azure.digitaltwins.core;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.core.util.JsonPatchDocument;
+import com.azure.core.models.JsonPatchDocument;
 import com.azure.digitaltwins.core.helpers.ConsoleLogger;
 import com.azure.digitaltwins.core.helpers.SamplesArguments;
 import com.azure.digitaltwins.core.helpers.SamplesConstants;
@@ -131,7 +131,7 @@ public class ComponentSyncSamples {
 
         // Update Component1 by replacing the property ComponentProp1 value,
         // using the UpdateOperationUtility to build the payload.
-        JsonPatchDocument updateOp = new com.azure.core.util.JsonPatchDocument().appendReplace("/ComponentProp1", "Some new Value");
+        JsonPatchDocument updateOp = new JsonPatchDocument().appendReplace("/ComponentProp1", "Some new Value");
 
         client.updateComponent(basicDigitalTwinId, "Component1", updateOp);
 

@@ -1,6 +1,6 @@
 package com.azure.digitaltwins.core;
 
-import com.azure.core.util.JsonPatchDocument;
+import com.azure.core.models.JsonPatchDocument;
 
 import java.io.IOException;
 import java.io.InputStream;
