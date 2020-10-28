@@ -17,10 +17,12 @@ import com.microsoft.azure.eventhub.stream.binder.EventHubMessageChannelBinder;
 import com.microsoft.azure.eventhub.stream.binder.properties.EventHubExtendedBindingProperties;
 import com.microsoft.azure.eventhub.stream.binder.provisioning.EventHubChannelProvisioner;
 import com.microsoft.azure.eventhub.stream.binder.provisioning.EventHubChannelResourceManagerProvisioner;
+import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.spring.cloud.autoconfigure.context.AzureEnvironmentAutoConfiguration;
 import com.microsoft.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubAutoConfiguration;
 import com.microsoft.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubProperties;
 import com.microsoft.azure.spring.cloud.autoconfigure.eventhub.EventHubUtils;
+import com.microsoft.azure.spring.cloud.context.core.config.AzureProperties;
 import com.microsoft.azure.spring.cloud.context.core.impl.EventHubConsumerGroupManager;
 import com.microsoft.azure.spring.cloud.context.core.impl.EventHubManager;
 import com.microsoft.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
@@ -56,6 +58,9 @@ public class EventHubBinderConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public EventHubChannelProvisioner eventHubChannelProvisioner(AzureEventHubProperties eventHubProperties) {
+        // TODO: With the previous ResourceManagerProvider architecture, eventHubManager
+        // and eventHubConsumerGroup manager were created unconditionally.
+        // Now, they are not created at all. Should they be?
         if (eventHubNamespaceManager != null && eventHubManager != null && eventHubConsumerGroupManager != null) {
             return new EventHubChannelResourceManagerProvisioner(eventHubNamespaceManager, eventHubManager,
                     eventHubConsumerGroupManager, eventHubProperties.getNamespace());
@@ -76,5 +81,17 @@ public class EventHubBinderConfiguration {
                 eventHubOperation);
         binder.setBindingProperties(bindingProperties);
         return binder;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public EventHubManager eventHubManager(Azure azure, AzureProperties azureProperties) {
+        return new EventHubManager(azure, azureProperties);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public EventHubConsumerGroupManager eventHubConsumerGroupManager(Azure azure, AzureProperties azureProperties) {
+        return new EventHubConsumerGroupManager(azure, azureProperties);
     }
 }
