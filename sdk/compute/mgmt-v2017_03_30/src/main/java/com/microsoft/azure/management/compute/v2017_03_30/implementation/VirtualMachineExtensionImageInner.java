@@ -52,7 +52,7 @@ public class VirtualMachineExtensionImageInner extends Resource {
     private Boolean supportsMultipleExtensions;
 
     /**
-     * Get the operatingSystem value.
+     * Get the operating system this extension supports.
      *
      * @return the operatingSystem value
      */
@@ -61,7 +61,7 @@ public class VirtualMachineExtensionImageInner extends Resource {
     }
 
     /**
-     * Set the operatingSystem value.
+     * Set the operating system this extension supports.
      *
      * @param operatingSystem the operatingSystem value to set
      * @return the VirtualMachineExtensionImageInner object itself.
@@ -72,7 +72,7 @@ public class VirtualMachineExtensionImageInner extends Resource {
     }
 
     /**
-     * Get the computeRole value.
+     * Get the type of role (IaaS or PaaS) this extension supports.
      *
      * @return the computeRole value
      */
@@ -81,7 +81,7 @@ public class VirtualMachineExtensionImageInner extends Resource {
     }
 
     /**
-     * Set the computeRole value.
+     * Set the type of role (IaaS or PaaS) this extension supports.
      *
      * @param computeRole the computeRole value to set
      * @return the VirtualMachineExtensionImageInner object itself.
@@ -92,7 +92,7 @@ public class VirtualMachineExtensionImageInner extends Resource {
     }
 
     /**
-     * Get the handlerSchema value.
+     * Get the schema defined by publisher, where extension consumers should provide settings in a matching schema.
      *
      * @return the handlerSchema value
      */
@@ -101,7 +101,7 @@ public class VirtualMachineExtensionImageInner extends Resource {
     }
 
     /**
-     * Set the handlerSchema value.
+     * Set the schema defined by publisher, where extension consumers should provide settings in a matching schema.
      *
      * @param handlerSchema the handlerSchema value to set
      * @return the VirtualMachineExtensionImageInner object itself.
@@ -112,7 +112,7 @@ public class VirtualMachineExtensionImageInner extends Resource {
     }
 
     /**
-     * Get the vmScaleSetEnabled value.
+     * Get whether the extension can be used on xRP VMScaleSets. By default existing extensions are usable on scalesets, but there might be cases where a publisher wants to explicitly indicate the extension is only enabled for CRP VMs but not VMSS.
      *
      * @return the vmScaleSetEnabled value
      */
@@ -121,7 +121,7 @@ public class VirtualMachineExtensionImageInner extends Resource {
     }
 
     /**
-     * Set the vmScaleSetEnabled value.
+     * Set whether the extension can be used on xRP VMScaleSets. By default existing extensions are usable on scalesets, but there might be cases where a publisher wants to explicitly indicate the extension is only enabled for CRP VMs but not VMSS.
      *
      * @param vmScaleSetEnabled the vmScaleSetEnabled value to set
      * @return the VirtualMachineExtensionImageInner object itself.
@@ -132,7 +132,7 @@ public class VirtualMachineExtensionImageInner extends Resource {
     }
 
     /**
-     * Get the supportsMultipleExtensions value.
+     * Get whether the handler can support multiple extensions.
      *
      * @return the supportsMultipleExtensions value
      */
@@ -141,7 +141,7 @@ public class VirtualMachineExtensionImageInner extends Resource {
     }
 
     /**
-     * Set the supportsMultipleExtensions value.
+     * Set whether the handler can support multiple extensions.
      *
      * @param supportsMultipleExtensions the supportsMultipleExtensions value to set
      * @return the VirtualMachineExtensionImageInner object itself.
