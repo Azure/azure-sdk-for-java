@@ -35,6 +35,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -62,7 +63,7 @@ public class AzureADGraphClient {
     private static final String REQUEST_ID_SUFFIX = "aadfeed6";
     private static final String V2_VERSION_ENV_FLAG = "v2-graph";
     private static final String ACCESS_TOKEN = "ACCESS_TOKEN";
-    private static final long TIME_INTERNAL_FOR_OBO_TOKEN_EXPIRATION = 60 * 1000;
+    private static final long ACCESSTOKEN_MIN_LIVE_TIME = 60 * 1000;
 
     private final ServiceEndpoints serviceEndpoints;
     private final AADAuthenticationProperties aadAuthenticationProperties;
@@ -179,16 +180,16 @@ public class AzureADGraphClient {
     }
 
     /**
-     * Acquire OBO token for a web-hosted resource with expected permissions. Only work for stateful web service. Not
-     * work for stateless web api service.
+     * Acquire AccessToken token for a web-hosted resource with expected permissions. Only work for session supported
+     * web service.
      *
      * @param applicationIdUri The Application ID URI of web-hosted resource, e.g., https://graph.microsoft.com for
      * Microsoft Graph API.
      * @param permissions The expected permissions of resources.
-     * @return The OBO token for Graph service.
+     * @return AccessToken
      * @throws ServiceUnavailableException If fail to acquire the token.
      */
-    public String getOboToken(String applicationIdUri, Set<String> permissions) throws ServiceUnavailableException {
+    public AccessToken getAccessToken(String applicationIdUri, Set<String> permissions) throws ServiceUnavailableException {
         AccessToken accessToken = loadAccessTokenFromSession(applicationIdUri);
         Set<String> uniformedPermissions = permissions.stream()
                                                       .map(String::trim)
@@ -196,12 +197,11 @@ public class AzureADGraphClient {
                                                       .filter(s -> !s.isEmpty())
                                                       .collect(Collectors.toSet());
         if (accessToken.permissions.containsAll(uniformedPermissions)) {
-            return accessToken.getAccessTokenWithRefreshAutomatically();
+            return accessToken;
         } else {
             // TODO: incremental consent.
             String idToken = getIdTokenFromSecurityContext();
-            String tenantId = aadAuthenticationProperties.getTenantId();
-            return getAccessToken(idToken, tenantId, applicationIdUri, uniformedPermissions);
+            return getAccessToken(idToken, applicationIdUri, uniformedPermissions);
         }
     }
 
@@ -230,10 +230,9 @@ public class AzureADGraphClient {
     }
 
     /**
-     * Acquire access token for a web-hosted resource. Work both stateful web service and stateless web api service.
+     * Acquire access token for a web-hosted resource. Only work for session supported web service.
      *
-     * @param idToken The token used to perform an OBO request.
-     * @param tenantId The tenant id.
+     * @param idToken The token used to perform an get token request.
      * @param applicationIdUri The Application ID URI of web-hosted resource, e.g., https://graph.microsoft.com for
      * Microsoft Graph API.
      * @param permissions The permissions of resources to be authorized with, need to be formatted as lowercase.
@@ -241,20 +240,26 @@ public class AzureADGraphClient {
      * @throws ServiceUnavailableException If fail to acquire the token.
      * @throws MsalServiceException If {@link MsalServiceException} has occurred.
      */
-    public String getAccessToken(String idToken,
-                                 String tenantId,
-                                 String applicationIdUri,
-                                 Set<String> permissions) throws ServiceUnavailableException {
-        return getIAuthenticationResult(idToken, tenantId, applicationIdUri, permissions).accessToken();
-
+    public AccessToken getAccessToken(String idToken,
+                                      String applicationIdUri,
+                                      Set<String> permissions) throws ServiceUnavailableException {
+        IAuthenticationResult result = getIAuthenticationResult(idToken, applicationIdUri, permissions);
+        Set<String> uniformedPermissions =
+            Arrays.stream(result.scopes().toLowerCase(Locale.ENGLISH).split(" "))
+                  .map(s -> s.startsWith(applicationIdUri) ? s.split(applicationIdUri)[1] : s)
+                  .collect(Collectors.toSet());
+        return new AccessToken(
+            applicationIdUri,
+            uniformedPermissions,
+            result.expiresOnDate(),
+            result.accessToken()
+        );
     }
 
     /**
-     * Acquire IAuthenticationResult for a web-hosted resource. Work both stateful web service and stateless web api
-     * service.
+     * Acquire IAuthenticationResult for a web-hosted resource. Only work for session supported web service.
      *
-     * @param idToken The token used to perform an OBO request.
-     * @param tenantId The tenant id.
+     * @param idToken The token used to perform an get token request.
      * @param applicationIdUri The Application ID URI of web-hosted resource, e.g., https://graph.microsoft.com for
      * Microsoft Graph API.
      * @param permissions The permissions of resources to be authorized with, need to be formatted as lowercase.
@@ -263,7 +268,6 @@ public class AzureADGraphClient {
      * @throws MsalServiceException If {@link MsalServiceException} has occurred.
      */
     public IAuthenticationResult getIAuthenticationResult(String idToken,
-                                                          String tenantId,
                                                           String applicationIdUri,
                                                           Set<String> permissions) throws ServiceUnavailableException {
         final IClientCredential clientCredential =
@@ -273,7 +277,7 @@ public class AzureADGraphClient {
         try {
             final ConfidentialClientApplication application = ConfidentialClientApplication
                 .builder(aadAuthenticationProperties.getClientId(), clientCredential)
-                .authority(serviceEndpoints.getAadSigninUri() + tenantId + "/")
+                .authority(serviceEndpoints.getAadSigninUri() + aadAuthenticationProperties.getTenantId() + "/")
                 .correlationId(getCorrelationId())
                 .build();
             Set<String> scopes = toScopeSet(applicationIdUri, permissions);
@@ -303,8 +307,11 @@ public class AzureADGraphClient {
                                      .map(ServletRequestAttributes::getRequest)
                                      .map(HttpServletRequest::getSession)
                                      .map(s -> s.getAttribute(ACCESS_TOKEN + applicationIdUri))
-                                     .orElseGet(() -> new AccessToken(applicationIdUri, new HashSet<>(), new Date(),
-                                         ""));
+                                     .orElseGet(() -> new AccessToken(applicationIdUri,
+                                         new HashSet<>(),
+                                         new Date(),
+                                         "")
+                                     );
     }
 
     public void saveAccessTokenToSession(AccessToken accessToken) {
@@ -312,7 +319,10 @@ public class AzureADGraphClient {
         attr.getRequest().getSession(false).setAttribute(accessToken.applicationIdUri, accessToken);
     }
 
-    private class AccessToken {
+    /**
+     * AccessToken will cached in session. So AccessToken only work for session supported web service.
+     */
+    public class AccessToken {
         private final String applicationIdUri;
         private final Set<String> permissions;
         private String accessToken;
@@ -330,13 +340,12 @@ public class AzureADGraphClient {
 
         public boolean needRefresh() {
             Date currentTime = new Date();
-            return expiredTime.getTime() - currentTime.getTime() < TIME_INTERNAL_FOR_OBO_TOKEN_EXPIRATION;
+            return expiredTime.getTime() - currentTime.getTime() < ACCESSTOKEN_MIN_LIVE_TIME;
         }
 
         public void refresh() throws ServiceUnavailableException {
             String idToken = getIdTokenFromSecurityContext();
-            String tenantId = aadAuthenticationProperties.getTenantId();
-            IAuthenticationResult result = getIAuthenticationResult(idToken, tenantId, applicationIdUri, permissions);
+            IAuthenticationResult result = getIAuthenticationResult(idToken, applicationIdUri, permissions);
             accessToken = result.accessToken();
             expiredTime = result.expiresOnDate();
         }

@@ -32,7 +32,7 @@ public class AADOAuth2LoginAcquireTokenHomeControllerSample {
         AzureADGraphClient graphClient = new AzureADGraphClient(aadAuthenticationProperties,
             serviceEndpointsProperties);
 
-        String accessToken = graphClient.getOboToken("https://graph.microsoft.com/",
+        AzureADGraphClient.AccessToken accessToken = graphClient.getAccessToken("https://graph.microsoft.com/",
             Collections.singleton("user.read"));
 
         final OAuth2AuthorizedClient authorizedClient =
