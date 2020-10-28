@@ -4,7 +4,6 @@
 package com.azure.digitaltwins.core;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.digitaltwins.core.models.DigitalTwinPropertyMetadata;
 import com.fasterxml.jackson.annotation.*;
 
 import java.util.HashMap;
