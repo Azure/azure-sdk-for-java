@@ -276,6 +276,9 @@ public final class MessageUtils {
         return transactionalState;
     }
 
+    /**
+     * Used in ServiceBusMessageBatch.tryAddMessage() to start tracing for to-be-sent out messages.
+     */
     public static ServiceBusMessage traceMessageSpan(ServiceBusMessage serviceBusMessage,
         Context messageContext, String hostname, String entityPath, TracerProvider tracerProvider) {
         Optional<Object> eventContextData = messageContext.getData(SPAN_CONTEXT_KEY);
