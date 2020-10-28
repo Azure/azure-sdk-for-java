@@ -10,7 +10,7 @@ import java.time.OffsetDateTime;
 /**
  * Contains metadata about changes on properties on a digital twin or component.
  */
-public class BasicDigitalTwinPropertyMetadata {
+public class DigitalTwinPropertyMetadata {
     @JsonProperty(value = DigitalTwinsJsonPropertyNames.METADATA_PROPERTY_LAST_UPDATE_TIME, required = true)
     private OffsetDateTime lastUpdatedOn;
 
@@ -25,9 +25,9 @@ public class BasicDigitalTwinPropertyMetadata {
     /**
      * Sets the the date and time the property was last updated.
      * @param lastUpdatedOn The date and time the property was last updated.
-     * @return The BasicDigitalTwinPropertyMetadata object itself.
+     * @return The DigitalTwinPropertyMetadata object itself.
      */
-    public BasicDigitalTwinPropertyMetadata setLastUpdatedOn(OffsetDateTime lastUpdatedOn) {
+    public DigitalTwinPropertyMetadata setLastUpdatedOn(OffsetDateTime lastUpdatedOn) {
         this.lastUpdatedOn = lastUpdatedOn;
         return this;
     }

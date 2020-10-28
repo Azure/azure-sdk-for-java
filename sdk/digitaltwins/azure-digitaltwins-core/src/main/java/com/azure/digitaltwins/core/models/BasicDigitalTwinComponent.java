@@ -20,7 +20,7 @@ public final class BasicDigitalTwinComponent {
      * Information about the model a component conforms to. This field is present on every digital twin.
      */
     @JsonProperty(value = "$metadata", required = true)
-    private BasicDigitalTwinComponentMetadata metadata = new BasicDigitalTwinComponentMetadata();
+    private Map<String, DigitalTwinPropertyMetadata> metadata = new HashMap<>();
 
     /**
      * The additional contents of the model. This field will contain any contents of the digital twin that are not already defined by the other strong types of this class.
@@ -32,17 +32,18 @@ public final class BasicDigitalTwinComponent {
      * Gets the metadata about the model.
      * @return The model metadata.
      */
-    public BasicDigitalTwinComponentMetadata getMetadata() {
+    public Map<String, DigitalTwinPropertyMetadata> getMetadata() {
         return metadata;
     }
 
     /**
      * Sets the model metadata.
+     * @param key The key that maps to the metadata
      * @param metadata Model metadata.
      * @return The BasicDigitalTwinComponent object itself.
      */
-    public BasicDigitalTwinComponent setMetadata(BasicDigitalTwinComponentMetadata metadata) {
-        this.metadata = metadata;
+    public BasicDigitalTwinComponent addMetadata(String key, DigitalTwinPropertyMetadata metadata) {
+        this.metadata.put(key, metadata);
         return this;
     }
 
