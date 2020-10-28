@@ -14,7 +14,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -448,12 +447,12 @@ public class TransactionalBatchTest extends BatchTestBase {
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void BatchCreateAndPatchAsync() {
         BatchTestBase.TestDoc testDoc = this.populateTestDoc(this.partitionKey1);
-        List<PatchOperation> patchOperations = new ArrayList<>();
-        patchOperations.add(PatchOperation.replace("/cost", testDoc.getCost() + 1));
+        CosmosPatch cosmosPatch = CosmosPatch.createCosmosPatch();
+        cosmosPatch.replace("/cost", testDoc.getCost() + 1);
 
         TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
         batch.createItemOperation(testDoc);
-        batch.patchItemOperation(testDoc.getId(), patchOperations);
+        batch.patchItemOperation(testDoc.getId(), cosmosPatch);
 
         TransactionalBatchResponse batchResponse = batchContainer.executeTransactionalBatch(batch);
 

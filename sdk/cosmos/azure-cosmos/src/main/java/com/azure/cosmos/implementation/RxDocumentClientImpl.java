@@ -6,16 +6,10 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.SimpleTokenCache;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosDiagnostics;
-import com.azure.cosmos.DirectConnectionConfig;
-import com.azure.cosmos.PatchOperation;
+import com.azure.cosmos.*;
 import com.azure.cosmos.implementation.batch.BatchResponseParser;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.batch.SinglePartitionKeyServerBatchRequest;
-import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
@@ -1677,21 +1671,21 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<Document>> patchDocument(String documentLink,
-                                                          List<PatchOperation> patchOperations,
+                                                          CosmosPatch cosmosPatch,
                                                           RequestOptions options) {
         DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
-        return ObservableHelper.inlineIfPossibleAsObs(() -> patchDocumentInternal(documentLink, patchOperations, options, documentClientRetryPolicy), documentClientRetryPolicy);
+        return ObservableHelper.inlineIfPossibleAsObs(() -> patchDocumentInternal(documentLink, cosmosPatch, options, documentClientRetryPolicy), documentClientRetryPolicy);
     }
 
     private Mono<ResourceResponse<Document>> patchDocumentInternal(String documentLink,
-                                                                   List<PatchOperation> patchOperations,
+                                                                   CosmosPatch cosmosPatch,
                                                                    RequestOptions options,
                                                                    DocumentClientRetryPolicy retryPolicyInstance) {
-        if (patchOperations == null) {
-            throw new IllegalArgumentException("patchOperations");
+        if (cosmosPatch == null) {
+            throw new IllegalArgumentException("cosmosPatch");
         }
 
-        logger.debug("Running patch operations on document. patch Operations: [{}]", patchOperations);
+        logger.debug("Running patch operations on document. patch Operations: [{}]", cosmosPatch);
 
         final String path = Utils.joinPath(documentLink, null);
 
@@ -1699,7 +1693,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         final Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.Document, OperationType.Update);
         Instant serializationStartTimeUTC = Instant.now();
 
-        ByteBuffer content = ByteBuffer.wrap(PatchUtil.serializePatchOperationsToByteArray(patchOperations, options));
+        ByteBuffer content = ByteBuffer.wrap(PatchUtil.serializeCosmosPatchToByteArray(cosmosPatch, options));
 
         Instant serializationEndTime = Instant.now();
         SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(

@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -23,8 +24,6 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
-
-import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
 
 /**
  * Provides synchronous methods for reading, deleting, and replacing existing Containers
@@ -447,7 +446,7 @@ public class CosmosContainer {
      * @param <T> the type parameter.
      * @param itemId the item id.
      * @param partitionKey the partition key.
-     * @param patchOperations patchOperations.
+     * @param cosmosPatch patchOperations.
      * @param itemType the item type.
      *
      * @return the Cosmos item response.
@@ -455,10 +454,10 @@ public class CosmosContainer {
     public <T> CosmosItemResponse<T> patchItem(
         String itemId,
         PartitionKey partitionKey,
-        List<PatchOperation> patchOperations,
+        CosmosPatch cosmosPatch,
         Class<T> itemType) {
 
-        return this.blockItemResponse(asyncContainer.patchItem(itemId, partitionKey, patchOperations, itemType));
+        return this.blockItemResponse(asyncContainer.patchItem(itemId, partitionKey, cosmosPatch, itemType));
     }
 
     /**
@@ -467,7 +466,7 @@ public class CosmosContainer {
      * @param <T> the type parameter.
      * @param itemId the item id.
      * @param partitionKey the partition key.
-     * @param patchOperations patchOperations.
+     * @param cosmosPatch patchOperations.
      * @param options the request options.
      * @param itemType the item type.
      *
@@ -476,11 +475,11 @@ public class CosmosContainer {
     public <T> CosmosItemResponse<T> patchItem(
         String itemId,
         PartitionKey partitionKey,
-        List<PatchOperation> patchOperations,
+        CosmosPatch cosmosPatch,
         CosmosItemRequestOptions options,
         Class<T> itemType) {
 
-        return this.blockItemResponse(asyncContainer.patchItem(itemId, partitionKey, patchOperations, options, itemType));
+        return this.blockItemResponse(asyncContainer.patchItem(itemId, partitionKey, cosmosPatch, options, itemType));
     }
 
     /**

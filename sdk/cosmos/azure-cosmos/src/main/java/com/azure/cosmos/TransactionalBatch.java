@@ -5,6 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
+import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.Beta;
 
@@ -326,33 +327,33 @@ public final class TransactionalBatch {
      * Adds an operation to patch an item into the batch.
      *
      * @param id  the item id.
-     * @param patchOperations Represents a list of operations to be sequentially applied to the referred Cosmos item.
+     * @param cosmosPatch Represents a container having list of operations to be sequentially applied to the referred Cosmos item.
      *
      * @return The added operation.
      */
-    public CosmosItemOperation patchItemOperation(String id, List<PatchOperation> patchOperations) {
+    public CosmosItemOperation patchItemOperation(String id, CosmosPatch cosmosPatch) {
         checkNotNull(id, "expected non-null id");
-        checkNotNull(patchOperations, "expected non-null item");
+        checkNotNull(cosmosPatch, "expected non-null cosmosPatch");
 
-        return this.patchItemOperation(id, patchOperations, new TransactionalBatchItemRequestOptions());
+        return this.patchItemOperation(id, cosmosPatch, new TransactionalBatchItemRequestOptions());
     }
 
     /**
      * Adds an operation to patch an item into the batch.
      *
      * @param id  the item id.
-     * @param patchOperations Represents a list of operations to be sequentially applied to the referred Cosmos item.
+     * @param cosmosPatch Represents a container having list of operations to be sequentially applied to the referred Cosmos item.
      * @param requestOptions The options for the item request.
      *
      * @return The added operation.
      */
     public CosmosItemOperation patchItemOperation(
         String id,
-        List<PatchOperation> patchOperations,
+        CosmosPatch cosmosPatch,
         TransactionalBatchItemRequestOptions requestOptions) {
 
         checkNotNull(id, "expected non-null id");
-        checkNotNull(patchOperations, "expected non-null item");
+        checkNotNull(cosmosPatch, "expected non-null cosmosPatch");
 
         if (requestOptions == null) {
             requestOptions = new TransactionalBatchItemRequestOptions();
@@ -363,7 +364,7 @@ public final class TransactionalBatch {
             id,
             this.getPartitionKeyValue(),
             requestOptions.toRequestOptions(),
-            patchOperations
+            cosmosPatch
         );
 
         this.operations.add(operation);

@@ -15,15 +15,11 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 public class PatchTest extends TestSuiteBase {
 
@@ -58,20 +54,20 @@ public class PatchTest extends TestSuiteBase {
 
         Assert.assertNull(testItem.children[1].status);
 
-        List<PatchOperation> patchOperations = new ArrayList<>();
-        patchOperations.add(PatchOperation.add("/children/1/CamelCase", "patched"));
-        patchOperations.add(PatchOperation.remove("/description"));
-        patchOperations.add(PatchOperation.replace("/taskNum", newTaskNum));
+        CosmosPatch cosmosPatch = CosmosPatch.createCosmosPatch();
+        cosmosPatch.add("/children/1/CamelCase", "patched");
+        cosmosPatch.remove("/description");
+        cosmosPatch.replace("/taskNum", newTaskNum);
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         CosmosItemResponse<ToDoActivity> response = this.container.patchItem(
             testItem.id,
             new PartitionKey(testItem.status),
-            patchOperations,
+            cosmosPatch,
             options,
             ToDoActivity.class);
 
-        assertEquals(HttpResponseStatus.OK.code(), response.getStatusCode());
+        assertThat(response.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
 
         ToDoActivity patchedItem = response.getItem();
         Assert.assertNotNull(patchedItem);
@@ -81,34 +77,34 @@ public class PatchTest extends TestSuiteBase {
             new PartitionKey(testItem.status),
             options, ToDoActivity.class);
 
-        assertEquals(HttpResponseStatus.OK.code(), response.getStatusCode());
-        Assert.assertNotNull(response.getItem());
-        assertEquals("patched", response.getItem().children[1].camelCase);
-        Assert.assertNull(response.getItem().description);
-        assertEquals(newTaskNum, response.getItem().taskNum);
+        assertThat(response.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(response.getItem()).isNotNull();
+        assertThat(response.getItem().children[1].camelCase).isEqualTo("patched");
+        assertThat(response.getItem().description).isNull();
+        assertThat(response.getItem().taskNum).isEqualTo(newTaskNum);
 
-        assertEquals(patchedItem, response.getItem());
+        assertThat(response.getItem()).isEqualTo(patchedItem);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void itemPatchFailureTest() {
         // Create an item
         ToDoActivity testItem = ToDoActivity.createRandomItem(this.container);
-        List<PatchOperation> patchOperations = new ArrayList<>();
-        patchOperations.add(PatchOperation.add("/nonExistentParent/child", "bar"));
-        patchOperations.add(PatchOperation.remove("/cost"));
+        CosmosPatch cosmosPatch = CosmosPatch.createCosmosPatch();
+        cosmosPatch.add("/nonExistentParent/child", "bar");
+        cosmosPatch.remove("/cost");
 
         // item does not exist - 404 Resource Not Found error
         try {
             CosmosItemResponse<ToDoActivity> patchItemResponse = this.container.patchItem(
                 UUID.randomUUID().toString(),
                 new PartitionKey(testItem.status),
-                patchOperations,
+                cosmosPatch,
                 ToDoActivity.class);
             Assert.fail("Update operation should fail if the item doesn't exist.");
         } catch (CosmosException ex) {
-            assertEquals(HttpResponseStatus.NOT_FOUND.code(), ex.getStatusCode());
-            assertTrue(ex.getMessage().contains("Resource Not Found"), ex.getMessage());
+            assertThat(ex.getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
+            assertThat(ex.getMessage()).contains("Resource Not Found");
         }
 
         // adding a child when parent / ancestor does not exist - 400 BadRequest response
@@ -116,14 +112,14 @@ public class PatchTest extends TestSuiteBase {
             CosmosItemResponse<ToDoActivity> patchItemResponse = this.container.patchItem(
                 testItem.id,
                 new PartitionKey(testItem.status),
-                patchOperations,
+                cosmosPatch,
                 ToDoActivity.class);
 
             Assert.fail("Update operation should fail for malformed PatchSpecification.");
         } catch (CosmosException ex) {
-            assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ex.getStatusCode());
-            assertTrue(ex.getMessage().contains(
-                "Add Operation only support adding a leaf node of an existing node(array or object), no path found beyond: 'nonExistentParent'"), ex.getMessage());
+            assertThat(ex.getStatusCode()).isEqualTo(HttpResponseStatus.BAD_REQUEST.code());
+            assertThat(ex.getMessage())
+                .contains("Add Operation only support adding a leaf node of an existing node(array or object), no path found beyond: 'nonExistentParent'");
         }
 
         // precondition failure - 412 response
@@ -134,14 +130,14 @@ public class PatchTest extends TestSuiteBase {
             CosmosItemResponse<ToDoActivity> patchItemResponse = this.container.patchItem(
                 testItem.id,
                 new PartitionKey(testItem.status),
-                patchOperations,
+                cosmosPatch,
                 requestOptions,
                 ToDoActivity.class);
 
             Assert.fail("Update operation should fail in case of pre-condition failure.");
         } catch (CosmosException ex) {
-            assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ex.getStatusCode());
-            assertTrue(ex.getMessage().contains("One of the specified pre-condition is not met"), ex.getMessage());
+            assertThat(ex.getStatusCode()).isEqualTo(HttpResponseStatus.PRECONDITION_FAILED.code());
+            assertThat(ex.getMessage()).contains("One of the specified pre-condition is not met");
         }
     }
 

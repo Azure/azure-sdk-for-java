@@ -3,7 +3,8 @@
 
 package com.azure.cosmos.implementation.patch;
 
-import com.azure.cosmos.PatchOperation;
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosPatch;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Utils;
@@ -13,17 +14,16 @@ import java.util.List;
 
 public class PatchUtil {
 
-    @SuppressWarnings("unchecked")
     public static <T> JsonSerializable serializableBatchPatchOperation(T item) {
-        if (item instanceof List && !((List)item).isEmpty() && ((List) item).get(0) instanceof PatchOperation) {
-            return patchOperationsToJsonSerializable((List<PatchOperation>) item, null);
+        if (item instanceof CosmosPatch) {
+            return patchOperationsToJsonSerializable((CosmosPatch) item, null);
         } else {
             throw new UnsupportedOperationException("Unknown Patch operations.");
         }
     }
 
-    public static byte[] serializePatchOperationsToByteArray(List<PatchOperation> patchOperations, RequestOptions options) {
-        JsonSerializable jsonSerializable =  patchOperationsToJsonSerializable(patchOperations, options);
+    public static byte[] serializeCosmosPatchToByteArray(CosmosPatch cosmosPatch, RequestOptions options) {
+        JsonSerializable jsonSerializable =  patchOperationsToJsonSerializable(cosmosPatch, options);
 
         byte[] serializedBody;
         try {
@@ -36,9 +36,10 @@ public class PatchUtil {
         return serializedBody;
     }
 
-    private static JsonSerializable patchOperationsToJsonSerializable(List<PatchOperation> patchOperations, RequestOptions options) {
+    private static JsonSerializable patchOperationsToJsonSerializable(CosmosPatch cosmosPatch, RequestOptions options) {
         JsonSerializable jsonSerializable = new JsonSerializable();
         ArrayNode operations =  Utils.getSimpleObjectMapper().createArrayNode();
+        List<PatchOperation> patchOperations = BridgeInternal.getPatchOperationsFromCosmosPatch(cosmosPatch);
 
         for (PatchOperation patchOperation : patchOperations) {
 

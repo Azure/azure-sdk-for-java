@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchExecutor;
+import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.models.CosmosConflictProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -775,7 +776,7 @@ public class CosmosAsyncContainer {
      * @param <T> the type parameter.
      * @param itemId the item id.
      * @param partitionKey the partition key.
-     * @param patchOperations Represents a list of operations to be sequentially applied to the referred Cosmos item.
+     * @param cosmosPatch Represents a container having list of operations to be sequentially applied to the referred Cosmos item.
      * @param itemType the item type.
      *
      * @return an {@link Mono} containing the Cosmos item resource response with the replaced item or an error.
@@ -783,9 +784,9 @@ public class CosmosAsyncContainer {
     public <T> Mono<CosmosItemResponse<T>> patchItem(
         String itemId,
         PartitionKey partitionKey,
-        List<PatchOperation> patchOperations,
+        CosmosPatch cosmosPatch,
         Class<T> itemType) {
-        return patchItem(itemId, partitionKey, patchOperations, new CosmosItemRequestOptions(), itemType);
+        return patchItem(itemId, partitionKey, cosmosPatch, new CosmosItemRequestOptions(), itemType);
     }
 
     /**
@@ -797,7 +798,7 @@ public class CosmosAsyncContainer {
      * @param <T> the type parameter.
      * @param itemId the item id.
      * @param partitionKey the partition key.
-     * @param patchOperations Represents a list of operations to be sequentially applied to the referred Cosmos item.
+     * @param cosmosPatch Represents a container having list of operations to be sequentially applied to the referred Cosmos item.
      * @param options the request options.
      * @param itemType the item type.
      *
@@ -806,7 +807,7 @@ public class CosmosAsyncContainer {
     public <T> Mono<CosmosItemResponse<T>> patchItem(
         String itemId,
         PartitionKey partitionKey,
-        List<PatchOperation> patchOperations,
+        CosmosPatch cosmosPatch,
         CosmosItemRequestOptions options,
         Class<T> itemType) {
 
@@ -818,7 +819,7 @@ public class CosmosAsyncContainer {
         ModelBridgeInternal.setPartitionKey(options, partitionKey);
 
         final CosmosItemRequestOptions requestOptions = options;
-        return withContext(context -> patchItemInternal(itemId, patchOperations, requestOptions, context, itemType));
+        return withContext(context -> patchItemInternal(itemId, cosmosPatch, requestOptions, context, itemType));
     }
 
     /**
@@ -1039,14 +1040,14 @@ public class CosmosAsyncContainer {
 
     private <T> Mono<CosmosItemResponse<T>> patchItemInternal(
         String itemId,
-        List<PatchOperation> patchOperations,
+        CosmosPatch cosmosPatch,
         CosmosItemRequestOptions options,
         Context context,
         Class<T> itemType) {
 
         Mono<CosmosItemResponse<T>> responseMono = this.getDatabase()
             .getDocClientWrapper()
-            .patchDocument(getItemLink(itemId), patchOperations, ModelBridgeInternal.toRequestOptions(options))
+            .patchDocument(getItemLink(itemId), cosmosPatch, ModelBridgeInternal.toRequestOptions(options))
             .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()));
 
         return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,

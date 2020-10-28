@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.patch;
 
-import com.azure.cosmos.PatchOperation;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
@@ -11,7 +10,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
 /**
  * @param <T> The type of item to be created.
  */
-public class PatchOperationCore<T> extends PatchOperation {
+public final class PatchOperationCore<T> extends PatchOperation {
 
     private String path;
     private T resource;
@@ -31,11 +30,11 @@ public class PatchOperationCore<T> extends PatchOperation {
         this.resource = value;
     }
 
-    public String getPath() {
+    String getPath() {
         return path;
     }
 
-    public T getResource() {
+    T getResource() {
         return resource;
     }
 }
