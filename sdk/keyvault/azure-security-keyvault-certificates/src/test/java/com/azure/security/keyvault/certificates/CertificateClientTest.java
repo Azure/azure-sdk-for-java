@@ -25,7 +25,6 @@ import com.azure.security.keyvault.certificates.models.IssuerProperties;
 import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.security.cert.CertificateException;
