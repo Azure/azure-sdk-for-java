@@ -546,7 +546,11 @@
               </group>
               <group>
                 <title>Azure Core - AMQP</title>
-                <packages>com.azure.core.amqp*</packages>
+                <packages>com.azure.core.amqp:com.azure.core.amqp.exception*:com.azure.core.amqp.models*</packages>
+              </group>
+              <group>
+                <title>Azure Core - AMQP Experimental</title>
+                <packages>com.azure.core.amqp.experimental*</packages>
               </group>
               <group>
                 <title>Azure Core - Experimental</title>
