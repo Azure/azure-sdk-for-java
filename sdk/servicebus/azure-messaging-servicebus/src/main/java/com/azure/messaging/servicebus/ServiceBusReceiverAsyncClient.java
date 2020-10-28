@@ -1100,8 +1100,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                             errorSource = ServiceBusErrorSource.ABANDONED;
                             break;
                         default:
-                            throw logger.logExceptionAsError(new UnsupportedOperationException(String.format(
-                                "'%s' is not supported.", dispositionStatus)));
+                            errorSource = ServiceBusErrorSource.UNKNOWN;
                     }
 
                     return new ServiceBusException((AmqpException) throwable, errorSource);

@@ -494,7 +494,7 @@ class ServiceBusReceiverAsyncClientTest {
             .then(() -> messageSink.next(message))
             .expectNext()
             .verifyErrorMatches(throwable -> {
-                Assertions.assertTrue(throwable instanceof  ServiceBusException);
+                Assertions.assertTrue(throwable instanceof ServiceBusException);
                 final ServiceBusErrorSource actual = ((ServiceBusException) throwable).getErrorSource();
                 Assertions.assertEquals(expectedErrorSource, actual);
                 return true;
@@ -525,7 +525,7 @@ class ServiceBusReceiverAsyncClientTest {
         // Act & Assert
         StepVerifier.create(receiver.receiveMessages().take(1))
             .verifyErrorMatches(throwable -> {
-                Assertions.assertTrue(throwable instanceof  ServiceBusException);
+                Assertions.assertTrue(throwable instanceof ServiceBusException);
                 final ServiceBusErrorSource actual = ((ServiceBusException) throwable).getErrorSource();
                 Assertions.assertEquals(ServiceBusErrorSource.RECEIVE, actual);
                 return true;
