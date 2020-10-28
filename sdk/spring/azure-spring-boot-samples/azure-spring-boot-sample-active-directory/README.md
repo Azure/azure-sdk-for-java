@@ -10,7 +10,7 @@ products:
 # Authentication filter sample for Azure AD Spring Boot Starter client library for Java
 
 ## Key concepts
-This sample illustrates how to use `azure-active-directory-spring-boot-starter` package to plugin JWT token filter into Spring Security filter chain. The filter injects `UserPrincipal` object that is associated with the thread of the current user request. User's AAD membership info, along with token claimsset, JWS object etc. are accessible from the object which can be used for role based authorization. Methods like `isMemberOf` is also supported.
+This sample illustrates how to use `azure-spring-boot-starter-active-directory` package to plugin JWT token filter into Spring Security filter chain. The filter injects `UserPrincipal` object that is associated with the thread of the current user request. User's AAD membership info, along with token claimsset, JWS object etc. are accessible from the object which can be used for role based authorization. Methods like `isMemberOf` is also supported.
 
 ## Getting started
 The sample is composed of two layers: Angular JS client and Spring Boot RESTful Web Service. You need to make some changes to get it working with your Azure AD tenant on both sides.
@@ -18,7 +18,7 @@ The sample is composed of two layers: Angular JS client and Spring Boot RESTful 
 To run this sample, you'll need:
 
 - JDK 1.8 and above
-- [Maven](http://maven.apache.org/) 3.0 and above
+- [Maven](https://maven.apache.org/) 3.0 and above
 - An Internet connection
 - A Windows machine (necessary if you want to run the app on Windows)
 - An OS X machine (necessary if you want to run the app on Mac)
@@ -41,7 +41,7 @@ From your command line:
 ```command line
 git clone https://github.com/Azure/azure-sdk-for-java.git
 ```
-or download and extract the repository .zip file, and navigate to `azure-active-directory-spring-boot-sample` from the list of samples.
+or download and extract the repository .zip file, and navigate to `azure-spring-boot-sample-active-directory` from the list of samples.
 
 ---
 ### Step 2:  Register the sample with your Azure Active Directory tenant

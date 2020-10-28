@@ -5,6 +5,11 @@ package com.azure.spring.cloud.context.core.util;
 
 import java.util.Objects;
 
+/**
+ * Tuple class.
+ * @param <T> The type of the first element in the tuple.
+ * @param <U> The type of the second element in the tuple.
+ */
 public final class Tuple<T, U> {
 
     private final T first;

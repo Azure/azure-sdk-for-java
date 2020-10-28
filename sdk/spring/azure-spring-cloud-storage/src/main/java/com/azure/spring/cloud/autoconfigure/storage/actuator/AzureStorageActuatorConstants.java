@@ -3,10 +3,13 @@
 
 package com.azure.spring.cloud.autoconfigure.storage.actuator;
 
-import java.time.Duration;
-
 import org.springframework.boot.actuate.health.Status;
 
+import java.time.Duration;
+
+/**
+ * Azure Storage actuator related constants.
+ */
 public final class AzureStorageActuatorConstants {
     static final String URL_FIELD = "URL";
     static final Duration POLL_TIMEOUT = Duration.ofSeconds(2);

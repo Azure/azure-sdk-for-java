@@ -19,6 +19,9 @@ import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * Rest client used to send telemetry data to collecting server. An internal http client is wrapped.
+ */
 public class TelemetryRestClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TelemetryRestClient.class);

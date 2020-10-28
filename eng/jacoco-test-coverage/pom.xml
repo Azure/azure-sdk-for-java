@@ -88,6 +88,11 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-core-amqp-experimental</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-amqp-experimental;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-core-experimental</artifactId>
       <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
     </dependency>
@@ -134,7 +139,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.9.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -275,87 +280,87 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager</artifactId>
-      <version>2.0.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;current} -->
+      <version>2.1.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-appplatform</artifactId>
-      <version>2.0.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appplatform;current} -->
+      <version>2.0.0-beta.6</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appplatform;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-appservice</artifactId>
-      <version>2.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appservice;current} -->
+      <version>2.1.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appservice;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-authorization</artifactId>
-      <version>2.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-authorization;current} -->
+      <version>2.1.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-authorization;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-compute</artifactId>
-      <version>2.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-compute;current} -->
+      <version>2.1.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-compute;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-containerinstance</artifactId>
-      <version>2.0.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerinstance;current} -->
+      <version>2.0.0-beta.6</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerinstance;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-containerregistry</artifactId>
-      <version>2.0.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerregistry;current} -->
+      <version>2.0.0-beta.6</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerregistry;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-containerservice</artifactId>
-      <version>2.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerservice;current} -->
+      <version>2.1.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerservice;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-cosmos</artifactId>
-      <version>2.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;current} -->
+      <version>2.1.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-dns</artifactId>
-      <version>2.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-dns;current} -->
+      <version>2.1.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-dns;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-keyvault</artifactId>
-      <version>2.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-keyvault;current} -->
+      <version>2.1.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-keyvault;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-monitor</artifactId>
-      <version>2.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-monitor;current} -->
+      <version>2.1.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-monitor;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-msi</artifactId>
-      <version>2.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-msi;current} -->
+      <version>2.1.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-msi;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-network</artifactId>
-      <version>2.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-network;current} -->
+      <version>2.1.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-network;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-resources</artifactId>
-      <version>2.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
+      <version>2.1.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-sql</artifactId>
-      <version>2.0.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-sql;current} -->
+      <version>2.0.0-beta.6</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-sql;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-storage</artifactId>
-      <version>2.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storage;current} -->
+      <version>2.1.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storage;current} -->
     </dependency>
 
     <dependency>
@@ -401,7 +406,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-spring-data-cosmos</artifactId>
-      <version>3.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
+      <version>3.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -459,9 +464,9 @@
       <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-messaging;current} -->
     </dependency>
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>spring-cloud-starter-azure-appconfiguration-config</artifactId>
-      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config;current} -->
+      <groupId>com.azure.spring</groupId>
+      <artifactId>azure-spring-cloud-starter-appconfiguration-config</artifactId>
+      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-appconfiguration-config;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -495,8 +500,8 @@
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-cloud-servicebus-stream-binder-core</artifactId>
-      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-servicebus-stream-binder-core;current} -->
+      <artifactId>azure-spring-cloud-stream-binder-servicebus-core</artifactId>
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-servicebus-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -505,18 +510,18 @@
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-cloud-servicebus-topic-stream-binder</artifactId>
-      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-servicebus-topic-stream-binder;current} -->
+      <artifactId>azure-spring-cloud-stream-binder-servicebus-topic</artifactId>
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-servicebus-topic;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-cloud-servicebus-queue-stream-binder</artifactId>
-      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-servicebus-queue-stream-binder;current} -->
+      <artifactId>azure-spring-cloud-stream-binder-servicebus-queue</artifactId>
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-servicebus-queue;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-cloud-eventhubs-stream-binder</artifactId>
-      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-eventhubs-stream-binder;current} -->
+      <artifactId>azure-spring-cloud-stream-binder-eventhubs</artifactId>
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-eventhubs;current} -->
     </dependency>
 	<dependency>
       <groupId>com.azure</groupId>
@@ -547,27 +552,6 @@
             </configuration>
           </execution>
         </executions>
-      </plugin>
-      <!-- This entire plugin configuration needs to be removed once Spring's groupId changes to com.azure -->
-      <!-- Normally com.microsoft.azure:* would not be OK to add to the plugin configuration since that groupdId
-           isn't limited to what we build as part of the data track. In this particular case it's OK since the only
-           jacoco dependencies are limited to libraries we build.
-      -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
-        <configuration>
-          <rules>
-            <bannedDependencies>
-              <includes>
-                <!--This is fine for in here but individual libraries need to list out everything. This mainly because
-                    com.microsoft.azure includes things that are not owned or built by the azure-sdk team. -->
-                <include>com.microsoft.azure:*</include>
-              </includes>
-            </bannedDependencies>
-          </rules>
-        </configuration>
       </plugin>
     </plugins>
   </build>

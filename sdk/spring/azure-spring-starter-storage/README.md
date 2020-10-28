@@ -98,7 +98,7 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [azure_subscription]: https://azure.microsoft.com/free
 [logging_doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
-[maven]: http://maven.apache.org/
+[maven]: https://maven.apache.org/
 [azure_blob_storage]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-introduction
 [azure_storage]: https://azure.microsoft.com/services/storage/blobs/
 [other_operation]: https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#resources

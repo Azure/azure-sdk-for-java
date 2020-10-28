@@ -7,7 +7,7 @@ The Spring Data Gremlin Starter provides Spring Data support for the Gremlin que
 ### Prerequisites
 - [Java Development Kit (JDK)][jdk_link] with version 8 or above
 - [Azure Subscription][azure_subscription]
-- [Maven](http://maven.apache.org/) 3.0 and above
+- [Maven](https://maven.apache.org/) 3.0 and above
 
 ### Include the package
 [//]: # ({x-version-update-start;com.azure.spring:azure-spring-boot-starter-data-gremlin;current})

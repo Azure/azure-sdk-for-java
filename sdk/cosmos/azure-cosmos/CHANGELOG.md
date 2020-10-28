@@ -1,9 +1,19 @@
 ## Release History
 
-## 4.8.0-beta.1 (Unreleased)
+## 4.9.0-beta.1 (Unreleased)
 
 
-### 4.7.0 (2020-10-17)
+### 4.8.0 (2020-10-27)
+#### New Features
+* Added `contentResponseOnWriteEnabled` feature to `CosmosItemRequestOptions`.
+#### Key Bug Fixes
+* Fixed an issue which may affect query behaviour when resuming from a continuation token.
+
+### 4.7.1 (2020-10-21)
+#### Key Bug Fixes
+* Improved the 449 retry policy to force back-off on initial retry and start with shorter back-offs.
+
+### 4.7.0 (2020-10-17) NOTE: WE STRONGLY RECOMMEND OUR CUSTOMERS TO USE VERSION 4.7.0 AND ABOVE
 #### New Features
 * Added Beta for transactional batches.
 
@@ -19,7 +29,7 @@
 * Added new API to support AAD role-based access control in Cosmos. This is a preview feature which needs to be enabled at the account settings.
 * Added handler API(beta) to `CosmosPagedFlux`/`CosmosPagedIterable` to be invoked on every response.
 
-### 4.5.2 (2020-09-29) NOTE: WE STRONGLY RECOMMEND OUR CUSTOMERS TO USE VERSION 4.5.2 AND ABOVE
+### 4.5.2 (2020-09-29)
 #### Key Bug Fixes
 * Increased robustness of query execution and fetching metadata cache in case of intermittent connectivity issues.
 
