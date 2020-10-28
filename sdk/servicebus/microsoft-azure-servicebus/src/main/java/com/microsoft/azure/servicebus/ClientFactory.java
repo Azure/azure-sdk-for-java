@@ -113,10 +113,29 @@ public final class ClientFactory {
      * @throws InterruptedException if the current thread was interrupted while waiting
      * @throws ServiceBusException if the sender cannot be created
      */
+    @Deprecated
     public static IMessageSender createTransferMessageSenderFromEntityPath(MessagingFactory messagingFactory, String entityPath, String viaEntityPath)  throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(createTransferMessageSenderFromEntityPathAsync(messagingFactory, entityPath, viaEntityPath));
     }
 
+    /**
+     * Creates a transacted message sender. This sender sends message to destination entity via another entity.
+     *
+     * This is mainly to be used when sending messages in a transaction.
+     * When messages need to be sent across entities in a single transaction, this can be used to ensure
+     * all the messages land initially in the same entity/partition for local transactions, and then
+     * let service bus handle transferring the message to the actual destination.
+     * @param messagingFactory messaging factory (which represents a connection) on which sender needs to be created.
+     * @param entityPath path of the final destination of the message.
+     * @param transactionContext the TransactionContext that this sender will be a part of.
+     * @return IMessageSender instance
+     * @throws InterruptedException if the current thread was interrupted while waiting
+     * @throws ServiceBusException if the sender cannot be created
+     */
+    public static IMessageSender createTransactedMessageSenderFromEntityPath(MessagingFactory messagingFactory, String entityPath, TransactionContext transactionContext)  throws InterruptedException, ServiceBusException {
+        return Utils.completeFuture(createTransactedMessageSenderFromEntityPathAsync(messagingFactory, entityPath, transactionContext));
+    }
+    
     /**
      * Create message sender asynchronously from connection string with <a href="https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-sas">Shared Access Signatures</a>
      *
@@ -170,7 +189,7 @@ public final class ClientFactory {
 
     static CompletableFuture<IMessageSender> createMessageSenderFromEntityPathAsync(URI namespaceEndpointURI, String entityPath, MessagingEntityType entityType, ClientSettings clientSettings) {
         Utils.assertNonNull("namespaceEndpointURI", namespaceEndpointURI);
-        MessageSender sender = new MessageSender(namespaceEndpointURI, entityPath, null, entityType, clientSettings);
+        MessageSender sender = new MessageSender(namespaceEndpointURI, entityPath, null, null, entityType, clientSettings);
         return sender.initializeAsync().thenApply((v) -> sender);
     }
 
@@ -202,9 +221,30 @@ public final class ClientFactory {
      * @param viaEntityPath The initial destination of the message.
      * @return a CompletableFuture representing the pending creating of IMessageSender instance.
      */
+    @Deprecated
     public static CompletableFuture<IMessageSender> createTransferMessageSenderFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, String viaEntityPath) {
         Utils.assertNonNull("messagingFactory", messagingFactory);
-        MessageSender sender = new MessageSender(messagingFactory, viaEntityPath, entityPath, null);
+        MessageSender sender = new MessageSender(messagingFactory, viaEntityPath, entityPath, null, null);
+        return sender.initializeAsync().thenApply((v) -> sender);
+    }
+    
+    /**
+     * Creates a transacted message sender asynchronously. 
+     * This sender sends message to destination entity via the queue/topic of the first transacted sender/receiver attached with the transaction.
+     *
+     * This is mainly to be used when sending messages in a transaction.
+     * When messages need to be sent across entities in a single transaction, this can be used to ensure
+     * all the messages land initially in the same entity/partition for local transactions, and then
+     * let service bus handle transferring the message to the actual destination.
+     * @param messagingFactory messaging factory (which represents a connection) on which sender needs to be created.
+     * @param entityPath path of the final destination of the message.
+     * @param transactionContext The TransactionContext that this sender will be a part of.
+     * @return a CompletableFuture representing the pending creating of IMessageSender instance.
+     */
+    public static CompletableFuture<IMessageSender> createTransactedMessageSenderFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, TransactionContext transactionContext) {
+        Utils.assertNonNull("messagingFactory", messagingFactory);
+        Utils.assertNonNull("transactionContext", transactionContext);
+        MessageSender sender = new MessageSender(messagingFactory, entityPath, null, transactionContext, null);
         return sender.initializeAsync().thenApply((v) -> sender);
     }
 
@@ -342,9 +382,36 @@ public final class ClientFactory {
     public static IMessageReceiver createMessageReceiverFromEntityPath(MessagingFactory messagingFactory, String entityPath, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(createMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, receiveMode));
     }
+    
+    /**
+     * Creates a message receiver to the entity.
+     * @param messagingFactory messaging factory (which represents a connection) on which receiver needs to be created
+     * @param entityPath path of the entity
+     * @param transactionContext the TransactionContext that this receiver will be a part of
+     * @return IMessageReceiver instance
+     * @throws InterruptedException if the current thread was interrupted while waiting
+     * @throws ServiceBusException if the receiver cannot be created
+     */
+    public static IMessageReceiver createTransactedMessageReceiverFromEntityPath(MessagingFactory messagingFactory, String entityPath, TransactionContext transactionContext) throws InterruptedException, ServiceBusException {
+        return Utils.completeFuture(createTransactedMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, transactionContext, DEFAULTRECEIVEMODE));
+    }
+    
+    /**
+     * Creates a message receiver to the entity.
+     * @param messagingFactory messaging factory (which represents a connection) on which receiver needs to be created
+     * @param entityPath path of the entity
+     * @param transactionContext the TransactionContext that this receiver will be a part of
+     * @param receiveMode PeekLock or ReceiveAndDelete
+     * @return IMessageReceiver instance
+     * @throws InterruptedException if the current thread was interrupted while waiting
+     * @throws ServiceBusException if the receiver cannot be created
+     */
+    public static IMessageReceiver createTransactedMessageReceiverFromEntityPath(MessagingFactory messagingFactory, String entityPath, TransactionContext transactionContext, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
+        return Utils.completeFuture(createTransactedMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, transactionContext, receiveMode));
+    }
 
-    static IMessageReceiver createMessageReceiverFromEntityPath(MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
-        return Utils.completeFuture(createMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, entityType, receiveMode));
+    static IMessageReceiver createMessageReceiverFromEntityPath(MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType, TransactionContext transactionContext, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
+        return Utils.completeFuture(createMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, entityType, transactionContext, receiveMode));
     }
 
     /**
@@ -437,7 +504,7 @@ public final class ClientFactory {
     public static CompletableFuture<IMessageReceiver> createMessageReceiverFromEntityPathAsync(URI namespaceEndpointURI, String entityPath, ClientSettings clientSettings, ReceiveMode receiveMode) {
         Utils.assertNonNull("namespaceEndpointURI", namespaceEndpointURI);
         Utils.assertNonNull("entityPath", entityPath);
-        MessageReceiver receiver = new MessageReceiver(namespaceEndpointURI, entityPath, null, clientSettings, receiveMode);
+        MessageReceiver receiver = new MessageReceiver(namespaceEndpointURI, entityPath, null, clientSettings, null, receiveMode);
         return receiver.initializeAsync().thenApply((v) -> receiver);
     }
 
@@ -459,12 +526,37 @@ public final class ClientFactory {
      * @return a CompletableFuture representing the pending creation of message receiver
      */
     public static CompletableFuture<IMessageReceiver> createMessageReceiverFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, ReceiveMode receiveMode) {
-        return createMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, null, receiveMode);
+        return createMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, null, null, receiveMode);
+    }
+    
+    /**
+     * Asynchronously creates a new transacted message receiver to the entity on the messagingFactory.
+     * @param messagingFactory messaging factory (which represents a connection) on which receiver needs to be created.
+     * @param entityPath path of entity
+     * @param transactionContext the TransactionContext that this receiver will be a part of.
+     * @return a CompletableFuture representing the pending creation of message receiver
+     */
+    public static CompletableFuture<IMessageReceiver> createTransactedMessageReceiverFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, TransactionContext transactionContext) {
+        Utils.assertNonNull("transactionContext", transactionContext);
+        return createMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, null, transactionContext, DEFAULTRECEIVEMODE);
+    }
+    
+    /**
+     * Asynchronously creates a new transacted message receiver to the entity on the messagingFactory.
+     * @param messagingFactory messaging factory (which represents a connection) on which receiver needs to be created.
+     * @param entityPath path of entity
+     * @param transactionContext the TransactionContext that this receiver will be a part of.
+     * @param receiveMode PeekLock or ReceiveAndDelete
+     * @return a CompletableFuture representing the pending creation of message receiver
+     */
+    public static CompletableFuture<IMessageReceiver> createTransactedMessageReceiverFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, TransactionContext transactionContext, ReceiveMode receiveMode) {
+        Utils.assertNonNull("transactionContext", transactionContext);
+        return createMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, null, transactionContext, receiveMode);
     }
 
-    static CompletableFuture<IMessageReceiver> createMessageReceiverFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType, ReceiveMode receiveMode) {
+    static CompletableFuture<IMessageReceiver> createMessageReceiverFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType, TransactionContext transactionContext, ReceiveMode receiveMode) {
         Utils.assertNonNull("messagingFactory", messagingFactory);
-        MessageReceiver receiver = new MessageReceiver(messagingFactory, entityPath, entityType, receiveMode);
+        MessageReceiver receiver = new MessageReceiver(messagingFactory, entityPath, entityType, transactionContext, receiveMode);
         return receiver.initializeAsync().thenApply((v) -> receiver);
     }
 

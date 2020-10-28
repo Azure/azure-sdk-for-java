@@ -93,7 +93,6 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
     private SenderLinkSettings linkSettings;
     private String transferDestinationPath;
     private String transferSasTokenAudienceURI;
-    private boolean isSendVia;
     private int maxMessageSize;
     private boolean shouldRetryLinkOpenIfConnectionIsClosedAfterCBSTokenSent = true;
 
@@ -101,24 +100,44 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
     public static CompletableFuture<CoreMessageSender> create(
             final MessagingFactory factory,
             final String clientId,
-            final String senderPath,
-            final String transferDestinationPath) {
-        return CoreMessageSender.create(factory, clientId, senderPath, transferDestinationPath, null);
+            final String senderPath) {
+        return CoreMessageSender.create(factory, clientId, senderPath, null);
     }
 
     public static CompletableFuture<CoreMessageSender> create(
             final MessagingFactory factory,
             final String clientId,
             final String senderPath,
-            final String transferDestinationPath,
             final MessagingEntityType entityType) {
-        return CoreMessageSender.create(factory, clientId, entityType, CoreMessageSender.getDefaultLinkProperties(senderPath, transferDestinationPath, factory, entityType));
+
+        return CoreMessageSender.create(factory, clientId, null, entityType, CoreMessageSender.getDefaultLinkProperties(senderPath, factory, entityType));
+    }
+    
+    public static CompletableFuture<CoreMessageSender> create(
+            final MessagingFactory factory,
+            final String clientId,
+            final String senderPath,
+            final TransactionContext transactionContext,
+            final MessagingEntityType entityType) {
+
+        return CoreMessageSender.create(factory, clientId, transactionContext, entityType, CoreMessageSender.getDefaultLinkProperties(senderPath, factory, entityType));
     }
 
     static CompletableFuture<CoreMessageSender> create(
             final MessagingFactory factory,
             final String clientId,
+            final TransactionContext transactionContext,
             final MessagingEntityType entityType,
+            final SenderLinkSettings linkSettings) {
+        return create(factory, clientId, transactionContext, entityType, null, linkSettings);
+    }
+            
+    static CompletableFuture<CoreMessageSender> create(
+            final MessagingFactory factory,
+            final String clientId,
+            final TransactionContext transactionContext,
+            final MessagingEntityType entityType,
+            final Session session,
             final SenderLinkSettings linkSettings) {
         TRACE_LOGGER.info("Creating core message sender to '{}'", linkSettings.linkPath);
 
@@ -131,7 +150,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
         final CoreMessageSender msgSender = new CoreMessageSender(factory, clientId, entityType, linkSettings);
         TimeoutTracker openLinkTracker = TimeoutTracker.create(factory.getOperationTimeout());
         msgSender.initializeLinkOpen(openLinkTracker);
-
+        
         CompletableFuture<Void> authenticationFuture = null;
         if (linkSettings.requiresAuthentication) {
             authenticationFuture = msgSender.sendTokenAndSetRenewTimer(false);
@@ -146,10 +165,16 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
                 msgSender.linkFirstOpen.completeExceptionally(cause);
             } else {
                 try {
+                    Session linkSession = session;
+                    if (linkSession == null && transactionContext != null) {
+                        linkSession = msgSender.underlyingFactory.getOrCreateController(transactionContext.getTransactionId()).join().getSession();
+                    }
+                    
+                    Session linkSessionFinal = linkSession; // Must be an effectively final variable to be used in the scope below
                     msgSender.underlyingFactory.scheduleOnReactorThread(new DispatchHandler() {
                         @Override
                         public void onEvent() {
-                            msgSender.createSendLink(msgSender.linkSettings);
+                            msgSender.createSendLink(linkSessionFinal, msgSender.linkSettings);
                         }
                     });
                 } catch (IOException ioException) {
@@ -209,7 +234,6 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
             String transferPath = (String) linkSettings.linkProperties.getOrDefault(ClientConstants.LINK_TRANSFER_DESTINATION_PROPERTY, null);
             if (transferPath != null && !transferPath.isEmpty()) {
                 this.transferDestinationPath = transferPath;
-                this.isSendVia = true;
                 this.transferSasTokenAudienceURI = String.format(ClientConstants.SAS_TOKEN_AUDIENCE_FORMAT, factory.getHostName(), transferDestinationPath);
             } else {
                 // Ensure it is null.
@@ -549,7 +573,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
         ExceptionUtil.completeExceptionally(failedSend.getWork(), exception, this, true);
     }
 
-    private static SenderLinkSettings getDefaultLinkProperties(String sendPath, String transferDestinationPath, MessagingFactory underlyingFactory, MessagingEntityType entityType) {
+    private static SenderLinkSettings getDefaultLinkProperties(String sendPath, MessagingFactory underlyingFactory, MessagingEntityType entityType) {
         SenderLinkSettings linkSettings = new SenderLinkSettings();
         linkSettings.linkPath = sendPath;
 
@@ -566,9 +590,6 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
         if (entityType != null) {
             linkProperties.put(ClientConstants.ENTITY_TYPE_PROPERTY, entityType.getIntValue());
         }
-        if (transferDestinationPath != null && !transferDestinationPath.isEmpty()) {
-            linkProperties.put(ClientConstants.LINK_TRANSFER_DESTINATION_PROPERTY, transferDestinationPath);
-        }
 
         linkSettings.linkProperties = linkProperties;
 
@@ -576,6 +597,10 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
     }
 
     private void createSendLink(SenderLinkSettings linkSettings) {
+        createSendLink(null, linkSettings);
+    }
+    
+    private void createSendLink(Session session, SenderLinkSettings linkSettings) {
         TRACE_LOGGER.info("Creating send link to '{}'", this.sendPath);
         Connection connection = this.underlyingFactory.getActiveConnectionOrNothing();
 		if (connection == null) {
@@ -599,13 +624,9 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 
 			return;
 		}
-		
-        final Session session = connection.session();
-        session.setOutgoingWindow(Integer.MAX_VALUE);
-        session.open();
-        BaseHandler.setHandler(session, new SessionHandler(sendPath));
 
-        final Sender sender = session.sender(linkSettings.linkName);
+        Session linkSession = session == null ? this.underlyingFactory.getSession() : session;
+        final Sender sender = linkSession.sender(linkSettings.linkName);
         sender.setTarget(linkSettings.target);
         sender.setSource(linkSettings.source);
         sender.setProperties(linkSettings.linkProperties);

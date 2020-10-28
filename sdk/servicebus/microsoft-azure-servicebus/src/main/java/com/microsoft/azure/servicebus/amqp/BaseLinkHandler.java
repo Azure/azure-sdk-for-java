@@ -25,7 +25,6 @@ public class BaseLinkHandler extends BaseHandler {
         final Link link = event.getLink();
         if (link != null) {
             TRACE_LOGGER.debug("local link close. linkName:{}", link.getName());
-            closeSession(link);
         }
         freeClosedLink(link);
     }
@@ -41,7 +40,6 @@ public class BaseLinkHandler extends BaseHandler {
 
             ErrorCondition condition = link.getRemoteCondition();
             this.processOnClose(link, condition);
-            closeSession(link);
         }
         freeClosedLink(link);
     }

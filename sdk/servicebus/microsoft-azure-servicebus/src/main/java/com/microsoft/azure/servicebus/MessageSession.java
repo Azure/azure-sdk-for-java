@@ -15,7 +15,7 @@ public class MessageSession extends MessageReceiver implements IMessageSession {
     private String requestedSessionId;
     
     MessageSession(URI namespaceEndpointURI, String entityPath, MessagingEntityType entityType, String requestedSessionId, ClientSettings clientSettings, ReceiveMode receiveMode) {
-        super(namespaceEndpointURI, entityPath, entityType, clientSettings, receiveMode);
+        super(namespaceEndpointURI, entityPath, entityType, clientSettings, null, receiveMode);
         this.requestedSessionId = requestedSessionId;
     }
 

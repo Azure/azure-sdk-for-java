@@ -86,7 +86,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
         this.messageHandlerOptions = handlerOptions;
         this.customCodeExecutor = executorService;
 
-        this.innerReceiver = ClientFactory.createMessageReceiverFromEntityPath(this.factory, this.entityPath, this.entityType, this.receiveMode);
+        this.innerReceiver = ClientFactory.createMessageReceiverFromEntityPath(this.factory, this.entityPath, this.entityType, null, this.receiveMode);
         TRACE_LOGGER.info("Created MessageReceiver to entity '{}'", this.entityPath);
         if (this.prefetchCount != UNSET_PREFETCH_COUNT) {
             this.innerReceiver.setPrefetchCount(this.prefetchCount);

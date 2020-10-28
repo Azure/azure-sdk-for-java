@@ -36,6 +36,12 @@ class AsyncUtil {
     public static <T> void completeFutureExceptionally(CompletableFuture<T> future, Throwable exception) {
         MessagingFactory.INTERNAL_THREAD_POOL.submit(new CompleteExceptionallyCallable<>(future, exception));
     }
+    
+    public static <T> CompletableFuture<T> completedFutureFromException(Throwable exception) {
+        CompletableFuture<T> future = new CompletableFuture<T>();
+        future.completeExceptionally(exception);
+        return future;
+    }
 
     public static void run(Runnable runnable) {
         MessagingFactory.INTERNAL_THREAD_POOL.submit(runnable);
