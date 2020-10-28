@@ -295,19 +295,19 @@ res.waitForCompletion();
 ```
 
 ### Release Phone Numbers
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L399-L409 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L389-L399 -->
 ```java
-    PhoneNumber phoneNumber = new PhoneNumber("PHONE_NUMBER_TO_RELEASE");
-    List<PhoneNumber> phoneNumbers = new ArrayList<>();
-    phoneNumbers.add(phoneNumber);
-    PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+Duration duration = Duration.ofSeconds(1);
+PhoneNumber phoneNumber = new PhoneNumber("PHONE_NUMBER_TO_RELEASE");
+List<PhoneNumber> phoneNumbers = new ArrayList<>();
+phoneNumbers.add(phoneNumber);
+PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
-    SyncPoller<PhoneNumberRelease, PhoneNumberRelease> res = 
-        phoneNumberClient.beginReleasePhoneNumbers(phoneNumbers, duration);
-    res.waitForCompletion();
-    PhoneNumberRelease result = res.getFinalResult();
-    System.out.println("Phone number release status: " + result.getStatus());
-}
+SyncPoller<PhoneNumberRelease, PhoneNumberRelease> res = 
+    phoneNumberClient.beginReleasePhoneNumbers(phoneNumbers, duration);
+res.waitForCompletion();
+PhoneNumberRelease result = res.getFinalResult();
+System.out.println("Phone number release status: " + result.getStatus());
 ```
 
 ## Contributing
