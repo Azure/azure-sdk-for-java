@@ -2,6 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.context.core.util;
 
+/**
+ * The User Agent constants.
+ */
 public class Constants {
 
     // for the User-Agent header set in track2 SDKs

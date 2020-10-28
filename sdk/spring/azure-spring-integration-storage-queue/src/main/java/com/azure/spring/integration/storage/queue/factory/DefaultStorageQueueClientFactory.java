@@ -16,9 +16,12 @@ import java.util.function.Function;
 
 import static com.azure.spring.cloud.context.core.util.Constants.SPRING_INTEGRATION_STORAGE_QUEUE_APPLICATION_ID;
 
+/**
+ * Default client factory for Storage Queue.
+ */
 public class DefaultStorageQueueClientFactory implements StorageQueueClientFactory {
     private static final Logger LOG = LoggerFactory.getLogger(DefaultStorageQueueClientFactory.class);
-    private String connectionString;
+    private final String connectionString;
     private final Function<String, QueueAsyncClient> queueClientCreator = Memoizer.memoize(this::createQueueClient);
 
     public DefaultStorageQueueClientFactory(@NonNull String connectionString) {

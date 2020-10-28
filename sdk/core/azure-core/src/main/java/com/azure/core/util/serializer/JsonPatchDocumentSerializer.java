@@ -4,8 +4,8 @@
 package com.azure.core.util.serializer;
 
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.JsonPatchDocument;
-import com.azure.core.util.JsonPatchOperation;
+import com.azure.core.models.JsonPatchDocument;
+import com.azure.core.models.JsonPatchOperation;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;

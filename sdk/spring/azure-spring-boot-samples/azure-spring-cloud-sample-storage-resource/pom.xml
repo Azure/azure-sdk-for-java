@@ -12,7 +12,7 @@
   <artifactId>azure-spring-cloud-sample-storage-resource</artifactId>
   <groupId>com.azure.spring</groupId>
   <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-sample-storage-resource;current} -->
-  <name>Azure Spring Cloud Storage Sample</name>
+  <name>Azure Spring Cloud Sample Storage Resource</name>
 
   <dependencyManagement>
     <dependencies>

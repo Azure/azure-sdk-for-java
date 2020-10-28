@@ -3,7 +3,7 @@
 
 package com.azure.core.util.serializer;
 
-import com.azure.core.util.JsonPatchOperation;
+import com.azure.core.models.JsonPatchOperation;
 import com.azure.core.util.Option;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
