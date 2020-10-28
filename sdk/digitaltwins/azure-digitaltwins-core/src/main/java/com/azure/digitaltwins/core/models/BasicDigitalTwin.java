@@ -60,7 +60,7 @@ public final class BasicDigitalTwin {
      * Gets a string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.
      * @return A string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.
      */
-    public String getEtag() {
+    public String getETag() {
         return twinETag;
     }
 
@@ -69,7 +69,7 @@ public final class BasicDigitalTwin {
      * @param twinETag A string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.
      * @return The BasicDigitalTwin object itself.
      */
-    public BasicDigitalTwin setEtag(String twinETag) {
+    public BasicDigitalTwin setETag(String twinETag) {
         this.twinETag = twinETag;
         return this;
     }
