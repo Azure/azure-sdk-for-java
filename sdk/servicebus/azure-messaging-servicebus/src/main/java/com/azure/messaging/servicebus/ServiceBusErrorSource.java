@@ -37,6 +37,6 @@ public final class ServiceBusErrorSource extends ExpandableStringEnum<ServiceBus
     public static final ServiceBusErrorSource UNKNOWN = fromString("UNKNOWN", ServiceBusErrorSource.class);
 
     /** Error while user's code is running for a message.*/
-    public static final ServiceBusErrorSource USER_CODE = fromString("USER_CODE", ServiceBusErrorSource.class);
+    public static final ServiceBusErrorSource USER_CALLBACK = fromString("USER_CALLBACK", ServiceBusErrorSource.class);
 
 }
