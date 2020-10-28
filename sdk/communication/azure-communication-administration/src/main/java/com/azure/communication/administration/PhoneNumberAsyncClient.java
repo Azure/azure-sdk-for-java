@@ -62,6 +62,7 @@ import static com.azure.core.util.FluxUtil.pagedFluxError;
 public final class PhoneNumberAsyncClient {
     private final ClientLogger logger = new ClientLogger(PhoneNumberAsyncClient.class);
     private final PhoneNumberAdministrationsImpl phoneNumberAdministrations;
+    private final Duration defaultPollInterval = Duration.ofSeconds(1);
 
     PhoneNumberAsyncClient(PhoneNumberAdminClientImpl phoneNumberAdminClient) {
         this.phoneNumberAdministrations = phoneNumberAdminClient.getPhoneNumberAdministrations();
@@ -735,8 +736,7 @@ public final class PhoneNumberAsyncClient {
      * @param searchId ID of the search
      * @return A {@link Mono} for the asynchronous return
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> purchaseSearch(String searchId) {
+    private Mono<Void> purchaseSearch(String searchId) {
         return purchaseSearchWithResponse(searchId).flatMap(FluxUtil::toMono);
     }
 
@@ -746,12 +746,11 @@ public final class PhoneNumberAsyncClient {
      * @param searchId ID of the search
      * @return A {@link Mono} containing a {@link Response} for the operation
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> purchaseSearchWithResponse(String searchId) {
+    private Mono<Response<Void>> purchaseSearchWithResponse(String searchId) {
         return purchaseSearchWithResponse(searchId, null);
     }
 
-    Mono<Response<Void>> purchaseSearchWithResponse(String searchId, Context context) {
+    private Mono<Response<Void>> purchaseSearchWithResponse(String searchId, Context context) {
         Objects.requireNonNull(searchId, "'searchId' cannot be null.");
 
         try {
@@ -779,7 +778,11 @@ public final class PhoneNumberAsyncClient {
     public PollerFlux<PhoneNumberSearch, PhoneNumberSearch> beginCreateSearch(
         CreateSearchOptions options, Duration pollInterval) {
         Objects.requireNonNull(options, "'options' cannot be null.");
-        Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
+
+        if (pollInterval == null) {
+            pollInterval = defaultPollInterval;
+        }
+
         return new PollerFlux<PhoneNumberSearch, PhoneNumberSearch>(pollInterval,
             createSearchActivationOperation(options),
             createSearchPollOperation(),
@@ -849,7 +852,10 @@ public final class PhoneNumberAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<Void, Void> beginPurchaseSearch(String searchId, Duration pollInterval) {
         Objects.requireNonNull(searchId, "'searchId' can not be null.");
-        Objects.requireNonNull(pollInterval, "'pollInterval' can not be null.");
+        
+        if (pollInterval == null) {
+            pollInterval = defaultPollInterval;
+        }
 
         return new PollerFlux<Void, Void>(pollInterval,
             purchaseSearchActivationOperation(searchId),
@@ -858,11 +864,10 @@ public final class PhoneNumberAsyncClient {
             purchaseSearchFetchResultOperation());
     }
 
-    private Function<PollingContext<Void>, Mono<Void>> purchaseSearchActivationOperation(String searchId) {
-
+    private Function<PollingContext<Void>, 
+        Mono<Void>> purchaseSearchActivationOperation(String searchId) {
         return (pollingContext) -> {
-            Mono<Void> response = purchaseSearch(searchId);
-            return response;
+            return purchaseSearch(searchId);
         };
     }
 
@@ -871,13 +876,12 @@ public final class PhoneNumberAsyncClient {
         return (pollingContext) -> getSearchById(searchId)
             .flatMap(getSearchResponse -> {
                 SearchStatus statusResponse = getSearchResponse.getStatus();
-                if (statusResponse.equals(SearchStatus.RESERVED) 
-                    || statusResponse.equals(SearchStatus.EXPIRED)
-                    || statusResponse.equals(SearchStatus.SUCCESS)) {
+                if (statusResponse.equals(SearchStatus.SUCCESS)) {
                     return Mono.just(new PollResponse<>(
                     LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null));
                 }
-                if (statusResponse.equals(SearchStatus.ERROR)) {
+                if (statusResponse.equals(SearchStatus.ERROR) 
+                    || statusResponse.equals(SearchStatus.EXPIRED)) {
                     return Mono.just(new PollResponse<>(
                     LongRunningOperationStatus.FAILED, null));
                 }

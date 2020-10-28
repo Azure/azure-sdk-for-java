@@ -327,15 +327,6 @@ public class ReadmeSamples {
     }
 
     /**
-     * Sample code to purchase a phone number search
-     */
-    public void purchasePhoneNumberSearch() {
-        String phoneNumberSearchId = "SEARCH_ID_TO_PURCHASE";
-        PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
-        phoneNumberClient.purchaseSearch(phoneNumberSearchId);
-    }
-
-    /**
      * Sample code to configure a phone number
      */
     public void configurePhoneNumber() {
