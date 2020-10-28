@@ -61,6 +61,13 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
         this.providers = providers;
     }
 
+    /**
+     * @return the providers endpoint contained in policy
+     */
+    public Providers providers() {
+        return providers;
+    }
+
     private boolean isResponseSuccessful(HttpResponse response) {
         return response.getStatusCode() >= 200 && response.getStatusCode() < 300;
     }

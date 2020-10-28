@@ -228,7 +228,10 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
 
         for (int i = 0; i < httpPipeline.getPolicyCount(); ++i) {
             if (httpPipeline.getPolicy(i) instanceof ProviderRegistrationPolicy) {
-                ((ProviderRegistrationPolicy) httpPipeline.getPolicy(i)).setProviders(providers());
+                ProviderRegistrationPolicy policy = (ProviderRegistrationPolicy) httpPipeline.getPolicy(i);
+                if (policy.providers() == null) {
+                    policy.setProviders(providers());
+                }
             }
         }
     }
