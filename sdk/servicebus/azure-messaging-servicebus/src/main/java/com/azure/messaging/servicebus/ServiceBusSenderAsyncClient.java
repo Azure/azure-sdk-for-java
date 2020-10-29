@@ -371,26 +371,25 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             return fluxError(logger, new NullPointerException("'scheduledEnqueueTime' cannot be null."));
         }
 
-        return getSendLink().flatMapMany(link -> createMessageBatch()
-            .flatMapMany(messageBatch -> {
+        return createMessageBatch()
+            .map(messageBatch -> {
                 int index = 0;
                 for (ServiceBusMessage message : messages) {
                     if (!messageBatch.tryAddMessage(message)) {
                         final String error = String.format(Locale.US,
                             "Messages exceed max allowed size for all the messages together. "
                                 + "Failed to add message at index '%s'.", index);
-                        throw logger.logExceptionAsError(new AmqpException(false,
-                            AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, error, link.getErrorContext()));
+                        throw logger.logExceptionAsError(new IllegalArgumentException(error));
                     }
                     ++index;
                 }
-
-                return connectionProcessor
-                    .flatMap(connection -> connection.getManagementNode(entityName, entityType))
-                    .flatMapMany(managementNode -> managementNode.schedule(messageBatch.getMessages(),
-                        scheduledEnqueueTime, messageBatch.getMaxSizeInBytes(), link.getLinkName(),
-                        transactionContext));
-            }));
+                return messageBatch;
+            })
+            .flatMapMany(messageBatch -> connectionProcessor
+                .flatMap(connection -> connection.getManagementNode(entityName, entityType))
+                .flatMapMany(managementNode -> managementNode.schedule(messageBatch.getMessages(),
+                    scheduledEnqueueTime, messageBatch.getMaxSizeInBytes(), linkName.get(), transactionContext))
+            );
     }
 
     /**
