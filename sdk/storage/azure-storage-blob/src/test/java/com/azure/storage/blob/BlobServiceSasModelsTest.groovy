@@ -256,25 +256,4 @@ class BlobServiceSasModelsTest extends Specification {
         "container"  | "blob"  | "snapshot"  | null      | new BlobSasPermission().setReadPermission(true)                                  || "bs"     | "r"
         "container"  | "blob"  | null        | "version" | new BlobSasPermission().setReadPermission(true)                                  || "bv"     | "r"
     }
-
-    @Unroll
-    def "ensure state permission illegal argument"() {
-        setup:
-        def e = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)
-        def p = new BlobContainerSasPermission().setReadPermission(true).setListPermission(true)
-
-        when:
-        def v = new BlobServiceSasSignatureValues(e, p)
-        BlobSasImplUtil implUtil = new BlobSasImplUtil(v, "containerName", "blobName", snapId, null)
-
-        implUtil.ensureState()
-
-        then:
-        thrown(IllegalArgumentException)
-
-        where:
-        snapId || _
-        null   || _
-        "id"   || _
-    }
 }
