@@ -53,6 +53,11 @@ public interface DatabasisServerSensitivityLabelModel extends HasInner<Sensitivi
     String name();
 
     /**
+     * @return the rank value.
+     */
+    SensitivityLabelRank rank();
+
+    /**
      * @return the type value.
      */
     String type();
