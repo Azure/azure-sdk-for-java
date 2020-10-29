@@ -18,7 +18,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineDataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineUnmanagedDataDisk;
 import com.azure.resourcemanager.test.utils.TestUtilities;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import java.io.IOException;
@@ -193,7 +193,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
 
         customImage = computeManager.virtualMachineCustomImages().getByResourceGroup(rgName, imageName);
         Assertions.assertNotNull(customImage);
-        Assertions.assertNotNull(customImage.inner());
+        Assertions.assertNotNull(customImage.innerModel());
         computeManager.virtualMachineCustomImages().deleteById(customImage.id());
     }
 

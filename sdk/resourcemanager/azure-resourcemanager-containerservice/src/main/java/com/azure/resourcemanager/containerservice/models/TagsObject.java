@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The TagsObject model. */
+/** Tags object for patch operations. */
 @Fluent
 public final class TagsObject {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TagsObject.class);

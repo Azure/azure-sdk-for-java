@@ -3,10 +3,10 @@
 
 package com.azure.resourcemanager.servicebus.implementation;
 
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
-import com.azure.resourcemanager.servicebus.fluent.inner.ResourceListKeysInner;
-import com.azure.resourcemanager.servicebus.fluent.inner.SharedAccessAuthorizationRuleResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.ResourceListKeysInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SharedAccessAuthorizationRuleResourceInner;
 import com.azure.resourcemanager.servicebus.models.Policykey;
 import com.azure.resourcemanager.servicebus.models.TopicAuthorizationRule;
 import reactor.core.publisher.Mono;
@@ -55,7 +55,7 @@ class TopicAuthorizationRuleImpl
 
     @Override
     protected Mono<SharedAccessAuthorizationRuleResourceInner> getInnerAsync() {
-        return this.manager().inner().getTopics()
+        return this.manager().serviceClient().getTopics()
                 .getAuthorizationRuleAsync(this.resourceGroupName(),
                         this.namespaceName(),
                         this.topicName(),
@@ -65,11 +65,11 @@ class TopicAuthorizationRuleImpl
     @Override
     protected Mono<TopicAuthorizationRule> createChildResourceAsync() {
         final TopicAuthorizationRule self = this;
-        return this.manager().inner().getTopics().createOrUpdateAuthorizationRuleAsync(this.resourceGroupName(),
+        return this.manager().serviceClient().getTopics().createOrUpdateAuthorizationRuleAsync(this.resourceGroupName(),
                 this.namespaceName(),
                 this.topicName(),
                 this.name(),
-                prepareForCreate(this.inner()))
+                prepareForCreate(this.innerModel()))
             .map(inner -> {
                 setInner(inner);
                 return self;
@@ -78,7 +78,7 @@ class TopicAuthorizationRuleImpl
 
     @Override
     protected Mono<ResourceListKeysInner> getKeysInnerAsync() {
-        return this.manager().inner().getTopics()
+        return this.manager().serviceClient().getTopics()
                 .listKeysAsync(this.resourceGroupName(),
                         this.namespaceName(),
                         this.topicName(),
@@ -87,7 +87,7 @@ class TopicAuthorizationRuleImpl
 
     @Override
     protected Mono<ResourceListKeysInner> regenerateKeysInnerAsync(Policykey policykey) {
-        return this.manager().inner().getTopics().regenerateKeysAsync(this.resourceGroupName(),
+        return this.manager().serviceClient().getTopics().regenerateKeysAsync(this.resourceGroupName(),
                 this.namespaceName(),
                 this.topicName(),
                 this.name(),

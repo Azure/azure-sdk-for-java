@@ -15,7 +15,7 @@ APIs in one client library, you will know how to use them in other client librar
 
 ### Prerequisites
 
-- Java Development Kit (JDK) with version 8 or above
+- A [Java Development Kit (JDK)][jdk_link], version 8 or later.
 
 ### Include the package
 
@@ -27,7 +27,7 @@ tool when you depend on client libraries using it.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core</artifactId>
-  <version>1.8.1</version>
+  <version>1.10.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -80,7 +80,7 @@ Get started with Azure libraries that are [built using Azure Core](https://azure
 ## Troubleshooting
 
 If you encounter any bugs, please file issues via [GitHub Issues](https://github.com/Azure/azure-sdk-for-java/issues/new/choose)
-or checkout [StackOverflow for Azure Java SDK](http://stackoverflow.com/questions/tagged/azure-java-sdk).
+or checkout [StackOverflow for Azure Java SDK](https://stackoverflow.com/questions/tagged/azure-java-sdk).
 
 ### Enabling Logging
 
@@ -91,7 +91,7 @@ locate the root issue. View the [logging][logging] wiki for guidance about enabl
 ## Contributing
 
 If you would like to become an active contributor to this project please follow the instructions provided in
-[Microsoft Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
+[Microsoft Azure Projects Contribution Guidelines](https://azure.github.io/guidelines.html).
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
@@ -101,5 +101,6 @@ If you would like to become an active contributor to this project please follow 
 
 <!-- links -->
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core%2FREADME.png)

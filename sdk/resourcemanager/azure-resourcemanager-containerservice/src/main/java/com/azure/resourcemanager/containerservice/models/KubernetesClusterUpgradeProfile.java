@@ -3,12 +3,12 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.containerservice.fluent.inner.ManagedClusterUpgradeProfileInner;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterUpgradeProfileInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /** The result of checking for the Kubernetes cluster's upgrade profile. */
 @Fluent()
-public interface KubernetesClusterUpgradeProfile extends HasInner<ManagedClusterUpgradeProfileInner> {
+public interface KubernetesClusterUpgradeProfile extends HasInnerModel<ManagedClusterUpgradeProfileInner> {
     /** @return the ID of the Kubernetes cluster upgrade profile */
     String id();
 

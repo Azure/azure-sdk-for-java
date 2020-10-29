@@ -6,12 +6,12 @@ package com.azure.resourcemanager.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.servicebus.fluent.inner.SharedAccessAuthorizationRuleResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SharedAccessAuthorizationRuleResourceInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SharedAccessAuthorizationRuleListResult model. */
+/** The response to the List Namespace operation. */
 @Fluent
 public final class SharedAccessAuthorizationRuleListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SharedAccessAuthorizationRuleListResult.class);

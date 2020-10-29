@@ -6,7 +6,7 @@ package com.azure.resourcemanager.resources.implementation;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.PolicyDefinition;
 import com.azure.resourcemanager.resources.models.PolicyType;
-import com.azure.resourcemanager.resources.fluent.inner.PolicyDefinitionInner;
+import com.azure.resourcemanager.resources.fluent.models.PolicyDefinitionInner;
 import com.azure.resourcemanager.resources.fluent.PolicyDefinitionsClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
@@ -33,27 +33,27 @@ final class PolicyDefinitionImpl extends
 
     @Override
     public PolicyType policyType() {
-        return inner().policyType();
+        return innerModel().policyType();
     }
 
     @Override
     public String displayName() {
-        return inner().displayName();
+        return innerModel().displayName();
     }
 
     @Override
     public String description() {
-        return inner().description();
+        return innerModel().description();
     }
 
     @Override
     public Object policyRule() {
-        return inner().policyRule();
+        return innerModel().policyRule();
     }
 
     @Override
     public String id() {
-        return inner().id();
+        return innerModel().id();
     }
 
     @Override
@@ -63,26 +63,26 @@ final class PolicyDefinitionImpl extends
 
     @Override
     public PolicyDefinitionImpl withDescription(String description) {
-        inner().withDescription(description);
+        innerModel().withDescription(description);
         return this;
     }
 
     @Override
     public PolicyDefinitionImpl withDisplayName(String displayName) {
-        inner().withDisplayName(displayName);
+        innerModel().withDisplayName(displayName);
         return this;
     }
 
     @Override
     public PolicyDefinitionImpl withPolicyRule(Object policyRule) {
-        inner().withPolicyRule(policyRule);
+        innerModel().withPolicyRule(policyRule);
         return this;
     }
 
     @Override
     public PolicyDefinitionImpl withPolicyRuleJson(String policyRuleJson) {
         try {
-            inner().withPolicyRule(new ObjectMapper().readTree(policyRuleJson));
+            innerModel().withPolicyRule(new ObjectMapper().readTree(policyRuleJson));
         } catch (IOException e) {
             throw logger.logExceptionAsError(new RuntimeException(e));
         }
@@ -91,13 +91,13 @@ final class PolicyDefinitionImpl extends
 
     @Override
     public PolicyDefinitionImpl withPolicyType(PolicyType policyType) {
-        inner().withPolicyType(policyType);
+        innerModel().withPolicyType(policyType);
         return this;
     }
 
     @Override
     public Mono<PolicyDefinition> createResourceAsync() {
-        return innerCollection.createOrUpdateAsync(name(), inner())
+        return innerCollection.createOrUpdateAsync(name(), innerModel())
                 .map(innerToFluentMap(this));
     }
 

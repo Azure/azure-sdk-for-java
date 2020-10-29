@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The UnlinkParameters model. */
+/** Represents the parameters for Unlink Replication Link request. */
 @Fluent
 public final class UnlinkParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UnlinkParameters.class);

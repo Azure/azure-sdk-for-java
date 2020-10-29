@@ -1,0 +1,12 @@
+trigger: none
+
+jobs:
+  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: metricsadvisor
+      Artifacts:
+        - name: azure-ai-metricsadvisor
+          groupId: com.azure
+          safeName: azureaimetricsadvisor
+      EnvVars:
+        AZURE_TEST_MODE: RECORD

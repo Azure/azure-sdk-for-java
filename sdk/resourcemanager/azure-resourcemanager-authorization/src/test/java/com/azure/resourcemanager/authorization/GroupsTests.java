@@ -7,10 +7,11 @@ import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryObject;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
 import com.azure.resourcemanager.authorization.models.ServicePrincipal;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
 import java.util.Iterator;
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class GroupsTests extends GraphRbacManagementTest {
             servicePrincipal =
                 authorizationManager.servicePrincipals().define(spName).withNewApplication("https://" + spName).create();
             group1 = authorizationManager.groups().define(group1Name).withEmailAlias(group1Name).create();
-            SdkContext.sleep(15000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(15));
             group2 =
                 authorizationManager
                     .groups()

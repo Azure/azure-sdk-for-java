@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ResourceUploadDefinition model. */
+/** Resource upload definition payload. */
 @Fluent
 public final class ResourceUploadDefinition {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceUploadDefinition.class);

@@ -11,7 +11,10 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The SqlIntegratedChangeTrackingPolicy model. */
+/**
+ * Defines a data change detection policy that captures changes using the Integrated Change Tracking feature of Azure
+ * SQL Database.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy")
 @JsonFlatten

@@ -7,7 +7,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineOffers;
 import com.azure.resourcemanager.compute.models.VirtualMachinePublisher;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineExtensionImagesClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineImagesClient;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 
 /** The implementation for {@link VirtualMachinePublisher}. */
 class VirtualMachinePublisherImpl implements VirtualMachinePublisher {

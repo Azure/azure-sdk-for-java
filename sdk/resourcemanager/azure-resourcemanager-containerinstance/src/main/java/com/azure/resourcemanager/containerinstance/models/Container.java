@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The Container model. */
+/** A container instance. */
 @JsonFlatten
 @Fluent
 public class Container {

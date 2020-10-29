@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RunCommandInputParameter model. */
+/** Describes the properties of a run command parameter. */
 @Fluent
 public final class RunCommandInputParameter {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RunCommandInputParameter.class);

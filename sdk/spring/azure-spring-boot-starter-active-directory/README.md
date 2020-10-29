@@ -6,9 +6,9 @@ With Spring Starter for Azure Active Directory, now you can get started quickly 
 
 ## Getting started
 ### Prerequisites
-- Java Development Kit (JDK) with version 8 or above
+- [Java Development Kit (JDK)][jdk_link] with version 8 or above
 - [Azure Subscription][azure_subscription]
-- [Maven](http://maven.apache.org/) 3.0 and above
+- [Maven](https://maven.apache.org/) 3.0 and above
 
 ### Register the Application in Azure AD
 * **Register a new application**: Go to Azure Portal - Azure Active Directory - App registrations - New application registration to register the application in Azure Active Directory.  `Application ID` is `client-id` in `application.properties`.
@@ -16,10 +16,10 @@ With Spring Starter for Azure Active Directory, now you can get started quickly 
 * **Create a client secret key for the application**: Go to API ACCESS - Keys to create a secret key (`client-secret`).
 
 ### Include the package
-[//]: # "{x-version-update-start;com.azure:azure-spring-boot-starter-active-directory;current}"
+[//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory;current}"
 ```xml
 <dependency>
-    <groupId>com.azure</groupId>
+    <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-active-directory</artifactId>
     <version>3.0.0-beta.1</version>
 </dependency>
@@ -61,9 +61,9 @@ Please refer to [azure-spring-boot-sample-active-directory-backend](https://gith
 
 ####  Configure application.properties:
 ```properties
-spring.security.oauth2.client.registration.azure.client-id=xxxxxx-your-client-id-xxxxxx
-spring.security.oauth2.client.registration.azure.client-secret=xxxxxx-your-client-secret-xxxxxx
 azure.activedirectory.tenant-id=xxxxxx-your-tenant-id-xxxxxx
+azure.activedirectory.client-id=xxxxxx-your-client-id-xxxxxx
+azure.activedirectory.client-secret=xxxxxx-your-client-secret-xxxxxx
 azure.activedirectory.user-group.allowed-groups=group1, group2
 ```
 
@@ -95,8 +95,8 @@ Please refer to [azure-active-directory-spring-boot-sample](https://github.com/A
 
 #### Configure application.properties:
 ```properties
-azure.activedirectory.client-id=Application-ID-in-AAD-App-registrations
-azure.activedirectory.client-secret=Key-in-AAD-API-ACCESS
+azure.activedirectory.client-id=xxxxxx-your-client-id-xxxxxx
+azure.activedirectory.client-secret=xxxxxx-your-client-secret-xxxxxx
 azure.activedirectory.user-group.allowed-groups=Aad-groups e.g. group1,group2,group3
 ```
 
@@ -198,13 +198,6 @@ azure.activedirectory.environment=cn-v2-graph
 
 Please refer to [azure-spring-boot-sample-active-directory-backend-v2](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend-v2/README.md) to see a sample configured to use the Microsoft Graph API.
 
-### Using Microsoft identity platform endpoints
-If you want to use v2 version endpoints to do authorization and authentication, please pay attention to the attributes of claims, because there are some attributes exists in v1 version id-token by default but not in v2 version id-token, if you have to get that attribute, please make sure to add it into your scope.
-There is the doc [Difference between v1 and v2](https://docs.microsoft.com/azure/active-directory/develop/azure-ad-endpoint-comparison), For example, the name attribute doesn't exist in v2 token, if you want it, you need add `profile` to your scope, like this:
-```properties
-spring.security.oauth2.client.registration.azure.scope=openid, https://graph.microsoft.com/user.read, profile
-```
-You can see more details in this link: [details](https://docs.microsoft.com/azure/active-directory/develop/id-tokens)
 
 ### AAD Conditional Access Policy
 Now azure-active-directory-spring-boot-starter has supported AAD conditional access policy, if you are using this policy, you need add **AADOAuth2AuthorizationRequestResolver** and **AADAuthenticationFailureHandler** to your WebSecurityConfigurerAdapter.
@@ -239,6 +232,13 @@ public class AADOAuth2LoginConditionalPolicyConfigSample extends WebSecurityConf
     }
 }
 ```
+### Customize scopes in authorize requests
+
+By default, `azure-spring-boot-starter-active-directory` configures scopes of `openid`, `profile` and `https://graph.microsoft.com/user.read` to implement OpenID Connect protocol and access of Microsoft Graph API. For customization of scope, developers need to configure in the `application.properties`:
+```yaml
+azure.activedirectory.scope = openid, profile, https://graph.microsoft.com/user.read, {your-customized-scope}
+``` 
+Note, if you don't configure the 3 mentioned permissions, this starter will add them automatically.
 
 ## Troubleshooting
 ### Enable client logging
@@ -277,3 +277,4 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [azure_subscription]: https://azure.microsoft.com/free
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable

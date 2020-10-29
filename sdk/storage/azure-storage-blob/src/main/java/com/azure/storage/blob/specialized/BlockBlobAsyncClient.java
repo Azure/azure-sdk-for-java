@@ -19,14 +19,14 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
-import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.models.BlockBlobItem;
-import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
-import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.BlockLookupList;
 import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
+import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
+import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -235,8 +235,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param options {@link BlockBlobSimpleUploadOptions}
      * @return A reactive response containing the information of the uploaded block blob.
      */
-    public Mono<Response<BlockBlobItem>> uploadWithResponse(
-        BlockBlobSimpleUploadOptions options) {
+    public Mono<Response<BlockBlobItem>> uploadWithResponse(BlockBlobSimpleUploadOptions options) {
         try {
             return withContext(context -> uploadWithResponse(options, context));
         } catch (RuntimeException ex) {

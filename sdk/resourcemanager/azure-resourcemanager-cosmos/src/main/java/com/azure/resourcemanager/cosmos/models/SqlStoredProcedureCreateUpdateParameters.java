@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The SqlStoredProcedureCreateUpdateParameters model. */
+/** Parameters to create and update Cosmos DB storedProcedure. */
 @JsonFlatten
 @Fluent
 public class SqlStoredProcedureCreateUpdateParameters extends ArmResourceProperties {

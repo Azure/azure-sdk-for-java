@@ -8,14 +8,14 @@ import com.azure.resourcemanager.network.models.PublicIpPrefix;
 import com.azure.resourcemanager.network.models.PublicIpPrefixSku;
 import com.azure.resourcemanager.network.models.PublicIpPrefixSkuName;
 import com.azure.resourcemanager.network.models.PublicIpPrefixes;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import org.junit.jupiter.api.Assertions;
 
 /** Tests public Prefixes. */
 public class TestPublicIPPrefix extends TestTemplate<PublicIpPrefix, PublicIpPrefixes> {
     @Override
     public PublicIpPrefix createResource(PublicIpPrefixes pips) throws Exception {
-        final String newPipName = pips.manager().sdkContext().randomResourceName("pip", 10);
+        final String newPipName = pips.manager().resourceManager().internalContext().randomResourceName("pip", 10);
 
         PublicIpPrefix pip = pips.define(newPipName)
             .withRegion(Region.US_WEST)

@@ -6,12 +6,12 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.inner.AppServiceCertificateOrderInner;
+import com.azure.resourcemanager.appservice.fluent.models.AppServiceCertificateOrderInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AppServiceCertificateOrderCollection model. */
+/** Collection of certificate orders. */
 @Fluent
 public final class AppServiceCertificateOrderCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AppServiceCertificateOrderCollection.class);

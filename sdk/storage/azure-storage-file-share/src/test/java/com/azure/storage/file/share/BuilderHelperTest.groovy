@@ -49,7 +49,7 @@ class BuilderHelperTest extends Specification {
         }
 
         def pipeline = BuilderHelper.buildPipeline(credentialPolicySupplier, requestRetryOptions, BuilderHelper.defaultHttpLogOptions,
-            new FreshDateTestClient(), new ArrayList<>(), Configuration.NONE)
+            new FreshDateTestClient(), new ArrayList<>(), new ArrayList<>(), Configuration.NONE)
 
         then:
         StepVerifier.create(pipeline.send(request(endpoint)))
@@ -137,7 +137,7 @@ class BuilderHelperTest extends Specification {
         }
 
         def pipeline = BuilderHelper.buildPipeline(credentialPolicySupplier, new RequestRetryOptions(), new HttpLogOptions().setApplicationId("custom-id"),
-            new ApplicationIdUAStringTestClient(), new ArrayList<>(), Configuration.NONE)
+            new ApplicationIdUAStringTestClient(), new ArrayList<>(), new ArrayList<>(), Configuration.NONE)
 
         then:
         StepVerifier.create(pipeline.send(request(endpoint)))

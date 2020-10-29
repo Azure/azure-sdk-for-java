@@ -6,12 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.fluent.inner.LoadBalancerInner;
+import com.azure.resourcemanager.network.fluent.models.LoadBalancerInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The NetworkInterfaceLoadBalancerListResult model. */
+/** Response for list ip configurations API service call. */
 @Fluent
 public final class NetworkInterfaceLoadBalancerListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkInterfaceLoadBalancerListResult.class);

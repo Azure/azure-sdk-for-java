@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ExpressRouteCircuitSku model. */
+/** Contains SKU in an ExpressRouteCircuit. */
 @Fluent
 public final class ExpressRouteCircuitSku {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitSku.class);

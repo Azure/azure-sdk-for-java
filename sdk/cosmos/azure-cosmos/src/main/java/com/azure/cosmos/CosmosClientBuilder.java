@@ -4,6 +4,7 @@ package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
@@ -12,6 +13,7 @@ import com.azure.cosmos.models.CosmosPermissionProperties;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Helper class to build CosmosAsyncClient {@link CosmosAsyncClient} and CosmosClient {@link CosmosClient}
@@ -80,6 +82,7 @@ public class CosmosClientBuilder {
     private Configs configs = new Configs();
     private String serviceEndpoint;
     private String keyOrResourceToken;
+    private TokenCredential tokenCredential;
     private ConnectionPolicy connectionPolicy;
     private GatewayConnectionConfig gatewayConnectionConfig;
     private DirectConnectionConfig directConnectionConfig;
@@ -117,7 +120,7 @@ public class CosmosClientBuilder {
      * @param sessionCapturingOverrideEnabled session capturing override
      * @return current cosmosClientBuilder
      */
-    CosmosClientBuilder sessionCapturingOverrideEnabled(boolean sessionCapturingOverrideEnabled) {
+    public CosmosClientBuilder sessionCapturingOverrideEnabled(boolean sessionCapturingOverrideEnabled) {
         this.sessionCapturingOverrideEnabled = sessionCapturingOverrideEnabled;
         return this;
     }
@@ -199,7 +202,12 @@ public class CosmosClientBuilder {
      */
     CosmosClientBuilder authorizationTokenResolver(
         CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver) {
-        this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
+        this.cosmosAuthorizationTokenResolver = Objects.requireNonNull(cosmosAuthorizationTokenResolver,
+            "'cosmosAuthorizationTokenResolver' cannot be null.");
+        this.keyOrResourceToken = null;
+        this.credential = null;
+        this.permissions = null;
+        this.tokenCredential = null;
         return this;
     }
 
@@ -219,7 +227,7 @@ public class CosmosClientBuilder {
      * @return current Builder
      */
     public CosmosClientBuilder endpoint(String endpoint) {
-        this.serviceEndpoint = endpoint;
+        this.serviceEndpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
         return this;
     }
 
@@ -241,12 +249,16 @@ public class CosmosClientBuilder {
      * @return current Builder.
      */
     public CosmosClientBuilder key(String key) {
-        this.keyOrResourceToken = key;
+        this.keyOrResourceToken = Objects.requireNonNull(key, "'key' cannot be null.");
+        this.cosmosAuthorizationTokenResolver = null;
+        this.credential = null;
+        this.permissions = null;
+        this.tokenCredential = null;
         return this;
     }
 
     /**
-     * Sets a resource token used to perform authentication
+     * Gets a resource token used to perform authentication
      * for accessing resource.
      *
      * @return the resourceToken
@@ -263,7 +275,37 @@ public class CosmosClientBuilder {
      * @return current Builder.
      */
     public CosmosClientBuilder resourceToken(String resourceToken) {
-        this.keyOrResourceToken = resourceToken;
+        this.keyOrResourceToken = Objects.requireNonNull(resourceToken, "'resourceToken' cannot be null.");
+        this.cosmosAuthorizationTokenResolver = null;
+        this.credential = null;
+        this.permissions = null;
+        this.tokenCredential = null;
+        return this;
+    }
+
+    /**
+     * Gets a token credential instance used to perform authentication
+     * for accessing resource.
+     *
+     * @return the token credential.
+     */
+    TokenCredential getTokenCredential() {
+        return tokenCredential;
+    }
+
+    /**
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service.
+     *
+     * @param credential {@link TokenCredential}.
+     * @return the updated CosmosClientBuilder
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     */
+    public CosmosClientBuilder credential(TokenCredential credential) {
+        this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.keyOrResourceToken = null;
+        this.cosmosAuthorizationTokenResolver = null;
+        this.credential = null;
+        this.permissions = null;
         return this;
     }
 
@@ -285,7 +327,11 @@ public class CosmosClientBuilder {
      * @return current Builder.
      */
     public CosmosClientBuilder permissions(List<CosmosPermissionProperties> permissions) {
-        this.permissions = permissions;
+        this.permissions = Objects.requireNonNull(permissions, "'permissions' cannot be null.");
+        this.keyOrResourceToken = null;
+        this.cosmosAuthorizationTokenResolver = null;
+        this.credential = null;
+        this.tokenCredential = null;
         return this;
     }
 
@@ -338,7 +384,11 @@ public class CosmosClientBuilder {
      * @return current cosmosClientBuilder
      */
     public CosmosClientBuilder credential(AzureKeyCredential credential) {
-        this.credential = credential;
+        this.credential = Objects.requireNonNull(credential, "'cosmosKeyCredential' cannot be null.");
+        this.keyOrResourceToken = null;
+        this.cosmosAuthorizationTokenResolver = null;
+        this.permissions = null;
+        this.tokenCredential = null;
         return this;
     }
 
@@ -346,13 +396,13 @@ public class CosmosClientBuilder {
      * Gets the boolean which indicates whether to only return the headers and status code in Cosmos DB response
      * in case of Create, Update and Delete operations on CosmosItem.
      *
-     * If set to false (which is by default), this removes the resource from response. It reduces networking
-     * and CPU load by not sending the resource back over the network and serializing it
+     * If set to false (which is by default), service doesn't return payload in the response. It reduces networking
+     * and CPU load by not sending the payload back over the network and serializing it
      * on the client.
      *
      * By-default, this is false.
      *
-     * @return a boolean indicating whether resource will be included in the response or not
+     * @return a boolean indicating whether payload will be included in the response or not
      */
     boolean isContentResponseOnWriteEnabled() {
         return contentResponseOnWriteEnabled;
@@ -362,14 +412,14 @@ public class CosmosClientBuilder {
      * Sets the boolean to only return the headers and status code in Cosmos DB response
      * in case of Create, Update and Delete operations on CosmosItem.
      *
-     * If set to false (which is by default), this removes the resource from response. It reduces networking
-     * and CPU load by not sending the resource back over the network and serializing it on the client.
+     * If set to false (which is by default), service doesn't return payload in the response. It reduces networking
+     * and CPU load by not sending the payload back over the network and serializing it on the client.
      *
      * This feature does not impact RU usage for read or write operations.
      *
      * By-default, this is false.
      *
-     * @param contentResponseOnWriteEnabled a boolean indicating whether resource will be included in the response or not
+     * @param contentResponseOnWriteEnabled a boolean indicating whether payload will be included in the response or not
      * @return current cosmosClientBuilder
      */
     public CosmosClientBuilder contentResponseOnWriteEnabled(boolean contentResponseOnWriteEnabled) {
@@ -689,7 +739,8 @@ public class CosmosClientBuilder {
         ifThrowIllegalArgException(this.serviceEndpoint == null,
             "cannot buildAsyncClient client without service endpoint");
         ifThrowIllegalArgException(
-            this.keyOrResourceToken == null && (permissions == null || permissions.isEmpty()) && this.credential == null,
+            this.keyOrResourceToken == null && (permissions == null || permissions.isEmpty())
+                && this.credential == null && this.tokenCredential == null,
             "cannot buildAsyncClient client without any one of key, resource token, permissions, and "
                 + "azure key credential");
         ifThrowIllegalArgException(credential != null && StringUtils.isEmpty(credential.getKey()),

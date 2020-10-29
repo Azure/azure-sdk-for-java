@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DomainRecommendationSearchParameters model. */
+/** Domain recommendation search parameters. */
 @Fluent
 public final class DomainRecommendationSearchParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainRecommendationSearchParameters.class);

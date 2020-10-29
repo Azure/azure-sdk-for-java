@@ -6,10 +6,10 @@ package com.azure.resourcemanager.servicebus.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
 import com.azure.resourcemanager.servicebus.fluent.TopicsClient;
-import com.azure.resourcemanager.servicebus.fluent.inner.TopicResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.TopicResourceInner;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.resourcemanager.servicebus.models.Topic;
 import com.azure.resourcemanager.servicebus.models.Topics;
@@ -34,7 +34,7 @@ class TopicsImpl
     private final ClientLogger logger = new ClientLogger(TopicsImpl.class);
 
     TopicsImpl(String resourceGroupName, String namespaceName, Region region, ServiceBusManager manager) {
-        super(manager.inner().getTopics(), manager);
+        super(manager.serviceClient().getTopics(), manager);
         this.resourceGroupName = resourceGroupName;
         this.namespaceName = namespaceName;
         this.region = region;
@@ -47,24 +47,24 @@ class TopicsImpl
 
     @Override
     public Mono<Void> deleteByNameAsync(String name) {
-        return this.inner().deleteAsync(this.resourceGroupName,
+        return this.innerModel().deleteAsync(this.resourceGroupName,
                 this.namespaceName,
                 name);
     }
 
     @Override
     protected Mono<TopicResourceInner> getInnerByNameAsync(String name) {
-        return this.inner().getAsync(this.resourceGroupName, this.namespaceName, name);
+        return this.innerModel().getAsync(this.resourceGroupName, this.namespaceName, name);
     }
 
     @Override
     protected PagedFlux<TopicResourceInner> listInnerAsync() {
-        return this.inner().listAllAsync(this.resourceGroupName, this.namespaceName);
+        return this.innerModel().listAllAsync(this.resourceGroupName, this.namespaceName);
     }
 
     @Override
     protected PagedIterable<TopicResourceInner> listInner() {
-        return this.inner().listAll(this.resourceGroupName,
+        return this.innerModel().listAll(this.resourceGroupName,
                 this.namespaceName);
     }
 

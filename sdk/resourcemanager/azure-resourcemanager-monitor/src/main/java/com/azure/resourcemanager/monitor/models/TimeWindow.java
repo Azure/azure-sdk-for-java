@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The TimeWindow model. */
+/** A specific date-time for the profile. */
 @Fluent
 public final class TimeWindow {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TimeWindow.class);

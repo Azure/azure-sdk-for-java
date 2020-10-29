@@ -8,7 +8,7 @@ import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
 import com.azure.resourcemanager.authorization.models.PasswordProfile;
 import com.azure.resourcemanager.authorization.models.UserCreateParameters;
 import com.azure.resourcemanager.authorization.models.UserUpdateParameters;
-import com.azure.resourcemanager.authorization.fluent.inner.UserInner;
+import com.azure.resourcemanager.authorization.fluent.models.UserInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import reactor.core.publisher.Mono;
@@ -31,13 +31,13 @@ class ActiveDirectoryUserImpl extends CreatableUpdatableImpl<ActiveDirectoryUser
 
     @Override
     public String userPrincipalName() {
-        return inner().userPrincipalName();
+        return innerModel().userPrincipalName();
     }
 
     @Override
     public String signInName() {
-        if (inner().signInNames() != null && !inner().signInNames().isEmpty()) {
-            return inner().signInNames().get(0).value();
+        if (innerModel().signInNames() != null && !innerModel().signInNames().isEmpty()) {
+            return innerModel().signInNames().get(0).value();
         } else {
             return null;
         }
@@ -45,17 +45,17 @@ class ActiveDirectoryUserImpl extends CreatableUpdatableImpl<ActiveDirectoryUser
 
     @Override
     public String mail() {
-        return inner().mail();
+        return innerModel().mail();
     }
 
     @Override
     public String mailNickname() {
-        return inner().mailNickname();
+        return innerModel().mailNickname();
     }
 
     @Override
     public CountryIsoCode usageLocation() {
-        return CountryIsoCode.fromString(inner().usageLocation());
+        return CountryIsoCode.fromString(innerModel().usageLocation());
     }
 
     @Override
@@ -82,7 +82,7 @@ class ActiveDirectoryUserImpl extends CreatableUpdatableImpl<ActiveDirectoryUser
 
     @Override
     protected Mono<UserInner> getInnerAsync() {
-        return manager.inner().getUsers().getAsync(this.id());
+        return manager.serviceClient().getUsers().getAsync(this.id());
     }
 
     @Override
@@ -96,7 +96,7 @@ class ActiveDirectoryUserImpl extends CreatableUpdatableImpl<ActiveDirectoryUser
         if (emailAlias != null) {
             domain =
                 manager()
-                    .inner()
+                    .serviceClient()
                     .getDomains()
                     .listAsync(null)
                     .map(
@@ -114,13 +114,13 @@ class ActiveDirectoryUserImpl extends CreatableUpdatableImpl<ActiveDirectoryUser
             domain = Mono.just(this);
         }
         return domain
-            .flatMap(activeDirectoryUser -> manager().inner().getUsers().createAsync(createParameters))
+            .flatMap(activeDirectoryUser -> manager().serviceClient().getUsers().createAsync(createParameters))
             .map(innerToFluentMap(this));
     }
 
     public Mono<ActiveDirectoryUser> updateResourceAsync() {
         return manager()
-            .inner()
+            .serviceClient()
             .getUsers()
             .updateAsync(id(), updateParameters)
             .then(ActiveDirectoryUserImpl.this.refreshAsync());
@@ -159,7 +159,7 @@ class ActiveDirectoryUserImpl extends CreatableUpdatableImpl<ActiveDirectoryUser
 
     @Override
     public String id() {
-        return inner().objectId();
+        return innerModel().objectId();
     }
 
     @Override

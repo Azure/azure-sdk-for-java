@@ -6,12 +6,12 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.inner.ProcessModuleInfoInner;
+import com.azure.resourcemanager.appservice.fluent.models.ProcessModuleInfoInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ProcessModuleInfoCollection model. */
+/** Collection of Kudu thread information elements. */
 @Fluent
 public final class ProcessModuleInfoCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ProcessModuleInfoCollection.class);

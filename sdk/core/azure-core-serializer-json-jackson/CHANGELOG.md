@@ -1,7 +1,14 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0 (2020-10-28)
 
+### Breaking Changes
+
+- Changed default `ObjectMapper` configuration used by `JacksonJsonSerializerBuilder`.
+
+## 1.0.2 (2020-10-01)
+
+- Updated `azure-core` version.
 
 ## 1.0.1 (2020-09-08)
 

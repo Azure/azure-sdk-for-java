@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The DetectorAbnormalTimePeriod model. */
+/** Class representing Abnormal Time Period detected. */
 @Fluent
 public final class DetectorAbnormalTimePeriod {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DetectorAbnormalTimePeriod.class);

@@ -10,12 +10,13 @@ import com.azure.data.tables.models.TableItem;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Used to access internal methods on models.
  */
 public final class ModelHelper {
-    private static Function<Map<String, Object>, TableEntity> entityCreator;
+    private static Supplier<TableEntity> entityCreator;
     private static Function<TableResponseProperties, TableItem> itemCreator;
 
     static {
@@ -34,7 +35,7 @@ public final class ModelHelper {
      * @param creator The entity creator.
      * @throws IllegalStateException if the creator has already been set.
      */
-    public static void setEntityCreator(Function<Map<String, Object>, TableEntity> creator) {
+    public static void setEntityCreator(Supplier<TableEntity> creator) {
         Objects.requireNonNull(creator, "'creator' cannot be null.");
 
         if (ModelHelper.entityCreator != null) {
@@ -74,7 +75,7 @@ public final class ModelHelper {
                 new IllegalStateException("'entityCreator' should not be null."));
         }
 
-        return entityCreator.apply(properties);
+        return entityCreator.get().addProperties(properties);
     }
 
     /**

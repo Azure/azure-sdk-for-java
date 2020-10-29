@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The P2SVpnConnectionRequest model. */
+/** List of p2s vpn connections to be disconnected. */
 @Fluent
 public final class P2SVpnConnectionRequest {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(P2SVpnConnectionRequest.class);

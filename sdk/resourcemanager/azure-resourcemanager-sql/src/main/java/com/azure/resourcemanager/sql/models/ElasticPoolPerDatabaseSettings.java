@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ElasticPoolPerDatabaseSettings model. */
+/** Per database settings of an elastic pool. */
 @Fluent
 public final class ElasticPoolPerDatabaseSettings {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ElasticPoolPerDatabaseSettings.class);

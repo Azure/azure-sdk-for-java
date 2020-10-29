@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SshPublicKeyUpdateResource model. */
+/** Specifies information about the SSH public key. */
 @JsonFlatten
 @Fluent
 public class SshPublicKeyUpdateResource extends UpdateResource {

@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-/** The PrivateLinkServicePropertiesAutoApproval model. */
+/** The auto-approval list of the private link service. */
 @Immutable
 public final class PrivateLinkServicePropertiesAutoApproval extends ResourceSet {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkServicePropertiesAutoApproval.class);

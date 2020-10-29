@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ImageRegistryCredential model. */
+/** Image registry credential. */
 @Fluent
 public final class ImageRegistryCredential {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageRegistryCredential.class);

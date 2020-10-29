@@ -4,50 +4,23 @@
 
 package com.azure.resourcemanager.network.fluent;
 
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.Delete;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Headers;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.Patch;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
-import com.azure.core.annotation.Put;
-import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
-import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.fluent.inner.BgpPeerStatusListResultInner;
-import com.azure.resourcemanager.network.fluent.inner.GatewayRouteListResultInner;
-import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayConnectionListEntityInner;
-import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayInner;
-import com.azure.resourcemanager.network.fluent.inner.VpnClientConnectionHealthDetailListResultInner;
-import com.azure.resourcemanager.network.fluent.inner.VpnClientIPsecParametersInner;
-import com.azure.resourcemanager.network.models.ErrorException;
-import com.azure.resourcemanager.network.models.P2SVpnConnectionRequest;
-import com.azure.resourcemanager.network.models.TagsObject;
-import com.azure.resourcemanager.network.models.VirtualNetworkGatewayListConnectionsResult;
-import com.azure.resourcemanager.network.models.VirtualNetworkGatewayListResult;
+import com.azure.resourcemanager.network.fluent.models.BgpPeerStatusListResultInner;
+import com.azure.resourcemanager.network.fluent.models.GatewayRouteListResultInner;
+import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayConnectionListEntityInner;
+import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayInner;
+import com.azure.resourcemanager.network.fluent.models.VpnClientConnectionHealthDetailListResultInner;
+import com.azure.resourcemanager.network.fluent.models.VpnClientIPsecParametersInner;
 import com.azure.resourcemanager.network.models.VpnClientParameters;
 import com.azure.resourcemanager.network.models.VpnDeviceScriptParameters;
-import com.azure.resourcemanager.network.models.VpnPacketCaptureStartParameters;
-import com.azure.resourcemanager.network.models.VpnPacketCaptureStopParameters;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import java.nio.ByteBuffer;
@@ -56,369 +29,23 @@ import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VirtualNetworkGateways. */
-public final class VirtualNetworkGatewaysClient
-    implements InnerSupportsGet<VirtualNetworkGatewayInner>, InnerSupportsDelete<Void> {
-    private final ClientLogger logger = new ClientLogger(VirtualNetworkGatewaysClient.class);
-
-    /** The proxy service used to perform REST calls. */
-    private final VirtualNetworkGatewaysService service;
-
-    /** The service client containing this operation class. */
-    private final NetworkManagementClient client;
-
+/** An instance of this class provides access to all the operations defined in VirtualNetworkGatewaysClient. */
+public interface VirtualNetworkGatewaysClient
+    extends InnerSupportsGet<VirtualNetworkGatewayInner>, InnerSupportsDelete<Void> {
     /**
-     * Initializes an instance of VirtualNetworkGatewaysClient.
+     * Creates or updates a virtual network gateway in the specified resource group.
      *
-     * @param client the instance of the service client containing this operation class.
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param parameters A common class for general resource information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a common class for general resource information.
      */
-    VirtualNetworkGatewaysClient(NetworkManagementClient client) {
-        this.service =
-            RestProxy
-                .create(VirtualNetworkGatewaysService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
-    }
-
-    /**
-     * The interface defining all the services for NetworkManagementClientVirtualNetworkGateways to be used by the proxy
-     * service to perform REST calls.
-     */
-    @Host("{$host}")
-    @ServiceInterface(name = "NetworkManagementCli")
-    private interface VirtualNetworkGatewaysService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualNetworkGateways/{virtualNetworkGatewayName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualNetworkGatewayName") String virtualNetworkGatewayName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") VirtualNetworkGatewayInner parameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualNetworkGateways/{virtualNetworkGatewayName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualNetworkGatewayInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualNetworkGatewayName") String virtualNetworkGatewayName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualNetworkGateways/{virtualNetworkGatewayName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualNetworkGatewayName") String virtualNetworkGatewayName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualNetworkGateways/{virtualNetworkGatewayName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateTags(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualNetworkGatewayName") String virtualNetworkGatewayName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") TagsObject parameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualNetworkGateways")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualNetworkGatewayListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualNetworkGateways/{virtualNetworkGatewayName}/connections")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualNetworkGatewayListConnectionsResult>> listConnections(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualNetworkGatewayName") String virtualNetworkGatewayName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualNetworkGateways/{virtualNetworkGatewayName}/reset")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> reset(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualNetworkGatewayName") String virtualNetworkGatewayName,
-            @QueryParam("gatewayVip") String gatewayVip,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualNetworkGateways/{virtualNetworkGatewayName}/resetvpnclientsharedkey")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> resetVpnClientSharedKey(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualNetworkGatewayName") String virtualNetworkGatewayName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualNetworkGateways/{virtualNetworkGatewayName}/generatevpnclientpackage")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> generatevpnclientpackage(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualNetworkGatewayName") String virtualNetworkGatewayName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") VpnClientParameters parameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualNetworkGateways/{virtualNetworkGatewayName}/generatevpnprofile")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> generateVpnProfile(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualNetworkGatewayName") String virtualNetworkGatewayName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") VpnClientParameters parameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualNetworkGateways/{virtualNetworkGatewayName}/getvpnprofilepackageurl")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> getVpnProfilePackageUrl(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualNetworkGatewayName") String virtualNetworkGatewayName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualNetworkGateways/{virtualNetworkGatewayName}/getBgpPeerStatus")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> getBgpPeerStatus(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualNetworkGatewayName") String virtualNetworkGatewayName,
-            @QueryParam("peer") String peer,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualNetworkGateways/{virtualNetworkGatewayName}/supportedvpndevices")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<String>> supportedVpnDevices(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualNetworkGatewayName") String virtualNetworkGatewayName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualNetworkGateways/{virtualNetworkGatewayName}/getLearnedRoutes")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> getLearnedRoutes(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualNetworkGatewayName") String virtualNetworkGatewayName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualNetworkGateways/{virtualNetworkGatewayName}/getAdvertisedRoutes")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> getAdvertisedRoutes(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualNetworkGatewayName") String virtualNetworkGatewayName,
-            @QueryParam("peer") String peer,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualNetworkGateways/{virtualNetworkGatewayName}/setvpnclientipsecparameters")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> setVpnclientIpsecParameters(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualNetworkGatewayName") String virtualNetworkGatewayName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") VpnClientIPsecParametersInner vpnclientIpsecParams,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualNetworkGateways/{virtualNetworkGatewayName}/getvpnclientipsecparameters")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> getVpnclientIpsecParameters(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualNetworkGatewayName") String virtualNetworkGatewayName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections"
-                + "/{virtualNetworkGatewayConnectionName}/vpndeviceconfigurationscript")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<String>> vpnDeviceConfigurationScript(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualNetworkGatewayConnectionName") String virtualNetworkGatewayConnectionName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") VpnDeviceScriptParameters parameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualNetworkGateways/{virtualNetworkGatewayName}/startPacketCapture")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> startPacketCapture(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualNetworkGatewayName") String virtualNetworkGatewayName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") VpnPacketCaptureStartParameters parameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualNetworkGateways/{virtualNetworkGatewayName}/stopPacketCapture")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> stopPacketCapture(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualNetworkGatewayName") String virtualNetworkGatewayName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") VpnPacketCaptureStopParameters parameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualNetworkGateways/{virtualNetworkGatewayName}/getVpnClientConnectionHealth")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> getVpnclientConnectionHealth(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualNetworkGatewayName") String virtualNetworkGatewayName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualNetworkGateways/{virtualNetworkGatewayName}/disconnectVirtualNetworkGatewayVpnConnections")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> disconnectVirtualNetworkGatewayVpnConnections(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualNetworkGatewayName") String virtualNetworkGatewayName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") P2SVpnConnectionRequest request,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualNetworkGatewayListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualNetworkGatewayListConnectionsResult>> listConnectionsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-    }
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, VirtualNetworkGatewayInner parameters);
 
     /**
      * Creates or updates a virtual network gateway in the specified resource group.
@@ -427,55 +54,28 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters A common class for general resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a common class for general resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, VirtualNetworkGatewayInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2020-05-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualNetworkGatewayName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    PollerFlux<PollResult<VirtualNetworkGatewayInner>, VirtualNetworkGatewayInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, VirtualNetworkGatewayInner parameters);
+
+    /**
+     * Creates or updates a virtual network gateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param parameters A common class for general resource information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a common class for general resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<VirtualNetworkGatewayInner>, VirtualNetworkGatewayInner> beginCreateOrUpdate(
+        String resourceGroupName, String virtualNetworkGatewayName, VirtualNetworkGatewayInner parameters);
 
     /**
      * Creates or updates a virtual network gateway in the specified resource group.
@@ -485,55 +85,16 @@ public final class VirtualNetworkGatewaysClient
      * @param parameters A common class for general resource information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a common class for general resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+    SyncPoller<PollResult<VirtualNetworkGatewayInner>, VirtualNetworkGatewayInner> beginCreateOrUpdate(
         String resourceGroupName,
         String virtualNetworkGatewayName,
         VirtualNetworkGatewayInner parameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2020-05-01";
-        context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualNetworkGatewayName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
+        Context context);
 
     /**
      * Creates or updates a virtual network gateway in the specified resource group.
@@ -542,24 +103,28 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters A common class for general resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a common class for general resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<VirtualNetworkGatewayInner>, VirtualNetworkGatewayInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, VirtualNetworkGatewayInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, parameters);
-        return this
-            .client
-            .<VirtualNetworkGatewayInner, VirtualNetworkGatewayInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualNetworkGatewayInner.class,
-                VirtualNetworkGatewayInner.class,
-                Context.NONE);
-    }
+    Mono<VirtualNetworkGatewayInner> createOrUpdateAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, VirtualNetworkGatewayInner parameters);
+
+    /**
+     * Creates or updates a virtual network gateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param parameters A common class for general resource information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a common class for general resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VirtualNetworkGatewayInner createOrUpdate(
+        String resourceGroupName, String virtualNetworkGatewayName, VirtualNetworkGatewayInner parameters);
 
     /**
      * Creates or updates a virtual network gateway in the specified resource group.
@@ -569,147 +134,16 @@ public final class VirtualNetworkGatewaysClient
      * @param parameters A common class for general resource information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a common class for general resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<VirtualNetworkGatewayInner>, VirtualNetworkGatewayInner> beginCreateOrUpdateAsync(
+    VirtualNetworkGatewayInner createOrUpdate(
         String resourceGroupName,
         String virtualNetworkGatewayName,
         VirtualNetworkGatewayInner parameters,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, parameters, context);
-        return this
-            .client
-            .<VirtualNetworkGatewayInner, VirtualNetworkGatewayInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualNetworkGatewayInner.class,
-                VirtualNetworkGatewayInner.class,
-                context);
-    }
-
-    /**
-     * Creates or updates a virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param parameters A common class for general resource information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<VirtualNetworkGatewayInner>, VirtualNetworkGatewayInner> beginCreateOrUpdate(
-        String resourceGroupName, String virtualNetworkGatewayName, VirtualNetworkGatewayInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkGatewayName, parameters).getSyncPoller();
-    }
-
-    /**
-     * Creates or updates a virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param parameters A common class for general resource information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<VirtualNetworkGatewayInner>, VirtualNetworkGatewayInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String virtualNetworkGatewayName,
-        VirtualNetworkGatewayInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkGatewayName, parameters, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Creates or updates a virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param parameters A common class for general resource information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualNetworkGatewayInner> createOrUpdateAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, VirtualNetworkGatewayInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkGatewayName, parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates or updates a virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param parameters A common class for general resource information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualNetworkGatewayInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String virtualNetworkGatewayName,
-        VirtualNetworkGatewayInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkGatewayName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates or updates a virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param parameters A common class for general resource information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualNetworkGatewayInner createOrUpdate(
-        String resourceGroupName, String virtualNetworkGatewayName, VirtualNetworkGatewayInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, virtualNetworkGatewayName, parameters).block();
-    }
-
-    /**
-     * Creates or updates a virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param parameters A common class for general resource information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualNetworkGatewayInner createOrUpdate(
-        String resourceGroupName,
-        String virtualNetworkGatewayName,
-        VirtualNetworkGatewayInner parameters,
-        Context context) {
-        return createOrUpdateAsync(resourceGroupName, virtualNetworkGatewayName, parameters, context).block();
-    }
+        Context context);
 
     /**
      * Gets the specified virtual network gateway by resource group.
@@ -717,49 +151,40 @@ public final class VirtualNetworkGatewaysClient
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified virtual network gateway by resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VirtualNetworkGatewayInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualNetworkGatewayName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<VirtualNetworkGatewayInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * Gets the specified virtual network gateway by resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified virtual network gateway by resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<VirtualNetworkGatewayInner> getByResourceGroupAsync(
+        String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * Gets the specified virtual network gateway by resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified virtual network gateway by resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VirtualNetworkGatewayInner getByResourceGroup(String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * Gets the specified virtual network gateway by resource group.
@@ -768,127 +193,13 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified virtual network gateway by resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VirtualNetworkGatewayInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualNetworkGatewayName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * Gets the specified virtual network gateway by resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified virtual network gateway by resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualNetworkGatewayInner> getByResourceGroupAsync(
-        String resourceGroupName, String virtualNetworkGatewayName) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, virtualNetworkGatewayName)
-            .flatMap(
-                (Response<VirtualNetworkGatewayInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the specified virtual network gateway by resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified virtual network gateway by resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualNetworkGatewayInner> getByResourceGroupAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, context)
-            .flatMap(
-                (Response<VirtualNetworkGatewayInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the specified virtual network gateway by resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified virtual network gateway by resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualNetworkGatewayInner getByResourceGroup(String resourceGroupName, String virtualNetworkGatewayName) {
-        return getByResourceGroupAsync(resourceGroupName, virtualNetworkGatewayName).block();
-    }
-
-    /**
-     * Gets the specified virtual network gateway by resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified virtual network gateway by resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualNetworkGatewayInner getByResourceGroup(
-        String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        return getByResourceGroupAsync(resourceGroupName, virtualNetworkGatewayName, context).block();
-    }
+    Response<VirtualNetworkGatewayInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String virtualNetworkGatewayName, Context context);
 
     /**
      * Deletes the specified virtual network gateway.
@@ -896,97 +207,26 @@ public final class VirtualNetworkGatewaysClient
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualNetworkGatewayName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * Deletes the specified virtual network gateway.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualNetworkGatewayName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * Deletes the specified virtual network gateway.
@@ -994,18 +234,12 @@ public final class VirtualNetworkGatewaysClient
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String virtualNetworkGatewayName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualNetworkGatewayName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
-    }
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * Deletes the specified virtual network gateway.
@@ -1014,20 +248,13 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String virtualNetworkGatewayName, Context context);
 
     /**
      * Deletes the specified virtual network gateway.
@@ -1035,14 +262,24 @@ public final class VirtualNetworkGatewaysClient
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualNetworkGatewayName) {
-        return beginDeleteAsync(resourceGroupName, virtualNetworkGatewayName).getSyncPoller();
-    }
+    Mono<Void> deleteAsync(String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * Deletes the specified virtual network gateway.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * Deletes the specified virtual network gateway.
@@ -1051,79 +288,11 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        return beginDeleteAsync(resourceGroupName, virtualNetworkGatewayName, context).getSyncPoller();
-    }
-
-    /**
-     * Deletes the specified virtual network gateway.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String virtualNetworkGatewayName) {
-        return beginDeleteAsync(resourceGroupName, virtualNetworkGatewayName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes the specified virtual network gateway.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        return beginDeleteAsync(resourceGroupName, virtualNetworkGatewayName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes the specified virtual network gateway.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String virtualNetworkGatewayName) {
-        deleteAsync(resourceGroupName, virtualNetworkGatewayName).block();
-    }
-
-    /**
-     * Deletes the specified virtual network gateway.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        deleteAsync(resourceGroupName, virtualNetworkGatewayName, context).block();
-    }
+    void delete(String resourceGroupName, String virtualNetworkGatewayName, Context context);
 
     /**
      * Updates a virtual network gateway tags.
@@ -1132,52 +301,43 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a common class for general resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, Map<String, String> tags) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateTags(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualNetworkGatewayName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, Map<String, String> tags);
+
+    /**
+     * Updates a virtual network gateway tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param tags Resource tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a common class for general resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<VirtualNetworkGatewayInner>, VirtualNetworkGatewayInner> beginUpdateTagsAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, Map<String, String> tags);
+
+    /**
+     * Updates a virtual network gateway tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param tags Resource tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a common class for general resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<VirtualNetworkGatewayInner>, VirtualNetworkGatewayInner> beginUpdateTags(
+        String resourceGroupName, String virtualNetworkGatewayName, Map<String, String> tags);
 
     /**
      * Updates a virtual network gateway tags.
@@ -1187,49 +347,13 @@ public final class VirtualNetworkGatewaysClient
      * @param tags Resource tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a common class for general resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, Map<String, String> tags, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
-        context = this.client.mergeContext(context);
-        return service
-            .updateTags(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualNetworkGatewayName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
+    SyncPoller<PollResult<VirtualNetworkGatewayInner>, VirtualNetworkGatewayInner> beginUpdateTags(
+        String resourceGroupName, String virtualNetworkGatewayName, Map<String, String> tags, Context context);
 
     /**
      * Updates a virtual network gateway tags.
@@ -1238,24 +362,41 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a common class for general resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<VirtualNetworkGatewayInner>, VirtualNetworkGatewayInner> beginUpdateTagsAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, Map<String, String> tags) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, tags);
-        return this
-            .client
-            .<VirtualNetworkGatewayInner, VirtualNetworkGatewayInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualNetworkGatewayInner.class,
-                VirtualNetworkGatewayInner.class,
-                Context.NONE);
-    }
+    Mono<VirtualNetworkGatewayInner> updateTagsAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, Map<String, String> tags);
+
+    /**
+     * Updates a virtual network gateway tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a common class for general resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<VirtualNetworkGatewayInner> updateTagsAsync(String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * Updates a virtual network gateway tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param tags Resource tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a common class for general resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VirtualNetworkGatewayInner updateTags(
+        String resourceGroupName, String virtualNetworkGatewayName, Map<String, String> tags);
 
     /**
      * Updates a virtual network gateway tags.
@@ -1265,245 +406,50 @@ public final class VirtualNetworkGatewaysClient
      * @param tags Resource tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a common class for general resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<VirtualNetworkGatewayInner>, VirtualNetworkGatewayInner> beginUpdateTagsAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, Map<String, String> tags, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, tags, context);
-        return this
-            .client
-            .<VirtualNetworkGatewayInner, VirtualNetworkGatewayInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualNetworkGatewayInner.class,
-                VirtualNetworkGatewayInner.class,
-                context);
-    }
+    VirtualNetworkGatewayInner updateTags(
+        String resourceGroupName, String virtualNetworkGatewayName, Map<String, String> tags, Context context);
 
     /**
      * Updates a virtual network gateway tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a common class for general resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<VirtualNetworkGatewayInner>, VirtualNetworkGatewayInner> beginUpdateTags(
-        String resourceGroupName, String virtualNetworkGatewayName, Map<String, String> tags) {
-        return beginUpdateTagsAsync(resourceGroupName, virtualNetworkGatewayName, tags).getSyncPoller();
-    }
-
-    /**
-     * Updates a virtual network gateway tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<VirtualNetworkGatewayInner>, VirtualNetworkGatewayInner> beginUpdateTags(
-        String resourceGroupName, String virtualNetworkGatewayName, Map<String, String> tags, Context context) {
-        return beginUpdateTagsAsync(resourceGroupName, virtualNetworkGatewayName, tags, context).getSyncPoller();
-    }
-
-    /**
-     * Updates a virtual network gateway tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualNetworkGatewayInner> updateTagsAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, Map<String, String> tags) {
-        return beginUpdateTagsAsync(resourceGroupName, virtualNetworkGatewayName, tags)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Updates a virtual network gateway tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualNetworkGatewayInner> updateTagsAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, Map<String, String> tags, Context context) {
-        return beginUpdateTagsAsync(resourceGroupName, virtualNetworkGatewayName, tags, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Updates a virtual network gateway tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualNetworkGatewayInner updateTags(
-        String resourceGroupName, String virtualNetworkGatewayName, Map<String, String> tags) {
-        return updateTagsAsync(resourceGroupName, virtualNetworkGatewayName, tags).block();
-    }
-
-    /**
-     * Updates a virtual network gateway tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualNetworkGatewayInner updateTags(
-        String resourceGroupName, String virtualNetworkGatewayName, Map<String, String> tags, Context context) {
-        return updateTagsAsync(resourceGroupName, virtualNetworkGatewayName, tags, context).block();
-    }
+    VirtualNetworkGatewayInner updateTags(String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * Gets all virtual network gateways by resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all virtual network gateways by resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<VirtualNetworkGatewayInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .<PagedResponse<VirtualNetworkGatewayInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Gets all virtual network gateways by resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all virtual network gateways by resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<VirtualNetworkGatewayInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(
-                this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Gets all virtual network gateways by resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all virtual network gateways by resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<VirtualNetworkGatewayInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName), nextLink -> listNextSinglePageAsync(nextLink));
-    }
+    PagedFlux<VirtualNetworkGatewayInner> listByResourceGroupAsync(String resourceGroupName);
+
+    /**
+     * Gets all virtual network gateways by resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all virtual network gateways by resource group.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<VirtualNetworkGatewayInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Gets all virtual network gateways by resource group.
@@ -1511,45 +457,12 @@ public final class VirtualNetworkGatewaysClient
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all virtual network gateways by resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<VirtualNetworkGatewayInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets all virtual network gateways by resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all virtual network gateways by resource group.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VirtualNetworkGatewayInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
-    }
-
-    /**
-     * Gets all virtual network gateways by resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all virtual network gateways by resource group.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VirtualNetworkGatewayInner> listByResourceGroup(String resourceGroupName, Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
-    }
+    PagedIterable<VirtualNetworkGatewayInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Gets all the connections in a virtual network gateway.
@@ -1557,58 +470,27 @@ public final class VirtualNetworkGatewaysClient
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the connections in a virtual network gateway.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<VirtualNetworkGatewayConnectionListEntityInner>> listConnectionsSinglePageAsync(
-        String resourceGroupName, String virtualNetworkGatewayName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listConnections(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualNetworkGatewayName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .<PagedResponse<VirtualNetworkGatewayConnectionListEntityInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<VirtualNetworkGatewayConnectionListEntityInner> listConnectionsAsync(
+        String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * Gets all the connections in a virtual network gateway.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the connections in a virtual network gateway.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<VirtualNetworkGatewayConnectionListEntityInner> listConnections(
+        String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * Gets all the connections in a virtual network gateway.
@@ -1617,125 +499,13 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the connections in a virtual network gateway.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<VirtualNetworkGatewayConnectionListEntityInner>> listConnectionsSinglePageAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        context = this.client.mergeContext(context);
-        return service
-            .listConnections(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualNetworkGatewayName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Gets all the connections in a virtual network gateway.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the connections in a virtual network gateway.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<VirtualNetworkGatewayConnectionListEntityInner> listConnectionsAsync(
-        String resourceGroupName, String virtualNetworkGatewayName) {
-        return new PagedFlux<>(
-            () -> listConnectionsSinglePageAsync(resourceGroupName, virtualNetworkGatewayName),
-            nextLink -> listConnectionsNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Gets all the connections in a virtual network gateway.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the connections in a virtual network gateway.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<VirtualNetworkGatewayConnectionListEntityInner> listConnectionsAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        return new PagedFlux<>(
-            () -> listConnectionsSinglePageAsync(resourceGroupName, virtualNetworkGatewayName, context),
-            nextLink -> listConnectionsNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets all the connections in a virtual network gateway.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the connections in a virtual network gateway.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VirtualNetworkGatewayConnectionListEntityInner> listConnections(
-        String resourceGroupName, String virtualNetworkGatewayName) {
-        return new PagedIterable<>(listConnectionsAsync(resourceGroupName, virtualNetworkGatewayName));
-    }
-
-    /**
-     * Gets all the connections in a virtual network gateway.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the connections in a virtual network gateway.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VirtualNetworkGatewayConnectionListEntityInner> listConnections(
-        String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        return new PagedIterable<>(listConnectionsAsync(resourceGroupName, virtualNetworkGatewayName, context));
-    }
+    PagedIterable<VirtualNetworkGatewayConnectionListEntityInner> listConnections(
+        String resourceGroupName, String virtualNetworkGatewayName, Context context);
 
     /**
      * Resets the primary of the virtual network gateway in the specified resource group.
@@ -1745,50 +515,45 @@ public final class VirtualNetworkGatewaysClient
      * @param gatewayVip Virtual network gateway vip address supplied to the begin reset of the active-active feature
      *     enabled gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a common class for general resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> resetWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, String gatewayVip) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .reset(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualNetworkGatewayName,
-                            gatewayVip,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> resetWithResponseAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, String gatewayVip);
+
+    /**
+     * Resets the primary of the virtual network gateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param gatewayVip Virtual network gateway vip address supplied to the begin reset of the active-active feature
+     *     enabled gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a common class for general resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<VirtualNetworkGatewayInner>, VirtualNetworkGatewayInner> beginResetAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, String gatewayVip);
+
+    /**
+     * Resets the primary of the virtual network gateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param gatewayVip Virtual network gateway vip address supplied to the begin reset of the active-active feature
+     *     enabled gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a common class for general resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<VirtualNetworkGatewayInner>, VirtualNetworkGatewayInner> beginReset(
+        String resourceGroupName, String virtualNetworkGatewayName, String gatewayVip);
 
     /**
      * Resets the primary of the virtual network gateway in the specified resource group.
@@ -1799,47 +564,13 @@ public final class VirtualNetworkGatewaysClient
      *     enabled gateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a common class for general resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> resetWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, String gatewayVip, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        context = this.client.mergeContext(context);
-        return service
-            .reset(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualNetworkGatewayName,
-                gatewayVip,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
+    SyncPoller<PollResult<VirtualNetworkGatewayInner>, VirtualNetworkGatewayInner> beginReset(
+        String resourceGroupName, String virtualNetworkGatewayName, String gatewayVip, Context context);
 
     /**
      * Resets the primary of the virtual network gateway in the specified resource group.
@@ -1849,24 +580,41 @@ public final class VirtualNetworkGatewaysClient
      * @param gatewayVip Virtual network gateway vip address supplied to the begin reset of the active-active feature
      *     enabled gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a common class for general resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<VirtualNetworkGatewayInner>, VirtualNetworkGatewayInner> beginResetAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, String gatewayVip) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            resetWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, gatewayVip);
-        return this
-            .client
-            .<VirtualNetworkGatewayInner, VirtualNetworkGatewayInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualNetworkGatewayInner.class,
-                VirtualNetworkGatewayInner.class,
-                Context.NONE);
-    }
+    Mono<VirtualNetworkGatewayInner> resetAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, String gatewayVip);
+
+    /**
+     * Resets the primary of the virtual network gateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a common class for general resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<VirtualNetworkGatewayInner> resetAsync(String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * Resets the primary of the virtual network gateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param gatewayVip Virtual network gateway vip address supplied to the begin reset of the active-active feature
+     *     enabled gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a common class for general resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VirtualNetworkGatewayInner reset(String resourceGroupName, String virtualNetworkGatewayName, String gatewayVip);
 
     /**
      * Resets the primary of the virtual network gateway in the specified resource group.
@@ -1877,103 +625,13 @@ public final class VirtualNetworkGatewaysClient
      *     enabled gateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a common class for general resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<VirtualNetworkGatewayInner>, VirtualNetworkGatewayInner> beginResetAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, String gatewayVip, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            resetWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, gatewayVip, context);
-        return this
-            .client
-            .<VirtualNetworkGatewayInner, VirtualNetworkGatewayInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualNetworkGatewayInner.class,
-                VirtualNetworkGatewayInner.class,
-                context);
-    }
-
-    /**
-     * Resets the primary of the virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param gatewayVip Virtual network gateway vip address supplied to the begin reset of the active-active feature
-     *     enabled gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<VirtualNetworkGatewayInner>, VirtualNetworkGatewayInner> beginReset(
-        String resourceGroupName, String virtualNetworkGatewayName, String gatewayVip) {
-        return beginResetAsync(resourceGroupName, virtualNetworkGatewayName, gatewayVip).getSyncPoller();
-    }
-
-    /**
-     * Resets the primary of the virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param gatewayVip Virtual network gateway vip address supplied to the begin reset of the active-active feature
-     *     enabled gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<VirtualNetworkGatewayInner>, VirtualNetworkGatewayInner> beginReset(
-        String resourceGroupName, String virtualNetworkGatewayName, String gatewayVip, Context context) {
-        return beginResetAsync(resourceGroupName, virtualNetworkGatewayName, gatewayVip, context).getSyncPoller();
-    }
-
-    /**
-     * Resets the primary of the virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param gatewayVip Virtual network gateway vip address supplied to the begin reset of the active-active feature
-     *     enabled gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualNetworkGatewayInner> resetAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, String gatewayVip) {
-        return beginResetAsync(resourceGroupName, virtualNetworkGatewayName, gatewayVip)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Resets the primary of the virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param gatewayVip Virtual network gateway vip address supplied to the begin reset of the active-active feature
-     *     enabled gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualNetworkGatewayInner> resetAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, String gatewayVip, Context context) {
-        return beginResetAsync(resourceGroupName, virtualNetworkGatewayName, gatewayVip, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
+    VirtualNetworkGatewayInner reset(
+        String resourceGroupName, String virtualNetworkGatewayName, String gatewayVip, Context context);
 
     /**
      * Resets the primary of the virtual network gateway in the specified resource group.
@@ -1981,72 +639,12 @@ public final class VirtualNetworkGatewaysClient
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a common class for general resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualNetworkGatewayInner> resetAsync(String resourceGroupName, String virtualNetworkGatewayName) {
-        final String gatewayVip = null;
-        final Context context = null;
-        return beginResetAsync(resourceGroupName, virtualNetworkGatewayName, gatewayVip)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Resets the primary of the virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param gatewayVip Virtual network gateway vip address supplied to the begin reset of the active-active feature
-     *     enabled gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualNetworkGatewayInner reset(
-        String resourceGroupName, String virtualNetworkGatewayName, String gatewayVip) {
-        return resetAsync(resourceGroupName, virtualNetworkGatewayName, gatewayVip).block();
-    }
-
-    /**
-     * Resets the primary of the virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param gatewayVip Virtual network gateway vip address supplied to the begin reset of the active-active feature
-     *     enabled gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualNetworkGatewayInner reset(
-        String resourceGroupName, String virtualNetworkGatewayName, String gatewayVip, Context context) {
-        return resetAsync(resourceGroupName, virtualNetworkGatewayName, gatewayVip, context).block();
-    }
-
-    /**
-     * Resets the primary of the virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualNetworkGatewayInner reset(String resourceGroupName, String virtualNetworkGatewayName) {
-        final String gatewayVip = null;
-        final Context context = null;
-        return resetAsync(resourceGroupName, virtualNetworkGatewayName, gatewayVip).block();
-    }
+    VirtualNetworkGatewayInner reset(String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
@@ -2054,97 +652,27 @@ public final class VirtualNetworkGatewaysClient
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> resetVpnClientSharedKeyWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .resetVpnClientSharedKey(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualNetworkGatewayName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> resetVpnClientSharedKeyWithResponseAsync(
+        String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> resetVpnClientSharedKeyWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        context = this.client.mergeContext(context);
-        return service
-            .resetVpnClientSharedKey(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualNetworkGatewayName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
+    PollerFlux<PollResult<Void>, Void> beginResetVpnClientSharedKeyAsync(
+        String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
@@ -2152,19 +680,13 @@ public final class VirtualNetworkGatewaysClient
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginResetVpnClientSharedKeyAsync(
-        String resourceGroupName, String virtualNetworkGatewayName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            resetVpnClientSharedKeyWithResponseAsync(resourceGroupName, virtualNetworkGatewayName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
-    }
+    SyncPoller<PollResult<Void>, Void> beginResetVpnClientSharedKey(
+        String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
@@ -2173,20 +695,13 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginResetVpnClientSharedKeyAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            resetVpnClientSharedKeyWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
+    SyncPoller<PollResult<Void>, Void> beginResetVpnClientSharedKey(
+        String resourceGroupName, String virtualNetworkGatewayName, Context context);
 
     /**
      * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
@@ -2194,15 +709,24 @@ public final class VirtualNetworkGatewaysClient
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginResetVpnClientSharedKey(
-        String resourceGroupName, String virtualNetworkGatewayName) {
-        return beginResetVpnClientSharedKeyAsync(resourceGroupName, virtualNetworkGatewayName).getSyncPoller();
-    }
+    Mono<Void> resetVpnClientSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void resetVpnClientSharedKey(String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
@@ -2211,80 +735,11 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginResetVpnClientSharedKey(
-        String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        return beginResetVpnClientSharedKeyAsync(resourceGroupName, virtualNetworkGatewayName, context).getSyncPoller();
-    }
-
-    /**
-     * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resetVpnClientSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayName) {
-        return beginResetVpnClientSharedKeyAsync(resourceGroupName, virtualNetworkGatewayName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resetVpnClientSharedKeyAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        return beginResetVpnClientSharedKeyAsync(resourceGroupName, virtualNetworkGatewayName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resetVpnClientSharedKey(String resourceGroupName, String virtualNetworkGatewayName) {
-        resetVpnClientSharedKeyAsync(resourceGroupName, virtualNetworkGatewayName).block();
-    }
-
-    /**
-     * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resetVpnClientSharedKey(String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        resetVpnClientSharedKeyAsync(resourceGroupName, virtualNetworkGatewayName, context).block();
-    }
+    void resetVpnClientSharedKey(String resourceGroupName, String virtualNetworkGatewayName, Context context);
 
     /**
      * Generates VPN client package for P2S client of the virtual network gateway in the specified resource group.
@@ -2293,55 +748,43 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Vpn Client Parameters for package generation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> generatevpnclientpackageWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2020-05-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .generatevpnclientpackage(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualNetworkGatewayName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> generatevpnclientpackageWithResponseAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters);
+
+    /**
+     * Generates VPN client package for P2S client of the virtual network gateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param parameters Vpn Client Parameters for package generation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<String>, String> beginGeneratevpnclientpackageAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters);
+
+    /**
+     * Generates VPN client package for P2S client of the virtual network gateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param parameters Vpn Client Parameters for package generation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<String>, String> beginGeneratevpnclientpackage(
+        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters);
 
     /**
      * Generates VPN client package for P2S client of the virtual network gateway in the specified resource group.
@@ -2351,52 +794,13 @@ public final class VirtualNetworkGatewaysClient
      * @param parameters Vpn Client Parameters for package generation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> generatevpnclientpackageWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2020-05-01";
-        context = this.client.mergeContext(context);
-        return service
-            .generatevpnclientpackage(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualNetworkGatewayName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
+    SyncPoller<PollResult<String>, String> beginGeneratevpnclientpackage(
+        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters, Context context);
 
     /**
      * Generates VPN client package for P2S client of the virtual network gateway in the specified resource group.
@@ -2405,20 +809,28 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Vpn Client Parameters for package generation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<String>, String> beginGeneratevpnclientpackageAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            generatevpnclientpackageWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, parameters);
-        return this
-            .client
-            .<String, String>getLroResult(
-                mono, this.client.getHttpPipeline(), String.class, String.class, Context.NONE);
-    }
+    Mono<String> generatevpnclientpackageAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters);
+
+    /**
+     * Generates VPN client package for P2S client of the virtual network gateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param parameters Vpn Client Parameters for package generation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    String generatevpnclientpackage(
+        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters);
 
     /**
      * Generates VPN client package for P2S client of the virtual network gateway in the specified resource group.
@@ -2428,132 +840,13 @@ public final class VirtualNetworkGatewaysClient
      * @param parameters Vpn Client Parameters for package generation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<String>, String> beginGeneratevpnclientpackageAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            generatevpnclientpackageWithResponseAsync(
-                resourceGroupName, virtualNetworkGatewayName, parameters, context);
-        return this
-            .client
-            .<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class, context);
-    }
-
-    /**
-     * Generates VPN client package for P2S client of the virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param parameters Vpn Client Parameters for package generation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<String>, String> beginGeneratevpnclientpackage(
-        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters) {
-        return beginGeneratevpnclientpackageAsync(resourceGroupName, virtualNetworkGatewayName, parameters)
-            .getSyncPoller();
-    }
-
-    /**
-     * Generates VPN client package for P2S client of the virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param parameters Vpn Client Parameters for package generation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<String>, String> beginGeneratevpnclientpackage(
-        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters, Context context) {
-        return beginGeneratevpnclientpackageAsync(resourceGroupName, virtualNetworkGatewayName, parameters, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Generates VPN client package for P2S client of the virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param parameters Vpn Client Parameters for package generation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> generatevpnclientpackageAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters) {
-        return beginGeneratevpnclientpackageAsync(resourceGroupName, virtualNetworkGatewayName, parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Generates VPN client package for P2S client of the virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param parameters Vpn Client Parameters for package generation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> generatevpnclientpackageAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters, Context context) {
-        return beginGeneratevpnclientpackageAsync(resourceGroupName, virtualNetworkGatewayName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Generates VPN client package for P2S client of the virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param parameters Vpn Client Parameters for package generation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public String generatevpnclientpackage(
-        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters) {
-        return generatevpnclientpackageAsync(resourceGroupName, virtualNetworkGatewayName, parameters).block();
-    }
-
-    /**
-     * Generates VPN client package for P2S client of the virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param parameters Vpn Client Parameters for package generation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public String generatevpnclientpackage(
-        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters, Context context) {
-        return generatevpnclientpackageAsync(resourceGroupName, virtualNetworkGatewayName, parameters, context).block();
-    }
+    String generatevpnclientpackage(
+        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters, Context context);
 
     /**
      * Generates VPN profile for P2S client of the virtual network gateway in the specified resource group. Used for
@@ -2563,55 +856,45 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Vpn Client Parameters for package generation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> generateVpnProfileWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2020-05-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .generateVpnProfile(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualNetworkGatewayName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> generateVpnProfileWithResponseAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters);
+
+    /**
+     * Generates VPN profile for P2S client of the virtual network gateway in the specified resource group. Used for
+     * IKEV2 and radius based authentication.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param parameters Vpn Client Parameters for package generation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<String>, String> beginGenerateVpnProfileAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters);
+
+    /**
+     * Generates VPN profile for P2S client of the virtual network gateway in the specified resource group. Used for
+     * IKEV2 and radius based authentication.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param parameters Vpn Client Parameters for package generation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<String>, String> beginGenerateVpnProfile(
+        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters);
 
     /**
      * Generates VPN profile for P2S client of the virtual network gateway in the specified resource group. Used for
@@ -2622,52 +905,13 @@ public final class VirtualNetworkGatewaysClient
      * @param parameters Vpn Client Parameters for package generation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> generateVpnProfileWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2020-05-01";
-        context = this.client.mergeContext(context);
-        return service
-            .generateVpnProfile(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualNetworkGatewayName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
+    SyncPoller<PollResult<String>, String> beginGenerateVpnProfile(
+        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters, Context context);
 
     /**
      * Generates VPN profile for P2S client of the virtual network gateway in the specified resource group. Used for
@@ -2677,20 +921,29 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Vpn Client Parameters for package generation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<String>, String> beginGenerateVpnProfileAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            generateVpnProfileWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, parameters);
-        return this
-            .client
-            .<String, String>getLroResult(
-                mono, this.client.getHttpPipeline(), String.class, String.class, Context.NONE);
-    }
+    Mono<String> generateVpnProfileAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters);
+
+    /**
+     * Generates VPN profile for P2S client of the virtual network gateway in the specified resource group. Used for
+     * IKEV2 and radius based authentication.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param parameters Vpn Client Parameters for package generation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    String generateVpnProfile(
+        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters);
 
     /**
      * Generates VPN profile for P2S client of the virtual network gateway in the specified resource group. Used for
@@ -2701,136 +954,13 @@ public final class VirtualNetworkGatewaysClient
      * @param parameters Vpn Client Parameters for package generation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<String>, String> beginGenerateVpnProfileAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            generateVpnProfileWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, parameters, context);
-        return this
-            .client
-            .<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class, context);
-    }
-
-    /**
-     * Generates VPN profile for P2S client of the virtual network gateway in the specified resource group. Used for
-     * IKEV2 and radius based authentication.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param parameters Vpn Client Parameters for package generation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<String>, String> beginGenerateVpnProfile(
-        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters) {
-        return beginGenerateVpnProfileAsync(resourceGroupName, virtualNetworkGatewayName, parameters).getSyncPoller();
-    }
-
-    /**
-     * Generates VPN profile for P2S client of the virtual network gateway in the specified resource group. Used for
-     * IKEV2 and radius based authentication.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param parameters Vpn Client Parameters for package generation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<String>, String> beginGenerateVpnProfile(
-        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters, Context context) {
-        return beginGenerateVpnProfileAsync(resourceGroupName, virtualNetworkGatewayName, parameters, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Generates VPN profile for P2S client of the virtual network gateway in the specified resource group. Used for
-     * IKEV2 and radius based authentication.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param parameters Vpn Client Parameters for package generation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> generateVpnProfileAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters) {
-        return beginGenerateVpnProfileAsync(resourceGroupName, virtualNetworkGatewayName, parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Generates VPN profile for P2S client of the virtual network gateway in the specified resource group. Used for
-     * IKEV2 and radius based authentication.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param parameters Vpn Client Parameters for package generation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> generateVpnProfileAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters, Context context) {
-        return beginGenerateVpnProfileAsync(resourceGroupName, virtualNetworkGatewayName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Generates VPN profile for P2S client of the virtual network gateway in the specified resource group. Used for
-     * IKEV2 and radius based authentication.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param parameters Vpn Client Parameters for package generation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public String generateVpnProfile(
-        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters) {
-        return generateVpnProfileAsync(resourceGroupName, virtualNetworkGatewayName, parameters).block();
-    }
-
-    /**
-     * Generates VPN profile for P2S client of the virtual network gateway in the specified resource group. Used for
-     * IKEV2 and radius based authentication.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param parameters Vpn Client Parameters for package generation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public String generateVpnProfile(
-        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters, Context context) {
-        return generateVpnProfileAsync(resourceGroupName, virtualNetworkGatewayName, parameters, context).block();
-    }
+    String generateVpnProfile(
+        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters, Context context);
 
     /**
      * Gets pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group. The
@@ -2839,49 +969,43 @@ public final class VirtualNetworkGatewaysClient
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> getVpnProfilePackageUrlWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getVpnProfilePackageUrl(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualNetworkGatewayName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> getVpnProfilePackageUrlWithResponseAsync(
+        String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * Gets pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group. The
+     * profile needs to be generated first using generateVpnProfile.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<String>, String> beginGetVpnProfilePackageUrlAsync(
+        String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * Gets pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group. The
+     * profile needs to be generated first using generateVpnProfile.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<String>, String> beginGetVpnProfilePackageUrl(
+        String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * Gets pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group. The
@@ -2891,46 +1015,13 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> getVpnProfilePackageUrlWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        context = this.client.mergeContext(context);
-        return service
-            .getVpnProfilePackageUrl(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualNetworkGatewayName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
+    SyncPoller<PollResult<String>, String> beginGetVpnProfilePackageUrl(
+        String resourceGroupName, String virtualNetworkGatewayName, Context context);
 
     /**
      * Gets pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group. The
@@ -2939,20 +1030,26 @@ public final class VirtualNetworkGatewaysClient
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<String>, String> beginGetVpnProfilePackageUrlAsync(
-        String resourceGroupName, String virtualNetworkGatewayName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            getVpnProfilePackageUrlWithResponseAsync(resourceGroupName, virtualNetworkGatewayName);
-        return this
-            .client
-            .<String, String>getLroResult(
-                mono, this.client.getHttpPipeline(), String.class, String.class, Context.NONE);
-    }
+    Mono<String> getVpnProfilePackageUrlAsync(String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * Gets pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group. The
+     * profile needs to be generated first using generateVpnProfile.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    String getVpnProfilePackageUrl(String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * Gets pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group. The
@@ -2962,126 +1059,12 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<String>, String> beginGetVpnProfilePackageUrlAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            getVpnProfilePackageUrlWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, context);
-        return this
-            .client
-            .<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class, context);
-    }
-
-    /**
-     * Gets pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group. The
-     * profile needs to be generated first using generateVpnProfile.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<String>, String> beginGetVpnProfilePackageUrl(
-        String resourceGroupName, String virtualNetworkGatewayName) {
-        return beginGetVpnProfilePackageUrlAsync(resourceGroupName, virtualNetworkGatewayName).getSyncPoller();
-    }
-
-    /**
-     * Gets pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group. The
-     * profile needs to be generated first using generateVpnProfile.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<String>, String> beginGetVpnProfilePackageUrl(
-        String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        return beginGetVpnProfilePackageUrlAsync(resourceGroupName, virtualNetworkGatewayName, context).getSyncPoller();
-    }
-
-    /**
-     * Gets pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group. The
-     * profile needs to be generated first using generateVpnProfile.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> getVpnProfilePackageUrlAsync(String resourceGroupName, String virtualNetworkGatewayName) {
-        return beginGetVpnProfilePackageUrlAsync(resourceGroupName, virtualNetworkGatewayName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Gets pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group. The
-     * profile needs to be generated first using generateVpnProfile.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> getVpnProfilePackageUrlAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        return beginGetVpnProfilePackageUrlAsync(resourceGroupName, virtualNetworkGatewayName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Gets pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group. The
-     * profile needs to be generated first using generateVpnProfile.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public String getVpnProfilePackageUrl(String resourceGroupName, String virtualNetworkGatewayName) {
-        return getVpnProfilePackageUrlAsync(resourceGroupName, virtualNetworkGatewayName).block();
-    }
-
-    /**
-     * Gets pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group. The
-     * profile needs to be generated first using generateVpnProfile.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public String getVpnProfilePackageUrl(String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        return getVpnProfilePackageUrlAsync(resourceGroupName, virtualNetworkGatewayName, context).block();
-    }
+    String getVpnProfilePackageUrl(String resourceGroupName, String virtualNetworkGatewayName, Context context);
 
     /**
      * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
@@ -3090,50 +1073,43 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param peer The IP address of the peer to retrieve the status of.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for list BGP peer status API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> getBgpPeerStatusWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, String peer) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getBgpPeerStatus(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualNetworkGatewayName,
-                            peer,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> getBgpPeerStatusWithResponseAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, String peer);
+
+    /**
+     * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peer The IP address of the peer to retrieve the status of.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for list BGP peer status API service call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<BgpPeerStatusListResultInner>, BgpPeerStatusListResultInner> beginGetBgpPeerStatusAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, String peer);
+
+    /**
+     * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peer The IP address of the peer to retrieve the status of.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for list BGP peer status API service call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<BgpPeerStatusListResultInner>, BgpPeerStatusListResultInner> beginGetBgpPeerStatus(
+        String resourceGroupName, String virtualNetworkGatewayName, String peer);
 
     /**
      * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
@@ -3143,47 +1119,13 @@ public final class VirtualNetworkGatewaysClient
      * @param peer The IP address of the peer to retrieve the status of.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for list BGP peer status API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> getBgpPeerStatusWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, String peer, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        context = this.client.mergeContext(context);
-        return service
-            .getBgpPeerStatus(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualNetworkGatewayName,
-                peer,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
+    SyncPoller<PollResult<BgpPeerStatusListResultInner>, BgpPeerStatusListResultInner> beginGetBgpPeerStatus(
+        String resourceGroupName, String virtualNetworkGatewayName, String peer, Context context);
 
     /**
      * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
@@ -3192,24 +1134,42 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param peer The IP address of the peer to retrieve the status of.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for list BGP peer status API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<BgpPeerStatusListResultInner>, BgpPeerStatusListResultInner>
-        beginGetBgpPeerStatusAsync(String resourceGroupName, String virtualNetworkGatewayName, String peer) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            getBgpPeerStatusWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, peer);
-        return this
-            .client
-            .<BgpPeerStatusListResultInner, BgpPeerStatusListResultInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                BgpPeerStatusListResultInner.class,
-                BgpPeerStatusListResultInner.class,
-                Context.NONE);
-    }
+    Mono<BgpPeerStatusListResultInner> getBgpPeerStatusAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, String peer);
+
+    /**
+     * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for list BGP peer status API service call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<BgpPeerStatusListResultInner> getBgpPeerStatusAsync(
+        String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peer The IP address of the peer to retrieve the status of.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for list BGP peer status API service call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BgpPeerStatusListResultInner getBgpPeerStatus(
+        String resourceGroupName, String virtualNetworkGatewayName, String peer);
 
     /**
      * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
@@ -3219,100 +1179,13 @@ public final class VirtualNetworkGatewaysClient
      * @param peer The IP address of the peer to retrieve the status of.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for list BGP peer status API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<BgpPeerStatusListResultInner>, BgpPeerStatusListResultInner>
-        beginGetBgpPeerStatusAsync(
-            String resourceGroupName, String virtualNetworkGatewayName, String peer, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            getBgpPeerStatusWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, peer, context);
-        return this
-            .client
-            .<BgpPeerStatusListResultInner, BgpPeerStatusListResultInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                BgpPeerStatusListResultInner.class,
-                BgpPeerStatusListResultInner.class,
-                context);
-    }
-
-    /**
-     * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param peer The IP address of the peer to retrieve the status of.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list BGP peer status API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<BgpPeerStatusListResultInner>, BgpPeerStatusListResultInner> beginGetBgpPeerStatus(
-        String resourceGroupName, String virtualNetworkGatewayName, String peer) {
-        return beginGetBgpPeerStatusAsync(resourceGroupName, virtualNetworkGatewayName, peer).getSyncPoller();
-    }
-
-    /**
-     * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param peer The IP address of the peer to retrieve the status of.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list BGP peer status API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<BgpPeerStatusListResultInner>, BgpPeerStatusListResultInner> beginGetBgpPeerStatus(
-        String resourceGroupName, String virtualNetworkGatewayName, String peer, Context context) {
-        return beginGetBgpPeerStatusAsync(resourceGroupName, virtualNetworkGatewayName, peer, context).getSyncPoller();
-    }
-
-    /**
-     * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param peer The IP address of the peer to retrieve the status of.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list BGP peer status API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BgpPeerStatusListResultInner> getBgpPeerStatusAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, String peer) {
-        return beginGetBgpPeerStatusAsync(resourceGroupName, virtualNetworkGatewayName, peer)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param peer The IP address of the peer to retrieve the status of.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list BGP peer status API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BgpPeerStatusListResultInner> getBgpPeerStatusAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, String peer, Context context) {
-        return beginGetBgpPeerStatusAsync(resourceGroupName, virtualNetworkGatewayName, peer, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
+    BgpPeerStatusListResultInner getBgpPeerStatus(
+        String resourceGroupName, String virtualNetworkGatewayName, String peer, Context context);
 
     /**
      * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
@@ -3320,71 +1193,12 @@ public final class VirtualNetworkGatewaysClient
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for list BGP peer status API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BgpPeerStatusListResultInner> getBgpPeerStatusAsync(
-        String resourceGroupName, String virtualNetworkGatewayName) {
-        final String peer = null;
-        final Context context = null;
-        return beginGetBgpPeerStatusAsync(resourceGroupName, virtualNetworkGatewayName, peer)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param peer The IP address of the peer to retrieve the status of.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list BGP peer status API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BgpPeerStatusListResultInner getBgpPeerStatus(
-        String resourceGroupName, String virtualNetworkGatewayName, String peer) {
-        return getBgpPeerStatusAsync(resourceGroupName, virtualNetworkGatewayName, peer).block();
-    }
-
-    /**
-     * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param peer The IP address of the peer to retrieve the status of.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list BGP peer status API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BgpPeerStatusListResultInner getBgpPeerStatus(
-        String resourceGroupName, String virtualNetworkGatewayName, String peer, Context context) {
-        return getBgpPeerStatusAsync(resourceGroupName, virtualNetworkGatewayName, peer, context).block();
-    }
-
-    /**
-     * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list BGP peer status API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BgpPeerStatusListResultInner getBgpPeerStatus(String resourceGroupName, String virtualNetworkGatewayName) {
-        final String peer = null;
-        final Context context = null;
-        return getBgpPeerStatusAsync(resourceGroupName, virtualNetworkGatewayName, peer).block();
-    }
+    BgpPeerStatusListResultInner getBgpPeerStatus(String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * Gets a xml format representation for supported vpn devices.
@@ -3392,49 +1206,39 @@ public final class VirtualNetworkGatewaysClient
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a xml format representation for supported vpn devices.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<String>> supportedVpnDevicesWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .supportedVpnDevices(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualNetworkGatewayName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<String>> supportedVpnDevicesWithResponseAsync(
+        String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * Gets a xml format representation for supported vpn devices.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a xml format representation for supported vpn devices.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<String> supportedVpnDevicesAsync(String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * Gets a xml format representation for supported vpn devices.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a xml format representation for supported vpn devices.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    String supportedVpnDevices(String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * Gets a xml format representation for supported vpn devices.
@@ -3443,125 +1247,13 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a xml format representation for supported vpn devices.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<String>> supportedVpnDevicesWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        context = this.client.mergeContext(context);
-        return service
-            .supportedVpnDevices(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualNetworkGatewayName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * Gets a xml format representation for supported vpn devices.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a xml format representation for supported vpn devices.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> supportedVpnDevicesAsync(String resourceGroupName, String virtualNetworkGatewayName) {
-        return supportedVpnDevicesWithResponseAsync(resourceGroupName, virtualNetworkGatewayName)
-            .flatMap(
-                (Response<String> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a xml format representation for supported vpn devices.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a xml format representation for supported vpn devices.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> supportedVpnDevicesAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        return supportedVpnDevicesWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, context)
-            .flatMap(
-                (Response<String> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a xml format representation for supported vpn devices.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a xml format representation for supported vpn devices.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public String supportedVpnDevices(String resourceGroupName, String virtualNetworkGatewayName) {
-        return supportedVpnDevicesAsync(resourceGroupName, virtualNetworkGatewayName).block();
-    }
-
-    /**
-     * Gets a xml format representation for supported vpn devices.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a xml format representation for supported vpn devices.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public String supportedVpnDevices(String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        return supportedVpnDevicesAsync(resourceGroupName, virtualNetworkGatewayName, context).block();
-    }
+    Response<String> supportedVpnDevicesWithResponse(
+        String resourceGroupName, String virtualNetworkGatewayName, Context context);
 
     /**
      * This operation retrieves a list of routes the virtual network gateway has learned, including routes learned from
@@ -3570,49 +1262,43 @@ public final class VirtualNetworkGatewaysClient
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of virtual network gateway routes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> getLearnedRoutesWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getLearnedRoutes(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualNetworkGatewayName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> getLearnedRoutesWithResponseAsync(
+        String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * This operation retrieves a list of routes the virtual network gateway has learned, including routes learned from
+     * BGP peers.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of virtual network gateway routes.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<GatewayRouteListResultInner>, GatewayRouteListResultInner> beginGetLearnedRoutesAsync(
+        String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * This operation retrieves a list of routes the virtual network gateway has learned, including routes learned from
+     * BGP peers.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of virtual network gateway routes.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<GatewayRouteListResultInner>, GatewayRouteListResultInner> beginGetLearnedRoutes(
+        String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * This operation retrieves a list of routes the virtual network gateway has learned, including routes learned from
@@ -3622,46 +1308,13 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of virtual network gateway routes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> getLearnedRoutesWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        context = this.client.mergeContext(context);
-        return service
-            .getLearnedRoutes(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualNetworkGatewayName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
+    SyncPoller<PollResult<GatewayRouteListResultInner>, GatewayRouteListResultInner> beginGetLearnedRoutes(
+        String resourceGroupName, String virtualNetworkGatewayName, Context context);
 
     /**
      * This operation retrieves a list of routes the virtual network gateway has learned, including routes learned from
@@ -3670,24 +1323,26 @@ public final class VirtualNetworkGatewaysClient
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of virtual network gateway routes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<GatewayRouteListResultInner>, GatewayRouteListResultInner> beginGetLearnedRoutesAsync(
-        String resourceGroupName, String virtualNetworkGatewayName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            getLearnedRoutesWithResponseAsync(resourceGroupName, virtualNetworkGatewayName);
-        return this
-            .client
-            .<GatewayRouteListResultInner, GatewayRouteListResultInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                GatewayRouteListResultInner.class,
-                GatewayRouteListResultInner.class,
-                Context.NONE);
-    }
+    Mono<GatewayRouteListResultInner> getLearnedRoutesAsync(String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * This operation retrieves a list of routes the virtual network gateway has learned, including routes learned from
+     * BGP peers.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of virtual network gateway routes.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GatewayRouteListResultInner getLearnedRoutes(String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * This operation retrieves a list of routes the virtual network gateway has learned, including routes learned from
@@ -3697,133 +1352,13 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of virtual network gateway routes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<GatewayRouteListResultInner>, GatewayRouteListResultInner> beginGetLearnedRoutesAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            getLearnedRoutesWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, context);
-        return this
-            .client
-            .<GatewayRouteListResultInner, GatewayRouteListResultInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                GatewayRouteListResultInner.class,
-                GatewayRouteListResultInner.class,
-                context);
-    }
-
-    /**
-     * This operation retrieves a list of routes the virtual network gateway has learned, including routes learned from
-     * BGP peers.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual network gateway routes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<GatewayRouteListResultInner>, GatewayRouteListResultInner> beginGetLearnedRoutes(
-        String resourceGroupName, String virtualNetworkGatewayName) {
-        return beginGetLearnedRoutesAsync(resourceGroupName, virtualNetworkGatewayName).getSyncPoller();
-    }
-
-    /**
-     * This operation retrieves a list of routes the virtual network gateway has learned, including routes learned from
-     * BGP peers.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual network gateway routes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<GatewayRouteListResultInner>, GatewayRouteListResultInner> beginGetLearnedRoutes(
-        String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        return beginGetLearnedRoutesAsync(resourceGroupName, virtualNetworkGatewayName, context).getSyncPoller();
-    }
-
-    /**
-     * This operation retrieves a list of routes the virtual network gateway has learned, including routes learned from
-     * BGP peers.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual network gateway routes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GatewayRouteListResultInner> getLearnedRoutesAsync(
-        String resourceGroupName, String virtualNetworkGatewayName) {
-        return beginGetLearnedRoutesAsync(resourceGroupName, virtualNetworkGatewayName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * This operation retrieves a list of routes the virtual network gateway has learned, including routes learned from
-     * BGP peers.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual network gateway routes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GatewayRouteListResultInner> getLearnedRoutesAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        return beginGetLearnedRoutesAsync(resourceGroupName, virtualNetworkGatewayName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * This operation retrieves a list of routes the virtual network gateway has learned, including routes learned from
-     * BGP peers.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual network gateway routes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GatewayRouteListResultInner getLearnedRoutes(String resourceGroupName, String virtualNetworkGatewayName) {
-        return getLearnedRoutesAsync(resourceGroupName, virtualNetworkGatewayName).block();
-    }
-
-    /**
-     * This operation retrieves a list of routes the virtual network gateway has learned, including routes learned from
-     * BGP peers.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual network gateway routes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GatewayRouteListResultInner getLearnedRoutes(
-        String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        return getLearnedRoutesAsync(resourceGroupName, virtualNetworkGatewayName, context).block();
-    }
+    GatewayRouteListResultInner getLearnedRoutes(
+        String resourceGroupName, String virtualNetworkGatewayName, Context context);
 
     /**
      * This operation retrieves a list of routes the virtual network gateway is advertising to the specified peer.
@@ -3832,53 +1367,43 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param peer The IP address of the peer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of virtual network gateway routes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> getAdvertisedRoutesWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, String peer) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (peer == null) {
-            return Mono.error(new IllegalArgumentException("Parameter peer is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getAdvertisedRoutes(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualNetworkGatewayName,
-                            peer,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> getAdvertisedRoutesWithResponseAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, String peer);
+
+    /**
+     * This operation retrieves a list of routes the virtual network gateway is advertising to the specified peer.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peer The IP address of the peer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of virtual network gateway routes.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<GatewayRouteListResultInner>, GatewayRouteListResultInner> beginGetAdvertisedRoutesAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, String peer);
+
+    /**
+     * This operation retrieves a list of routes the virtual network gateway is advertising to the specified peer.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peer The IP address of the peer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of virtual network gateway routes.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<GatewayRouteListResultInner>, GatewayRouteListResultInner> beginGetAdvertisedRoutes(
+        String resourceGroupName, String virtualNetworkGatewayName, String peer);
 
     /**
      * This operation retrieves a list of routes the virtual network gateway is advertising to the specified peer.
@@ -3888,50 +1413,13 @@ public final class VirtualNetworkGatewaysClient
      * @param peer The IP address of the peer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of virtual network gateway routes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> getAdvertisedRoutesWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, String peer, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (peer == null) {
-            return Mono.error(new IllegalArgumentException("Parameter peer is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        context = this.client.mergeContext(context);
-        return service
-            .getAdvertisedRoutes(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualNetworkGatewayName,
-                peer,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
+    SyncPoller<PollResult<GatewayRouteListResultInner>, GatewayRouteListResultInner> beginGetAdvertisedRoutes(
+        String resourceGroupName, String virtualNetworkGatewayName, String peer, Context context);
 
     /**
      * This operation retrieves a list of routes the virtual network gateway is advertising to the specified peer.
@@ -3940,24 +1428,28 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param peer The IP address of the peer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of virtual network gateway routes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<GatewayRouteListResultInner>, GatewayRouteListResultInner>
-        beginGetAdvertisedRoutesAsync(String resourceGroupName, String virtualNetworkGatewayName, String peer) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            getAdvertisedRoutesWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, peer);
-        return this
-            .client
-            .<GatewayRouteListResultInner, GatewayRouteListResultInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                GatewayRouteListResultInner.class,
-                GatewayRouteListResultInner.class,
-                Context.NONE);
-    }
+    Mono<GatewayRouteListResultInner> getAdvertisedRoutesAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, String peer);
+
+    /**
+     * This operation retrieves a list of routes the virtual network gateway is advertising to the specified peer.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peer The IP address of the peer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of virtual network gateway routes.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GatewayRouteListResultInner getAdvertisedRoutes(
+        String resourceGroupName, String virtualNetworkGatewayName, String peer);
 
     /**
      * This operation retrieves a list of routes the virtual network gateway is advertising to the specified peer.
@@ -3967,136 +1459,13 @@ public final class VirtualNetworkGatewaysClient
      * @param peer The IP address of the peer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of virtual network gateway routes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<GatewayRouteListResultInner>, GatewayRouteListResultInner>
-        beginGetAdvertisedRoutesAsync(
-            String resourceGroupName, String virtualNetworkGatewayName, String peer, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            getAdvertisedRoutesWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, peer, context);
-        return this
-            .client
-            .<GatewayRouteListResultInner, GatewayRouteListResultInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                GatewayRouteListResultInner.class,
-                GatewayRouteListResultInner.class,
-                context);
-    }
-
-    /**
-     * This operation retrieves a list of routes the virtual network gateway is advertising to the specified peer.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param peer The IP address of the peer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual network gateway routes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<GatewayRouteListResultInner>, GatewayRouteListResultInner> beginGetAdvertisedRoutes(
-        String resourceGroupName, String virtualNetworkGatewayName, String peer) {
-        return beginGetAdvertisedRoutesAsync(resourceGroupName, virtualNetworkGatewayName, peer).getSyncPoller();
-    }
-
-    /**
-     * This operation retrieves a list of routes the virtual network gateway is advertising to the specified peer.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param peer The IP address of the peer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual network gateway routes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<GatewayRouteListResultInner>, GatewayRouteListResultInner> beginGetAdvertisedRoutes(
-        String resourceGroupName, String virtualNetworkGatewayName, String peer, Context context) {
-        return beginGetAdvertisedRoutesAsync(resourceGroupName, virtualNetworkGatewayName, peer, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * This operation retrieves a list of routes the virtual network gateway is advertising to the specified peer.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param peer The IP address of the peer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual network gateway routes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GatewayRouteListResultInner> getAdvertisedRoutesAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, String peer) {
-        return beginGetAdvertisedRoutesAsync(resourceGroupName, virtualNetworkGatewayName, peer)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * This operation retrieves a list of routes the virtual network gateway is advertising to the specified peer.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param peer The IP address of the peer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual network gateway routes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GatewayRouteListResultInner> getAdvertisedRoutesAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, String peer, Context context) {
-        return beginGetAdvertisedRoutesAsync(resourceGroupName, virtualNetworkGatewayName, peer, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * This operation retrieves a list of routes the virtual network gateway is advertising to the specified peer.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param peer The IP address of the peer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual network gateway routes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GatewayRouteListResultInner getAdvertisedRoutes(
-        String resourceGroupName, String virtualNetworkGatewayName, String peer) {
-        return getAdvertisedRoutesAsync(resourceGroupName, virtualNetworkGatewayName, peer).block();
-    }
-
-    /**
-     * This operation retrieves a list of routes the virtual network gateway is advertising to the specified peer.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param peer The IP address of the peer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual network gateway routes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GatewayRouteListResultInner getAdvertisedRoutes(
-        String resourceGroupName, String virtualNetworkGatewayName, String peer, Context context) {
-        return getAdvertisedRoutesAsync(resourceGroupName, virtualNetworkGatewayName, peer, context).block();
-    }
+    GatewayRouteListResultInner getAdvertisedRoutes(
+        String resourceGroupName, String virtualNetworkGatewayName, String peer, Context context);
 
     /**
      * The Set VpnclientIpsecParameters operation sets the vpnclient ipsec policy for P2S client of virtual network
@@ -4106,118 +1475,13 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param vpnclientIpsecParams An IPSec parameters for a virtual network gateway P2S connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an IPSec parameters for a virtual network gateway P2S connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> setVpnclientIpsecParametersWithResponseAsync(
-        String resourceGroupName,
-        String virtualNetworkGatewayName,
-        VpnClientIPsecParametersInner vpnclientIpsecParams) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (vpnclientIpsecParams == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter vpnclientIpsecParams is required and cannot be null."));
-        } else {
-            vpnclientIpsecParams.validate();
-        }
-        final String apiVersion = "2020-05-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .setVpnclientIpsecParameters(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualNetworkGatewayName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            vpnclientIpsecParams,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * The Set VpnclientIpsecParameters operation sets the vpnclient ipsec policy for P2S client of virtual network
-     * gateway in the specified resource group through Network resource provider.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param vpnclientIpsecParams An IPSec parameters for a virtual network gateway P2S connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an IPSec parameters for a virtual network gateway P2S connection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> setVpnclientIpsecParametersWithResponseAsync(
-        String resourceGroupName,
-        String virtualNetworkGatewayName,
-        VpnClientIPsecParametersInner vpnclientIpsecParams,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (vpnclientIpsecParams == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter vpnclientIpsecParams is required and cannot be null."));
-        } else {
-            vpnclientIpsecParams.validate();
-        }
-        final String apiVersion = "2020-05-01";
-        context = this.client.mergeContext(context);
-        return service
-            .setVpnclientIpsecParameters(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualNetworkGatewayName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                vpnclientIpsecParams,
-                context);
-    }
+    Mono<Response<Flux<ByteBuffer>>> setVpnclientIpsecParametersWithResponseAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, VpnClientIPsecParametersInner vpnclientIpsecParams);
 
     /**
      * The Set VpnclientIpsecParameters operation sets the vpnclient ipsec policy for P2S client of virtual network
@@ -4227,62 +1491,16 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param vpnclientIpsecParams An IPSec parameters for a virtual network gateway P2S connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an IPSec parameters for a virtual network gateway P2S connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<VpnClientIPsecParametersInner>, VpnClientIPsecParametersInner>
+    PollerFlux<PollResult<VpnClientIPsecParametersInner>, VpnClientIPsecParametersInner>
         beginSetVpnclientIpsecParametersAsync(
             String resourceGroupName,
             String virtualNetworkGatewayName,
-            VpnClientIPsecParametersInner vpnclientIpsecParams) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            setVpnclientIpsecParametersWithResponseAsync(
-                resourceGroupName, virtualNetworkGatewayName, vpnclientIpsecParams);
-        return this
-            .client
-            .<VpnClientIPsecParametersInner, VpnClientIPsecParametersInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VpnClientIPsecParametersInner.class,
-                VpnClientIPsecParametersInner.class,
-                Context.NONE);
-    }
-
-    /**
-     * The Set VpnclientIpsecParameters operation sets the vpnclient ipsec policy for P2S client of virtual network
-     * gateway in the specified resource group through Network resource provider.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param vpnclientIpsecParams An IPSec parameters for a virtual network gateway P2S connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an IPSec parameters for a virtual network gateway P2S connection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<VpnClientIPsecParametersInner>, VpnClientIPsecParametersInner>
-        beginSetVpnclientIpsecParametersAsync(
-            String resourceGroupName,
-            String virtualNetworkGatewayName,
-            VpnClientIPsecParametersInner vpnclientIpsecParams,
-            Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            setVpnclientIpsecParametersWithResponseAsync(
-                resourceGroupName, virtualNetworkGatewayName, vpnclientIpsecParams, context);
-        return this
-            .client
-            .<VpnClientIPsecParametersInner, VpnClientIPsecParametersInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VpnClientIPsecParametersInner.class,
-                VpnClientIPsecParametersInner.class,
-                context);
-    }
+            VpnClientIPsecParametersInner vpnclientIpsecParams);
 
     /**
      * The Set VpnclientIpsecParameters operation sets the vpnclient ipsec policy for P2S client of virtual network
@@ -4292,19 +1510,16 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param vpnclientIpsecParams An IPSec parameters for a virtual network gateway P2S connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an IPSec parameters for a virtual network gateway P2S connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<VpnClientIPsecParametersInner>, VpnClientIPsecParametersInner>
+    SyncPoller<PollResult<VpnClientIPsecParametersInner>, VpnClientIPsecParametersInner>
         beginSetVpnclientIpsecParameters(
             String resourceGroupName,
             String virtualNetworkGatewayName,
-            VpnClientIPsecParametersInner vpnclientIpsecParams) {
-        return beginSetVpnclientIpsecParametersAsync(resourceGroupName, virtualNetworkGatewayName, vpnclientIpsecParams)
-            .getSyncPoller();
-    }
+            VpnClientIPsecParametersInner vpnclientIpsecParams);
 
     /**
      * The Set VpnclientIpsecParameters operation sets the vpnclient ipsec policy for P2S client of virtual network
@@ -4315,21 +1530,17 @@ public final class VirtualNetworkGatewaysClient
      * @param vpnclientIpsecParams An IPSec parameters for a virtual network gateway P2S connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an IPSec parameters for a virtual network gateway P2S connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<VpnClientIPsecParametersInner>, VpnClientIPsecParametersInner>
+    SyncPoller<PollResult<VpnClientIPsecParametersInner>, VpnClientIPsecParametersInner>
         beginSetVpnclientIpsecParameters(
             String resourceGroupName,
             String virtualNetworkGatewayName,
             VpnClientIPsecParametersInner vpnclientIpsecParams,
-            Context context) {
-        return beginSetVpnclientIpsecParametersAsync(
-                resourceGroupName, virtualNetworkGatewayName, vpnclientIpsecParams, context)
-            .getSyncPoller();
-    }
+            Context context);
 
     /**
      * The Set VpnclientIpsecParameters operation sets the vpnclient ipsec policy for P2S client of virtual network
@@ -4339,44 +1550,13 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param vpnclientIpsecParams An IPSec parameters for a virtual network gateway P2S connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an IPSec parameters for a virtual network gateway P2S connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VpnClientIPsecParametersInner> setVpnclientIpsecParametersAsync(
-        String resourceGroupName,
-        String virtualNetworkGatewayName,
-        VpnClientIPsecParametersInner vpnclientIpsecParams) {
-        return beginSetVpnclientIpsecParametersAsync(resourceGroupName, virtualNetworkGatewayName, vpnclientIpsecParams)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * The Set VpnclientIpsecParameters operation sets the vpnclient ipsec policy for P2S client of virtual network
-     * gateway in the specified resource group through Network resource provider.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param vpnclientIpsecParams An IPSec parameters for a virtual network gateway P2S connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an IPSec parameters for a virtual network gateway P2S connection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VpnClientIPsecParametersInner> setVpnclientIpsecParametersAsync(
-        String resourceGroupName,
-        String virtualNetworkGatewayName,
-        VpnClientIPsecParametersInner vpnclientIpsecParams,
-        Context context) {
-        return beginSetVpnclientIpsecParametersAsync(
-                resourceGroupName, virtualNetworkGatewayName, vpnclientIpsecParams, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
+    Mono<VpnClientIPsecParametersInner> setVpnclientIpsecParametersAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, VpnClientIPsecParametersInner vpnclientIpsecParams);
 
     /**
      * The Set VpnclientIpsecParameters operation sets the vpnclient ipsec policy for P2S client of virtual network
@@ -4386,18 +1566,13 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param vpnclientIpsecParams An IPSec parameters for a virtual network gateway P2S connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an IPSec parameters for a virtual network gateway P2S connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VpnClientIPsecParametersInner setVpnclientIpsecParameters(
-        String resourceGroupName,
-        String virtualNetworkGatewayName,
-        VpnClientIPsecParametersInner vpnclientIpsecParams) {
-        return setVpnclientIpsecParametersAsync(resourceGroupName, virtualNetworkGatewayName, vpnclientIpsecParams)
-            .block();
-    }
+    VpnClientIPsecParametersInner setVpnclientIpsecParameters(
+        String resourceGroupName, String virtualNetworkGatewayName, VpnClientIPsecParametersInner vpnclientIpsecParams);
 
     /**
      * The Set VpnclientIpsecParameters operation sets the vpnclient ipsec policy for P2S client of virtual network
@@ -4408,20 +1583,16 @@ public final class VirtualNetworkGatewaysClient
      * @param vpnclientIpsecParams An IPSec parameters for a virtual network gateway P2S connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an IPSec parameters for a virtual network gateway P2S connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VpnClientIPsecParametersInner setVpnclientIpsecParameters(
+    VpnClientIPsecParametersInner setVpnclientIpsecParameters(
         String resourceGroupName,
         String virtualNetworkGatewayName,
         VpnClientIPsecParametersInner vpnclientIpsecParams,
-        Context context) {
-        return setVpnclientIpsecParametersAsync(
-                resourceGroupName, virtualNetworkGatewayName, vpnclientIpsecParams, context)
-            .block();
-    }
+        Context context);
 
     /**
      * The Get VpnclientIpsecParameters operation retrieves information about the vpnclient ipsec policy for P2S client
@@ -4430,49 +1601,43 @@ public final class VirtualNetworkGatewaysClient
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The virtual network gateway name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an IPSec parameters for a virtual network gateway P2S connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> getVpnclientIpsecParametersWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getVpnclientIpsecParameters(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualNetworkGatewayName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> getVpnclientIpsecParametersWithResponseAsync(
+        String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * The Get VpnclientIpsecParameters operation retrieves information about the vpnclient ipsec policy for P2S client
+     * of virtual network gateway in the specified resource group through Network resource provider.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The virtual network gateway name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an IPSec parameters for a virtual network gateway P2S connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<VpnClientIPsecParametersInner>, VpnClientIPsecParametersInner>
+        beginGetVpnclientIpsecParametersAsync(String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * The Get VpnclientIpsecParameters operation retrieves information about the vpnclient ipsec policy for P2S client
+     * of virtual network gateway in the specified resource group through Network resource provider.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The virtual network gateway name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an IPSec parameters for a virtual network gateway P2S connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<VpnClientIPsecParametersInner>, VpnClientIPsecParametersInner>
+        beginGetVpnclientIpsecParameters(String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * The Get VpnclientIpsecParameters operation retrieves information about the vpnclient ipsec policy for P2S client
@@ -4482,46 +1647,13 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The virtual network gateway name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an IPSec parameters for a virtual network gateway P2S connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> getVpnclientIpsecParametersWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        context = this.client.mergeContext(context);
-        return service
-            .getVpnclientIpsecParameters(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualNetworkGatewayName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
+    SyncPoller<PollResult<VpnClientIPsecParametersInner>, VpnClientIPsecParametersInner>
+        beginGetVpnclientIpsecParameters(String resourceGroupName, String virtualNetworkGatewayName, Context context);
 
     /**
      * The Get VpnclientIpsecParameters operation retrieves information about the vpnclient ipsec policy for P2S client
@@ -4530,24 +1662,28 @@ public final class VirtualNetworkGatewaysClient
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The virtual network gateway name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an IPSec parameters for a virtual network gateway P2S connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<VpnClientIPsecParametersInner>, VpnClientIPsecParametersInner>
-        beginGetVpnclientIpsecParametersAsync(String resourceGroupName, String virtualNetworkGatewayName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            getVpnclientIpsecParametersWithResponseAsync(resourceGroupName, virtualNetworkGatewayName);
-        return this
-            .client
-            .<VpnClientIPsecParametersInner, VpnClientIPsecParametersInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VpnClientIPsecParametersInner.class,
-                VpnClientIPsecParametersInner.class,
-                Context.NONE);
-    }
+    Mono<VpnClientIPsecParametersInner> getVpnclientIpsecParametersAsync(
+        String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * The Get VpnclientIpsecParameters operation retrieves information about the vpnclient ipsec policy for P2S client
+     * of virtual network gateway in the specified resource group through Network resource provider.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The virtual network gateway name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an IPSec parameters for a virtual network gateway P2S connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VpnClientIPsecParametersInner getVpnclientIpsecParameters(
+        String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * The Get VpnclientIpsecParameters operation retrieves information about the vpnclient ipsec policy for P2S client
@@ -4557,136 +1693,13 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The virtual network gateway name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an IPSec parameters for a virtual network gateway P2S connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<VpnClientIPsecParametersInner>, VpnClientIPsecParametersInner>
-        beginGetVpnclientIpsecParametersAsync(
-            String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            getVpnclientIpsecParametersWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, context);
-        return this
-            .client
-            .<VpnClientIPsecParametersInner, VpnClientIPsecParametersInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VpnClientIPsecParametersInner.class,
-                VpnClientIPsecParametersInner.class,
-                context);
-    }
-
-    /**
-     * The Get VpnclientIpsecParameters operation retrieves information about the vpnclient ipsec policy for P2S client
-     * of virtual network gateway in the specified resource group through Network resource provider.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The virtual network gateway name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an IPSec parameters for a virtual network gateway P2S connection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<VpnClientIPsecParametersInner>, VpnClientIPsecParametersInner>
-        beginGetVpnclientIpsecParameters(String resourceGroupName, String virtualNetworkGatewayName) {
-        return beginGetVpnclientIpsecParametersAsync(resourceGroupName, virtualNetworkGatewayName).getSyncPoller();
-    }
-
-    /**
-     * The Get VpnclientIpsecParameters operation retrieves information about the vpnclient ipsec policy for P2S client
-     * of virtual network gateway in the specified resource group through Network resource provider.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The virtual network gateway name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an IPSec parameters for a virtual network gateway P2S connection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<VpnClientIPsecParametersInner>, VpnClientIPsecParametersInner>
-        beginGetVpnclientIpsecParameters(String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        return beginGetVpnclientIpsecParametersAsync(resourceGroupName, virtualNetworkGatewayName, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * The Get VpnclientIpsecParameters operation retrieves information about the vpnclient ipsec policy for P2S client
-     * of virtual network gateway in the specified resource group through Network resource provider.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The virtual network gateway name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an IPSec parameters for a virtual network gateway P2S connection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VpnClientIPsecParametersInner> getVpnclientIpsecParametersAsync(
-        String resourceGroupName, String virtualNetworkGatewayName) {
-        return beginGetVpnclientIpsecParametersAsync(resourceGroupName, virtualNetworkGatewayName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * The Get VpnclientIpsecParameters operation retrieves information about the vpnclient ipsec policy for P2S client
-     * of virtual network gateway in the specified resource group through Network resource provider.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The virtual network gateway name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an IPSec parameters for a virtual network gateway P2S connection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VpnClientIPsecParametersInner> getVpnclientIpsecParametersAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        return beginGetVpnclientIpsecParametersAsync(resourceGroupName, virtualNetworkGatewayName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * The Get VpnclientIpsecParameters operation retrieves information about the vpnclient ipsec policy for P2S client
-     * of virtual network gateway in the specified resource group through Network resource provider.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The virtual network gateway name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an IPSec parameters for a virtual network gateway P2S connection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VpnClientIPsecParametersInner getVpnclientIpsecParameters(
-        String resourceGroupName, String virtualNetworkGatewayName) {
-        return getVpnclientIpsecParametersAsync(resourceGroupName, virtualNetworkGatewayName).block();
-    }
-
-    /**
-     * The Get VpnclientIpsecParameters operation retrieves information about the vpnclient ipsec policy for P2S client
-     * of virtual network gateway in the specified resource group through Network resource provider.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The virtual network gateway name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an IPSec parameters for a virtual network gateway P2S connection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VpnClientIPsecParametersInner getVpnclientIpsecParameters(
-        String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        return getVpnclientIpsecParametersAsync(resourceGroupName, virtualNetworkGatewayName, context).block();
-    }
+    VpnClientIPsecParametersInner getVpnclientIpsecParameters(
+        String resourceGroupName, String virtualNetworkGatewayName, Context context);
 
     /**
      * Gets a xml format representation for vpn device configuration script.
@@ -4696,55 +1709,45 @@ public final class VirtualNetworkGatewaysClient
      *     configuration script is generated.
      * @param parameters Vpn device configuration script generation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a xml format representation for vpn device configuration script.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<String>> vpnDeviceConfigurationScriptWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName, VpnDeviceScriptParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayConnectionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2020-05-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .vpnDeviceConfigurationScript(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualNetworkGatewayConnectionName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<String>> vpnDeviceConfigurationScriptWithResponseAsync(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, VpnDeviceScriptParameters parameters);
+
+    /**
+     * Gets a xml format representation for vpn device configuration script.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection for which the
+     *     configuration script is generated.
+     * @param parameters Vpn device configuration script generation parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a xml format representation for vpn device configuration script.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<String> vpnDeviceConfigurationScriptAsync(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, VpnDeviceScriptParameters parameters);
+
+    /**
+     * Gets a xml format representation for vpn device configuration script.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection for which the
+     *     configuration script is generated.
+     * @param parameters Vpn device configuration script generation parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a xml format representation for vpn device configuration script.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    String vpnDeviceConfigurationScript(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, VpnDeviceScriptParameters parameters);
 
     /**
      * Gets a xml format representation for vpn device configuration script.
@@ -4755,156 +1758,16 @@ public final class VirtualNetworkGatewaysClient
      * @param parameters Vpn device configuration script generation parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a xml format representation for vpn device configuration script.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<String>> vpnDeviceConfigurationScriptWithResponseAsync(
+    Response<String> vpnDeviceConfigurationScriptWithResponse(
         String resourceGroupName,
         String virtualNetworkGatewayConnectionName,
         VpnDeviceScriptParameters parameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayConnectionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2020-05-01";
-        context = this.client.mergeContext(context);
-        return service
-            .vpnDeviceConfigurationScript(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualNetworkGatewayConnectionName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Gets a xml format representation for vpn device configuration script.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection for which the
-     *     configuration script is generated.
-     * @param parameters Vpn device configuration script generation parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a xml format representation for vpn device configuration script.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> vpnDeviceConfigurationScriptAsync(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName, VpnDeviceScriptParameters parameters) {
-        return vpnDeviceConfigurationScriptWithResponseAsync(
-                resourceGroupName, virtualNetworkGatewayConnectionName, parameters)
-            .flatMap(
-                (Response<String> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a xml format representation for vpn device configuration script.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection for which the
-     *     configuration script is generated.
-     * @param parameters Vpn device configuration script generation parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a xml format representation for vpn device configuration script.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> vpnDeviceConfigurationScriptAsync(
-        String resourceGroupName,
-        String virtualNetworkGatewayConnectionName,
-        VpnDeviceScriptParameters parameters,
-        Context context) {
-        return vpnDeviceConfigurationScriptWithResponseAsync(
-                resourceGroupName, virtualNetworkGatewayConnectionName, parameters, context)
-            .flatMap(
-                (Response<String> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a xml format representation for vpn device configuration script.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection for which the
-     *     configuration script is generated.
-     * @param parameters Vpn device configuration script generation parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a xml format representation for vpn device configuration script.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public String vpnDeviceConfigurationScript(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName, VpnDeviceScriptParameters parameters) {
-        return vpnDeviceConfigurationScriptAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters)
-            .block();
-    }
-
-    /**
-     * Gets a xml format representation for vpn device configuration script.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection for which the
-     *     configuration script is generated.
-     * @param parameters Vpn device configuration script generation parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a xml format representation for vpn device configuration script.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public String vpnDeviceConfigurationScript(
-        String resourceGroupName,
-        String virtualNetworkGatewayConnectionName,
-        VpnDeviceScriptParameters parameters,
-        Context context) {
-        return vpnDeviceConfigurationScriptAsync(
-                resourceGroupName, virtualNetworkGatewayConnectionName, parameters, context)
-            .block();
-    }
+        Context context);
 
     /**
      * Starts packet capture on virtual network gateway in the specified resource group.
@@ -4913,56 +1776,43 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param filterData Start Packet capture parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> startPacketCaptureWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, String filterData) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        VpnPacketCaptureStartParameters parametersInternal = null;
-        if (filterData != null) {
-            parametersInternal = new VpnPacketCaptureStartParameters();
-            parametersInternal.withFilterData(filterData);
-        }
-        VpnPacketCaptureStartParameters parameters = parametersInternal;
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .startPacketCapture(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualNetworkGatewayName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> startPacketCaptureWithResponseAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, String filterData);
+
+    /**
+     * Starts packet capture on virtual network gateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param filterData Start Packet capture parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<String>, String> beginStartPacketCaptureAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, String filterData);
+
+    /**
+     * Starts packet capture on virtual network gateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param filterData Start Packet capture parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<String>, String> beginStartPacketCapture(
+        String resourceGroupName, String virtualNetworkGatewayName, String filterData);
 
     /**
      * Starts packet capture on virtual network gateway in the specified resource group.
@@ -4972,53 +1822,13 @@ public final class VirtualNetworkGatewaysClient
      * @param filterData Start Packet capture parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> startPacketCaptureWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, String filterData, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        VpnPacketCaptureStartParameters parametersInternal = null;
-        if (filterData != null) {
-            parametersInternal = new VpnPacketCaptureStartParameters();
-            parametersInternal.withFilterData(filterData);
-        }
-        VpnPacketCaptureStartParameters parameters = parametersInternal;
-        context = this.client.mergeContext(context);
-        return service
-            .startPacketCapture(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualNetworkGatewayName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
+    SyncPoller<PollResult<String>, String> beginStartPacketCapture(
+        String resourceGroupName, String virtualNetworkGatewayName, String filterData, Context context);
 
     /**
      * Starts packet capture on virtual network gateway in the specified resource group.
@@ -5027,20 +1837,39 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param filterData Start Packet capture parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<String>, String> beginStartPacketCaptureAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, String filterData) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            startPacketCaptureWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, filterData);
-        return this
-            .client
-            .<String, String>getLroResult(
-                mono, this.client.getHttpPipeline(), String.class, String.class, Context.NONE);
-    }
+    Mono<String> startPacketCaptureAsync(String resourceGroupName, String virtualNetworkGatewayName, String filterData);
+
+    /**
+     * Starts packet capture on virtual network gateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<String> startPacketCaptureAsync(String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * Starts packet capture on virtual network gateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param filterData Start Packet capture parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    String startPacketCapture(String resourceGroupName, String virtualNetworkGatewayName, String filterData);
 
     /**
      * Starts packet capture on virtual network gateway in the specified resource group.
@@ -5050,129 +1879,26 @@ public final class VirtualNetworkGatewaysClient
      * @param filterData Start Packet capture parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<String>, String> beginStartPacketCaptureAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, String filterData, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            startPacketCaptureWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, filterData, context);
-        return this
-            .client
-            .<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class, context);
-    }
+    String startPacketCapture(
+        String resourceGroupName, String virtualNetworkGatewayName, String filterData, Context context);
 
     /**
      * Starts packet capture on virtual network gateway in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param filterData Start Packet capture parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<String>, String> beginStartPacketCapture(
-        String resourceGroupName, String virtualNetworkGatewayName, String filterData) {
-        return beginStartPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayName, filterData).getSyncPoller();
-    }
-
-    /**
-     * Starts packet capture on virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param filterData Start Packet capture parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<String>, String> beginStartPacketCapture(
-        String resourceGroupName, String virtualNetworkGatewayName, String filterData, Context context) {
-        return beginStartPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayName, filterData, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Starts packet capture on virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param filterData Start Packet capture parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> startPacketCaptureAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, String filterData) {
-        return beginStartPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayName, filterData)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Starts packet capture on virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param filterData Start Packet capture parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> startPacketCaptureAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, String filterData, Context context) {
-        return beginStartPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayName, filterData, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Starts packet capture on virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param filterData Start Packet capture parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public String startPacketCapture(String resourceGroupName, String virtualNetworkGatewayName, String filterData) {
-        return startPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayName, filterData).block();
-    }
-
-    /**
-     * Starts packet capture on virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param filterData Start Packet capture parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public String startPacketCapture(
-        String resourceGroupName, String virtualNetworkGatewayName, String filterData, Context context) {
-        return startPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayName, filterData, context).block();
-    }
+    String startPacketCapture(String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * Stops packet capture on virtual network gateway in the specified resource group.
@@ -5181,52 +1907,43 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param sasUrl SAS url for packet capture on virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> stopPacketCaptureWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, String sasUrl) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        VpnPacketCaptureStopParameters parameters = new VpnPacketCaptureStopParameters();
-        parameters.withSasUrl(sasUrl);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .stopPacketCapture(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualNetworkGatewayName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> stopPacketCaptureWithResponseAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, String sasUrl);
+
+    /**
+     * Stops packet capture on virtual network gateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param sasUrl SAS url for packet capture on virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<String>, String> beginStopPacketCaptureAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, String sasUrl);
+
+    /**
+     * Stops packet capture on virtual network gateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param sasUrl SAS url for packet capture on virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<String>, String> beginStopPacketCapture(
+        String resourceGroupName, String virtualNetworkGatewayName, String sasUrl);
 
     /**
      * Stops packet capture on virtual network gateway in the specified resource group.
@@ -5236,49 +1953,13 @@ public final class VirtualNetworkGatewaysClient
      * @param sasUrl SAS url for packet capture on virtual network gateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> stopPacketCaptureWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, String sasUrl, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        VpnPacketCaptureStopParameters parameters = new VpnPacketCaptureStopParameters();
-        parameters.withSasUrl(sasUrl);
-        context = this.client.mergeContext(context);
-        return service
-            .stopPacketCapture(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualNetworkGatewayName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
+    SyncPoller<PollResult<String>, String> beginStopPacketCapture(
+        String resourceGroupName, String virtualNetworkGatewayName, String sasUrl, Context context);
 
     /**
      * Stops packet capture on virtual network gateway in the specified resource group.
@@ -5287,20 +1968,39 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param sasUrl SAS url for packet capture on virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<String>, String> beginStopPacketCaptureAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, String sasUrl) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            stopPacketCaptureWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, sasUrl);
-        return this
-            .client
-            .<String, String>getLroResult(
-                mono, this.client.getHttpPipeline(), String.class, String.class, Context.NONE);
-    }
+    Mono<String> stopPacketCaptureAsync(String resourceGroupName, String virtualNetworkGatewayName, String sasUrl);
+
+    /**
+     * Stops packet capture on virtual network gateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<String> stopPacketCaptureAsync(String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * Stops packet capture on virtual network gateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param sasUrl SAS url for packet capture on virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    String stopPacketCapture(String resourceGroupName, String virtualNetworkGatewayName, String sasUrl);
 
     /**
      * Stops packet capture on virtual network gateway in the specified resource group.
@@ -5310,129 +2010,26 @@ public final class VirtualNetworkGatewaysClient
      * @param sasUrl SAS url for packet capture on virtual network gateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<String>, String> beginStopPacketCaptureAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, String sasUrl, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            stopPacketCaptureWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, sasUrl, context);
-        return this
-            .client
-            .<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class, context);
-    }
+    String stopPacketCapture(
+        String resourceGroupName, String virtualNetworkGatewayName, String sasUrl, Context context);
 
     /**
      * Stops packet capture on virtual network gateway in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param sasUrl SAS url for packet capture on virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<String>, String> beginStopPacketCapture(
-        String resourceGroupName, String virtualNetworkGatewayName, String sasUrl) {
-        return beginStopPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayName, sasUrl).getSyncPoller();
-    }
-
-    /**
-     * Stops packet capture on virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param sasUrl SAS url for packet capture on virtual network gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<String>, String> beginStopPacketCapture(
-        String resourceGroupName, String virtualNetworkGatewayName, String sasUrl, Context context) {
-        return beginStopPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayName, sasUrl, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Stops packet capture on virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param sasUrl SAS url for packet capture on virtual network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> stopPacketCaptureAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, String sasUrl) {
-        return beginStopPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayName, sasUrl)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Stops packet capture on virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param sasUrl SAS url for packet capture on virtual network gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> stopPacketCaptureAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, String sasUrl, Context context) {
-        return beginStopPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayName, sasUrl, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Stops packet capture on virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param sasUrl SAS url for packet capture on virtual network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public String stopPacketCapture(String resourceGroupName, String virtualNetworkGatewayName, String sasUrl) {
-        return stopPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayName, sasUrl).block();
-    }
-
-    /**
-     * Stops packet capture on virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param sasUrl SAS url for packet capture on virtual network gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public String stopPacketCapture(
-        String resourceGroupName, String virtualNetworkGatewayName, String sasUrl, Context context) {
-        return stopPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayName, sasUrl, context).block();
-    }
+    String stopPacketCapture(String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * Get VPN client connection health detail per P2S client connection of the virtual network gateway in the specified
@@ -5441,100 +2038,14 @@ public final class VirtualNetworkGatewaysClient
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vPN client connection health detail per P2S client connection of the virtual network gateway in the
      *     specified resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> getVpnclientConnectionHealthWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getVpnclientConnectionHealth(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualNetworkGatewayName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get VPN client connection health detail per P2S client connection of the virtual network gateway in the specified
-     * resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vPN client connection health detail per P2S client connection of the virtual network gateway in the
-     *     specified resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> getVpnclientConnectionHealthWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        context = this.client.mergeContext(context);
-        return service
-            .getVpnclientConnectionHealth(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualNetworkGatewayName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
+    Mono<Response<Flux<ByteBuffer>>> getVpnclientConnectionHealthWithResponseAsync(
+        String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * Get VPN client connection health detail per P2S client connection of the virtual network gateway in the specified
@@ -5543,27 +2054,15 @@ public final class VirtualNetworkGatewaysClient
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vPN client connection health detail per P2S client connection of the virtual network gateway in the
      *     specified resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<
+    PollerFlux<
             PollResult<VpnClientConnectionHealthDetailListResultInner>, VpnClientConnectionHealthDetailListResultInner>
-        beginGetVpnclientConnectionHealthAsync(String resourceGroupName, String virtualNetworkGatewayName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            getVpnclientConnectionHealthWithResponseAsync(resourceGroupName, virtualNetworkGatewayName);
-        return this
-            .client
-            .<VpnClientConnectionHealthDetailListResultInner, VpnClientConnectionHealthDetailListResultInner>
-                getLroResult(
-                    mono,
-                    this.client.getHttpPipeline(),
-                    VpnClientConnectionHealthDetailListResultInner.class,
-                    VpnClientConnectionHealthDetailListResultInner.class,
-                    Context.NONE);
-    }
+        beginGetVpnclientConnectionHealthAsync(String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * Get VPN client connection health detail per P2S client connection of the virtual network gateway in the specified
@@ -5571,31 +2070,16 @@ public final class VirtualNetworkGatewaysClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vPN client connection health detail per P2S client connection of the virtual network gateway in the
      *     specified resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<
+    SyncPoller<
             PollResult<VpnClientConnectionHealthDetailListResultInner>, VpnClientConnectionHealthDetailListResultInner>
-        beginGetVpnclientConnectionHealthAsync(
-            String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            getVpnclientConnectionHealthWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, context);
-        return this
-            .client
-            .<VpnClientConnectionHealthDetailListResultInner, VpnClientConnectionHealthDetailListResultInner>
-                getLroResult(
-                    mono,
-                    this.client.getHttpPipeline(),
-                    VpnClientConnectionHealthDetailListResultInner.class,
-                    VpnClientConnectionHealthDetailListResultInner.class,
-                    context);
-    }
+        beginGetVpnclientConnectionHealth(String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * Get VPN client connection health detail per P2S client connection of the virtual network gateway in the specified
@@ -5603,18 +2087,49 @@ public final class VirtualNetworkGatewaysClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vPN client connection health detail per P2S client connection of the virtual network gateway in the
      *     specified resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<
+    SyncPoller<
             PollResult<VpnClientConnectionHealthDetailListResultInner>, VpnClientConnectionHealthDetailListResultInner>
-        beginGetVpnclientConnectionHealth(String resourceGroupName, String virtualNetworkGatewayName) {
-        return beginGetVpnclientConnectionHealthAsync(resourceGroupName, virtualNetworkGatewayName).getSyncPoller();
-    }
+        beginGetVpnclientConnectionHealth(String resourceGroupName, String virtualNetworkGatewayName, Context context);
+
+    /**
+     * Get VPN client connection health detail per P2S client connection of the virtual network gateway in the specified
+     * resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vPN client connection health detail per P2S client connection of the virtual network gateway in the
+     *     specified resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<VpnClientConnectionHealthDetailListResultInner> getVpnclientConnectionHealthAsync(
+        String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * Get VPN client connection health detail per P2S client connection of the virtual network gateway in the specified
+     * resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vPN client connection health detail per P2S client connection of the virtual network gateway in the
+     *     specified resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VpnClientConnectionHealthDetailListResultInner getVpnclientConnectionHealth(
+        String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * Get VPN client connection health detail per P2S client connection of the virtual network gateway in the specified
@@ -5624,96 +2139,14 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vPN client connection health detail per P2S client connection of the virtual network gateway in the
      *     specified resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<
-            PollResult<VpnClientConnectionHealthDetailListResultInner>, VpnClientConnectionHealthDetailListResultInner>
-        beginGetVpnclientConnectionHealth(String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        return beginGetVpnclientConnectionHealthAsync(resourceGroupName, virtualNetworkGatewayName, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Get VPN client connection health detail per P2S client connection of the virtual network gateway in the specified
-     * resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vPN client connection health detail per P2S client connection of the virtual network gateway in the
-     *     specified resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VpnClientConnectionHealthDetailListResultInner> getVpnclientConnectionHealthAsync(
-        String resourceGroupName, String virtualNetworkGatewayName) {
-        return beginGetVpnclientConnectionHealthAsync(resourceGroupName, virtualNetworkGatewayName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Get VPN client connection health detail per P2S client connection of the virtual network gateway in the specified
-     * resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vPN client connection health detail per P2S client connection of the virtual network gateway in the
-     *     specified resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VpnClientConnectionHealthDetailListResultInner> getVpnclientConnectionHealthAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        return beginGetVpnclientConnectionHealthAsync(resourceGroupName, virtualNetworkGatewayName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Get VPN client connection health detail per P2S client connection of the virtual network gateway in the specified
-     * resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vPN client connection health detail per P2S client connection of the virtual network gateway in the
-     *     specified resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VpnClientConnectionHealthDetailListResultInner getVpnclientConnectionHealth(
-        String resourceGroupName, String virtualNetworkGatewayName) {
-        return getVpnclientConnectionHealthAsync(resourceGroupName, virtualNetworkGatewayName).block();
-    }
-
-    /**
-     * Get VPN client connection health detail per P2S client connection of the virtual network gateway in the specified
-     * resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vPN client connection health detail per P2S client connection of the virtual network gateway in the
-     *     specified resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VpnClientConnectionHealthDetailListResultInner getVpnclientConnectionHealth(
-        String resourceGroupName, String virtualNetworkGatewayName, Context context) {
-        return getVpnclientConnectionHealthAsync(resourceGroupName, virtualNetworkGatewayName, context).block();
-    }
+    VpnClientConnectionHealthDetailListResultInner getVpnclientConnectionHealth(
+        String resourceGroupName, String virtualNetworkGatewayName, Context context);
 
     /**
      * Disconnect vpn connections of virtual network gateway in the specified resource group.
@@ -5722,52 +2155,43 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param vpnConnectionIds List of p2s vpn connection Ids.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> disconnectVirtualNetworkGatewayVpnConnectionsWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, List<String> vpnConnectionIds) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        P2SVpnConnectionRequest request = new P2SVpnConnectionRequest();
-        request.withVpnConnectionIds(vpnConnectionIds);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .disconnectVirtualNetworkGatewayVpnConnections(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            virtualNetworkGatewayName,
-                            apiVersion,
-                            request,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> disconnectVirtualNetworkGatewayVpnConnectionsWithResponseAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, List<String> vpnConnectionIds);
+
+    /**
+     * Disconnect vpn connections of virtual network gateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param vpnConnectionIds List of p2s vpn connection Ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<Void>, Void> beginDisconnectVirtualNetworkGatewayVpnConnectionsAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, List<String> vpnConnectionIds);
+
+    /**
+     * Disconnect vpn connections of virtual network gateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param vpnConnectionIds List of p2s vpn connection Ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginDisconnectVirtualNetworkGatewayVpnConnections(
+        String resourceGroupName, String virtualNetworkGatewayName, List<String> vpnConnectionIds);
 
     /**
      * Disconnect vpn connections of virtual network gateway in the specified resource group.
@@ -5777,49 +2201,13 @@ public final class VirtualNetworkGatewaysClient
      * @param vpnConnectionIds List of p2s vpn connection Ids.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> disconnectVirtualNetworkGatewayVpnConnectionsWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, List<String> vpnConnectionIds, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkGatewayName is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        P2SVpnConnectionRequest request = new P2SVpnConnectionRequest();
-        request.withVpnConnectionIds(vpnConnectionIds);
-        context = this.client.mergeContext(context);
-        return service
-            .disconnectVirtualNetworkGatewayVpnConnections(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                virtualNetworkGatewayName,
-                apiVersion,
-                request,
-                context);
-    }
+    SyncPoller<PollResult<Void>, Void> beginDisconnectVirtualNetworkGatewayVpnConnections(
+        String resourceGroupName, String virtualNetworkGatewayName, List<String> vpnConnectionIds, Context context);
 
     /**
      * Disconnect vpn connections of virtual network gateway in the specified resource group.
@@ -5828,20 +2216,41 @@ public final class VirtualNetworkGatewaysClient
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param vpnConnectionIds List of p2s vpn connection Ids.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDisconnectVirtualNetworkGatewayVpnConnectionsAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, List<String> vpnConnectionIds) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            disconnectVirtualNetworkGatewayVpnConnectionsWithResponseAsync(
-                resourceGroupName, virtualNetworkGatewayName, vpnConnectionIds);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
-    }
+    Mono<Void> disconnectVirtualNetworkGatewayVpnConnectionsAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, List<String> vpnConnectionIds);
+
+    /**
+     * Disconnect vpn connections of virtual network gateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> disconnectVirtualNetworkGatewayVpnConnectionsAsync(
+        String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * Disconnect vpn connections of virtual network gateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param vpnConnectionIds List of p2s vpn connection Ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void disconnectVirtualNetworkGatewayVpnConnections(
+        String resourceGroupName, String virtualNetworkGatewayName, List<String> vpnConnectionIds);
 
     /**
      * Disconnect vpn connections of virtual network gateway in the specified resource group.
@@ -5851,252 +2260,22 @@ public final class VirtualNetworkGatewaysClient
      * @param vpnConnectionIds List of p2s vpn connection Ids.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDisconnectVirtualNetworkGatewayVpnConnectionsAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, List<String> vpnConnectionIds, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            disconnectVirtualNetworkGatewayVpnConnectionsWithResponseAsync(
-                resourceGroupName, virtualNetworkGatewayName, vpnConnectionIds, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
+    void disconnectVirtualNetworkGatewayVpnConnections(
+        String resourceGroupName, String virtualNetworkGatewayName, List<String> vpnConnectionIds, Context context);
 
     /**
      * Disconnect vpn connections of virtual network gateway in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param vpnConnectionIds List of p2s vpn connection Ids.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDisconnectVirtualNetworkGatewayVpnConnections(
-        String resourceGroupName, String virtualNetworkGatewayName, List<String> vpnConnectionIds) {
-        return beginDisconnectVirtualNetworkGatewayVpnConnectionsAsync(
-                resourceGroupName, virtualNetworkGatewayName, vpnConnectionIds)
-            .getSyncPoller();
-    }
-
-    /**
-     * Disconnect vpn connections of virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param vpnConnectionIds List of p2s vpn connection Ids.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDisconnectVirtualNetworkGatewayVpnConnections(
-        String resourceGroupName, String virtualNetworkGatewayName, List<String> vpnConnectionIds, Context context) {
-        return beginDisconnectVirtualNetworkGatewayVpnConnectionsAsync(
-                resourceGroupName, virtualNetworkGatewayName, vpnConnectionIds, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Disconnect vpn connections of virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param vpnConnectionIds List of p2s vpn connection Ids.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> disconnectVirtualNetworkGatewayVpnConnectionsAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, List<String> vpnConnectionIds) {
-        return beginDisconnectVirtualNetworkGatewayVpnConnectionsAsync(
-                resourceGroupName, virtualNetworkGatewayName, vpnConnectionIds)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Disconnect vpn connections of virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param vpnConnectionIds List of p2s vpn connection Ids.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> disconnectVirtualNetworkGatewayVpnConnectionsAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, List<String> vpnConnectionIds, Context context) {
-        return beginDisconnectVirtualNetworkGatewayVpnConnectionsAsync(
-                resourceGroupName, virtualNetworkGatewayName, vpnConnectionIds, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Disconnect vpn connections of virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param vpnConnectionIds List of p2s vpn connection Ids.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disconnectVirtualNetworkGatewayVpnConnections(
-        String resourceGroupName, String virtualNetworkGatewayName, List<String> vpnConnectionIds) {
-        disconnectVirtualNetworkGatewayVpnConnectionsAsync(
-                resourceGroupName, virtualNetworkGatewayName, vpnConnectionIds)
-            .block();
-    }
-
-    /**
-     * Disconnect vpn connections of virtual network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param vpnConnectionIds List of p2s vpn connection Ids.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disconnectVirtualNetworkGatewayVpnConnections(
-        String resourceGroupName, String virtualNetworkGatewayName, List<String> vpnConnectionIds, Context context) {
-        disconnectVirtualNetworkGatewayVpnConnectionsAsync(
-                resourceGroupName, virtualNetworkGatewayName, vpnConnectionIds, context)
-            .block();
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the ListVirtualNetworkGateways API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<VirtualNetworkGatewayInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
-            .<PagedResponse<VirtualNetworkGatewayInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the ListVirtualNetworkGateways API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<VirtualNetworkGatewayInner>> listNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the VirtualNetworkGatewayListConnections API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<VirtualNetworkGatewayConnectionListEntityInner>> listConnectionsNextSinglePageAsync(
-        String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listConnectionsNext(nextLink, context))
-            .<PagedResponse<VirtualNetworkGatewayConnectionListEntityInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the VirtualNetworkGatewayListConnections API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<VirtualNetworkGatewayConnectionListEntityInner>> listConnectionsNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listConnectionsNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
+    void disconnectVirtualNetworkGatewayVpnConnections(String resourceGroupName, String virtualNetworkGatewayName);
 }

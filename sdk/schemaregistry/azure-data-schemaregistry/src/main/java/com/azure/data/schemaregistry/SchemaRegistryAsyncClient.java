@@ -55,21 +55,10 @@ public final class SchemaRegistryAsyncClient {
         this.schemaStringCache = new ConcurrentHashMap<>();
     }
 
-    // testing - todo remove constructor and replace with mock
-    SchemaRegistryAsyncClient(
-        AzureSchemaRegistry restService,
-        Map<String, SchemaProperties> idCache,
-        Map<String, SchemaProperties> schemaStringCache,
-        ConcurrentSkipListMap<String, Function<String, Object>> typeParserMap) {
-        this.restService = restService; // mockable
-        this.idCache = idCache;
-        this.schemaStringCache = schemaStringCache;
-        this.typeParserMap = typeParserMap;
-        this.maxSchemaMapSize = MAX_SCHEMA_MAP_SIZE_DEFAULT;
-    }
-
     /**
-     * Registers a schema with the provided schema details.
+     * Registers a new schema in the specified schema group with the given schema name. If the schema name already
+     * exists in this schema group, a new version with the updated schema string will be registered.
+     *
      * @param schemaGroup The schema group.
      * @param schemaName The schema name.
      * @param schemaString The string representation of the schema.
@@ -90,10 +79,13 @@ public final class SchemaRegistryAsyncClient {
         }
 
         return registerSchemaWithResponse(schemaGroup, schemaName, schemaString, serializationType)
-            .map(response -> response.getValue());
+            .map(Response::getValue);
     }
 
     /**
+     * Registers a new schema in the specified schema group with the given schema name. If the schema name already
+     * exists in this schema group, a new version with the updated schema string will be registered.
+     *
      * @param schemaGroup The schema group.
      * @param schemaName The schema name.
      * @param schemaString The string representation of the schema.
@@ -209,6 +201,8 @@ public final class SchemaRegistryAsyncClient {
     }
 
     /**
+     * Gets the schema identifier associated with the given schema.
+     *
      * @param schemaGroup The schema group.
      * @param schemaName The schema name.
      * @param schemaString The string representation of the schema.
@@ -231,6 +225,8 @@ public final class SchemaRegistryAsyncClient {
     }
 
     /**
+     * Gets the schema identifier associated with the given schema.
+     *
      * @param schemaGroup The schema group.
      * @param schemaName The schema name.
      * @param schemaString The string representation of the schema.

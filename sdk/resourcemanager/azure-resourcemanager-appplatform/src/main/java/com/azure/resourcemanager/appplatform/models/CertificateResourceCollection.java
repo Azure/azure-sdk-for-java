@@ -6,12 +6,12 @@ package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appplatform.fluent.inner.CertificateResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.CertificateResourceInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CertificateResourceCollection model. */
+/** Collection compose of certificate resources list and a possible link for next page. */
 @Fluent
 public final class CertificateResourceCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateResourceCollection.class);

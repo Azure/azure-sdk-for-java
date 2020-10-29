@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ApiEntityReference model. */
+/** The API entity reference. */
 @Fluent
 public final class ApiEntityReference {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiEntityReference.class);

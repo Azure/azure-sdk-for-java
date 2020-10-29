@@ -30,12 +30,12 @@ public class SqlDatabaseForElasticPoolImpl
     SqlDatabaseForElasticPoolImpl(SqlElasticPoolImpl sqlElasticPool, SqlDatabaseImpl sqlDatabase) {
         Objects.requireNonNull(sqlElasticPool);
         Objects.requireNonNull(sqlDatabase);
-        Objects.requireNonNull(sqlDatabase.inner());
+        Objects.requireNonNull(sqlDatabase.innerModel());
         this.sqlElasticPool = sqlElasticPool;
         this.sqlDatabase = sqlDatabase;
-        this.sqlDatabase.inner().withLocation(sqlElasticPool.regionName());
-        this.sqlDatabase.inner().withElasticPoolId(this.sqlElasticPool.id());
-        this.sqlDatabase.inner().withSku(null);
+        this.sqlDatabase.innerModel().withLocation(sqlElasticPool.regionName());
+        this.sqlDatabase.innerModel().withElasticPoolId(this.sqlElasticPool.id());
+        this.sqlDatabase.innerModel().withSku(null);
     }
 
     @Override
@@ -45,13 +45,13 @@ public class SqlDatabaseForElasticPoolImpl
 
     @Override
     public SqlDatabaseForElasticPoolImpl withSourceDatabase(String sourceDatabaseId) {
-        this.sqlDatabase.inner().withSourceDatabaseId(sourceDatabaseId);
+        this.sqlDatabase.innerModel().withSourceDatabaseId(sourceDatabaseId);
         return this;
     }
 
     @Override
     public SqlDatabaseForElasticPoolImpl withSourceDatabase(SqlDatabase sourceDatabase) {
-        this.sqlDatabase.inner().withSourceDatabaseId(sourceDatabase.databaseId());
+        this.sqlDatabase.innerModel().withSourceDatabaseId(sourceDatabase.databaseId());
         return this;
     }
 

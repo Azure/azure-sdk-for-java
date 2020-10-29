@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The WebhookUpdateParameters model. */
+/** The parameters for updating a webhook. */
 @JsonFlatten
 @Fluent
 public class WebhookUpdateParameters {

@@ -6,12 +6,12 @@ package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.fluent.inner.DomainInner;
+import com.azure.resourcemanager.authorization.fluent.models.DomainInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The DomainListResult model. */
+/** Server response for Get tenant domains API call. */
 @Fluent
 public final class DomainListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainListResult.class);

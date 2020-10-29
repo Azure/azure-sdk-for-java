@@ -8,7 +8,7 @@ import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusters;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import org.junit.jupiter.api.Assertions;
 
 import java.io.ByteArrayOutputStream;
@@ -30,7 +30,7 @@ public class TestKubernetesCluster extends TestTemplate<KubernetesCluster, Kuber
     public KubernetesCluster createResource(KubernetesClusters kubernetesClusters) throws Exception {
         final String sshKeyData = this.getSshKey();
 
-        final String newName = "aks" + kubernetesClusters.manager().sdkContext().randomResourceName("", 8);
+        final String newName = "aks" + kubernetesClusters.manager().resourceManager().internalContext().randomResourceName("", 8);
         final String dnsPrefix = "dns" + newName;
         final String agentPoolName = "ap" + newName;
         String clientId = "clientId";

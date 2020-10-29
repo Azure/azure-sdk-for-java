@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.privatedns.implementation;
 
-import com.azure.resourcemanager.privatedns.fluent.inner.RecordSetInner;
+import com.azure.resourcemanager.privatedns.fluent.models.RecordSetInner;
 import com.azure.resourcemanager.privatedns.models.ARecord;
 import com.azure.resourcemanager.privatedns.models.ARecordSet;
 import com.azure.resourcemanager.privatedns.models.RecordType;
@@ -24,8 +24,8 @@ class ARecordSetImpl extends PrivateDnsRecordSetImpl implements ARecordSet {
     @Override
     public List<String> ipv4Addresses() {
         List<String> ipv4Addresses = new ArrayList<>();
-        if (inner().aRecords() != null) {
-            for (ARecord aRecord : inner().aRecords()) {
+        if (innerModel().aRecords() != null) {
+            for (ARecord aRecord : innerModel().aRecords()) {
                 ipv4Addresses.add(aRecord.ipv4Address());
             }
         }
@@ -34,12 +34,12 @@ class ARecordSetImpl extends PrivateDnsRecordSetImpl implements ARecordSet {
 
     @Override
     protected RecordSetInner prepareForUpdate(RecordSetInner resource) {
-        if (inner().aRecords() != null && !inner().aRecords().isEmpty()) {
+        if (innerModel().aRecords() != null && !innerModel().aRecords().isEmpty()) {
             if (resource.aRecords() == null) {
                 resource.withARecords(new ArrayList<>());
             }
-            resource.aRecords().addAll(inner().aRecords());
-            inner().aRecords().clear();
+            resource.aRecords().addAll(innerModel().aRecords());
+            innerModel().aRecords().clear();
         }
         if (!recordSetRemoveInfo.aRecords().isEmpty()) {
             if (resource.aRecords() != null) {

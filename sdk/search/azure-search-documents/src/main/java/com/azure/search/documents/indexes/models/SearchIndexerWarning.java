@@ -10,7 +10,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SearchIndexerWarning model. */
+/** Represents an item-level warning. */
 @Immutable
 public final class SearchIndexerWarning {
     /*

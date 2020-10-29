@@ -69,7 +69,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13</version> <!-- {x-version-update;junit:junit;external_dependency} -->
+      <version>4.13.1</version> <!-- {x-version-update;junit:junit;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -81,7 +81,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>msal4j</artifactId>
-      <version>1.6.2</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
+      <version>1.7.1</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

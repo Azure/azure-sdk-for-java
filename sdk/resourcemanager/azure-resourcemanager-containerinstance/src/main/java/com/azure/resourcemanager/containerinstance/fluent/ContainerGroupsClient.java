@@ -4,38 +4,17 @@
 
 package com.azure.resourcemanager.containerinstance.fluent;
 
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.Delete;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Headers;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.Patch;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
-import com.azure.core.annotation.Put;
-import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.Resource;
-import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.containerinstance.fluent.inner.ContainerGroupInner;
-import com.azure.resourcemanager.containerinstance.models.ContainerGroupListResult;
+import com.azure.resourcemanager.containerinstance.fluent.models.ContainerGroupInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -43,218 +22,34 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ContainerGroups. */
-public final class ContainerGroupsClient
-    implements InnerSupportsGet<ContainerGroupInner>,
+/** An instance of this class provides access to all the operations defined in ContainerGroupsClient. */
+public interface ContainerGroupsClient
+    extends InnerSupportsGet<ContainerGroupInner>,
         InnerSupportsListing<ContainerGroupInner>,
         InnerSupportsDelete<ContainerGroupInner> {
-    private final ClientLogger logger = new ClientLogger(ContainerGroupsClient.class);
-
-    /** The proxy service used to perform REST calls. */
-    private final ContainerGroupsService service;
-
-    /** The service client containing this operation class. */
-    private final ContainerInstanceManagementClient client;
-
     /**
-     * Initializes an instance of ContainerGroupsClient.
+     * Get a list of container groups in the specified subscription. This operation returns properties of each container
+     * group including containers, image registry credentials, restart policy, IP address type, OS type, state, and
+     * volumes.
      *
-     * @param client the instance of the service client containing this operation class.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of container groups in the specified subscription.
      */
-    ContainerGroupsClient(ContainerInstanceManagementClient client) {
-        this.service =
-            RestProxy.create(ContainerGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
-    }
-
-    /**
-     * The interface defining all the services for ContainerInstanceManagementClientContainerGroups to be used by the
-     * proxy service to perform REST calls.
-     */
-    @Host("{$host}")
-    @ServiceInterface(name = "ContainerInstanceMan")
-    private interface ContainerGroupsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/containerGroups")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ContainerGroupListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance"
-                + "/containerGroups")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ContainerGroupListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance"
-                + "/containerGroups/{containerGroupName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ContainerGroupInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("containerGroupName") String containerGroupName,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance"
-                + "/containerGroups/{containerGroupName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("containerGroupName") String containerGroupName,
-            @BodyParam("application/json") ContainerGroupInner containerGroup,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance"
-                + "/containerGroups/{containerGroupName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ContainerGroupInner>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("containerGroupName") String containerGroupName,
-            @BodyParam("application/json") Resource resource,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance"
-                + "/containerGroups/{containerGroupName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("containerGroupName") String containerGroupName,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance"
-                + "/containerGroups/{containerGroupName}/restart")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> restart(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("containerGroupName") String containerGroupName,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance"
-                + "/containerGroups/{containerGroupName}/stop")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> stop(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("containerGroupName") String containerGroupName,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance"
-                + "/containerGroups/{containerGroupName}/start")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> start(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("containerGroupName") String containerGroupName,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ContainerGroupListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ContainerGroupListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<ContainerGroupInner> listAsync();
 
     /**
      * Get a list of container groups in the specified subscription. This operation returns properties of each container
      * group including containers, image registry credentials, restart policy, IP address type, OS type, state, and
      * volumes.
      *
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of container groups in the specified subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ContainerGroupInner>> listSinglePageAsync() {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .<PagedResponse<ContainerGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ContainerGroupInner> list();
 
     /**
      * Get a list of container groups in the specified subscription. This operation returns properties of each container
@@ -263,98 +58,12 @@ public final class ContainerGroupsClient
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of container groups in the specified subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ContainerGroupInner>> listSinglePageAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get a list of container groups in the specified subscription. This operation returns properties of each container
-     * group including containers, image registry credentials, restart policy, IP address type, OS type, state, and
-     * volumes.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of container groups in the specified subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ContainerGroupInner> listAsync() {
-        return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Get a list of container groups in the specified subscription. This operation returns properties of each container
-     * group including containers, image registry credentials, restart policy, IP address type, OS type, state, and
-     * volumes.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of container groups in the specified subscription.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ContainerGroupInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Get a list of container groups in the specified subscription. This operation returns properties of each container
-     * group including containers, image registry credentials, restart policy, IP address type, OS type, state, and
-     * volumes.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of container groups in the specified subscription.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ContainerGroupInner> list() {
-        return new PagedIterable<>(listAsync());
-    }
-
-    /**
-     * Get a list of container groups in the specified subscription. This operation returns properties of each container
-     * group including containers, image registry credentials, restart policy, IP address type, OS type, state, and
-     * volumes.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of container groups in the specified subscription.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ContainerGroupInner> list(Context context) {
-        return new PagedIterable<>(listAsync(context));
-    }
+    PagedIterable<ContainerGroupInner> list(Context context);
 
     /**
      * Get a list of container groups in a specified subscription and resource group. This operation returns properties
@@ -363,49 +72,26 @@ public final class ContainerGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of container groups in a specified subscription and resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ContainerGroupInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            context))
-            .<PagedResponse<ContainerGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<ContainerGroupInner> listByResourceGroupAsync(String resourceGroupName);
+
+    /**
+     * Get a list of container groups in a specified subscription and resource group. This operation returns properties
+     * of each container group including containers, image registry credentials, restart policy, IP address type, OS
+     * type, state, and volumes.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of container groups in a specified subscription and resource group.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ContainerGroupInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Get a list of container groups in a specified subscription and resource group. This operation returns properties
@@ -415,117 +101,12 @@ public final class ContainerGroupsClient
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of container groups in a specified subscription and resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ContainerGroupInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get a list of container groups in a specified subscription and resource group. This operation returns properties
-     * of each container group including containers, image registry credentials, restart policy, IP address type, OS
-     * type, state, and volumes.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of container groups in a specified subscription and resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ContainerGroupInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Get a list of container groups in a specified subscription and resource group. This operation returns properties
-     * of each container group including containers, image registry credentials, restart policy, IP address type, OS
-     * type, state, and volumes.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of container groups in a specified subscription and resource group.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ContainerGroupInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Get a list of container groups in a specified subscription and resource group. This operation returns properties
-     * of each container group including containers, image registry credentials, restart policy, IP address type, OS
-     * type, state, and volumes.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of container groups in a specified subscription and resource group.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ContainerGroupInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
-    }
-
-    /**
-     * Get a list of container groups in a specified subscription and resource group. This operation returns properties
-     * of each container group including containers, image registry credentials, restart policy, IP address type, OS
-     * type, state, and volumes.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of container groups in a specified subscription and resource group.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ContainerGroupInner> listByResourceGroup(String resourceGroupName, Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
-    }
+    PagedIterable<ContainerGroupInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Gets the properties of the specified container group in the specified subscription and resource group. The
@@ -535,46 +116,43 @@ public final class ContainerGroupsClient
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified container group in the specified subscription and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ContainerGroupInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String containerGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerGroupName is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            containerGroupName,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<ContainerGroupInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String containerGroupName);
+
+    /**
+     * Gets the properties of the specified container group in the specified subscription and resource group. The
+     * operation returns the properties of each container group including containers, image registry credentials,
+     * restart policy, IP address type, OS type, state, and volumes.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified container group in the specified subscription and resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ContainerGroupInner> getByResourceGroupAsync(String resourceGroupName, String containerGroupName);
+
+    /**
+     * Gets the properties of the specified container group in the specified subscription and resource group. The
+     * operation returns the properties of each container group including containers, image registry credentials,
+     * restart policy, IP address type, OS type, state, and volumes.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified container group in the specified subscription and resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ContainerGroupInner getByResourceGroup(String resourceGroupName, String containerGroupName);
 
     /**
      * Gets the properties of the specified container group in the specified subscription and resource group. The
@@ -585,131 +163,13 @@ public final class ContainerGroupsClient
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified container group in the specified subscription and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ContainerGroupInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String containerGroupName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerGroupName is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                containerGroupName,
-                context);
-    }
-
-    /**
-     * Gets the properties of the specified container group in the specified subscription and resource group. The
-     * operation returns the properties of each container group including containers, image registry credentials,
-     * restart policy, IP address type, OS type, state, and volumes.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified container group in the specified subscription and resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ContainerGroupInner> getByResourceGroupAsync(String resourceGroupName, String containerGroupName) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, containerGroupName)
-            .flatMap(
-                (Response<ContainerGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the properties of the specified container group in the specified subscription and resource group. The
-     * operation returns the properties of each container group including containers, image registry credentials,
-     * restart policy, IP address type, OS type, state, and volumes.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified container group in the specified subscription and resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ContainerGroupInner> getByResourceGroupAsync(
-        String resourceGroupName, String containerGroupName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, containerGroupName, context)
-            .flatMap(
-                (Response<ContainerGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the properties of the specified container group in the specified subscription and resource group. The
-     * operation returns the properties of each container group including containers, image registry credentials,
-     * restart policy, IP address type, OS type, state, and volumes.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified container group in the specified subscription and resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerGroupInner getByResourceGroup(String resourceGroupName, String containerGroupName) {
-        return getByResourceGroupAsync(resourceGroupName, containerGroupName).block();
-    }
-
-    /**
-     * Gets the properties of the specified container group in the specified subscription and resource group. The
-     * operation returns the properties of each container group including containers, image registry credentials,
-     * restart policy, IP address type, OS type, state, and volumes.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified container group in the specified subscription and resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerGroupInner getByResourceGroup(
-        String resourceGroupName, String containerGroupName, Context context) {
-        return getByResourceGroupAsync(resourceGroupName, containerGroupName, context).block();
-    }
+    Response<ContainerGroupInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String containerGroupName, Context context);
 
     /**
      * Create or update container groups with specified configurations.
@@ -718,52 +178,43 @@ public final class ContainerGroupsClient
      * @param containerGroupName The name of the container group.
      * @param containerGroup A container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerGroupName is required and cannot be null."));
-        }
-        if (containerGroup == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerGroup is required and cannot be null."));
-        } else {
-            containerGroup.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            containerGroupName,
-                            containerGroup,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup);
+
+    /**
+     * Create or update container groups with specified configurations.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @param containerGroup A container group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<ContainerGroupInner>, ContainerGroupInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup);
+
+    /**
+     * Create or update container groups with specified configurations.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @param containerGroup A container group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<ContainerGroupInner>, ContainerGroupInner> beginCreateOrUpdate(
+        String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup);
 
     /**
      * Create or update container groups with specified configurations.
@@ -773,49 +224,13 @@ public final class ContainerGroupsClient
      * @param containerGroup A container group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerGroupName is required and cannot be null."));
-        }
-        if (containerGroup == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerGroup is required and cannot be null."));
-        } else {
-            containerGroup.validate();
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                containerGroupName,
-                containerGroup,
-                context);
-    }
+    SyncPoller<PollResult<ContainerGroupInner>, ContainerGroupInner> beginCreateOrUpdate(
+        String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup, Context context);
 
     /**
      * Create or update container groups with specified configurations.
@@ -824,24 +239,28 @@ public final class ContainerGroupsClient
      * @param containerGroupName The name of the container group.
      * @param containerGroup A container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ContainerGroupInner>, ContainerGroupInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, containerGroupName, containerGroup);
-        return this
-            .client
-            .<ContainerGroupInner, ContainerGroupInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ContainerGroupInner.class,
-                ContainerGroupInner.class,
-                Context.NONE);
-    }
+    Mono<ContainerGroupInner> createOrUpdateAsync(
+        String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup);
+
+    /**
+     * Create or update container groups with specified configurations.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @param containerGroup A container group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ContainerGroupInner createOrUpdate(
+        String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup);
 
     /**
      * Create or update container groups with specified configurations.
@@ -851,130 +270,13 @@ public final class ContainerGroupsClient
      * @param containerGroup A container group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ContainerGroupInner>, ContainerGroupInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, containerGroupName, containerGroup, context);
-        return this
-            .client
-            .<ContainerGroupInner, ContainerGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ContainerGroupInner.class, ContainerGroupInner.class, context);
-    }
-
-    /**
-     * Create or update container groups with specified configurations.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @param containerGroup A container group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<ContainerGroupInner>, ContainerGroupInner> beginCreateOrUpdate(
-        String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup) {
-        return beginCreateOrUpdateAsync(resourceGroupName, containerGroupName, containerGroup).getSyncPoller();
-    }
-
-    /**
-     * Create or update container groups with specified configurations.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @param containerGroup A container group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<ContainerGroupInner>, ContainerGroupInner> beginCreateOrUpdate(
-        String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, containerGroupName, containerGroup, context).getSyncPoller();
-    }
-
-    /**
-     * Create or update container groups with specified configurations.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @param containerGroup A container group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ContainerGroupInner> createOrUpdateAsync(
-        String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup) {
-        return beginCreateOrUpdateAsync(resourceGroupName, containerGroupName, containerGroup)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create or update container groups with specified configurations.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @param containerGroup A container group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ContainerGroupInner> createOrUpdateAsync(
-        String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, containerGroupName, containerGroup, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create or update container groups with specified configurations.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @param containerGroup A container group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerGroupInner createOrUpdate(
-        String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup) {
-        return createOrUpdateAsync(resourceGroupName, containerGroupName, containerGroup).block();
-    }
-
-    /**
-     * Create or update container groups with specified configurations.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @param containerGroup A container group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerGroupInner createOrUpdate(
-        String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup, Context context) {
-        return createOrUpdateAsync(resourceGroupName, containerGroupName, containerGroup, context).block();
-    }
+    ContainerGroupInner createOrUpdate(
+        String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup, Context context);
 
     /**
      * Updates container group tags with specified values.
@@ -983,50 +285,41 @@ public final class ContainerGroupsClient
      * @param containerGroupName The name of the container group.
      * @param resource The Resource model definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ContainerGroupInner>> updateWithResponseAsync(
-        String resourceGroupName, String containerGroupName, Resource resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerGroupName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            containerGroupName,
-                            resource,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<ContainerGroupInner>> updateWithResponseAsync(
+        String resourceGroupName, String containerGroupName, Resource resource);
+
+    /**
+     * Updates container group tags with specified values.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @param resource The Resource model definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ContainerGroupInner> updateAsync(String resourceGroupName, String containerGroupName, Resource resource);
+
+    /**
+     * Updates container group tags with specified values.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @param resource The Resource model definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ContainerGroupInner update(String resourceGroupName, String containerGroupName, Resource resource);
 
     /**
      * Updates container group tags with specified values.
@@ -1036,132 +329,13 @@ public final class ContainerGroupsClient
      * @param resource The Resource model definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ContainerGroupInner>> updateWithResponseAsync(
-        String resourceGroupName, String containerGroupName, Resource resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerGroupName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                containerGroupName,
-                resource,
-                context);
-    }
-
-    /**
-     * Updates container group tags with specified values.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @param resource The Resource model definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ContainerGroupInner> updateAsync(
-        String resourceGroupName, String containerGroupName, Resource resource) {
-        return updateWithResponseAsync(resourceGroupName, containerGroupName, resource)
-            .flatMap(
-                (Response<ContainerGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates container group tags with specified values.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @param resource The Resource model definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ContainerGroupInner> updateAsync(
-        String resourceGroupName, String containerGroupName, Resource resource, Context context) {
-        return updateWithResponseAsync(resourceGroupName, containerGroupName, resource, context)
-            .flatMap(
-                (Response<ContainerGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates container group tags with specified values.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @param resource The Resource model definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerGroupInner update(String resourceGroupName, String containerGroupName, Resource resource) {
-        return updateAsync(resourceGroupName, containerGroupName, resource).block();
-    }
-
-    /**
-     * Updates container group tags with specified values.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @param resource The Resource model definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerGroupInner update(
-        String resourceGroupName, String containerGroupName, Resource resource, Context context) {
-        return updateAsync(resourceGroupName, containerGroupName, resource, context).block();
-    }
+    Response<ContainerGroupInner> updateWithResponse(
+        String resourceGroupName, String containerGroupName, Resource resource, Context context);
 
     /**
      * Delete the specified container group in the specified subscription and resource group. The operation does not
@@ -1170,46 +344,42 @@ public final class ContainerGroupsClient
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String containerGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerGroupName is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            containerGroupName,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String containerGroupName);
+
+    /**
+     * Delete the specified container group in the specified subscription and resource group. The operation does not
+     * delete other resources provided by the user, such as volumes.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<ContainerGroupInner>, ContainerGroupInner> beginDeleteAsync(
+        String resourceGroupName, String containerGroupName);
+
+    /**
+     * Delete the specified container group in the specified subscription and resource group. The operation does not
+     * delete other resources provided by the user, such as volumes.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<ContainerGroupInner>, ContainerGroupInner> beginDelete(
+        String resourceGroupName, String containerGroupName);
 
     /**
      * Delete the specified container group in the specified subscription and resource group. The operation does not
@@ -1219,43 +389,13 @@ public final class ContainerGroupsClient
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String containerGroupName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerGroupName is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                containerGroupName,
-                context);
-    }
+    SyncPoller<PollResult<ContainerGroupInner>, ContainerGroupInner> beginDelete(
+        String resourceGroupName, String containerGroupName, Context context);
 
     /**
      * Delete the specified container group in the specified subscription and resource group. The operation does not
@@ -1264,23 +404,26 @@ public final class ContainerGroupsClient
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ContainerGroupInner>, ContainerGroupInner> beginDeleteAsync(
-        String resourceGroupName, String containerGroupName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, containerGroupName);
-        return this
-            .client
-            .<ContainerGroupInner, ContainerGroupInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ContainerGroupInner.class,
-                ContainerGroupInner.class,
-                Context.NONE);
-    }
+    Mono<ContainerGroupInner> deleteAsync(String resourceGroupName, String containerGroupName);
+
+    /**
+     * Delete the specified container group in the specified subscription and resource group. The operation does not
+     * delete other resources provided by the user, such as volumes.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ContainerGroupInner delete(String resourceGroupName, String containerGroupName);
 
     /**
      * Delete the specified container group in the specified subscription and resource group. The operation does not
@@ -1290,125 +433,12 @@ public final class ContainerGroupsClient
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ContainerGroupInner>, ContainerGroupInner> beginDeleteAsync(
-        String resourceGroupName, String containerGroupName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, containerGroupName, context);
-        return this
-            .client
-            .<ContainerGroupInner, ContainerGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ContainerGroupInner.class, ContainerGroupInner.class, context);
-    }
-
-    /**
-     * Delete the specified container group in the specified subscription and resource group. The operation does not
-     * delete other resources provided by the user, such as volumes.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<ContainerGroupInner>, ContainerGroupInner> beginDelete(
-        String resourceGroupName, String containerGroupName) {
-        return beginDeleteAsync(resourceGroupName, containerGroupName).getSyncPoller();
-    }
-
-    /**
-     * Delete the specified container group in the specified subscription and resource group. The operation does not
-     * delete other resources provided by the user, such as volumes.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<ContainerGroupInner>, ContainerGroupInner> beginDelete(
-        String resourceGroupName, String containerGroupName, Context context) {
-        return beginDeleteAsync(resourceGroupName, containerGroupName, context).getSyncPoller();
-    }
-
-    /**
-     * Delete the specified container group in the specified subscription and resource group. The operation does not
-     * delete other resources provided by the user, such as volumes.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ContainerGroupInner> deleteAsync(String resourceGroupName, String containerGroupName) {
-        return beginDeleteAsync(resourceGroupName, containerGroupName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Delete the specified container group in the specified subscription and resource group. The operation does not
-     * delete other resources provided by the user, such as volumes.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ContainerGroupInner> deleteAsync(String resourceGroupName, String containerGroupName, Context context) {
-        return beginDeleteAsync(resourceGroupName, containerGroupName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Delete the specified container group in the specified subscription and resource group. The operation does not
-     * delete other resources provided by the user, such as volumes.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerGroupInner delete(String resourceGroupName, String containerGroupName) {
-        return deleteAsync(resourceGroupName, containerGroupName).block();
-    }
-
-    /**
-     * Delete the specified container group in the specified subscription and resource group. The operation does not
-     * delete other resources provided by the user, such as volumes.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerGroupInner delete(String resourceGroupName, String containerGroupName, Context context) {
-        return deleteAsync(resourceGroupName, containerGroupName, context).block();
-    }
+    ContainerGroupInner delete(String resourceGroupName, String containerGroupName, Context context);
 
     /**
      * Restarts all containers in a container group in place. If container image has updates, new image will be
@@ -1417,46 +447,40 @@ public final class ContainerGroupsClient
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(
-        String resourceGroupName, String containerGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerGroupName is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .restart(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            containerGroupName,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName, String containerGroupName);
+
+    /**
+     * Restarts all containers in a container group in place. If container image has updates, new image will be
+     * downloaded.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String containerGroupName);
+
+    /**
+     * Restarts all containers in a container group in place. If container image has updates, new image will be
+     * downloaded.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String containerGroupName);
 
     /**
      * Restarts all containers in a container group in place. If container image has updates, new image will be
@@ -1466,43 +490,13 @@ public final class ContainerGroupsClient
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(
-        String resourceGroupName, String containerGroupName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerGroupName is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .restart(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                containerGroupName,
-                context);
-    }
+    SyncPoller<PollResult<Void>, Void> beginRestart(
+        String resourceGroupName, String containerGroupName, Context context);
 
     /**
      * Restarts all containers in a container group in place. If container image has updates, new image will be
@@ -1511,17 +505,25 @@ public final class ContainerGroupsClient
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String containerGroupName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = restartWithResponseAsync(resourceGroupName, containerGroupName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
-    }
+    Mono<Void> restartAsync(String resourceGroupName, String containerGroupName);
+
+    /**
+     * Restarts all containers in a container group in place. If container image has updates, new image will be
+     * downloaded.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void restart(String resourceGroupName, String containerGroupName);
 
     /**
      * Restarts all containers in a container group in place. If container image has updates, new image will be
@@ -1531,122 +533,11 @@ public final class ContainerGroupsClient
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginRestartAsync(
-        String resourceGroupName, String containerGroupName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            restartWithResponseAsync(resourceGroupName, containerGroupName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Restarts all containers in a container group in place. If container image has updates, new image will be
-     * downloaded.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String containerGroupName) {
-        return beginRestartAsync(resourceGroupName, containerGroupName).getSyncPoller();
-    }
-
-    /**
-     * Restarts all containers in a container group in place. If container image has updates, new image will be
-     * downloaded.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginRestart(
-        String resourceGroupName, String containerGroupName, Context context) {
-        return beginRestartAsync(resourceGroupName, containerGroupName, context).getSyncPoller();
-    }
-
-    /**
-     * Restarts all containers in a container group in place. If container image has updates, new image will be
-     * downloaded.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> restartAsync(String resourceGroupName, String containerGroupName) {
-        return beginRestartAsync(resourceGroupName, containerGroupName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Restarts all containers in a container group in place. If container image has updates, new image will be
-     * downloaded.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> restartAsync(String resourceGroupName, String containerGroupName, Context context) {
-        return beginRestartAsync(resourceGroupName, containerGroupName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Restarts all containers in a container group in place. If container image has updates, new image will be
-     * downloaded.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void restart(String resourceGroupName, String containerGroupName) {
-        restartAsync(resourceGroupName, containerGroupName).block();
-    }
-
-    /**
-     * Restarts all containers in a container group in place. If container image has updates, new image will be
-     * downloaded.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void restart(String resourceGroupName, String containerGroupName, Context context) {
-        restartAsync(resourceGroupName, containerGroupName, context).block();
-    }
+    void restart(String resourceGroupName, String containerGroupName, Context context);
 
     /**
      * Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
@@ -1654,45 +545,37 @@ public final class ContainerGroupsClient
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> stopWithResponseAsync(String resourceGroupName, String containerGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerGroupName is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .stop(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            containerGroupName,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Void>> stopWithResponseAsync(String resourceGroupName, String containerGroupName);
+
+    /**
+     * Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> stopAsync(String resourceGroupName, String containerGroupName);
+
+    /**
+     * Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void stop(String resourceGroupName, String containerGroupName);
 
     /**
      * Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
@@ -1701,105 +584,12 @@ public final class ContainerGroupsClient
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> stopWithResponseAsync(
-        String resourceGroupName, String containerGroupName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerGroupName is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .stop(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                containerGroupName,
-                context);
-    }
-
-    /**
-     * Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> stopAsync(String resourceGroupName, String containerGroupName) {
-        return stopWithResponseAsync(resourceGroupName, containerGroupName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> stopAsync(String resourceGroupName, String containerGroupName, Context context) {
-        return stopWithResponseAsync(resourceGroupName, containerGroupName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void stop(String resourceGroupName, String containerGroupName) {
-        stopAsync(resourceGroupName, containerGroupName).block();
-    }
-
-    /**
-     * Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void stop(String resourceGroupName, String containerGroupName, Context context) {
-        stopAsync(resourceGroupName, containerGroupName, context).block();
-    }
+    Response<Void> stopWithResponse(String resourceGroupName, String containerGroupName, Context context);
 
     /**
      * Starts all containers in a container group. Compute resources will be allocated and billing will start.
@@ -1807,46 +597,38 @@ public final class ContainerGroupsClient
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
-        String resourceGroupName, String containerGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerGroupName is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .start(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            containerGroupName,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String containerGroupName);
+
+    /**
+     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String containerGroupName);
+
+    /**
+     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String containerGroupName);
 
     /**
      * Starts all containers in a container group. Compute resources will be allocated and billing will start.
@@ -1855,43 +637,12 @@ public final class ContainerGroupsClient
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
-        String resourceGroupName, String containerGroupName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerGroupName is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .start(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                containerGroupName,
-                context);
-    }
+    SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String containerGroupName, Context context);
 
     /**
      * Starts all containers in a container group. Compute resources will be allocated and billing will start.
@@ -1899,17 +650,24 @@ public final class ContainerGroupsClient
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String containerGroupName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, containerGroupName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
-    }
+    Mono<Void> startAsync(String resourceGroupName, String containerGroupName);
+
+    /**
+     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void start(String resourceGroupName, String containerGroupName);
 
     /**
      * Starts all containers in a container group. Compute resources will be allocated and billing will start.
@@ -1918,228 +676,9 @@ public final class ContainerGroupsClient
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginStartAsync(
-        String resourceGroupName, String containerGroupName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, containerGroupName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String containerGroupName) {
-        return beginStartAsync(resourceGroupName, containerGroupName).getSyncPoller();
-    }
-
-    /**
-     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginStart(
-        String resourceGroupName, String containerGroupName, Context context) {
-        return beginStartAsync(resourceGroupName, containerGroupName, context).getSyncPoller();
-    }
-
-    /**
-     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> startAsync(String resourceGroupName, String containerGroupName) {
-        return beginStartAsync(resourceGroupName, containerGroupName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> startAsync(String resourceGroupName, String containerGroupName, Context context) {
-        return beginStartAsync(resourceGroupName, containerGroupName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void start(String resourceGroupName, String containerGroupName) {
-        startAsync(resourceGroupName, containerGroupName).block();
-    }
-
-    /**
-     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void start(String resourceGroupName, String containerGroupName, Context context) {
-        startAsync(resourceGroupName, containerGroupName, context).block();
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container group list response that contains the container group properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ContainerGroupInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
-            .<PagedResponse<ContainerGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container group list response that contains the container group properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ContainerGroupInner>> listNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container group list response that contains the container group properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ContainerGroupInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listByResourceGroupNext(nextLink, context))
-            .<PagedResponse<ContainerGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container group list response that contains the container group properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ContainerGroupInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
+    void start(String resourceGroupName, String containerGroupName, Context context);
 }

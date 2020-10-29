@@ -4,22 +4,25 @@
 package com.azure.storage.blob.specialized
 
 import com.azure.core.exception.UnexpectedLengthException
+import com.azure.core.util.CoreUtils
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobContainerClient
-import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.blob.models.ClearRange
 import com.azure.storage.blob.models.CopyStatusType
-import com.azure.storage.blob.options.BlobGetTagsOptions
-import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions
-import com.azure.storage.blob.options.PageBlobCreateOptions
+import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions
 import com.azure.storage.blob.models.PageBlobRequestConditions
 import com.azure.storage.blob.models.PageRange
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.SequenceNumberActionType
+import com.azure.storage.blob.options.BlobGetTagsOptions
+import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions
+import com.azure.storage.blob.options.PageBlobCreateOptions
+import com.azure.storage.common.implementation.Constants
 import spock.lang.Ignore
 import spock.lang.Unroll
 
@@ -196,7 +199,7 @@ class PageBlobAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null           | null
         null     | null       | null        | receivedEtag | null           | null
         null     | null       | null        | null         | garbageLeaseID | null
-        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
+        null     | null       | null        | null         | null           | "\"notfoo\" = 'notbar'"
     }
 
     def "Create error"() {
@@ -756,7 +759,7 @@ class PageBlobAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null           | null
         null     | null       | null        | receivedEtag | null           | null
         null     | null       | null        | null         | garbageLeaseID | null
-        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
+        null     | null       | null        | null         | null           | "\"notfoo\" = 'notbar'"
     }
 
     def "Get page ranges error"() {
@@ -770,32 +773,81 @@ class PageBlobAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    @Unroll
     def "Get page ranges diff"() {
         setup:
-        bc.create(PageBlobClient.PAGE_BYTES * 2, true)
+        bc.create(4 * Constants.MB, true)
 
-        bc.uploadPages(new PageRange().setStart(PageBlobClient.PAGE_BYTES).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
+        bc.uploadPages(new PageRange().setStart(0).setEnd(4 * Constants.MB - 1),
+            new ByteArrayInputStream(getRandomByteArray(4 * Constants.MB)))
 
         def snapId = bc.createSnapshot().getSnapshotId()
 
-        bc.uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
+        rangesToUpdate.forEach({
+            bc.uploadPages(it, new ByteArrayInputStream(getRandomByteArray((int) (it.getEnd() - it.getStart()) + 1)))
+        })
 
-        bc.clearPages(new PageRange().setStart(PageBlobClient.PAGE_BYTES).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1))
+        rangesToClear.forEach({ bc.clearPages(it) })
 
         when:
-        def response = bc.getPageRangesDiffWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES * 2), snapId, null, null, null)
+        def response = bc.getPageRangesDiffWithResponse(new BlobRange(0, 4 * Constants.MB), snapId, null, null, null)
 
         then:
-        response.getValue().getPageRange().size() == 1
-        response.getValue().getPageRange().get(0).getStart() == 0
-        response.getValue().getPageRange().get(0).getEnd() == PageBlobClient.PAGE_BYTES - 1
-        response.getValue().getClearRange().size() == 1
-        response.getValue().getClearRange().get(0).getStart() == PageBlobClient.PAGE_BYTES
-        response.getValue().getClearRange().get(0).getEnd() == PageBlobClient.PAGE_BYTES * 2 - 1
         validateBasicHeaders(response.getHeaders())
-        Integer.parseInt(response.getHeaders().getValue("x-ms-blob-content-length")) == PageBlobClient.PAGE_BYTES * 2
+        response.getValue().getPageRange().size() == expectedPageRanges.size()
+        response.getValue().getClearRange().size() == expectedClearRanges.size()
+
+        for (def i = 0; i < expectedPageRanges.size(); i++) {
+            def actualRange = response.getValue().getPageRange().get(i)
+            def expectedRange = expectedPageRanges.get(i)
+            expectedRange.getStart() == actualRange.getStart()
+            expectedRange.getEnd() == actualRange.getEnd()
+        }
+
+        for (def i = 0; i < expectedClearRanges.size(); i++) {
+            def actualRange = response.getValue().getClearRange().get(i)
+            def expectedRange = expectedClearRanges.get(i)
+            expectedRange.getStart() == actualRange.getStart()
+            expectedRange.getEnd() == actualRange.getEnd()
+        }
+
+        Integer.parseInt(response.getHeaders().getValue("x-ms-blob-content-length")) == 4 * Constants.MB
+
+        where:
+        rangesToUpdate                       | rangesToClear                           | expectedPageRanges                   | expectedClearRanges
+        createPageRanges()                   | createPageRanges()                      | createPageRanges()                   | createClearRanges()
+        createPageRanges(0, 511)             | createPageRanges()                      | createPageRanges(0, 511)             | createClearRanges()
+        createPageRanges()                   | createPageRanges(0, 511)                | createPageRanges()                   | createClearRanges(0, 511)
+        createPageRanges(0, 511)             | createPageRanges(512, 1023)             | createPageRanges(0, 511)             | createClearRanges(512, 1023)
+        createPageRanges(0, 511, 1024, 1535) | createPageRanges(512, 1023, 1536, 2047) | createPageRanges(0, 511, 1024, 1535) | createClearRanges(512, 1023, 1536, 2047)
+    }
+
+    static def createPageRanges(long... offsets) {
+        def pageRanges = [] as List<PageRange>
+
+        if (CoreUtils.isNullOrEmpty(offsets)) {
+            return pageRanges
+        }
+
+        for (def i = 0; i < offsets.length / 2; i++) {
+            pageRanges.add(new PageRange().setStart(offsets[i * 2]).setEnd(offsets[i * 2 + 1]))
+        }
+
+        return pageRanges
+    }
+
+    static def createClearRanges(long... offsets) {
+        def clearRanges = [] as List<ClearRange>
+
+        if (CoreUtils.isNullOrEmpty(offsets)) {
+            return clearRanges
+        }
+
+        for (def i = 0; i < offsets.length / 2; i++) {
+            clearRanges.add(new ClearRange().setStart(offsets[i * 2]).setEnd(offsets[i * 2 + 1]))
+        }
+
+        return clearRanges
     }
 
     def "Get page ranges diff min"() {
@@ -867,7 +919,7 @@ class PageBlobAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null           | null
         null     | null       | null        | receivedEtag | null           | null
         null     | null       | null        | null         | garbageLeaseID | null
-        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
+        null     | null       | null        | null         | null           | "\"notfoo\" = 'notbar'"
     }
 
     def "Get page ranges diff error"() {
@@ -1178,13 +1230,13 @@ class PageBlobAPITest extends APISpec {
         bu2.copyIncrementalWithResponse(new PageBlobCopyIncrementalOptions(bc.getBlobUrl(), snapshot).setRequestConditions(mac), null, null).getStatusCode() == 202
 
         where:
-        modified | unmodified | match        | noneMatch    | tags
-        null     | null       | null         | null         | null
-        oldDate  | null       | null         | null         | null
-        null     | newDate    | null         | null         | null
-        null     | null       | receivedEtag | null         | null
-        null     | null       | null         | garbageEtag  | null
-        null     | null       | null         | null         | "\"foo\" = 'bar'"
+        modified | unmodified | match        | noneMatch   | tags
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | "\"foo\" = 'bar'"
     }
 
     @Unroll
@@ -1204,18 +1256,18 @@ class PageBlobAPITest extends APISpec {
             .setTagsConditions(tags)
 
         when:
-        bu2.copyIncrementalWithResponse(new PageBlobCopyIncrementalOptions(bc.getBlobUrl(), snapshot).setRequestConditions(mac),null, null)
+        bu2.copyIncrementalWithResponse(new PageBlobCopyIncrementalOptions(bc.getBlobUrl(), snapshot).setRequestConditions(mac), null, null)
 
         then:
         thrown(BlobStorageException)
 
         where:
-        modified | unmodified | match       | noneMatch     | tags
-        newDate  | null       | null        | null          | null
-        null     | oldDate    | null        | null          | null
-        null     | null       | garbageEtag | null          | null
-        null     | null       | null        | receivedEtag  | null
-        null     | null       | null         | null         | "\"notfoo\" = 'notbar'"
+        modified | unmodified | match       | noneMatch    | tags
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | "\"notfoo\" = 'notbar'"
     }
 
     def "Start incremental copy error"() {
@@ -1270,5 +1322,19 @@ class PageBlobAPITest extends APISpec {
 
         then:
         notThrown(Throwable)
+    }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+    def "Per call policy"() {
+        setup:
+        def specialBlob = getSpecializedBuilder(primaryCredential, bc.getBlobUrl(), getPerCallVersionPolicy())
+            .buildPageBlobClient()
+
+        when:
+        def response = specialBlob.getPropertiesWithResponse(null, null, null)
+
+        then:
+        notThrown(BlobStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
 }

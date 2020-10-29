@@ -16,6 +16,6 @@ public class NetworkWatcherSampleLiveOnlyTests extends SamplesTestBase {
             return;
         }
 
-        Assertions.assertTrue(ManageNetworkWatcher.runSample(azure));
+        Assertions.assertTrue(ManageNetworkWatcher.runSample(azureResourceManager));
     }
 }

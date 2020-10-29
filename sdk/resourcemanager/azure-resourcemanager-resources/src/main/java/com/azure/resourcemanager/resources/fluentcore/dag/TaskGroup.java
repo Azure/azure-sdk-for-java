@@ -5,7 +5,7 @@ package com.azure.resourcemanager.resources.fluentcore.dag;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -213,12 +213,13 @@ public class TaskGroup
      * Mark the given TaskItem depends on this taskGroup.
      *
      * @param dependentTaskItem the task item that depends on this task group
-     * @param sdkContext the sdkcontext
+     * @param internalContext the internal runtime context
      * @return key to be used as parameter to taskResult(string) method to retrieve result of
      * invocation of given task item.
      */
-    public String addPostRunDependent(FunctionalTaskItem dependentTaskItem, SdkContext sdkContext) {
-        IndexableTaskItem taskItem = IndexableTaskItem.create(dependentTaskItem, sdkContext);
+    public String addPostRunDependent(
+        FunctionalTaskItem dependentTaskItem, ResourceManagerUtils.InternalRuntimeContext internalContext) {
+        IndexableTaskItem taskItem = IndexableTaskItem.create(dependentTaskItem, internalContext);
         this.addPostRunDependent(taskItem);
         return taskItem.key();
     }

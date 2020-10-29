@@ -146,16 +146,6 @@ jobs:
           PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
           ACCOUNT_CONSISTENCY: 'Strong'
-        # 45m 23s, expect passed
-        Session_Multimaster_Multi_Region_Tcp_Long:
-          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true}"
-          DisplayName: Multimaster Multi Region Long
-          OSVmImage: 'windows-2019'
-          ProfileFlag: '-e -Plong'
-          PROTOCOLS: '["Tcp"]'
-          ACCOUNT_CONSISTENCY: 'Session'
-          DESIRED_CONSISTENCIES: '["Session"]'
-          PREFERRED_LOCATIONS: '["East US 2"]'
         # 15m 34s, previously failing
         Session_Multimaster_Multi_Region_Tcp_MultiMaster:
           ArmTemplateParameters: "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true}"

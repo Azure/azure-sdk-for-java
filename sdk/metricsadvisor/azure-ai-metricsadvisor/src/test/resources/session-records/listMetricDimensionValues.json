@@ -1,0 +1,48 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//metrics/3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5/dimension/query",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5f4b201e-bd8b-4089-a5e8-1c347c3ed105",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "d7fb2c38-5d38-4a5f-813c-b3352fff2d08",
+      "x-envoy-upstream-service-time" : "174",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "d7fb2c38-5d38-4a5f-813c-b3352fff2d08",
+      "retry-after" : "0",
+      "Content-Length" : "497",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[\"Algerian Fir\",\"Almond\",\"Aspen\",\"Austrian Pine\",\"Bastard Service Tree\",\"Birch\",\"Black Birch (River Birch)\",\"Black Mulberry\",\"Black Poplar\",\"Blackthorn\",\"Blue Atlas Cedar\",\"Box elder\",\"Cabbage Palm\",\"Caucasian Fir\",\"Caucasian Lime\",\"Cherry\",\"Cherry Laurel\",\"Chinese red-barked birch\",\"Cider gum\",\"Cockspur Thorn\"],\"@nextLink\":\"https://anuchan-cg-metric-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/metrics/3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5/dimension/query?$top=20&$skip=20\"}",
+      "Date" : "Mon, 14 Sep 2020 06:27:22 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/metrics/3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5/dimension/query?$top=20&$skip=20",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "bb95fc4b-4d45-4548-b15f-2623338a133c",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "73aae4a6-e5be-4087-8853-74bff2366a40",
+      "x-envoy-upstream-service-time" : "194",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "73aae4a6-e5be-4087-8853-74bff2366a40",
+      "retry-after" : "0",
+      "Content-Length" : "161",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[\"Common Alder\",\"Common Ash\",\"Common Beech\",\"Common Hazel\",\"Common Juniper\",\"Common Lime\",\"Common Walnut\",\"Common Yew\",\"Copper Beech\"],\"@nextLink\":null}",
+      "Date" : "Mon, 14 Sep 2020 06:27:23 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

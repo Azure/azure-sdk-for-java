@@ -1,0 +1,48 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//feedback/metric/query?$top=3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8d937392-9eb7-46ad-b29d-c7b053364500",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "d2b11506-e3e5-43f3-af2b-783cb849f648",
+      "x-envoy-upstream-service-time" : "5257",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "d2b11506-e3e5-43f3-af2b-783cb849f648",
+      "retry-after" : "0",
+      "Content-Length" : "1442",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"feedbackId\":\"97ef8f80-7bf8-46d0-97cb-a0ec7d9647ba\",\"createdTime\":\"2020-09-30T00:57:07.15Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Amphibian\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2020-08-05T07:00:00Z\",\"endTime\":\"2020-08-07T07:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"},\"anomalyDetectionConfigurationId\":null,\"anomalyDetectionConfigurationSnapshot\":null},{\"feedbackId\":\"2fb44e7e-d33a-47e8-b752-235ee858797d\",\"createdTime\":\"2020-09-29T23:42:43.931Z\",\"userPrincipal\":\"chriss@microsoft.com\",\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Ant\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2020-05-29T23:42:44.007Z\",\"endTime\":\"2020-09-29T23:42:44.007Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"},\"anomalyDetectionConfigurationId\":null,\"anomalyDetectionConfigurationSnapshot\":null},{\"feedbackId\":\"d2744fdb-35cb-41d5-b167-0e03626df36d\",\"createdTime\":\"2020-09-29T23:42:45.86Z\",\"userPrincipal\":\"chriss@microsoft.com\",\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Ant\"}},\"feedbackType\":\"Comment\",\"startTime\":null,\"endTime\":null,\"value\":{\"commentValue\":\"my comment\"}}],\"@nextLink\":\"https://anuchan-cg-metric-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/feedback/metric/query?$top=3&$skip=3\"}",
+      "Date" : "Wed, 30 Sep 2020 01:12:43 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com:443/metricsadvisor/v1.0/feedback/metric/query?$top=3&$skip=3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d3f3e218-8168-4ed8-b1b0-4ed4e6d908db",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "38325869-f4d7-4cd6-8ccd-e8f8e1e3a114",
+      "x-envoy-upstream-service-time" : "5180",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "38325869-f4d7-4cd6-8ccd-e8f8e1e3a114",
+      "retry-after" : "0",
+      "Content-Length" : "1355",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"feedbackId\":\"79cf3681-7aea-4acb-bd63-ffc19dee6c2e\",\"createdTime\":\"2020-09-29T23:42:45.283Z\",\"userPrincipal\":\"chriss@microsoft.com\",\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Ant\"}},\"feedbackType\":\"Period\",\"value\":{\"periodType\":\"AssignValue\",\"periodValue\":5}},{\"feedbackId\":\"3c1ed4fd-a8d9-4b6d-a1bd-e46b08b11625\",\"createdTime\":\"2020-09-29T23:42:44.646Z\",\"userPrincipal\":\"chriss@microsoft.com\",\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Ant\"}},\"feedbackType\":\"ChangePoint\",\"startTime\":\"2020-05-29T23:42:44.007Z\",\"endTime\":\"2020-09-29T23:42:44.007Z\",\"value\":{\"changePointValue\":\"NotChangePoint\"}},{\"feedbackId\":\"fe12deea-858c-4af8-ad3c-35ba8acc4705\",\"createdTime\":\"2020-09-29T23:42:30.188Z\",\"userPrincipal\":\"chriss@microsoft.com\",\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Ant\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2020-05-29T23:42:30.253Z\",\"endTime\":\"2020-09-29T23:42:30.253Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"},\"anomalyDetectionConfigurationId\":null,\"anomalyDetectionConfigurationSnapshot\":null}],\"@nextLink\":\"https://anuchan-cg-metric-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/feedback/metric/query?$top=3&$skip=6\"}",
+      "Date" : "Wed, 30 Sep 2020 01:12:51 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

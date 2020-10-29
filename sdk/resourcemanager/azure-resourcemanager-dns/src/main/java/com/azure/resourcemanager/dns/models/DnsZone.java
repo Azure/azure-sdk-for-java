@@ -5,7 +5,7 @@ package com.azure.resourcemanager.dns.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.dns.DnsZoneManager;
-import com.azure.resourcemanager.dns.fluent.inner.ZoneInner;
+import com.azure.resourcemanager.dns.fluent.models.ZoneInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
@@ -80,13 +80,13 @@ public interface DnsZone
     CaaRecordSets caaRecordSets();
 
     /** @return entry point to manage record sets in this zone containing CNAME (canonical name) records */
-    CNameRecordSets cNameRecordSets();
+    CnameRecordSets cNameRecordSets();
 
     /** @return entry point to manage record sets in this zone containing MX (mail exchange) records */
-    MXRecordSets mxRecordSets();
+    MxRecordSets mxRecordSets();
 
     /** @return entry point to manage record sets in this zone containing NS (name server) records */
-    NSRecordSets nsRecordSets();
+    NsRecordSets nsRecordSets();
 
     /** @return entry point to manage record sets in this zone containing PTR (pointer) records */
     PtrRecordSets ptrRecordSets();

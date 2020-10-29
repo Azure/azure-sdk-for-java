@@ -14,7 +14,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-test</artifactId>
-  <version>2.0.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-test;current} -->
+  <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-test;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure Resource Manager Test Library</name>
@@ -52,22 +52,27 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.4.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.5.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>1.9.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-management</artifactId>
-      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
+      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.1.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.1.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.6.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.6.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
   </dependencies>
   <build>
@@ -108,6 +113,8 @@
           <excludes>
             <exclude>com/azure/resourcemanager/**/fluent/**/*</exclude>
             <exclude>com/azure/resourcemanager/**/models/**/*</exclude>
+            <exclude>com/azure/resourcemanager/**/implementation/*ClientImpl*</exclude>
+            <exclude>com/azure/resourcemanager/**/implementation/*ClientBuilder*</exclude>
           </excludes>
         </configuration>
       </plugin>

@@ -4,10 +4,11 @@
 package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.resourcemanager.appservice.models.DeploymentSlot;
+import com.azure.resourcemanager.appservice.models.DeploymentSlotBase;
 import com.azure.resourcemanager.appservice.models.WebApp;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteConfigResourceInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteLogsConfigInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteConfigResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteLogsConfigInner;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,8 +22,8 @@ class DeploymentSlotImpl
         DeploymentSlotImpl,
         WebAppImpl,
         DeploymentSlot.DefinitionStages.WithCreate,
-        DeploymentSlot.Update>
-    implements DeploymentSlot, DeploymentSlot.Definition, DeploymentSlot.Update {
+        DeploymentSlotBase.Update<DeploymentSlot>>
+    implements DeploymentSlot, DeploymentSlot.Definition {
 
     DeploymentSlotImpl(
         String name,
@@ -56,13 +57,13 @@ class DeploymentSlotImpl
     }
 
     @Override
-    public Mono<Void> warDeployAsync(InputStream warFile) {
-        return warDeployAsync(warFile, null);
+    public Mono<Void> warDeployAsync(InputStream warFile, long length) {
+        return warDeployAsync(warFile, length, null);
     }
 
     @Override
-    public void warDeploy(InputStream warFile) {
-        warDeployAsync(warFile).block();
+    public void warDeploy(InputStream warFile, long length) {
+        warDeployAsync(warFile, length).block();
     }
 
     @Override
@@ -80,13 +81,13 @@ class DeploymentSlotImpl
     }
 
     @Override
-    public Mono<Void> warDeployAsync(InputStream warFile, String appName) {
-        return kuduClient.warDeployAsync(warFile, appName);
+    public Mono<Void> warDeployAsync(InputStream warFile, long length, String appName) {
+        return kuduClient.warDeployAsync(warFile, length, appName);
     }
 
     @Override
-    public void warDeploy(InputStream warFile, String appName) {
-        warDeployAsync(warFile, appName).block();
+    public void warDeploy(InputStream warFile, long length, String appName) {
+        warDeployAsync(warFile, length, appName).block();
     }
 
     @Override
@@ -95,13 +96,13 @@ class DeploymentSlotImpl
     }
 
     @Override
-    public void zipDeploy(InputStream zipFile) {
-        zipDeployAsync(zipFile).block();
+    public void zipDeploy(InputStream zipFile, long length) {
+        zipDeployAsync(zipFile, length).block();
     }
 
     @Override
-    public Mono<Void> zipDeployAsync(InputStream zipFile) {
-        return kuduClient.zipDeployAsync(zipFile).then(stopAsync()).then(startAsync());
+    public Mono<Void> zipDeployAsync(InputStream zipFile, long length) {
+        return kuduClient.zipDeployAsync(zipFile, length).then(stopAsync()).then(startAsync());
     }
 
     @Override

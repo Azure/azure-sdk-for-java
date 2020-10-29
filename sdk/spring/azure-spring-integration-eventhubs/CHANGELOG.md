@@ -1,8 +1,10 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
-
+## 2.0.0-beta.1 (Unreleased)
+### Breaking Changes
+- Change group id from `com.microsoft.azure` to `com.azure.spring`.
+- Change artifact id from `spring-integration-eventhubs` to `azure-spring-integration-eventhubs`.
 
 ## 1.2.8 (2020-09-14)
-_Improved_
- - Enable scheduled enqueue message in Service Bus binders
+### Breaking Changes
+- Unify Azure Spring Cloud packages version

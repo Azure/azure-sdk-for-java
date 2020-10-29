@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ContainerServiceCustomProfile model. */
+/** Properties to configure a custom container service cluster. */
 @Fluent
 public final class ContainerServiceCustomProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerServiceCustomProfile.class);

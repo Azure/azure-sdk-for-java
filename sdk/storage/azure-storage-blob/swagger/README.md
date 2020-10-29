@@ -15,7 +15,7 @@ autorest --use=@microsoft.azure/autorest.java@3.0.4 --use=jianghaolu/autorest.mo
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.BlobStorage/preview/2019-12-12/blob.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.BlobStorage/preview/2020-02-10/blob.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.blob
@@ -892,6 +892,21 @@ directive:
       replace(
         "public final class BlobHierarchyListSegment {",
         "@JsonDeserialize(using = CustomHierarchicalListingDeserializer.class)\npublic final class BlobHierarchyListSegment {");
+```
+
+### Add the PageListDeserializer attribute
+``` yaml
+directive:
+- from: PageList.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "import com.fasterxml.jackson.annotation.JsonProperty;",
+        "import com.fasterxml.jackson.annotation.JsonProperty;\nimport com.fasterxml.jackson.databind.annotation.JsonDeserialize;").
+      replace(
+        "public final class PageList {",
+        "@JsonDeserialize(using = PageListDeserializer.class)\npublic final class PageList {");
 ```
 
 ### Add EncryptionKeySha256 to PageBlobUploadPagesFromURLHeaders

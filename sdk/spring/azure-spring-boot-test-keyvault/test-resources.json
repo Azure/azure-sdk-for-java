@@ -175,7 +175,10 @@
           {
             "name": "[variables('subnetName')]",
             "properties": {
-              "addressPrefix": "10.0.0.0/24"
+              "addressPrefix": "10.0.0.0/24",
+              "networkSecurityGroup": {
+                "id": "[variables('nsgId')]"
+              }
             }
           }
         ]
@@ -208,10 +211,10 @@
         "autoUpgradeMinorVersion": true,
         "settings": {
           "fileUris": [
-            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/spring/azure-spring-boot-test-keyvault/install_java.sh",
-            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/spring/azure-spring-boot-test-keyvault/install_java_with_retry.sh"
+            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/spring/azure-spring-boot-test-keyvault/install_apps.sh",
+            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/spring/azure-spring-boot-test-keyvault/install_apps_with_retry.sh"
           ],
-          "commandToExecute": "bash install_java_with_retry.sh"
+          "commandToExecute": "bash install_apps_with_retry.sh"
         },
         "protectedSettings": {
           "commandToExecute": ""

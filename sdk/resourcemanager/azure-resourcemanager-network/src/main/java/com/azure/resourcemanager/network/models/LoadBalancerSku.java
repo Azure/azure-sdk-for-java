@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The LoadBalancerSku model. */
+/** SKU of a load balancer. */
 @Fluent
 public final class LoadBalancerSku {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancerSku.class);

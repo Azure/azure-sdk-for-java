@@ -11,8 +11,7 @@ import reactor.core.publisher.Mono;
 
 /** Entry point to gallery image versions management API in Azure. */
 @Fluent
-public interface GalleryImageVersions
-    extends SupportsCreating<GalleryImageVersion.DefinitionStages.Blank> {
+public interface GalleryImageVersions extends SupportsCreating<GalleryImageVersion.DefinitionStages.Blank> {
     /**
      * Retrieves information about a gallery image version.
      *

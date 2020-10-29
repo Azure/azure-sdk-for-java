@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The DomainPatchResource model. */
+/** ARM resource for a domain. */
 @JsonFlatten
 @Fluent
 public class DomainPatchResource extends ProxyOnlyResource {

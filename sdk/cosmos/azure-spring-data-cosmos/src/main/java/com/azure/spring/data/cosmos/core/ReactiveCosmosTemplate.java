@@ -580,7 +580,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
 
     @Override
     public <T> Flux<T> runQuery(SqlQuerySpec querySpec, Class<?> domainType, Class<T> returnType) {
-        String containerName = domainType.getSimpleName();
+        String containerName = getContainerName(domainType);
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         return cosmosAsyncClient.getDatabase(this.databaseName)
                    .getContainer(containerName)

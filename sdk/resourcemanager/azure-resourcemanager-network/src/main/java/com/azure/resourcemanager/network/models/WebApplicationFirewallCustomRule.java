@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The WebApplicationFirewallCustomRule model. */
+/** Defines contents of a web application rule. */
 @Fluent
 public final class WebApplicationFirewallCustomRule {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WebApplicationFirewallCustomRule.class);

@@ -10,12 +10,12 @@ import com.azure.resourcemanager.authorization.models.ActiveDirectoryObject;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
 import com.azure.resourcemanager.authorization.models.GroupCreateParameters;
 import com.azure.resourcemanager.authorization.models.ServicePrincipal;
-import com.azure.resourcemanager.authorization.fluent.inner.ADGroupInner;
-import com.azure.resourcemanager.authorization.fluent.inner.ApplicationInner;
-import com.azure.resourcemanager.authorization.fluent.inner.ServicePrincipalInner;
-import com.azure.resourcemanager.authorization.fluent.inner.UserInner;
+import com.azure.resourcemanager.authorization.fluent.models.ADGroupInner;
+import com.azure.resourcemanager.authorization.fluent.models.ApplicationInner;
+import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalInner;
+import com.azure.resourcemanager.authorization.fluent.models.UserInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -47,12 +47,12 @@ class ActiveDirectoryGroupImpl
 
     @Override
     public boolean securityEnabled() {
-        return Utils.toPrimitiveBoolean(inner().securityEnabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().securityEnabled());
     }
 
     @Override
     public String mail() {
-        return inner().mail();
+        return innerModel().mail();
     }
 
     @Override
@@ -63,7 +63,7 @@ class ActiveDirectoryGroupImpl
     @Override
     public PagedFlux<ActiveDirectoryObject> listMembersAsync() {
         return manager()
-            .inner()
+            .serviceClient()
             .getGroups()
             .getGroupMembersAsync(id())
             .mapPage(
@@ -84,7 +84,7 @@ class ActiveDirectoryGroupImpl
 
     @Override
     protected Mono<ADGroupInner> getInnerAsync() {
-        return manager().inner().getGroups().getAsync(id());
+        return manager().serviceClient().getGroups().getAsync(id());
     }
 
     @Override
@@ -96,7 +96,7 @@ class ActiveDirectoryGroupImpl
     public Mono<ActiveDirectoryGroup> createResourceAsync() {
         Mono<?> group = Mono.just(this);
         if (isInCreateMode()) {
-            group = manager().inner().getGroups().createAsync(createParameters).map(innerToFluentMap(this));
+            group = manager().serviceClient().getGroups().createAsync(createParameters).map(innerToFluentMap(this));
         }
         if (!membersToRemove.isEmpty()) {
             group =
@@ -105,7 +105,7 @@ class ActiveDirectoryGroupImpl
                         o ->
                             Flux
                                 .fromIterable(membersToRemove)
-                                .flatMap(s -> manager().inner().getGroups().removeMemberAsync(id(), s))
+                                .flatMap(s -> manager().serviceClient().getGroups().removeMemberAsync(id(), s))
                                 .singleOrEmpty()
                                 .thenReturn(Mono.just(this))
                                 .doFinally(signalType -> membersToRemove.clear()));
@@ -117,7 +117,7 @@ class ActiveDirectoryGroupImpl
                         o ->
                             Flux
                                 .fromIterable(membersToAdd)
-                                .flatMap(s -> manager().inner().getGroups().addMemberAsync(id(), s))
+                                .flatMap(s -> manager().serviceClient().getGroups().addMemberAsync(id(), s))
                                 .singleOrEmpty()
                                 .thenReturn(Mono.just(this))
                                 .doFinally(signalType -> membersToAdd.clear()));
@@ -142,7 +142,9 @@ class ActiveDirectoryGroupImpl
         membersToAdd
             .add(
                 String.format(
-                    "%s%s/directoryObjects/%s", manager().inner().getEndpoint(), manager().tenantId(), objectId));
+                    "%s%s/directoryObjects/%s",
+                    manager().serviceClient().getEndpoint(), manager().tenantId(),
+                    objectId));
         return this;
     }
 
@@ -184,7 +186,7 @@ class ActiveDirectoryGroupImpl
 
     @Override
     public String id() {
-        return inner().objectId();
+        return innerModel().objectId();
     }
 
     @Override

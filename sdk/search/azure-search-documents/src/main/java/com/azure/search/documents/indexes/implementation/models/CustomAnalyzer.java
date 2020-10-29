@@ -17,7 +17,11 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The CustomAnalyzer model. */
+/**
+ * Allows you to take control over the process of converting text into indexable/searchable tokens. It's a user-defined
+ * configuration consisting of a single predefined tokenizer and one or more filters. The tokenizer is responsible for
+ * breaking text into tokens, and the filters for modifying tokens emitted by the tokenizer.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.CustomAnalyzer")
 @JsonFlatten

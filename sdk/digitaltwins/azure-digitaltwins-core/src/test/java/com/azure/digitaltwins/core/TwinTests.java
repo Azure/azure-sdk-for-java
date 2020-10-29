@@ -41,10 +41,10 @@ public class TwinTests extends TwinTestBase{
 
         try {
             // Create models to test the Twin lifecycle.
-            List<DigitalTwinsModelData> createdList = client.createModels(modelsList);
-            logger.info("Created {} models successfully", createdList.size());
+            Iterable<DigitalTwinsModelData> createdList = client.createModels(modelsList);
+            logger.info("Created models successfully");
 
-            BasicDigitalTwin createdTwin = client.createDigitalTwin(roomTwinId, deserializeJsonString(roomTwin, BasicDigitalTwin.class), BasicDigitalTwin.class);
+            BasicDigitalTwin createdTwin = client.createOrReplaceDigitalTwin(roomTwinId, deserializeJsonString(roomTwin, BasicDigitalTwin.class), BasicDigitalTwin.class);
 
             logger.info("Created {} twin successfully", createdTwin.getId());
             assertEquals(createdTwin.getId(), roomTwinId);
@@ -57,18 +57,18 @@ public class TwinTests extends TwinTestBase{
             DigitalTwinsResponse<Void> updateTwinResponse = client.updateDigitalTwinWithResponse(
                 roomTwinId,
                 TestAssetsHelper.getRoomTwinUpdatePayload(),
-                new UpdateDigitalTwinRequestOptions(),
+                null,
                 Context.NONE);
 
             assertEquals(updateTwinResponse.getStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
 
             BasicDigitalTwin getTwinObject = client.getDigitalTwin(roomTwinId, BasicDigitalTwin.class);
 
-            assertThat(getTwinObject.getCustomProperties().get("Humidity"))
+            assertThat(getTwinObject.getContents().get("Humidity"))
                 .as("Humidity is added")
                 .isEqualTo(30);
 
-            assertThat(getTwinObject.getCustomProperties().get("Temperature"))
+            assertThat(getTwinObject.getContents().get("Temperature"))
                 .as("Temperature is updated")
                 .isEqualTo(70);
 

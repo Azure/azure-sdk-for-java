@@ -3,7 +3,7 @@ package com.azure.digitaltwins.core;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.digitaltwins.core.models.EventRoute;
+import com.azure.digitaltwins.core.models.DigitalTwinsEventRoute;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -32,16 +32,19 @@ public abstract class EventRoutesTestBase extends DigitalTwinsTestBase {
     @Test
     public abstract void createEventRouteThrowsIfFilterIsMalformed(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
 
+    @Test
+    public abstract void listEventRoutesPaginationWorks(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
+
     // Azure Digital Twins instances have a low cap on the number of event routes allowed, so we need to delete the existing
     // event routes before each test to make sure that we can add an event route in each test.
     @BeforeEach
     public void removeAllEventRoutes() {
         // Using sync client for simplicity. This function isn't testing the clients, so no need to use both sync and async clients for cleanup
         DigitalTwinsClient client = getDigitalTwinsClientBuilder(null, DigitalTwinsServiceVersion.getLatest()).buildClient();
-        PagedIterable<EventRoute> listedEventRoutes = client.listEventRoutes();
+        PagedIterable<DigitalTwinsEventRoute> listedEventRoutes = client.listEventRoutes();
         List<String> currentEventRouteIds = new ArrayList<>();
-        for (EventRoute listedEventRoute : listedEventRoutes) {
-            currentEventRouteIds.add(listedEventRoute.getId());
+        for (DigitalTwinsEventRoute listedEventRoute : listedEventRoutes) {
+            currentEventRouteIds.add(listedEventRoute.getEventRouteId());
         }
 
         for (String eventRouteId : currentEventRouteIds) {
@@ -52,8 +55,8 @@ public abstract class EventRoutesTestBase extends DigitalTwinsTestBase {
 
     // Note that only service returned eventRoute instances have their Id field set. When a user builds an instance locally,
     // there is no way to assign an Id to it.
-    protected static void assertEventRoutesEqual(EventRoute expected, String expectedId, EventRoute actual) {
-        assertEquals(expectedId, actual.getId());
+    protected static void assertEventRoutesEqual(DigitalTwinsEventRoute expected, String expectedId, DigitalTwinsEventRoute actual) {
+        assertEquals(expectedId, actual.getEventRouteId());
         assertEquals(expected.getEndpointName(), actual.getEndpointName());
         assertEquals(expected.getFilter(), actual.getFilter());
     }

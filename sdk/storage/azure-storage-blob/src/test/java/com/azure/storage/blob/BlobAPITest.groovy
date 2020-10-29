@@ -31,6 +31,7 @@ import com.azure.storage.blob.models.RehydratePriority
 import com.azure.storage.blob.models.SyncCopyStatusType
 import com.azure.storage.blob.options.BlobBeginCopyOptions
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions
+import com.azure.storage.blob.options.BlobDownloadToFileOptions
 import com.azure.storage.blob.options.BlobGetTagsOptions
 import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.options.BlobSetAccessTierOptions
@@ -45,6 +46,7 @@ import reactor.core.publisher.Hooks
 import reactor.test.StepVerifier
 import spock.lang.Requires
 import spock.lang.Unroll
+import spock.lang.Ignore
 
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
@@ -227,6 +229,7 @@ class BlobAPITest extends APISpec {
         headers.getBlobCommittedBlockCount() == null
         headers.isServerEncrypted() != null
         headers.getBlobContentMD5() == null
+//        headers.getLastAccessedTime() /* TODO (gapra): re-enable when last access time enabled. */
     }
 
     def "Download empty file"() {
@@ -905,6 +908,32 @@ class BlobAPITest extends APISpec {
         8 * 1026 * 1024 + 10 | _
     }
 
+    @Unroll
+    @Ignore("Very large data sizes.") /* Enable once we have ability to run large resource heavy tests in CI. */
+    def "Download to file blockSize"() {
+        def file = getRandomFile(sizeOfData)
+        bc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + "")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        when:
+        bc.downloadToFileWithResponse(new BlobDownloadToFileOptions(outFile.toPath().toString())
+            .setParallelTransferOptions(new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong(downloadBlockSize))
+            .setDownloadRetryOptions(new DownloadRetryOptions().setMaxRetryRequests(3)), null, null)
+
+        then:
+        notThrown(BlobStorageException)
+
+        where:
+        sizeOfData           | downloadBlockSize   || _
+        5000 * Constants.MB  | 5000 * Constants.MB || _ /* This was the default before. */
+        6000 * Constants.MB  | 6000 * Constants.MB || _ /* Trying to see if we can set it to a number greater than previous default. */
+        6000 * Constants.MB  | 5100 * Constants.MB || _ /* Testing chunking with a large size */
+    }
+
+
     def "Get properties default"() {
         when:
         bc.setTags(Collections.singletonMap("foo", "bar"))
@@ -945,6 +974,7 @@ class BlobAPITest extends APISpec {
         properties.getTagCount() == 1
         properties.getRehydratePriority() == null // tested in setTier rehydrate priority
         !properties.isSealed() // tested in AppendBlob. "seal blob"
+//        properties.getLastAccessedTime() /* TODO: re-enable when last access time enabled. */
     }
 
     def "Get properties min"() {
@@ -2662,4 +2692,16 @@ class BlobAPITest extends APISpec {
         then:
         thrown(IllegalArgumentException)
     }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+     def "Per call policy"() {
+         bc = getBlobClient(primaryCredential, bc.getBlobUrl(), getPerCallVersionPolicy())
+
+         when:
+         def response = bc.getPropertiesWithResponse(null, null, null)
+
+         then:
+         notThrown(BlobStorageException)
+         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
+     }
 }

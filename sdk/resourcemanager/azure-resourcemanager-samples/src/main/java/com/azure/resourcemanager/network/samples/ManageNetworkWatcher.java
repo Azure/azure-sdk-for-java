@@ -7,7 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
@@ -23,10 +23,10 @@ import com.azure.resourcemanager.network.models.PcProtocol;
 import com.azure.resourcemanager.network.models.SecurityGroupView;
 import com.azure.resourcemanager.network.models.Topology;
 import com.azure.resourcemanager.network.models.VerificationIPFlow;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.storage.blob.BlobClient;
@@ -34,6 +34,8 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.BlobItem;
+
+import java.time.Duration;
 
 /**
  * Azure Network sample for managing network watcher.
@@ -65,22 +67,22 @@ public final class ManageNetworkWatcher {
     /**
      * Main function which runs the actual sample.
      *
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_NORTH_CENTRAL;
-        final String nwName = azure.sdkContext().randomResourceName("nw", 8);
+        final String nwName = Utils.randomResourceName(azureResourceManager, "nw", 8);
 
         final String userName = "tirekicker";
-        final String vnetName = azure.sdkContext().randomResourceName("vnet", 20);
-        final String dnsLabel = azure.sdkContext().randomResourceName("pipdns", 20);
+        final String vnetName = Utils.randomResourceName(azureResourceManager, "vnet", 20);
+        final String dnsLabel = Utils.randomResourceName(azureResourceManager, "pipdns", 20);
         final String subnetName = "subnet1";
-        final String nsgName = azure.sdkContext().randomResourceName("nsg", 20);
-        final String rgName = azure.sdkContext().randomResourceName("rg", 24);
-        final String saName = azure.sdkContext().randomResourceName("sa", 24);
-        final String vmName = azure.sdkContext().randomResourceName("vm", 24);
-        final String packetCaptureName = azure.sdkContext().randomResourceName("pc", 8);
+        final String nsgName = Utils.randomResourceName(azureResourceManager, "nsg", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rg", 24);
+        final String saName = Utils.randomResourceName(azureResourceManager, "sa", 24);
+        final String vmName = Utils.randomResourceName(azureResourceManager, "vm", 24);
+        final String packetCaptureName = Utils.randomResourceName(azureResourceManager, "pc", 8);
         final String packetCaptureStorageContainer = "packetcapture";
         // file name to save packet capture log locally
         final String packetCaptureFile = "packetcapture.cap";
@@ -92,7 +94,7 @@ public final class ManageNetworkWatcher {
             //============================================================
             // Create network watcher
             System.out.println("Creating network watcher...");
-            nw = azure.networkWatchers().define(nwName)
+            nw = azureResourceManager.networkWatchers().define(nwName)
                     .withRegion(region)
                     .withNewResourceGroup()
                     .create();
@@ -105,7 +107,7 @@ public final class ManageNetworkWatcher {
 
             // Create network security group, virtual network and VM; add packetCapture extension to enable
             System.out.println("Creating network security group...");
-            NetworkSecurityGroup nsg = azure.networkSecurityGroups().define(nsgName)
+            NetworkSecurityGroup nsg = azureResourceManager.networkSecurityGroups().define(nsgName)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .defineRule("DenyInternetInComing")
@@ -119,7 +121,7 @@ public final class ManageNetworkWatcher {
                     .create();
 
             System.out.println("Defining a virtual network...");
-            Creatable<Network> virtualNetworkDefinition = azure.networks().define(vnetName)
+            Creatable<Network> virtualNetworkDefinition = azureResourceManager.networks().define(vnetName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withAddressSpace("192.168.0.0/16")
@@ -129,7 +131,7 @@ public final class ManageNetworkWatcher {
                     .attach();
 
             System.out.println("Creating a virtual machine...");
-            VirtualMachine vm = azure.virtualMachines().define(vmName)
+            VirtualMachine vm = azureResourceManager.virtualMachines().define(vmName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork(virtualNetworkDefinition)
@@ -150,7 +152,7 @@ public final class ManageNetworkWatcher {
 
             // Create storage account
             System.out.println("Creating storage account...");
-            StorageAccount storageAccount = azure.storageAccounts().define(saName)
+            StorageAccount storageAccount = azureResourceManager.storageAccounts().define(saName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withGeneralPurposeAccountKindV2()
@@ -242,7 +244,7 @@ public final class ManageNetworkWatcher {
 
             // wait for flow log to log an event
             System.out.println("Waiting for flow log to log an event...");
-            SdkContext.sleep(250000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(250));
 
             // Disable NSG flow log
             System.out.println("Disabling flow log...");
@@ -291,17 +293,17 @@ public final class ManageNetworkWatcher {
             //============================================================
             // Delete network watcher
             System.out.println("Deleting network watcher...");
-            azure.networkWatchers().deleteById(nw.id());
+            azureResourceManager.networkWatchers().deleteById(nw.id());
             System.out.println("Deleted network watcher");
 
             return true;
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 if (nw != null) {
                     System.out.println("Deleting network watcher resource group: " + nw.name());
-                    azure.resourceGroups().beginDeleteByName(nw.resourceGroupName());
+                    azureResourceManager.resourceGroups().beginDeleteByName(nw.resourceGroupName());
                 }
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -323,18 +325,19 @@ public final class ManageNetworkWatcher {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

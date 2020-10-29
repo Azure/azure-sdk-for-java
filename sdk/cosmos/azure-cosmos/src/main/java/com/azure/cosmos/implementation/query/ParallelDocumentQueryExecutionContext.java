@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -44,6 +45,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
     private CosmosQueryRequestOptions cosmosQueryRequestOptions;
 
     private ParallelDocumentQueryExecutionContext(
+            DiagnosticsClientContext diagnosticsClientContext,
             IDocumentQueryClient client,
             List<PartitionKeyRange> partitionKeyRanges,
             ResourceType resourceTypeEnum,
@@ -56,16 +58,17 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             boolean isContinuationExpected,
             boolean getLazyFeedResponse,
             UUID correlatedActivityId) {
-        super(client, partitionKeyRanges, resourceTypeEnum, resourceType, query, cosmosQueryRequestOptions, resourceLink,
+        super(diagnosticsClientContext, client, partitionKeyRanges, resourceTypeEnum, resourceType, query, cosmosQueryRequestOptions, resourceLink,
                 rewrittenQuery, isContinuationExpected, getLazyFeedResponse, correlatedActivityId);
         this.cosmosQueryRequestOptions = cosmosQueryRequestOptions;
     }
 
     public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
+            DiagnosticsClientContext diagnosticsClientContext,
             IDocumentQueryClient client,
             PipelinedDocumentQueryParams<T> initParams) {
 
-        ParallelDocumentQueryExecutionContext<T> context = new ParallelDocumentQueryExecutionContext<T>(
+        ParallelDocumentQueryExecutionContext<T> context = new ParallelDocumentQueryExecutionContext<T>(diagnosticsClientContext,
                 client,
                 initParams.getPartitionKeyRanges(),
                 initParams.getResourceTypeEnum(),
@@ -93,6 +96,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
     }
 
     public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createReadManyQueryAsync(
+        DiagnosticsClientContext diagnosticsClientContext,
         IDocumentQueryClient queryClient,
         String collectionResourceId, SqlQuerySpec sqlQuery,
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap,
@@ -102,7 +106,8 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
         List<PartitionKeyRange> ranges = new ArrayList<>();
         ranges.addAll(rangeQueryMap.keySet());
 
-        ParallelDocumentQueryExecutionContext<T> context = new ParallelDocumentQueryExecutionContext<T>(queryClient,
+        ParallelDocumentQueryExecutionContext<T> context = new ParallelDocumentQueryExecutionContext<T>(diagnosticsClientContext,
+                                                                                                        queryClient,
                                                                                                         ranges,
                                                                                                         resourceTypeEnum,
                                                                                                         klass,

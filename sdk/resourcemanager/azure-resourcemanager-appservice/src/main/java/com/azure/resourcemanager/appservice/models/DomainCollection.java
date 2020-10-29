@@ -6,12 +6,12 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.inner.DomainInner;
+import com.azure.resourcemanager.appservice.fluent.models.DomainInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The DomainCollection model. */
+/** Collection of domains. */
 @Fluent
 public final class DomainCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainCollection.class);

@@ -28,7 +28,7 @@ within your project, you can use [Maven][maven].
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventgrid</artifactId>
-    <version>2.0.0-beta.1</version>
+    <version>2.0.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -165,7 +165,7 @@ Learn more [here][EventGridEvent].
 ```java
 List<EventGridEvent> events = new ArrayList<>();
 events.add(
-    new EventGridEvent("exampleSubject", "Com.Example.ExampleEventType", "Example Data", 
+    new EventGridEvent("exampleSubject", "Com.Example.ExampleEventType", "Example Data",
         "1")
 );
 
@@ -271,18 +271,18 @@ Reference documentation for the SDK can be found [here][javadocs]. This is a goo
 to understanding the purpose of each method called, as well as possible reasons for errors
 or unexpected behavior.
 
-If you encounter any bugs with these SDKs, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java/issues) or checkout [StackOverflow for Azure Java SDK](http://stackoverflow.com/questions/tagged/azure-java-sdk).
+If you encounter any bugs with these SDKs, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java/issues) or checkout [StackOverflow for Azure Java SDK](https://stackoverflow.com/questions/tagged/azure-java-sdk).
 
 ## Next steps
 
 - [Azure Java SDKs](https://docs.microsoft.com/java/azure/)
-- If you don't have a Microsoft Azure subscription you can get a FREE trial account [here](http://go.microsoft.com/fwlink/?LinkId=330212)
+- If you don't have a Microsoft Azure subscription you can get a FREE trial account [here](https://go.microsoft.com/fwlink/?LinkId=330212)
 - Some additional sample code can be found [here][samples]
 - Additional Event Grid tutorials can be found [here][service_docs]
 
 ## Contributing
 
-If you would like to become an active contributor to this project please follow the instructions provided in [Microsoft Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
+If you would like to become an active contributor to this project please follow the instructions provided in [Microsoft Azure Projects Contribution Guidelines](https://azure.github.io/guidelines.html).
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)

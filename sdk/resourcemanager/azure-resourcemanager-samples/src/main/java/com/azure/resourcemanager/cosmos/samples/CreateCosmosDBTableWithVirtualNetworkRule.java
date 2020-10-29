@@ -9,12 +9,12 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
 import com.azure.resourcemanager.cosmos.models.VirtualNetworkRule;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.ServiceEndpointType;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
@@ -32,20 +32,20 @@ import java.util.List;
 public class CreateCosmosDBTableWithVirtualNetworkRule {
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
-        final String docDBName = azure.sdkContext().randomResourceName("cosmosdb", 15);
-        final String rgName = azure.sdkContext().randomResourceName("rgcosmosdb", 24);
-        final String vnetName = azure.sdkContext().randomResourceName("vnetcosmosdb", 20);
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
+        final String docDBName = Utils.randomResourceName(azureResourceManager, "cosmosdb", 15);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgcosmosdb", 24);
+        final String vnetName = Utils.randomResourceName(azureResourceManager, "vnetcosmosdb", 20);
 
         try {
             // ============================================================
             // Create a virtual network with two subnets.
             System.out.println("Create a virtual network with two subnets: subnet1 and subnet2");
 
-            Network virtualNetwork = azure.networks().define(vnetName)
+            Network virtualNetwork = azureResourceManager.networks().define(vnetName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .withAddressSpace("192.168.0.0/16")
@@ -67,7 +67,7 @@ public class CreateCosmosDBTableWithVirtualNetworkRule {
             //============================================================
             // Create a CosmosDB
             System.out.println("Creating a CosmosDB...");
-            CosmosDBAccount cosmosDBAccount = azure.cosmosDBAccounts().define(docDBName)
+            CosmosDBAccount cosmosDBAccount = azureResourceManager.cosmosDBAccounts().define(docDBName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .withDataModelAzureTable()
@@ -112,7 +112,7 @@ public class CreateCosmosDBTableWithVirtualNetworkRule {
                 .withVirtualNetworkRules(null)
                 .apply();
 
-            azure.networks().deleteById(virtualNetwork.id());
+            azureResourceManager.networks().deleteById(virtualNetwork.id());
 
 
             //============================================================
@@ -120,7 +120,7 @@ public class CreateCosmosDBTableWithVirtualNetworkRule {
             System.out.println("Deleting the CosmosDB");
             // work around CosmosDB service issue returning 404 ManagementException on delete operation
             try {
-                azure.cosmosDBAccounts().deleteById(cosmosDBAccount.id());
+                azureResourceManager.cosmosDBAccounts().deleteById(cosmosDBAccount.id());
             } catch (ManagementException e) {
             }
             System.out.println("Deleted the CosmosDB");
@@ -129,7 +129,7 @@ public class CreateCosmosDBTableWithVirtualNetworkRule {
         } finally {
             try {
                 System.out.println("Deleting resource group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted resource group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -151,18 +151,19 @@ public class CreateCosmosDBTableWithVirtualNetworkRule {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

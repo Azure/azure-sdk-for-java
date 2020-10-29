@@ -9,7 +9,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Source model. */
+/**
+ * The registry node that generated the event. Put differently, while the actor initiates the event, the source
+ * generates it.
+ */
 @Fluent
 public final class Source {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Source.class);

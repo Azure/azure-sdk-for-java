@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.trafficmanager.models;
 
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 
 /** An immutable client-side representation of an Azure traffic manager profile external endpoint. */
 public interface TrafficManagerExternalEndpoint extends TrafficManagerEndpoint {

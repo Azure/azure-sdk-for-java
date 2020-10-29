@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ActivityLogAlertActionList model. */
+/** A list of activity log alert actions. */
 @Fluent
 public final class ActivityLogAlertActionList {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ActivityLogAlertActionList.class);

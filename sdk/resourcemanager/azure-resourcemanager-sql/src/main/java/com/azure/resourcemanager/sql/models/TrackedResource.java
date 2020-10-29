@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The TrackedResource model. */
+/** ARM tracked top level resource. */
 @Fluent
 public final class TrackedResource extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TrackedResource.class);

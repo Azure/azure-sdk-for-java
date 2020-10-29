@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
@@ -37,13 +38,14 @@ public class DocumentQueryExecutionContextFactory {
 
     private final static int PageSizeFactorForTop = 5;
 
-    private static Mono<Utils.ValueHolder<DocumentCollection>> resolveCollection(IDocumentQueryClient client,
+    private static Mono<Utils.ValueHolder<DocumentCollection>> resolveCollection(DiagnosticsClientContext diagnosticsClientContext,
+                                                                                 IDocumentQueryClient client,
                                                                                  ResourceType resourceTypeEnum,
                                                                                  String resourceLink) {
 
         RxCollectionCache collectionCache = client.getCollectionCache();
 
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(diagnosticsClientContext,
                 OperationType.Query,
                 resourceTypeEnum,
                 resourceLink, null
@@ -53,6 +55,7 @@ public class DocumentQueryExecutionContextFactory {
     }
 
     private static <T extends Resource> Mono<Pair<List<PartitionKeyRange>,QueryInfo>> getPartitionKeyRangesAndQueryInfo(
+        DiagnosticsClientContext diagnosticsClientContext,
         IDocumentQueryClient client,
         SqlQuerySpec query,
         CosmosQueryRequestOptions cosmosQueryRequestOptions,
@@ -77,7 +80,7 @@ public class DocumentQueryExecutionContextFactory {
         Instant startTime = Instant.now();
         Mono<PartitionedQueryExecutionInfo> queryExecutionInfoMono =
             QueryPlanRetriever
-                .getQueryPlanThroughGatewayAsync(client, query, resourceLink);
+                .getQueryPlanThroughGatewayAsync(diagnosticsClientContext, client, query, resourceLink);
 
         return queryExecutionInfoMono.flatMap(
             partitionedQueryExecutionInfo -> {
@@ -109,6 +112,7 @@ public class DocumentQueryExecutionContextFactory {
     }
 
     public static <T extends Resource> Flux<? extends IDocumentQueryExecutionContext<T>> createDocumentQueryExecutionContextAsync(
+            DiagnosticsClientContext diagnosticsClientContext,
             IDocumentQueryClient client,
             ResourceType resourceTypeEnum,
             Class<T> resourceType,
@@ -122,10 +126,11 @@ public class DocumentQueryExecutionContextFactory {
         Flux<Utils.ValueHolder<DocumentCollection>> collectionObs = Flux.just(new Utils.ValueHolder<>(null));
 
         if (resourceTypeEnum.isCollectionChild()) {
-            collectionObs = resolveCollection(client, resourceTypeEnum, resourceLink).flux();
+            collectionObs = resolveCollection(diagnosticsClientContext, client, resourceTypeEnum, resourceLink).flux();
         }
 
         DefaultDocumentQueryExecutionContext<T> queryExecutionContext = new DefaultDocumentQueryExecutionContext<T>(
+            diagnosticsClientContext,
             client,
             resourceTypeEnum,
             resourceType,
@@ -140,7 +145,7 @@ public class DocumentQueryExecutionContextFactory {
         }
 
         return collectionObs.single().flatMap(collectionValueHolder -> {
-            Mono<Pair<List<PartitionKeyRange>, QueryInfo>> queryPlanTask = getPartitionKeyRangesAndQueryInfo(
+            Mono<Pair<List<PartitionKeyRange>, QueryInfo>> queryPlanTask = getPartitionKeyRangesAndQueryInfo(diagnosticsClientContext,
                 client,
                 query,
                 cosmosQueryRequestOptions,
@@ -149,7 +154,7 @@ public class DocumentQueryExecutionContextFactory {
                 queryExecutionContext);
 
             return queryPlanTask
-                .flatMap(queryPlan -> createSpecializedDocumentQueryExecutionContextAsync(
+                .flatMap(queryPlan -> createSpecializedDocumentQueryExecutionContextAsync(diagnosticsClientContext,
                     client,
                     resourceTypeEnum,
                     resourceType,
@@ -166,7 +171,8 @@ public class DocumentQueryExecutionContextFactory {
     }
 
 	public static <T extends Resource> Flux<? extends IDocumentQueryExecutionContext<T>> createSpecializedDocumentQueryExecutionContextAsync(
-            IDocumentQueryClient client,
+            DiagnosticsClientContext diagnosticsClientContext,
+	        IDocumentQueryClient client,
             ResourceType resourceTypeEnum,
             Class<T> resourceType,
             SqlQuerySpec query,
@@ -235,16 +241,16 @@ public class DocumentQueryExecutionContextFactory {
             cosmosQueryRequestOptions,
             correlatedActivityId);
 
-        return PipelinedDocumentQueryExecutionContext.createAsync(client, documentQueryParams);
+        return PipelinedDocumentQueryExecutionContext.createAsync(diagnosticsClientContext, client, documentQueryParams);
     }
 
     public static <T extends Resource> Flux<? extends IDocumentQueryExecutionContext<T>> createReadManyQueryAsync(
-        IDocumentQueryClient queryClient, String collectionResourceId, SqlQuerySpec sqlQuery,
+        DiagnosticsClientContext diagnosticsClientContext, IDocumentQueryClient queryClient, String collectionResourceId, SqlQuerySpec sqlQuery,
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap, CosmosQueryRequestOptions cosmosQueryRequestOptions,
         String resourceId, String collectionLink, UUID activityId, Class<T> klass,
         ResourceType resourceTypeEnum) {
 
-        return PipelinedDocumentQueryExecutionContext.createReadManyAsync(queryClient,
+        return PipelinedDocumentQueryExecutionContext.createReadManyAsync(diagnosticsClientContext, queryClient,
                                                                    collectionResourceId, sqlQuery, rangeQueryMap,
             cosmosQueryRequestOptions, resourceId, collectionLink,
                                                                    activityId, klass,

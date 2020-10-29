@@ -7,7 +7,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Executable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
@@ -53,10 +53,10 @@ public abstract class IndexableTaskItem
     /**
      * Creates a TaskItem which is index-able using a random UUID.
      *
-     * @param sdkContext the sdkcontext
+     * @param internalContext the internal runtime context
      */
-    public IndexableTaskItem(SdkContext sdkContext) {
-        this(sdkContext.randomUuid());
+    public IndexableTaskItem(ResourceManagerUtils.InternalRuntimeContext internalContext) {
+        this(internalContext.randomUuid());
     }
 
     /**
@@ -80,11 +80,12 @@ public abstract class IndexableTaskItem
      * Creates an IndexableTaskItem from provided FunctionalTaskItem.
      *
      * @param taskItem functional TaskItem
-     * @param sdkContext the sdkcontext
+     * @param internalContext the internal runtime context
      * @return IndexableTaskItem
      */
-    public static IndexableTaskItem create(final FunctionalTaskItem taskItem, SdkContext sdkContext) {
-        return new IndexableTaskItem(sdkContext) {
+    public static IndexableTaskItem create(
+        final FunctionalTaskItem taskItem, ResourceManagerUtils.InternalRuntimeContext internalContext) {
+        return new IndexableTaskItem(internalContext) {
             @Override
             protected Mono<Indexable> invokeTaskAsync(TaskGroup.InvocationContext context) {
                 FunctionalTaskItem.Context fContext = new FunctionalTaskItem.Context(this);
@@ -273,7 +274,7 @@ public abstract class IndexableTaskItem
     @Override
     public Mono<Indexable> invokeAsync(TaskGroup.InvocationContext context) {
         return this.invokeTaskAsync(context)
-                .subscribeOn(SdkContext.getReactorScheduler())
+                .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler())
                 .map(result -> {
                     taskResult = result;
                     return result;

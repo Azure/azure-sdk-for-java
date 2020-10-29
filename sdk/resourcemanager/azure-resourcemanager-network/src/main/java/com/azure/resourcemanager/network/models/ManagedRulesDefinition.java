@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ManagedRulesDefinition model. */
+/** Allow to exclude some variable satisfy the condition for the WAF check. */
 @Fluent
 public final class ManagedRulesDefinition {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedRulesDefinition.class);

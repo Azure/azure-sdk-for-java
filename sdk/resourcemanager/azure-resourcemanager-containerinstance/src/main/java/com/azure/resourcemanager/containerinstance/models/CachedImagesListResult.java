@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CachedImagesListResult model. */
+/** The response containing cached images. */
 @Fluent
 public final class CachedImagesListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CachedImagesListResult.class);

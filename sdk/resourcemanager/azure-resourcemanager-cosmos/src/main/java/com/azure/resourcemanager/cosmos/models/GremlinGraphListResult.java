@@ -6,12 +6,12 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.cosmos.fluent.inner.GremlinGraphGetResultsInner;
+import com.azure.resourcemanager.cosmos.fluent.models.GremlinGraphGetResultsInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The GremlinGraphListResult model. */
+/** The List operation response, that contains the graphs and their properties. */
 @Immutable
 public final class GremlinGraphListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GremlinGraphListResult.class);

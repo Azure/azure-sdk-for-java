@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The DeploymentResourceProperties model. */
+/** Deployment resource properties payload. */
 @Fluent
 public final class DeploymentResourceProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentResourceProperties.class);

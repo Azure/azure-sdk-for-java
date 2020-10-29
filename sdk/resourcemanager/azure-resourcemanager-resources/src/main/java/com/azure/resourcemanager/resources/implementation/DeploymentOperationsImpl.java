@@ -9,7 +9,7 @@ import com.azure.resourcemanager.resources.models.Deployment;
 import com.azure.resourcemanager.resources.models.DeploymentOperation;
 import com.azure.resourcemanager.resources.models.DeploymentOperations;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
-import com.azure.resourcemanager.resources.fluent.inner.DeploymentOperationInner;
+import com.azure.resourcemanager.resources.fluent.models.DeploymentOperationInner;
 import com.azure.resourcemanager.resources.fluent.DeploymentOperationsClient;
 import reactor.core.publisher.Mono;
 

@@ -6,12 +6,12 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.inner.InboundEnvironmentEndpointInner;
+import com.azure.resourcemanager.appservice.fluent.models.InboundEnvironmentEndpointInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The InboundEnvironmentEndpointCollection model. */
+/** Collection of Inbound Environment Endpoints. */
 @Fluent
 public final class InboundEnvironmentEndpointCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(InboundEnvironmentEndpointCollection.class);

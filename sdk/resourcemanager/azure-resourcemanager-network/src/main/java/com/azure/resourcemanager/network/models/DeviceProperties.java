@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DeviceProperties model. */
+/** List of properties of the device. */
 @Fluent
 public final class DeviceProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DeviceProperties.class);

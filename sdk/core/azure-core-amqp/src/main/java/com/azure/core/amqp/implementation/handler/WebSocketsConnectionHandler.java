@@ -7,6 +7,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.microsoft.azure.proton.transport.ws.impl.WebSocketImpl;
 import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.engine.impl.TransportInternal;
 
 /**
@@ -33,8 +34,8 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
      * @param clientOptions provided by the user.
      */
     public WebSocketsConnectionHandler(final String connectionId, final String hostname, final String product,
-        final String clientVersion, final ClientOptions clientOptions) {
-        super(connectionId, hostname, product, clientVersion, clientOptions);
+        final String clientVersion, final SslDomain.VerifyMode verifyMode, final ClientOptions clientOptions) {
+        super(connectionId, hostname, product, clientVersion, verifyMode, clientOptions);
     }
 
     @Override

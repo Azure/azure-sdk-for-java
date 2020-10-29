@@ -3,13 +3,13 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.cosmos.fluent.inner.PrivateLinkResourceInner;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.cosmos.fluent.models.PrivateLinkResourceInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.util.List;
 
 /** A private link resource. */
 @Fluent
-public interface PrivateLinkResource extends HasInner<PrivateLinkResourceInner> {
+public interface PrivateLinkResource extends HasInnerModel<PrivateLinkResourceInner> {
 
     /**
      * Get the id value.

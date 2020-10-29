@@ -5,7 +5,7 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.AppServiceManager;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
@@ -125,6 +125,9 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
 
     /** @return the Linux app framework and version if this is a Linux web app. */
     String linuxFxVersion();
+
+    /** @return the Windows app framework and version if this is a Windows web app. */
+    String windowsFxVersion();
 
     /** @return the diagnostic logs configuration */
     WebAppDiagnosticLogs diagnosticLogsConfig();
@@ -304,18 +307,24 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
 
     /**
      * Deploys a ZIP file onto the Azure specialized Java SE image on this web app.
+     * <p>
+     * Retry by client is required if error happens, due to nature of the stream.
      *
      * @param zipFile the ZIP file to upload
+     * @param length the length of the file
      */
-    void zipDeploy(InputStream zipFile);
+    void zipDeploy(InputStream zipFile, long length);
 
     /**
      * Deploys a ZIP file onto the Azure specialized Java SE image on this web app.
+     * <p>
+     * Retry by client is required if error happens, due to nature of the stream.
      *
      * @param zipFile the ZIP file to upload
+     * @param length the length of the file
      * @return a completable of the operation
      */
-    Mono<Void> zipDeployAsync(InputStream zipFile);
+    Mono<Void> zipDeployAsync(InputStream zipFile, long length);
 
     /**************************************************************
      * Fluent interfaces to provision a Web App or deployment slot.
@@ -480,13 +489,6 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
              * @return the next stage of the definition
              */
             WithCreate<FluentT> withPhpVersion(PhpVersion version);
-
-            /**
-             * Turn off PHP support.
-             *
-             * @return the next stage of the definition
-             */
-            WithCreate<FluentT> withoutPhp();
 
             /**
              * Specifies the Java version.
@@ -1067,6 +1069,13 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
              * @return the next stage of web app update
              */
             Update<FluentT> withPhpVersion(PhpVersion version);
+
+            /**
+             * Turn off PHP support.
+             *
+             * @return the next stage of the update
+             */
+            Update<FluentT> withoutPhp();
 
             /**
              * Specifies the Java version.

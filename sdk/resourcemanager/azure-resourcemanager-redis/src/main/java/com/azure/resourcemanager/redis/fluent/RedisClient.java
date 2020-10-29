@@ -4,47 +4,25 @@
 
 package com.azure.resourcemanager.redis.fluent;
 
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.Delete;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Headers;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.Patch;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
-import com.azure.core.annotation.Put;
-import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
-import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.redis.fluent.inner.NotificationListResponseInner;
-import com.azure.resourcemanager.redis.fluent.inner.RedisAccessKeysInner;
-import com.azure.resourcemanager.redis.fluent.inner.RedisForceRebootResponseInner;
-import com.azure.resourcemanager.redis.fluent.inner.RedisResourceInner;
+import com.azure.resourcemanager.redis.fluent.models.NotificationListResponseInner;
+import com.azure.resourcemanager.redis.fluent.models.RedisAccessKeysInner;
+import com.azure.resourcemanager.redis.fluent.models.RedisForceRebootResponseInner;
+import com.azure.resourcemanager.redis.fluent.models.RedisResourceInner;
 import com.azure.resourcemanager.redis.models.CheckNameAvailabilityParameters;
 import com.azure.resourcemanager.redis.models.ExportRdbParameters;
 import com.azure.resourcemanager.redis.models.ImportRdbParameters;
 import com.azure.resourcemanager.redis.models.RedisCreateParameters;
 import com.azure.resourcemanager.redis.models.RedisKeyType;
-import com.azure.resourcemanager.redis.models.RedisListResult;
 import com.azure.resourcemanager.redis.models.RedisRebootParameters;
-import com.azure.resourcemanager.redis.models.RedisRegenerateKeyParameters;
 import com.azure.resourcemanager.redis.models.RedisUpdateParameters;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -53,266 +31,43 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Redis. */
-public final class RedisClient
-    implements InnerSupportsGet<RedisResourceInner>,
-        InnerSupportsListing<RedisResourceInner>,
-        InnerSupportsDelete<Void> {
-    private final ClientLogger logger = new ClientLogger(RedisClient.class);
-
-    /** The proxy service used to perform REST calls. */
-    private final RedisService service;
-
-    /** The service client containing this operation class. */
-    private final RedisManagementClient client;
-
+/** An instance of this class provides access to all the operations defined in RedisClient. */
+public interface RedisClient
+    extends InnerSupportsGet<RedisResourceInner>, InnerSupportsListing<RedisResourceInner>, InnerSupportsDelete<Void> {
     /**
-     * Initializes an instance of RedisClient.
+     * Checks that the redis cache name is valid and is not already in use.
      *
-     * @param client the instance of the service client containing this operation class.
+     * @param parameters Parameters body to pass for resource name availability check.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
-    RedisClient(RedisManagementClient client) {
-        this.service = RestProxy.create(RedisService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
-    }
-
-    /**
-     * The interface defining all the services for RedisManagementClientRedis to be used by the proxy service to perform
-     * REST calls.
-     */
-    @Host("{$host}")
-    @ServiceInterface(name = "RedisManagementClien")
-    private interface RedisService {
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Cache/CheckNameAvailability")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> checkNameAvailability(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") CheckNameAvailabilityParameters parameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}"
-                + "/listUpgradeNotifications")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NotificationListResponseInner>> listUpgradeNotifications(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("history") double history,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") RedisCreateParameters parameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RedisResourceInner>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") RedisUpdateParameters parameters,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RedisResourceInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RedisListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Cache/Redis")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RedisListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}"
-                + "/listKeys")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RedisAccessKeysInner>> listKeys(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}"
-                + "/regenerateKey")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RedisAccessKeysInner>> regenerateKey(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") RedisRegenerateKeyParameters parameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}"
-                + "/forceReboot")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RedisForceRebootResponseInner>> forceReboot(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") RedisRebootParameters parameters,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}"
-                + "/import")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> importData(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") ImportRdbParameters parameters,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}"
-                + "/export")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> exportData(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") ExportRdbParameters parameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RedisListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RedisListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-    }
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> checkNameAvailabilityWithResponseAsync(CheckNameAvailabilityParameters parameters);
 
     /**
      * Checks that the redis cache name is valid and is not already in use.
      *
      * @param parameters Parameters body to pass for resource name availability check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> checkNameAvailabilityWithResponseAsync(CheckNameAvailabilityParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkNameAvailability(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Void> checkNameAvailabilityAsync(CheckNameAvailabilityParameters parameters);
+
+    /**
+     * Checks that the redis cache name is valid and is not already in use.
+     *
+     * @param parameters Parameters body to pass for resource name availability check.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void checkNameAvailability(CheckNameAvailabilityParameters parameters);
 
     /**
      * Checks that the redis cache name is valid and is not already in use.
@@ -320,96 +75,12 @@ public final class RedisClient
      * @param parameters Parameters body to pass for resource name availability check.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> checkNameAvailabilityWithResponseAsync(
-        CheckNameAvailabilityParameters parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .checkNameAvailability(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Checks that the redis cache name is valid and is not already in use.
-     *
-     * @param parameters Parameters body to pass for resource name availability check.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> checkNameAvailabilityAsync(CheckNameAvailabilityParameters parameters) {
-        return checkNameAvailabilityWithResponseAsync(parameters).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Checks that the redis cache name is valid and is not already in use.
-     *
-     * @param parameters Parameters body to pass for resource name availability check.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> checkNameAvailabilityAsync(CheckNameAvailabilityParameters parameters, Context context) {
-        return checkNameAvailabilityWithResponseAsync(parameters, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Checks that the redis cache name is valid and is not already in use.
-     *
-     * @param parameters Parameters body to pass for resource name availability check.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void checkNameAvailability(CheckNameAvailabilityParameters parameters) {
-        checkNameAvailabilityAsync(parameters).block();
-    }
-
-    /**
-     * Checks that the redis cache name is valid and is not already in use.
-     *
-     * @param parameters Parameters body to pass for resource name availability check.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void checkNameAvailability(CheckNameAvailabilityParameters parameters, Context context) {
-        checkNameAvailabilityAsync(parameters, context).block();
-    }
+    Response<Void> checkNameAvailabilityWithResponse(CheckNameAvailabilityParameters parameters, Context context);
 
     /**
      * Gets any upgrade notifications for a Redis cache.
@@ -418,46 +89,42 @@ public final class RedisClient
      * @param name The name of the Redis cache.
      * @param history how many minutes in past to look for upgrade notifications.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any upgrade notifications for a Redis cache.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<NotificationListResponseInner>> listUpgradeNotificationsWithResponseAsync(
-        String resourceGroupName, String name, double history) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listUpgradeNotifications(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            history,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<NotificationListResponseInner>> listUpgradeNotificationsWithResponseAsync(
+        String resourceGroupName, String name, double history);
+
+    /**
+     * Gets any upgrade notifications for a Redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the Redis cache.
+     * @param history how many minutes in past to look for upgrade notifications.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any upgrade notifications for a Redis cache.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<NotificationListResponseInner> listUpgradeNotificationsAsync(
+        String resourceGroupName, String name, double history);
+
+    /**
+     * Gets any upgrade notifications for a Redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the Redis cache.
+     * @param history how many minutes in past to look for upgrade notifications.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any upgrade notifications for a Redis cache.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NotificationListResponseInner listUpgradeNotifications(String resourceGroupName, String name, double history);
 
     /**
      * Gets any upgrade notifications for a Redis cache.
@@ -467,129 +134,13 @@ public final class RedisClient
      * @param history how many minutes in past to look for upgrade notifications.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any upgrade notifications for a Redis cache.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<NotificationListResponseInner>> listUpgradeNotificationsWithResponseAsync(
-        String resourceGroupName, String name, double history, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listUpgradeNotifications(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                history,
-                context);
-    }
-
-    /**
-     * Gets any upgrade notifications for a Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param history how many minutes in past to look for upgrade notifications.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any upgrade notifications for a Redis cache.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NotificationListResponseInner> listUpgradeNotificationsAsync(
-        String resourceGroupName, String name, double history) {
-        return listUpgradeNotificationsWithResponseAsync(resourceGroupName, name, history)
-            .flatMap(
-                (Response<NotificationListResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets any upgrade notifications for a Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param history how many minutes in past to look for upgrade notifications.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any upgrade notifications for a Redis cache.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NotificationListResponseInner> listUpgradeNotificationsAsync(
-        String resourceGroupName, String name, double history, Context context) {
-        return listUpgradeNotificationsWithResponseAsync(resourceGroupName, name, history, context)
-            .flatMap(
-                (Response<NotificationListResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets any upgrade notifications for a Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param history how many minutes in past to look for upgrade notifications.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any upgrade notifications for a Redis cache.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NotificationListResponseInner listUpgradeNotifications(
-        String resourceGroupName, String name, double history) {
-        return listUpgradeNotificationsAsync(resourceGroupName, name, history).block();
-    }
-
-    /**
-     * Gets any upgrade notifications for a Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param history how many minutes in past to look for upgrade notifications.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any upgrade notifications for a Redis cache.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NotificationListResponseInner listUpgradeNotifications(
-        String resourceGroupName, String name, double history, Context context) {
-        return listUpgradeNotificationsAsync(resourceGroupName, name, history, context).block();
-    }
+    Response<NotificationListResponseInner> listUpgradeNotificationsWithResponse(
+        String resourceGroupName, String name, double history, Context context);
 
     /**
      * Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
@@ -598,51 +149,43 @@ public final class RedisClient
      * @param name The name of the Redis cache.
      * @param parameters Parameters supplied to the Create Redis operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single Redis item in List or Get Operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String name, RedisCreateParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
+        String resourceGroupName, String name, RedisCreateParameters parameters);
+
+    /**
+     * Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters supplied to the Create Redis operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single Redis item in List or Get Operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<RedisResourceInner>, RedisResourceInner> beginCreateAsync(
+        String resourceGroupName, String name, RedisCreateParameters parameters);
+
+    /**
+     * Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters supplied to the Create Redis operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single Redis item in List or Get Operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<RedisResourceInner>, RedisResourceInner> beginCreate(
+        String resourceGroupName, String name, RedisCreateParameters parameters);
 
     /**
      * Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
@@ -652,48 +195,13 @@ public final class RedisClient
      * @param parameters Parameters supplied to the Create Redis operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single Redis item in List or Get Operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String name, RedisCreateParameters parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
+    SyncPoller<PollResult<RedisResourceInner>, RedisResourceInner> beginCreate(
+        String resourceGroupName, String name, RedisCreateParameters parameters, Context context);
 
     /**
      * Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
@@ -702,19 +210,26 @@ public final class RedisClient
      * @param name The name of the Redis cache.
      * @param parameters Parameters supplied to the Create Redis operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single Redis item in List or Get Operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<RedisResourceInner>, RedisResourceInner> beginCreateAsync(
-        String resourceGroupName, String name, RedisCreateParameters parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, name, parameters);
-        return this
-            .client
-            .<RedisResourceInner, RedisResourceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RedisResourceInner.class, RedisResourceInner.class, Context.NONE);
-    }
+    Mono<RedisResourceInner> createAsync(String resourceGroupName, String name, RedisCreateParameters parameters);
+
+    /**
+     * Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters supplied to the Create Redis operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single Redis item in List or Get Operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RedisResourceInner create(String resourceGroupName, String name, RedisCreateParameters parameters);
 
     /**
      * Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
@@ -724,128 +239,12 @@ public final class RedisClient
      * @param parameters Parameters supplied to the Create Redis operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single Redis item in List or Get Operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<RedisResourceInner>, RedisResourceInner> beginCreateAsync(
-        String resourceGroupName, String name, RedisCreateParameters parameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, name, parameters, context);
-        return this
-            .client
-            .<RedisResourceInner, RedisResourceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RedisResourceInner.class, RedisResourceInner.class, context);
-    }
-
-    /**
-     * Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param parameters Parameters supplied to the Create Redis operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single Redis item in List or Get Operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<RedisResourceInner>, RedisResourceInner> beginCreate(
-        String resourceGroupName, String name, RedisCreateParameters parameters) {
-        return beginCreateAsync(resourceGroupName, name, parameters).getSyncPoller();
-    }
-
-    /**
-     * Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param parameters Parameters supplied to the Create Redis operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single Redis item in List or Get Operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<RedisResourceInner>, RedisResourceInner> beginCreate(
-        String resourceGroupName, String name, RedisCreateParameters parameters, Context context) {
-        return beginCreateAsync(resourceGroupName, name, parameters, context).getSyncPoller();
-    }
-
-    /**
-     * Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param parameters Parameters supplied to the Create Redis operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single Redis item in List or Get Operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RedisResourceInner> createAsync(
-        String resourceGroupName, String name, RedisCreateParameters parameters) {
-        return beginCreateAsync(resourceGroupName, name, parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param parameters Parameters supplied to the Create Redis operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single Redis item in List or Get Operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RedisResourceInner> createAsync(
-        String resourceGroupName, String name, RedisCreateParameters parameters, Context context) {
-        return beginCreateAsync(resourceGroupName, name, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param parameters Parameters supplied to the Create Redis operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single Redis item in List or Get Operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RedisResourceInner create(String resourceGroupName, String name, RedisCreateParameters parameters) {
-        return createAsync(resourceGroupName, name, parameters).block();
-    }
-
-    /**
-     * Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param parameters Parameters supplied to the Create Redis operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single Redis item in List or Get Operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RedisResourceInner create(
-        String resourceGroupName, String name, RedisCreateParameters parameters, Context context) {
-        return createAsync(resourceGroupName, name, parameters, context).block();
-    }
+    RedisResourceInner create(String resourceGroupName, String name, RedisCreateParameters parameters, Context context);
 
     /**
      * Update an existing Redis cache.
@@ -854,51 +253,41 @@ public final class RedisClient
      * @param name The name of the Redis cache.
      * @param parameters Parameters supplied to the Update Redis operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single Redis item in List or Get Operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RedisResourceInner>> updateWithResponseAsync(
-        String resourceGroupName, String name, RedisUpdateParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<RedisResourceInner>> updateWithResponseAsync(
+        String resourceGroupName, String name, RedisUpdateParameters parameters);
+
+    /**
+     * Update an existing Redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters supplied to the Update Redis operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single Redis item in List or Get Operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RedisResourceInner> updateAsync(String resourceGroupName, String name, RedisUpdateParameters parameters);
+
+    /**
+     * Update an existing Redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters supplied to the Update Redis operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single Redis item in List or Get Operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RedisResourceInner update(String resourceGroupName, String name, RedisUpdateParameters parameters);
 
     /**
      * Update an existing Redis cache.
@@ -908,133 +297,13 @@ public final class RedisClient
      * @param parameters Parameters supplied to the Update Redis operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single Redis item in List or Get Operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RedisResourceInner>> updateWithResponseAsync(
-        String resourceGroupName, String name, RedisUpdateParameters parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Update an existing Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param parameters Parameters supplied to the Update Redis operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single Redis item in List or Get Operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RedisResourceInner> updateAsync(
-        String resourceGroupName, String name, RedisUpdateParameters parameters) {
-        return updateWithResponseAsync(resourceGroupName, name, parameters)
-            .flatMap(
-                (Response<RedisResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Update an existing Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param parameters Parameters supplied to the Update Redis operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single Redis item in List or Get Operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RedisResourceInner> updateAsync(
-        String resourceGroupName, String name, RedisUpdateParameters parameters, Context context) {
-        return updateWithResponseAsync(resourceGroupName, name, parameters, context)
-            .flatMap(
-                (Response<RedisResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Update an existing Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param parameters Parameters supplied to the Update Redis operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single Redis item in List or Get Operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RedisResourceInner update(String resourceGroupName, String name, RedisUpdateParameters parameters) {
-        return updateAsync(resourceGroupName, name, parameters).block();
-    }
-
-    /**
-     * Update an existing Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param parameters Parameters supplied to the Update Redis operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single Redis item in List or Get Operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RedisResourceInner update(
-        String resourceGroupName, String name, RedisUpdateParameters parameters, Context context) {
-        return updateAsync(resourceGroupName, name, parameters, context).block();
-    }
+    Response<RedisResourceInner> updateWithResponse(
+        String resourceGroupName, String name, RedisUpdateParameters parameters, Context context);
 
     /**
      * Deletes a Redis cache.
@@ -1042,44 +311,38 @@ public final class RedisClient
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String name) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String name);
+
+    /**
+     * Deletes a Redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the Redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name);
+
+    /**
+     * Deletes a Redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the Redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name);
 
     /**
      * Deletes a Redis cache.
@@ -1088,42 +351,12 @@ public final class RedisClient
      * @param name The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                context);
-    }
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, Context context);
 
     /**
      * Deletes a Redis cache.
@@ -1131,17 +364,24 @@ public final class RedisClient
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, name);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
-    }
+    Mono<Void> deleteAsync(String resourceGroupName, String name);
+
+    /**
+     * Deletes a Redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the Redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String name);
 
     /**
      * Deletes a Redis cache.
@@ -1150,109 +390,11 @@ public final class RedisClient
      * @param name The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, name, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Deletes a Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name) {
-        return beginDeleteAsync(resourceGroupName, name).getSyncPoller();
-    }
-
-    /**
-     * Deletes a Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, Context context) {
-        return beginDeleteAsync(resourceGroupName, name, context).getSyncPoller();
-    }
-
-    /**
-     * Deletes a Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String name) {
-        return beginDeleteAsync(resourceGroupName, name).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes a Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String name, Context context) {
-        return beginDeleteAsync(resourceGroupName, name, context).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes a Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String name) {
-        deleteAsync(resourceGroupName, name).block();
-    }
-
-    /**
-     * Deletes a Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String name, Context context) {
-        deleteAsync(resourceGroupName, name, context).block();
-    }
+    void delete(String resourceGroupName, String name, Context context);
 
     /**
      * Gets a Redis cache (resource description).
@@ -1260,45 +402,38 @@ public final class RedisClient
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Redis cache (resource description).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RedisResourceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String name) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<RedisResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String name);
+
+    /**
+     * Gets a Redis cache (resource description).
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the Redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Redis cache (resource description).
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RedisResourceInner> getByResourceGroupAsync(String resourceGroupName, String name);
+
+    /**
+     * Gets a Redis cache (resource description).
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the Redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Redis cache (resource description).
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RedisResourceInner getByResourceGroup(String resourceGroupName, String name);
 
     /**
      * Gets a Redis cache (resource description).
@@ -1307,169 +442,36 @@ public final class RedisClient
      * @param name The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Redis cache (resource description).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RedisResourceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * Gets a Redis cache (resource description).
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Redis cache (resource description).
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RedisResourceInner> getByResourceGroupAsync(String resourceGroupName, String name) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, name)
-            .flatMap(
-                (Response<RedisResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a Redis cache (resource description).
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Redis cache (resource description).
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RedisResourceInner> getByResourceGroupAsync(String resourceGroupName, String name, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, name, context)
-            .flatMap(
-                (Response<RedisResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a Redis cache (resource description).
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Redis cache (resource description).
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RedisResourceInner getByResourceGroup(String resourceGroupName, String name) {
-        return getByResourceGroupAsync(resourceGroupName, name).block();
-    }
-
-    /**
-     * Gets a Redis cache (resource description).
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Redis cache (resource description).
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RedisResourceInner getByResourceGroup(String resourceGroupName, String name, Context context) {
-        return getByResourceGroupAsync(resourceGroupName, name, context).block();
-    }
+    Response<RedisResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String name, Context context);
 
     /**
      * Lists all Redis caches in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of list Redis operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RedisResourceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            context))
-            .<PagedResponse<RedisResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<RedisResourceInner> listByResourceGroupAsync(String resourceGroupName);
+
+    /**
+     * Lists all Redis caches in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of list Redis operation.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<RedisResourceInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Lists all Redis caches in a resource group.
@@ -1477,241 +479,44 @@ public final class RedisClient
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list Redis operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RedisResourceInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Lists all Redis caches in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of list Redis operation.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RedisResourceInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Lists all Redis caches in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list Redis operation.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RedisResourceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Lists all Redis caches in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list Redis operation.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RedisResourceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
-    }
-
-    /**
-     * Lists all Redis caches in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list Redis operation.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RedisResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
-    }
+    PagedIterable<RedisResourceInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Gets all Redis caches in the specified subscription.
      *
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all Redis caches in the specified subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RedisResourceInner>> listSinglePageAsync() {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            context))
-            .<PagedResponse<RedisResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<RedisResourceInner> listAsync();
+
+    /**
+     * Gets all Redis caches in the specified subscription.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all Redis caches in the specified subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<RedisResourceInner> list();
 
     /**
      * Gets all Redis caches in the specified subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Redis caches in the specified subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RedisResourceInner>> listSinglePageAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Gets all Redis caches in the specified subscription.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all Redis caches in the specified subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RedisResourceInner> listAsync() {
-        return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Gets all Redis caches in the specified subscription.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Redis caches in the specified subscription.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RedisResourceInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets all Redis caches in the specified subscription.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Redis caches in the specified subscription.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RedisResourceInner> list() {
-        return new PagedIterable<>(listAsync());
-    }
-
-    /**
-     * Gets all Redis caches in the specified subscription.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Redis caches in the specified subscription.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RedisResourceInner> list(Context context) {
-        return new PagedIterable<>(listAsync(context));
-    }
+    PagedIterable<RedisResourceInner> list(Context context);
 
     /**
      * Retrieve a Redis cache's access keys. This operation requires write permission to the cache resource.
@@ -1719,44 +524,38 @@ public final class RedisClient
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return redis cache access keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RedisAccessKeysInner>> listKeysWithResponseAsync(String resourceGroupName, String name) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listKeys(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<RedisAccessKeysInner>> listKeysWithResponseAsync(String resourceGroupName, String name);
+
+    /**
+     * Retrieve a Redis cache's access keys. This operation requires write permission to the cache resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the Redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return redis cache access keys.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RedisAccessKeysInner> listKeysAsync(String resourceGroupName, String name);
+
+    /**
+     * Retrieve a Redis cache's access keys. This operation requires write permission to the cache resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the Redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return redis cache access keys.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RedisAccessKeysInner listKeys(String resourceGroupName, String name);
 
     /**
      * Retrieve a Redis cache's access keys. This operation requires write permission to the cache resource.
@@ -1765,120 +564,12 @@ public final class RedisClient
      * @param name The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return redis cache access keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RedisAccessKeysInner>> listKeysWithResponseAsync(
-        String resourceGroupName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listKeys(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * Retrieve a Redis cache's access keys. This operation requires write permission to the cache resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return redis cache access keys.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RedisAccessKeysInner> listKeysAsync(String resourceGroupName, String name) {
-        return listKeysWithResponseAsync(resourceGroupName, name)
-            .flatMap(
-                (Response<RedisAccessKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Retrieve a Redis cache's access keys. This operation requires write permission to the cache resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return redis cache access keys.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RedisAccessKeysInner> listKeysAsync(String resourceGroupName, String name, Context context) {
-        return listKeysWithResponseAsync(resourceGroupName, name, context)
-            .flatMap(
-                (Response<RedisAccessKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Retrieve a Redis cache's access keys. This operation requires write permission to the cache resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return redis cache access keys.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RedisAccessKeysInner listKeys(String resourceGroupName, String name) {
-        return listKeysAsync(resourceGroupName, name).block();
-    }
-
-    /**
-     * Retrieve a Redis cache's access keys. This operation requires write permission to the cache resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return redis cache access keys.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RedisAccessKeysInner listKeys(String resourceGroupName, String name, Context context) {
-        return listKeysAsync(resourceGroupName, name, context).block();
-    }
+    Response<RedisAccessKeysInner> listKeysWithResponse(String resourceGroupName, String name, Context context);
 
     /**
      * Regenerate Redis cache's access keys. This operation requires write permission to the cache resource.
@@ -1887,51 +578,41 @@ public final class RedisClient
      * @param name The name of the Redis cache.
      * @param keyType The Redis access key to regenerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return redis cache access keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RedisAccessKeysInner>> regenerateKeyWithResponseAsync(
-        String resourceGroupName, String name, RedisKeyType keyType) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (keyType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter keyType is required and cannot be null."));
-        }
-        RedisRegenerateKeyParameters parameters = new RedisRegenerateKeyParameters();
-        parameters.withKeyType(keyType);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .regenerateKey(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<RedisAccessKeysInner>> regenerateKeyWithResponseAsync(
+        String resourceGroupName, String name, RedisKeyType keyType);
+
+    /**
+     * Regenerate Redis cache's access keys. This operation requires write permission to the cache resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the Redis cache.
+     * @param keyType The Redis access key to regenerate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return redis cache access keys.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RedisAccessKeysInner> regenerateKeyAsync(String resourceGroupName, String name, RedisKeyType keyType);
+
+    /**
+     * Regenerate Redis cache's access keys. This operation requires write permission to the cache resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the Redis cache.
+     * @param keyType The Redis access key to regenerate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return redis cache access keys.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RedisAccessKeysInner regenerateKey(String resourceGroupName, String name, RedisKeyType keyType);
 
     /**
      * Regenerate Redis cache's access keys. This operation requires write permission to the cache resource.
@@ -1941,132 +622,13 @@ public final class RedisClient
      * @param keyType The Redis access key to regenerate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return redis cache access keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RedisAccessKeysInner>> regenerateKeyWithResponseAsync(
-        String resourceGroupName, String name, RedisKeyType keyType, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (keyType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter keyType is required and cannot be null."));
-        }
-        RedisRegenerateKeyParameters parameters = new RedisRegenerateKeyParameters();
-        parameters.withKeyType(keyType);
-        context = this.client.mergeContext(context);
-        return service
-            .regenerateKey(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Regenerate Redis cache's access keys. This operation requires write permission to the cache resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param keyType The Redis access key to regenerate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return redis cache access keys.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RedisAccessKeysInner> regenerateKeyAsync(String resourceGroupName, String name, RedisKeyType keyType) {
-        return regenerateKeyWithResponseAsync(resourceGroupName, name, keyType)
-            .flatMap(
-                (Response<RedisAccessKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Regenerate Redis cache's access keys. This operation requires write permission to the cache resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param keyType The Redis access key to regenerate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return redis cache access keys.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RedisAccessKeysInner> regenerateKeyAsync(
-        String resourceGroupName, String name, RedisKeyType keyType, Context context) {
-        return regenerateKeyWithResponseAsync(resourceGroupName, name, keyType, context)
-            .flatMap(
-                (Response<RedisAccessKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Regenerate Redis cache's access keys. This operation requires write permission to the cache resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param keyType The Redis access key to regenerate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return redis cache access keys.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RedisAccessKeysInner regenerateKey(String resourceGroupName, String name, RedisKeyType keyType) {
-        return regenerateKeyAsync(resourceGroupName, name, keyType).block();
-    }
-
-    /**
-     * Regenerate Redis cache's access keys. This operation requires write permission to the cache resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param keyType The Redis access key to regenerate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return redis cache access keys.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RedisAccessKeysInner regenerateKey(
-        String resourceGroupName, String name, RedisKeyType keyType, Context context) {
-        return regenerateKeyAsync(resourceGroupName, name, keyType, context).block();
-    }
+    Response<RedisAccessKeysInner> regenerateKeyWithResponse(
+        String resourceGroupName, String name, RedisKeyType keyType, Context context);
 
     /**
      * Reboot specified Redis node(s). This operation requires write permission to the cache resource. There can be
@@ -2076,51 +638,44 @@ public final class RedisClient
      * @param name The name of the Redis cache.
      * @param parameters Specifies which Redis node(s) to reboot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response to force reboot for Redis cache.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RedisForceRebootResponseInner>> forceRebootWithResponseAsync(
-        String resourceGroupName, String name, RedisRebootParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .forceReboot(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<RedisForceRebootResponseInner>> forceRebootWithResponseAsync(
+        String resourceGroupName, String name, RedisRebootParameters parameters);
+
+    /**
+     * Reboot specified Redis node(s). This operation requires write permission to the cache resource. There can be
+     * potential data loss.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the Redis cache.
+     * @param parameters Specifies which Redis node(s) to reboot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response to force reboot for Redis cache.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RedisForceRebootResponseInner> forceRebootAsync(
+        String resourceGroupName, String name, RedisRebootParameters parameters);
+
+    /**
+     * Reboot specified Redis node(s). This operation requires write permission to the cache resource. There can be
+     * potential data loss.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the Redis cache.
+     * @param parameters Specifies which Redis node(s) to reboot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response to force reboot for Redis cache.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RedisForceRebootResponseInner forceReboot(String resourceGroupName, String name, RedisRebootParameters parameters);
 
     /**
      * Reboot specified Redis node(s). This operation requires write permission to the cache resource. There can be
@@ -2131,138 +686,13 @@ public final class RedisClient
      * @param parameters Specifies which Redis node(s) to reboot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response to force reboot for Redis cache.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RedisForceRebootResponseInner>> forceRebootWithResponseAsync(
-        String resourceGroupName, String name, RedisRebootParameters parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .forceReboot(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Reboot specified Redis node(s). This operation requires write permission to the cache resource. There can be
-     * potential data loss.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param parameters Specifies which Redis node(s) to reboot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to force reboot for Redis cache.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RedisForceRebootResponseInner> forceRebootAsync(
-        String resourceGroupName, String name, RedisRebootParameters parameters) {
-        return forceRebootWithResponseAsync(resourceGroupName, name, parameters)
-            .flatMap(
-                (Response<RedisForceRebootResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Reboot specified Redis node(s). This operation requires write permission to the cache resource. There can be
-     * potential data loss.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param parameters Specifies which Redis node(s) to reboot.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to force reboot for Redis cache.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RedisForceRebootResponseInner> forceRebootAsync(
-        String resourceGroupName, String name, RedisRebootParameters parameters, Context context) {
-        return forceRebootWithResponseAsync(resourceGroupName, name, parameters, context)
-            .flatMap(
-                (Response<RedisForceRebootResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Reboot specified Redis node(s). This operation requires write permission to the cache resource. There can be
-     * potential data loss.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param parameters Specifies which Redis node(s) to reboot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to force reboot for Redis cache.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RedisForceRebootResponseInner forceReboot(
-        String resourceGroupName, String name, RedisRebootParameters parameters) {
-        return forceRebootAsync(resourceGroupName, name, parameters).block();
-    }
-
-    /**
-     * Reboot specified Redis node(s). This operation requires write permission to the cache resource. There can be
-     * potential data loss.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param parameters Specifies which Redis node(s) to reboot.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to force reboot for Redis cache.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RedisForceRebootResponseInner forceReboot(
-        String resourceGroupName, String name, RedisRebootParameters parameters, Context context) {
-        return forceRebootAsync(resourceGroupName, name, parameters, context).block();
-    }
+    Response<RedisForceRebootResponseInner> forceRebootWithResponse(
+        String resourceGroupName, String name, RedisRebootParameters parameters, Context context);
 
     /**
      * Import data into Redis cache.
@@ -2271,51 +701,43 @@ public final class RedisClient
      * @param name The name of the Redis cache.
      * @param parameters Parameters for Redis import operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> importDataWithResponseAsync(
-        String resourceGroupName, String name, ImportRdbParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .importData(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> importDataWithResponseAsync(
+        String resourceGroupName, String name, ImportRdbParameters parameters);
+
+    /**
+     * Import data into Redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters for Redis import operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<Void>, Void> beginImportDataAsync(
+        String resourceGroupName, String name, ImportRdbParameters parameters);
+
+    /**
+     * Import data into Redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters for Redis import operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginImportData(
+        String resourceGroupName, String name, ImportRdbParameters parameters);
 
     /**
      * Import data into Redis cache.
@@ -2325,48 +747,13 @@ public final class RedisClient
      * @param parameters Parameters for Redis import operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> importDataWithResponseAsync(
-        String resourceGroupName, String name, ImportRdbParameters parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .importData(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
+    SyncPoller<PollResult<Void>, Void> beginImportData(
+        String resourceGroupName, String name, ImportRdbParameters parameters, Context context);
 
     /**
      * Import data into Redis cache.
@@ -2375,18 +762,25 @@ public final class RedisClient
      * @param name The name of the Redis cache.
      * @param parameters Parameters for Redis import operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginImportDataAsync(
-        String resourceGroupName, String name, ImportRdbParameters parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = importDataWithResponseAsync(resourceGroupName, name, parameters);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
-    }
+    Mono<Void> importDataAsync(String resourceGroupName, String name, ImportRdbParameters parameters);
+
+    /**
+     * Import data into Redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters for Redis import operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void importData(String resourceGroupName, String name, ImportRdbParameters parameters);
 
     /**
      * Import data into Redis cache.
@@ -2396,124 +790,11 @@ public final class RedisClient
      * @param parameters Parameters for Redis import operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginImportDataAsync(
-        String resourceGroupName, String name, ImportRdbParameters parameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            importDataWithResponseAsync(resourceGroupName, name, parameters, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Import data into Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param parameters Parameters for Redis import operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginImportData(
-        String resourceGroupName, String name, ImportRdbParameters parameters) {
-        return beginImportDataAsync(resourceGroupName, name, parameters).getSyncPoller();
-    }
-
-    /**
-     * Import data into Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param parameters Parameters for Redis import operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginImportData(
-        String resourceGroupName, String name, ImportRdbParameters parameters, Context context) {
-        return beginImportDataAsync(resourceGroupName, name, parameters, context).getSyncPoller();
-    }
-
-    /**
-     * Import data into Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param parameters Parameters for Redis import operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> importDataAsync(String resourceGroupName, String name, ImportRdbParameters parameters) {
-        return beginImportDataAsync(resourceGroupName, name, parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Import data into Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param parameters Parameters for Redis import operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> importDataAsync(
-        String resourceGroupName, String name, ImportRdbParameters parameters, Context context) {
-        return beginImportDataAsync(resourceGroupName, name, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Import data into Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param parameters Parameters for Redis import operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void importData(String resourceGroupName, String name, ImportRdbParameters parameters) {
-        importDataAsync(resourceGroupName, name, parameters).block();
-    }
-
-    /**
-     * Import data into Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param parameters Parameters for Redis import operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void importData(String resourceGroupName, String name, ImportRdbParameters parameters, Context context) {
-        importDataAsync(resourceGroupName, name, parameters, context).block();
-    }
+    void importData(String resourceGroupName, String name, ImportRdbParameters parameters, Context context);
 
     /**
      * Export data from the redis cache to blobs in a container.
@@ -2522,51 +803,43 @@ public final class RedisClient
      * @param name The name of the Redis cache.
      * @param parameters Parameters for Redis export operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> exportDataWithResponseAsync(
-        String resourceGroupName, String name, ExportRdbParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .exportData(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> exportDataWithResponseAsync(
+        String resourceGroupName, String name, ExportRdbParameters parameters);
+
+    /**
+     * Export data from the redis cache to blobs in a container.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters for Redis export operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<Void>, Void> beginExportDataAsync(
+        String resourceGroupName, String name, ExportRdbParameters parameters);
+
+    /**
+     * Export data from the redis cache to blobs in a container.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters for Redis export operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginExportData(
+        String resourceGroupName, String name, ExportRdbParameters parameters);
 
     /**
      * Export data from the redis cache to blobs in a container.
@@ -2576,48 +849,13 @@ public final class RedisClient
      * @param parameters Parameters for Redis export operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> exportDataWithResponseAsync(
-        String resourceGroupName, String name, ExportRdbParameters parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .exportData(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
+    SyncPoller<PollResult<Void>, Void> beginExportData(
+        String resourceGroupName, String name, ExportRdbParameters parameters, Context context);
 
     /**
      * Export data from the redis cache to blobs in a container.
@@ -2626,18 +864,25 @@ public final class RedisClient
      * @param name The name of the Redis cache.
      * @param parameters Parameters for Redis export operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginExportDataAsync(
-        String resourceGroupName, String name, ExportRdbParameters parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = exportDataWithResponseAsync(resourceGroupName, name, parameters);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
-    }
+    Mono<Void> exportDataAsync(String resourceGroupName, String name, ExportRdbParameters parameters);
+
+    /**
+     * Export data from the redis cache to blobs in a container.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters for Redis export operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void exportData(String resourceGroupName, String name, ExportRdbParameters parameters);
 
     /**
      * Export data from the redis cache to blobs in a container.
@@ -2647,237 +892,9 @@ public final class RedisClient
      * @param parameters Parameters for Redis export operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginExportDataAsync(
-        String resourceGroupName, String name, ExportRdbParameters parameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            exportDataWithResponseAsync(resourceGroupName, name, parameters, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Export data from the redis cache to blobs in a container.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param parameters Parameters for Redis export operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginExportData(
-        String resourceGroupName, String name, ExportRdbParameters parameters) {
-        return beginExportDataAsync(resourceGroupName, name, parameters).getSyncPoller();
-    }
-
-    /**
-     * Export data from the redis cache to blobs in a container.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param parameters Parameters for Redis export operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginExportData(
-        String resourceGroupName, String name, ExportRdbParameters parameters, Context context) {
-        return beginExportDataAsync(resourceGroupName, name, parameters, context).getSyncPoller();
-    }
-
-    /**
-     * Export data from the redis cache to blobs in a container.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param parameters Parameters for Redis export operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> exportDataAsync(String resourceGroupName, String name, ExportRdbParameters parameters) {
-        return beginExportDataAsync(resourceGroupName, name, parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Export data from the redis cache to blobs in a container.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param parameters Parameters for Redis export operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> exportDataAsync(
-        String resourceGroupName, String name, ExportRdbParameters parameters, Context context) {
-        return beginExportDataAsync(resourceGroupName, name, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Export data from the redis cache to blobs in a container.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param parameters Parameters for Redis export operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void exportData(String resourceGroupName, String name, ExportRdbParameters parameters) {
-        exportDataAsync(resourceGroupName, name, parameters).block();
-    }
-
-    /**
-     * Export data from the redis cache to blobs in a container.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param parameters Parameters for Redis export operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void exportData(String resourceGroupName, String name, ExportRdbParameters parameters, Context context) {
-        exportDataAsync(resourceGroupName, name, parameters, context).block();
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list Redis operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RedisResourceInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listByResourceGroupNext(nextLink, context))
-            .<PagedResponse<RedisResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list Redis operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RedisResourceInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list Redis operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RedisResourceInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
-            .<PagedResponse<RedisResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list Redis operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RedisResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
+    void exportData(String resourceGroupName, String name, ExportRdbParameters parameters, Context context);
 }

@@ -6,8 +6,10 @@ package com.microsoft.azure.eventhubs.sendrecv;
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
 import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.TransportType;
+import com.microsoft.azure.eventhubs.impl.SendTest;
 import com.microsoft.azure.eventhubs.lib.SasTokenTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
+import org.apache.qpid.proton.engine.SslDomain;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -32,7 +34,7 @@ public class WebSocketsSendTest extends SasTokenTestBase {
 
         ConnectionStringBuilder connectionString = TestContext.getConnectionString();
         connectionString.setTransportType(TransportType.AMQP_WEB_SOCKETS);
-        SendTest.initializeEventHub(connectionString);
+        SendTest.initializeEventHub(connectionString, SslDomain.VerifyMode.VERIFY_PEER_NAME);
     }
 
     @AfterClass

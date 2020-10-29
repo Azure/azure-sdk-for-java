@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The DatabaseAccountUpdateParameters model. */
+/** Parameters for patching Azure Cosmos DB database account properties. */
 @JsonFlatten
 @Fluent
 public class DatabaseAccountUpdateParameters {

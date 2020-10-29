@@ -18,7 +18,7 @@ To use this package, add the following to your _pom.xml_.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-test</artifactId>
-  <version>1.4.2</version>
+  <version>1.5.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -111,7 +111,7 @@ public class FooBar {
 
 If you encounter any bugs with these SDKs, please file issues via
 [Issues](https://github.com/Azure/azure-sdk-for-java/issues) or checkout
-[StackOverflow for Azure Java SDK](http://stackoverflow.com/questions/tagged/azure-java-sdk).
+[StackOverflow for Azure Java SDK](https://stackoverflow.com/questions/tagged/azure-java-sdk).
 
 ## Next steps
 
@@ -121,7 +121,7 @@ Other useful packages are:
 ## Contributing
 
 If you would like to become an active contributor to this project please follow the instructions provided in
-[Microsoft Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
+[Microsoft Azure Projects Contribution Guidelines](https://azure.github.io/guidelines.html).
 
 1. Fork it
 1. Create your feature branch (`git checkout -b my-new-feature`)

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ExpressRouteCircuitPeeringId model. */
+/** ExpressRoute circuit peering identifier. */
 @Fluent
 public final class ExpressRouteCircuitPeeringId {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitPeeringId.class);

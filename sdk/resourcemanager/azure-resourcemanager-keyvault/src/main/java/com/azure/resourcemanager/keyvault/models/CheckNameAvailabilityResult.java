@@ -4,12 +4,12 @@
 package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.keyvault.fluent.inner.CheckNameAvailabilityResultInner;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.keyvault.fluent.models.CheckNameAvailabilityResultInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /** The CheckNameAvailability operation response wrapper. */
 @Fluent
-public interface CheckNameAvailabilityResult extends HasInner<CheckNameAvailabilityResultInner> {
+public interface CheckNameAvailabilityResult extends HasInnerModel<CheckNameAvailabilityResultInner> {
 
     /**
      * Get the nameAvailable value.

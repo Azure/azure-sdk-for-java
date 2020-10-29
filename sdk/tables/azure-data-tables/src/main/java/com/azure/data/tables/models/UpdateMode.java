@@ -3,9 +3,16 @@
 package com.azure.data.tables.models;
 
 /**
- * update type for update and upsert methods
+ * The type of update operation to perform on an existing entity within a table.
  */
 public enum UpdateMode {
+    /**
+     * The provided entity's properties will be merged into the existing entity.
+     */
     MERGE,
+
+    /**
+     * The provided entity's properties will completely replace those in the existing entity.
+     */
     REPLACE
 }

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The OptionalClaim model. */
+/** Specifying the claims to be included in a token. */
 @Fluent
 public final class OptionalClaim {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OptionalClaim.class);

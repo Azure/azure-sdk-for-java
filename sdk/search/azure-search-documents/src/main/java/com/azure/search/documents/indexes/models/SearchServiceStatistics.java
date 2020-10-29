@@ -10,7 +10,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SearchServiceStatistics model. */
+/** Response from a get service statistics request. If successful, it includes service level counters and limits. */
 @Fluent
 public final class SearchServiceStatistics {
     /*

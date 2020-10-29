@@ -50,19 +50,6 @@ opt-in-extensible-enums: true
 openapi-type: data-plane
 ```
 
-### Tag: package-2020-06-searchservice
-
-These settings apply only when `--tag=package-2020-06-searchservice` is specified on the command line.
-
-``` yaml $(tag) == 'package-2020-06-searchservice'
-namespace: com.azure.search.documents.indexes
-input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/6a024fe462c3a4b0b720183c1d8c6f96b261a386/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchservice.json
-models-subpackage: implementation.models
-custom-types-subpackage: models
-custom-types: AnalyzedTokenInfo,BlobIndexerDataToExtract,BlobIndexerImageAction,BlobIndexerPDFTextRotationAlgorithm,BlobIndexerParsingMode,CharFilterName,CjkBigramTokenFilterScripts,CorsOptions,DistanceScoringParameters,EdgeNGramTokenFilterSide,EntityCategory,EntityRecognitionSkillLanguage,FieldMapping,FieldMappingFunction,FreshnessScoringParameters,ImageAnalysisSkillLanguage,ImageDetail,IndexerExecutionEnvironment,IndexerExecutionResult,IndexerExecutionStatus,IndexerStatus,IndexingParametersConfiguration,IndexingSchedule,KeyPhraseExtractionSkillLanguage,LexicalAnalyzerName,LexicalTokenizerName,MicrosoftStemmingTokenizerLanguage,MicrosoftTokenizerLanguage,OcrSkillLanguage,OutputFieldMappingEntry,PhoneticEncoder,RegexFlags,ResourceCounter,ScoringFunctionAggregation,ScoringFunctionInterpolation,SearchFieldDataType,SearchIndexerDataContainer,SearchIndexerDataSourceType,SearchIndexerError,SearchIndexerLimits,SearchIndexerStatus,SearchIndexerWarning,SearchServiceCounters,SearchServiceLimits,SearchServiceStatistics,SentimentSkillLanguage,SnowballTokenFilterLanguage,SplitSkillLanguage,StemmerTokenFilterLanguage,StopwordsList,TagScoringParameters,TextSplitMode,TextTranslationSkillLanguage,TextWeights,TokenCharacterKind,TokenFilterName,VisualFeature
-```
-
 ### Tag: package-2020-06-searchindex
 
 These settings apply only when `--tag=package-2020-06-searchindex` is specified on the command line.
@@ -70,10 +57,23 @@ These settings apply only when `--tag=package-2020-06-searchindex` is specified 
 ``` yaml $(tag) == 'package-2020-06-searchindex'
 namespace: com.azure.search.documents
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchindex.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/55c3979124d193ab8cd4c5409a3e9f67739ca571/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchindex.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
 custom-types: AutocompleteItem,AutocompleteMode,AutocompleteResult,FacetResult,IndexActionType,QueryType,ScoringStatistics,SearchMode
+```
+
+### Tag: package-2020-06-searchservice
+
+These settings apply only when `--tag=package-2020-06-searchservice` is specified on the command line.
+
+``` yaml $(tag) == 'package-2020-06-searchservice'
+namespace: com.azure.search.documents.indexes
+input-file:
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/55c3979124d193ab8cd4c5409a3e9f67739ca571/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchservice.json
+models-subpackage: implementation.models
+custom-types-subpackage: models
+custom-types: AnalyzedTokenInfo,BlobIndexerDataToExtract,BlobIndexerImageAction,BlobIndexerPDFTextRotationAlgorithm,BlobIndexerParsingMode,CharFilterName,CjkBigramTokenFilterScripts,CorsOptions,DistanceScoringParameters,EdgeNGramTokenFilterSide,EntityCategory,EntityRecognitionSkillLanguage,FieldMapping,FieldMappingFunction,FreshnessScoringParameters,ImageAnalysisSkillLanguage,ImageDetail,IndexerExecutionEnvironment,IndexerExecutionResult,IndexerExecutionStatus,IndexerStatus,IndexingParametersConfiguration,IndexingSchedule,KeyPhraseExtractionSkillLanguage,LexicalAnalyzerName,LexicalTokenizerName,MicrosoftStemmingTokenizerLanguage,MicrosoftTokenizerLanguage,OcrSkillLanguage,OutputFieldMappingEntry,PhoneticEncoder,RegexFlags,ResourceCounter,ScoringFunctionAggregation,ScoringFunctionInterpolation,SearchFieldDataType,SearchIndexerDataContainer,SearchIndexerDataSourceType,SearchIndexerError,SearchIndexerLimits,SearchIndexerStatus,SearchIndexerWarning,SearchServiceCounters,SearchServiceLimits,SearchServiceStatistics,SentimentSkillLanguage,SnowballTokenFilterLanguage,SplitSkillLanguage,StemmerTokenFilterLanguage,StopwordsList,TagScoringParameters,TextSplitMode,TextTranslationSkillLanguage,TextWeights,TokenCharacterKind,TokenFilterName,VisualFeature
 ```
 
 ---

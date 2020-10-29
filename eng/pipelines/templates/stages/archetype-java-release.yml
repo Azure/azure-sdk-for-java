@@ -1,5 +1,6 @@
 parameters:
   Artifacts: []
+  TestPipeline: false
   ArtifactName: 'not-specified'
   TargetDocRepoOwner: ''
   TargetDocRepoName: ''
@@ -61,6 +62,15 @@ stages:
               vmImage: ubuntu-18.04
 
             steps:
+              - ${{if eq(parameters.TestPipeline, 'true')}}:
+                - task: PowerShell@2
+                  displayName: Prep template pipeline for release
+                  condition: succeeded()
+                  inputs:
+                    pwsh: true
+                    workingDirectory: $(Build.SourcesDirectory)
+                    filePath: eng/scripts/SetTestPipelineVersion.ps1
+
               - task: UsePythonVersion@0
                 displayName: 'Use Python 3.6'
                 inputs:
@@ -102,7 +112,6 @@ stages:
                         ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
                         PackageRepository: Maven
                         ReleaseSha: $(Build.SourceVersion)
-                        RepoId: Azure/azure-sdk-for-java
 
           - ${{if ne(artifact.skipPublishPackage, 'true')}}:
             - deployment: PublishPackage
@@ -169,7 +178,6 @@ stages:
                           ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
                           PackageRepository: Maven
                           ReleaseSha: $(Build.SourceVersion)
-                          RepoId: Azure/azure-sdk-for-java
                           WorkingDirectory: $(System.DefaultWorkingDirectory)
                           TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
                           TargetDocRepoName: ${{parameters.TargetDocRepoName}}
@@ -179,6 +187,7 @@ stages:
                           DocRepoDestinationPath: 'docs-ref-services/'
                           GHReviewersVariable: 'OwningGHUser'
                           CIConfigs: $(CIConfigs)
+                          CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
 
           - ${{if ne(artifact.skipPublishDocGithubIo, 'true')}}:
             - deployment: PublishDocs
@@ -242,7 +251,6 @@ stages:
 
                       - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
                         parameters:
-                          RepoName: azure-sdk-for-java
                           PRBranchName: increment-package-version-${{ parameters.ServiceDirectory }}-$(Build.BuildId)
                           CommitMsg: "Increment package version after release of ${{ artifact.groupId }} ${{ artifact.name }}"
                           PRTitle: "Increment version for ${{ parameters.ServiceDirectory }} releases"

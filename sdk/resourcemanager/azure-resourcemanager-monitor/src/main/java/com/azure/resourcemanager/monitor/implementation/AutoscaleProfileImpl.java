@@ -12,8 +12,8 @@ import com.azure.resourcemanager.monitor.models.RecurrentSchedule;
 import com.azure.resourcemanager.monitor.models.ScaleCapacity;
 import com.azure.resourcemanager.monitor.models.ScaleRule;
 import com.azure.resourcemanager.monitor.models.TimeWindow;
-import com.azure.resourcemanager.monitor.fluent.inner.AutoscaleProfileInner;
-import com.azure.resourcemanager.monitor.fluent.inner.ScaleRuleInner;
+import com.azure.resourcemanager.monitor.fluent.models.AutoscaleProfileInner;
+import com.azure.resourcemanager.monitor.fluent.models.ScaleRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -32,60 +32,60 @@ class AutoscaleProfileImpl extends WrapperImpl<AutoscaleProfileInner>
 
     AutoscaleProfileImpl(String name, AutoscaleProfileInner innerObject, AutoscaleSettingImpl parent) {
         super(innerObject);
-        this.inner().withName(name);
+        this.innerModel().withName(name);
         this.parent = parent;
-        if (this.inner().capacity() == null) {
-            this.inner().withCapacity(new ScaleCapacity());
+        if (this.innerModel().capacity() == null) {
+            this.innerModel().withCapacity(new ScaleCapacity());
         }
-        if (this.inner().rules() == null) {
-            this.inner().withRules(new ArrayList<>());
+        if (this.innerModel().rules() == null) {
+            this.innerModel().withRules(new ArrayList<>());
         }
     }
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public int minInstanceCount() {
-        if (this.inner().capacity() != null) {
-            return Integer.parseInt(this.inner().capacity().minimum());
+        if (this.innerModel().capacity() != null) {
+            return Integer.parseInt(this.innerModel().capacity().minimum());
         }
         return 0;
     }
 
     @Override
     public int maxInstanceCount() {
-        if (this.inner().capacity() != null) {
-            return Integer.parseInt(this.inner().capacity().maximum());
+        if (this.innerModel().capacity() != null) {
+            return Integer.parseInt(this.innerModel().capacity().maximum());
         }
         return 0;
     }
 
     @Override
     public int defaultInstanceCount() {
-        if (this.inner().capacity() != null) {
-            return Integer.parseInt(this.inner().capacity().defaultProperty());
+        if (this.innerModel().capacity() != null) {
+            return Integer.parseInt(this.innerModel().capacity().defaultProperty());
         }
         return 0;
     }
 
     @Override
     public TimeWindow fixedDateSchedule() {
-        return this.inner().fixedDate();
+        return this.innerModel().fixedDate();
     }
 
     @Override
     public Recurrence recurrentSchedule() {
-        return this.inner().recurrence();
+        return this.innerModel().recurrence();
     }
 
     @Override
     public List<ScaleRule> rules() {
         List<ScaleRule> rules = new ArrayList<>();
-        if (this.inner().rules() != null) {
-            for (ScaleRuleInner ruleInner : this.inner().rules()) {
+        if (this.innerModel().rules() != null) {
+            for (ScaleRuleInner ruleInner : this.innerModel().rules()) {
                 rules.add(new ScaleRuleImpl(ruleInner, this));
             }
         }
@@ -105,9 +105,9 @@ class AutoscaleProfileImpl extends WrapperImpl<AutoscaleProfileInner>
     @Override
     public AutoscaleProfileImpl withMetricBasedScale(
         int minimumInstanceCount, int maximumInstanceCount, int defaultInstanceCount) {
-        this.inner().capacity().withMinimum(Integer.toString(minimumInstanceCount));
-        this.inner().capacity().withMaximum(Integer.toString(maximumInstanceCount));
-        this.inner().capacity().withDefaultProperty(Integer.toString(defaultInstanceCount));
+        this.innerModel().capacity().withMinimum(Integer.toString(minimumInstanceCount));
+        this.innerModel().capacity().withMaximum(Integer.toString(maximumInstanceCount));
+        this.innerModel().capacity().withDefaultProperty(Integer.toString(defaultInstanceCount));
         return this;
     }
 
@@ -119,17 +119,17 @@ class AutoscaleProfileImpl extends WrapperImpl<AutoscaleProfileInner>
     @Override
     public AutoscaleProfileImpl withFixedInstanceCount(int instanceCount) {
         this.withMetricBasedScale(instanceCount, instanceCount, instanceCount);
-        this.inner().withFixedDate(null);
-        this.inner().withRecurrence(null);
-        this.inner().withRules(new ArrayList<ScaleRuleInner>());
+        this.innerModel().withFixedDate(null);
+        this.innerModel().withRecurrence(null);
+        this.innerModel().withRules(new ArrayList<ScaleRuleInner>());
         return this;
     }
 
     @Override
     public AutoscaleProfileImpl withFixedDateSchedule(String timeZone, OffsetDateTime start, OffsetDateTime end) {
-        this.inner().withFixedDate(new TimeWindow().withTimeZone(timeZone).withStart(start).withEnd(end));
-        if (this.inner().recurrence() != null) {
-            this.inner().withRecurrence(null);
+        this.innerModel().withFixedDate(new TimeWindow().withTimeZone(timeZone).withStart(start).withEnd(end));
+        if (this.innerModel().recurrence() != null) {
+            this.innerModel().withRecurrence(null);
         }
         return this;
     }
@@ -157,21 +157,21 @@ class AutoscaleProfileImpl extends WrapperImpl<AutoscaleProfileInner>
                     + " supported)."));
         }
 
-        this.inner().withRecurrence(new Recurrence());
-        this.inner().recurrence().withFrequency(RecurrenceFrequency.WEEK);
-        this.inner().recurrence().withSchedule(new RecurrentSchedule());
-        this.inner().recurrence().schedule().withTimeZone(scheduleTimeZone);
-        this.inner().recurrence().schedule().withHours(new ArrayList<Integer>());
-        this.inner().recurrence().schedule().withMinutes(new ArrayList<Integer>());
-        this.inner().recurrence().schedule().hours().add(hh);
-        this.inner().recurrence().schedule().minutes().add(mm);
-        this.inner().recurrence().schedule().withDays(new ArrayList<String>());
+        this.innerModel().withRecurrence(new Recurrence());
+        this.innerModel().recurrence().withFrequency(RecurrenceFrequency.WEEK);
+        this.innerModel().recurrence().withSchedule(new RecurrentSchedule());
+        this.innerModel().recurrence().schedule().withTimeZone(scheduleTimeZone);
+        this.innerModel().recurrence().schedule().withHours(new ArrayList<Integer>());
+        this.innerModel().recurrence().schedule().withMinutes(new ArrayList<Integer>());
+        this.innerModel().recurrence().schedule().hours().add(hh);
+        this.innerModel().recurrence().schedule().minutes().add(mm);
+        this.innerModel().recurrence().schedule().withDays(new ArrayList<String>());
 
         for (DayOfWeek dof : weekday) {
-            this.inner().recurrence().schedule().days().add(dof.toString());
+            this.innerModel().recurrence().schedule().days().add(dof.toString());
         }
 
-        this.inner().withFixedDate(null);
+        this.innerModel().withFixedDate(null);
         return this;
     }
 
@@ -182,18 +182,18 @@ class AutoscaleProfileImpl extends WrapperImpl<AutoscaleProfileInner>
 
     @Override
     public ScaleRuleImpl updateScaleRule(int ruleIndex) {
-        ScaleRuleImpl srToUpdate = new ScaleRuleImpl(this.inner().rules().get(ruleIndex), this);
+        ScaleRuleImpl srToUpdate = new ScaleRuleImpl(this.innerModel().rules().get(ruleIndex), this);
         return srToUpdate;
     }
 
     @Override
     public AutoscaleProfileImpl withoutScaleRule(int ruleIndex) {
-        this.inner().rules().remove(ruleIndex);
+        this.innerModel().rules().remove(ruleIndex);
         return this;
     }
 
     AutoscaleProfileImpl addNewScaleRule(ScaleRuleImpl scaleRule) {
-        this.inner().rules().add(scaleRule.inner());
+        this.innerModel().rules().add(scaleRule.innerModel());
         return this;
     }
 }

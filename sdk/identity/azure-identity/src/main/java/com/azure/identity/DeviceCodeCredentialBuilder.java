@@ -4,6 +4,7 @@
 package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.identity.implementation.AuthenticationRecord;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.util.HashMap;
@@ -15,11 +16,14 @@ import java.util.function.Consumer;
  * @see DeviceCodeCredential
  */
 public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<DeviceCodeCredentialBuilder> {
-    private Consumer<DeviceCodeInfo> challengeConsumer;
+    private Consumer<DeviceCodeInfo> challengeConsumer =
+        deviceCodeInfo -> System.out.println(deviceCodeInfo.getMessage());
+
     private boolean automaticAuthentication = true;
 
     /**
-     * Sets the consumer to meet the device code challenge.
+     * Sets the consumer to meet the device code challenge. If not specified a default consumer is used which prints
+     * the device code info message to stdout.
      *
      * @param challengeConsumer A method allowing the user to meet the device code challenge.
      * @return the InteractiveBrowserCredentialBuilder itself
@@ -36,7 +40,7 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
      *
      * @return An updated instance of this builder.
      */
-    public DeviceCodeCredentialBuilder allowUnencryptedCache() {
+    DeviceCodeCredentialBuilder allowUnencryptedCache() {
         this.identityClientOptions.setAllowUnencryptedCache(true);
         return this;
     }
@@ -48,7 +52,7 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
      *
      * @return An updated instance of this builder with if the shared token cache enabled specified.
      */
-    public DeviceCodeCredentialBuilder enablePersistentCache() {
+    DeviceCodeCredentialBuilder enablePersistentCache() {
         this.identityClientOptions.enablePersistentCache();
         return this;
     }
@@ -60,7 +64,7 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
      *
      * @return An updated instance of this builder with the configured authentication record.
      */
-    public DeviceCodeCredentialBuilder authenticationRecord(AuthenticationRecord authenticationRecord) {
+    DeviceCodeCredentialBuilder authenticationRecord(AuthenticationRecord authenticationRecord) {
         this.identityClientOptions.setAuthenticationRecord(authenticationRecord);
         return this;
     }
@@ -75,7 +79,7 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
      *
      * @return An updated instance of this builder with automatic authentication disabled.
      */
-    public DeviceCodeCredentialBuilder disableAutomaticAuthentication() {
+    DeviceCodeCredentialBuilder disableAutomaticAuthentication() {
         this.automaticAuthentication = false;
         return this;
     }

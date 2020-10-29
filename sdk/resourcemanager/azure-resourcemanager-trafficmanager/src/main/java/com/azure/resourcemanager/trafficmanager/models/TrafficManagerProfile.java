@@ -10,7 +10,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.trafficmanager.TrafficManager;
-import com.azure.resourcemanager.trafficmanager.fluent.inner.ProfileInner;
+import com.azure.resourcemanager.trafficmanager.fluent.models.ProfileInner;
 import java.util.Map;
 
 /** An immutable client-side representation of an Azure traffic manager profile. */

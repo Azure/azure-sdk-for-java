@@ -15,7 +15,6 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
-import com.azure.messaging.servicebus.administration.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessageWithLockToken;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
@@ -23,9 +22,15 @@ import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorReceiver;
+import com.azure.messaging.servicebus.models.AbandonOptions;
+import com.azure.messaging.servicebus.models.CompleteOptions;
+import com.azure.messaging.servicebus.models.DeadLetterOptions;
+import com.azure.messaging.servicebus.models.DeferOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
+import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
 import org.apache.qpid.proton.amqp.transport.DeliveryState.DeliveryStateType;
+import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -143,9 +148,13 @@ class ServiceBusReceiverAsyncClientTest {
         when(amqpReceiveLink.receive()).thenReturn(messageProcessor.publishOn(Schedulers.single()));
         when(amqpReceiveLink.getEndpointStates()).thenReturn(endpointProcessor);
 
+        when(sessionReceiveLink.receive()).thenReturn(messageProcessor.publishOn(Schedulers.single()));
+        when(sessionReceiveLink.getEndpointStates()).thenReturn(endpointProcessor);
+
         ConnectionOptions connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new AmqpRetryOptions(),
-            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.boundedElastic(), CLIENT_OPTIONS);
+            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.boundedElastic(), CLIENT_OPTIONS,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME);
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         endpointSink.next(AmqpEndpointState.ACTIVE);
@@ -164,11 +173,12 @@ class ServiceBusReceiverAsyncClientTest {
                     connectionOptions.getRetry()));
 
         receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH), connectionProcessor, CLEANUP_INTERVAL,
-            tracerProvider, messageSerializer, onClientClose);
+            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, null, false),
+            connectionProcessor, CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
 
         sessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, "Some-Session", false, null),
+            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, null, false, "Some-Session",
+                false, null),
             connectionProcessor, CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
     }
 
@@ -186,12 +196,12 @@ class ServiceBusReceiverAsyncClientTest {
     @SuppressWarnings("unchecked")
     @Test
     void peekTwoMessages() {
+        // Arrange
         final long sequence1 = 10;
         final long sequence2 = 12;
         final ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
         when(receivedMessage.getSequenceNumber()).thenReturn(sequence1);
         when(receivedMessage2.getSequenceNumber()).thenReturn(sequence2);
-        // Arrange
         when(managementNode.peek(anyLong(), isNull(), isNull()))
             .thenReturn(Mono.just(receivedMessage), Mono.just(receivedMessage2));
 
@@ -200,7 +210,6 @@ class ServiceBusReceiverAsyncClientTest {
             .expectNext(receivedMessage)
             .verifyComplete();
 
-        // Act & Assert
         StepVerifier.create(receiver.peekMessage())
             .expectNext(receivedMessage2)
             .verifyComplete();
@@ -213,6 +222,20 @@ class ServiceBusReceiverAsyncClientTest {
         // Because we always add one when we fetch the next message.
         Assertions.assertTrue(allValues.contains(0L));
         Assertions.assertTrue(allValues.contains(11L));
+    }
+
+    /**
+     * Verifies that when no messages are returned, that it does not error.
+     */
+    @Test
+    void peekEmptyEntity() {
+        // Arrange
+        when(managementNode.peek(0, null, null))
+            .thenReturn(Mono.empty());
+
+        // Act & Assert
+        StepVerifier.create(receiver.peekMessage())
+            .verifyComplete();
     }
 
     /**
@@ -241,9 +264,12 @@ class ServiceBusReceiverAsyncClientTest {
         // Arrange
         final int numberOfEvents = 1;
         final List<Message> messages = getMessages();
+        final String lockToken = UUID.randomUUID().toString();
 
         ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
-        when(receivedMessage.getLockToken()).thenReturn(UUID.randomUUID().toString());
+        when(receivedMessage.getLockedUntil()).thenReturn(OffsetDateTime.now());
+        when(receivedMessage.getLockToken()).thenReturn(lockToken);
+
         when(messageSerializer.deserialize(any(Message.class), eq(ServiceBusReceivedMessage.class)))
             .thenReturn(receivedMessage);
 
@@ -254,46 +280,7 @@ class ServiceBusReceiverAsyncClientTest {
             .verifyComplete();
 
         verify(amqpReceiveLink).addCredits(PREFETCH);
-    }
-
-    /**
-     * Verifies that we error if we try to settle a message with null transaction.
-     */
-    @ParameterizedTest
-    @EnumSource(DispositionStatus.class)
-    void settleWithNullTransaction(DispositionStatus dispositionStatus) {
-        // Arrange
-        ServiceBusTransactionContext nullTransaction = null;
-        when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE)).thenReturn(Mono.just(managementNode));
-        when(managementNode.updateDisposition(any(), eq(dispositionStatus), isNull(), isNull(), isNull(),
-            isNull(), isNull(), isNull()))
-            .thenReturn(Mono.delay(Duration.ofMillis(250)).then());
-        when(receivedMessage.getLockToken()).thenReturn("mylockToken");
-
-        final Mono<Void> operation;
-        switch (dispositionStatus) {
-            case DEFERRED:
-                operation = receiver.defer(receivedMessage, null, nullTransaction);
-                break;
-            case ABANDONED:
-                operation = receiver.abandon(receivedMessage, null, nullTransaction);
-                break;
-            case COMPLETED:
-                operation = receiver.complete(receivedMessage, nullTransaction);
-                break;
-            case SUSPENDED:
-                operation = receiver.deadLetter(receivedMessage, new DeadLetterOptions(), nullTransaction);
-                break;
-            default:
-                throw new IllegalArgumentException("Unrecognized operation: " + dispositionStatus);
-        }
-
-        StepVerifier.create(operation)
-            .expectError(NullPointerException.class)
-            .verify();
-
-        verify(managementNode, never()).updateDisposition(any(), eq(dispositionStatus), isNull(), isNull(),
-            isNull(), isNull(), isNull(), isNull());
+        verify(amqpReceiveLink, never()).updateDisposition(eq(lockToken), any());
     }
 
     /**
@@ -304,6 +291,7 @@ class ServiceBusReceiverAsyncClientTest {
     void settleWithNullTransactionId(DispositionStatus dispositionStatus) {
         // Arrange
         ServiceBusTransactionContext nullTransactionId = new ServiceBusTransactionContext(null);
+
         when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE)).thenReturn(Mono.just(managementNode));
         when(managementNode.updateDisposition(any(), eq(dispositionStatus), isNull(), isNull(), isNull(),
             isNull(), isNull(), isNull()))
@@ -313,16 +301,16 @@ class ServiceBusReceiverAsyncClientTest {
         final Mono<Void> operation;
         switch (dispositionStatus) {
             case DEFERRED:
-                operation = receiver.defer(receivedMessage, null, nullTransactionId);
+                operation = receiver.defer(receivedMessage, new DeferOptions().setTransactionContext(nullTransactionId));
                 break;
             case ABANDONED:
-                operation = receiver.abandon(receivedMessage, null, nullTransactionId);
+                operation = receiver.abandon(receivedMessage, new AbandonOptions().setTransactionContext(nullTransactionId));
                 break;
             case COMPLETED:
-                operation = receiver.complete(receivedMessage, nullTransactionId);
+                operation = receiver.complete(receivedMessage, new CompleteOptions().setTransactionContext(nullTransactionId));
                 break;
             case SUSPENDED:
-                operation = receiver.deadLetter(receivedMessage, new DeadLetterOptions(), nullTransactionId);
+                operation = receiver.deadLetter(receivedMessage, new DeadLetterOptions().setTransactionContext(nullTransactionId));
                 break;
             default:
                 throw new IllegalArgumentException("Unrecognized operation: " + dispositionStatus);
@@ -349,7 +337,7 @@ class ServiceBusReceiverAsyncClientTest {
      */
     @Test
     void completeInReceiveAndDeleteMode() {
-        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, PREFETCH);
+        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, PREFETCH, null, false);
         ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, options, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
             messageSerializer, onClientClose);
@@ -371,7 +359,7 @@ class ServiceBusReceiverAsyncClientTest {
      * Verifies that this peek batch of messages.
      */
     @Test
-    void peekBatchMessages() {
+    void peekMessages() {
         // Arrange
         final int numberOfEvents = 2;
 
@@ -381,6 +369,22 @@ class ServiceBusReceiverAsyncClientTest {
         // Act & Assert
         StepVerifier.create(receiver.peekMessages(numberOfEvents))
             .expectNextCount(numberOfEvents)
+            .verifyComplete();
+    }
+
+    /**
+     * Verifies that this peek batch of messages.
+     */
+    @Test
+    void peekMessagesEmptyEntity() {
+        // Arrange
+        final int numberOfEvents = 2;
+
+        when(managementNode.peek(0, null, null, numberOfEvents))
+            .thenReturn(Flux.fromIterable(Collections.emptyList()));
+
+        // Act & Assert
+        StepVerifier.create(receiver.peekMessages(numberOfEvents))
             .verifyComplete();
     }
 
@@ -588,11 +592,12 @@ class ServiceBusReceiverAsyncClientTest {
         ServiceBusReceiverClientBuilder builder = new ServiceBusClientBuilder()
             .connectionString(NAMESPACE_CONNECTION_STRING)
             .receiver()
-            .topicName("baz").subscriptionName("bar").prefetchCount(-1)
+            .topicName("baz").subscriptionName("bar")
             .receiveMode(ReceiveMode.PEEK_LOCK);
 
+
         // Act & Assert
-        Assertions.assertThrows(IllegalArgumentException.class, () -> builder.buildAsyncClient());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> builder.prefetchCount(-1));
     }
 
     @Test
@@ -616,6 +621,36 @@ class ServiceBusReceiverAsyncClientTest {
         // Assert
         Assertions.assertEquals(entityPath, actual);
         Assertions.assertEquals(NAMESPACE, actualNamespace);
+    }
+
+    /**
+     * Verifies that client can call multiple receiveMessages on same receiver instance.
+     */
+    @Test
+    void canPerformMultipleReceive() {
+        // Arrange
+        final int numberOfEvents = 1;
+        final List<Message> messages = getMessages();
+
+        ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
+        when(receivedMessage.getLockedUntil()).thenReturn(OffsetDateTime.now());
+        when(receivedMessage.getLockToken()).thenReturn(UUID.randomUUID().toString());
+        when(messageSerializer.deserialize(any(Message.class), eq(ServiceBusReceivedMessage.class)))
+            .thenReturn(receivedMessage);
+
+        // Act & Assert
+
+        StepVerifier.create(receiver.receiveMessages().take(numberOfEvents))
+            .then(() -> messages.forEach(m -> messageSink.next(m)))
+            .expectNextCount(numberOfEvents)
+            .verifyComplete();
+
+        StepVerifier.create(receiver.receiveMessages().take(numberOfEvents))
+            .then(() -> messages.forEach(m -> messageSink.next(m)))
+            .expectNextCount(numberOfEvents)
+            .verifyComplete();
+
+        verify(amqpReceiveLink).addCredits(PREFETCH);
     }
 
     /**
@@ -702,13 +737,13 @@ class ServiceBusReceiverAsyncClientTest {
     @Test
     void renewSessionLock() {
         // Arrange
-        final Instant expiry = Instant.ofEpochSecond(1588011761L);
+        final OffsetDateTime expiry = Instant.ofEpochSecond(1588011761L).atOffset(ZoneOffset.UTC);
 
         when(managementNode.renewSessionLock(SESSION_ID, null)).thenReturn(Mono.just(expiry));
 
         // Act & Assert
         StepVerifier.create(sessionReceiver.renewSessionLock(SESSION_ID))
-            .expectNext(expiry.atOffset(ZoneOffset.UTC))
+            .expectNext(expiry)
             .expectComplete()
             .verify();
     }
@@ -744,7 +779,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         when(receivedMessage.getLockToken()).thenReturn(lockToken);
         when(managementNode.renewMessageLock(lockToken, null))
-            .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
+            .thenReturn(Mono.fromCallable(() -> OffsetDateTime.now().plus(renewalPeriod)));
 
         // Act & Assert
         StepVerifier.create(receiver.renewMessageLock(receivedMessage, maxDuration))
@@ -767,7 +802,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         when(receivedMessage.getLockToken()).thenReturn(null);
         when(managementNode.renewMessageLock(anyString(), isNull()))
-            .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
+            .thenReturn(Mono.fromCallable(() -> OffsetDateTime.now().plus(renewalPeriod)));
 
         // Act & Assert
         StepVerifier.create(receiver.renewMessageLock(receivedMessage, maxDuration))
@@ -789,7 +824,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         when(receivedMessage.getLockToken()).thenReturn("");
         when(managementNode.renewMessageLock(anyString(), isNull()))
-            .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
+            .thenReturn(Mono.fromCallable(() -> OffsetDateTime.now().plus(renewalPeriod)));
 
         // Act & Assert
         StepVerifier.create(receiver.renewMessageLock(receivedMessage, maxDuration))
@@ -814,7 +849,7 @@ class ServiceBusReceiverAsyncClientTest {
         final Duration totalSleepPeriod = maxDuration.plusMillis(500);
 
         when(managementNode.renewSessionLock(sessionId, null))
-            .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
+            .thenReturn(Mono.fromCallable(() -> OffsetDateTime.now().plus(renewalPeriod)));
 
         // Act & Assert
         StepVerifier.create(sessionReceiver.renewSessionLock(sessionId, maxDuration))
@@ -836,7 +871,7 @@ class ServiceBusReceiverAsyncClientTest {
         final Duration renewalPeriod = Duration.ofSeconds(3);
 
         when(managementNode.renewSessionLock(anyString(), isNull()))
-            .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
+            .thenReturn(Mono.fromCallable(() -> OffsetDateTime.now().plus(renewalPeriod)));
 
         // Act & Assert
         StepVerifier.create(sessionReceiver.renewSessionLock(null, maxDuration))
@@ -857,7 +892,7 @@ class ServiceBusReceiverAsyncClientTest {
         final String sessionId = "";
 
         when(managementNode.renewSessionLock(anyString(), isNull()))
-            .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
+            .thenReturn(Mono.fromCallable(() -> OffsetDateTime.now().plus(renewalPeriod)));
 
         // Act & Assert
         StepVerifier.create(sessionReceiver.renewSessionLock(sessionId, maxDuration))
@@ -865,6 +900,67 @@ class ServiceBusReceiverAsyncClientTest {
             .verify();
 
         verify(managementNode, never()).renewSessionLock(anyString(), isNull());
+    }
+
+    @Test
+    void autoCompleteMessage() {
+        // Arrange
+        final int numberOfEvents = 3;
+        final List<Message> messages = getMessages();
+        final String lockToken = UUID.randomUUID().toString();
+        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, null, true);
+        final ServiceBusReceiverAsyncClient receiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
+            MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
+            messageSerializer, onClientClose);
+
+        when(receivedMessage.getLockToken()).thenReturn(lockToken);
+        when(messageSerializer.deserialize(any(Message.class), eq(ServiceBusReceivedMessage.class)))
+            .thenReturn(receivedMessage);
+
+        when(amqpReceiveLink.updateDisposition(lockToken, Accepted.getInstance())).thenReturn(Mono.empty());
+
+        try {
+            // Act & Assert
+            StepVerifier.create(receiver2.receiveMessages().take(numberOfEvents))
+                .then(() -> messages.forEach(m -> messageSink.next(m)))
+                .expectNextCount(numberOfEvents)
+                .verifyComplete();
+        } finally {
+            receiver2.close();
+        }
+
+        verify(amqpReceiveLink, times(numberOfEvents)).updateDisposition(lockToken, Accepted.getInstance());
+    }
+
+    @Test
+    void autoCompleteMessageSessionReceiver() {
+        // Arrange
+        final int numberOfEvents = 3;
+        final List<Message> messages = getMessages();
+        final String lockToken = UUID.randomUUID().toString();
+        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, null,
+            true, "Some-Session", false, null);
+        final ServiceBusReceiverAsyncClient sessionReceiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
+            MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
+            messageSerializer, onClientClose);
+
+        when(receivedMessage.getLockToken()).thenReturn(lockToken);
+        when(messageSerializer.deserialize(any(Message.class), eq(ServiceBusReceivedMessage.class)))
+            .thenReturn(receivedMessage);
+
+        when(sessionReceiveLink.updateDisposition(lockToken, Accepted.getInstance())).thenReturn(Mono.empty());
+
+        try {
+            // Act & Assert
+            StepVerifier.create(sessionReceiver2.receiveMessages().take(numberOfEvents))
+                .then(() -> messages.forEach(m -> messageSink.next(m)))
+                .expectNextCount(numberOfEvents)
+                .verifyComplete();
+        } finally {
+            sessionReceiver2.close();
+        }
+
+        verify(sessionReceiveLink, times(numberOfEvents)).updateDisposition(lockToken, Accepted.getInstance());
     }
 
     private List<Message> getMessages() {

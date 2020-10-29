@@ -10,7 +10,7 @@ import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.SqlServer;
 import com.azure.resourcemanager.sql.models.SqlServerDnsAlias;
 import com.azure.resourcemanager.sql.models.SqlServerDnsAliasOperations;
-import com.azure.resourcemanager.sql.fluent.inner.ServerDnsAliasInner;
+import com.azure.resourcemanager.sql.fluent.models.ServerDnsAliasInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,7 +35,7 @@ public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<S
     @Override
     public SqlServerDnsAlias getBySqlServer(String resourceGroupName, String sqlServerName, String name) {
         ServerDnsAliasInner serverDnsAliasInner =
-            this.sqlServerManager.inner().getServerDnsAliases().get(resourceGroupName, sqlServerName, name);
+            this.sqlServerManager.serviceClient().getServerDnsAliases().get(resourceGroupName, sqlServerName, name);
         return serverDnsAliasInner != null
             ? new SqlServerDnsAliasImpl(
                 resourceGroupName, sqlServerName, name, serverDnsAliasInner, this.sqlServerManager)
@@ -48,7 +48,7 @@ public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<S
         final SqlServerDnsAliasOperationsImpl self = this;
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getServerDnsAliases()
             .getAsync(resourceGroupName, sqlServerName, name)
             .map(
@@ -60,8 +60,12 @@ public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<S
     @Override
     public SqlServerDnsAlias getBySqlServer(SqlServer sqlServer, String name) {
         Objects.requireNonNull(sqlServer);
-        ServerDnsAliasInner serverDnsAliasInner = sqlServer.manager().inner().getServerDnsAliases()
-            .get(sqlServer.resourceGroupName(), sqlServer.name(), name);
+        ServerDnsAliasInner serverDnsAliasInner =
+            sqlServer
+                .manager()
+                .serviceClient()
+                .getServerDnsAliases()
+                .get(sqlServer.resourceGroupName(), sqlServer.name(), name);
         return serverDnsAliasInner != null
             ? new SqlServerDnsAliasImpl(name, (SqlServerImpl) sqlServer, serverDnsAliasInner, sqlServer.manager())
             : null;
@@ -72,7 +76,7 @@ public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<S
         Objects.requireNonNull(sqlServer);
         return sqlServer
             .manager()
-            .inner()
+            .serviceClient()
             .getServerDnsAliases()
             .getAsync(sqlServer.resourceGroupName(), sqlServer.name(), name)
             .map(
@@ -83,19 +87,23 @@ public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<S
 
     @Override
     public void deleteBySqlServer(String resourceGroupName, String sqlServerName, String name) {
-        this.sqlServerManager.inner().getServerDnsAliases().delete(resourceGroupName, sqlServerName, name);
+        this.sqlServerManager.serviceClient().getServerDnsAliases().delete(resourceGroupName, sqlServerName, name);
     }
 
     @Override
     public Mono<Void> deleteBySqlServerAsync(String resourceGroupName, String sqlServerName, String name) {
-        return this.sqlServerManager.inner().getServerDnsAliases().deleteAsync(resourceGroupName, sqlServerName, name);
+        return this
+            .sqlServerManager
+            .serviceClient()
+            .getServerDnsAliases()
+            .deleteAsync(resourceGroupName, sqlServerName, name);
     }
 
     @Override
     public List<SqlServerDnsAlias> listBySqlServer(String resourceGroupName, String sqlServerName) {
         List<SqlServerDnsAlias> serverDnsAliases = new ArrayList<>();
         PagedIterable<ServerDnsAliasInner> serverDnsAliasInners =
-            this.sqlServerManager.inner().getServerDnsAliases().listByServer(resourceGroupName, sqlServerName);
+            this.sqlServerManager.serviceClient().getServerDnsAliases().listByServer(resourceGroupName, sqlServerName);
         for (ServerDnsAliasInner inner : serverDnsAliasInners) {
             serverDnsAliases
                 .add(
@@ -111,7 +119,7 @@ public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<S
         final SqlServerDnsAliasOperationsImpl self = this;
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getServerDnsAliases()
             .listByServerAsync(resourceGroupName, sqlServerName)
             .mapPage(
@@ -130,14 +138,12 @@ public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<S
         PagedIterable<ServerDnsAliasInner> serverDnsAliasInners =
             sqlServer
                 .manager()
-                .inner()
+                .serviceClient()
                 .getServerDnsAliases()
                 .listByServer(sqlServer.resourceGroupName(), sqlServer.name());
         for (ServerDnsAliasInner inner : serverDnsAliasInners) {
             serverDnsAliases
-                .add(
-                    new SqlServerDnsAliasImpl(
-                        inner.name(), (SqlServerImpl) sqlServer, inner, this.sqlServerManager));
+                .add(new SqlServerDnsAliasImpl(inner.name(), (SqlServerImpl) sqlServer, inner, this.sqlServerManager));
         }
         return Collections.unmodifiableList(serverDnsAliases);
     }
@@ -146,7 +152,7 @@ public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<S
     public PagedFlux<SqlServerDnsAlias> listBySqlServerAsync(final SqlServer sqlServer) {
         return sqlServer
             .manager()
-            .inner()
+            .serviceClient()
             .getServerDnsAliases()
             .listByServerAsync(sqlServer.resourceGroupName(), sqlServer.name())
             .mapPage(
@@ -162,7 +168,7 @@ public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<S
     public void acquire(String resourceGroupName, String serverName, String dnsAliasName, String sqlServerId) {
         this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getServerDnsAliases()
             .acquire(resourceGroupName, serverName, dnsAliasName, sqlServerId + DNS_ALIASES + dnsAliasName);
     }
@@ -172,7 +178,7 @@ public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<S
         String resourceGroupName, String serverName, String dnsAliasName, String sqlServerId) {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getServerDnsAliases()
             .acquireAsync(resourceGroupName, serverName, dnsAliasName, sqlServerId + DNS_ALIASES + dnsAliasName);
     }
@@ -183,7 +189,7 @@ public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<S
         ResourceId resourceId = ResourceId.fromString(oldSqlServerId);
         this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getServerDnsAliases()
             .acquire(
                 resourceId.resourceGroupName(),
@@ -198,7 +204,7 @@ public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<S
         ResourceId resourceId = ResourceId.fromString(oldSqlServerId);
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getServerDnsAliases()
             .acquireAsync(
                 resourceId.resourceGroupName(),

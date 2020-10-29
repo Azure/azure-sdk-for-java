@@ -7,6 +7,7 @@ import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
+import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
@@ -39,7 +40,11 @@ public class TrainModelWithoutLabelsAsync {
         // Train custom model
         String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-        PollerFlux<FormRecognizerOperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl, false);
+        PollerFlux<FormRecognizerOperationResult, CustomFormModel> trainingPoller
+            = client.beginTraining(trainingFilesUrl,
+            false,
+            new TrainingOptions()
+                .setModelName("model trained without labels"));
 
         Mono<CustomFormModel> customFormModelResult = trainingPoller
             .last()
@@ -57,6 +62,7 @@ public class TrainModelWithoutLabelsAsync {
             // Model Info
             System.out.printf("Model Id: %s%n", customFormModel.getModelId());
             System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
+            System.out.printf("Model name: %s%n", customFormModel.getModelName());
             System.out.printf("Training started on: %s%n", customFormModel.getTrainingStartedOn());
             System.out.printf("Training completed on: %s%n%n", customFormModel.getTrainingCompletedOn());
 
@@ -64,8 +70,9 @@ public class TrainModelWithoutLabelsAsync {
             // looping through the subModels, which contains the fields they were trained on
             // Since the given training documents are unlabeled, we still group them but they do not have a label.
             customFormModel.getSubmodels().forEach(customFormSubmodel -> {
+                System.out.printf("Submodel Id: %s%n", customFormSubmodel.getModelId());
                 // Since the training data is unlabeled, we are unable to return the accuracy of this model
-                System.out.printf("The subModel has form type %s%n", customFormSubmodel.getFormType());
+                System.out.printf("The submodel has form type %s%n", customFormSubmodel.getFormType());
                 customFormSubmodel.getFields().forEach((field, customFormModelField) ->
                     System.out.printf("The model found field '%s' with label: %s%n",
                         field, customFormModelField.getLabel()));

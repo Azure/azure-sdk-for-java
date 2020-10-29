@@ -9,7 +9,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SenderAuthorization model. */
+/**
+ * the authorization used by the user who has performed the operation that led to this event. This captures the RBAC
+ * properties of the event. These usually include the 'action', 'role' and the 'scope'.
+ */
 @Fluent
 public final class SenderAuthorization {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SenderAuthorization.class);

@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The SuggestResult model. */
+/** A result containing a document found by a suggestion query, plus associated metadata. */
 @Fluent
 public final class SuggestResult {
     /*

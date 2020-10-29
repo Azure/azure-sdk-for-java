@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The ContainerState model. */
+/** The container instance state. */
 @Immutable
 public final class ContainerState {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerState.class);

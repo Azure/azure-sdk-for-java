@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ApplicationGatewayFirewallDisabledRuleGroup model. */
+/** Allows to disable rules within a rule group or an entire rule group. */
 @Fluent
 public final class ApplicationGatewayFirewallDisabledRuleGroup {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayFirewallDisabledRuleGroup.class);

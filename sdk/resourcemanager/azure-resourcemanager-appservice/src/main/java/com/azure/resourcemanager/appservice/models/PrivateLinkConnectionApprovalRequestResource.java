@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PrivateLinkConnectionApprovalRequestResource model. */
+/** Private Endpoint Connection Approval ARM resource. */
 @JsonFlatten
 @Fluent
 public class PrivateLinkConnectionApprovalRequestResource extends ProxyOnlyResource {

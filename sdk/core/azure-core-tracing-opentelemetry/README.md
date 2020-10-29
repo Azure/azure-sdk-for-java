@@ -13,7 +13,7 @@ documentation][api_documentation] | [Samples][samples]
 
 ### Prerequisites
 
-- Java Development Kit (JDK) with version 8 or above
+- A [Java Development Kit (JDK)][jdk_link], version 8 or later.
 
 ### Include the package
 
@@ -157,6 +157,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azure-messaging-eventhubs]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/azure-messaging-eventhubs
 [azure-security-keyvault-secrets]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-secrets
 [context]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/util/Context.java
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [OpenTelemetry-quickstart]: https://github.com/open-telemetry/opentelemetry-java
 [OpenTelemetry]: https://github.com/open-telemetry/opentelemetry-java

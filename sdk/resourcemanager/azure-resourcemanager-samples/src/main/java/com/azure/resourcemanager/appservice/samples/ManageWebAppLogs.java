@@ -7,15 +7,15 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.appservice.models.JavaVersion;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebContainer;
 import com.azure.resourcemanager.appservice.models.LogLevel;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import org.apache.commons.lang.time.StopWatch;
 import reactor.core.publisher.BaseSubscriber;
@@ -23,6 +23,7 @@ import reactor.core.publisher.BaseSubscriber;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -38,15 +39,15 @@ public final class ManageWebAppLogs {
     /**
      * Main function which runs the actual sample.
      *
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws IOException {
+    public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException {
         // New resources
         final String suffix = ".azurewebsites.net";
-        final String appName = azure.sdkContext().randomResourceName("webapp1-", 20);
+        final String appName = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
         final String appUrl = appName + suffix;
-        final String rgName = azure.sdkContext().randomResourceName("rg1NEMV_", 24);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
 
         try {
 
@@ -55,7 +56,7 @@ public final class ManageWebAppLogs {
 
             System.out.println("Creating web app " + appName + " in resource group " + rgName + "...");
 
-            final WebApp app = azure.webApps().define(appName)
+            final WebApp app = azureResourceManager.webApps().define(appName)
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rgName)
                     .withNewWindowsPlan(PricingTier.BASIC_B1)
@@ -93,7 +94,7 @@ public final class ManageWebAppLogs {
                     System.out.println("Deploying coffeeshop.war to " + appName + " through web deploy...");
 
                     app.deploy()
-                            .withPackageUri("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/management/samples/src/main/resources/coffeeshop.zip")
+                            .withPackageUri("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/coffeeshop.zip")
                             .withExistingDeploymentsDeleted(false)
                             .execute();
 
@@ -102,10 +103,10 @@ public final class ManageWebAppLogs {
 
                     // warm up
                     System.out.println("Warming up " + appUrl + "/coffeeshop...");
-                    Utils.curl("http://" + appUrl + "/coffeeshop/");
-                    SdkContext.sleep(5000);
+                    Utils.sendGetRequest("http://" + appUrl + "/coffeeshop/");
+                    ResourceManagerUtils.sleep(Duration.ofSeconds(5));
                     System.out.println("CURLing " + appUrl + "/coffeeshop...");
-                    System.out.println(Utils.curl("http://" + appUrl + "/coffeeshop/"));
+                    System.out.println(Utils.sendGetRequest("http://" + appUrl + "/coffeeshop/"));
                 }
             }).start();
             // Watch logs for 2 minutes
@@ -121,13 +122,13 @@ public final class ManageWebAppLogs {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    SdkContext.sleep(10000);
+                    ResourceManagerUtils.sleep(Duration.ofSeconds(10));
                     System.out.println("Starting hitting");
-                    Utils.curl("http://" + appUrl + "/coffeeshop/");
-                    SdkContext.sleep(15000);
-                    Utils.curl("http://" + appUrl + "/coffeeshop/");
-                    SdkContext.sleep(20000);
-                    Utils.curl("http://" + appUrl + "/coffeeshop/");
+                    Utils.sendGetRequest("http://" + appUrl + "/coffeeshop/");
+                    ResourceManagerUtils.sleep(Duration.ofSeconds(15));
+                    Utils.sendGetRequest("http://" + appUrl + "/coffeeshop/");
+                    ResourceManagerUtils.sleep(Duration.ofSeconds(20));
+                    Utils.sendGetRequest("http://" + appUrl + "/coffeeshop/");
                 }
             }).start();
 
@@ -155,7 +156,7 @@ public final class ManageWebAppLogs {
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -178,18 +179,19 @@ public final class ManageWebAppLogs {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

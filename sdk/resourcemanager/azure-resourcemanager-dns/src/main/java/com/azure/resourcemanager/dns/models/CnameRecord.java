@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CnameRecord model. */
+/** A CNAME record. */
 @Fluent
 public final class CnameRecord {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CnameRecord.class);

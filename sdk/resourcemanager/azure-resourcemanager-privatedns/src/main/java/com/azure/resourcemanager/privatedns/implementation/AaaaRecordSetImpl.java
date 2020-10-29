@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.privatedns.implementation;
 
-import com.azure.resourcemanager.privatedns.fluent.inner.RecordSetInner;
+import com.azure.resourcemanager.privatedns.fluent.models.RecordSetInner;
 import com.azure.resourcemanager.privatedns.models.AaaaRecord;
 import com.azure.resourcemanager.privatedns.models.AaaaRecordSet;
 import com.azure.resourcemanager.privatedns.models.RecordType;
@@ -25,8 +25,8 @@ class AaaaRecordSetImpl extends PrivateDnsRecordSetImpl implements AaaaRecordSet
     @Override
     public List<String> ipv6Addresses() {
         List<String> ipv6Addresses = new ArrayList<>();
-        if (inner().aaaaRecords() != null) {
-            for (AaaaRecord aaaaRecord : inner().aaaaRecords()) {
+        if (innerModel().aaaaRecords() != null) {
+            for (AaaaRecord aaaaRecord : innerModel().aaaaRecords()) {
                 ipv6Addresses.add(aaaaRecord.ipv6Address());
             }
         }
@@ -35,12 +35,12 @@ class AaaaRecordSetImpl extends PrivateDnsRecordSetImpl implements AaaaRecordSet
 
     @Override
     protected RecordSetInner prepareForUpdate(RecordSetInner resource) {
-        if (inner().aaaaRecords() != null && !inner().aaaaRecords().isEmpty()) {
+        if (innerModel().aaaaRecords() != null && !innerModel().aaaaRecords().isEmpty()) {
             if (resource.aaaaRecords() == null) {
                 resource.withAaaaRecords(new ArrayList<>());
             }
-            resource.aaaaRecords().addAll(inner().aaaaRecords());
-            inner().aaaaRecords().clear();
+            resource.aaaaRecords().addAll(innerModel().aaaaRecords());
+            innerModel().aaaaRecords().clear();
         }
         if (!recordSetRemoveInfo.aaaaRecords().isEmpty()) {
             if (resource.aaaaRecords() != null) {

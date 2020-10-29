@@ -10,7 +10,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ManagementPolicySchema model. */
+/**
+ * The Storage Account ManagementPolicies Rules. See more details in:
+ * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
+ */
 @Fluent
 public final class ManagementPolicySchema {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementPolicySchema.class);

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The ContainerGroupIdentity model. */
+/** Identity for the container group. */
 @Fluent
 public class ContainerGroupIdentity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerGroupIdentity.class);

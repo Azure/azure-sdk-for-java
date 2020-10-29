@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ProxyOnlyResource model. */
+/** Azure proxy only resource. This resource is not tracked by Azure Resource Manager. */
 @Fluent
 public class ProxyOnlyResource extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ProxyOnlyResource.class);

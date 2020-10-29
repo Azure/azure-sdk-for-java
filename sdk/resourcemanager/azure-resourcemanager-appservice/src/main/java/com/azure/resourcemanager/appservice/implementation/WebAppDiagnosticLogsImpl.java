@@ -12,9 +12,9 @@ import com.azure.resourcemanager.appservice.models.HttpLogsConfig;
 import com.azure.resourcemanager.appservice.models.LogLevel;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
 import com.azure.resourcemanager.appservice.models.WebAppDiagnosticLogs;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteLogsConfigInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteLogsConfigInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 
 /**
  * Implementation for WebAppDiagnosticLogs and its create and update interfaces.
@@ -42,90 +42,91 @@ class WebAppDiagnosticLogsImpl<FluentT extends WebAppBase, FluentImplT extends W
 
     @Override
     public LogLevel applicationLoggingFileSystemLogLevel() {
-        if (inner().applicationLogs() == null
-            || inner().applicationLogs().fileSystem() == null
-            || inner().applicationLogs().fileSystem().level() == null) {
+        if (innerModel().applicationLogs() == null
+            || innerModel().applicationLogs().fileSystem() == null
+            || innerModel().applicationLogs().fileSystem().level() == null) {
             return LogLevel.OFF;
         } else {
-            return inner().applicationLogs().fileSystem().level();
+            return innerModel().applicationLogs().fileSystem().level();
         }
     }
 
     @Override
     public String applicationLoggingStorageBlobContainer() {
-        if (inner().applicationLogs() == null || inner().applicationLogs().azureBlobStorage() == null) {
+        if (innerModel().applicationLogs() == null || innerModel().applicationLogs().azureBlobStorage() == null) {
             return null;
         } else {
-            return inner().applicationLogs().azureBlobStorage().sasUrl();
+            return innerModel().applicationLogs().azureBlobStorage().sasUrl();
         }
     }
 
     @Override
     public LogLevel applicationLoggingStorageBlobLogLevel() {
-        if (inner().applicationLogs() == null
-            || inner().applicationLogs().azureBlobStorage() == null
-            || inner().applicationLogs().azureBlobStorage().level() == null) {
+        if (innerModel().applicationLogs() == null
+            || innerModel().applicationLogs().azureBlobStorage() == null
+            || innerModel().applicationLogs().azureBlobStorage().level() == null) {
             return LogLevel.OFF;
         } else {
-            return inner().applicationLogs().azureBlobStorage().level();
+            return innerModel().applicationLogs().azureBlobStorage().level();
         }
     }
 
     @Override
     public int applicationLoggingStorageBlobRetentionDays() {
-        if (inner().applicationLogs() == null || inner().applicationLogs().azureBlobStorage() == null) {
+        if (innerModel().applicationLogs() == null || innerModel().applicationLogs().azureBlobStorage() == null) {
             return 0;
         } else {
-            return Utils.toPrimitiveInt(inner().applicationLogs().azureBlobStorage().retentionInDays());
+            return ResourceManagerUtils.toPrimitiveInt(
+                innerModel().applicationLogs().azureBlobStorage().retentionInDays());
         }
     }
 
     @Override
     public int webServerLoggingFileSystemQuotaInMB() {
-        if (inner().httpLogs() == null || inner().httpLogs().fileSystem() == null) {
+        if (innerModel().httpLogs() == null || innerModel().httpLogs().fileSystem() == null) {
             return 0;
         } else {
-            return Utils.toPrimitiveInt(inner().httpLogs().fileSystem().retentionInMb());
+            return ResourceManagerUtils.toPrimitiveInt(innerModel().httpLogs().fileSystem().retentionInMb());
         }
     }
 
     @Override
     public int webServerLoggingFileSystemRetentionDays() {
-        if (inner().httpLogs() == null || inner().httpLogs().fileSystem() == null) {
+        if (innerModel().httpLogs() == null || innerModel().httpLogs().fileSystem() == null) {
             return 0;
         } else {
-            return Utils.toPrimitiveInt(inner().httpLogs().fileSystem().retentionInDays());
+            return ResourceManagerUtils.toPrimitiveInt(innerModel().httpLogs().fileSystem().retentionInDays());
         }
     }
 
     @Override
     public int webServerLoggingStorageBlobRetentionDays() {
-        if (inner().httpLogs() == null || inner().httpLogs().azureBlobStorage() == null) {
+        if (innerModel().httpLogs() == null || innerModel().httpLogs().azureBlobStorage() == null) {
             return 0;
         } else {
-            return Utils.toPrimitiveInt(inner().httpLogs().azureBlobStorage().retentionInDays());
+            return ResourceManagerUtils.toPrimitiveInt(innerModel().httpLogs().azureBlobStorage().retentionInDays());
         }
     }
 
     @Override
     public String webServerLoggingStorageBlobContainer() {
-        if (inner().httpLogs() == null || inner().httpLogs().azureBlobStorage() == null) {
+        if (innerModel().httpLogs() == null || innerModel().httpLogs().azureBlobStorage() == null) {
             return null;
         } else {
-            return inner().httpLogs().azureBlobStorage().sasUrl();
+            return innerModel().httpLogs().azureBlobStorage().sasUrl();
         }
     }
 
     @Override
     public boolean failedRequestsTracing() {
-        return inner().failedRequestsTracing() != null
-            && Utils.toPrimitiveBoolean(inner().failedRequestsTracing().enabled());
+        return innerModel().failedRequestsTracing() != null
+            && ResourceManagerUtils.toPrimitiveBoolean(innerModel().failedRequestsTracing().enabled());
     }
 
     @Override
     public boolean detailedErrorMessages() {
-        return inner().detailedErrorMessages() != null
-            && Utils.toPrimitiveBoolean(inner().detailedErrorMessages().enabled());
+        return innerModel().detailedErrorMessages() != null
+            && ResourceManagerUtils.toPrimitiveBoolean(innerModel().detailedErrorMessages().enabled());
     }
 
     @Override
@@ -143,7 +144,7 @@ class WebAppDiagnosticLogsImpl<FluentT extends WebAppBase, FluentImplT extends W
 
     @Override
     public WebAppDiagnosticLogsImpl<FluentT, FluentImplT> withApplicationLogging() {
-        inner().withApplicationLogs(new ApplicationLogsConfig());
+        innerModel().withApplicationLogs(new ApplicationLogsConfig());
         return this;
     }
 
@@ -156,7 +157,7 @@ class WebAppDiagnosticLogsImpl<FluentT extends WebAppBase, FluentImplT extends W
 
     @Override
     public WebAppDiagnosticLogsImpl<FluentT, FluentImplT> withWebServerLogging() {
-        inner().withHttpLogs(new HttpLogsConfig());
+        innerModel().withHttpLogs(new HttpLogsConfig());
         return this;
     }
 
@@ -169,20 +170,20 @@ class WebAppDiagnosticLogsImpl<FluentT extends WebAppBase, FluentImplT extends W
 
     @Override
     public WebAppDiagnosticLogsImpl<FluentT, FluentImplT> withDetailedErrorMessages(boolean enabled) {
-        inner().withDetailedErrorMessages(new EnabledConfig().withEnabled(enabled));
+        innerModel().withDetailedErrorMessages(new EnabledConfig().withEnabled(enabled));
         return this;
     }
 
     @Override
     public WebAppDiagnosticLogsImpl<FluentT, FluentImplT> withFailedRequestTracing(boolean enabled) {
-        inner().withFailedRequestsTracing(new EnabledConfig().withEnabled(enabled));
+        innerModel().withFailedRequestsTracing(new EnabledConfig().withEnabled(enabled));
         return this;
     }
 
     @Override
     public WebAppDiagnosticLogsImpl<FluentT, FluentImplT> withApplicationLogsStoredOnFileSystem() {
-        if (inner().applicationLogs() != null) {
-            inner()
+        if (innerModel().applicationLogs() != null) {
+            innerModel()
                 .applicationLogs()
                 .withFileSystem(new FileSystemApplicationLogsConfig().withLevel(applicationLogLevel));
         }
@@ -192,8 +193,8 @@ class WebAppDiagnosticLogsImpl<FluentT extends WebAppBase, FluentImplT extends W
     @Override
     public WebAppDiagnosticLogsImpl<FluentT, FluentImplT> withApplicationLogsStoredOnStorageBlob(
         String containerSasUrl) {
-        if (inner().applicationLogs() != null) {
-            inner()
+        if (innerModel().applicationLogs() != null) {
+            innerModel()
                 .applicationLogs()
                 .withAzureBlobStorage(
                     new AzureBlobStorageApplicationLogsConfig()
@@ -205,16 +206,16 @@ class WebAppDiagnosticLogsImpl<FluentT extends WebAppBase, FluentImplT extends W
 
     @Override
     public WebAppDiagnosticLogsImpl<FluentT, FluentImplT> withWebServerLogsStoredOnFileSystem() {
-        if (inner().httpLogs() != null) {
-            inner().httpLogs().withFileSystem(new FileSystemHttpLogsConfig().withEnabled(true));
+        if (innerModel().httpLogs() != null) {
+            innerModel().httpLogs().withFileSystem(new FileSystemHttpLogsConfig().withEnabled(true));
         }
         return this;
     }
 
     @Override
     public WebAppDiagnosticLogsImpl<FluentT, FluentImplT> withWebServerLogsStoredOnStorageBlob(String containerSasUrl) {
-        if (inner().httpLogs() != null) {
-            inner()
+        if (innerModel().httpLogs() != null) {
+            innerModel()
                 .httpLogs()
                 .withAzureBlobStorage(
                     new AzureBlobStorageHttpLogsConfig().withEnabled(true).withSasUrl(containerSasUrl));
@@ -224,16 +225,16 @@ class WebAppDiagnosticLogsImpl<FluentT extends WebAppBase, FluentImplT extends W
 
     @Override
     public WebAppDiagnosticLogsImpl<FluentT, FluentImplT> withoutWebServerLogsStoredOnFileSystem() {
-        if (inner().httpLogs() != null && inner().httpLogs().fileSystem() != null) {
-            inner().httpLogs().fileSystem().withEnabled(false);
+        if (innerModel().httpLogs() != null && innerModel().httpLogs().fileSystem() != null) {
+            innerModel().httpLogs().fileSystem().withEnabled(false);
         }
         return this;
     }
 
     @Override
     public WebAppDiagnosticLogsImpl<FluentT, FluentImplT> withoutWebServerLogsStoredOnStorageBlob() {
-        if (inner().httpLogs() != null && inner().httpLogs().azureBlobStorage() != null) {
-            inner().httpLogs().azureBlobStorage().withEnabled(false);
+        if (innerModel().httpLogs() != null && innerModel().httpLogs().azureBlobStorage() != null) {
+            innerModel().httpLogs().azureBlobStorage().withEnabled(false);
         }
         return this;
     }
@@ -246,56 +247,56 @@ class WebAppDiagnosticLogsImpl<FluentT extends WebAppBase, FluentImplT extends W
 
     @Override
     public WebAppDiagnosticLogsImpl<FluentT, FluentImplT> withWebServerFileSystemQuotaInMB(int quotaInMB) {
-        if (inner().httpLogs() != null
-            && inner().httpLogs().fileSystem() != null
-            && inner().httpLogs().fileSystem().enabled()) {
-            inner().httpLogs().fileSystem().withRetentionInMb(quotaInMB);
+        if (innerModel().httpLogs() != null
+            && innerModel().httpLogs().fileSystem() != null
+            && innerModel().httpLogs().fileSystem().enabled()) {
+            innerModel().httpLogs().fileSystem().withRetentionInMb(quotaInMB);
         }
         return this;
     }
 
     @Override
     public WebAppDiagnosticLogsImpl<FluentT, FluentImplT> withLogRetentionDays(int retentionDays) {
-        if (inner().httpLogs() != null
-            && inner().httpLogs().fileSystem() != null
-            && inner().httpLogs().fileSystem().enabled()) {
-            inner().httpLogs().fileSystem().withRetentionInDays(retentionDays);
+        if (innerModel().httpLogs() != null
+            && innerModel().httpLogs().fileSystem() != null
+            && innerModel().httpLogs().fileSystem().enabled()) {
+            innerModel().httpLogs().fileSystem().withRetentionInDays(retentionDays);
         }
-        if (inner().httpLogs() != null
-            && inner().httpLogs().azureBlobStorage() != null
-            && inner().httpLogs().azureBlobStorage().enabled()) {
-            inner().httpLogs().azureBlobStorage().withRetentionInDays(retentionDays);
+        if (innerModel().httpLogs() != null
+            && innerModel().httpLogs().azureBlobStorage() != null
+            && innerModel().httpLogs().azureBlobStorage().enabled()) {
+            innerModel().httpLogs().azureBlobStorage().withRetentionInDays(retentionDays);
         }
         return this;
     }
 
     @Override
     public WebAppDiagnosticLogsImpl<FluentT, FluentImplT> withUnlimitedLogRetentionDays() {
-        if (inner().httpLogs() != null
-            && inner().httpLogs().fileSystem() != null
-            && inner().httpLogs().fileSystem().enabled()) {
-            inner().httpLogs().fileSystem().withRetentionInDays(0);
+        if (innerModel().httpLogs() != null
+            && innerModel().httpLogs().fileSystem() != null
+            && innerModel().httpLogs().fileSystem().enabled()) {
+            innerModel().httpLogs().fileSystem().withRetentionInDays(0);
         }
-        if (inner().httpLogs() != null
-            && inner().httpLogs().azureBlobStorage() != null
-            && inner().httpLogs().fileSystem().enabled()) {
-            inner().httpLogs().azureBlobStorage().withRetentionInDays(0);
+        if (innerModel().httpLogs() != null
+            && innerModel().httpLogs().azureBlobStorage() != null
+            && innerModel().httpLogs().fileSystem().enabled()) {
+            innerModel().httpLogs().azureBlobStorage().withRetentionInDays(0);
         }
         return this;
     }
 
     @Override
     public WebAppDiagnosticLogsImpl<FluentT, FluentImplT> withoutApplicationLogsStoredOnFileSystem() {
-        if (inner().applicationLogs() != null && inner().applicationLogs().fileSystem() != null) {
-            inner().applicationLogs().fileSystem().withLevel(LogLevel.OFF);
+        if (innerModel().applicationLogs() != null && innerModel().applicationLogs().fileSystem() != null) {
+            innerModel().applicationLogs().fileSystem().withLevel(LogLevel.OFF);
         }
         return this;
     }
 
     @Override
     public WebAppDiagnosticLogsImpl<FluentT, FluentImplT> withoutApplicationLogsStoredOnStorageBlob() {
-        if (inner().applicationLogs() != null && inner().applicationLogs().azureBlobStorage() != null) {
-            inner().applicationLogs().azureBlobStorage().withLevel(LogLevel.OFF);
+        if (innerModel().applicationLogs() != null && innerModel().applicationLogs().azureBlobStorage() != null) {
+            innerModel().applicationLogs().azureBlobStorage().withLevel(LogLevel.OFF);
         }
         return this;
     }

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.digitaltwins.core.implementation.serializer;
 
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -6,7 +9,7 @@ import com.azure.core.util.serializer.SerializerEncoding;
 /**
  * Encodes the continuation token as a json encoded string
  */
-public class SerializationHelpers {
+public final class SerializationHelpers {
     /**
      * Encodes the continuation token as a json encoded string that the ADT service expects
      * @param continuationToken The continuation token.
@@ -19,8 +22,8 @@ public class SerializationHelpers {
         try {
             return new JacksonAdapter().serialize(continuationToken, SerializerEncoding.JSON);
         }
-        catch (Exception e){
-            throw new IllegalArgumentException("Invalid continuation token");
+        catch (Exception e) {
+            throw new IllegalArgumentException("Invalid continuation token", e);
         }
     }
 }

@@ -23,6 +23,7 @@ import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.tcp.ProxyProvider;
 
 import java.nio.charset.Charset;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -94,14 +95,20 @@ class ReactorNettyClient implements HttpClient {
     }
 
     @Override
-    public Mono<HttpResponse> send(final HttpRequest request) {
+    public Mono<HttpResponse> send(HttpRequest request) {
+        //  By default, Configs.getHttpsResponseTimeoutInSeconds default value is used as response timeout
+        return send(request, Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds()));
+    }
+
+    @Override
+    public Mono<HttpResponse> send(final HttpRequest request, Duration responseTimeout) {
         Objects.requireNonNull(request.httpMethod());
         Objects.requireNonNull(request.uri());
         Objects.requireNonNull(this.httpClientConfig);
-        if(request.getReactorNettyRequestRecord() == null) {
+        if(request.reactorNettyRequestRecord() == null) {
             ReactorNettyRequestRecord reactorNettyRequestRecord = new ReactorNettyRequestRecord();
             reactorNettyRequestRecord.setTimeCreated(Instant.now());
-            request.setReactorNettyRequestRecord(reactorNettyRequestRecord);
+            request.withReactorNettyRequestRecord(reactorNettyRequestRecord);
         }
 
         final AtomicReference<ReactorNettyHttpResponse> responseReference = new AtomicReference<>();
@@ -110,17 +117,18 @@ class ReactorNettyClient implements HttpClient {
             .observe((connection, state) -> {
                 Instant time = Instant.now();
                 if(state.equals(HttpClientState.CONNECTED) || state.equals(HttpClientState.ACQUIRED)){
-                    request.getReactorNettyRequestRecord().setTimeConnected(time);
+                    request.reactorNettyRequestRecord().setTimeConnected(time);
                 } else if(state.equals(HttpClientState.CONFIGURED)){
-                    request.getReactorNettyRequestRecord().setTimeConfigured(time);
+                    request.reactorNettyRequestRecord().setTimeConfigured(time);
                 } else if(state.equals(HttpClientState.REQUEST_SENT)){
-                    request.getReactorNettyRequestRecord().setTimeSent(time);
+                    request.reactorNettyRequestRecord().setTimeSent(time);
                 } else if(state.equals(HttpClientState.RESPONSE_RECEIVED)){
-                    request.getReactorNettyRequestRecord().setTimeReceived(time);
+                    request.reactorNettyRequestRecord().setTimeReceived(time);
                 }
             })
             .keepAlive(this.httpClientConfig.isConnectionKeepAlive())
             .port(request.port())
+            .responseTimeout(responseTimeout)
             .request(HttpMethod.valueOf(request.httpMethod().toString()))
             .uri(request.uri().toString())
             .send(bodySendDelegate(request))
@@ -133,8 +141,15 @@ class ReactorNettyClient implements HttpClient {
             .doOnCancel(() -> {
                 ReactorNettyHttpResponse reactorNettyHttpResponse = responseReference.get();
                 if (reactorNettyHttpResponse != null) {
-                    reactorNettyHttpResponse.releaseAfterCancel(request.httpMethod());
+                    reactorNettyHttpResponse.releaseOnNotSubscribedResponse(ReactorNettyResponseState.CANCELLED);
                 }
+            })
+            .onErrorMap(throwable -> {
+                ReactorNettyHttpResponse reactorNettyHttpResponse = responseReference.get();
+                if (reactorNettyHttpResponse != null) {
+                    reactorNettyHttpResponse.releaseOnNotSubscribedResponse(ReactorNettyResponseState.ERROR);
+                }
+                return throwable;
             })
             .single();
     }
@@ -151,7 +166,7 @@ class ReactorNettyClient implements HttpClient {
                 reactorNettyRequest.header(header.name(), header.value());
             }
             if (restRequest.body() != null) {
-                return reactorNettyOutbound.send(restRequest.body());
+                return reactorNettyOutbound.sendByteArray(restRequest.body());
             } else {
                 return reactorNettyOutbound;
             }
@@ -245,14 +260,14 @@ class ReactorNettyClient implements HttpClient {
         }
 
         /**
-         * Called by {@link ReactorNettyClient} when a cancellation is detected
+         * Called by {@link ReactorNettyClient} when a cancellation or error is detected
          * but the content has not been subscribed to. If the subscription never
          * materializes then the content will remain not drained. Or it could still
-         * materialize if the cancellation happened very early, or the response
+         * materialize if the cancellation or error happened very early, or the response
          * reading was delayed for some reason.
          */
-        private void releaseAfterCancel(HttpMethod method) {
-            if (this.state.compareAndSet(ReactorNettyResponseState.NOT_SUBSCRIBED, ReactorNettyResponseState.CANCELLED)) {
+        private void releaseOnNotSubscribedResponse(ReactorNettyResponseState reactorNettyResponseState) {
+            if (this.state.compareAndSet(ReactorNettyResponseState.NOT_SUBSCRIBED, reactorNettyResponseState)) {
                 if (logger.isDebugEnabled()) {
                     logger.debug("Releasing body, not yet subscribed");
                 }
@@ -265,8 +280,10 @@ class ReactorNettyClient implements HttpClient {
 
     private enum ReactorNettyResponseState {
         // 0 - not subscribed, 1 - subscribed, 2 - cancelled via connector (before subscribe)
+        // 3 - error occurred before subscribe
         NOT_SUBSCRIBED,
         SUBSCRIBED,
-        CANCELLED;
+        CANCELLED,
+        ERROR;
     }
 }

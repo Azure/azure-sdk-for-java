@@ -4,9 +4,9 @@
 package com.azure.resourcemanager.appplatform.implementation;
 
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
-import com.azure.resourcemanager.appplatform.fluent.inner.ConfigServerResourceInner;
-import com.azure.resourcemanager.appplatform.fluent.inner.MonitoringSettingResourceInner;
-import com.azure.resourcemanager.appplatform.fluent.inner.ServiceResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.ConfigServerResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.MonitoringSettingResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.ServiceResourceInner;
 import com.azure.resourcemanager.appplatform.models.CertificateProperties;
 import com.azure.resourcemanager.appplatform.models.ConfigServerGitProperty;
 import com.azure.resourcemanager.appplatform.models.ConfigServerProperties;
@@ -38,7 +38,7 @@ public class SpringServiceImpl
 
     @Override
     public Sku sku() {
-        return inner().sku();
+        return innerModel().sku();
     }
 
     @Override
@@ -58,7 +58,7 @@ public class SpringServiceImpl
 
     @Override
     public Mono<MonitoringSettingProperties> getMonitoringSettingAsync() {
-        return manager().inner().getMonitoringSettings().getAsync(resourceGroupName(), name())
+        return manager().serviceClient().getMonitoringSettings().getAsync(resourceGroupName(), name())
             .map(MonitoringSettingResourceInner::properties);
     }
 
@@ -69,7 +69,7 @@ public class SpringServiceImpl
 
     @Override
     public Mono<ConfigServerProperties> getServerPropertiesAsync() {
-        return manager().inner().getConfigServers().getAsync(resourceGroupName(), name())
+        return manager().serviceClient().getConfigServers().getAsync(resourceGroupName(), name())
             .map(ConfigServerResourceInner::properties);
     }
 
@@ -80,7 +80,7 @@ public class SpringServiceImpl
 
     @Override
     public Mono<TestKeys> listTestKeysAsync() {
-        return manager().inner().getServices().listTestKeysAsync(resourceGroupName(), name());
+        return manager().serviceClient().getServices().listTestKeysAsync(resourceGroupName(), name());
     }
 
     @Override
@@ -90,7 +90,7 @@ public class SpringServiceImpl
 
     @Override
     public Mono<TestKeys> regenerateTestKeysAsync(TestKeyType keyType) {
-        return manager().inner().getServices().regenerateTestKeyAsync(resourceGroupName(), name(), keyType);
+        return manager().serviceClient().getServices().regenerateTestKeyAsync(resourceGroupName(), name(), keyType);
     }
 
     @Override
@@ -100,7 +100,7 @@ public class SpringServiceImpl
 
     @Override
     public Mono<Void> disableTestEndpointAsync() {
-        return manager().inner().getServices().disableTestEndpointAsync(resourceGroupName(), name());
+        return manager().serviceClient().getServices().disableTestEndpointAsync(resourceGroupName(), name());
     }
 
     @Override
@@ -110,7 +110,7 @@ public class SpringServiceImpl
 
     @Override
     public Mono<TestKeys> enableTestEndpointAsync() {
-        return manager().inner().getServices().enableTestEndpointAsync(resourceGroupName(), name());
+        return manager().serviceClient().getServices().enableTestEndpointAsync(resourceGroupName(), name());
     }
 
     @Override
@@ -131,14 +131,14 @@ public class SpringServiceImpl
     @Override
     public SpringServiceImpl withSku(Sku sku) {
         needUpdate = true;
-        inner().withSku(sku);
+        innerModel().withSku(sku);
         return this;
     }
 
     @Override
     public SpringServiceImpl withTracing(String appInsightInstrumentationKey) {
         monitoringSettingTask =
-            context -> manager().inner().getMonitoringSettings()
+            context -> manager().serviceClient().getMonitoringSettings()
                 .updatePatchAsync(resourceGroupName(), name(), new MonitoringSettingProperties()
                     .withAppInsightsInstrumentationKey(appInsightInstrumentationKey)
                     .withTraceEnabled(true))
@@ -149,7 +149,7 @@ public class SpringServiceImpl
     @Override
     public SpringServiceImpl withoutTracing() {
         monitoringSettingTask =
-            context -> manager().inner().getMonitoringSettings()
+            context -> manager().serviceClient().getMonitoringSettings()
                 .updatePatchAsync(
                     resourceGroupName(), name(), new MonitoringSettingProperties().withTraceEnabled(false))
                 .then(context.voidMono());
@@ -159,7 +159,7 @@ public class SpringServiceImpl
     @Override
     public SpringServiceImpl withGitUri(String uri) {
         configServerTask =
-            context -> manager().inner().getConfigServers()
+            context -> manager().serviceClient().getConfigServers()
                 .updatePatchAsync(resourceGroupName(), name(), new ConfigServerProperties()
                     .withConfigServer(new ConfigServerSettings().withGitProperty(
                         new ConfigServerGitProperty().withUri(uri)
@@ -171,7 +171,7 @@ public class SpringServiceImpl
     @Override
     public SpringServiceImpl withGitUriAndCredential(String uri, String username, String password) {
         configServerTask =
-            context -> manager().inner().getConfigServers()
+            context -> manager().serviceClient().getConfigServers()
                 .updatePatchAsync(resourceGroupName(), name(), new ConfigServerProperties()
                     .withConfigServer(new ConfigServerSettings().withGitProperty(
                         new ConfigServerGitProperty()
@@ -186,7 +186,7 @@ public class SpringServiceImpl
     @Override
     public SpringServiceImpl withGitConfig(ConfigServerGitProperty gitConfig) {
         configServerTask =
-            context -> manager().inner().getConfigServers()
+            context -> manager().serviceClient().getConfigServers()
                 .updatePatchAsync(resourceGroupName(), name(), new ConfigServerProperties()
                     .withConfigServer(new ConfigServerSettings().withGitProperty(gitConfig)))
                 .then(context.voidMono());
@@ -196,7 +196,7 @@ public class SpringServiceImpl
     @Override
     public SpringServiceImpl withoutGitConfig() {
         configServerTask =
-            context -> manager().inner().getConfigServers()
+            context -> manager().serviceClient().getConfigServers()
                 .updatePatchAsync(resourceGroupName(), name(), new ConfigServerProperties())
                 .then(context.voidMono());
         return this;
@@ -218,10 +218,12 @@ public class SpringServiceImpl
     public Mono<SpringService> createResourceAsync() {
         Mono<ServiceResourceInner> createOrUpdate;
         if (isInCreateMode()) {
-            createOrUpdate = manager().inner().getServices().createOrUpdateAsync(resourceGroupName(), name(), inner());
+            createOrUpdate = manager().serviceClient().getServices()
+                .createOrUpdateAsync(resourceGroupName(), name(), innerModel());
         } else if (needUpdate) {
             needUpdate = false;
-            createOrUpdate = manager().inner().getServices().updateAsync(resourceGroupName(), name(), inner());
+            createOrUpdate = manager().serviceClient().getServices().updateAsync(
+                resourceGroupName(), name(), innerModel());
         } else {
             return Mono.just(this);
         }
@@ -234,7 +236,7 @@ public class SpringServiceImpl
 
     @Override
     protected Mono<ServiceResourceInner> getInnerAsync() {
-        return manager().inner().getServices().getByResourceGroupAsync(resourceGroupName(), name());
+        return manager().serviceClient().getServices().getByResourceGroupAsync(resourceGroupName(), name());
     }
 
     @Override

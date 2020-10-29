@@ -6,6 +6,8 @@ package com.azure.messaging.servicebus.implementation;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -19,11 +21,11 @@ class MessageUtilsTest {
     void convertDotNetTicksToInstant() {
         // Arrange
         final String dateTime = "2016-11-30T20:57:01.4638052Z";
-        final Instant expected = Instant.parse(dateTime);
+        final OffsetDateTime expected = Instant.parse(dateTime).atOffset(ZoneOffset.UTC);
         final long dotNetTicks = 636161362214638052L;
 
         // Act
-        final Instant actual = MessageUtils.convertDotNetTicksToInstant(dotNetTicks);
+        final OffsetDateTime actual = MessageUtils.convertDotNetTicksToOffsetDateTime(dotNetTicks);
 
         // Assert
         assertEquals(expected, actual, "DateTime conversion from DotNet to Java failed");

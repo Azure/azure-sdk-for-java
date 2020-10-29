@@ -6,12 +6,12 @@ package com.azure.resourcemanager.trafficmanager.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.trafficmanager.fluent.inner.ProfileInner;
+import com.azure.resourcemanager.trafficmanager.fluent.models.ProfileInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ProfileListResult model. */
+/** The list Traffic Manager profiles operation response. */
 @Fluent
 public final class ProfileListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ProfileListResult.class);

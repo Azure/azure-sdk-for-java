@@ -6,12 +6,12 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.fluent.inner.ResourceSkuInner;
+import com.azure.resourcemanager.compute.fluent.models.ResourceSkuInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ResourceSkusResult model. */
+/** The List Resource Skus operation response. */
 @Fluent
 public final class ResourceSkusResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkusResult.class);

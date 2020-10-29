@@ -10,7 +10,10 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AzureActiveDirectoryApplicationCredentials model. */
+/**
+ * Credentials of a registered application created for your search service, used for authenticated access to the
+ * encryption keys stored in Azure Key Vault.
+ */
 @Fluent
 public final class AzureActiveDirectoryApplicationCredentials {
     /*

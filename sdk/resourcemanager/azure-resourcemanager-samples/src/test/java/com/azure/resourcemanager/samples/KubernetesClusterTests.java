@@ -3,7 +3,6 @@
 package com.azure.resourcemanager.samples;
 
 
-import com.azure.resourcemanager.kubernetescluster.samples.DeployImageFromContainerRegistryToKubernetes;
 import com.azure.resourcemanager.kubernetescluster.samples.ManageKubernetesCluster;
 import com.azure.resourcemanager.kubernetescluster.samples.ManagedKubernetesClusterWithAdvancedNetworking;
 import com.jcraft.jsch.JSchException;
@@ -22,7 +21,7 @@ public class KubernetesClusterTests extends SamplesTestBase {
             // Assertions.assertTrue(ManageKubernetesCluster.runSample(azure, "client id", "secret"));
             return;
         } else {
-            Assertions.assertTrue(ManageKubernetesCluster.runSample(azure, "", ""));
+            Assertions.assertTrue(ManageKubernetesCluster.runSample(azureResourceManager, "", ""));
         }
     }
 
@@ -34,14 +33,14 @@ public class KubernetesClusterTests extends SamplesTestBase {
             // Assertions.assertTrue(ManageKubernetesCluster.runSample(azure, "client id", "secret"));
             return;
         } else {
-            Assertions.assertTrue(ManagedKubernetesClusterWithAdvancedNetworking.runSample(azure, "", ""));
+            Assertions.assertTrue(ManagedKubernetesClusterWithAdvancedNetworking.runSample(azureResourceManager, "", ""));
         }
     }
 
-    @Test
-    public void testDeployImageFromContainerRegistryToKubernetes() throws InterruptedException, JSchException, IOException {
-        if (!isPlaybackMode()) {
-            Assertions.assertTrue(DeployImageFromContainerRegistryToKubernetes.runSample(azure, "", ""));
-        }
-    }
+//    @Test
+//    public void testDeployImageFromContainerRegistryToKubernetes() throws InterruptedException, JSchException, IOException {
+//        if (!isPlaybackMode()) {
+//            Assertions.assertTrue(DeployImageFromContainerRegistryToKubernetes.runSample(azureResourceManager, "", ""));
+//        }
+//    }
 }

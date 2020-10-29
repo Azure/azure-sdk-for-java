@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Recurrence model. */
+/** The repeating times at which this profile begins. This element is not used if the FixedDate element is used. */
 @Fluent
 public final class Recurrence {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Recurrence.class);

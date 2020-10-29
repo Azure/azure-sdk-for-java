@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PreAuthorizedApplicationExtension model. */
+/** Representation of an app PreAuthorizedApplicationExtension required by a pre authorized client app. */
 @Fluent
 public final class PreAuthorizedApplicationExtension {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PreAuthorizedApplicationExtension.class);

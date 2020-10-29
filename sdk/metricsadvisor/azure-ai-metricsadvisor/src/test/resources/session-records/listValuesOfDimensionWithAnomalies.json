@@ -1,0 +1,70 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//enrichment/anomalyDetection/configurations/c0f2539f-b804-4ab9-a70f-0da0c89c76d8/anomalies/dimension/query?$top=10",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (1.8.0_221; Mac OS X; 10.15.5)",
+      "x-ms-client-request-id" : "55047b21-5211-4850-a6b2-b771b010b1cf",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "5ad7217a-697d-43c3-aeb2-3f792d409563",
+      "x-envoy-upstream-service-time" : "266",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "5ad7217a-697d-43c3-aeb2-3f792d409563",
+      "retry-after" : "0",
+      "Content-Length" : "380",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[\"Common Lime\",\"Cherry Laurel\",\"Cabbage Palm\",\"Blackthorn\",\"Blue Atlas Cedar\",\"Cherry\",\"Cider gum\",\"Common Walnut\",\"Almond\",\"Chinese red-barked birch\"],\"@nextLink\":\"https://anuchan-cg-metric-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/c0f2539f-b804-4ab9-a70f-0da0c89c76d8/anomalies/dimension/query?$top=10&$skip=10\"}",
+      "Date" : "Sat, 12 Sep 2020 21:45:53 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/c0f2539f-b804-4ab9-a70f-0da0c89c76d8/anomalies/dimension/query?$top=10&$skip=10",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (1.8.0_221; Mac OS X; 10.15.5)",
+      "x-ms-client-request-id" : "f562df17-eeea-4c72-9ae4-0290f0acc34d",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "23937770-5361-4c86-ad78-c3af29779ffe",
+      "x-envoy-upstream-service-time" : "248",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "23937770-5361-4c86-ad78-c3af29779ffe",
+      "retry-after" : "0",
+      "Content-Length" : "397",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[\"Caucasian Fir\",\"Black Birch (River Birch)\",\"Bastard Service Tree\",\"Common Beech\",\"Caucasian Lime\",\"Birch\",\"Black Poplar\",\"Cockspur Thorn\",\"Common Ash\",\"Common Hazel\"],\"@nextLink\":\"https://anuchan-cg-metric-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/c0f2539f-b804-4ab9-a70f-0da0c89c76d8/anomalies/dimension/query?$top=10&$skip=20\"}",
+      "Date" : "Sat, 12 Sep 2020 21:45:55 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/c0f2539f-b804-4ab9-a70f-0da0c89c76d8/anomalies/dimension/query?$top=10&$skip=20",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (1.8.0_221; Mac OS X; 10.15.5)",
+      "x-ms-client-request-id" : "84d759cb-00c4-42e5-8521-557e8d7fa947",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "9e600e9b-ea2b-4c32-b8e4-9d16d3c3b6fc",
+      "x-envoy-upstream-service-time" : "143",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "9e600e9b-ea2b-4c32-b8e4-9d16d3c3b6fc",
+      "retry-after" : "0",
+      "Content-Length" : "111",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[\"Austrian Pine\",\"Common Alder\",\"Box elder\",\"Algerian Fir\",\"Common Juniper\",\"Aspen\"],\"@nextLink\":null}",
+      "Date" : "Sat, 12 Sep 2020 21:45:54 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

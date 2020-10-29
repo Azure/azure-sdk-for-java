@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The StorageAccountCreateParameters model. */
+/** The parameters used when creating a storage account. */
 @JsonFlatten
 @Fluent
 public class StorageAccountCreateParameters {

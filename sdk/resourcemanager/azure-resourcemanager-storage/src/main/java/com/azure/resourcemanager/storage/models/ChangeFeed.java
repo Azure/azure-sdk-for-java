@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ChangeFeed model. */
+/** The blob service properties for change feed events. */
 @Fluent
 public final class ChangeFeed {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ChangeFeed.class);

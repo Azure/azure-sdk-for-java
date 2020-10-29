@@ -4,9 +4,9 @@
 package com.azure.resourcemanager.resources.fluentcore.model.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskItem;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -53,7 +53,7 @@ public class ExecuteTask<ResultT extends Indexable> implements TaskItem {
     @Override
     public Mono<Indexable> invokeAsync(TaskGroup.InvocationContext context) {
         return this.executor.executeWorkAsync()
-                .subscribeOn(SdkContext.getReactorScheduler())
+                .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler())
                 .doOnNext(resultT -> result = resultT)
                 .map(resourceT -> resourceT);
     }

@@ -1,6 +1,33 @@
 # Release History
 
-## 1.2.0-beta.2 (Unreleased)
+## 1.2.0-beta.3 (Unreleased)
+
+### Breaking Changes
+- Removing Application Authentication APIs for GA release. These will be reintroduced in 1.3.0-beta.1.
+  - Removed class `AuthenticationRecord`
+  - Removed class `AuthenticationRequiredException`
+  - Removed methods `allowUnencryptedCache()` and `enablePersistentCache()` from `ClientCertificateCredentialBuilder`, 
+   `ClientSecretCredentialBuilder`, `InteractiveBrowserCredentialBuilder`, `DeviceCodeCredentialBuilder`,
+    `UsernamePasswordCredentialBuilder` and `ClientCertificateCredentialBuilder`.
+  - Removed methods `disallowUnencryptedCache()` and `authenticationRecord(AuthenticationRecord)` from `SharedTokenCacheCredentialBuilder`.
+  - Removed methods `authenticationRecord(AuthenticationRecord)` and `disableAutomaticAuthentication()` from `DeviceCodeCredentialBuilder` and `InteractiveBrowserCredentialBuilder`.
+  - Removed methods `authenticate(TokenRequestContext)` and `authenticate()` from `DeviceCodeCredential`, `InteractiveBrowserCredential`
+    and `UsernamePasswordCredential`.
+
+
+## 1.2.0-beta.2 (2020-10-06)
+
+### New Features
+- Added the methods `pfxCertificate(InputStream certificate, String clientCertificatePassword)` and `pemCertificate(InputStream certificate)` in `ClientCertificateCredentialBuilder`.
+- Added `includeX5c(boolean)` method in `ClientCertificateCredentialBuilder` to enable subject name / issuer based authentication.
+- Added a default `challengeConsumer` in `DeviceCodeCredentialBuilder` which prints the device code information to console. The `challengeConsumer` configuration is no longer required in `DeviceCodeCredentialBuilder`.
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to 1.9.0
+- Upgraded `jna-platform` dependency to 5.6.0
+- Upgraded `msal4j` dependency to 1.7.1
+
+
 
 
 ## 1.2.0-beta.1 (2020-09-11)

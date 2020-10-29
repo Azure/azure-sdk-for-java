@@ -1,0 +1,44 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//dataFeeds?dataSourceType=AzureBlob",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "60440905-f502-4b34-9ddc-b5196436bb28"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "Retry-After" : "0",
+      "apim-request-id" : "285452d1-d9e0-4e75-8a4e-60c1bb9306c0",
+      "Content-Length" : "306",
+      "StatusCode" : "429",
+      "Body" : "{\"error\":{\"code\":\"429\",\"message\": \"Requests to the List all data feeds Operation under Metrics Advisor have exceeded rate limit of your current MetricsAdvisor S0 pricing tier. Please retry after 1 second. Please contact Azure support service if you would like to further increase the default rate limit.\"}}",
+      "Date" : "Sat, 12 Sep 2020 21:13:23 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//dataFeeds?dataSourceType=AzureBlob",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "60440905-f502-4b34-9ddc-b5196436bb28"
+    },
+    "Response" : {
+      "x-request-id" : "c37d8d02-4946-4b42-9efc-0307ac3a8e95",
+      "x-envoy-upstream-service-time" : "101",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "c37d8d02-4946-4b42-9efc-0307ac3a8e95",
+      "retry-after" : "0",
+      "Content-Length" : "5307",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"dataFeedId\":\"1fefc4a0-a84d-41af-83bd-f3686a523cb0\",\"dataFeedName\":\"java_BLOB_create_data_feed_test_sample942034ee-ce5b-41aa-adb3-6762de533e83\",\"metrics\":[{\"metricId\":\"7b4dd200-40c8-45bd-9015-5cf2660ce9e8\",\"metricName\":\"cost\",\"metricDisplayName\":\"cost\",\"metricDescription\":\"\"},{\"metricId\":\"269c7fd0-48d3-4575-b11e-9bc8a9cfcf54\",\"metricName\":\"revenue\",\"metricDisplayName\":\"revenue\",\"metricDescription\":\"\"}],\"dimension\":[{\"dimensionName\":\"category\",\"dimensionDisplayName\":\"category\"},{\"dimensionName\":\"city\",\"dimensionDisplayName\":\"city\"}],\"dataStartFrom\":\"2019-10-01T00:00:00Z\",\"dataSourceType\":\"AzureBlob\",\"timestampColumn\":\"\",\"startOffsetInSeconds\":0,\"maxQueryPerMinute\":30.0,\"granularityName\":\"Daily\",\"granularityAmount\":null,\"allUpIdentification\":null,\"needRollup\":\"NoRollup\",\"fillMissingPointType\":\"PreviousValue\",\"fillMissingPointValue\":0.0,\"rollUpMethod\":\"None\",\"rollUpColumns\":[],\"dataFeedDescription\":\"\",\"stopRetryAfterInSeconds\":-1,\"minRetryIntervalInSeconds\":-1,\"maxConcurrency\":0,\"viewMode\":\"Private\",\"admins\":[\"savaity@microsoft.com\"],\"viewers\":[],\"creator\":\"savaity@microsoft.com\",\"status\":\"Active\",\"createdTime\":\"2020-09-12T21:13:24Z\",\"isAdmin\":true,\"actionLinkTemplate\":\"\",\"dataSourceParameter\":{\"container\":\"BLOB_CONTAINER\",\"connectionString\":\"REDACTED\",\"blobTemplate\":\"BLOB_TEMPLATE_NAME\"}},{\"dataFeedId\":\"56c14e17-553c-45b8-930a-fd044f5c3195\",\"dataFeedName\":\"java_create_data_feed_test_sampled47f6244-8868-4aba-b1e6-e2a041c14c63\",\"metrics\":[{\"metricId\":\"d42ca848-ae18-4e83-a2b7-6678aed75897\",\"metricName\":\"cost\",\"metricDisplayName\":\"cost\",\"metricDescription\":\"\"},{\"metricId\":\"0de3f7fb-349a-4547-90b4-17e3e2a97b01\",\"metricName\":\"revenue\",\"metricDisplayName\":\"revenue\",\"metricDescription\":\"\"}],\"dimension\":[{\"dimensionName\":\"category\",\"dimensionDisplayName\":\"category\"},{\"dimensionName\":\"city\",\"dimensionDisplayName\":\"city\"}],\"dataStartFrom\":\"2019-10-01T00:00:00Z\",\"dataSourceType\":\"AzureBlob\",\"timestampColumn\":\"\",\"startOffsetInSeconds\":0,\"maxQueryPerMinute\":30.0,\"granularityName\":\"Daily\",\"granularityAmount\":null,\"allUpIdentification\":null,\"needRollup\":\"NoRollup\",\"fillMissingPointType\":\"PreviousValue\",\"fillMissingPointValue\":0.0,\"rollUpMethod\":\"None\",\"rollUpColumns\":[],\"dataFeedDescription\":\"\",\"stopRetryAfterInSeconds\":-1,\"minRetryIntervalInSeconds\":-1,\"maxConcurrency\":0,\"viewMode\":\"Private\",\"admins\":[\"savaity@microsoft.com\"],\"viewers\":[],\"creator\":\"savaity@microsoft.com\",\"status\":\"Active\",\"createdTime\":\"2020-09-12T21:13:24Z\",\"isAdmin\":true,\"actionLinkTemplate\":\"\",\"dataSourceParameter\":{\"container\":\"adsample\",\"connectionString\":\"REDACTED\",\"blobTemplate\":\"%Y/%m/%d/%h/JsonFormatV2.json\"}},{\"dataFeedId\":\"4957a2f7-a0f4-4fc0-b8d7-d866c1df0f4c\",\"dataFeedName\":\"testDataFeed1\",\"metrics\":[{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"metricName\":\"Metric1\",\"metricDisplayName\":\"Metric1\",\"metricDescription\":\"\"},{\"metricId\":\"6b593f73-345c-40eb-a15c-7ec1fc73b028\",\"metricName\":\"Metric2\",\"metricDisplayName\":\"Metric2\",\"metricDescription\":\"\"}],\"dimension\":[{\"dimensionName\":\"Dim1\",\"dimensionDisplayName\":\"Dim1\"},{\"dimensionName\":\"Dim2\",\"dimensionDisplayName\":\"Dim2\"}],\"dataStartFrom\":\"2020-08-09T00:00:00Z\",\"dataSourceType\":\"AzureBlob\",\"timestampColumn\":\"Timestamp\",\"startOffsetInSeconds\":0,\"maxQueryPerMinute\":30.0,\"granularityName\":\"Daily\",\"granularityAmount\":null,\"allUpIdentification\":null,\"needRollup\":\"NoRollup\",\"fillMissingPointType\":\"SmartFilling\",\"fillMissingPointValue\":0.0,\"rollUpMethod\":\"None\",\"rollUpColumns\":[],\"dataFeedDescription\":\"\",\"stopRetryAfterInSeconds\":-1,\"minRetryIntervalInSeconds\":-1,\"maxConcurrency\":-1,\"viewMode\":\"Private\",\"admins\":[\"savaity@microsoft.com\",\"krpratic@microsoft.com\",\"yumeng@microsoft.com\",\"johanste@microsoft.com\",\"camaiaor@microsoft.com\",\"xiangyan@microsoft.com\",\"anuchan@microsoft.com\",\"chriss@microsoft.com\",\"kaolsze@microsoft.com\",\"kaghiya@microsoft.com\",\"mayurid@microsoft.com\"],\"viewers\":[],\"creator\":\"savaity@microsoft.com\",\"status\":\"Active\",\"createdTime\":\"2020-09-12T00:43:30Z\",\"isAdmin\":true,\"actionLinkTemplate\":\"\",\"dataSourceParameter\":{\"container\":\"adsample\",\"connectionString\":\"REDACTED\",\"blobTemplate\":\"%Y/%m/%d/%h/JsonFormatV2.json\",\"jsonFormatVersion\":\"V2\"}}],\"@nextLink\":null}",
+      "Date" : "Sat, 12 Sep 2020 21:13:25 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

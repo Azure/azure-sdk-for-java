@@ -163,8 +163,7 @@ class AnalyzeSentimentAsyncClient {
                     new SentimentConfidenceScores(confidenceScorePerSentence.getNegative(),
                         confidenceScorePerSentence.getNeutral(), confidenceScorePerSentence.getPositive()),
                     toMinedOpinionList(sentenceSentiment, documentSentimentList),
-                    sentenceSentiment.getOffset(),
-                    sentenceSentiment.getLength()
+                    sentenceSentiment.getOffset()
                 );
             }).collect(Collectors.toList());
 
@@ -251,7 +250,7 @@ class AnalyzeSentimentAsyncClient {
             minedOpinions.add(new MinedOpinion(
                 new AspectSentiment(sentenceAspect.getText(),
                     TextSentiment.fromString(sentenceAspect.getSentiment().toString()),
-                    sentenceAspect.getOffset(), sentenceAspect.getLength(),
+                    sentenceAspect.getOffset(),
                     toSentimentConfidenceScores(sentenceAspect.getConfidenceScores())),
                 new IterableStream<>(opinionSentiments)));
         });
@@ -274,7 +273,7 @@ class AnalyzeSentimentAsyncClient {
     private OpinionSentiment toOpinionSentiment(SentenceOpinion sentenceOpinion) {
         return new OpinionSentiment(sentenceOpinion.getText(),
             TextSentiment.fromString(sentenceOpinion.getSentiment().toString()),
-            sentenceOpinion.getOffset(), sentenceOpinion.getLength(), sentenceOpinion.isNegated(),
+            sentenceOpinion.getOffset(), sentenceOpinion.isNegated(),
             toSentimentConfidenceScores(sentenceOpinion.getConfidenceScores()));
     }
 

@@ -314,18 +314,6 @@ public interface FunctionApp extends FunctionAppBasic, WebAppBase, Updatable<Fun
             /**
              * Creates a new storage account to use for the function app.
              *
-             * @deprecated use {@link FunctionApp.DefinitionStages.WithStorageAccount#withNewStorageAccount(String,
-             *     StorageAccountSkuType)} instead
-             * @param name the name of the storage account
-             * @param sku the sku of the storage account
-             * @return the next stage of the definition
-             */
-            @Deprecated
-            WithCreate withNewStorageAccount(String name, com.azure.resourcemanager.storage.models.SkuName sku);
-
-            /**
-             * Creates a new storage account to use for the function app.
-             *
              * @param name the name of the storage account
              * @param sku the sku of the storage account
              * @return the next stage of the definition
@@ -651,18 +639,6 @@ public interface FunctionApp extends FunctionAppBasic, WebAppBase, Updatable<Fun
          * function execution runtime, triggers, and logs.
          */
         interface WithStorageAccount {
-            /**
-             * Creates a new storage account to use for the function app.
-             *
-             * @deprecated use {@link FunctionApp.UpdateStages.WithStorageAccount#withNewStorageAccount(String,
-             *     StorageAccountSkuType)} instead
-             * @param name the name of the storage account
-             * @param sku the sku of the storage account
-             * @return the next stage of the function app update
-             */
-            @Deprecated
-            Update withNewStorageAccount(String name, com.azure.resourcemanager.storage.models.SkuName sku);
-
             /**
              * Creates a new storage account to use for the function app.
              *

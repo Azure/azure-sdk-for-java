@@ -7,14 +7,14 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.network.models.ConnectivityCheck;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkPeering;
 import com.azure.resourcemanager.network.models.NetworkWatcher;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
 import com.azure.resourcemanager.resources.fluentcore.model.Executable;
@@ -55,25 +55,25 @@ public final class VerifyNetworkPeeringWithNetworkWatcher {
     /**
      * Main function which runs the actual sample.
      *
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
-        final Region region = Region.US_SOUTH_CENTRAL;
-        final String resourceGroupName = azure.sdkContext().randomResourceName("rg", 15);
-        final String vnetAName = azure.sdkContext().randomResourceName("net", 15);
-        final String vnetBName = azure.sdkContext().randomResourceName("net", 15);
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
+        final Region region = Region.EUROPE_NORTH;
+        final String resourceGroupName = Utils.randomResourceName(azureResourceManager, "rg", 15);
+        final String vnetAName = Utils.randomResourceName(azureResourceManager, "net", 15);
+        final String vnetBName = Utils.randomResourceName(azureResourceManager, "net", 15);
 
-        final String[] vmNames = azure.sdkContext().randomResourceNames("vm", 15, 2);
+        final String[] vmNames = Utils.randomResourceNames(azureResourceManager, "vm", 15, 2);
         final String[] vmIPAddresses = new String[]{
                 /* within subnetA */ "10.0.0.8",
                 /* within subnetB */ "10.1.0.8"
         };
 
-        final String peeringABName = azure.sdkContext().randomResourceName("peer", 15);
+        final String peeringABName = Utils.randomResourceName(azureResourceManager, "peer", 15);
         final String rootname = "tirekicker";
-        final String password = azure.sdkContext().randomResourceName("pWd!", 15);
-        final String networkWatcherName = azure.sdkContext().randomResourceName("netwch", 20);
+        final String password = Utils.password();
+        final String networkWatcherName = Utils.randomResourceName(azureResourceManager, "netwch", 20);
 
         try {
 
@@ -81,13 +81,13 @@ public final class VerifyNetworkPeeringWithNetworkWatcher {
             // Define two virtual networks to peer and put the virtual machines in, at specific IP addresses
             List<Creatable<Network>> networkDefinitions = new ArrayList<>();
 
-            networkDefinitions.add(azure.networks().define(vnetAName)
+            networkDefinitions.add(azureResourceManager.networks().define(vnetAName)
                     .withRegion(region)
                     .withNewResourceGroup(resourceGroupName)
                     .withAddressSpace("10.0.0.0/27")
                     .withSubnet("subnetA", "10.0.0.0/27"));
 
-            networkDefinitions.add(azure.networks().define(vnetBName)
+            networkDefinitions.add(azureResourceManager.networks().define(vnetBName)
                     .withRegion(region)
                     .withNewResourceGroup(resourceGroupName)
                     .withAddressSpace("10.1.0.0/27")
@@ -99,7 +99,7 @@ public final class VerifyNetworkPeeringWithNetworkWatcher {
             List<Creatable<VirtualMachine>> vmDefinitions = new ArrayList<>();
 
             for (int i = 0; i < networkDefinitions.size(); i++) {
-                vmDefinitions.add(azure.virtualMachines().define(vmNames[i])
+                vmDefinitions.add(azureResourceManager.virtualMachines().define(vmNames[i])
                         .withRegion(region)
                         .withExistingResourceGroup(resourceGroupName)
                         .withNewPrimaryNetwork(networkDefinitions.get(i))
@@ -119,7 +119,7 @@ public final class VerifyNetworkPeeringWithNetworkWatcher {
 
             // Create the VMs in parallel for better performance
             System.out.println("Creating virtual machines and virtual networks...");
-            CreatedResources<VirtualMachine> createdVMs = azure.virtualMachines().create(vmDefinitions);
+            CreatedResources<VirtualMachine> createdVMs = azureResourceManager.virtualMachines().create(vmDefinitions);
             VirtualMachine vmA = createdVMs.get(vmDefinitions.get(0).key());
             VirtualMachine vmB = createdVMs.get(vmDefinitions.get(1).key());
             System.out.println("Created the virtual machines and networks.");
@@ -148,10 +148,17 @@ public final class VerifyNetworkPeeringWithNetworkWatcher {
 
             //=============================================================
             // Check connectivity between the two VMs/networks using Network Watcher
-            NetworkWatcher networkWatcher = azure.networkWatchers().define(networkWatcherName)
+
+            // Azure Network Watcher enabled by default
+            // https://azure.microsoft.com/updates/azure-network-watcher-will-be-enabled-by-default-for-subscriptions-containing-virtual-networks/
+            NetworkWatcher networkWatcher = azureResourceManager.networkWatchers().list().stream()
+                .filter(nw -> nw.region() == region).findFirst()
+                .orElseGet(() -> azureResourceManager
+                    .networkWatchers()
+                    .define(networkWatcherName)
                     .withRegion(region)
                     .withExistingResourceGroup(resourceGroupName)
-                    .create();
+                    .create());
 
             // Verify bi-directional connectivity between the VMs on port 22 (SSH enabled by default on Linux VMs)
             Executable<ConnectivityCheck> connectivityAtoB = networkWatcher.checkConnectivity()
@@ -184,7 +191,7 @@ public final class VerifyNetworkPeeringWithNetworkWatcher {
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + resourceGroupName);
-                azure.resourceGroups().beginDeleteByName(resourceGroupName);
+                azureResourceManager.resourceGroups().beginDeleteByName(resourceGroupName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             } catch (Exception g) {
@@ -207,18 +214,19 @@ public final class VerifyNetworkPeeringWithNetworkWatcher {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

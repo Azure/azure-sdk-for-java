@@ -15,31 +15,31 @@ public class SqlDatabaseMetricValueImpl extends WrapperImpl<MetricValue> impleme
 
     @Override
     public double count() {
-        return this.inner().count();
+        return this.innerModel().count();
     }
 
     @Override
     public double average() {
-        return this.inner().average();
+        return this.innerModel().average();
     }
 
     @Override
     public double maximum() {
-        return this.inner().maximum();
+        return this.innerModel().maximum();
     }
 
     @Override
     public double minimum() {
-        return this.inner().minimum();
+        return this.innerModel().minimum();
     }
 
     @Override
     public OffsetDateTime timestamp() {
-        return this.inner().timestamp();
+        return this.innerModel().timestamp();
     }
 
     @Override
     public double total() {
-        return this.inner().total();
+        return this.innerModel().total();
     }
 }

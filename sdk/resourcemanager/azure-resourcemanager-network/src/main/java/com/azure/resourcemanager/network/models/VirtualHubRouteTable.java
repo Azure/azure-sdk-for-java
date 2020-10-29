@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VirtualHubRouteTable model. */
+/** VirtualHub route table. */
 @Fluent
 public final class VirtualHubRouteTable {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualHubRouteTable.class);

@@ -6,12 +6,12 @@ package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.fluent.inner.ServicePrincipalInner;
+import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ServicePrincipalListResult model. */
+/** Server response for get tenant service principals API call. */
 @Fluent
 public final class ServicePrincipalListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ServicePrincipalListResult.class);

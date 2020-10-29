@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The LogProfileResourcePatch model. */
+/** The log profile resource for patch operations. */
 @JsonFlatten
 @Fluent
 public class LogProfileResourcePatch {

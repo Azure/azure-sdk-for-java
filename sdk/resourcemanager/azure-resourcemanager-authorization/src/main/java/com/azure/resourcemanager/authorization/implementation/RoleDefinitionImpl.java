@@ -6,8 +6,8 @@ package com.azure.resourcemanager.authorization.implementation;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.models.Permission;
 import com.azure.resourcemanager.authorization.models.RoleDefinition;
-import com.azure.resourcemanager.authorization.fluent.inner.PermissionInner;
-import com.azure.resourcemanager.authorization.fluent.inner.RoleDefinitionInner;
+import com.azure.resourcemanager.authorization.fluent.models.PermissionInner;
+import com.azure.resourcemanager.authorization.fluent.models.RoleDefinitionInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import java.util.Collections;
 import java.util.HashSet;
@@ -31,23 +31,23 @@ class RoleDefinitionImpl extends WrapperImpl<RoleDefinitionInner> implements Rol
 
     @Override
     public String roleName() {
-        return inner().roleName();
+        return innerModel().roleName();
     }
 
     @Override
     public String description() {
-        return inner().description();
+        return innerModel().description();
     }
 
     @Override
     public String type() {
-        return inner().type();
+        return innerModel().type();
     }
 
     @Override
     public Set<Permission> permissions() {
         HashSet<Permission> ret = new HashSet<>();
-        for (PermissionInner inner : inner().permissions()) {
+        for (PermissionInner inner : innerModel().permissions()) {
             ret.add(new PermissionImpl(inner));
         }
         return ret;
@@ -55,12 +55,12 @@ class RoleDefinitionImpl extends WrapperImpl<RoleDefinitionInner> implements Rol
 
     @Override
     public Set<String> assignableScopes() {
-        return Collections.unmodifiableSet(new HashSet<>(inner().assignableScopes()));
+        return Collections.unmodifiableSet(new HashSet<>(innerModel().assignableScopes()));
     }
 
     @Override
     public String id() {
-        return inner().id();
+        return innerModel().id();
     }
 
     @Override
@@ -70,6 +70,6 @@ class RoleDefinitionImpl extends WrapperImpl<RoleDefinitionInner> implements Rol
 
     @Override
     public String name() {
-        return inner().name();
+        return innerModel().name();
     }
 }

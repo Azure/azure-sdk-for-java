@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ManagedInstancePairInfo model. */
+/** Pairs of Managed Instances in the failover group. */
 @Fluent
 public final class ManagedInstancePairInfo {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedInstancePairInfo.class);

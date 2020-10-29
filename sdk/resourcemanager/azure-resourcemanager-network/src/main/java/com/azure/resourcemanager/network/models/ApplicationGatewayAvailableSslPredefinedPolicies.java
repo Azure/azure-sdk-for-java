@@ -6,12 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewaySslPredefinedPolicyInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewaySslPredefinedPolicyInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ApplicationGatewayAvailableSslPredefinedPolicies model. */
+/** Response for ApplicationGatewayAvailableSslOptions API service call. */
 @Fluent
 public final class ApplicationGatewayAvailableSslPredefinedPolicies {
     @JsonIgnore

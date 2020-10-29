@@ -5,7 +5,7 @@ package com.azure.resourcemanager.storage;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.test.utils.TestUtilities;
-import com.azure.resourcemanager.storage.fluent.inner.UsageInner;
+import com.azure.resourcemanager.storage.fluent.models.UsageInner;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 

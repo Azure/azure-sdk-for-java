@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The RelationshipCollection model. */
+/** A collection of relationships which relate digital twins together. */
 @Fluent
 public final class RelationshipCollection {
     /*

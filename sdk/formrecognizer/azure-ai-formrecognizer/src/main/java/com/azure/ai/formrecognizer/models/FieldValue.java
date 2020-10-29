@@ -17,6 +17,7 @@ import static com.azure.ai.formrecognizer.models.FieldValueType.LIST;
 import static com.azure.ai.formrecognizer.models.FieldValueType.LONG;
 import static com.azure.ai.formrecognizer.models.FieldValueType.MAP;
 import static com.azure.ai.formrecognizer.models.FieldValueType.PHONE_NUMBER;
+import static com.azure.ai.formrecognizer.models.FieldValueType.SELECTION_MARK_STATE;
 import static com.azure.ai.formrecognizer.models.FieldValueType.STRING;
 import static com.azure.ai.formrecognizer.models.FieldValueType.TIME;
 
@@ -33,6 +34,7 @@ public final class FieldValue {
     private Long formFieldLong;
     private LocalDate formFieldDate;
     private LocalTime formFieldTime;
+    private SelectionMarkState selectionMarkState;
     private String formFieldString;
     private String formFieldPhoneNumber;
 
@@ -69,6 +71,9 @@ public final class FieldValue {
                 break;
             case MAP:
                 formFieldMap = (Map<String, FormField>) value;
+                break;
+            case SELECTION_MARK_STATE:
+                selectionMarkState = (SelectionMarkState) value;
                 break;
             default:
                 throw logger.logExceptionAsError(new IllegalStateException("Unexpected type value: " + valueType));
@@ -195,5 +200,20 @@ public final class FieldValue {
                 + "%s from field value of type %s", MAP, this.getValueType()))));
         }
         return this.formFieldMap;
+    }
+
+    /**
+     * Gets the value of the field as a selection mark state.
+     *
+     * @return the value of the field as an unmodifiable selection mark state.
+     * @throws UnsupportedOperationException if {@link FieldValue#getValueType()} is not
+     * {@link FieldValueType#SELECTION_MARK_STATE}.
+     */
+    public SelectionMarkState asSelectionMarkState() {
+        if (SELECTION_MARK_STATE != this.getValueType()) {
+            throw logger.logExceptionAsError((new UnsupportedOperationException(String.format(
+                "Cannot get field as a %s from field value of type %s", SELECTION_MARK_STATE, this.getValueType()))));
+        }
+        return this.selectionMarkState;
     }
 }

@@ -14,7 +14,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The WordDelimiterTokenFilter model. */
+/**
+ * Splits words into subwords and performs optional transformations on subword groups. This token filter is implemented
+ * using Apache Lucene.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.WordDelimiterTokenFilter")
 @JsonFlatten

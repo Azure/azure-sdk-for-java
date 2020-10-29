@@ -6,12 +6,12 @@ package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.eventhubs.fluent.inner.ConsumerGroupInner;
+import com.azure.resourcemanager.eventhubs.fluent.models.ConsumerGroupInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ConsumerGroupListResult model. */
+/** The result to the List Consumer Group operation. */
 @Fluent
 public final class ConsumerGroupListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ConsumerGroupListResult.class);

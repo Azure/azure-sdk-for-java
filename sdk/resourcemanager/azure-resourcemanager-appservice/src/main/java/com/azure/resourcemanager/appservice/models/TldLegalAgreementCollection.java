@@ -6,12 +6,12 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.inner.TldLegalAgreementInner;
+import com.azure.resourcemanager.appservice.fluent.models.TldLegalAgreementInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The TldLegalAgreementCollection model. */
+/** Collection of top-level domain legal agreements. */
 @Fluent
 public final class TldLegalAgreementCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TldLegalAgreementCollection.class);

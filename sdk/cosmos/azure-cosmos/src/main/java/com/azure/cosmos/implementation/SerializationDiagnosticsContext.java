@@ -54,8 +54,8 @@ public class SerializationDiagnosticsContext {
                 Duration.ZERO : Duration.between(serializationDiagnostics.startTimeUTC, serializationDiagnostics.endTimeUTC);
             jsonGenerator.writeStartObject();
             jsonGenerator.writeObjectField("serializationType", serializationDiagnostics.serializationType);
-            jsonGenerator.writeStringField("startTimeUTC", DiagnosticsInstantSerializer.formatDateTime(serializationDiagnostics.startTimeUTC));
-            jsonGenerator.writeStringField("endTimeUTC", DiagnosticsInstantSerializer.formatDateTime(serializationDiagnostics.endTimeUTC));
+            jsonGenerator.writeStringField("startTimeUTC", DiagnosticsInstantSerializer.fromInstant(serializationDiagnostics.startTimeUTC));
+            jsonGenerator.writeStringField("endTimeUTC", DiagnosticsInstantSerializer.fromInstant(serializationDiagnostics.endTimeUTC));
             if (durationinMS != null) {
                 jsonGenerator.writeNumberField("durationInMicroSec", durationinMS.toNanos() / 1000);
             }

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CachedImages model. */
+/** The cached image and OS type. */
 @Fluent
 public final class CachedImages {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CachedImages.class);

@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//feedback/metric/fc2abd1f-821d-4dac-8bec-e09c977fb6fa",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "63e63cb3-104b-4f47-9278-360cd0e11fbd"
+    },
+    "Response" : {
+      "x-request-id" : "c16ec50d-aef0-4ac5-b7e2-9392dc42aa05",
+      "x-envoy-upstream-service-time" : "143",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "c16ec50d-aef0-4ac5-b7e2-9392dc42aa05",
+      "retry-after" : "0",
+      "Content-Length" : "394",
+      "StatusCode" : "200",
+      "Body" : "{\"feedbackId\":\"fc2abd1f-821d-4dac-8bec-e09c977fb6fa\",\"createdTime\":\"2020-09-23T23:17:00.425Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Amphibian\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2020-08-05T07:00:00Z\",\"endTime\":\"2020-08-07T07:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}}",
+      "Date" : "Wed, 23 Sep 2020 23:30:41 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

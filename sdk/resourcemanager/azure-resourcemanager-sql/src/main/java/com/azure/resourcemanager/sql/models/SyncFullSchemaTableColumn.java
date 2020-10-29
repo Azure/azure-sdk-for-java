@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SyncFullSchemaTableColumn model. */
+/** Properties of the column in the table of database full schema. */
 @Immutable
 public final class SyncFullSchemaTableColumn {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SyncFullSchemaTableColumn.class);

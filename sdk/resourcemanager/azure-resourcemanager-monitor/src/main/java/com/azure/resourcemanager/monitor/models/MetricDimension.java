@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The MetricDimension model. */
+/** Specifies a metric dimension. */
 @Fluent
 public final class MetricDimension {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricDimension.class);

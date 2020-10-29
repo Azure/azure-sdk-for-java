@@ -13,8 +13,8 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import com.microsoft.azure.management.avs.v2020_03_20.ClusterUpdate;
 import com.microsoft.azure.management.avs.v2020_03_20.Sku;
-import java.util.List;
 import com.microsoft.azure.management.avs.v2020_03_20.ClusterProvisioningState;
+import java.util.List;
 import rx.functions.Func1;
 
 class ClusterImpl extends CreatableUpdatableImpl<Cluster, ClusterInner, ClusterImpl> implements Cluster, Cluster.Definition, Cluster.Update {
@@ -144,6 +144,12 @@ class ClusterImpl extends CreatableUpdatableImpl<Cluster, ClusterInner, ClusterI
     @Override
     public ClusterImpl withSku(Sku sku) {
         this.inner().withSku(sku);
+        return this;
+    }
+
+    @Override
+    public ClusterImpl withProvisioningState(ClusterProvisioningState provisioningState) {
+        this.inner().withProvisioningState(provisioningState);
         return this;
     }
 

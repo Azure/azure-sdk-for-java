@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The InputFieldMappingEntry model. */
+/** Input field mapping for a skill. */
 @Fluent
 public final class InputFieldMappingEntry {
     /*
