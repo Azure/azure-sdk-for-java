@@ -4,7 +4,6 @@
 
 ### New Features
 
-- Added `Option<T>` to represent the states of instantiated, null, and non-null for the wrapped value.
 - Added `JsonPatchDocument` to support `json-patch` functionality.
 - Added new Identity `Configuration` properties.
 
