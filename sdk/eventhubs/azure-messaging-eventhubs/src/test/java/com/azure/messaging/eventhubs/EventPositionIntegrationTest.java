@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import reactor.core.Disposable;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -21,8 +20,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
@@ -171,35 +168,26 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
      * Test for receiving message from latest offset
      */
     @Test
-    void receiveLatestMessages() throws InterruptedException {
+    void receiveLatestMessages() {
         // Arrange
         final String messageId = UUID.randomUUID().toString();
         final SendOptions options = new SendOptions().setPartitionId(testData.getPartitionId());
         final EventHubProducerClient producer = createBuilder()
             .buildProducerClient();
         final List<EventData> events = TestUtils.getEvents(15, messageId);
-        final CountDownLatch countDownLatch = new CountDownLatch(numberOfEvents);
 
-        Disposable subscription = null;
         try {
-            subscription = consumer.receiveFromPartition(testData.getPartitionId(), EventPosition.latest())
+            StepVerifier.create(consumer.receiveFromPartition(testData.getPartitionId(), EventPosition.latest())
                 .filter(event -> isMatchingEvent(event, messageId))
-                .take(numberOfEvents)
-                .subscribe(event -> countDownLatch.countDown());
+                .take(numberOfEvents))
+                .then(() -> producer.send(events, options))
+                .expectNextCount(numberOfEvents)
+                .verifyComplete();
 
             // Act
-            producer.send(events, options);
-            countDownLatch.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS);
         } finally {
-            if (subscription != null) {
-                subscription.dispose();
-            }
-
             dispose(producer);
         }
-
-        // Assert
-        Assertions.assertEquals(0, countDownLatch.getCount());
     }
 
     /**
