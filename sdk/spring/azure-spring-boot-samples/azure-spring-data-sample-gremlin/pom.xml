@@ -11,7 +11,7 @@
 	<groupId>com.azure.spring</groupId>
 	<artifactId>azure-spring-data-sample-gremlin</artifactId>
 	<version>1.0.0</version>
-	<name>azure-spring-data-sample-gremlin</name>
+	<name>Azure Spring Data Sample Gremlin</name>
 	<description>Sample project for cosmos gremlin</description>
 
 	<dependencies>

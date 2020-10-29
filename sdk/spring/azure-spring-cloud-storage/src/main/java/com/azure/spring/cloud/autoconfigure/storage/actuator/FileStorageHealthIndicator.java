@@ -12,9 +12,12 @@ import com.azure.storage.file.share.ShareServiceAsyncClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
 import com.azure.storage.file.share.models.ShareServiceProperties;
 
+/**
+ * Health indicator for file storage.
+ */
 public class FileStorageHealthIndicator implements HealthIndicator {
 
-    private ShareServiceAsyncClient internalClient;
+    private final ShareServiceAsyncClient internalClient;
 
     public FileStorageHealthIndicator(ApplicationContext applicationContext) {
         ShareServiceClientBuilder shareStorageClientBuilder = applicationContext

@@ -387,8 +387,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             })
             .flatMapMany(messageBatch -> connectionProcessor
                 .flatMap(connection -> connection.getManagementNode(entityName, entityType))
-                .flatMapMany(managementNode -> managementNode.schedule(messageBatch.getMessages(),
-                    scheduledEnqueueTime, messageBatch.getMaxSizeInBytes(), linkName.get(), transactionContext))
+                .flatMapMany(managementNode -> managementNode.schedule(messageBatch.getMessages(), scheduledEnqueueTime,
+                    messageBatch.getMaxSizeInBytes(), linkName.get(), transactionContext))
             );
     }
 

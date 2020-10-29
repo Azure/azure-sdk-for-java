@@ -79,7 +79,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.10.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.10.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -94,7 +94,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-experimental</artifactId>
-      <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
+      <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -124,12 +124,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-json-gson</artifactId>
-      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-gson;current} -->
+      <version>1.0.3</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-gson;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-json-jackson</artifactId>
-      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;current} -->
+      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -500,8 +500,8 @@
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-cloud-servicebus-stream-binder-core</artifactId>
-      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-servicebus-stream-binder-core;current} -->
+      <artifactId>azure-spring-cloud-stream-binder-servicebus-core</artifactId>
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-servicebus-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -510,18 +510,18 @@
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-cloud-servicebus-topic-stream-binder</artifactId>
-      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-servicebus-topic-stream-binder;current} -->
+      <artifactId>azure-spring-cloud-stream-binder-servicebus-topic</artifactId>
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-servicebus-topic;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-cloud-servicebus-queue-stream-binder</artifactId>
-      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-servicebus-queue-stream-binder;current} -->
+      <artifactId>azure-spring-cloud-stream-binder-servicebus-queue</artifactId>
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-servicebus-queue;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-cloud-eventhubs-stream-binder</artifactId>
-      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-eventhubs-stream-binder;current} -->
+      <artifactId>azure-spring-cloud-stream-binder-eventhubs</artifactId>
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-eventhubs;current} -->
     </dependency>
 	<dependency>
       <groupId>com.azure</groupId>

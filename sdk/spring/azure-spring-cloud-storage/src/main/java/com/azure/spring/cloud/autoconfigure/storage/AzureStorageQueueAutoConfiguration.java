@@ -3,8 +3,6 @@
 
 package com.azure.spring.cloud.autoconfigure.storage;
 
-import com.azure.storage.queue.QueueServiceClient;
-import com.microsoft.azure.management.storage.StorageAccount;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.context.AzureEnvironmentAutoConfiguration;
 import com.azure.spring.cloud.context.core.api.EnvironmentProvider;
@@ -15,6 +13,8 @@ import com.azure.spring.integration.storage.queue.StorageQueueOperation;
 import com.azure.spring.integration.storage.queue.StorageQueueTemplate;
 import com.azure.spring.integration.storage.queue.factory.DefaultStorageQueueClientFactory;
 import com.azure.spring.integration.storage.queue.factory.StorageQueueClientFactory;
+import com.azure.storage.queue.QueueServiceClient;
+import com.microsoft.azure.management.storage.StorageAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -26,6 +26,9 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
 
+/**
+ * Auto-configuration class for Azure Storage Queue.
+ */
 @Configuration
 @AutoConfigureAfter({AzureContextAutoConfiguration.class, AzureEnvironmentAutoConfiguration.class})
 @ConditionalOnClass({QueueServiceClient.class, StorageQueueClientFactory.class})
@@ -34,8 +37,6 @@ import javax.annotation.PostConstruct;
 public class AzureStorageQueueAutoConfiguration {
 
     private static final String STORAGE_QUEUE = "StorageQueue";
-    private static final String STORAGE = "Storage";
-    private static final String ACCOUNT_NAME = "AccountName";
 
     @Autowired(required = false)
     private ResourceManagerProvider resourceManagerProvider;

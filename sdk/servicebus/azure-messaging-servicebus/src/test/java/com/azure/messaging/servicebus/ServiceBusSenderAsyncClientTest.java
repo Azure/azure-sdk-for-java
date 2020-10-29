@@ -70,7 +70,10 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_SERVICE_NAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -307,7 +310,10 @@ class ServiceBusSenderAsyncClientTest {
         // Act & Assert
         StepVerifier.create(sender.scheduleMessages(messages, instant))
             .verifyError(IllegalArgumentException.class);
+
+        verify(managementNode, never()).schedule(any(List.class), eq(instant), anyInt(), eq(LINK_NAME), isNull());
     }
+
 
     /**
      * Verifies that sending multiple message will result in calling sender.send(MessageBatch, transaction).
