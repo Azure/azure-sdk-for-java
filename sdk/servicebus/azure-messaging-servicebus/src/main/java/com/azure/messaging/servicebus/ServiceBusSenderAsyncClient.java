@@ -338,7 +338,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * Sends a scheduled messages to the Azure Service Bus entity this sender is connected to. A scheduled message is
      * enqueued and made available to receivers only at the scheduled enqueue time.
      *
-     * @param messages Message to be sent to the Service Bus Queue.
+     * @param messages Messages to be sent to the Service Bus Queue.
      * @param scheduledEnqueueTime OffsetDateTime at which the message should appear in the Service Bus queue or topic.
      *
      * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
@@ -353,7 +353,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * Sends a scheduled messages to the Azure Service Bus entity this sender is connected to. A scheduled message is
      * enqueued and made available to receivers only at the scheduled enqueue time.
      *
-     * @param messages Message to be sent to the Service Bus Queue.
+     * @param messages Messages to be sent to the Service Bus Queue.
      * @param scheduledEnqueueTime Instant at which the message should appear in the Service Bus queue or topic.
      * @param transactionContext to be set on batch message before scheduling them on Service Bus.
      *
@@ -371,13 +371,26 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             return fluxError(logger, new NullPointerException("'scheduledEnqueueTime' cannot be null."));
         }
 
-        return createMessageBatch().flatMapMany(messageBatch -> {
-            messages.forEach(message -> messageBatch.tryAddMessage(message));
-            return getSendLink().flatMapMany(link -> connectionProcessor
-                .flatMap(connection -> connection.getManagementNode(entityName, entityType))
-                .flatMapMany(managementNode -> managementNode.schedule(messageBatch.getMessages(), scheduledEnqueueTime,
-                    messageBatch.getMaxSizeInBytes(), link.getLinkName(), transactionContext)));
-        });
+        return getSendLink().flatMapMany(link -> createMessageBatch()
+            .flatMapMany(messageBatch -> {
+                int index = 0;
+                for (ServiceBusMessage message : messages) {
+                    if (!messageBatch.tryAddMessage(message)) {
+                        final String error = String.format(Locale.US,
+                            "Messages exceed max allowed size for all the messages together. "
+                                + "Failed to add message at index '%s'.", index);
+                        throw logger.logExceptionAsError(new AmqpException(false,
+                            AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, error, link.getErrorContext()));
+                    }
+                    ++index;
+                }
+
+                return connectionProcessor
+                    .flatMap(connection -> connection.getManagementNode(entityName, entityType))
+                    .flatMapMany(managementNode -> managementNode.schedule(messageBatch.getMessages(),
+                        scheduledEnqueueTime, messageBatch.getMaxSizeInBytes(), link.getLinkName(),
+                        transactionContext));
+            }));
     }
 
     /**
