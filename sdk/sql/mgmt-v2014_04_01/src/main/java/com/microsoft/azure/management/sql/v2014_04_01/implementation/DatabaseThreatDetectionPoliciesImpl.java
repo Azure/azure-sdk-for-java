@@ -44,10 +44,14 @@ class DatabaseThreatDetectionPoliciesImpl extends WrapperImpl<DatabaseThreatDete
     public Observable<DatabaseSecurityAlertPolicy> getAsync(String resourceGroupName, String serverName, String databaseName) {
         DatabaseThreatDetectionPoliciesInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, databaseName)
-        .map(new Func1<DatabaseSecurityAlertPolicyInner, DatabaseSecurityAlertPolicy>() {
+        .flatMap(new Func1<DatabaseSecurityAlertPolicyInner, Observable<DatabaseSecurityAlertPolicy>>() {
             @Override
-            public DatabaseSecurityAlertPolicy call(DatabaseSecurityAlertPolicyInner inner) {
-                return wrapModel(inner);
+            public Observable<DatabaseSecurityAlertPolicy> call(DatabaseSecurityAlertPolicyInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((DatabaseSecurityAlertPolicy)wrapModel(inner));
+                }
             }
        });
     }
