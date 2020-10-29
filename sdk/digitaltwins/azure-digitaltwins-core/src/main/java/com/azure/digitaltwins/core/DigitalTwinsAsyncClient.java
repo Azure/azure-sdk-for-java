@@ -26,6 +26,7 @@ import com.azure.digitaltwins.core.models.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ import static com.azure.core.util.FluxUtil.withContext;
 @ServiceClient(builder = DigitalTwinsClientBuilder.class, isAsync = true)
 public final class DigitalTwinsAsyncClient {
     private static final ClientLogger logger = new ClientLogger(DigitalTwinsAsyncClient.class);
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private static ObjectMapper mapper;
     private final DigitalTwinsServiceVersion serviceVersion;
     private final AzureDigitalTwinsAPIImpl protocolLayer;
     private static final Boolean includeModelDefinitionOnGet = true;
@@ -61,9 +62,10 @@ public final class DigitalTwinsAsyncClient {
 
     DigitalTwinsAsyncClient(String serviceEndpoint, HttpPipeline pipeline, DigitalTwinsServiceVersion serviceVersion, JsonSerializer jsonSerializer) {
         final SimpleModule stringModule = new SimpleModule("String Serializer");
-        stringModule.addSerializer(new DigitalTwinsStringSerializer(String.class, mapper));
 
         JacksonAdapter jacksonAdapter = new JacksonAdapter();
+        mapper = jacksonAdapter.serializer(); // Use the same mapper in this layer that the generated layer will use
+        stringModule.addSerializer(new DigitalTwinsStringSerializer(String.class, mapper));
         jacksonAdapter.serializer().registerModule(stringModule);
 
         this.serviceVersion = serviceVersion;
