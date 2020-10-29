@@ -9,12 +9,11 @@ import com.azure.core.amqp.models.AmqpBodyType;
 import com.azure.core.amqp.models.AmqpDataBody;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.experimental.util.BinaryData;
 
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
@@ -49,12 +48,12 @@ import static com.azure.core.amqp.AmqpMessageConstant.VIA_PARTITION_KEY_ANNOTATI
  * </p>
  *
  * @see ServiceBusMessageBatch
+ * @see BinaryData
  */
 public class ServiceBusMessage {
     private final AmqpAnnotatedMessage amqpAnnotatedMessage;
     private final ClientLogger logger = new ClientLogger(ServiceBusMessage.class);
 
-    private final byte[] binaryData;
     private Context context;
 
     /**
@@ -65,20 +64,23 @@ public class ServiceBusMessage {
      * @throws NullPointerException if {@code body} is null.
      */
     public ServiceBusMessage(String body) {
-        this(Objects.requireNonNull(body, "'body' cannot be null.").getBytes(StandardCharsets.UTF_8));
+        this(BinaryData.fromString(Objects.requireNonNull(body, "'body' cannot be null.")));
     }
 
     /**
-     * Creates a {@link ServiceBusMessage} containing the {@code body}.
+     * Creates a {@link ServiceBusMessage} containing the {@code body}.The {@link BinaryData} provides various
+     * convenience API representing byte array. It also provides a way to serialize {@link Object} into
+     * {@link BinaryData}.
      *
      * @param body The data to set for this {@link ServiceBusMessage}.
      *
      * @throws NullPointerException if {@code body} is {@code null}.
+     *
+     * @see BinaryData
      */
-    public ServiceBusMessage(byte[] body) {
-        this.binaryData = Objects.requireNonNull(body, "'body' cannot be null.");
+    public ServiceBusMessage(BinaryData body) {
         this.context = Context.NONE;
-        this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(binaryData)));
+        this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(body)));
     }
 
     /**
@@ -94,7 +96,6 @@ public class ServiceBusMessage {
 
         this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(receivedMessage.getAmqpAnnotatedMessage());
         this.context = Context.NONE;
-        this.binaryData = receivedMessage.getBody();
 
         // clean up data which user is not allowed to set.
         amqpAnnotatedMessage.getHeader().setDeliveryCount(null);
@@ -132,6 +133,8 @@ public class ServiceBusMessage {
     /**
      * Gets the actual payload/data wrapped by the {@link ServiceBusMessage}.
      *
+     * <p>The {@link BinaryData} wraps byte array and is an abstraction over many different ways it can be represented.
+     * It provides many convenience API including APIs to serialize/deserialize object.
      * <p>
      * If the means for deserializing the raw data is not apparent to consumers, a common technique is to make use of
      * {@link #getApplicationProperties()} when creating the event, to associate serialization hints as an aid to
@@ -140,11 +143,11 @@ public class ServiceBusMessage {
      *
      * @return A byte array representing the data.
      */
-    public byte[] getBody() {
+    public BinaryData getBody() {
         final AmqpBodyType type = amqpAnnotatedMessage.getBody().getBodyType();
         switch (type) {
             case DATA:
-                return Arrays.copyOf(binaryData, binaryData.length);
+                return ((AmqpDataBody) amqpAnnotatedMessage.getBody()).getData().stream().findFirst().get();
             case SEQUENCE:
             case VALUE:
                 throw logger.logExceptionAsError(new UnsupportedOperationException("Not supported AmqpBodyType: "

@@ -206,7 +206,7 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
         }
 
         assertEquals(messageId, message.getMessageId());
-        assertEquals(contents, new String(message.getBody(), StandardCharsets.UTF_8));
+        assertEquals(contents, message.getBody().toString());
 
         assertNull(actual.getThrowable());
     }

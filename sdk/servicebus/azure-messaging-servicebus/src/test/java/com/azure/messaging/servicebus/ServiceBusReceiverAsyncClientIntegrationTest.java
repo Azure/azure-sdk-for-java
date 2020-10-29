@@ -7,6 +7,7 @@ import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpDataBody;
 import com.azure.core.amqp.models.AmqpMessageHeader;
 import com.azure.core.amqp.models.AmqpMessageProperties;
+import com.azure.core.experimental.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
@@ -1089,7 +1090,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         final String messageId = UUID.randomUUID().toString();
         final AmqpAnnotatedMessage expectedAmqpProperties = new AmqpAnnotatedMessage(
-            new AmqpDataBody(Collections.singletonList(CONTENTS_BYTES)));
+            new AmqpDataBody(Collections.singletonList(BinaryData.fromBytes(CONTENTS_BYTES))));
         expectedAmqpProperties.getProperties().setSubject(subject);
         expectedAmqpProperties.getProperties().setReplyToGroupId("r-gid");
         expectedAmqpProperties.getProperties().setReplyTo("reply-to");
@@ -1097,7 +1098,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         expectedAmqpProperties.getProperties().setCorrelationId("correlation-id");
         expectedAmqpProperties.getProperties().setTo("to");
         expectedAmqpProperties.getProperties().setAbsoluteExpiryTime(OffsetDateTime.now().plusSeconds(60));
-        expectedAmqpProperties.getProperties().setUserId("user-id-1".getBytes());
+        expectedAmqpProperties.getProperties().setUserId(BinaryData.fromString("user-id-1"));
         expectedAmqpProperties.getProperties().setContentEncoding("string");
         expectedAmqpProperties.getProperties().setGroupSequence(2L);
         expectedAmqpProperties.getProperties().setCreationTime(OffsetDateTime.now().plusSeconds(30));
@@ -1147,7 +1148,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 assertNotNull(received.getLockToken());
                 AmqpAnnotatedMessage actual = received.getAmqpAnnotatedMessage();
                 try {
-                    assertArrayEquals(CONTENTS_BYTES, message.getBody());
+                    assertArrayEquals(CONTENTS_BYTES, message.getBody().toBytes());
                     assertEquals(expectedAmqpProperties.getHeader().getPriority(), actual.getHeader().getPriority());
                     assertEquals(expectedAmqpProperties.getHeader().isFirstAcquirer(), actual.getHeader().isFirstAcquirer());
                     assertEquals(expectedAmqpProperties.getHeader().isDurable(), actual.getHeader().isDurable());
@@ -1163,7 +1164,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                     assertEquals(expectedAmqpProperties.getProperties().getContentEncoding(), actual.getProperties().getContentEncoding());
                     assertEquals(expectedAmqpProperties.getProperties().getGroupSequence(), actual.getProperties().getGroupSequence());
                     assertEquals(expectedAmqpProperties.getProperties().getCreationTime().toEpochSecond(), actual.getProperties().getCreationTime().toEpochSecond());
-                    assertArrayEquals(expectedAmqpProperties.getProperties().getUserId(), actual.getProperties().getUserId());
+                    assertArrayEquals(expectedAmqpProperties.getProperties().getUserId().toBytes(), actual.getProperties().getUserId().toBytes());
 
                     assertMapValues(expectedAmqpProperties.getDeliveryAnnotations(), actual.getDeliveryAnnotations());
                     assertMapValues(expectedAmqpProperties.getMessageAnnotations(), actual.getMessageAnnotations());

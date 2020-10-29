@@ -18,6 +18,7 @@ import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.experimental.util.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
@@ -268,9 +269,9 @@ class ServiceBusSenderAsyncClientTest {
             .thenReturn(Mono.just(link));
 
         // This is 1024 bytes when serialized.
-        final ServiceBusMessage event = new ServiceBusMessage(new byte[maxEventPayload]);
+        final ServiceBusMessage event = new ServiceBusMessage(BinaryData.fromBytes(new byte[maxEventPayload]));
 
-        final ServiceBusMessage tooLargeEvent = new ServiceBusMessage(new byte[maxEventPayload + 1]);
+        final ServiceBusMessage tooLargeEvent = new ServiceBusMessage(BinaryData.fromBytes(new byte[maxEventPayload + 1]));
         final CreateMessageBatchOptions options = new CreateMessageBatchOptions().setMaximumSizeInBytes(batchSize);
 
         // Act & Assert
@@ -325,7 +326,7 @@ class ServiceBusSenderAsyncClientTest {
             errorContextProvider, tracerProvider, serializer, null, null);
 
         IntStream.range(0, count).forEach(index -> {
-            final ServiceBusMessage message = new ServiceBusMessage(contents);
+            final ServiceBusMessage message = new ServiceBusMessage(BinaryData.fromBytes(contents));
             Assertions.assertTrue(batch.tryAddMessage(message));
         });
 
@@ -364,7 +365,7 @@ class ServiceBusSenderAsyncClientTest {
             errorContextProvider, tracerProvider, serializer, null, null);
 
         IntStream.range(0, count).forEach(index -> {
-            final ServiceBusMessage message = new ServiceBusMessage(contents);
+            final ServiceBusMessage message = new ServiceBusMessage(BinaryData.fromBytes(contents));
             Assertions.assertTrue(batch.tryAddMessage(message));
         });
 
@@ -432,7 +433,7 @@ class ServiceBusSenderAsyncClientTest {
         );
 
         IntStream.range(0, count).forEach(index -> {
-            final ServiceBusMessage message = new ServiceBusMessage(contents);
+            final ServiceBusMessage message = new ServiceBusMessage(BinaryData.fromBytes(contents));
             Assertions.assertTrue(batch.tryAddMessage(message));
         });
 
@@ -568,7 +569,7 @@ class ServiceBusSenderAsyncClientTest {
     void sendSingleMessage() {
         // Arrange
         final ServiceBusMessage testData =
-            new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
+            new ServiceBusMessage(BinaryData.fromString(TEST_CONTENTS));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))

@@ -12,6 +12,7 @@ import com.azure.core.amqp.implementation.RequestResponseUtils;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpMessageHeader;
 import com.azure.core.amqp.models.AmqpMessageProperties;
+import com.azure.core.experimental.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.ManagementConstants;
 import com.azure.messaging.servicebus.implementation.MessageWithLockToken;
@@ -122,7 +123,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
 
         final ServiceBusMessage brokeredMessage = (ServiceBusMessage) object;
         final Message amqpMessage = Proton.message();
-        final byte[] body = brokeredMessage.getBody();
+        final byte[] body = brokeredMessage.getBody().toBytes();
 
         //TODO (conniey): support AMQP sequence and AMQP value.
         amqpMessage.setBody(new Data(new Binary(body)));
@@ -153,7 +154,9 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             amqpMessage.setGroupSequence(brokeredProperties.getGroupSequence());
         }
         amqpMessage.getProperties().setTo(brokeredMessage.getTo());
-        amqpMessage.getProperties().setUserId(new Binary(brokeredProperties.getUserId()));
+        if (brokeredProperties.getUserId() != null) {
+            amqpMessage.getProperties().setUserId(new Binary(brokeredProperties.getUserId().toBytes()));
+        }
 
         if (brokeredProperties.getAbsoluteExpiryTime() != null) {
             amqpMessage.getProperties().setAbsoluteExpiryTime(Date.from(brokeredProperties.getAbsoluteExpiryTime()
@@ -357,7 +360,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             logger.warning(String.format(Messages.MESSAGE_NOT_OF_TYPE, "null"));
             bytes = EMPTY_BYTE_ARRAY;
         }
-        final ServiceBusReceivedMessage brokeredMessage = new ServiceBusReceivedMessage(bytes);
+        final ServiceBusReceivedMessage brokeredMessage = new ServiceBusReceivedMessage(BinaryData.fromBytes(bytes));
         AmqpAnnotatedMessage brokeredAmqpAnnotatedMessage = brokeredMessage.getAmqpAnnotatedMessage();
 
         // Application properties
@@ -416,7 +419,9 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         brokeredProperties.setGroupId(amqpMessage.getGroupId());
         brokeredProperties.setContentEncoding(amqpMessage.getContentEncoding());
         brokeredProperties.setGroupSequence(amqpMessage.getGroupSequence());
-        brokeredProperties.setUserId(amqpMessage.getUserId());
+        if (amqpMessage.getUserId() != null) {
+            brokeredProperties.setUserId(BinaryData.fromBytes(amqpMessage.getUserId()));
+        }
 
         // DeliveryAnnotations
         final DeliveryAnnotations deliveryAnnotations = amqpMessage.getDeliveryAnnotations();

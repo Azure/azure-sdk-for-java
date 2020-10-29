@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.experimental.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.LockContainer;
 import com.azure.messaging.servicebus.models.LockRenewalStatus;
@@ -54,7 +55,7 @@ public class FluxAutoLockRenewTest {
 
     private final ClientLogger logger = new ClientLogger(FluxAutoLockRenewTest.class);
 
-    private final ServiceBusReceivedMessage receivedMessage = new ServiceBusReceivedMessage("Some Data".getBytes());
+    private final ServiceBusReceivedMessage receivedMessage = new ServiceBusReceivedMessage(BinaryData.fromString("Some Data"));
     private final ServiceBusReceivedMessageContext message = new ServiceBusReceivedMessageContext(receivedMessage);
     private final TestPublisher<ServiceBusReceivedMessageContext> messagesPublisher = TestPublisher.create();
     private final Flux<? extends ServiceBusReceivedMessageContext> messageSource = messagesPublisher.flux();
@@ -103,7 +104,7 @@ public class FluxAutoLockRenewTest {
     @Test
     void canCancel() {
         // Arrange
-        final ServiceBusReceivedMessage receivedMessage2 = new ServiceBusReceivedMessage("data".getBytes());
+        final ServiceBusReceivedMessage receivedMessage2 = new ServiceBusReceivedMessage(BinaryData.fromString("data"));
         final ServiceBusReceivedMessageContext message2 = new ServiceBusReceivedMessageContext(receivedMessage2);
         receivedMessage2.setLockToken(UUID.randomUUID());
         receivedMessage2.setLockedUntil(OffsetDateTime.now().plusSeconds(2));
@@ -328,13 +329,13 @@ public class FluxAutoLockRenewTest {
     @Test
     public void simpleFilterAndBackpressured() {
         // Arrange
-        final ServiceBusReceivedMessage receivedMessage2 = new ServiceBusReceivedMessage("data".getBytes());
+        final ServiceBusReceivedMessage receivedMessage2 = new ServiceBusReceivedMessage(BinaryData.fromString("data"));
         receivedMessage2.setEnqueuedSequenceNumber(2);
         receivedMessage2.setLockToken(UUID.randomUUID());
         receivedMessage2.setLockedUntil(OffsetDateTime.now().plusSeconds(2));
         final ServiceBusReceivedMessageContext message2 = new ServiceBusReceivedMessageContext(receivedMessage2);
 
-        final ServiceBusReceivedMessage receivedMessage3 = new ServiceBusReceivedMessage("data".getBytes());
+        final ServiceBusReceivedMessage receivedMessage3 = new ServiceBusReceivedMessage(BinaryData.fromString("data"));
         receivedMessage3.setEnqueuedSequenceNumber(3);
         receivedMessage3.setLockToken(UUID.randomUUID());
         receivedMessage3.setLockedUntil(OffsetDateTime.now().plusSeconds(2));
@@ -368,12 +369,12 @@ public class FluxAutoLockRenewTest {
     @Test
     public void simpleMappingBackpressured() {
         // Arrange
-        final ServiceBusReceivedMessage receivedMessage2 = new ServiceBusReceivedMessage("data".getBytes());
+        final ServiceBusReceivedMessage receivedMessage2 = new ServiceBusReceivedMessage(BinaryData.fromString("data"));
         receivedMessage2.setLockToken(UUID.randomUUID());
         receivedMessage2.setLockedUntil(OffsetDateTime.now().plusSeconds(2));
         final ServiceBusReceivedMessageContext message2 = new ServiceBusReceivedMessageContext(receivedMessage2);
 
-        final ServiceBusReceivedMessage receivedMessage3 = new ServiceBusReceivedMessage("data".getBytes());
+        final ServiceBusReceivedMessage receivedMessage3 = new ServiceBusReceivedMessage(BinaryData.fromString("data"));
         receivedMessage3.setLockToken(UUID.randomUUID());
         receivedMessage3.setLockedUntil(OffsetDateTime.now().plusSeconds(2));
         final ServiceBusReceivedMessageContext message3 = new ServiceBusReceivedMessageContext(receivedMessage3);
@@ -405,13 +406,13 @@ public class FluxAutoLockRenewTest {
         // Arrange
         final Long expectedEnqueuedSequenceNumber = 2L;
         final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(1);
-        final ServiceBusReceivedMessage receivedMessage2 = new ServiceBusReceivedMessage("data".getBytes());
+        final ServiceBusReceivedMessage receivedMessage2 = new ServiceBusReceivedMessage(BinaryData.fromString("data"));;
         final ServiceBusReceivedMessageContext message2 = new ServiceBusReceivedMessageContext(receivedMessage2);
         receivedMessage2.setLockToken(UUID.randomUUID());
         receivedMessage2.setLockedUntil(lockedUntil);
         receivedMessage2.setEnqueuedSequenceNumber(1);
 
-        final ServiceBusReceivedMessage receivedMessage3 = new ServiceBusReceivedMessage("data".getBytes());
+        final ServiceBusReceivedMessage receivedMessage3 = new ServiceBusReceivedMessage(BinaryData.fromString("data"));;
         final ServiceBusReceivedMessageContext message3 = new ServiceBusReceivedMessageContext(receivedMessage3);
         receivedMessage2.setLockToken(UUID.randomUUID());
         receivedMessage2.setLockedUntil(lockedUntil);

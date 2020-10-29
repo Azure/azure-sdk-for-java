@@ -18,17 +18,16 @@ import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpBodyType;
 import com.azure.core.amqp.models.AmqpDataBody;
+import com.azure.core.experimental.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -38,7 +37,6 @@ public final class ServiceBusReceivedMessage {
     private final ClientLogger logger = new ClientLogger(ServiceBusReceivedMessage.class);
 
     private final AmqpAnnotatedMessage amqpAnnotatedMessage;
-    private final byte[] binaryData;
     private UUID lockToken;
 
     /**
@@ -53,15 +51,15 @@ public final class ServiceBusReceivedMessage {
         return amqpAnnotatedMessage;
     }
 
-    ServiceBusReceivedMessage(byte[] body) {
-        binaryData = Objects.requireNonNull(body, "'body' cannot be null.");
-        amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(
-            binaryData)));
+    ServiceBusReceivedMessage(BinaryData body) {
+        amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(body)));
     }
 
     /**
      * Gets the actual payload/data wrapped by the {@link ServiceBusReceivedMessage}.
      *
+     * <p>The {@link BinaryData} wraps byte array and is an abstraction over many different ways it can be represented.
+     * It provides many convenience API including APIs to serialize/deserialize object.
      * <p>
      * If the means for deserializing the raw data is not apparent to consumers, a common technique is to make use of
      * {@link #getApplicationProperties()} when creating the event, to associate serialization hints as an aid to
@@ -70,17 +68,16 @@ public final class ServiceBusReceivedMessage {
      *
      * @return A byte array representing the data.
      */
-    public byte[] getBody() {
+    public BinaryData getBody() {
         final AmqpBodyType bodyType = amqpAnnotatedMessage.getBody().getBodyType();
         switch (bodyType) {
             case DATA:
-                return Arrays.copyOf(binaryData, binaryData.length);
+                return ((AmqpDataBody) amqpAnnotatedMessage.getBody()).getData().stream().findFirst().get();
             case SEQUENCE:
             case VALUE:
                 throw logger.logExceptionAsError(new UnsupportedOperationException("Body type not supported yet "
                     + bodyType.toString()));
             default:
-                logger.warning("Invalid body type {}.", bodyType);
                 throw logger.logExceptionAsError(new IllegalStateException("Body type not valid "
                     + bodyType.toString()));
         }
