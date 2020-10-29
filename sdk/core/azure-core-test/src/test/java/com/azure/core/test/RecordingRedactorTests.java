@@ -95,7 +95,7 @@ public class RecordingRedactorTests {
         + "\"url\":\"http://url\"}";
 
     private static final String REDACTED_HTTP_URL_RESPONSE_BODY = "\"dataSourceParameter\":{\"httpMethod\":\"GET\","
-        + "\"url\":\"REDACTED\"}";;
+        + "\"url\":\"REDACTED\"}";
 
     private static final String HOST_RESPONSE_BODY = "\"dataSourceParameter\":{\"port\":\"9200\","
         + "\"query\":\"select * from adsample2 where Timestamp = @StartTime\",\"host\":\"host.azure.com\"}";

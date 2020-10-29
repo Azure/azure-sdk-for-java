@@ -53,17 +53,17 @@ public abstract class IncidentRootCauseTestBase extends TestBase {
     }
 
     static IncidentRootCause getExpectedIncidentRootCause() {
-        IncidentRootCause incidentRootCause = new IncidentRootCause();
-        PrivateFieldAccessHelper.set(incidentRootCause, "seriesKey",
-            new DimensionKey(new HashMap<String, String>() {{
+        RootCause innerRootCause = new RootCause()
+            .setRootCause(new DimensionGroupIdentity().setDimension(new HashMap<String, String>() {
+                {
                     put("category", "Electronics (Consumer)");
                     put("city", "Karachi");
-                }}));
-        PrivateFieldAccessHelper.set(incidentRootCause, "paths", Collections.singletonList("city"));
-        PrivateFieldAccessHelper.set(incidentRootCause, "confidenceScore", 0.34265262137636504);
-        PrivateFieldAccessHelper.set(incidentRootCause, "description",
-            "Increase on category = Electronics (Consumer) | city = Karachi contributes the most to current incident.");
-        return incidentRootCause;
+                }
+            }))
+            .setPath(Collections.singletonList("city"))
+            .setScore(0.34265262137636504)
+            .setDescription("Increase on category = Electronics (Consumer) | city = Karachi contributes the most to current incident.");
+        return IncidentRootCauseTransforms.fromInner(innerRootCause);
     }
 
     void validateIncidentRootCauses(IncidentRootCause expectedIncidentRootCause,

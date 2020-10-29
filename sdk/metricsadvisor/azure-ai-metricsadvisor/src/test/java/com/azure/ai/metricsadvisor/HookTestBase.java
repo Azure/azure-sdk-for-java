@@ -85,7 +85,7 @@ public abstract class HookTestBase extends MetricsAdvisorAdministrationClientTes
         Assertions.assertEquals(CreateWebHookInput.INSTANCE.description, webHook.getDescription());
         Assertions.assertEquals(CreateWebHookInput.INSTANCE.externalLink, webHook.getExternalLink());
         Assertions.assertEquals(CreateWebHookInput.INSTANCE.userName, webHook.getUsername());
-        Assertions.assertEquals(CreateWebHookInput.INSTANCE.password, webHook.getPassword());
+        Assertions.assertNotNull(webHook.getPassword());
         HttpHeaders httpHeaders = webHook.getHttpHeaders();
         Assertions.assertNotNull(httpHeaders);
 //        TODO: BUG: Service is not returning headers.
@@ -97,6 +97,7 @@ public abstract class HookTestBase extends MetricsAdvisorAdministrationClientTes
 //        }
     }
 
+    // Track this with https://github.com/Azure/azure-sdk-for-java/issues/16932
     @Test
     abstract void testListHook(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
 
