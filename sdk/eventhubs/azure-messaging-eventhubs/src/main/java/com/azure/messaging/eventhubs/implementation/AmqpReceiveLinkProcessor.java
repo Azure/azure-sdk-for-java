@@ -177,8 +177,8 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                                 LinkErrorContext errorContext = (LinkErrorContext) amqpException.getContext();
                                 if (currentLink != null
                                     && !currentLink.getLinkName().equals(errorContext.getTrackingId())) {
-                                    logger.info("EntityPath[{}]: Link lost signal received for a link " +
-                                        "that is not current. Ignoring the error. Current link {}, link lost {}",
+                                    logger.info("EntityPath[{}]: Link lost signal received for a link "
+                                        + "that is not current. Ignoring the error. Current link {}, link lost {}",
                                         entityPath, linkName, errorContext.getTrackingId());
                                     return;
                                 }
