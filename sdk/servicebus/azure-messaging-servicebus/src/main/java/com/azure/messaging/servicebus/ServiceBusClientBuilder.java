@@ -624,6 +624,7 @@ public final class ServiceBusClientBuilder {
     @ServiceClientBuilder(serviceClients = {ServiceBusReceiverClient.class, ServiceBusReceiverAsyncClient.class})
     public final class ServiceBusSessionReceiverClientBuilder {
         private boolean enableAutoComplete = true;
+        private Integer maxConcurrentSessions = null;
         private int prefetchCount = DEFAULT_PREFETCH_COUNT;
         private String queueName;
         private ReceiveMode receiveMode = ReceiveMode.PEEK_LOCK;
@@ -661,6 +662,24 @@ public final class ServiceBusClientBuilder {
         public ServiceBusSessionReceiverClientBuilder maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
             validateAndThrow(maxAutoLockRenewDuration);
             this.maxAutoLockRenewDuration = maxAutoLockRenewDuration;
+            return this;
+        }
+
+        /**
+         * Enables session processing roll-over by processing at most {@code maxConcurrentSessions}.
+         *
+         * @param maxConcurrentSessions Maximum number of concurrent sessions to process at any given time.
+         *
+         * @return The modified {@link ServiceBusSessionReceiverClientBuilder} object.
+         * @throws IllegalArgumentException if {@code maxConcurrentSessions} is less than 1.
+         */
+        ServiceBusSessionReceiverClientBuilder maxConcurrentSessions(int maxConcurrentSessions) {
+            if (maxConcurrentSessions < 1) {
+                throw logger.logExceptionAsError(new IllegalArgumentException(
+                    "maxConcurrentSessions cannot be less than 1."));
+            }
+
+            this.maxConcurrentSessions = maxConcurrentSessions;
             return this;
         }
 
@@ -791,7 +810,7 @@ public final class ServiceBusClientBuilder {
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
-                maxAutoLockRenewDuration, enableAutoComplete, null, null);
+                maxAutoLockRenewDuration, enableAutoComplete, null, maxConcurrentSessions);
 
             return new ServiceBusSessionReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(),
                 entityPath, entityType, receiverOptions, connectionProcessor, tracerProvider, messageSerializer,
