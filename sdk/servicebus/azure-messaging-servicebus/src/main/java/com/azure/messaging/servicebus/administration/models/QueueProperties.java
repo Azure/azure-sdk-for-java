@@ -64,7 +64,7 @@ public final class QueueProperties {
                     .setDeadLetteringOnMessageExpiration(queue.isDeadLetteringOnMessageExpiration())
                     .setDefaultMessageTimeToLive(queue.getDefaultMessageTimeToLive())
                     .setDuplicateDetectionHistoryTimeWindow(queue.getDuplicateDetectionHistoryTimeWindow())
-                    .setEnablePartitioning(queue.enablePartitioning())
+                    .setEnablePartitioning(queue.isPartitioningEnabled())
                     .setEnableExpress(queue.enableExpress)
                     .setEnableBatchedOperations(queue.enableBatchedOperations)
                     .setEntityAvailabilityStatus(queue.entityAvailabilityStatus)
@@ -79,8 +79,8 @@ public final class QueueProperties {
                     .setSupportOrdering(queue.supportOrdering)
                     .setStatus(queue.getStatus())
                     .setSizeInBytes(queue.getSizeInBytes())
-                    .setRequiresSession(queue.requiresSession())
-                    .setRequiresDuplicateDetection(queue.requiresDuplicateDetection())
+                    .setRequiresSession(queue.isSessionRequired())
+                    .setRequiresDuplicateDetection(queue.isDuplicateDetectionRequired())
                     .setUpdatedAt(queue.getUpdatedAt())
                     .setUserMetadata(queue.getUserMetadata());
 
@@ -261,7 +261,7 @@ public final class QueueProperties {
      *
      * @return the enableBatchedOperations value.
      */
-    public boolean enableBatchedOperations() {
+    public boolean isBatchedOperationsEnabled() {
         return this.enableBatchedOperations;
     }
 
@@ -273,7 +273,7 @@ public final class QueueProperties {
      *
      * @return the {@link QueueProperties} object itself.
      */
-    public QueueProperties setEnableBatchedOperations(boolean enableBatchedOperations) {
+    public QueueProperties setBatchedOperationsEnabled(boolean enableBatchedOperations) {
         this.enableBatchedOperations = enableBatchedOperations;
         return this;
     }
@@ -284,7 +284,7 @@ public final class QueueProperties {
      *
      * @return the enablePartitioning value.
      */
-    public boolean enablePartitioning() {
+    public boolean isPartitioningEnabled() {
         return this.enablePartitioning;
     }
 
@@ -409,7 +409,7 @@ public final class QueueProperties {
      *
      * @return the requiresDuplicateDetection value.
      */
-    public boolean requiresDuplicateDetection() {
+    public boolean isDuplicateDetectionRequired() {
         return this.requiresDuplicateDetection;
     }
 
@@ -418,7 +418,7 @@ public final class QueueProperties {
      *
      * @return the requiresSession value.
      */
-    public boolean requiresSession() {
+    public boolean isSessionRequired() {
         return this.requiresSession;
     }
 
@@ -521,17 +521,17 @@ public final class QueueProperties {
         return this.updatedAt;
     }
 
-    QueueProperties setEnablePartitioning(boolean enablePartitioning) {
+    QueueProperties setPartitioningEnabled(boolean enablePartitioning) {
         this.enablePartitioning = enablePartitioning;
         return this;
     }
 
-    QueueProperties setRequiresDuplicateDetection(boolean requiresDuplicateDetection) {
+    QueueProperties setDuplicateDetectionRequired(boolean requiresDuplicateDetection) {
         this.requiresDuplicateDetection = requiresDuplicateDetection;
         return this;
     }
 
-    QueueProperties setRequiresSession(boolean requiresSession) {
+    QueueProperties setSessionRequired(boolean requiresSession) {
         this.requiresSession = requiresSession;
         return this;
     }
