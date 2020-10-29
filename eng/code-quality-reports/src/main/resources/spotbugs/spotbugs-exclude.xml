@@ -1990,6 +1990,13 @@
     <Bug pattern="EQ_UNUSUAL"/>
   </Match>
 
+   <!-- False positive, equals method is implemented correctly by using equality of member variables  -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.clientTelemetry.ReportPayload"/>
+    <Method name="equals"/>
+    <Bug pattern="EQ_UNUSUAL"/>
+  </Match>
+
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9106 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.PathsHelper"/>
