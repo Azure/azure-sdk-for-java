@@ -5,14 +5,10 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.ExpandableStringEnum;
 
-import java.io.Serializable;
-
 /**
  * Represent the operation this sdk was performing when the error happened.
  */
-public final class ServiceBusErrorSource extends ExpandableStringEnum<ServiceBusErrorSource> implements Serializable {
-
-    private static final long serialVersionUID = -2819764417333954922L;
+public final class ServiceBusErrorSource extends ExpandableStringEnum<ServiceBusErrorSource> {
 
     /** Error while abandoning the message.*/
     public static final ServiceBusErrorSource ABANDONED = fromString("ABANDONED", ServiceBusErrorSource.class);

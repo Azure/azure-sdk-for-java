@@ -11,7 +11,7 @@ import com.azure.core.amqp.exception.AmqpException;
  * @see ServiceBusErrorSource
  */
 public final class ServiceBusAmqpException extends AmqpException {
-    private final ServiceBusErrorSource errorSource;
+    private final transient ServiceBusErrorSource errorSource;
 
     /**
      * @param amqpException for the error hapened.
