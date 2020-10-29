@@ -463,11 +463,10 @@ class ServiceBusReceiverAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(receiver.renewMessageLock(receivedMessage, maxDuration))
-            .verifyErrorMatches(throwable -> {
+            .verifyErrorSatisfies(throwable -> {
                 Assertions.assertTrue(throwable instanceof ServiceBusAmqpException);
                 final ServiceBusErrorSource actual = ((ServiceBusAmqpException) throwable).getErrorSource();
                 Assertions.assertEquals(ServiceBusErrorSource.RENEW_LOCK, actual);
-                return true;
             });
 
         verify(managementNode, times(1)).renewMessageLock(lockToken, null);
@@ -483,11 +482,10 @@ class ServiceBusReceiverAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(sessionReceiver.renewSessionLock(SESSION_ID))
-            .verifyErrorMatches(throwable -> {
+            .verifyErrorSatisfies(throwable -> {
                 Assertions.assertTrue(throwable instanceof ServiceBusAmqpException);
                 final ServiceBusErrorSource actual = ((ServiceBusAmqpException) throwable).getErrorSource();
                 Assertions.assertEquals(ServiceBusErrorSource.RENEW_LOCK, actual);
-                return true;
             });
     }
 
@@ -536,11 +534,10 @@ class ServiceBusReceiverAsyncClientTest {
             }))
             .then(() -> messageSink.next(message))
             .expectNext()
-            .verifyErrorMatches(throwable -> {
+            .verifyErrorSatisfies(throwable -> {
                 Assertions.assertTrue(throwable instanceof ServiceBusAmqpException);
                 final ServiceBusErrorSource actual = ((ServiceBusAmqpException) throwable).getErrorSource();
                 Assertions.assertEquals(expectedErrorSource, actual);
-                return true;
             });
 
         verify(amqpReceiveLink).updateDisposition(eq(lockToken1), any(DeliveryState.class));
@@ -573,11 +570,56 @@ class ServiceBusReceiverAsyncClientTest {
             StepVerifier.create(receiver2.receiveMessages().take(numberOfEvents))
                 .then(() -> messages.forEach(m -> messageSink.next(m)))
                 .expectNextCount(messagesToReceive)
-                .verifyErrorMatches(throwable -> {
+                .verifyErrorSatisfies(throwable -> {
                     Assertions.assertTrue(throwable instanceof ServiceBusAmqpException);
                     final ServiceBusErrorSource actual = ((ServiceBusAmqpException) throwable).getErrorSource();
                     Assertions.assertEquals(ServiceBusErrorSource.COMPLETE, actual);
-                    return true;
+                });
+        } finally {
+            receiver2.close();
+        }
+
+        verify(amqpReceiveLink, times(messagesToReceive)).updateDisposition(lockToken, Accepted.getInstance());
+    }
+
+    /**
+     * Ensure that we throw right error source when there is any issue during autocomplete. Error source should be
+     * {@link ServiceBusErrorSource#COMPLETE}
+     */
+    @Test
+    void errorSourceAutoRenewLock() {
+        // Arrange
+        final int numberOfEvents = 2;
+        final int messagesToReceive = 1;
+        final List<Message> messages = getMessages();
+        final String lockToken = UUID.randomUUID().toString();
+        final OffsetDateTime expiration = OffsetDateTime.now().plus(Duration.ofMinutes(5));
+        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, Duration.ofSeconds(10), true);
+        final ServiceBusReceiverAsyncClient receiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
+            MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
+            messageSerializer, onClientClose);
+
+        when(receivedMessage.getLockToken()).thenReturn(lockToken);
+        when(receivedMessage.getLockedUntil()).thenReturn(expiration);
+
+
+        when(messageSerializer.deserialize(any(Message.class), eq(ServiceBusReceivedMessage.class)))
+            .thenReturn(receivedMessage);
+
+        when(amqpReceiveLink.updateDisposition(lockToken, Accepted.getInstance())).thenReturn(Mono.empty());
+
+        when(managementNode.renewMessageLock(lockToken, null))
+            .thenReturn(Mono.error(new AmqpException(false, "some error occurred.", null)));
+
+        try {
+            // Act & Assert
+            StepVerifier.create(receiver2.receiveMessages().take(1))
+                .then(() -> messages.forEach(m -> messageSink.next(m)))
+                .expectNext()
+                .verifyErrorSatisfies(throwable -> {
+                    Assertions.assertTrue(throwable instanceof ServiceBusAmqpException);
+                    final ServiceBusErrorSource actual = ((ServiceBusAmqpException) throwable).getErrorSource();
+                    Assertions.assertEquals(ServiceBusErrorSource.RENEW_LOCK, actual);
                 });
         } finally {
             receiver2.close();
@@ -607,11 +649,10 @@ class ServiceBusReceiverAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(receiver.receiveMessages().take(1))
-            .verifyErrorMatches(throwable -> {
+            .verifyErrorSatisfies(throwable -> {
                 Assertions.assertTrue(throwable instanceof ServiceBusAmqpException);
                 final ServiceBusErrorSource actual = ((ServiceBusAmqpException) throwable).getErrorSource();
                 Assertions.assertEquals(ServiceBusErrorSource.RECEIVE, actual);
-                return true;
             });
 
         verify(amqpReceiveLink, never()).updateDisposition(eq(lockToken), any(DeliveryState.class));
