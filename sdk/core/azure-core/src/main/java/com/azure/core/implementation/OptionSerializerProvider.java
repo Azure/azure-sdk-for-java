@@ -18,9 +18,8 @@
  * Portions Copyright (c) Microsoft Corporation
  */
 
-package com.azure.core.util.serializer;
+package com.azure.core.implementation;
 
-import com.azure.core.util.Option;
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.MapperFeature;
@@ -37,10 +36,10 @@ final class OptionSerializerProvider extends Serializers.Base implements java.io
 
     @Override
     public JsonSerializer<?> findReferenceSerializer(SerializationConfig config,
-                                                     ReferenceType refType,
-                                                     BeanDescription beanDesc,
-                                                     TypeSerializer contentTypeSerializer,
-                                                     JsonSerializer<Object> contentValueSerializer) {
+        ReferenceType refType,
+        BeanDescription beanDesc,
+        TypeSerializer contentTypeSerializer,
+        JsonSerializer<Object> contentValueSerializer) {
         if (Option.class.isAssignableFrom(refType.getRawClass())) {
             // The standard Serializers.Base implementations for reference types honor
             // USE_STATIC_TYPING flag (e.g. Optional in Jdk8Module), do the same for

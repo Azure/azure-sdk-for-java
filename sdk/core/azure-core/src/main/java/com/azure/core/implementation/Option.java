@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.util;
+package com.azure.core.implementation;
 
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
 /**
- * The Option type to describe tri-state. Every Option instance is in one of
- * the three states: a state representing a non-null-value, null-value, or no-value.
+ * The Option type to describe tri-state. Every Option instance is in one of the three states: a state representing a
+ * non-null-value, null-value, or no-value.
  *
  * <p><strong>Code sample</strong></p>
  * {@codesnippet com.azure.core.util.Option}
@@ -37,6 +37,7 @@ public final class Option<T> {
      * <p>
      * {@code Option.empty()} is a syntactic sugar for {@code Option.of(null)}.
      * </p>
+     *
      * @param <T> The value type.
      * @return an {@link Option} with a null-value.
      */
@@ -59,8 +60,8 @@ public final class Option<T> {
     }
 
     /**
-     * Return {@code true} if this instance is initialized with a null-value or non-null-value,
-     * otherwise {@code false}.
+     * Return {@code true} if this instance is initialized with a null-value or non-null-value, otherwise {@code
+     * false}.
      *
      * @return {@code true} if a value has been initialized, otherwise {@code false}
      */
@@ -71,8 +72,7 @@ public final class Option<T> {
     /**
      * Gets the value in the {@link Option}.
      *
-     * @return The {@code null} (null-value) or non-null-value that the {@link Option}
-     *     is initialized with.
+     * @return The {@code null} (null-value) or non-null-value that the {@link Option} is initialized with.
      * @throws NoSuchElementException thrown if the {@link Option} is in no-value state.
      */
     public T getValue() {
@@ -83,8 +83,7 @@ public final class Option<T> {
     }
 
     /**
-     * Indicates whether some other object is "equal to" this Option. The
-     * other object is considered equal if:
+     * Indicates whether some other object is "equal to" this Option. The other object is considered equal if:
      * <ul>
      * <li>it is also an {@code Option} and;
      * <li>both instances are not initialized or;
@@ -112,13 +111,12 @@ public final class Option<T> {
     }
 
     /**
-     * Returns hash code of the value this Option is initialized with or -1 if in
-     * uninitialized state.
+     * Returns hash code of the value this Option is initialized with or -1 if in uninitialized state.
      * <p>
      * The value 0 will be returned when initialized with {@code null}.
      * </p>
-     * @return hash code of the value this Option is initialized with or -1 if in
-     * uninitialized state.
+     *
+     * @return hash code of the value this Option is initialized with or -1 if in uninitialized state.
      */
     @Override
     public int hashCode() {
