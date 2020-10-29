@@ -504,28 +504,6 @@ public final class PhoneNumberClient {
     }
 
     /**
-     * Purchases the phone number search.
-     *
-     * @param searchId ID of the search
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void purchaseSearch(String searchId) {
-        phoneNumberAsyncClient.purchaseSearch(searchId).block();
-    }
-
-    /**
-     * Purchases the phone number search.
-     *
-     * @param searchId ID of the search
-     * @param context A {@link Context} representing the request context.
-     * @return A {@link Response} for the operation
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> purchaseSearchWithResponse(String searchId, Context context) {
-        return phoneNumberAsyncClient.purchaseSearchWithResponse(searchId, context).block();
-    }
-
-    /**
      * Initiates a search and returns a {@link PhoneNumberSearch} usable by other functions
      * This function returns a Long Running Operation poller.
      * 
@@ -538,5 +516,20 @@ public final class PhoneNumberClient {
     public SyncPoller<PhoneNumberSearch, PhoneNumberSearch> beginCreateSearch(
         CreateSearchOptions options, Duration pollInterval) {
         return phoneNumberAsyncClient.beginCreateSearch(options, pollInterval).getSyncPoller();
+    }
+
+    /**
+     * Initiates a purchase process and polls until a terminal state is reached
+     * This function returns a Long Running Operation poller
+     * 
+     * @param searchId ID of the search     
+     * @param pollInterval The time our long running operation will keep on polling 
+     * until it gets a result from the server
+     * @return A {@link SyncPoller} object with the search result
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<Void, Void> beginPurchaseSearch(
+        String searchId, Duration pollInterval) {
+        return phoneNumberAsyncClient.beginPurchaseSearch(searchId, pollInterval).getSyncPoller();
     }
 }

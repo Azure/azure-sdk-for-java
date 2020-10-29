@@ -18,6 +18,7 @@ import com.azure.communication.administration.models.PhonePlan;
 import com.azure.communication.administration.models.PhonePlanGroup;
 import com.azure.communication.administration.models.PstnConfiguration;
 import com.azure.communication.administration.models.ReleaseResponse;
+import com.azure.communication.administration.models.SearchStatus;
 import com.azure.communication.administration.models.UpdateNumberCapabilitiesResponse;
 import com.azure.communication.administration.models.UpdatePhoneNumberCapabilitiesResponse;
 import com.azure.communication.common.PhoneNumber;
@@ -347,26 +348,6 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void purchaseSearch(HttpClient httpClient) {
-        Mono<Void> mono = this.getClient(httpClient).purchaseSearch(SEARCH_ID_TO_PURCHASE);
-
-        StepVerifier.create(mono).verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void purchaseSearchWithResponse(HttpClient httpClient) {
-        Mono<Response<Void>> mono = this.getClient(httpClient).purchaseSearchWithResponse(SEARCH_ID_TO_PURCHASE, Context.NONE);
-
-        StepVerifier.create(mono)
-            .assertNext(item -> {
-                assertEquals(202, item.getStatusCode());
-            })
-            .verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void cancelSearch(HttpClient httpClient) {
         Mono<Void> mono = this.getClient(httpClient).cancelSearch(SEARCH_ID_TO_CANCEL);
 
@@ -525,6 +506,23 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
         PhoneNumberSearch testResult = asyncRes.getValue();
         assertEquals(testResult.getPhoneNumbers().size(), 2);
         assertNotNull(testResult.getSearchId());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void beginPurchaseSearch(HttpClient httpClient) {
+        Duration pollInterval = Duration.ofSeconds(1);
+        PhoneNumberAsyncClient client = this.getClient(httpClient);
+        PollerFlux<Void, Void> poller =
+            client.beginPurchaseSearch(SEARCH_ID, pollInterval); 
+        poller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+            .blockLast();
+        Mono<PhoneNumberSearch> testResult = client.getSearchById(SEARCH_ID);
+        StepVerifier.create(testResult)
+            .assertNext(item -> {
+                assertEquals(SearchStatus.SUCCESS, item.getStatus());
+            })
+            .verifyComplete();
     }
 
     private PhoneNumberAsyncClient getClient(HttpClient httpClient) {

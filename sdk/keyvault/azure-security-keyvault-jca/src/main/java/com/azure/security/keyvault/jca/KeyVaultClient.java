@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.security.keyvault.jca;
 
 import com.azure.security.keyvault.jca.rest.CertificateBundle;
@@ -182,7 +181,7 @@ class KeyVaultClient extends DelegateRestClient {
                 try {
                     CertificateFactory cf = CertificateFactory.getInstance("X.509");
                     certificate = (X509Certificate) cf.generateCertificate(
-                        new ByteArrayInputStream(Base64.getDecoder().decode(certificateString))
+                            new ByteArrayInputStream(Base64.getDecoder().decode(certificateString))
                     );
                 } catch (CertificateException ce) {
                     LOGGER.log(WARNING, "Certificate error", ce);
@@ -201,19 +200,21 @@ class KeyVaultClient extends DelegateRestClient {
      * @return the key.
      */
     Key getKey(String alias, char[] password) {
-        LOGGER.entering("KeyVaultClient", "getKey", new Object[] { alias, password });
+        LOGGER.entering("KeyVaultClient", "getKey", new Object[]{alias, password});
         LOGGER.log(INFO, "Getting key for alias: {0}", alias);
         Key key = null;
         CertificateBundle certificateBundle = getCertificateBundle(alias);
         boolean isExportable = Optional.ofNullable(certificateBundle)
-                                       .map(CertificateBundle::getPolicy)
-                                       .map(CertificatePolicy::getKeyProperties)
-                                       .map(KeyProperties::isExportable)
-                                       .orElse(false);
+                .map(CertificateBundle::getPolicy)
+                .map(CertificatePolicy::getKeyProperties)
+                .map(KeyProperties::isExportable)
+                .orElse(false);
         if (isExportable) {
+            //
             // Because the certificate is exportable the private key is
             // available. So we'll use the Azure Key Vault Secrets API to get
             // the private key.
+            //
             String certificateSecretUri = certificateBundle.getSid();
             HashMap<String, String> headers = new HashMap<>();
             headers.put("Authorization", "Bearer " + getAccessToken());
@@ -224,8 +225,8 @@ class KeyVaultClient extends DelegateRestClient {
                 try {
                     KeyStore keyStore = KeyStore.getInstance("PKCS12");
                     keyStore.load(
-                        new ByteArrayInputStream(Base64.getDecoder().decode(secretBundle.getValue())),
-                        "".toCharArray()
+                            new ByteArrayInputStream(Base64.getDecoder().decode(secretBundle.getValue())),
+                            "".toCharArray()
                     );
                     alias = keyStore.aliases().nextElement();
                     key = keyStore.getKey(alias, "".toCharArray());
@@ -233,11 +234,14 @@ class KeyVaultClient extends DelegateRestClient {
                     LOGGER.log(WARNING, "Unable to decode key", ex);
                 }
             }
-        } else {
-            // The private key is not available so the certificate cannot be
-            // used for server side certificates or mTLS. Since we do not know
-            // the intent of the usage at this stage we skip this key.
         }
+        
+        // 
+        // If the private key is not available the certificate cannot be
+        // used for server side certificates or mTLS. Then we do not know
+        // the intent of the usage at this stage we skip this key.
+        //
+
         LOGGER.exiting("KeyVaultClient", "getKey", key);
         return key;
     }

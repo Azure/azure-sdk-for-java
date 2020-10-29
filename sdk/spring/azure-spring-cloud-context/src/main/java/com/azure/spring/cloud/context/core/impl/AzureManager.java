@@ -12,6 +12,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 
+/**
+ * Abstract Azure resource manager.
+ * @param <T> The type of resource.
+ * @param <K> The type of resource key.
+ */
 public abstract class AzureManager<T, K> implements ResourceManager<T, K> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureManager.class);

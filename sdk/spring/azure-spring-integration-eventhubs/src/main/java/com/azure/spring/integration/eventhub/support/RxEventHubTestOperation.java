@@ -17,6 +17,9 @@ import rx.subscriptions.Subscriptions;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
+/**
+ * Rx implementation for {@link EventHubTestOperation}.
+ */
 public class RxEventHubTestOperation extends EventHubTestOperation implements EventHubRxOperation {
     private final ConcurrentHashMap<Tuple<String, String>, Observable<Message<?>>> subjectByNameAndGroup =
         new ConcurrentHashMap<>();

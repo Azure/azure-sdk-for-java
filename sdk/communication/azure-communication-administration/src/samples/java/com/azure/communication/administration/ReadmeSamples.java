@@ -327,15 +327,6 @@ public class ReadmeSamples {
     }
 
     /**
-     * Sample code to purchase a phone number search
-     */
-    public void purchasePhoneNumberSearch() {
-        String phoneNumberSearchId = "SEARCH_ID_TO_PURCHASE";
-        PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
-        phoneNumberClient.purchaseSearch(phoneNumberSearchId);
-    }
-
-    /**
      * Sample code to configure a phone number
      */
     public void configurePhoneNumber() {
@@ -376,5 +367,18 @@ public class ReadmeSamples {
         for (String phoneNumber: result.getPhoneNumbers()) {
             System.out.println("Phone Number: " + phoneNumber);
         }
+    }
+
+    /**
+     * Sample code to purchase a search as a long running operation
+     */
+    public void beginPurchaseSearch() {
+        Duration duration = Duration.ofSeconds(1);
+        String phoneNumberSearchId = "SEARCH_ID_TO_PURCHASE";
+        PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+
+        SyncPoller<Void, Void> res = 
+            phoneNumberClient.beginPurchaseSearch(phoneNumberSearchId, duration);
+        res.waitForCompletion();
     }
 }

@@ -12,7 +12,7 @@
   <artifactId>azure-spring-cloud-sample-feature-management-web</artifactId>
   <groupId>com.azure.spring</groupId>
   <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-sample-feature-management-web;current} -->
-  <name>Azure Spring Cloud Feature Management Web Sample</name>
+  <name>Azure Spring Cloud Sample Feature Management Web</name>
 
   <dependencyManagement>
     <dependencies>

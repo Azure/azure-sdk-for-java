@@ -8,8 +8,6 @@ import com.azure.digitaltwins.core.helpers.ConsoleLogger;
 import com.azure.digitaltwins.core.helpers.FileHelper;
 import com.azure.digitaltwins.core.helpers.SamplesArguments;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
-import com.azure.digitaltwins.core.models.BasicDigitalTwin;
-import com.azure.digitaltwins.core.models.BasicRelationship;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -164,12 +162,12 @@ public class DigitalTwinsLifecycleAsyncSample {
             // Call APIs to delete all relationships.
             if (listRelationshipSemaphore.await(MAX_WAIT_TIME_ASYNC_OPERATIONS_IN_SECONDS, TimeUnit.SECONDS)) {
                 relationshipList
-                    .forEach(relationship -> client.deleteRelationship(relationship.getSourceDigitalTwinId(), relationship.getRelationshipId())
+                    .forEach(relationship -> client.deleteRelationship(relationship.getSourceId(), relationship.getId())
                         .doOnSuccess(aVoid -> {
-                            if (twinId.equals(relationship.getSourceDigitalTwinId())) {
-                                ConsoleLogger.printSuccess("Found and deleted relationship: " + relationship.getRelationshipId());
+                            if (twinId.equals(relationship.getSourceId())) {
+                                ConsoleLogger.printSuccess("Found and deleted relationship: " + relationship.getId());
                             } else {
-                                ConsoleLogger.printSuccess("Found and deleted incoming relationship: " + relationship.getRelationshipId());
+                                ConsoleLogger.printSuccess("Found and deleted incoming relationship: " + relationship.getId());
                             }
                         })
                         .doOnError(IgnoreNotFoundError)
@@ -274,7 +272,7 @@ public class DigitalTwinsLifecycleAsyncSample {
 
         // Call APIs to create the twins. For each async operation, once the operation is completed successfully, a latch is counted down.
         twins
-            .forEach((twinId, twinContent) -> client.createDigitalTwin(twinId, twinContent, String.class)
+            .forEach((twinId, twinContent) -> client.createOrReplaceDigitalTwin(twinId, twinContent, String.class)
                 .subscribe(
                     twin -> ConsoleLogger.printSuccess("Created digital twin: " + twinId + "\n\t Body: " + twin),
                     throwable -> ConsoleLogger.printFatal("Could not create digital twin " + twinId + " due to " + throwable),
@@ -305,8 +303,8 @@ public class DigitalTwinsLifecycleAsyncSample {
                     relationships
                         .forEach(relationship -> {
                             try {
-                                client.createRelationship(relationship.getSourceDigitalTwinId(), relationship.getRelationshipId(), MAPPER.writeValueAsString(relationship), String.class)
-                                    .doOnSuccess(s -> ConsoleLogger.printSuccess("Linked twin " + relationship.getSourceDigitalTwinId() + " to twin " + relationship.getTargetDigitalTwinId() + " as " + relationship.getRelationshipName()))
+                                client.createOrReplaceRelationship(relationship.getSourceId(), relationship.getId(), MAPPER.writeValueAsString(relationship), String.class)
+                                    .doOnSuccess(s -> ConsoleLogger.printSuccess("Linked twin " + relationship.getSourceId() + " to twin " + relationship.getTargetId() + " as " + relationship.getName()))
                                     .doOnError(IgnoreConflictError)
                                     .doOnTerminate(connectTwinsLatch::countDown)
                                     .subscribe();

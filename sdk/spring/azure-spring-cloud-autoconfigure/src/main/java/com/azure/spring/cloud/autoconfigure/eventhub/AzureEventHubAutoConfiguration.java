@@ -56,6 +56,13 @@ public class AzureEventHubAutoConfiguration {
         return new EventHubTemplate(clientFactory);
     }
 
+    /**
+     * Create a {@link EventHubConnectionStringProvider} bean.
+     * @param eventHubProperties The Event Hubs properties.
+     * @return The {@link EventHubConnectionStringProvider} bean.
+     *
+     * @throws IllegalArgumentException If connection string is empty.
+     */
     @Bean
     @ConditionalOnMissingBean
     public EventHubConnectionStringProvider eventHubConnectionStringProvider(

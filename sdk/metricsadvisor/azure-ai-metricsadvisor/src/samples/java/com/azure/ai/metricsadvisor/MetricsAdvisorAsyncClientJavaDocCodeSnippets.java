@@ -525,7 +525,6 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-<<<<<<< HEAD
      * Code snippet for {@link MetricsAdvisorAsyncClient#listIncidentRootCauses(String, String)}.
      */
     public void listIncidentRootCauses() {

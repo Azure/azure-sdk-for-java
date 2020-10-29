@@ -7,6 +7,9 @@ import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 
+/**
+ * Resource manager for Storage account.
+ */
 public class StorageAccountManager extends AzureManager<StorageAccount, String> {
 
     public StorageAccountManager(Azure azure, AzureProperties azureProperties) {
