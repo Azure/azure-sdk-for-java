@@ -16,12 +16,14 @@ public class AuthClientTest {
 
     /**
      * Test getAuthorizationToken method.
+     * 
+     * @throws Exception when a serious error occurs.
      */
     @Test
     public void testGetAuthorizationToken() throws Exception {
-        String tenantId = "72f988bf-86f1-41af-91ab-2d7cd011db47";
-        String clientId = "2b8f123b-b18a-4077-bce0-42e10ce8bbab";
-        String clientSecret = "72-~tZ9~cG~rimDI0EkQSMQ1D9DYmGmI_I";
+        String tenantId = System.getProperty("azure.tenant.id");
+        String clientId = System.getProperty("azure.client.id");
+        String clientSecret = System.getProperty("azure.client.secret");
         AuthClient authClient = new AuthClient();
         String result = authClient.getAccessToken(
             "https://management.azure.com/",

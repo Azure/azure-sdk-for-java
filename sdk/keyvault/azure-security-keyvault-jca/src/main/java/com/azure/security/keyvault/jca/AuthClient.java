@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.jca;
 
-import com.azure.security.keyvault.jca.rest.OAuthToken;
+import com.azure.security.keyvault.jca.model.OAuthToken;
 
 import java.util.HashMap;
 import java.util.logging.Logger;
@@ -71,16 +71,17 @@ class AuthClient extends DelegateRestClient {
      * Get an access token for a managed identity.
      *
      * @param resource the resource.
+     * @param identity the user-assigned identity (null if system-assigned)
      * @return the authorization token.
      */
-    public String getAccessToken(String resource) {
+    public String getAccessToken(String resource, String identity) {
         String result;
 
         if (System.getenv("WEBSITE_SITE_NAME") != null
             && !System.getenv("WEBSITE_SITE_NAME").isEmpty()) {
-            result = getAccessTokenOnAppService(resource);
+            result = getAccessTokenOnAppService(resource, identity);
         } else {
-            result = getAccessTokenOnOthers(resource);
+            result = getAccessTokenOnOthers(resource, identity);
         }
         return result;
     }
@@ -126,9 +127,10 @@ class AuthClient extends DelegateRestClient {
      * Get the access token on Azure App Service.
      *
      * @param resource the resource.
+     * @param identity the user-assigned identity (null if system-assigned).
      * @return the authorization token.
      */
-    private String getAccessTokenOnAppService(String resource) {
+    private String getAccessTokenOnAppService(String resource, String identity) {
         LOGGER.entering("AuthClient", "getAccessTokenOnAppService", resource);
         LOGGER.info("Getting access token using managed identity based on MSI_SECRET");
         String result = null;
@@ -156,9 +158,10 @@ class AuthClient extends DelegateRestClient {
      * Get the authorization token on everything else but Azure App Service.
      *
      * @param resource the resource.
+     * @param identity the user-assigned identity (null if system-assigned).
      * @return the authorization token.
      */
-    private String getAccessTokenOnOthers(String resource) {
+    private String getAccessTokenOnOthers(String resource, String identity) {
         LOGGER.entering("AuthClient", "getAccessTokenOnOthers", resource);
         LOGGER.info("Getting access token using managed identity");
         String result = null;

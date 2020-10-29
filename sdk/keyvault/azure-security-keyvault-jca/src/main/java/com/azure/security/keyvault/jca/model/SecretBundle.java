@@ -1,27 +1,26 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.jca.rest;
+package com.azure.security.keyvault.jca.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
- * The CertificateItem REST model.
+ * The SecretBundle REST model.
  */
-public class CertificateListResult implements Serializable {
+public class SecretBundle implements Serializable {
 
     /**
      * Stores the value.
      */
-    private List<CertificateItem> value;
+    private String value;
 
     /**
      * Get the value.
      *
-     * @return the id.
+     * @return the value.
      */
-    public List<CertificateItem> getValue() {
+    public String getValue() {
         return value;
     }
 
@@ -30,7 +29,7 @@ public class CertificateListResult implements Serializable {
      *
      * @param value the value.
      */
-    public void setValue(List<CertificateItem> value) {
+    public void setValue(String value) {
         this.value = value;
     }
 }

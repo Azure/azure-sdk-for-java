@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca;
 
-import com.azure.security.keyvault.jca.rest.CertificateBundle;
-import com.azure.security.keyvault.jca.rest.CertificateItem;
-import com.azure.security.keyvault.jca.rest.CertificateListResult;
-import com.azure.security.keyvault.jca.rest.CertificatePolicy;
-import com.azure.security.keyvault.jca.rest.KeyProperties;
-import com.azure.security.keyvault.jca.rest.SecretBundle;
+import com.azure.security.keyvault.jca.model.CertificateBundle;
+import com.azure.security.keyvault.jca.model.CertificateItem;
+import com.azure.security.keyvault.jca.model.CertificateListResult;
+import com.azure.security.keyvault.jca.model.CertificatePolicy;
+import com.azure.security.keyvault.jca.model.KeyProperties;
+import com.azure.security.keyvault.jca.model.SecretBundle;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -66,6 +66,11 @@ class KeyVaultClient extends DelegateRestClient {
      * Stores the client secret.
      */
     private String clientSecret;
+    
+    /**
+     * Stores the identity (either user-assigned identity or null if system-assigned)
+     */
+    private String identity;
 
     /**
      * Constructor.
@@ -73,6 +78,22 @@ class KeyVaultClient extends DelegateRestClient {
      * @param keyVaultUri the Azure Key Vault URI.
      */
     KeyVaultClient(String keyVaultUri) {
+        super(RestClientFactory.createClient());
+        LOGGER.log(INFO, "Using Azure Key Vault: {0}", keyVaultUri);
+        if (!keyVaultUri.endsWith("/")) {
+            keyVaultUri = keyVaultUri + "/";
+        }
+        this.keyVaultUrl = keyVaultUri;
+    }
+    
+    
+    /**
+     * Constructor.
+     *
+     * @param keyVaultUri the Azure Key Vault URI.
+     * @param userAssignedIdentity the user assigned identity.
+     */
+    KeyVaultClient(String keyVaultUri, String userAssignedIdentity) {
         super(RestClientFactory.createClient());
         LOGGER.log(INFO, "Using Azure Key Vault: {0}", keyVaultUri);
         if (!keyVaultUri.endsWith("/")) {
@@ -109,8 +130,11 @@ class KeyVaultClient extends DelegateRestClient {
             String resource = URLEncoder.encode("https://vault.azure.net", "UTF-8");
             if (tenantId != null && clientId != null && clientSecret != null) {
                 accessToken = authClient.getAccessToken(resource, tenantId, clientId, clientSecret);
-            } else {
-                accessToken = authClient.getAccessToken(resource);
+            } else if (identity != null) {
+                accessToken = authClient.getAccessToken(resource, identity);
+            }
+            else {
+                accessToken = authClient.getAccessToken(resource, identity);
             }
         } catch (UnsupportedEncodingException uee) {
             LOGGER.log(WARNING, "Unsupported encoding", uee);

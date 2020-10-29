@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.security.keyvault.jca.rest;
+package com.azure.security.keyvault.jca.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
