@@ -551,7 +551,7 @@ class ServiceBusReceiverAsyncClientTest {
      */
     @Test
     void errorSourceOnReceiveMessage() {
-        final String lockToken1 = UUID.randomUUID().toString();
+        final String lockToken = UUID.randomUUID().toString();
 
         final OffsetDateTime expiration = OffsetDateTime.now().plus(Duration.ofMinutes(5));
 
@@ -559,7 +559,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         when(messageSerializer.deserialize(message, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage);
 
-        when(receivedMessage.getLockToken()).thenReturn(lockToken1);
+        when(receivedMessage.getLockToken()).thenReturn(lockToken);
         when(receivedMessage.getLockedUntil()).thenReturn(expiration);
 
         when(connection.createReceiveLink(anyString(), anyString(), any(ReceiveMode.class), any(),
@@ -574,7 +574,7 @@ class ServiceBusReceiverAsyncClientTest {
                 return true;
             });
 
-        verify(amqpReceiveLink, never()).updateDisposition(eq(lockToken1), any(DeliveryState.class));
+        verify(amqpReceiveLink, never()).updateDisposition(eq(lockToken), any(DeliveryState.class));
     }
 
     /**

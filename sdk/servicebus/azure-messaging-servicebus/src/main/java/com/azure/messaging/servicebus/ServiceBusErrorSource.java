@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.io.Serializable;
 
 /**
- * Represent the operation user was performing when the error happened.
+ * Represent the operation this sdk was performing when the error happened.
  */
 public final class ServiceBusErrorSource extends ExpandableStringEnum<ServiceBusErrorSource> implements Serializable {
 
@@ -37,6 +37,14 @@ public final class ServiceBusErrorSource extends ExpandableStringEnum<ServiceBus
     public static final ServiceBusErrorSource UNKNOWN = fromString("UNKNOWN", ServiceBusErrorSource.class);
 
     /** Error while user's code is running for a message.*/
-    public static final ServiceBusErrorSource USER_CALLBACK = fromString("USER_CALLBACK", ServiceBusErrorSource.class);
+    public static final ServiceBusErrorSource USER_CALLBACK = fromString("USER_CALLBACK",
+        ServiceBusErrorSource.class);
+
+    /** Error while session is accepted.*/
+    public static final ServiceBusErrorSource ACCEPT_MESSAGE_SESSION = fromString("ACCEPT_MESSAGE_SESSION", ServiceBusErrorSource.class);
+
+    /** Error while session is closed.*/
+    public static final ServiceBusErrorSource CLOSE_MESSAGE_SESSION = fromString("CLOSE_MESSAGE_SESSION", ServiceBusErrorSource.class);
+
 
 }

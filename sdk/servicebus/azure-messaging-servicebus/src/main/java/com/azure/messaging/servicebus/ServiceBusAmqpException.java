@@ -6,12 +6,11 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.exception.AmqpException;
 
 /**
- * Defines {@link ServiceBusAmqpException} which has addition properties. You can {@link ServiceBusErrorSource} to
- * determine source of error.
+ * Defines {@link ServiceBusAmqpException} which has additional information about the operation that caused the error.
  *
  * @see ServiceBusErrorSource
  */
-public class ServiceBusAmqpException extends AmqpException {
+public final class ServiceBusAmqpException extends AmqpException {
     private final ServiceBusErrorSource errorSource;
 
     /**

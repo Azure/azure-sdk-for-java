@@ -1174,7 +1174,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Map the error to ServiceBusException
+     * Map the error to {@link ServiceBusAmqpException}
      */
     private Throwable mapError(Throwable throwable, ServiceBusErrorSource errorSource) {
         if (throwable instanceof AmqpException) {
