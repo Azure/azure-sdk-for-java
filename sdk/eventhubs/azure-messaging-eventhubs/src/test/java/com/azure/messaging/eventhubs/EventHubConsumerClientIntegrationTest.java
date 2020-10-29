@@ -164,7 +164,7 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
         final EventHubClientBuilder builder = createBuilder().consumerGroup(DEFAULT_CONSUMER_GROUP_NAME);
         final EventHubConsumerClient consumer = builder.buildConsumerClient();
         final EventHubConsumerClient consumer2 = builder.buildConsumerClient();
-        final Duration firstReceive = Duration.ofSeconds(5);
+        final Duration firstReceive = Duration.ofSeconds(30);
         final Duration secondReceiveDuration = firstReceive.plus(firstReceive);
 
         try {
