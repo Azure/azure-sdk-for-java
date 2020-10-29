@@ -146,7 +146,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
     @Test
     void acceptSession() {
         // Arrange
-        ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, false, null, null);
+        ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, Duration.ZERO, false, null, null);
         final String lockToken = "a-lock-token";
         final String linkName = "my-link-name";
         final String sessionId = linkName;
@@ -189,13 +189,13 @@ class ServiceBusSessionReceiverAsyncClientTest {
             .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
             .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
             .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
-            .verifyComplete();
+            .thenCancel().verify();
     }
 
     @Test
     void acceptNextSession() {
         // Arrange
-        ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, false, null, null);
+        ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, Duration.ZERO, false, null, null);
         sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             tracerProvider, messageSerializer, receiverOptions);
 
