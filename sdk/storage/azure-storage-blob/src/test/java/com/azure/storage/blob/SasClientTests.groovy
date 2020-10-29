@@ -329,6 +329,66 @@ class SasClientTests extends APISpec {
         thrown(BlobStorageException)
     }
 
+    def "container user delegation correlation id"() {
+        setup:
+        def permissions = new BlobContainerSasPermission()
+            .setListPermission(true)
+
+        def expiryTime = getUTCNow().plusDays(1)
+
+        def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
+
+        def keyOid = getConfigValue(key.getSignedObjectId())
+        key.setSignedObjectId(keyOid)
+
+        def keyTid = getConfigValue(key.getSignedTenantId())
+        key.setSignedTenantId(keyTid)
+
+        def cid = getRandomUUID()
+
+        when:
+        def sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions)
+            .setCorrelationId(cid)
+        def sasWithPermissions = cc.generateUserDelegationSas(sasValues, key)
+
+        def client = getContainerClient(sasWithPermissions, cc.getBlobContainerUrl())
+        client.listBlobs().iterator().hasNext()
+
+        then:
+        sasWithPermissions.contains("scid=" + cid)
+        notThrown(BlobStorageException)
+    }
+
+    def "container user delegation correlation id error"() {
+        setup:
+        def permissions = new BlobContainerSasPermission()
+            .setListPermission(true)
+
+        def expiryTime = getUTCNow().plusDays(1)
+
+        def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
+
+        def keyOid = getConfigValue(key.getSignedObjectId())
+        key.setSignedObjectId(keyOid)
+
+        def keyTid = getConfigValue(key.getSignedTenantId())
+        key.setSignedTenantId(keyTid)
+
+        def cid = "invalidcid"
+
+        when:
+        def sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions)
+            .setCorrelationId(cid)
+        def sasWithPermissions = cc.generateUserDelegationSas(sasValues, key)
+
+        def client = getContainerClient(sasWithPermissions, cc.getBlobContainerUrl())
+        client.listBlobs().iterator().hasNext()
+
+        then:
+        sasWithPermissions.contains("scid=" + cid)
+        thrown(BlobStorageException)
+    }
+
     def "account sas tags and filter tags"() {
         setup:
         def service = new AccountSasService()
