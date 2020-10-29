@@ -62,6 +62,8 @@ public class AmqpAnnotatedMessageTest {
         expectedMessageProperties.setCorrelationId("c");
         expectedMessageProperties.setSubject("d");
         expectedMessageProperties.setMessageId("id");
+        expectedMessageProperties.setUserId(BinaryData.fromString("id"));
+
 
         final AmqpMessageHeader expectedMessageHeader = expected.getHeader();
         expectedMessageHeader.setDeliveryCount(5L);
@@ -88,7 +90,7 @@ public class AmqpAnnotatedMessageTest {
         assertNotSame(expected.getFooter(), actual.getFooter());
         assertNotSame(expected.getHeader(), actual.getHeader());
         assertNotSame(expected.getMessageAnnotations(), actual.getMessageAnnotations());
-        assertNotSame(expected.getProperties().getUserId(), actual.getProperties().getUserId());
+        assertNotSame(expected.getProperties().getUserId().toString(), actual.getProperties().getUserId().toString());
         assertNotSame(expected.getHeader().getDeliveryCount(), actual.getHeader().getDeliveryCount());
 
         assertEquals(1, actual.getDeliveryAnnotations().size());
