@@ -18,14 +18,12 @@ import java.util.Objects;
  *         Use {@link #acceptSession(String)} to acquire the lock of a session if you know the session id.
  *         <p>
  *         {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#nextsession}
- *         </p>
  *    </li>
  *    <li>
  *        Use {@link #acceptNextSession()} to acquire the lock of the next available session
  *        without specifying the session id.
  *        <p>
  *        {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#sessionId}
- *        </p>
  *    </li>
  * </ul>
  *
@@ -46,7 +44,7 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
      * immediately.
      * <p>
      * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#nextsession}
-     * </p>
+     * <p>
      * @return A {@link ServiceBusReceiverClient} that is tied to the available session.
      * @throws UnsupportedOperationException if the queue or topic subscription is not session-enabled.
      * @throws IllegalStateException if the operation times out. The timeout duration is the tryTimeout
@@ -66,7 +64,7 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
      * {@link com.azure.core.amqp.exception.AmqpException} is thrown immediately.
      * <p>
      * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#sessionId}
-     * </p>
+     * <p>
      * @param sessionId The session Id.
      * @return A {@link ServiceBusReceiverClient} that is tied to the specified session.
      * @throws NullPointerException if {@code sessionId} is null.
