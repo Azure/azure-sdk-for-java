@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.sql.v2015_05_01_preview;
 
+import rx.Completable;
 import rx.Observable;
 import com.microsoft.azure.management.sql.v2015_05_01_preview.implementation.EncryptionProtectorInner;
 import com.microsoft.azure.management.sql.v2015_05_01_preview.implementation.EncryptionProtectorsInner;
@@ -17,6 +18,16 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing EncryptionProtectors.
  */
 public interface EncryptionProtectors extends HasInner<EncryptionProtectorsInner> {
+    /**
+     * Revalidates an existing encryption protector.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable revalidateAsync(String resourceGroupName, String serverName);
+
     /**
      * Gets a list of server encryption protectors.
      *

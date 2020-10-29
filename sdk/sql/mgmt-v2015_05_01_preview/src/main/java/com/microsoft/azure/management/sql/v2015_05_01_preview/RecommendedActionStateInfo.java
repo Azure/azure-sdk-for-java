@@ -28,7 +28,7 @@ public class RecommendedActionStateInfo {
      * improvement so recommended action is queued for revert or user has
      * manually reverted. Reverting   -&gt; changes made while applying
      * recommended action are being reverted on the user database. Reverted
-     * -&gt; succesfully reverted the changes made by recommended action on
+     * -&gt; successfully reverted the changes made by recommended action on
      * user database. Ignored     -&gt; user explicitly ignored/discarded the
      * recommended action. Possible values include: 'Active', 'Pending',
      * 'Executing', 'Verifying', 'PendingRevert', 'RevertCancelled',
@@ -40,7 +40,7 @@ public class RecommendedActionStateInfo {
 
     /**
      * Gets who initiated the execution of this recommended action. Possible
-     * Value are: User    -&gt; When user explicity notified system to apply
+     * Value are: User    -&gt; When user explicitly notified system to apply
      * the recommended action. System  -&gt; When auto-execute status of this
      * advisor was set to 'Enabled', in which case the system applied it.
      * Possible values include: 'User', 'System'.
@@ -55,7 +55,7 @@ public class RecommendedActionStateInfo {
     private DateTime lastModified;
 
     /**
-     * Get current state the recommended action is in. Some commonly used states are: Active      -&gt; recommended action is active and no action has been taken yet. Pending     -&gt; recommended action is approved for and is awaiting execution. Executing   -&gt; recommended action is being applied on the user database. Verifying   -&gt; recommended action was applied and is being verified of its usefulness by the system. Success     -&gt; recommended action was applied and improvement found during verification. Pending Revert  -&gt; verification found little or no improvement so recommended action is queued for revert or user has manually reverted. Reverting   -&gt; changes made while applying recommended action are being reverted on the user database. Reverted    -&gt; succesfully reverted the changes made by recommended action on user database. Ignored     -&gt; user explicitly ignored/discarded the recommended action. Possible values include: 'Active', 'Pending', 'Executing', 'Verifying', 'PendingRevert', 'RevertCancelled', 'Reverting', 'Reverted', 'Ignored', 'Expired', 'Monitoring', 'Resolved', 'Success', 'Error'.
+     * Get current state the recommended action is in. Some commonly used states are: Active      -&gt; recommended action is active and no action has been taken yet. Pending     -&gt; recommended action is approved for and is awaiting execution. Executing   -&gt; recommended action is being applied on the user database. Verifying   -&gt; recommended action was applied and is being verified of its usefulness by the system. Success     -&gt; recommended action was applied and improvement found during verification. Pending Revert  -&gt; verification found little or no improvement so recommended action is queued for revert or user has manually reverted. Reverting   -&gt; changes made while applying recommended action are being reverted on the user database. Reverted    -&gt; successfully reverted the changes made by recommended action on user database. Ignored     -&gt; user explicitly ignored/discarded the recommended action. Possible values include: 'Active', 'Pending', 'Executing', 'Verifying', 'PendingRevert', 'RevertCancelled', 'Reverting', 'Reverted', 'Ignored', 'Expired', 'Monitoring', 'Resolved', 'Success', 'Error'.
      *
      * @return the currentValue value
      */
@@ -64,7 +64,7 @@ public class RecommendedActionStateInfo {
     }
 
     /**
-     * Set current state the recommended action is in. Some commonly used states are: Active      -&gt; recommended action is active and no action has been taken yet. Pending     -&gt; recommended action is approved for and is awaiting execution. Executing   -&gt; recommended action is being applied on the user database. Verifying   -&gt; recommended action was applied and is being verified of its usefulness by the system. Success     -&gt; recommended action was applied and improvement found during verification. Pending Revert  -&gt; verification found little or no improvement so recommended action is queued for revert or user has manually reverted. Reverting   -&gt; changes made while applying recommended action are being reverted on the user database. Reverted    -&gt; succesfully reverted the changes made by recommended action on user database. Ignored     -&gt; user explicitly ignored/discarded the recommended action. Possible values include: 'Active', 'Pending', 'Executing', 'Verifying', 'PendingRevert', 'RevertCancelled', 'Reverting', 'Reverted', 'Ignored', 'Expired', 'Monitoring', 'Resolved', 'Success', 'Error'.
+     * Set current state the recommended action is in. Some commonly used states are: Active      -&gt; recommended action is active and no action has been taken yet. Pending     -&gt; recommended action is approved for and is awaiting execution. Executing   -&gt; recommended action is being applied on the user database. Verifying   -&gt; recommended action was applied and is being verified of its usefulness by the system. Success     -&gt; recommended action was applied and improvement found during verification. Pending Revert  -&gt; verification found little or no improvement so recommended action is queued for revert or user has manually reverted. Reverting   -&gt; changes made while applying recommended action are being reverted on the user database. Reverted    -&gt; successfully reverted the changes made by recommended action on user database. Ignored     -&gt; user explicitly ignored/discarded the recommended action. Possible values include: 'Active', 'Pending', 'Executing', 'Verifying', 'PendingRevert', 'RevertCancelled', 'Reverting', 'Reverted', 'Ignored', 'Expired', 'Monitoring', 'Resolved', 'Success', 'Error'.
      *
      * @param currentValue the currentValue value to set
      * @return the RecommendedActionStateInfo object itself.
@@ -75,7 +75,7 @@ public class RecommendedActionStateInfo {
     }
 
     /**
-     * Get gets who initiated the execution of this recommended action. Possible Value are: User    -&gt; When user explicity notified system to apply the recommended action. System  -&gt; When auto-execute status of this advisor was set to 'Enabled', in which case the system applied it. Possible values include: 'User', 'System'.
+     * Get gets who initiated the execution of this recommended action. Possible Value are: User    -&gt; When user explicitly notified system to apply the recommended action. System  -&gt; When auto-execute status of this advisor was set to 'Enabled', in which case the system applied it. Possible values include: 'User', 'System'.
      *
      * @return the actionInitiatedBy value
      */
