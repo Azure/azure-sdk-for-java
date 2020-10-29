@@ -10,9 +10,13 @@ jobs:
       - name: azure-communication-chat
         groupId: com.azure
         safeName: azurecommunicationchat
+      - name: azure-communication-sms
+        groupId: com.azure
+        safeName: azurecommunicationsms
     ServiceDirectory: communication
     EnvVars:
       AZURE_TEST_MODE: LIVE
       SKIP_PHONENUMBER_INTEGRATION_TESTS: TRUE
       SKIP_LIVE_TEST: TRUE
-
+      COMMUNICATION_CONNECTION_STRING: $(python-communication-connection-string)
+      SMS_SERVICE_PHONE_NUMBER: $(python-communication-phone-number)
