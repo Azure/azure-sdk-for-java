@@ -27,7 +27,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -44,10 +43,6 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 @Tag("integration")
 class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
-
-    /* Sometime not all the messages are cleaned-up. This is buffer to ensure all the messages are cleaned-up.*/
-    private static final int BUFFER_MESSAGES_TO_REMOVE = 10;
-
     private final AtomicInteger messagesPending = new AtomicInteger();
     private final AtomicReference<List<Long>> messagesDeferred = new AtomicReference<>(new ArrayList<>());
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverClientIntegrationTest.class);
@@ -736,7 +731,13 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         receiver.defer(receivedMessage);
 
         // cleanup
-        completeDeferredMessages(receiver, receivedMessage, isSessionEnabled);
+        final ServiceBusReceivedMessage deferred;
+        if (isSessionEnabled) {
+            deferred = receiver.receiveDeferredMessage(receivedMessage.getSequenceNumber(), sessionId);
+        } else {
+            deferred = receiver.receiveDeferredMessage(receivedMessage.getSequenceNumber());
+        }
+        receiver.complete(deferred);
         messagesPending.addAndGet(-maxMessages);
     }
 
@@ -815,19 +816,19 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
-            this.receiver = getSessionReceiverBuilder(false, entityType, entityIndex, Function.identity(), sharedConnection)
+            this.receiver = getSessionReceiverBuilder(false, entityType, entityIndex, sharedConnection)
                 .sessionId(sessionId)
                 .buildClient();
             this.receiveAndDeleteReceiver = getSessionReceiverBuilder(false, entityType, entityIndex,
-                Function.identity(), sharedConnection)
+                sharedConnection)
                 .sessionId(sessionId)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildClient();
         } else {
-            this.receiver = getReceiverBuilder(false, entityType, entityIndex, Function.identity(), sharedConnection)
+            this.receiver = getReceiverBuilder(false, entityType, entityIndex, sharedConnection)
                 .buildClient();
             this.receiveAndDeleteReceiver = getReceiverBuilder(false, entityType, entityIndex,
-                Function.identity(), sharedConnection)
+                sharedConnection)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildClient();
         }
@@ -852,15 +853,5 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
             receiver.complete(context.getMessage());
         }
         return asList.size();
-    }
-
-    private void completeDeferredMessages(ServiceBusReceiverClient client, ServiceBusReceivedMessage receivedMessage, boolean isSessionEnabled) {
-        final ServiceBusReceivedMessage message;
-        if (isSessionEnabled) {
-            message = client.receiveDeferredMessage(receivedMessage.getSequenceNumber(), sessionId);
-        } else {
-            message = client.receiveDeferredMessage(receivedMessage.getSequenceNumber());
-        }
-        receiver.complete(message);
     }
 }

@@ -41,31 +41,25 @@ public class IncidentTransforms {
 
     private static Incident fromInner(IncidentResult innerIncident) {
         Incident incident = new Incident();
-        PrivateFieldAccessHelper.set(incident, "id", innerIncident.getIncidentId());
+        IncidentHelper.setId(incident, innerIncident.getIncidentId());
         if (innerIncident.getMetricId() != null) {
-            PrivateFieldAccessHelper.set(incident, "metricId", innerIncident.getMetricId().toString());
+            IncidentHelper.setMetricId(incident, innerIncident.getMetricId().toString());
         }
         if (innerIncident.getAnomalyDetectionConfigurationId() != null) {
-            PrivateFieldAccessHelper.set(incident, "detectionConfigurationId",
+            IncidentHelper.setDetectionConfigurationId(incident,
                 innerIncident.getAnomalyDetectionConfigurationId().toString());
         }
         if (innerIncident.getRootNode() != null && innerIncident.getRootNode().getDimension() != null) {
-            PrivateFieldAccessHelper.set(incident,
-                "rootDimensionKey",
+            IncidentHelper.setRootDimensionKey(incident,
                 new DimensionKey(innerIncident.getRootNode().getDimension()));
         }
         if (innerIncident.getProperty() != null) {
-            PrivateFieldAccessHelper.set(incident, "severity",
-                innerIncident.getProperty().getMaxSeverity());
-            PrivateFieldAccessHelper.set(incident, "status",
-                innerIncident.getProperty().getIncidentStatus());
+            IncidentHelper.setSeverity(incident, innerIncident.getProperty().getMaxSeverity());
+            IncidentHelper.setStatus(incident, innerIncident.getProperty().getIncidentStatus());
         }
 
-        PrivateFieldAccessHelper.set(incident, "startTime",
-            innerIncident.getStartTime());
-        PrivateFieldAccessHelper.set(incident, "lastTime",
-            innerIncident.getLastTime());
-
+        IncidentHelper.setStartTime(incident, innerIncident.getStartTime());
+        IncidentHelper.setLastTime(incident, innerIncident.getLastTime());
         return incident;
     }
 

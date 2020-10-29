@@ -14,13 +14,13 @@
             "io\\.netty\\..+",
             "com\\.nimbusds(\\..+)?",
             "com\\.microsoft\\.azure\\..+",
-            "com\\.microsoft\\.spring\\..+",
             "javax\\.jms(\\..+)?",
             "javax\\.servlet(\\..+)?",
             "io\\.micrometer(\\..+)?",
             "com\\.azure\\.data\\.cosmos(\\..+)?",
             "com\\.azure\\.spring\\.data\\.cosmos\\..+",
-            "org\\.springframework\\.data\\..+",
+            "com\\.azure\\.spring\\.data\\.gremlin\\..+",
+            "com\\.azure\\.spring(\\..+)?",
             "org\\.apache\\.avro\\..+"
           ]
         }
@@ -235,6 +235,17 @@
         "code": "java\\.class\\.externalClassExposedInAPI",
         "new": "(interface|class|enum) io\\.opentelemetry.*",
         "justification": "Azure Monitor Exporter is allowed to use OpenTelemetry types in public APIs as it implements interfaces defined by OpenTelemetry"
+      },
+      {
+        "code": "java.annotation.attributeAdded",
+        "old": "class com.azure.messaging.eventhubs.EventHubClientBuilder",
+        "new": "class com.azure.messaging.eventhubs.EventHubClientBuilder",
+        "justification": "Setting protocol to AMQP in @ServiceClientBuilder annotation is not a breaking change"
+      },
+      {
+        "code": "java.annotation.added",
+        "new": "class com.azure.storage.blob.models.PageList",
+        "justification": "Annotation required to resolve deserialization bug."
       }
     ]
   }

@@ -1,5 +1,20 @@
 # Release History
 
+## 1.2.0-beta.3 (Unreleased)
+
+### Breaking Changes
+- Removing Application Authentication APIs for GA release. These will be reintroduced in 1.3.0-beta.1.
+  - Removed class `AuthenticationRecord`
+  - Removed class `AuthenticationRequiredException`
+  - Removed methods `allowUnencryptedCache()` and `enablePersistentCache()` from `ClientCertificateCredentialBuilder`, 
+   `ClientSecretCredentialBuilder`, `InteractiveBrowserCredentialBuilder`, `DeviceCodeCredentialBuilder`,
+    `UsernamePasswordCredentialBuilder` and `ClientCertificateCredentialBuilder`.
+  - Removed methods `disallowUnencryptedCache()` and `authenticationRecord(AuthenticationRecord)` from `SharedTokenCacheCredentialBuilder`.
+  - Removed methods `authenticationRecord(AuthenticationRecord)` and `disableAutomaticAuthentication()` from `DeviceCodeCredentialBuilder` and `InteractiveBrowserCredentialBuilder`.
+  - Removed methods `authenticate(TokenRequestContext)` and `authenticate()` from `DeviceCodeCredential`, `InteractiveBrowserCredential`
+    and `UsernamePasswordCredential`.
+
+
 ## 1.2.0-beta.2 (2020-10-06)
 
 ### New Features

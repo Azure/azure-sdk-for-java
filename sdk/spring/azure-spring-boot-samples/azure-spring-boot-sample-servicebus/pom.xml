@@ -10,7 +10,7 @@
     <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
   </parent>
 
-  <groupId>com.azure</groupId>
+  <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-sample-servicebus</artifactId>
   <version>1.0.0</version>
   <packaging>jar</packaging>

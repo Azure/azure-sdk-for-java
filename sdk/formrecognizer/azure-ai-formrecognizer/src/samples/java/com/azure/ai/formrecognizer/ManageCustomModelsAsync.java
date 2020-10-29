@@ -39,6 +39,9 @@ public class ManageCustomModelsAsync {
         client.listCustomModels().subscribe(customFormModelInfo -> {
             String createdModelId = customFormModelInfo.getModelId();
             System.out.printf("Model Id: %s%n", createdModelId);
+            if (customFormModelInfo.getCustomModelProperties() != null) {
+                System.out.printf("Is it a composed model? : %s%n", customFormModelInfo.getCustomModelProperties().isComposed());
+            }
             // get custom model info
             modelId.set(createdModelId);
             client.getCustomModel(customFormModelInfo.getModelId()).subscribe(customModel -> {

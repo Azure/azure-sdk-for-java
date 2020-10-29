@@ -35,18 +35,18 @@ public final class ManageUsersGroupsAndRoles {
     /**
      * Main function which runs the actual sample.
      *
-     * @param authenticated instance of Authenticated
+     * @param azureResourceManager instance of AzureResourceManager
      * @param profile the profile works with sample
      * @return true if sample runs successfully
      */
-    public static boolean runSample(AzureResourceManager.Authenticated authenticated, AzureProfile profile) {
-        final String userEmail = Utils.randomResourceName(authenticated, "test", 15);
+    public static boolean runSample(AzureResourceManager azureResourceManager, AzureProfile profile) {
+        final String userEmail = Utils.randomResourceName(azureResourceManager, "test", 15);
         final String userName = userEmail.replace("test", "Test ");
-        final String spName = Utils.randomResourceName(authenticated, "sp", 15);
-        final String raName1 = Utils.randomUuid(authenticated);
-        final String raName2 = Utils.randomUuid(authenticated);
-        final String groupEmail1 = Utils.randomResourceName(authenticated, "group1", 15);
-        final String groupEmail2 = Utils.randomResourceName(authenticated, "group2", 15);
+        final String spName = Utils.randomResourceName(azureResourceManager, "sp", 15);
+        final String raName1 = Utils.randomUuid(azureResourceManager);
+        final String raName2 = Utils.randomUuid(azureResourceManager);
+        final String groupEmail1 = Utils.randomResourceName(azureResourceManager, "group1", 15);
+        final String groupEmail2 = Utils.randomResourceName(azureResourceManager, "group2", 15);
         final String groupName1 = groupEmail1.replace("group1", "Group ");
         final String groupName2 = groupEmail2.replace("group2", "Group ");
         String spId = "";
@@ -56,7 +56,7 @@ public final class ManageUsersGroupsAndRoles {
 
             System.out.println("Creating an AD user " + userName + "...");
 
-            ActiveDirectoryUser user = authenticated.activeDirectoryUsers()
+            ActiveDirectoryUser user = azureResourceManager.accessManagement().activeDirectoryUsers()
                     .define(userName)
                     .withEmailAlias(userEmail)
                     .withPassword("StrongPass!12")
@@ -68,7 +68,7 @@ public final class ManageUsersGroupsAndRoles {
             // ============================================================
             // Assign role to AD user
 
-            RoleAssignment roleAssignment1 = authenticated.roleAssignments()
+            RoleAssignment roleAssignment1 = azureResourceManager.accessManagement().roleAssignments()
                     .define(raName1)
                     .forUser(user)
                     .withBuiltInRole(BuiltInRole.READER)
@@ -80,20 +80,20 @@ public final class ManageUsersGroupsAndRoles {
             // ============================================================
             // Revoke role from AD user
 
-            authenticated.roleAssignments().deleteById(roleAssignment1.id());
+            azureResourceManager.accessManagement().roleAssignments().deleteById(roleAssignment1.id());
             System.out.println("Revoked Role Assignment: " + roleAssignment1.id());
 
             // ============================================================
             // Get role by scope and role name
 
-            RoleDefinition roleDefinition = authenticated.roleDefinitions()
+            RoleDefinition roleDefinition = azureResourceManager.accessManagement().roleDefinitions()
                     .getByScopeAndRoleName("subscriptions/" + profile.getSubscriptionId(), "Contributor");
             Utils.print(roleDefinition);
 
             // ============================================================
             // Create Service Principal
 
-            ServicePrincipal sp = authenticated.servicePrincipals().define(spName)
+            ServicePrincipal sp = azureResourceManager.accessManagement().servicePrincipals().define(spName)
                     .withNewApplication("http://" + spName)
                     .create();
             // wait till service principal created and propagated
@@ -105,7 +105,7 @@ public final class ManageUsersGroupsAndRoles {
             // ============================================================
             // Assign role to Service Principal
 
-            RoleAssignment roleAssignment2 = authenticated.roleAssignments()
+            RoleAssignment roleAssignment2 = azureResourceManager.accessManagement().roleAssignments()
                     .define(raName2)
                     .forServicePrincipal(sp)
                     .withBuiltInRole(BuiltInRole.CONTRIBUTOR)
@@ -118,7 +118,7 @@ public final class ManageUsersGroupsAndRoles {
             // Create Active Directory groups
 
             System.out.println("Creating Active Directory group " + groupName1 + "...");
-            ActiveDirectoryGroup group1 = authenticated.activeDirectoryGroups()
+            ActiveDirectoryGroup group1 = azureResourceManager.accessManagement().activeDirectoryGroups()
                     .define(groupName1)
                     .withEmailAlias(groupEmail1)
                     .create();
@@ -127,7 +127,7 @@ public final class ManageUsersGroupsAndRoles {
             Utils.print(group1);
 
             System.out.println("Creating Active Directory group " + groupName2 + "...");
-            ActiveDirectoryGroup group2 = authenticated.activeDirectoryGroups()
+            ActiveDirectoryGroup group2 = azureResourceManager.accessManagement().activeDirectoryGroups()
                     .define(groupName2)
                     .withEmailAlias(groupEmail2)
                     .create();
@@ -148,7 +148,7 @@ public final class ManageUsersGroupsAndRoles {
         } finally {
             try {
                 System.out.println("Deleting Service Principal: " + spName);
-                authenticated.servicePrincipals().deleteById(spId);
+                azureResourceManager.accessManagement().servicePrincipals().deleteById(spId);
                 System.out.println("Deleted Service Principal: " + spName);
             } catch (Exception e) {
                 System.out.println("Did not create Service Principal in Azure. No clean up is necessary");
@@ -168,11 +168,13 @@ public final class ManageUsersGroupsAndRoles {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager.Authenticated authenticated = AzureResourceManager
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
-                .authenticate(credential, profile);
-            runSample(authenticated, profile);
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
+
+            runSample(azureResourceManager, profile);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
