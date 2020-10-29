@@ -13,13 +13,13 @@ import java.util.Objects;
 /**
  * This represent amqp payload of {@link AmqpBodyType#DATA} type.
  */
-public final class AmqpDataBody implements AmqpMessageBody {
-    private final ClientLogger logger = new ClientLogger(AmqpDataBody.class);
+public final class AmqpDataMessageBody implements AmqpMessageBody {
+    private final ClientLogger logger = new ClientLogger(AmqpDataMessageBody.class);
     private final BinaryData binaryData;
 
     /**
-     * Creates instance of {@link AmqpDataBody} with given {@link Iterable} of {@link BinaryData}. Please note that this
-     * version of the SDK supports only one element in given {@link Iterable} of {@link BinaryData}.
+     * Creates instance of {@link AmqpDataMessageBody} with given {@link Iterable} of {@link BinaryData}. Please note
+     * that this version of the SDK supports only one element in given {@link Iterable} of {@link BinaryData}.
      *
      * <p>The {@link BinaryData} wraps byte array and is an abstraction over many different ways it can be represented.
      * It provides many convenience API including APIs to serialize/deserialize object.
@@ -31,7 +31,7 @@ public final class AmqpDataBody implements AmqpMessageBody {
      *
      * @see BinaryData
      */
-    public AmqpDataBody(Iterable<BinaryData> data) {
+    public AmqpDataMessageBody(Iterable<BinaryData> data) {
         Objects.requireNonNull(data, "'data' cannot be null.");
         BinaryData payload = null;
         for (BinaryData binaryData : data) {
@@ -50,13 +50,13 @@ public final class AmqpDataBody implements AmqpMessageBody {
     }
 
     /**
-     * Creates instance of {@link AmqpDataBody} with given {@link AmqpDataBody} instance.
+     * Creates instance of {@link AmqpDataMessageBody} with given {@link AmqpDataMessageBody} instance.
      *
-     * @param data used to create another instance of {@link AmqpDataBody}.
+     * @param data used to create another instance of {@link AmqpDataMessageBody}.
      *
-     * @throws NullPointerException if {@code data} or {@link AmqpDataBody#getData() body} is null.
+     * @throws NullPointerException if {@code data} or {@link AmqpDataMessageBody#getData() body} is null.
      */
-    public AmqpDataBody(AmqpDataBody data) {
+    public AmqpDataMessageBody(AmqpDataMessageBody data) {
         this(Objects.requireNonNull(data, "'data' cannot be null.").getData());
     }
 
@@ -66,9 +66,9 @@ public final class AmqpDataBody implements AmqpMessageBody {
     }
 
     /**
-     * Gets {@link IterableStream} of {@link BinaryData} set on this {@link AmqpDataBody}.
+     * Gets {@link IterableStream} of {@link BinaryData} set on this {@link AmqpDataMessageBody}.
      *
-     * @return data set on {@link AmqpDataBody}.
+     * @return data set on {@link AmqpDataMessageBody}.
      */
     public IterableStream<BinaryData> getData() {
         return new IterableStream<>(Collections.singleton(binaryData));

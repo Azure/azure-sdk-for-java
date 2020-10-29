@@ -1,6 +1,13 @@
 # Release History
 
 ## 1.7.0-beta.1 (Unreleased)
+### New Features
+- Adding support for `BinaryData` in `AmqpAnnotatedMessage`.
+ 
+### Breaking Changes
+- Updated constructor `AmqpDataMessageBody` to support `BinaryData`.
+- Renamed `AmqpDataBody` to `AmqpDataMessageBody`.
+
 
 ## 1.6.0 (2020-10-12)
 ### New Features

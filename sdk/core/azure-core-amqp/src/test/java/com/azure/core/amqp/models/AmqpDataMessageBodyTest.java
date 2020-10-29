@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Test for {@link AmqpDataBody}.
  */
-public class AmqpDataBodyTest {
+public class AmqpDataMessageBodyTest {
 
     /**
      * Verifies we correctly set {@link BinaryData} values via constructor for {@link AmqpAnnotatedMessage}.
@@ -30,7 +30,7 @@ public class AmqpDataBodyTest {
         expectedDataList.add(BinaryData.fromBytes(expectedData));
 
         // Act
-        final AmqpDataBody actual = new AmqpDataBody(expectedDataList);
+        final AmqpDataMessageBody actual = new AmqpDataMessageBody(expectedDataList);
 
         // Assert
         assertEquals(AmqpBodyType.DATA, actual.getBodyType());
@@ -57,9 +57,9 @@ public class AmqpDataBodyTest {
         final List<BinaryData> unexpectedEmptyDataList = new ArrayList<>();
 
         // Act & Assert
-        Assertions.assertThrows(NullPointerException.class, () -> new AmqpDataBody(listBinaryData));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new AmqpDataBody(unexpectedLargeDataList));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new AmqpDataBody(unexpectedEmptyDataList));
+        Assertions.assertThrows(NullPointerException.class, () -> new AmqpDataMessageBody(listBinaryData));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new AmqpDataMessageBody(unexpectedLargeDataList));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new AmqpDataMessageBody(unexpectedEmptyDataList));
     }
 
     /**
@@ -72,10 +72,10 @@ public class AmqpDataBodyTest {
         final List<BinaryData> expectedDataList = new ArrayList<>();
         expectedDataList.add(BinaryData.fromBytes(expectedData));
 
-        final AmqpDataBody expected = new AmqpDataBody(expectedDataList);
+        final AmqpDataMessageBody expected = new AmqpDataMessageBody(expectedDataList);
 
         // Act
-        final AmqpDataBody actual = new AmqpDataBody(expected);
+        final AmqpDataMessageBody actual = new AmqpDataMessageBody(expected);
 
         // Assert
         assertEquals(expected.getBodyType(), actual.getBodyType());
