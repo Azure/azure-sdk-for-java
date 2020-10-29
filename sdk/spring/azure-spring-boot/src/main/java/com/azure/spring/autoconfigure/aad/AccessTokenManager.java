@@ -135,6 +135,7 @@ public class AccessTokenManager {
      * Acquire IAuthenticationResult for a resource server.
      *
      * @param idToken The token used to perform an get token request.
+     * @param tenantId The tenantId of the current application.
      * @param applicationIdUri The Application ID URI of resource server, e.g., https://graph.microsoft.com for
      * Microsoft Graph API.
      * @param permissions The permissions of resources to be authorized with, need to be formatted as lowercase.
