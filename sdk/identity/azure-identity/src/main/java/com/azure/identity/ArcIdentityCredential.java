@@ -3,8 +3,8 @@
 
 package com.azure.identity;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -15,31 +15,22 @@ import reactor.core.publisher.Mono;
  * The Managed Service Identity credential for Azure App Service.
  */
 @Immutable
-class AppServiceMsiCredential extends ManagedIdentityServiceCredential {
+class ArcIdentityCredential extends ManagedIdentityServiceCredential {
     private final String identityEndpoint;
-    private final String msiEndpoint;
-    private final String msiSecret;
-    private final String identityHeader;
-    private final ClientLogger logger = new ClientLogger(AppServiceMsiCredential.class);
+    private final ClientLogger logger = new ClientLogger(ArcIdentityCredential.class);
 
     /**
-     * Creates an instance of {@link AppServiceMsiCredential}.
+     * Creates an instance of {@link ArcIdentityCredential}.
      *
      * @param clientId The client ID of user assigned or system assigned identity.
      * @param identityClient The identity client to acquire a token with.
      */
-    AppServiceMsiCredential(String clientId, IdentityClient identityClient) {
-        super(clientId, identityClient, "AZURE APP SERVICE MSI/IDENTITY ENDPOINT");
+    ArcIdentityCredential(String clientId, IdentityClient identityClient) {
+        super(clientId, identityClient, "AZURE ARC IDENTITY_ENDPOINT");
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
         this.identityEndpoint = configuration.get(ManagedIdentityCredential.PROPERTY_IDENTITY_ENDPOINT);
-        this.identityHeader = configuration.get(ManagedIdentityCredential.PROPERTY_IDENTITY_HEADER);
-        this.msiEndpoint = configuration.get(Configuration.PROPERTY_MSI_ENDPOINT);
-        this.msiSecret = configuration.get(Configuration.PROPERTY_MSI_SECRET);
         if (identityEndpoint != null) {
             validateEndpointProtocol(this.identityEndpoint, "Identity");
-        }
-        if (msiEndpoint != null) {
-            validateEndpointProtocol(this.msiEndpoint, "MSI");
         }
     }
 
@@ -67,7 +58,6 @@ class AppServiceMsiCredential extends ManagedIdentityServiceCredential {
      * @return A publisher that emits an {@link AccessToken}.
      */
     public Mono<AccessToken> authenticate(TokenRequestContext request) {
-        return identityClient.authenticateToManagedIdentityEndpoint(identityEndpoint, identityHeader, msiEndpoint,
-            msiSecret, request);
+        return identityClient.authenticateToArcManagedIdentityEndpoint(identityEndpoint, request);
     }
 }

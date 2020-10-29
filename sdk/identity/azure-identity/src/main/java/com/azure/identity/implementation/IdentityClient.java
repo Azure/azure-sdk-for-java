@@ -80,6 +80,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.TreeMap;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -743,6 +744,87 @@ public class IdentityClient {
 
                         return authenticateWithPublicClientCache(request, requestedAccount);
                     }));
+    }
+
+
+    /**
+     * Asynchronously acquire a token from the App Service Managed Service Identity endpoint.
+     *
+     * @param identityEndpoint the Identity endpoint to acquire token from
+     * @param request the details of the token request
+     * @return a Publisher that emits an AccessToken
+     */
+    public Mono<AccessToken> authenticateToArcManagedIdentityEndpoint(String identityEndpoint,
+                                                                      TokenRequestContext request) {
+        return Mono.fromCallable(() -> {
+
+            HttpURLConnection connection = null;
+            StringBuilder payload = new StringBuilder();
+            payload.append("resource=");
+            payload.append(URLEncoder.encode(ScopeUtil.scopesToResource(request.getScopes()), "UTF-8"));
+            payload.append("&api-version=");
+            payload.append(URLEncoder.encode("2019-11-01", "UTF-8"));
+
+            URL url = new URL(String.format("%s?%s", identityEndpoint, payload));
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Metadata", "true");
+            connection.connect();
+
+            try {
+                Scanner s = new Scanner(connection.getInputStream(), "UTF-8").useDelimiter("\\A");
+            } catch (IOException e) {
+                int status = connection.getResponseCode();
+                if (status != 401) {
+                    throw logger.logExceptionAsError(new ClientAuthenticationException(String.format("Expected a 401"
+                         + " Unauthorized response from Azure Arc Managed Identity Endpoint, received: %d", status),
+                        null, e));
+                }
+            }
+
+            try {
+                Map<String, List<String>> headers = connection.getHeaderFields();
+                String realm = null;
+                for (String header : headers.keySet()) {
+                    if (header.equalsIgnoreCase("WWW-Authenticate")) {
+                        List<String> headerValues = headers.get(header);
+                        if (headerValues.size() == 0) {
+                            throw logger.logExceptionAsError(new ClientAuthenticationException("Did not receive a value"
+                               + " for WWW-Authenticate header in the response from Azure Arc Managed Identity Endpoint"
+                                , null));
+                        }
+                        realm = headerValues.get(0);
+                    }
+                }
+
+                int separatorIndex = realm.indexOf("=");
+                if (separatorIndex == -1) {
+                    throw logger.logExceptionAsError(new ClientAuthenticationException("Did not receive a correct value"
+                       + " for WWW-Authenticate header in the response from Azure Arc Managed Identity Endpoint",
+                        null));
+                }
+
+                String secretKeyPath = realm.substring(separatorIndex + 1);
+                String secretKey = new String(Files.readAllBytes(Paths.get(secretKeyPath)), StandardCharsets.UTF_8);
+
+                connection.disconnect();
+
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Authorization", String.format("Basic %s", secretKey));
+                connection.setRequestProperty("Metadata", "true");
+                connection.connect();
+
+                Scanner s = new Scanner(connection.getInputStream(), "UTF-8").useDelimiter("\\A");
+                String result = s.hasNext() ? s.next() : "";
+
+                return SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+            }
+        });
     }
 
     /**
