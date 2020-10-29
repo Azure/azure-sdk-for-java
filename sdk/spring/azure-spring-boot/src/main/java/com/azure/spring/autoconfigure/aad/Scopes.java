@@ -8,6 +8,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Constants used for Graph API scopes.
+ */
 public class Scopes {
 
     public static final String AAD_GRAPH_API_URI = "https://graph.windows.net/";

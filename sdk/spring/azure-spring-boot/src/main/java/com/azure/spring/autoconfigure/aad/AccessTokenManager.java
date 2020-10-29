@@ -36,6 +36,9 @@ import java.util.stream.Collectors;
 import static com.azure.spring.autoconfigure.aad.Scopes.OPENID_PERMISSIONS;
 import static com.azure.spring.autoconfigure.aad.Scopes.MICROSOFT_GRAPH_URI;
 
+/**
+ * This class is used to acquire access tokens for resource URIs and scopes as needed.
+ */
 public class AccessTokenManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(AccessTokenManager.class);
     // We use "aadfeed5" as suffix when client library is ADAL, upgrade to "aadfeed6" for MSAL
@@ -231,6 +234,11 @@ public class AccessTokenManager {
             return expiredTime.getTime() - currentTime.getTime() > ACCESS_TOKEN_MIN_LIVE_TIME;
         }
 
+        /**
+         * Refresh access tokens if expired.
+         *
+         * @throws ServiceUnavailableException If fail to acquire the token.
+         */
         public void refresh() throws ServiceUnavailableException {
             String idToken = getIdTokenFromSecurityContext();
             IAuthenticationResult result = getIAuthenticationResult(idToken,
@@ -239,6 +247,12 @@ public class AccessTokenManager {
             expiredTime = result.expiresOnDate();
         }
 
+        /**
+         * Refresh access token if expired and return it in String.
+         *
+         * @return The access token in JWT format.
+         * @throws ServiceUnavailableException If fail to acquire the token.
+         */
         public String getAccessTokenWithRefreshAutomatically() throws ServiceUnavailableException {
             if (needRefresh()) {
                 refresh();
