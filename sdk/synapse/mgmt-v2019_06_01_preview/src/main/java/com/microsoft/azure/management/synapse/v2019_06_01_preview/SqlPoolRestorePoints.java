@@ -10,11 +10,24 @@ package com.microsoft.azure.management.synapse.v2019_06_01_preview;
 
 import rx.Observable;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.RestorePoint;
+import rx.Completable;
 
 /**
  * Type representing SqlPoolRestorePoints.
  */
 public interface SqlPoolRestorePoints {
+    /**
+     * Gets a restore point.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param sqlPoolName SQL pool name
+     * @param restorePointName The name of the restore point.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<RestorePoint> getAsync(String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName);
+
     /**
      * Get SQL pool backup.
      * Get SQL pool backup information.
@@ -26,6 +39,18 @@ public interface SqlPoolRestorePoints {
      * @return the observable for the request
      */
     Observable<RestorePoint> listAsync(final String resourceGroupName, final String workspaceName, final String sqlPoolName);
+
+    /**
+     * Deletes a restore point.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param sqlPoolName SQL pool name
+     * @param restorePointName The name of the restore point.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable deleteAsync(String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName);
 
     /**
      * Creates a restore point for a data warehouse.

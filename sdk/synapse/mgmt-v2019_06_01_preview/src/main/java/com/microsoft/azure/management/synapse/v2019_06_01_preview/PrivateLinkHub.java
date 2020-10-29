@@ -18,12 +18,18 @@ import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation.SynapseManager;
+import java.util.List;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation.PrivateLinkHubInner;
 
 /**
  * Type representing PrivateLinkHub.
  */
 public interface PrivateLinkHub extends HasInner<PrivateLinkHubInner>, Resource, GroupableResourceCore<SynapseManager, PrivateLinkHubInner>, HasResourceGroup, Refreshable<PrivateLinkHub>, Updatable<PrivateLinkHub.Update>, HasManager<SynapseManager> {
+    /**
+     * @return the privateEndpointConnections value.
+     */
+    List<PrivateEndpointConnectionForPrivateLinkHubBasic> privateEndpointConnections();
+
     /**
      * @return the provisioningState value.
      */

@@ -13,6 +13,7 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.ErrorContractException;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.ResourceMoveDefinition;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolPatchInfo;
 import com.microsoft.azure.Page;
@@ -129,7 +130,7 @@ public class SqlPoolsInner {
      * @param workspaceName The name of the workspace
      * @param sqlPoolName SQL pool name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SqlPoolInner object if successful.
      */
@@ -211,10 +212,10 @@ public class SqlPoolsInner {
             });
     }
 
-    private ServiceResponse<SqlPoolInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<SqlPoolInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<SqlPoolInner> getDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SqlPoolInner, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SqlPoolInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -333,7 +334,7 @@ public class SqlPoolsInner {
      * @param sqlPoolName SQL pool name
      * @param sqlPoolInfo The SQL pool to create
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SqlPoolInner object if successful.
      */
@@ -421,7 +422,7 @@ public class SqlPoolsInner {
      * @param sqlPoolName SQL pool name
      * @param sqlPoolInfo The SQL pool to create
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SqlPoolInner object if successful.
      */
@@ -510,12 +511,12 @@ public class SqlPoolsInner {
             });
     }
 
-    private ServiceResponse<SqlPoolInner> beginCreateDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<SqlPoolInner, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<SqlPoolInner> beginCreateDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SqlPoolInner, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SqlPoolInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorContractInnerException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -527,7 +528,7 @@ public class SqlPoolsInner {
      * @param workspaceName The name of the workspace
      * @param sqlPoolName SQL pool name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Object object if successful.
      */
@@ -607,7 +608,7 @@ public class SqlPoolsInner {
      * @param workspaceName The name of the workspace
      * @param sqlPoolName SQL pool name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Object object if successful.
      */
@@ -689,12 +690,12 @@ public class SqlPoolsInner {
             });
     }
 
-    private ServiceResponse<Object> beginDeleteDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Object, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Object> beginDeleteDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Object, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
                 .register(202, new TypeToken<Object>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorContractInnerException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -705,7 +706,7 @@ public class SqlPoolsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SqlPoolInner&gt; object if successful.
      */
@@ -819,10 +820,10 @@ public class SqlPoolsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<SqlPoolInner>> listByWorkspaceDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<SqlPoolInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<SqlPoolInner>> listByWorkspaceDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SqlPoolInner>, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SqlPoolInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -834,7 +835,7 @@ public class SqlPoolsInner {
      * @param workspaceName The name of the workspace
      * @param sqlPoolName SQL pool name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Object object if successful.
      */
@@ -914,7 +915,7 @@ public class SqlPoolsInner {
      * @param workspaceName The name of the workspace
      * @param sqlPoolName SQL pool name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Object object if successful.
      */
@@ -996,11 +997,11 @@ public class SqlPoolsInner {
             });
     }
 
-    private ServiceResponse<Object> beginPauseDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Object, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Object> beginPauseDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Object, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -1293,7 +1294,7 @@ public class SqlPoolsInner {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SqlPoolInner&gt; object if successful.
      */
@@ -1396,10 +1397,10 @@ public class SqlPoolsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<SqlPoolInner>> listByWorkspaceNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<SqlPoolInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<SqlPoolInner>> listByWorkspaceNextDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SqlPoolInner>, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SqlPoolInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
