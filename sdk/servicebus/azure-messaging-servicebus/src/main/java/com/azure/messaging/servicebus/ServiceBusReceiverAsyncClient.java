@@ -1105,6 +1105,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         } else if (maxLockRenewalDuration.isNegative()) {
             return monoError(logger, new IllegalArgumentException(
                 "'maxLockRenewalDuration' cannot be negative."));
+        } else if (Objects.isNull(sessionId)) {
+            return monoError(logger, new NullPointerException("'sessionId' cannot be null."));
+        } else if (sessionId.isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'sessionId' cannot be empty."));
         }
         final LockRenewalOperation operation = new LockRenewalOperation(sessionId,
             maxLockRenewalDuration, true, this::renewSessionLock);

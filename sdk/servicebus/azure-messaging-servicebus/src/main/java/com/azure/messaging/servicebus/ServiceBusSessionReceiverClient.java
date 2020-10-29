@@ -3,6 +3,9 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceMethod;
+
 import java.time.Duration;
 import java.util.Objects;
 
@@ -17,7 +20,7 @@ import java.util.Objects;
  *         </p>
  *    </li>
  *    <li>
- *        Use {@link #acceptNextSession()} to acquire the lock of the next availabe session
+ *        Use {@link #acceptNextSession()} to acquire the lock of the next available session
  *        without specifying the session id.
  *        <p>
  *        {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#sessionId}
@@ -26,7 +29,7 @@ import java.util.Objects;
  * </ul>
  *
  */
-public class ServiceBusSessionReceiverClient implements AutoCloseable {
+public final class ServiceBusSessionReceiverClient implements AutoCloseable {
     private final ServiceBusSessionReceiverAsyncClient sessionAsyncClient;
     private final Duration operationTimeout;
 
@@ -37,14 +40,18 @@ public class ServiceBusSessionReceiverClient implements AutoCloseable {
 
     /**
      * Acquires a session lock for the next available session and create a {@link ServiceBusReceiverClient}
-     * to receive messages from the session. It will wait if no session is available.
-     * <p>Accept next available session</p>
+     * to receive messages from the session. It will wait until a session is available if no one is available
+     * immediately.
+     * <p>
      * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#nextsession}
      * </p>
      * @return A {@link ServiceBusReceiverClient} that is tied to the available session.
      * @throws UnsupportedOperationException if the queue or topic subscription is not session-enabled.
-     * @throws IllegalStateException if the operation times out.
+     * @throws IllegalStateException if the operation times out. The timeout duration is the tryTimeout
+     * of when you build this client with the
+     * {@link ServiceBusClientBuilder#retryOptions(com.azure.core.amqp.AmqpRetryOptions)}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceBusReceiverClient acceptNextSession() {
         return sessionAsyncClient.acceptNextSession()
             .map(asyncClient -> new ServiceBusReceiverClient(asyncClient, operationTimeout))
@@ -53,7 +60,8 @@ public class ServiceBusSessionReceiverClient implements AutoCloseable {
 
     /**
      * Acquires a session lock for {@code sessionId} and create a {@link ServiceBusReceiverClient}
-     * to receive messages from the session.
+     * to receive messages from the session. If the session is already locked by another client, an
+     * {@link com.azure.core.amqp.exception.AmqpException} is thrown immediately.
      * <p>
      * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#sessionId}
      * </p>
@@ -63,8 +71,11 @@ public class ServiceBusSessionReceiverClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code sessionId} is empty.
      * @throws UnsupportedOperationException if the queue or topic subscription is not session-enabled.
      * @throws com.azure.core.amqp.exception.AmqpException if the session has been locked by another session receiver.
-     * @throws IllegalStateException if the operation times out.
+     * @throws IllegalStateException if the operation times out. The timeout duration is the tryTimeout
+     * of when you build this client with the
+     * {@link ServiceBusClientBuilder#retryOptions(com.azure.core.amqp.AmqpRetryOptions)}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceBusReceiverClient acceptSession(String sessionId) {
         return sessionAsyncClient.acceptSession(sessionId)
             .map(asyncClient -> new ServiceBusReceiverClient(asyncClient, operationTimeout))
