@@ -23,9 +23,8 @@ public class EventHubChannelResourceManagerProvisioner extends EventHubChannelPr
     private final EventHubConsumerGroupManager eventHubConsumerGroupManager;
 
     public EventHubChannelResourceManagerProvisioner(@NonNull EventHubNamespaceManager eventHubNamespaceManager,
-                                                     @NonNull EventHubManager eventHubManager,
-                                                     @NonNull EventHubConsumerGroupManager eventHubConsumerGroupManager,
-                                                     @NonNull String namespace) {
+            @NonNull EventHubManager eventHubManager,
+            @NonNull EventHubConsumerGroupManager eventHubConsumerGroupManager, @NonNull String namespace) {
         Assert.hasText(namespace, "The namespace can't be null or empty");
         this.namespace = namespace;
         this.eventHubNamespaceManager = eventHubNamespaceManager;
@@ -36,13 +35,15 @@ public class EventHubChannelResourceManagerProvisioner extends EventHubChannelPr
     @Override
     protected void validateOrCreateForConsumer(String name, String group) {
         EventHubNamespace eventHubNamespace = eventHubNamespaceManager.getOrCreate(namespace);
-        //If the consumer is created before the producer, we need to create the event hub with it.
-        //Otherwise, this method will fail and the startup of a distributed application, where no order of operations can be imposed, will fail with it.
+        // If the consumer is created before the producer, we need to create the event
+        // hub with it.
+        // Otherwise, this method will fail and the startup of a distributed
+        // application, where no order of operations can be imposed, will fail with it.
         EventHub eventHub = eventHubManager.getOrCreate(Tuple.of(eventHubNamespace, name));
         if (eventHub == null) {
             throw new ProvisioningException(
                     String.format("Event hub with name '%s' in namespace '%s' could not be created", name, namespace));
-
+        }
         eventHubConsumerGroupManager.getOrCreate(Tuple.of(eventHub, group));
     }
 

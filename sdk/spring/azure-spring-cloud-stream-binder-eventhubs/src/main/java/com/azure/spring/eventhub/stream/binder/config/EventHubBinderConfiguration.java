@@ -7,6 +7,7 @@ import com.azure.spring.cloud.autoconfigure.context.AzureEnvironmentAutoConfigur
 import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubProperties;
 import com.azure.spring.cloud.autoconfigure.eventhub.EventHubUtils;
+import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.EventHubConsumerGroupManager;
 import com.azure.spring.cloud.context.core.impl.EventHubManager;
 import com.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
@@ -24,21 +25,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import com.microsoft.azure.eventhub.stream.binder.EventHubMessageChannelBinder;
-import com.microsoft.azure.eventhub.stream.binder.properties.EventHubExtendedBindingProperties;
-import com.microsoft.azure.eventhub.stream.binder.provisioning.EventHubChannelProvisioner;
-import com.microsoft.azure.eventhub.stream.binder.provisioning.EventHubChannelResourceManagerProvisioner;
 import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.spring.cloud.autoconfigure.context.AzureEnvironmentAutoConfiguration;
-import com.microsoft.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubAutoConfiguration;
-import com.microsoft.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubProperties;
-import com.microsoft.azure.spring.cloud.autoconfigure.eventhub.EventHubUtils;
-import com.microsoft.azure.spring.cloud.context.core.config.AzureProperties;
-import com.microsoft.azure.spring.cloud.context.core.impl.EventHubConsumerGroupManager;
-import com.microsoft.azure.spring.cloud.context.core.impl.EventHubManager;
-import com.microsoft.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
-import com.microsoft.azure.spring.cloud.telemetry.TelemetryCollector;
-import com.microsoft.azure.spring.integration.eventhub.api.EventHubOperation;
 
 import javax.annotation.PostConstruct;
 
