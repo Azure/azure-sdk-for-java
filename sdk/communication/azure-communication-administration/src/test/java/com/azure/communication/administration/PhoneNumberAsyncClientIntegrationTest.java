@@ -469,12 +469,13 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
         PhoneNumberAsyncClient client = this.getClient(httpClient);
         PollerFlux<PhoneNumberSearch, PhoneNumberSearch> poller = 
             client.beginCreateSearch(createSearchOptions, duration);
-        AsyncPollResponse<PhoneNumberSearch, PhoneNumberSearch> asyncRes = 
-            poller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-            .blockLast();
-        PhoneNumberSearch testResult = asyncRes.getValue();
-        assertEquals(testResult.getPhoneNumbers().size(), 2);
-        assertNotNull(testResult.getSearchId());
+        Mono<AsyncPollResponse<PhoneNumberSearch, PhoneNumberSearch>> asyncRes = poller.last();
+        StepVerifier.create(asyncRes)
+            .assertNext(item -> {
+                assertEquals(item.getValue().getPhoneNumbers().size(), 2);
+                assertNotNull(item.getValue().getSearchId());
+            })
+            .verifyComplete();        
     }
 
     @ParameterizedTest
@@ -500,14 +501,15 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
         PhoneNumber phoneNumber = new PhoneNumber(PHONENUMBER_TO_RELEASE);
         List<PhoneNumber> phoneNumbers = new ArrayList<>();
         phoneNumbers.add(phoneNumber);
-        Duration pollInterval = Duration.ofSeconds(5);
+        Duration pollInterval = Duration.ofSeconds(1);
         PollerFlux<PhoneNumberRelease, PhoneNumberRelease> poller =
             this.getClient(httpClient).beginReleasePhoneNumbers(phoneNumbers, pollInterval);
-        AsyncPollResponse<PhoneNumberRelease, PhoneNumberRelease> asyncRes = 
-            poller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED).
-            blockLast();
-        PhoneNumberRelease testResult = asyncRes.getValue();
-        assertEquals(ReleaseStatus.COMPLETE, testResult.getStatus());
+        Mono<AsyncPollResponse<PhoneNumberRelease, PhoneNumberRelease>> asyncRes = poller.last();
+        StepVerifier.create(asyncRes)
+            .assertNext(item -> {
+                assertEquals(ReleaseStatus.COMPLETE, item.getValue().getStatus());
+            })
+            .verifyComplete();        
     }
 
     private PhoneNumberAsyncClient getClient(HttpClient httpClient) {

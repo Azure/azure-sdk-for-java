@@ -911,7 +911,11 @@ public final class PhoneNumberAsyncClient {
     public PollerFlux<PhoneNumberRelease, PhoneNumberRelease> 
         beginReleasePhoneNumbers(List<PhoneNumber> phoneNumbers, Duration pollInterval) {
         Objects.requireNonNull(phoneNumbers, "'phoneNumbers' cannot be null.");
-        Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
+
+        if (pollInterval == null) {
+            pollInterval = defaultPollInterval;
+        }
+
         return new PollerFlux<PhoneNumberRelease, PhoneNumberRelease>(pollInterval,
             releaseNumbersActivationOperation(phoneNumbers),
             releaseNumbersPollOperation(),
@@ -933,8 +937,7 @@ public final class PhoneNumberAsyncClient {
         };
     }
 
-    private Function<PollingContext<PhoneNumberRelease>, 
-        Mono<PollResponse<PhoneNumberRelease>>> 
+    private Function<PollingContext<PhoneNumberRelease>, Mono<PollResponse<PhoneNumberRelease>>> 
         releaseNumbersPollOperation() {
         return pollingContext ->
             getReleaseById(pollingContext.getLatestResponse().getValue().getReleaseId())
