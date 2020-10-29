@@ -337,6 +337,36 @@ class SasClientTests extends APISpec {
         thrown(BlobStorageException)
     }
 
+    def "blob user delegation saoid"() {
+        setup:
+        def permissions = new BlobSasPermission()
+            .setReadPermission(true)
+
+        def expiryTime = getUTCNow().plusDays(1)
+
+        def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
+
+        def keyOid = getConfigValue(key.getSignedObjectId())
+        key.setSignedObjectId(keyOid)
+
+        def keyTid = getConfigValue(key.getSignedTenantId())
+        key.setSignedTenantId(keyTid)
+
+        def saoid = getRandomUUID()
+
+        when:
+        def sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions)
+            .setPreauthorizedAgentObjectId(saoid)
+        def sasWithPermissions = sasClient.generateUserDelegationSas(sasValues, key)
+
+        def client = getBlobClient(sasWithPermissions, cc.getBlobContainerUrl(), blobName)
+        client.getProperties()
+
+        then:
+        sasWithPermissions.contains("saoid=" + saoid)
+        notThrown(BlobStorageException)
+    }
+
     def "container user delegation correlation id"() {
         setup:
         def permissions = new BlobContainerSasPermission()
