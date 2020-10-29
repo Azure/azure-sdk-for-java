@@ -84,8 +84,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
             .setMaxSizeInMegabytes(1024)
             .setMaxDeliveryCount(7)
             .setLockDuration(Duration.ofSeconds(45))
-            .setRequiresSession(true)
-            .setRequiresDuplicateDetection(true)
+            .setSessionRequired(true)
+            .setDuplicateDetectionRequired(true)
             .setDuplicateDetectionHistoryTimeWindow(Duration.ofMinutes(2))
             .setUserMetadata("some-metadata-for-testing");
 
@@ -99,10 +99,10 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
                 assertEquals(expected.getMaxSizeInMegabytes(), actual.getMaxSizeInMegabytes());
                 assertEquals(expected.getUserMetadata(), actual.getUserMetadata());
 
-                assertEquals(expected.deadLetteringOnMessageExpiration(), actual.isDeadLetteringOnMessageExpiration());
-                assertEquals(expected.enablePartitioning(), actual.enablePartitioning());
-                assertEquals(expected.requiresDuplicateDetection(), actual.requiresDuplicateDetection());
-                assertEquals(expected.requiresSession(), actual.requiresSession());
+                assertEquals(expected.isDeadLetteringOnMessageExpiration(), actual.isDeadLetteringOnMessageExpiration());
+                assertEquals(expected.isPartitioningEnabled(), actual.isPartitioningEnabled());
+                assertEquals(expected.isDuplicateDetectionRequired(), actual.isDuplicateDetectionRequired());
+                assertEquals(expected.isSessionRequired(), actual.isSessionRequired());
 
                 final QueueRuntimeProperties runtimeProperties = new QueueRuntimeProperties(actual);
                 assertEquals(0, runtimeProperties.getTotalMessageCount());
@@ -145,8 +145,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
             .setMaxSizeInMegabytes(1024)
             .setMaxDeliveryCount(7)
             .setLockDuration(Duration.ofSeconds(45))
-            .setRequiresSession(true)
-            .setRequiresDuplicateDetection(true)
+            .setSessionRequired(true)
+            .setDuplicateDetectionRequired(true)
             .setDuplicateDetectionHistoryTimeWindow(Duration.ofMinutes(2))
             .setUserMetadata("some-metadata-for-testing");
 
@@ -162,10 +162,10 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
                 assertEquals(expected.getMaxSizeInMegabytes(), actual.getMaxSizeInMegabytes());
                 assertEquals(expected.getUserMetadata(), actual.getUserMetadata());
 
-                assertEquals(expected.deadLetteringOnMessageExpiration(), actual.isDeadLetteringOnMessageExpiration());
-                assertEquals(expected.enablePartitioning(), actual.enablePartitioning());
-                assertEquals(expected.requiresDuplicateDetection(), actual.requiresDuplicateDetection());
-                assertEquals(expected.requiresSession(), actual.requiresSession());
+                assertEquals(expected.isDeadLetteringOnMessageExpiration(), actual.isDeadLetteringOnMessageExpiration());
+                assertEquals(expected.isPartitioningEnabled(), actual.isPartitioningEnabled());
+                assertEquals(expected.isDuplicateDetectionRequired(), actual.isDuplicateDetectionRequired());
+                assertEquals(expected.isSessionRequired(), actual.isSessionRequired());
 
                 final QueueRuntimeProperties runtimeProperties = new QueueRuntimeProperties(actual);
                 assertEquals(0, runtimeProperties.getTotalMessageCount());
@@ -201,8 +201,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
                 assertEquals(expected.getMaxDeliveryCount(), actual.getMaxDeliveryCount());
                 assertEquals(expected.getUserMetadata(), actual.getUserMetadata());
 
-                assertEquals(expected.deadLetteringOnMessageExpiration(), actual.deadLetteringOnMessageExpiration());
-                assertEquals(expected.requiresSession(), actual.requiresSession());
+                assertEquals(expected.isDeadLetteringOnMessageExpiration(), actual.isDeadLetteringOnMessageExpiration());
+                assertEquals(expected.isSessionRequired(), actual.isSessionRequired());
             })
             .verifyComplete();
     }
@@ -233,7 +233,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         final String topicName = testResourceNamer.randomName("test", 10);
         final CreateTopicOptions expected = new CreateTopicOptions()
             .setMaxSizeInMegabytes(2048L)
-            .setRequiresDuplicateDetection(true)
+            .setDuplicateDetectionRequired(true)
             .setDuplicateDetectionHistoryTimeWindow(Duration.ofMinutes(2))
             .setUserMetadata("some-metadata-for-testing-topic");
 
@@ -250,8 +250,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
                 assertEquals(expected.getMaxSizeInMegabytes(), actual.getMaxSizeInMegabytes());
                 assertEquals(expected.getUserMetadata(), actual.getUserMetadata());
 
-                assertEquals(expected.enablePartitioning(), actual.enablePartitioning());
-                assertEquals(expected.requiresDuplicateDetection(), actual.requiresDuplicateDetection());
+                assertEquals(expected.isPartitioningEnabled(), actual.isPartitioningEnabled());
+                assertEquals(expected.isDuplicateDetectionRequired(), actual.isDuplicateDetectionRequired());
 
                 final TopicRuntimeProperties runtimeProperties = new TopicRuntimeProperties(actual);
                 assertEquals(0, runtimeProperties.getSubscriptionCount());
@@ -320,8 +320,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
             .assertNext(queueDescription -> {
                 assertEquals(queueName, queueDescription.getName());
 
-                assertFalse(queueDescription.enablePartitioning());
-                assertFalse(queueDescription.requiresSession());
+                assertFalse(queueDescription.isPartitioningEnabled());
+                assertFalse(queueDescription.isSessionRequired());
                 assertNotNull(queueDescription.getLockDuration());
 
                 final QueueRuntimeProperties runtimeProperties = new QueueRuntimeProperties(queueDescription);
@@ -467,7 +467,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
                 assertEquals(topicName, description.getTopicName());
                 assertEquals(subscriptionName, description.getSubscriptionName());
 
-                assertTrue(description.requiresSession());
+                assertTrue(description.isSessionRequired());
                 assertNotNull(description.getLockDuration());
 
                 final SubscriptionRuntimeProperties runtimeProperties = new SubscriptionRuntimeProperties(description);
@@ -569,11 +569,11 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
             .assertNext(topicDescription -> {
                 assertEquals(topicName, topicDescription.getName());
 
-                assertTrue(topicDescription.enableBatchedOperations());
-                assertFalse(topicDescription.requiresDuplicateDetection());
+                assertTrue(topicDescription.isBatchedOperationsEnabled());
+                assertFalse(topicDescription.isDuplicateDetectionRequired());
                 assertNotNull(topicDescription.getDuplicateDetectionHistoryTimeWindow());
                 assertNotNull(topicDescription.getDefaultMessageTimeToLive());
-                assertFalse(topicDescription.enablePartitioning());
+                assertFalse(topicDescription.isPartitioningEnabled());
 
                 final TopicRuntimeProperties runtimeProperties = new TopicRuntimeProperties(topicDescription);
                 assertNotNull(runtimeProperties.getCreatedAt());
@@ -703,9 +703,9 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         StepVerifier.create(client.listQueues())
             .assertNext(queueDescription -> {
                 assertNotNull(queueDescription.getName());
-                assertTrue(queueDescription.enableBatchedOperations());
-                assertFalse(queueDescription.requiresDuplicateDetection());
-                assertFalse(queueDescription.enablePartitioning());
+                assertTrue(queueDescription.isBatchedOperationsEnabled());
+                assertFalse(queueDescription.isDuplicateDetectionRequired());
+                assertFalse(queueDescription.isPartitioningEnabled());
             })
             .expectNextCount(9)
             .thenCancel()
@@ -742,8 +742,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         StepVerifier.create(client.listTopics())
             .assertNext(topics -> {
                 assertNotNull(topics.getName());
-                assertTrue(topics.enableBatchedOperations());
-                assertFalse(topics.enablePartitioning());
+                assertTrue(topics.isBatchedOperationsEnabled());
+                assertFalse(topics.isPartitioningEnabled());
             })
             .expectNextCount(2)
             .thenCancel()
