@@ -96,7 +96,7 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
     /**
      * Acquires a session lock for {@code sessionId} and create a {@link ServiceBusReceiverAsyncClient}
      * to receive messages from the session. If the session is already locked by another client, an
-     * {@link com.azure.core.amqp.exception.AmqpException} is thrown immediately.
+     * {@link com.azure.core.amqp.exception.AmqpException} is thrown.
      * <p>
      * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#sessionId}
      * </p>
@@ -105,9 +105,7 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
      * @throws NullPointerException if {@code sessionId} is null.
      * @throws IllegalArgumentException if {@code sessionId} is empty.
      * @throws UnsupportedOperationException if the queue or topic subscription is not session-enabled.
-     * @throws com.azure.core.amqp.exception.AmqpException with errorCondition
-     * {@link com.azure.core.amqp.exception.AmqpErrorCondition#SESSION_CANNOT_BE_LOCKED}
-     * if the session is locked by another client.
+     * @throws com.azure.core.amqp.exception.AmqpException if the lock cannot be acquired.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServiceBusReceiverAsyncClient> acceptSession(String sessionId) {

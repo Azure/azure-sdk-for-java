@@ -70,7 +70,7 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
      * @throws NullPointerException if {@code sessionId} is null.
      * @throws IllegalArgumentException if {@code sessionId} is empty.
      * @throws UnsupportedOperationException if the queue or topic subscription is not session-enabled.
-     * @throws com.azure.core.amqp.exception.AmqpException if the session has been locked by another session receiver.
+     * @throws com.azure.core.amqp.exception.AmqpException if the lock cannot be acquired.
      * @throws IllegalStateException if the operation times out. The timeout duration is the tryTimeout
      * of when you build this client with the
      * {@link ServiceBusClientBuilder#retryOptions(com.azure.core.amqp.AmqpRetryOptions)}.
