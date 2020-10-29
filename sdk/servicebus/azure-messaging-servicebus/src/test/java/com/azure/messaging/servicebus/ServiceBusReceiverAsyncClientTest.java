@@ -464,8 +464,8 @@ class ServiceBusReceiverAsyncClientTest {
         // Act & Assert
         StepVerifier.create(receiver.renewMessageLock(receivedMessage, maxDuration))
             .verifyErrorMatches(throwable -> {
-                Assertions.assertTrue(throwable instanceof ServiceBusException);
-                final ServiceBusErrorSource actual = ((ServiceBusException) throwable).getErrorSource();
+                Assertions.assertTrue(throwable instanceof ServiceBusAmqpException);
+                final ServiceBusErrorSource actual = ((ServiceBusAmqpException) throwable).getErrorSource();
                 Assertions.assertEquals(ServiceBusErrorSource.RENEW_LOCK, actual);
                 return true;
             });
@@ -484,8 +484,8 @@ class ServiceBusReceiverAsyncClientTest {
         // Act & Assert
         StepVerifier.create(sessionReceiver.renewSessionLock(SESSION_ID))
             .verifyErrorMatches(throwable -> {
-                Assertions.assertTrue(throwable instanceof ServiceBusException);
-                final ServiceBusErrorSource actual = ((ServiceBusException) throwable).getErrorSource();
+                Assertions.assertTrue(throwable instanceof ServiceBusAmqpException);
+                final ServiceBusErrorSource actual = ((ServiceBusAmqpException) throwable).getErrorSource();
                 Assertions.assertEquals(ServiceBusErrorSource.RENEW_LOCK, actual);
                 return true;
             });
@@ -537,8 +537,8 @@ class ServiceBusReceiverAsyncClientTest {
             .then(() -> messageSink.next(message))
             .expectNext()
             .verifyErrorMatches(throwable -> {
-                Assertions.assertTrue(throwable instanceof ServiceBusException);
-                final ServiceBusErrorSource actual = ((ServiceBusException) throwable).getErrorSource();
+                Assertions.assertTrue(throwable instanceof ServiceBusAmqpException);
+                final ServiceBusErrorSource actual = ((ServiceBusAmqpException) throwable).getErrorSource();
                 Assertions.assertEquals(expectedErrorSource, actual);
                 return true;
             });
@@ -568,8 +568,8 @@ class ServiceBusReceiverAsyncClientTest {
         // Act & Assert
         StepVerifier.create(receiver.receiveMessages().take(1))
             .verifyErrorMatches(throwable -> {
-                Assertions.assertTrue(throwable instanceof ServiceBusException);
-                final ServiceBusErrorSource actual = ((ServiceBusException) throwable).getErrorSource();
+                Assertions.assertTrue(throwable instanceof ServiceBusAmqpException);
+                final ServiceBusErrorSource actual = ((ServiceBusAmqpException) throwable).getErrorSource();
                 Assertions.assertEquals(ServiceBusErrorSource.RECEIVE, actual);
                 return true;
             });

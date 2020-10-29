@@ -31,3 +31,5 @@ public class ServiceBusAmqpException extends AmqpException {
      */
     public ServiceBusErrorSource getErrorSource() {
         return errorSource;
+    }
+}

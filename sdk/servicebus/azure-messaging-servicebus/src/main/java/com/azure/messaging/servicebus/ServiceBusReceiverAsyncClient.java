@@ -1103,7 +1103,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                             errorSource = ServiceBusErrorSource.UNKNOWN;
                     }
 
-                    return new ServiceBusException((AmqpException) throwable, errorSource);
+                    return new ServiceBusAmqpException((AmqpException) throwable, errorSource);
 
                 } else {
                     return throwable;
@@ -1178,7 +1178,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     private Throwable mapError(Throwable throwable, ServiceBusErrorSource errorSource) {
         if (throwable instanceof AmqpException) {
-            return new ServiceBusException((AmqpException) throwable, errorSource);
+            return new ServiceBusAmqpException((AmqpException) throwable, errorSource);
         } else {
             return throwable;
         }
