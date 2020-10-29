@@ -3,6 +3,8 @@
 
 package com.azure.core.amqp.models;
 
+import com.azure.core.util.logging.ClientLogger;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -14,6 +16,8 @@ import java.util.Objects;
  *     Amqp Message Format.</a>
  */
 public final class AmqpAnnotatedMessage {
+    private final ClientLogger logger = new ClientLogger(AmqpAnnotatedMessage.class);
+
     private final AmqpMessageBody amqpMessageBody;
     private final Map<String, Object> applicationProperties;
     private final Map<String, Object> deliveryAnnotations;
@@ -49,7 +53,22 @@ public final class AmqpAnnotatedMessage {
      */
     public AmqpAnnotatedMessage(AmqpAnnotatedMessage message) {
         Objects.requireNonNull(message, "'message' cannot be null.");
-        amqpMessageBody = Objects.requireNonNull(message.getBody(), "'message.body' cannot be null.");
+        Objects.requireNonNull(message.getBody(), "'message.body' cannot be null.");
+
+        AmqpBodyType bodyType = message.getBody().getBodyType();
+        switch (bodyType) {
+            case DATA:
+                amqpMessageBody = new AmqpDataBody((AmqpDataBody) message.getBody());
+                break;
+            case SEQUENCE:
+            case VALUE:
+                throw logger.logExceptionAsError(new UnsupportedOperationException("Body type not supported yet "
+                    + bodyType.toString()));
+            default:
+                throw logger.logExceptionAsError(new IllegalStateException("Body type not valid "
+                    + bodyType.toString()));
+        }
+
         applicationProperties = new HashMap<>(message.getApplicationProperties());
         deliveryAnnotations = new HashMap<>(message.getDeliveryAnnotations());
         messageAnnotations = new HashMap<>(message.getMessageAnnotations());

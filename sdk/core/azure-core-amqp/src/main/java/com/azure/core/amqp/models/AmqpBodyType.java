@@ -4,19 +4,23 @@
 package com.azure.core.amqp.models;
 
 /**
- * All AmqpBodyType available for AMQP Message.
+ * All {@link AmqpBodyType} available for AMQP Message.
  */
 public enum AmqpBodyType {
     /**
-     * Represent Amqp Data type
+     * When message content is byte array, equivalent to AMQP Data.
      */
     DATA,
+
     /**
-     * Represent Amqp Value type
+     * When message content is a list of objects, equivalent to AMQP Sequence. Each object must be of a type supported
+     * by AMQP.
      */
     VALUE,
+
     /**
-     * Represent Amqp Sequence type
+     * When message content is a single object, equivalent to AMQP Value. The object must be of a type supported by
+     * AMQP.
      */
     SEQUENCE;
 

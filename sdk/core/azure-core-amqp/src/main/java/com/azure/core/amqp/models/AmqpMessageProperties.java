@@ -4,9 +4,9 @@
 package com.azure.core.amqp.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.experimental.util.BinaryData;
 
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -30,7 +30,7 @@ public class AmqpMessageProperties {
     private String replyTo;
     private String to;
     private String subject;
-    private byte[] userId;
+    private BinaryData userId;
 
     AmqpMessageProperties() {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
@@ -313,8 +313,8 @@ public class AmqpMessageProperties {
      *
      * @return the {@code userId} value.
      */
-    public byte[] getUserId() {
-        return userId != null ? Arrays.copyOf(userId, userId.length) : new byte[0];
+    public BinaryData getUserId() {
+        return userId;
     }
 
     /**
@@ -323,8 +323,8 @@ public class AmqpMessageProperties {
      * @param userId to be set .
      * @return updated {@link AmqpMessageProperties} object.
      */
-    public AmqpMessageProperties setUserId(byte[] userId) {
-        this.userId = userId != null ? Arrays.copyOf(userId, userId.length) : new byte[0];
+    public AmqpMessageProperties setUserId(BinaryData userId) {
+        this.userId = userId;
         return this;
     }
 
