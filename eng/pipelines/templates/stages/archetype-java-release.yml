@@ -101,7 +101,7 @@ stages:
             variables:
               - template: ../variables/globals.yml
             pool:
-              vmImage: vs2017-win2016
+              vmImage: windows-2019
             strategy:
               runOnce:
                 deploy:
@@ -122,7 +122,7 @@ stages:
               variables:
                 - template: ../variables/globals.yml
               pool:
-                vmImage: vs2017-win2016
+                vmImage: windows-2019
               strategy:
                 runOnce:
                   deploy:
@@ -163,7 +163,7 @@ stages:
                 CIConfigs: "{'targets':[{'path_to_config':'package.json','mode':'Preview','monikerid':'1'},{'path_to_config':'package.json','mode':'Latest','monikerid':'0'}]}"
                 skipComponentGovernanceDetection: true
               pool:
-                vmImage: vs2017-win2016
+                vmImage: windows-2019
               strategy:
                 runOnce:
                   deploy:
@@ -268,7 +268,7 @@ stages:
             value: https://pkgs.dev.azure.com/azure-sdk/internal/_packaging/azure-sdk-for-java-pr/maven/v1
 
         pool:
-          vmImage: vs2017-win2016
+          vmImage: windows-2019
         steps:
         - checkout: self
           path: azure-sdk-for-java
