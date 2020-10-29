@@ -19,6 +19,7 @@ import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation.SynapseManager;
 import java.util.Map;
 import org.joda.time.DateTime;
+import java.util.List;
 
 /**
  * Type representing BigDataPoolResourceInfo.
@@ -38,6 +39,11 @@ public interface BigDataPoolResourceInfo extends HasInner<BigDataPoolResourceInf
      * @return the creationDate value.
      */
     DateTime creationDate();
+
+    /**
+     * @return the customLibraries value.
+     */
+    List<LibraryInfo> customLibraries();
 
     /**
      * @return the defaultSparkLogFolder value.
@@ -88,6 +94,16 @@ public interface BigDataPoolResourceInfo extends HasInner<BigDataPoolResourceInf
      * @return the provisioningState value.
      */
     String provisioningState();
+
+    /**
+     * @return the sessionLevelPackagesEnabled value.
+     */
+    Boolean sessionLevelPackagesEnabled();
+
+    /**
+     * @return the sparkConfigProperties value.
+     */
+    LibraryRequirements sparkConfigProperties();
 
     /**
      * @return the sparkEventsFolder value.
@@ -199,6 +215,18 @@ public interface BigDataPoolResourceInfo extends HasInner<BigDataPoolResourceInf
         }
 
         /**
+         * The stage of the bigdatapoolresourceinfo definition allowing to specify CustomLibraries.
+         */
+        interface WithCustomLibraries {
+            /**
+             * Specifies customLibraries.
+             * @param customLibraries List of custom libraries/packages associated with the spark pool
+             * @return the next definition stage
+             */
+            WithCreate withCustomLibraries(List<LibraryInfo> customLibraries);
+        }
+
+        /**
          * The stage of the bigdatapoolresourceinfo definition allowing to specify DefaultSparkLogFolder.
          */
         interface WithDefaultSparkLogFolder {
@@ -252,7 +280,7 @@ public interface BigDataPoolResourceInfo extends HasInner<BigDataPoolResourceInf
         interface WithNodeSize {
             /**
              * Specifies nodeSize.
-             * @param nodeSize The level of compute power that each node in the Big Data pool has. Possible values include: 'None', 'Small', 'Medium', 'Large', 'XLarge', 'XXLarge'
+             * @param nodeSize The level of compute power that each node in the Big Data pool has. Possible values include: 'None', 'Small', 'Medium', 'Large', 'XLarge', 'XXLarge', 'XXXLarge'
              * @return the next definition stage
              */
             WithCreate withNodeSize(NodeSize nodeSize);
@@ -280,6 +308,30 @@ public interface BigDataPoolResourceInfo extends HasInner<BigDataPoolResourceInf
              * @return the next definition stage
              */
             WithCreate withProvisioningState(String provisioningState);
+        }
+
+        /**
+         * The stage of the bigdatapoolresourceinfo definition allowing to specify SessionLevelPackagesEnabled.
+         */
+        interface WithSessionLevelPackagesEnabled {
+            /**
+             * Specifies sessionLevelPackagesEnabled.
+             * @param sessionLevelPackagesEnabled Whether session level library/package management is enabled or not
+             * @return the next definition stage
+             */
+            WithCreate withSessionLevelPackagesEnabled(Boolean sessionLevelPackagesEnabled);
+        }
+
+        /**
+         * The stage of the bigdatapoolresourceinfo definition allowing to specify SparkConfigProperties.
+         */
+        interface WithSparkConfigProperties {
+            /**
+             * Specifies sparkConfigProperties.
+             * @param sparkConfigProperties Spark configuration file to specify additional properties
+             * @return the next definition stage
+             */
+            WithCreate withSparkConfigProperties(LibraryRequirements sparkConfigProperties);
         }
 
         /**
@@ -323,13 +375,13 @@ public interface BigDataPoolResourceInfo extends HasInner<BigDataPoolResourceInf
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<BigDataPoolResourceInfo>, DefinitionStages.WithAutoPause, DefinitionStages.WithAutoScale, DefinitionStages.WithCreationDate, DefinitionStages.WithDefaultSparkLogFolder, DefinitionStages.WithIsComputeIsolationEnabled, DefinitionStages.WithLibraryRequirements, DefinitionStages.WithNodeCount, DefinitionStages.WithNodeSize, DefinitionStages.WithNodeSizeFamily, DefinitionStages.WithProvisioningState, DefinitionStages.WithSparkEventsFolder, DefinitionStages.WithSparkVersion, DefinitionStages.WithTags {
+        interface WithCreate extends Creatable<BigDataPoolResourceInfo>, DefinitionStages.WithAutoPause, DefinitionStages.WithAutoScale, DefinitionStages.WithCreationDate, DefinitionStages.WithCustomLibraries, DefinitionStages.WithDefaultSparkLogFolder, DefinitionStages.WithIsComputeIsolationEnabled, DefinitionStages.WithLibraryRequirements, DefinitionStages.WithNodeCount, DefinitionStages.WithNodeSize, DefinitionStages.WithNodeSizeFamily, DefinitionStages.WithProvisioningState, DefinitionStages.WithSessionLevelPackagesEnabled, DefinitionStages.WithSparkConfigProperties, DefinitionStages.WithSparkEventsFolder, DefinitionStages.WithSparkVersion, DefinitionStages.WithTags {
         }
     }
     /**
      * The template for a BigDataPoolResourceInfo update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<BigDataPoolResourceInfo>, UpdateStages.WithForce, UpdateStages.WithAutoPause, UpdateStages.WithAutoScale, UpdateStages.WithCreationDate, UpdateStages.WithDefaultSparkLogFolder, UpdateStages.WithIsComputeIsolationEnabled, UpdateStages.WithLibraryRequirements, UpdateStages.WithNodeCount, UpdateStages.WithNodeSize, UpdateStages.WithNodeSizeFamily, UpdateStages.WithProvisioningState, UpdateStages.WithSparkEventsFolder, UpdateStages.WithSparkVersion, UpdateStages.WithTags {
+    interface Update extends Appliable<BigDataPoolResourceInfo>, UpdateStages.WithForce, UpdateStages.WithAutoPause, UpdateStages.WithAutoScale, UpdateStages.WithCreationDate, UpdateStages.WithCustomLibraries, UpdateStages.WithDefaultSparkLogFolder, UpdateStages.WithIsComputeIsolationEnabled, UpdateStages.WithLibraryRequirements, UpdateStages.WithNodeCount, UpdateStages.WithNodeSize, UpdateStages.WithNodeSizeFamily, UpdateStages.WithProvisioningState, UpdateStages.WithSessionLevelPackagesEnabled, UpdateStages.WithSparkConfigProperties, UpdateStages.WithSparkEventsFolder, UpdateStages.WithSparkVersion, UpdateStages.WithTags {
     }
 
     /**
@@ -382,6 +434,18 @@ public interface BigDataPoolResourceInfo extends HasInner<BigDataPoolResourceInf
              * @return the next update stage
              */
             Update withCreationDate(DateTime creationDate);
+        }
+
+        /**
+         * The stage of the bigdatapoolresourceinfo update allowing to specify CustomLibraries.
+         */
+        interface WithCustomLibraries {
+            /**
+             * Specifies customLibraries.
+             * @param customLibraries List of custom libraries/packages associated with the spark pool
+             * @return the next update stage
+             */
+            Update withCustomLibraries(List<LibraryInfo> customLibraries);
         }
 
         /**
@@ -438,7 +502,7 @@ public interface BigDataPoolResourceInfo extends HasInner<BigDataPoolResourceInf
         interface WithNodeSize {
             /**
              * Specifies nodeSize.
-             * @param nodeSize The level of compute power that each node in the Big Data pool has. Possible values include: 'None', 'Small', 'Medium', 'Large', 'XLarge', 'XXLarge'
+             * @param nodeSize The level of compute power that each node in the Big Data pool has. Possible values include: 'None', 'Small', 'Medium', 'Large', 'XLarge', 'XXLarge', 'XXXLarge'
              * @return the next update stage
              */
             Update withNodeSize(NodeSize nodeSize);
@@ -466,6 +530,30 @@ public interface BigDataPoolResourceInfo extends HasInner<BigDataPoolResourceInf
              * @return the next update stage
              */
             Update withProvisioningState(String provisioningState);
+        }
+
+        /**
+         * The stage of the bigdatapoolresourceinfo update allowing to specify SessionLevelPackagesEnabled.
+         */
+        interface WithSessionLevelPackagesEnabled {
+            /**
+             * Specifies sessionLevelPackagesEnabled.
+             * @param sessionLevelPackagesEnabled Whether session level library/package management is enabled or not
+             * @return the next update stage
+             */
+            Update withSessionLevelPackagesEnabled(Boolean sessionLevelPackagesEnabled);
+        }
+
+        /**
+         * The stage of the bigdatapoolresourceinfo update allowing to specify SparkConfigProperties.
+         */
+        interface WithSparkConfigProperties {
+            /**
+             * Specifies sparkConfigProperties.
+             * @param sparkConfigProperties Spark configuration file to specify additional properties
+             * @return the next update stage
+             */
+            Update withSparkConfigProperties(LibraryRequirements sparkConfigProperties);
         }
 
         /**

@@ -10,6 +10,7 @@ package com.microsoft.azure.management.synapse.v2019_06_01_preview.implementatio
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.ErrorContractException;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
@@ -70,7 +71,7 @@ public class SqlPoolMetadataSyncConfigsInner {
      * @param workspaceName The name of the workspace
      * @param sqlPoolName SQL pool name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the MetadataSyncConfigInner object if successful.
      */
@@ -152,11 +153,11 @@ public class SqlPoolMetadataSyncConfigsInner {
             });
     }
 
-    private ServiceResponse<MetadataSyncConfigInner> getDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<MetadataSyncConfigInner, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<MetadataSyncConfigInner> getDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<MetadataSyncConfigInner, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<MetadataSyncConfigInner>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorContractInnerException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -168,7 +169,7 @@ public class SqlPoolMetadataSyncConfigsInner {
      * @param workspaceName The name of the workspace
      * @param sqlPoolName SQL pool name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the MetadataSyncConfigInner object if successful.
      */
@@ -262,7 +263,7 @@ public class SqlPoolMetadataSyncConfigsInner {
      * @param sqlPoolName SQL pool name
      * @param enabled Indicates whether the metadata sync is enabled or disabled
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the MetadataSyncConfigInner object if successful.
      */
@@ -349,11 +350,11 @@ public class SqlPoolMetadataSyncConfigsInner {
             });
     }
 
-    private ServiceResponse<MetadataSyncConfigInner> createDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<MetadataSyncConfigInner, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<MetadataSyncConfigInner> createDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<MetadataSyncConfigInner, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<MetadataSyncConfigInner>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorContractInnerException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 

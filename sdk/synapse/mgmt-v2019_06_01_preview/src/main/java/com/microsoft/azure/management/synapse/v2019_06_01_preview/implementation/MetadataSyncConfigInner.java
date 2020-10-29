@@ -25,6 +25,12 @@ public class MetadataSyncConfigInner extends ProxyResource {
     private Boolean enabled;
 
     /**
+     * The Sync Interval in minutes.
+     */
+    @JsonProperty(value = "properties.syncIntervalInMinutes", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer syncIntervalInMinutes;
+
+    /**
      * Get indicates whether the metadata sync is enabled or disabled.
      *
      * @return the enabled value
@@ -42,6 +48,15 @@ public class MetadataSyncConfigInner extends ProxyResource {
     public MetadataSyncConfigInner withEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
+    }
+
+    /**
+     * Get the Sync Interval in minutes.
+     *
+     * @return the syncIntervalInMinutes value
+     */
+    public Integer syncIntervalInMinutes() {
+        return this.syncIntervalInMinutes;
     }
 
 }

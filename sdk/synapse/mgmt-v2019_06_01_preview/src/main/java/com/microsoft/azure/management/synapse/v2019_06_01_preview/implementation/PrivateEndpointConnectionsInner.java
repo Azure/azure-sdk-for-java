@@ -12,6 +12,7 @@ import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.ErrorContractException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
@@ -95,7 +96,7 @@ public class PrivateEndpointConnectionsInner {
      * @param workspaceName The name of the workspace
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PrivateEndpointConnectionInner object if successful.
      */
@@ -174,10 +175,10 @@ public class PrivateEndpointConnectionsInner {
             });
     }
 
-    private ServiceResponse<PrivateEndpointConnectionInner> getDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PrivateEndpointConnectionInner, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PrivateEndpointConnectionInner> getDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PrivateEndpointConnectionInner, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PrivateEndpointConnectionInner>() { }.getType())
-                .registerError(ErrorContractInnerException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -188,7 +189,7 @@ public class PrivateEndpointConnectionsInner {
      * @param workspaceName The name of the workspace
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PrivateEndpointConnectionInner object if successful.
      */
@@ -264,7 +265,7 @@ public class PrivateEndpointConnectionsInner {
      * @param workspaceName The name of the workspace
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PrivateEndpointConnectionInner object if successful.
      */
@@ -343,11 +344,11 @@ public class PrivateEndpointConnectionsInner {
             });
     }
 
-    private ServiceResponse<PrivateEndpointConnectionInner> beginCreateDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PrivateEndpointConnectionInner, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PrivateEndpointConnectionInner> beginCreateDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PrivateEndpointConnectionInner, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PrivateEndpointConnectionInner>() { }.getType())
                 .register(201, new TypeToken<PrivateEndpointConnectionInner>() { }.getType())
-                .registerError(ErrorContractInnerException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -358,7 +359,7 @@ public class PrivateEndpointConnectionsInner {
      * @param workspaceName The name of the workspace
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationResourceInner object if successful.
      */
@@ -434,7 +435,7 @@ public class PrivateEndpointConnectionsInner {
      * @param workspaceName The name of the workspace
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationResourceInner object if successful.
      */
@@ -513,11 +514,11 @@ public class PrivateEndpointConnectionsInner {
             });
     }
 
-    private ServiceResponse<OperationResourceInner> beginDeleteDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<OperationResourceInner, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<OperationResourceInner> beginDeleteDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<OperationResourceInner, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<OperationResourceInner>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorContractInnerException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -527,7 +528,7 @@ public class PrivateEndpointConnectionsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PrivateEndpointConnectionInner&gt; object if successful.
      */
@@ -637,10 +638,10 @@ public class PrivateEndpointConnectionsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<PrivateEndpointConnectionInner>> listDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<PrivateEndpointConnectionInner>, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<PrivateEndpointConnectionInner>> listDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<PrivateEndpointConnectionInner>, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<PrivateEndpointConnectionInner>>() { }.getType())
-                .registerError(ErrorContractInnerException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -649,7 +650,7 @@ public class PrivateEndpointConnectionsInner {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PrivateEndpointConnectionInner&gt; object if successful.
      */
@@ -748,10 +749,10 @@ public class PrivateEndpointConnectionsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<PrivateEndpointConnectionInner>> listNextDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<PrivateEndpointConnectionInner>, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<PrivateEndpointConnectionInner>> listNextDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<PrivateEndpointConnectionInner>, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<PrivateEndpointConnectionInner>>() { }.getType())
-                .registerError(ErrorContractInnerException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 

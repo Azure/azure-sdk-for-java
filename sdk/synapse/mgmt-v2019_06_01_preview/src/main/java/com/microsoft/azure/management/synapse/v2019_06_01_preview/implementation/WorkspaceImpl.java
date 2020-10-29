@@ -16,6 +16,9 @@ import com.microsoft.azure.management.synapse.v2019_06_01_preview.DataLakeStorag
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.VirtualNetworkProfile;
 import java.util.Map;
 import java.util.List;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.EncryptionDetails;
+import java.util.UUID;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.ManagedVirtualNetworkSettings;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.ManagedIdentity;
 import java.util.ArrayList;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.PrivateEndpointConnection;
@@ -82,6 +85,11 @@ class WorkspaceImpl extends GroupableResourceCoreImpl<Workspace, WorkspaceInner,
     }
 
     @Override
+    public EncryptionDetails encryption() {
+        return this.inner().encryption();
+    }
+
+    @Override
     public Map<String, Object> extraProperties() {
         return this.inner().extraProperties();
     }
@@ -99,6 +107,11 @@ class WorkspaceImpl extends GroupableResourceCoreImpl<Workspace, WorkspaceInner,
     @Override
     public String managedVirtualNetwork() {
         return this.inner().managedVirtualNetwork();
+    }
+
+    @Override
+    public ManagedVirtualNetworkSettings managedVirtualNetworkSettings() {
+        return this.inner().managedVirtualNetworkSettings();
     }
 
     @Override
@@ -133,6 +146,11 @@ class WorkspaceImpl extends GroupableResourceCoreImpl<Workspace, WorkspaceInner,
     }
 
     @Override
+    public UUID workspaceUID() {
+        return this.inner().workspaceUID();
+    }
+
+    @Override
     public WorkspaceImpl withConnectivityEndpoints(Map<String, String> connectivityEndpoints) {
         this.inner().withConnectivityEndpoints(connectivityEndpoints);
         return this;
@@ -141,6 +159,12 @@ class WorkspaceImpl extends GroupableResourceCoreImpl<Workspace, WorkspaceInner,
     @Override
     public WorkspaceImpl withDefaultDataLakeStorage(DataLakeStorageAccountDetails defaultDataLakeStorage) {
         this.inner().withDefaultDataLakeStorage(defaultDataLakeStorage);
+        return this;
+    }
+
+    @Override
+    public WorkspaceImpl withEncryption(EncryptionDetails encryption) {
+        this.inner().withEncryption(encryption);
         return this;
     }
 
@@ -180,6 +204,16 @@ class WorkspaceImpl extends GroupableResourceCoreImpl<Workspace, WorkspaceInner,
             this.inner().withIdentity(identity);
         } else {
             this.updateParameter.withIdentity(identity);
+        }
+        return this;
+    }
+
+    @Override
+    public WorkspaceImpl withManagedVirtualNetworkSettings(ManagedVirtualNetworkSettings managedVirtualNetworkSettings) {
+        if (isInCreateMode()) {
+            this.inner().withManagedVirtualNetworkSettings(managedVirtualNetworkSettings);
+        } else {
+            this.updateParameter.withManagedVirtualNetworkSettings(managedVirtualNetworkSettings);
         }
         return this;
     }

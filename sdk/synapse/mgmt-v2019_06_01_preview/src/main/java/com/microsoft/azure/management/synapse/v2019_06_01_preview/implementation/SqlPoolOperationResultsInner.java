@@ -157,6 +157,7 @@ public class SqlPoolOperationResultsInner {
     private ServiceResponse<Object> getLocationHeaderResultDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Object, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
+                .register(202, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

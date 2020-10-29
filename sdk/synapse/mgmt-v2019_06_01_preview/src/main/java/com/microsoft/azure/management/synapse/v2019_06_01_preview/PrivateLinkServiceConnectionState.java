@@ -11,30 +11,29 @@ package com.microsoft.azure.management.synapse.v2019_06_01_preview;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Connection state details of the private endpoint.
+ * Private Link Service Connection State.
  */
 public class PrivateLinkServiceConnectionState {
     /**
-     * The private link service connection status. Possible values include:
-     * 'Approved', 'Pending', 'Rejected', 'Disconnected'.
+     * Status of private link service connection state.
      */
-    @JsonProperty(value = "status")
+    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /**
-     * The private link service connection description.
+     * Description of private link service connection state.
      */
-    @JsonProperty(value = "description")
+    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /**
-     * The actions required for private link service connection.
+     * Actions Required.
      */
     @JsonProperty(value = "actionsRequired", access = JsonProperty.Access.WRITE_ONLY)
     private String actionsRequired;
 
     /**
-     * Get the private link service connection status. Possible values include: 'Approved', 'Pending', 'Rejected', 'Disconnected'.
+     * Get status of private link service connection state.
      *
      * @return the status value
      */
@@ -43,18 +42,7 @@ public class PrivateLinkServiceConnectionState {
     }
 
     /**
-     * Set the private link service connection status. Possible values include: 'Approved', 'Pending', 'Rejected', 'Disconnected'.
-     *
-     * @param status the status value to set
-     * @return the PrivateLinkServiceConnectionState object itself.
-     */
-    public PrivateLinkServiceConnectionState withStatus(String status) {
-        this.status = status;
-        return this;
-    }
-
-    /**
-     * Get the private link service connection description.
+     * Get description of private link service connection state.
      *
      * @return the description value
      */
@@ -63,18 +51,7 @@ public class PrivateLinkServiceConnectionState {
     }
 
     /**
-     * Set the private link service connection description.
-     *
-     * @param description the description value to set
-     * @return the PrivateLinkServiceConnectionState object itself.
-     */
-    public PrivateLinkServiceConnectionState withDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
-     * Get the actions required for private link service connection.
+     * Get actions Required.
      *
      * @return the actionsRequired value
      */

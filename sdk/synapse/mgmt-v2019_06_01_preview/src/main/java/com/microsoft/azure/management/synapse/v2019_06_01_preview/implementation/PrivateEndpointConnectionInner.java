@@ -15,30 +15,39 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.ProxyResource;
 
 /**
- * A private endpoint connection.
+ * The PrivateEndpointConnectionInner model.
  */
 @JsonFlatten
 public class PrivateEndpointConnectionInner extends ProxyResource {
     /**
-     * The private endpoint which the connection belongs to.
-     */
-    @JsonProperty(value = "properties.privateEndpoint")
-    private PrivateEndpoint privateEndpoint;
-
-    /**
-     * Connection state of the private endpoint connection.
-     */
-    @JsonProperty(value = "properties.privateLinkServiceConnectionState")
-    private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
-
-    /**
-     * Provisioning state of the private endpoint connection.
+     * Provisioning state.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /**
-     * Get the private endpoint which the connection belongs to.
+     * Private Endpoint.
+     */
+    @JsonProperty(value = "properties.privateEndpoint")
+    private PrivateEndpoint privateEndpoint;
+
+    /**
+     * Private Link Service Connection State.
+     */
+    @JsonProperty(value = "properties.privateLinkServiceConnectionState")
+    private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
+
+    /**
+     * Get provisioning state.
+     *
+     * @return the provisioningState value
+     */
+    public String provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get private Endpoint.
      *
      * @return the privateEndpoint value
      */
@@ -47,7 +56,7 @@ public class PrivateEndpointConnectionInner extends ProxyResource {
     }
 
     /**
-     * Set the private endpoint which the connection belongs to.
+     * Set private Endpoint.
      *
      * @param privateEndpoint the privateEndpoint value to set
      * @return the PrivateEndpointConnectionInner object itself.
@@ -58,7 +67,7 @@ public class PrivateEndpointConnectionInner extends ProxyResource {
     }
 
     /**
-     * Get connection state of the private endpoint connection.
+     * Get private Link Service Connection State.
      *
      * @return the privateLinkServiceConnectionState value
      */
@@ -67,7 +76,7 @@ public class PrivateEndpointConnectionInner extends ProxyResource {
     }
 
     /**
-     * Set connection state of the private endpoint connection.
+     * Set private Link Service Connection State.
      *
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set
      * @return the PrivateEndpointConnectionInner object itself.
@@ -75,15 +84,6 @@ public class PrivateEndpointConnectionInner extends ProxyResource {
     public PrivateEndpointConnectionInner withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
         return this;
-    }
-
-    /**
-     * Get provisioning state of the private endpoint connection.
-     *
-     * @return the provisioningState value
-     */
-    public String provisioningState() {
-        return this.provisioningState;
     }
 
 }
