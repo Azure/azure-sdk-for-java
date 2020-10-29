@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 
 import java.time.Duration;
@@ -29,6 +30,7 @@ import java.util.Objects;
  * </ul>
  *
  */
+@ServiceClient(builder = ServiceBusClientBuilder.class)
 public final class ServiceBusSessionReceiverClient implements AutoCloseable {
     private final ServiceBusSessionReceiverAsyncClient sessionAsyncClient;
     private final Duration operationTimeout;

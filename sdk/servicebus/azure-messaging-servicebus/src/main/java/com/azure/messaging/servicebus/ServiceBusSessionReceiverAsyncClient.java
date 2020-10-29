@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -38,6 +39,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * </ul>
  *
  */
+@ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
 public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable {
     private final String fullyQualifiedNamespace;
     private final String entityPath;
