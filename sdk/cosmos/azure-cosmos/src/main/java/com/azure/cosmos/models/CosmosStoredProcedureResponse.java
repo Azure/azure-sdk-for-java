@@ -2,10 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.StoredProcedure;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+
+import java.time.Duration;
+import java.util.Map;
 
 /**
  * The type Cosmos stored procedure response.
@@ -24,7 +28,7 @@ public class CosmosStoredProcedureResponse extends CosmosResponse<CosmosStoredPr
     }
 
     CosmosStoredProcedureResponse(StoredProcedureResponse response) {
-        super(response);
+        super(null, null);
         this.storedProcedureResponse = response;
 
     }
@@ -90,13 +94,56 @@ public class CosmosStoredProcedureResponse extends CosmosResponse<CosmosStoredPr
         return super.getRequestCharge();
     }
 
+    @Override
+    public String getMaxResourceQuota() {
+        if (storedProcedureResponse != null) {
+            return storedProcedureResponse.getMaxResourceQuota();
+        }
+        return super.getMaxResourceQuota();
+    }
+
+    @Override
+    public String getCurrentResourceQuotaUsage() {
+        if (storedProcedureResponse != null) {
+            return storedProcedureResponse.getCurrentResourceQuotaUsage();
+        }
+        return super.getCurrentResourceQuotaUsage();
+    }
+
+    @Override
+    public Map<String, String> getResponseHeaders() {
+        if (storedProcedureResponse != null) {
+            return storedProcedureResponse.getResponseHeaders();
+        }
+        return super.getResponseHeaders();
+    }
+
+    @Override
+    public CosmosDiagnostics getDiagnostics() {
+        if (storedProcedureResponse != null) {
+            return storedProcedureResponse.getCosmosDiagnostics();
+        }
+        return super.getDiagnostics();
+    }
+
+    @Override
+    public Duration getDuration() {
+        if (storedProcedureResponse != null) {
+            return storedProcedureResponse.getCosmosDiagnostics().getDuration();
+        }
+        return super.getDuration();
+    }
+
     /**
      * Gets the response of the stored procedure as a string.
      *
      * @return the response as a string.
      */
     public String getResponseAsString() {
-        return this.storedProcedureResponse.getResponseAsString();
+        if (storedProcedureResponse != null) {
+            return storedProcedureResponse.getResponseAsString();
+        }
+        return null;
     }
 
     /**
@@ -105,6 +152,9 @@ public class CosmosStoredProcedureResponse extends CosmosResponse<CosmosStoredPr
      * @return the output string from the stored procedure console.log() statements.
      */
     public String getScriptLog() {
-        return this.storedProcedureResponse.getScriptLog();
+        if (storedProcedureResponse != null) {
+            return this.storedProcedureResponse.getScriptLog();
+        }
+        return null;
     }
 }
