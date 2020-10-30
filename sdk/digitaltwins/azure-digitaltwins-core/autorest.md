@@ -27,7 +27,7 @@ input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/14fb403
 
 output-folder: "./"
 license-header: MICROSOFT_MIT_SMALL
-use: 'C://Users//azad_//Enlistments//autorest.java'
+use: '@autorest/java@4.0.3'
 java:
     add-context-parameter: true
     namespace: com.azure.digitaltwins.core
