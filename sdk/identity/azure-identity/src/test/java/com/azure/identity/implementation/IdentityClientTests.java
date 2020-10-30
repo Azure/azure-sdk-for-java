@@ -5,6 +5,7 @@ package com.azure.identity.implementation;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.CertificateUtil;
@@ -34,16 +35,23 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -231,6 +239,38 @@ public class IdentityClientTests {
         AccessToken token = client.authenticateToManagedIdentityEndpoint(endpoint, secret, null, null, request).block();
         Assert.assertEquals("token1", token.getToken());
         Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
+    }
+
+    @Test (expected = ClientAuthenticationException.class)
+    public void testInValidIdentityEndpointSecretArcCodeFlow() throws Exception {
+        // setup
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        String endpoint = "http://localhost";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        configuration.put("IDENTITY_ENDPOINT", endpoint);
+        // mock
+        mockForArcCodeFlow(401);
+
+        // test
+        IdentityClient client = new IdentityClientBuilder().build();
+        client.authenticateToArcManagedIdentityEndpoint(endpoint, request).block();
+    }
+
+    @Test (expected = ClientAuthenticationException.class)
+    public void testInValidIdentityEndpointResponseCodeArcCodeFlow() throws Exception {
+        // setup
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        String endpoint = "http://localhost";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        configuration.put("IDENTITY_ENDPOINT", endpoint);
+        // mock
+        mockForArcCodeFlow(200);
+
+        // test
+        IdentityClient client = new IdentityClientBuilder().build();
+        client.authenticateToArcManagedIdentityEndpoint(endpoint, request).block();
     }
 
     @Test
@@ -484,6 +524,18 @@ public class IdentityClientTests {
         PowerMockito.doNothing().when(huc).setRequestMethod(anyString());
         InputStream inputStream = new ByteArrayInputStream(tokenJson.getBytes(Charset.defaultCharset()));
         when(huc.getInputStream()).thenReturn(inputStream);
+    }
+
+    private void mockForArcCodeFlow(int responseCode) throws Exception {
+        URL u = PowerMockito.mock(URL.class);
+        whenNew(URL.class).withAnyArguments().thenReturn(u);
+        HttpURLConnection initConnection = PowerMockito.mock(HttpURLConnection.class);
+        when(u.openConnection()).thenReturn(initConnection);
+        PowerMockito.doNothing().when(initConnection).setRequestMethod(anyString());
+        PowerMockito.doNothing().when(initConnection).setRequestProperty(anyString(), anyString());
+        PowerMockito.doNothing().when(initConnection).connect();
+        when(initConnection.getInputStream()).thenThrow(new IOException());
+        when(initConnection.getResponseCode()).thenReturn(responseCode);
     }
 
     private void mockForIMDSCodeFlow(String tokenJson) throws Exception {

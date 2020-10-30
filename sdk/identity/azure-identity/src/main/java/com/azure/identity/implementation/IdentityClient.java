@@ -757,8 +757,7 @@ public class IdentityClient {
     public Mono<AccessToken> authenticateToArcManagedIdentityEndpoint(String identityEndpoint,
                                                                       TokenRequestContext request) {
         return Mono.fromCallable(() -> {
-
-            HttpURLConnection connection = null;
+            HttpURLConnection connection;
             StringBuilder payload = new StringBuilder();
             payload.append("resource=");
             payload.append(URLEncoder.encode(ScopeUtil.scopesToResource(request.getScopes()), "UTF-8"));
@@ -783,18 +782,12 @@ public class IdentityClient {
             }
 
             try {
-                Map<String, List<String>> headers = connection.getHeaderFields();
-                String realm = null;
-                for (String header : headers.keySet()) {
-                    if (header.equalsIgnoreCase("WWW-Authenticate")) {
-                        List<String> headerValues = headers.get(header);
-                        if (headerValues.size() == 0) {
-                            throw logger.logExceptionAsError(new ClientAuthenticationException("Did not receive a value"
-                               + " for WWW-Authenticate header in the response from Azure Arc Managed Identity Endpoint"
-                                , null));
-                        }
-                        realm = headerValues.get(0);
-                    }
+                String realm = connection.getHeaderField("WWW-Authenticate");
+
+                if (realm == null) {
+                    throw logger.logExceptionAsError(new ClientAuthenticationException("Did not receive a value"
+                       + " for WWW-Authenticate header in the response from Azure Arc Managed Identity Endpoint"
+                        , null));
                 }
 
                 int separatorIndex = realm.indexOf("=");
