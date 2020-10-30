@@ -683,7 +683,7 @@ public class BlobClientBase {
         return downloadToFileWithResponse(new BlobDownloadToFileOptions(filePath).setRange(range)
             .setParallelTransferOptions(finalParallelTransferOptions)
             .setDownloadRetryOptions(downloadRetryOptions).setRequestConditions(requestConditions)
-            .setRangeGetContentMd5(rangeGetContentMd5).setOpenOptions(openOptions), timeout, context);
+            .setRetrieveContentRangeMd5(rangeGetContentMd5).setOpenOptions(openOptions), timeout, context);
     }
 
     /**
