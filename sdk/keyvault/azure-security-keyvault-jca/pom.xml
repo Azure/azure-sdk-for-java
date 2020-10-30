@@ -114,20 +114,12 @@
                         <bannedDependencies>
                             <includes>
                                 <include>com.fasterxml.jackson.core:jackson-databind:[2.11.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-                                <include>org.apache.httpcomponents.client5:httpclient5:[5.0.1]</include> <!-- {x-include-update;org.apache.httpcomponents.client5:httpclient5;external_dependency} -->
+                                <include>org.apache.httpcomponents.client5:httpclient5:[5.0.3]</include> <!-- {x-include-update;org.apache.httpcomponents.client5:httpclient5;external_dependency} -->
                                 <include>org.conscrypt:conscrypt-openjdk-uber:[2.2.1]</include> <!-- {x-include-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
                                 <include>org.slf4j:slf4j-nop:[1.7.30]</include> <!-- {x-include-update;org.slf4j:slf4j-nop;external_dependency} -->
                             </includes>
                         </bannedDependencies>
                     </rules>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.github.spotbugs</groupId>
-                <artifactId>spotbugs-maven-plugin</artifactId>
-                <version>3.1.12.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
-                <configuration>
-                    <skip>true</skip>
                 </configuration>
             </plugin>
             <plugin>
@@ -145,15 +137,15 @@
         <dependency>
             <groupId>org.apache.httpcomponents.client5</groupId>
             <artifactId>httpclient5</artifactId>
-            <version>5.0.1</version> <!-- {x-version-update;org.apache.httpcomponents.client5:httpclient5;external_dependency} -->
+            <version>5.0.3</version> <!-- {x-version-update;org.apache.httpcomponents.client5:httpclient5;external_dependency} -->
             <optional>true</optional>
         </dependency>
+        <!-- Conscrypt -->
         <dependency>
             <groupId>org.conscrypt</groupId>
             <artifactId>conscrypt-openjdk-uber</artifactId>
-            <scope>compile</scope>
+            <scope>provided</scope>
             <version>2.2.1</version> <!-- {x-version-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
-            <optional>true</optional>
         </dependency>
         <!-- Jackson Databind -->
         <dependency>
@@ -192,14 +184,14 @@
         <profile>
             <id>it</id>
             <!--
-      
+
               To run the integration tests pass in the following system properties
-      
+
               - azure.keyvault.uri    - the Azure Key Vault URI
               - azure.tenant.id       - your tenant ID
               - azure.client.id       - the (application) client ID
               - azure.client.secret   - the (application) client secret
-      
+
             -->
             <activation>
                 <property>

@@ -240,19 +240,10 @@ for (String areaCode
 }
 ```
 
-### Purchase Search
-
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L334-L335 -->
-```java
-PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
-phoneNumberClient.purchaseSearch(phoneNumberSearchId);
-```
-
 ### Configure Phone Number
 
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L346-L347 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L338-L338 -->
 ```java
-PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 phoneNumberClient.configureNumber(phoneNumber, pstnConfiguration);
 ```
 
@@ -262,7 +253,7 @@ The Phone Number Client supports a variety of long running operations that allow
 
 ### Create Search
 
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L354-L378 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L345-L369 -->
 ```java
 String phonePlanId = "PHONE_PLAN_ID";
 
@@ -292,7 +283,7 @@ for (String phoneNumber: result.getPhoneNumbers()) {
 ```
 
 ### Purchase Search
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L385-L391 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L376-L382 -->
 ```java
 Duration duration = Duration.ofSeconds(1);
 String phoneNumberSearchId = "SEARCH_ID_TO_PURCHASE";
@@ -301,6 +292,22 @@ PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 SyncPoller<Void, Void> res = 
     phoneNumberClient.beginPurchaseSearch(phoneNumberSearchId, duration);
 res.waitForCompletion();
+```
+
+### Release Phone Numbers
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L389-L399 -->
+```java
+Duration duration = Duration.ofSeconds(1);
+PhoneNumber phoneNumber = new PhoneNumber("PHONE_NUMBER_TO_RELEASE");
+List<PhoneNumber> phoneNumbers = new ArrayList<>();
+phoneNumbers.add(phoneNumber);
+PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+
+SyncPoller<PhoneNumberRelease, PhoneNumberRelease> res = 
+    phoneNumberClient.beginReleasePhoneNumbers(phoneNumbers, duration);
+res.waitForCompletion();
+PhoneNumberRelease result = res.getFinalResult();
+System.out.println("Phone number release status: " + result.getStatus());
 ```
 
 ## Contributing

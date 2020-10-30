@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.digitaltwins.core.models;
+package com.azure.digitaltwins.core;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.digitaltwins.core.models.DigitalTwinsJsonPropertyNames;
 import com.fasterxml.jackson.annotation.*;
 
 import java.util.HashMap;
@@ -28,7 +29,7 @@ public final class BasicDigitalTwin {
     private String id;
 
     @JsonProperty(value = DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_ETAG, required = true)
-    private String twinETag;
+    private String etag;
 
     @JsonProperty(value = DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_METADATA, required = true)
     private BasicDigitalTwinMetadata metadata;
@@ -60,17 +61,17 @@ public final class BasicDigitalTwin {
      * Gets a string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.
      * @return A string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.
      */
-    public String getEtag() {
-        return twinETag;
+    public String getETag() {
+        return etag;
     }
 
     /**
      * Sets a string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.
-     * @param twinETag A string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.
+     * @param etag A string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.
      * @return The BasicDigitalTwin object itself.
      */
-    public BasicDigitalTwin setEtag(String twinETag) {
-        this.twinETag = twinETag;
+    public BasicDigitalTwin setETag(String etag) {
+        this.etag = etag;
         return this;
     }
 
