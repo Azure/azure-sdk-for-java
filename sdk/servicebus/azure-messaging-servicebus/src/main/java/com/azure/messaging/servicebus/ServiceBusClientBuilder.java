@@ -494,8 +494,6 @@ public final class ServiceBusClientBuilder {
     public final class ServiceBusSenderClientBuilder {
         private String queueName;
         private String topicName;
-        private String viaQueueName;
-        private String viaTopicName;
 
         private ServiceBusSenderClientBuilder() {
         }
@@ -509,34 +507,6 @@ public final class ServiceBusClientBuilder {
          */
         public ServiceBusSenderClientBuilder queueName(String queueName) {
             this.queueName = queueName;
-            return this;
-        }
-
-        /**
-         * Sets the name of the initial destination Service Bus queue to publish messages to.
-         *
-         * @param viaQueueName The initial destination of the message.
-         *
-         * @return The modified {@link ServiceBusSenderClientBuilder} object.
-         * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via">Send
-         *     Via</a>
-         */
-        public ServiceBusSenderClientBuilder viaQueueName(String viaQueueName) {
-            this.viaQueueName = viaQueueName;
-            return this;
-        }
-
-        /**
-         * Sets the name of the initial destination Service Bus topic to publish messages to.
-         *
-         * @param viaTopicName The initial destination of the message.
-         *
-         * @return The modified {@link ServiceBusSenderClientBuilder} object.
-         * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via">Send
-         *     Via</a>
-         */
-        public ServiceBusSenderClientBuilder viaTopicName(String viaTopicName) {
-            this.viaTopicName = viaTopicName;
             return this;
         }
 
@@ -560,8 +530,7 @@ public final class ServiceBusClientBuilder {
          * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
          *     topicName} are not set or, both of these fields are set. It is also thrown if the Service Bus {@link
          *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
-         *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}. Or the {@link
-         *     #viaQueueName(String) viaQueueName} is specified along with {@link #topicName(String) topicName}.
+         *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}.
          * @throws IllegalArgumentException if the entity type is not a queue or a topic.
          */
         public ServiceBusSenderAsyncClient buildAsyncClient() {
@@ -569,16 +538,7 @@ public final class ServiceBusClientBuilder {
             final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
                 queueName);
 
-            if (!CoreUtils.isNullOrEmpty(viaQueueName) && entityType == MessagingEntityType.SUBSCRIPTION) {
-                throw logger.logExceptionAsError(new IllegalStateException(String.format(
-                    "(%s), Via queue feature work only with a queue.", viaQueueName)));
-            } else if (!CoreUtils.isNullOrEmpty(viaTopicName) && entityType == MessagingEntityType.QUEUE) {
-                throw logger.logExceptionAsError(new IllegalStateException(String.format(
-                    "(%s), Via topic feature work only with a topic.", viaTopicName)));
-            }
-
             final String entityName;
-            final String viaEntityName = !CoreUtils.isNullOrEmpty(viaQueueName) ? viaQueueName : viaTopicName;
             switch (entityType) {
                 case QUEUE:
                     entityName = queueName;
@@ -595,7 +555,7 @@ public final class ServiceBusClientBuilder {
             }
 
             return new ServiceBusSenderAsyncClient(entityName, entityType, connectionProcessor, retryOptions,
-                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose, viaEntityName);
+                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose, null);
         }
 
         /**
