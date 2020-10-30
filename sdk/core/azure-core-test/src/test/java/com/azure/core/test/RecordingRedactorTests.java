@@ -116,11 +116,16 @@ public class RecordingRedactorTests {
         + "\":\"adsample\",\"accountKey\":\"REDACTED\"}";
 
     private static final String AUTH_HEADER_RESPONSE_BODY = "\"dataSourceParameter\":"
-        + "{\"authHeader\":\"authHeaderXYZ\",\"port\":\"9200\"";
+        + "{\"authHeader\":\"XYZ\",\"port\":\"9200\"";
 
     private static final String REDACTED_AUTH_HEADER_RESPONSE_BODY = "\"dataSourceParameter\":"
         + "{\"authHeader\":\"REDACTED\",\"port\":\"9200\"";
 
+    private static final String EMPTY_KEY_RESPONSE_BODY = "\"dataSourceParameter\":"
+        + "{\"username\":\"\",\"port\":\"9200\"";
+
+    private static final String REDACTED_EMPTY_KEY_RESPONSE_BODY = "\"dataSourceParameter\":"
+        + "{\"username\":\"\",\"port\":\"9200\"";
     /**
      * Verify if the given content is redacted successfully.
      */
@@ -162,6 +167,7 @@ public class RecordingRedactorTests {
             Arguments.of(USER_DELEGATION_KEY_FOR_VALUE_RESPONSE, EXPECTED_USER_DELEGATION_KEY_FOR_VALUE_RESPONSE_REDACTED),
             Arguments.of(PASSWORD_RESPONSE_BODY, REDACTED_PASSWORD_RESPONSE_BODY),
             Arguments.of(USERNAME_RESPONSE_BODY, REDACTED_USERNAME_RESPONSE),
+            Arguments.of(REDACTED_EMPTY_KEY_RESPONSE_BODY, EMPTY_KEY_RESPONSE_BODY),
             Arguments.of(NON_SENSITIVE_DATA_CONTENT, NON_SENSITIVE_DATA_CONTENT)
             );
     }
