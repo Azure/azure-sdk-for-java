@@ -3,6 +3,8 @@
 
 package com.azure.core.test.models;
 
+import com.azure.core.util.CoreUtils;
+
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -40,11 +42,11 @@ public class RecordingRedactor {
         .add("url")
         .add("host")
         .add("password")
-        .add("password")
         .add("userName");
 
     private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
-        = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()));
+        = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()),
+        Pattern.CASE_INSENSITIVE);
 
     /**
      * Redact the sensitive information.
@@ -96,7 +98,10 @@ public class RecordingRedactor {
 
     private static String redactionReplacement(String content, Matcher matcher, String replacement) {
         while (matcher.find()) {
-            content = content.replace(matcher.group(1), replacement);
+            String captureGroup = matcher.group(1);
+            if (!CoreUtils.isNullOrEmpty(captureGroup)) {
+                content = content.replace(matcher.group(1), replacement);
+            }
         }
 
         return content;

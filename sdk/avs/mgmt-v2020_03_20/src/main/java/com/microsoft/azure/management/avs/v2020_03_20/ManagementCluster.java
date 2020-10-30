@@ -16,6 +16,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ManagementCluster extends ClusterUpdateProperties {
     /**
+     * The state of the cluster provisioning. Possible values include:
+     * 'Succeeded', 'Failed', 'Cancelled', 'Deleting', 'Updating'.
+     */
+    @JsonProperty(value = "provisioningState")
+    private ClusterProvisioningState provisioningState;
+
+    /**
      * The identity.
      */
     @JsonProperty(value = "clusterId", access = JsonProperty.Access.WRITE_ONLY)
@@ -26,6 +33,26 @@ public class ManagementCluster extends ClusterUpdateProperties {
      */
     @JsonProperty(value = "hosts", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> hosts;
+
+    /**
+     * Get the state of the cluster provisioning. Possible values include: 'Succeeded', 'Failed', 'Cancelled', 'Deleting', 'Updating'.
+     *
+     * @return the provisioningState value
+     */
+    public ClusterProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Set the state of the cluster provisioning. Possible values include: 'Succeeded', 'Failed', 'Cancelled', 'Deleting', 'Updating'.
+     *
+     * @param provisioningState the provisioningState value to set
+     * @return the ManagementCluster object itself.
+     */
+    public ManagementCluster withProvisioningState(ClusterProvisioningState provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
 
     /**
      * Get the identity.

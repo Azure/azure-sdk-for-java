@@ -19,6 +19,7 @@ import reactor.core.publisher.Mono;
 public interface DeploymentSlot
     extends IndependentChildResource<AppServiceManager, SiteInner>,
         WebDeploymentSlotBasic,
+        SupportsOneDeploy,
         DeploymentSlotBase<DeploymentSlot>,
         Updatable<DeploymentSlotBase.Update<DeploymentSlot>>,
         HasParent<WebApp> {

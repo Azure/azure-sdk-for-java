@@ -132,7 +132,7 @@ public class RuleProperties {
                     final SqlRuleActionImpl returned = new SqlRuleActionImpl()
                         .setSqlExpression(action.getSqlExpression())
                         .setCompatibilityLevel(action.getCompatibilityLevel())
-                        .setRequiresPreprocessing(action.getRequiresPreprocessing());
+                        .setRequiresPreprocessing(action.isPreprocessingRequired());
 
                     if (!action.getProperties().isEmpty()) {
                         final List<KeyValueImpl> parameters = action.getProperties().entrySet().stream()
@@ -183,7 +183,7 @@ public class RuleProperties {
                     final SqlFilterImpl returned = new SqlFilterImpl()
                         .setSqlExpression(filter.getSqlExpression())
                         .setCompatibilityLevel(filter.getCompatibilityLevel())
-                        .setRequiresPreprocessing(filter.getRequiresPreprocessing());
+                        .setRequiresPreprocessing(filter.isPreprocessingRequired());
 
                     if (!filter.getProperties().isEmpty()) {
                         final List<KeyValueImpl> parameters = filter.getProperties().entrySet()
