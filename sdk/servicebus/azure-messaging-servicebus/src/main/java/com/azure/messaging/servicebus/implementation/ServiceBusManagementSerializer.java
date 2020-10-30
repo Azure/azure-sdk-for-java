@@ -118,9 +118,4 @@ public class ServiceBusManagementSerializer implements SerializerAdapter {
     public <T> T deserialize(HttpHeaders headers, Type type) throws IOException {
         return jacksonAdapter.deserialize(headers, type);
     }
-
-    private boolean shouldReplace(Class<?> clazz) {
-        return !CreateQueueBody.class.equals(clazz) && !CreateRuleBody.class.equals(clazz)
-            && !CreateSubscriptionBody.class.equals(clazz);
-    }
 }
