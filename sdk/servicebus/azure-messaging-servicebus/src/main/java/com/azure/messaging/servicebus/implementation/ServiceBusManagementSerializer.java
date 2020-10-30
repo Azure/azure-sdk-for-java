@@ -51,7 +51,7 @@ public class ServiceBusManagementSerializer implements SerializerAdapter {
         // xmlns:ns0="foo", and then prefixing all elements with ns0:AuthorizationRule will break.
         final Matcher namespaceMatcher = NAMESPACE_PATTERN.matcher(contents);
         if (!namespaceMatcher.find()) {
-            logger.info("Could not find {} in {}", NAMESPACE_PATTERN.pattern(), contents);
+            logger.warning("Could not find {} in {}", NAMESPACE_PATTERN.pattern(), contents);
             return contents;
         }
 
@@ -69,7 +69,8 @@ public class ServiceBusManagementSerializer implements SerializerAdapter {
         if (filterType.find()) {
             return filterType.replaceAll("<$1 xmlns:ns0=\"http://www.w3.org/2001/XMLSchema-instance\" ns0:type=");
         } else {
-            logger.info("Could not find filter name pattern '{}' in {}.", FILTER_ACTION_PATTERN.pattern(), contents);
+            logger.warning("Could not find filter name pattern '{}' in {}.", FILTER_ACTION_PATTERN.pattern(),
+                contents);
             return replaced;
         }
     }
