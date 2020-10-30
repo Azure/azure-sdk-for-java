@@ -2477,6 +2477,20 @@
       <Class name="com.azure.core.implementation.logging.DefaultLogger" />
       <Bug pattern="INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE" />
   </Match>
+  
+  
+  <!-- Disabling false positives in azure-messaging-servicebus -->
+  <!-- The user input does not get passed to String.format calls flagged in these classes, so this issue doesn't expose any risk/threat.-->
+  <Match>
+      <Or>
+          <Class name="com.azure.messaging.servicebus.ServiceBusSessionManager"/>
+          <Class name="com.azure.messaging.servicebus.implementation.MessageUtils"/>
+          <Class name="com.azure.messaging.servicebus.ServiceBusSenderAsyncClient"/>
+          <Class name="com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient"/>
+          <Class name="com.azure.messaging.servicebus.ServiceBusMessageSerializer"/>
+      </Or>
+      <Bug pattern="FORMAT_STRING_MANIPULATION" />
+  </Match>
 
   <!-- False positives -->
   <Match>
