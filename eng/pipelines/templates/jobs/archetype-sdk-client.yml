@@ -170,10 +170,11 @@ jobs:
             Directory: sdk/${{ parameters.ServiceDirectory }}
           CheckLinkGuidance: $true
 
-      # Disabled for now until long term decision can be made for violating files.
-      #- template: /eng/common/pipelines/templates/steps/verify-path-length.yml
-      #  parameters:
-      #    SourceDirectory: $(Build.SourcesDirectory)
+      # Use BasePathLength of 38 instead of the default 49 as some GA'd files fail when the number is higher.
+      - template: /eng/common/pipelines/templates/steps/verify-path-length.yml
+        parameters:
+          SourceDirectory: $(Build.SourcesDirectory)
+          BasePathLength: 38
 
       - ${{if ne(parameters.SDKType, 'data')}}:
         - ${{ each artifact in parameters.Artifacts }}:
