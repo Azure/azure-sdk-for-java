@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -27,7 +28,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -44,10 +44,6 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 @Tag("integration")
 class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
-
-    /* Sometime not all the messages are cleaned-up. This is buffer to ensure all the messages are cleaned-up.*/
-    private static final int BUFFER_MESSAGES_TO_REMOVE = 10;
-
     private final AtomicInteger messagesPending = new AtomicInteger();
     private final AtomicReference<List<Long>> messagesDeferred = new AtomicReference<>(new ArrayList<>());
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverClientIntegrationTest.class);
@@ -59,6 +55,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      * Receiver used to clean up resources in {@link #afterTest()}.
      */
     private ServiceBusReceiverClient receiveAndDeleteReceiver;
+    private Mono<ServiceBusReceiverClient> receiveAndDeleteReceiverMono;
 
     protected ServiceBusReceiverClientIntegrationTest() {
         super(new ClientLogger(ServiceBusReceiverClientIntegrationTest.class));
@@ -74,11 +71,18 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         final int pending = messagesPending.get();
         if (pending < 1 && messagesDeferred.get().size() < 1) {
             dispose(receiver, sender, receiveAndDeleteReceiver);
+            if (receiveAndDeleteReceiverMono != null) {
+                dispose(receiveAndDeleteReceiverMono.block());
+            }
             return;
         }
 
         // In the case that this test failed... we're going to drain the queue or subscription.
         if (pending > 0) {
+            dispose(receiver, sender);
+            if (receiveAndDeleteReceiverMono != null) {
+                receiveAndDeleteReceiver = receiveAndDeleteReceiverMono.block();
+            }
             try {
                 IterableStream<ServiceBusReceivedMessageContext> removedMessage = receiveAndDeleteReceiver.receiveMessages(
                     pending, Duration.ofSeconds(15));
@@ -104,7 +108,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
             }
         }
 
-        dispose(receiver, sender, receiveAndDeleteReceiver);
+        dispose(receiveAndDeleteReceiver);
     }
 
     /**
@@ -736,7 +740,10 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         receiver.defer(receivedMessage);
 
         // cleanup
-        completeDeferredMessages(receiver, receivedMessage, isSessionEnabled);
+        final ServiceBusReceivedMessage deferred;
+        deferred = receiver.receiveDeferredMessage(receivedMessage.getSequenceNumber());
+
+        receiver.complete(deferred);
         messagesPending.addAndGet(-maxMessages);
     }
 
@@ -815,19 +822,17 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
-            this.receiver = getSessionReceiverBuilder(false, entityType, entityIndex, Function.identity(), sharedConnection)
-                .sessionId(sessionId)
-                .buildClient();
-            this.receiveAndDeleteReceiver = getSessionReceiverBuilder(false, entityType, entityIndex,
-                Function.identity(), sharedConnection)
-                .sessionId(sessionId)
+            this.receiver = getSessionReceiverBuilder(false, entityType, entityIndex, sharedConnection)
+                .buildClient().acceptSession(sessionId);
+            this.receiveAndDeleteReceiverMono = Mono.fromCallable(() -> getSessionReceiverBuilder(false, entityType, entityIndex,
+                sharedConnection)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
-                .buildClient();
+                .buildClient().acceptSession(sessionId));
         } else {
-            this.receiver = getReceiverBuilder(false, entityType, entityIndex, Function.identity(), sharedConnection)
+            this.receiver = getReceiverBuilder(false, entityType, entityIndex, sharedConnection)
                 .buildClient();
             this.receiveAndDeleteReceiver = getReceiverBuilder(false, entityType, entityIndex,
-                Function.identity(), sharedConnection)
+                sharedConnection)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildClient();
         }
@@ -852,15 +857,5 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
             receiver.complete(context.getMessage());
         }
         return asList.size();
-    }
-
-    private void completeDeferredMessages(ServiceBusReceiverClient client, ServiceBusReceivedMessage receivedMessage, boolean isSessionEnabled) {
-        final ServiceBusReceivedMessage message;
-        if (isSessionEnabled) {
-            message = client.receiveDeferredMessage(receivedMessage.getSequenceNumber(), sessionId);
-        } else {
-            message = client.receiveDeferredMessage(receivedMessage.getSequenceNumber());
-        }
-        receiver.complete(message);
     }
 }

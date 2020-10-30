@@ -43,13 +43,14 @@ public class AADOAuth2AuthorizationRequestResolver implements OAuth2Authorizatio
         if (oAuth2AuthorizationRequest == null || httpServletRequest == null) {
             return oAuth2AuthorizationRequest;
         }
+        // Handle conditional access policy, step 4.
         final String conditionalAccessPolicyClaims =
             Optional.of(httpServletRequest)
                     .map(HttpServletRequest::getSession)
                     .map(httpSession -> {
-                        String claims = (String) httpSession.getAttribute(Constants.CAP_CLAIMS);
+                        String claims = (String) httpSession.getAttribute(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS);
                         if (claims != null) {
-                            httpSession.removeAttribute(Constants.CAP_CLAIMS);
+                            httpSession.removeAttribute(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS);
                         }
                         return claims;
                     })

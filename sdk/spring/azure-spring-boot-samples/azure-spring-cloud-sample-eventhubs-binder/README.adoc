@@ -34,7 +34,7 @@ spring.cloud.azure.eventhub.checkpoint-storage-account=[checkpoint-storage-accou
 spring.cloud.azure.eventhub.checkpoint-access-key=[checkpoint-accesskey]
 spring.cloud.azure.eventhub.checkpoint-container=[checkpoint-container]
 
-# Fill eventhub infomation
+# Fill eventhub information
 spring.cloud.stream.bindings.input.destination=[eventhub-name]
 spring.cloud.stream.bindings.input.group=[consumer-group]
 spring.cloud.stream.bindings.output.destination=[eventhub-name]

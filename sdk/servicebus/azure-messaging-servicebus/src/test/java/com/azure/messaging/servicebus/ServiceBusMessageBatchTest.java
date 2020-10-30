@@ -36,7 +36,7 @@ public class ServiceBusMessageBatchTest {
     @Test
     public void nullMessage() {
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(1024, errorContextProvider, tracerProvider, serializer, null, null);
-        assertThrows(IllegalArgumentException.class, () -> batch.tryAdd(null));
+        assertThrows(NullPointerException.class, () -> batch.tryAddMessage(null));
     }
 
     /**
@@ -51,7 +51,7 @@ public class ServiceBusMessageBatchTest {
         final ServiceBusMessage tooBig = new ServiceBusMessage(new byte[1024 * 1024 * 2]);
 
         // Act
-        AmqpException amqpException = assertThrows(AmqpException.class, () -> batch.tryAdd(tooBig));
+        AmqpException amqpException = assertThrows(AmqpException.class, () -> batch.tryAddMessage(tooBig));
 
         // Assert
         Assertions.assertFalse(amqpException.isTransient());
@@ -70,7 +70,7 @@ public class ServiceBusMessageBatchTest {
 
         Assertions.assertEquals(maxSize, batch.getMaxSizeInBytes());
         Assertions.assertTrue(maxSize > batch.getSizeInBytes());
-        Assertions.assertTrue(batch.tryAdd(within));
+        Assertions.assertTrue(batch.tryAddMessage(within));
         Assertions.assertEquals(1, batch.getCount());
     }
 

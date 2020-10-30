@@ -48,6 +48,9 @@ extends:
       - name: azure-spring-boot-starter-data-gremlin
         groupId: com.azure.spring
         safeName: azurespringbootstarterdatagremlin
+      - name: azure-spring-boot-starter-keyvault-certificates
+        groupId: com.azure.spring
+        safeName: azurespringbootstarterkeyvaultcertificates
       - name: azure-spring-boot-starter-keyvault-secrets
         groupId: com.azure.spring
         safeName: azurespringbootstarterkeyvaultsecrets
@@ -102,19 +105,19 @@ extends:
       - name: azure-spring-cloud-starter-storage-queue
         groupId: com.azure.spring
         safeName: azurespringcloudstarterstoragequeue
-      - name: azure-spring-cloud-servicebus-stream-binder-core
+      - name: azure-spring-cloud-stream-binder-servicebus-core
         groupId: com.azure.spring
         safeName: azurespringcloudservicebusstreambindercore
       - name: azure-spring-cloud-stream-binder-test
         groupId: com.azure.spring
         safeName: azurespringcloudstreambindertest
-      - name: azure-spring-cloud-servicebus-topic-stream-binder
+      - name: azure-spring-cloud-stream-binder-servicebus-topic
         groupId: com.azure.spring
         safeName: azurespringcloudservicebustopicstreambinder
-      - name: azure-spring-cloud-servicebus-queue-stream-binder
+      - name: azure-spring-cloud-stream-binder-servicebus-queue
         groupId: com.azure.spring
         safeName: azurespringcloudservicebusqueuestreambinder
-      - name: azure-spring-cloud-eventhubs-stream-binder
+      - name: azure-spring-cloud-stream-binder-eventhubs
         groupId: com.azure.spring
         safeName: azurespringcloudeventhubsstreambinder
     AdditionalModules:

@@ -1,7 +1,9 @@
 # Release History
 
 ## 2.0.0-beta.1 (Unreleased)
-- Update `com.azure` group id to `com.azure.spring`.
+### Breaking Changes
+- Change group id from `com.microsoft.azure` to `com.azure.spring`.
+- Change artifact id from `spring-cloud-starter-azure-eventhubs` to `azure-spring-cloud-starter-eventhubs`.
 
 ## 1.2.8 (2020-09-14)
 ### Key Bug Fixes

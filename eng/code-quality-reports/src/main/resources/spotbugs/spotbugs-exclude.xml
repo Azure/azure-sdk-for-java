@@ -1333,6 +1333,23 @@
     <Bug pattern="UWF_UNWRITTEN_FIELD" />
   </Match>
 
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.models.FormSelectionMark" />
+    <Field name="confidence" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.models.FormSelectionMark" />
+    <Field name="state" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.models.FormPage" />
+    <Field name="selectionMarks" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
 
   <!-- Exception is required to catch, ref: code comment in the OrderbyRowComparer::compare() method  -->
   <Match>
@@ -2233,6 +2250,14 @@
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
 
+  <!-- Exclude for Fluent Lite generated code -->
+  <Match>
+    <Or>
+      <Package name="~com\.azure\.resourcemanager(\.[^.]+)*\.generated(\.[^.]+)*"/>
+    </Or>
+    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE,SIC_INNER_SHOULD_BE_STATIC_ANON,SKIPPED_CLASS_TOO_BIG,UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
   <!-- Exclude from spring related classes -->
   <Match>
     <Or>
@@ -2432,5 +2457,36 @@
     <Class name="com.azure.ai.metricsadvisor.models.MetricAnomalyFeedback" />
     <Field name="detectionConfiguration" />
     <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <!-- Disabling false positives in azure-core -->
+  <!-- This Issue has been resolved as per spotbugs's recommended solution but the static checker still flags it, its a known issue with this rule. -->
+  <Match>
+      <Class name="com.azure.core.util.logging.ClientLogger" />
+      <Bug pattern="CRLF_INJECTION_LOGS" />
+  </Match>
+
+  <!-- The predictable randomness doesn't expose any crucial detail in this case. -->
+  <Match>
+      <Class name="com.azure.core.http.policy.ExponentialBackoff" />
+      <Bug pattern="PREDICTABLE_RANDOM" />
+  </Match>
+
+  <!-- In the default log level azure-core will not print the stack trace, but when the user opt-in for the lowest level log (DEBUG) we'll print it, which is expected. -->
+  <Match>
+      <Class name="com.azure.core.implementation.logging.DefaultLogger" />
+      <Bug pattern="INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE" />
+  </Match>
+
+  <!-- False positives -->
+  <Match>
+      <Class name="com.azure.security.keyvault.jca.KeyVaultKeyStore" />
+      <Method name="getFilenames" />
+      <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE" />
+  </Match>
+  <Match>
+      <Class name="com.azure.security.keyvault.jca.LegacyRestClient" />
+      <Method name="~(get|post)" />
+      <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE" />
   </Match>
 </FindBugsFilter>

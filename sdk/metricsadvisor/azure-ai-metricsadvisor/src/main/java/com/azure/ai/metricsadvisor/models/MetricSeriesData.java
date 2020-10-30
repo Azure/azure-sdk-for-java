@@ -3,6 +3,8 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.implementation.util.MetricSeriesDataHelper;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -27,6 +29,30 @@ public final class MetricSeriesData {
      * values of the data related to this time series
      */
     private List<Double> valueList;
+
+    static {
+        MetricSeriesDataHelper.setAccessor(new MetricSeriesDataHelper.MetricSeriesDataAccessor() {
+            @Override
+            public void setMetricId(MetricSeriesData seriesData, String metricId) {
+                seriesData.setMetricId(metricId);
+            }
+
+            @Override
+            public void setSeriesKey(MetricSeriesData seriesData, DimensionKey seriesKey) {
+                seriesData.setSeriesKey(seriesKey);
+            }
+
+            @Override
+            public void setTimestampList(MetricSeriesData seriesData, List<OffsetDateTime> timestampList) {
+                seriesData.setTimestampList(timestampList);
+            }
+
+            @Override
+            public void setValueList(MetricSeriesData seriesData, List<Double> valueList) {
+                seriesData.setValueList(valueList);
+            }
+        });
+    }
 
     /**
      * Get the metricId property: metric unique id.
@@ -65,5 +91,21 @@ public final class MetricSeriesData {
      */
     public List<Double> getValueList() {
         return this.valueList;
+    }
+
+    void setMetricId(String metricId) {
+        this.metricId = metricId;
+    }
+
+    void setSeriesKey(DimensionKey seriesKey) {
+        this.seriesKey = seriesKey;
+    }
+
+    void setTimestampList(List<OffsetDateTime> timestampList) {
+        this.timestampList = timestampList;
+    }
+
+    void setValueList(List<Double> valueList) {
+        this.valueList = valueList;
     }
 }

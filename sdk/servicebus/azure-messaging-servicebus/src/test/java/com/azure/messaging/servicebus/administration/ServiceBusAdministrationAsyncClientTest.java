@@ -505,18 +505,18 @@ class ServiceBusAdministrationAsyncClientTest {
 
         return equals(expected.getAutoDeleteOnIdle(), properties.getAutoDeleteOnIdle())
             && equals(expected.getDefaultMessageTimeToLive(), properties.getDefaultMessageTimeToLive())
-            && equals(expected.deadLetteringOnMessageExpiration(), properties.isDeadLetteringOnMessageExpiration())
+            && equals(expected.isDeadLetteringOnMessageExpiration(), properties.isDeadLetteringOnMessageExpiration())
             && equals(expected.getDuplicateDetectionHistoryTimeWindow(),
             properties.getDuplicateDetectionHistoryTimeWindow())
-            && equals(expected.enableBatchedOperations(), properties.isEnableBatchedOperations())
-            && equals(expected.enablePartitioning(), properties.isEnablePartitioning())
+            && equals(expected.isBatchedOperationsEnabled(), properties.isEnableBatchedOperations())
+            && equals(expected.isPartitioningEnabled(), properties.isEnablePartitioning())
             && equals(expected.getForwardTo(), properties.getForwardTo())
             && equals(expected.getForwardDeadLetteredMessagesTo(), properties.getForwardDeadLetteredMessagesTo())
             && equals(expected.getLockDuration(), properties.getLockDuration())
             && equals(expected.getMaxDeliveryCount(), properties.getMaxDeliveryCount())
             && equals(expected.getMaxSizeInMegabytes(), properties.getMaxSizeInMegabytes())
-            && equals(expected.requiresDuplicateDetection(), properties.isRequiresDuplicateDetection())
-            && equals(expected.requiresSession(), properties.isRequiresSession())
+            && equals(expected.isDuplicateDetectionRequired(), properties.isRequiresDuplicateDetection())
+            && equals(expected.isSessionRequired(), properties.isRequiresSession())
             && equals(expected.getUserMetadata(), properties.getUserMetadata())
             && "application/xml".equals(content.getType());
     }

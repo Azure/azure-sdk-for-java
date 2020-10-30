@@ -4,8 +4,8 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.FormPage;
-import com.azure.ai.formrecognizer.models.FormTable;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
+import com.azure.ai.formrecognizer.models.FormTable;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 
@@ -58,13 +58,8 @@ public class RecognizeContent {
                 System.out.printf("Table %d has %d rows and %d columns.%n", i1, formTable.getRowCount(),
                     formTable.getColumnCount());
                 formTable.getCells().forEach(formTableCell -> {
-                    final StringBuilder boundingBoxStr = new StringBuilder();
-                    if (formTableCell.getBoundingBox() != null) {
-                        formTableCell.getBoundingBox().getPoints().forEach(point ->
-                            boundingBoxStr.append(String.format("[%.2f, %.2f]", point.getX(), point.getY())));
-                    }
                     System.out.printf("Cell has text '%s', within bounding box %s.%n", formTableCell.getText(),
-                        boundingBoxStr);
+                        formTableCell.getBoundingBox().toString());
                 });
                 System.out.println();
             }

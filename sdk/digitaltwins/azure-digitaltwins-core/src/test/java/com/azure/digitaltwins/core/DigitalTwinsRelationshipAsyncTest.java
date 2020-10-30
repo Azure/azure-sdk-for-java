@@ -5,8 +5,7 @@ package com.azure.digitaltwins.core;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.digitaltwins.core.models.BasicDigitalTwin;
-import com.azure.digitaltwins.core.models.BasicRelationship;
+import com.azure.digitaltwins.core.models.CreateOrReplaceRelationshipOptions;
 import com.azure.digitaltwins.core.models.IncomingRelationship;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -62,7 +61,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
 
             // Create relationship from Floor -> Room
             StepVerifier
-                .create(asyncClient.createRelationship(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, deserializeJsonString(floorContainsRoomPayload, BasicRelationship.class), BasicRelationship.class))
+                .create(asyncClient.createOrReplaceRelationship(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, deserializeJsonString(floorContainsRoomPayload, BasicRelationship.class), BasicRelationship.class))
                 .assertNext(
                     basicRelationship -> {
                         assertThat(basicRelationship.getId())
@@ -75,7 +74,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
 
             // Create relationship from Floor -> Hvac
             StepVerifier
-                .create(asyncClient.createRelationship(floorTwinId, FLOOR_COOLED_BY_HVAC_RELATIONSHIP_ID, deserializeJsonString(floorCooledByHvacPayload, BasicRelationship.class), BasicRelationship.class))
+                .create(asyncClient.createOrReplaceRelationship(floorTwinId, FLOOR_COOLED_BY_HVAC_RELATIONSHIP_ID, deserializeJsonString(floorCooledByHvacPayload, BasicRelationship.class), BasicRelationship.class))
                 .assertNext(
                     basicRelationship -> {
                         assertThat(basicRelationship.getId())
@@ -88,7 +87,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
 
             // Create relationship from Hvac -> Floor
             StepVerifier
-                .create(asyncClient.createRelationship(hvacTwinId, HVAC_COOLS_FLOOR_RELATIONSHIP_ID, deserializeJsonString(floorTwinCoolsRelationshipPayload, BasicRelationship.class), BasicRelationship.class))
+                .create(asyncClient.createOrReplaceRelationship(hvacTwinId, HVAC_COOLS_FLOOR_RELATIONSHIP_ID, deserializeJsonString(floorTwinCoolsRelationshipPayload, BasicRelationship.class), BasicRelationship.class))
                 .assertNext(
                     basicRelationship -> {
                         assertThat(basicRelationship.getId())
@@ -101,7 +100,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
 
             // Create relationship from Room -> Floor
             StepVerifier
-                .create(asyncClient.createRelationship(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID, deserializeJsonString(floorTwinContainedInRelationshipPayload, BasicRelationship.class), BasicRelationship.class))
+                .create(asyncClient.createOrReplaceRelationship(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID, deserializeJsonString(floorTwinContainedInRelationshipPayload, BasicRelationship.class), BasicRelationship.class))
                 .assertNext(
                     basicRelationship -> {
                         assertThat(basicRelationship.getId())
@@ -113,7 +112,12 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                 .verifyComplete();
 
             // Create a relation which already exists - should return status code 409 (Conflict).
-            StepVerifier.create(asyncClient.createRelationship(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID, floorTwinContainedInRelationshipPayload, String.class))
+            StepVerifier.create(asyncClient.createOrReplaceRelationshipWithResponse(
+                roomTwinId,
+                ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID,
+                floorTwinContainedInRelationshipPayload,
+                String.class,
+                new CreateOrReplaceRelationshipOptions().setIfNoneMatch("*")))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HTTP_PRECON_FAILED));
 
             // Update relationships
@@ -274,7 +278,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             for (int i = 0; i < BULK_RELATIONSHIP_COUNT; i++) {
                 String relationshipId = FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID + this.testResourceNamer.randomUuid();
                 StepVerifier.create(
-                    asyncClient.createRelationship(
+                    asyncClient.createOrReplaceRelationship(
                         floorTwinId,
                         relationshipId,
                         deserializeJsonString(floorContainsRoomPayload, BasicRelationship.class),
@@ -291,7 +295,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             for (int i = 0; i < BULK_RELATIONSHIP_COUNT; i++) {
                 String relationshipId = ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID + this.testResourceNamer.randomUuid();
                 StepVerifier.create(
-                    asyncClient.createRelationship(
+                    asyncClient.createOrReplaceRelationship(
                         roomTwinId,
                         relationshipId,
                         deserializeJsonString(roomContainedInFloorPayload, BasicRelationship.class),
@@ -390,7 +394,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             floorTwinId,
             floorModelId,
             (twinId, twin) -> StepVerifier
-                .create(asyncClient.createDigitalTwin(twinId, twin, BasicDigitalTwin.class))
+                .create(asyncClient.createOrReplaceDigitalTwin(twinId, twin, BasicDigitalTwin.class))
                 .assertNext(basicDigitalTwin -> logger.info("Created {} twin successfully", basicDigitalTwin.getId()))
                 .verifyComplete());
 
@@ -399,7 +403,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             roomTwinId,
             roomModelId,
             (twinId, twin) -> StepVerifier
-                .create(asyncClient.createDigitalTwin(twinId, twin, BasicDigitalTwin.class))
+                .create(asyncClient.createOrReplaceDigitalTwin(twinId, twin, BasicDigitalTwin.class))
                 .assertNext(basicDigitalTwin -> logger.info("Created {} twin successfully", basicDigitalTwin.getId()))
                 .verifyComplete());
 
@@ -408,7 +412,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             hvacTwinId,
             hvacModelId,
             (twinId, twin) -> StepVerifier
-                .create(asyncClient.createDigitalTwin(twinId, twin, BasicDigitalTwin.class))
+                .create(asyncClient.createOrReplaceDigitalTwin(twinId, twin, BasicDigitalTwin.class))
                 .assertNext(basicDigitalTwin -> logger.info("Created {} twin successfully", basicDigitalTwin.getId()))
                 .verifyComplete());
     }

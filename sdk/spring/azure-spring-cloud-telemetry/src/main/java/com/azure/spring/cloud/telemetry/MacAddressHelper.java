@@ -8,6 +8,9 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import org.apache.commons.codec.digest.DigestUtils;
 
+/**
+ * Helper class to get the MAC address.
+ */
 public class MacAddressHelper {
 
     private static final String UNKNOWN_MAC = "Unknown-Mac-Address";

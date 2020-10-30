@@ -25,7 +25,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-messaging</artifactId>
-      <version>5.2.8.RELEASE</version> <!-- {x-version-update;org.springframework:spring-messaging;external_dependency} -->
+      <version>5.2.9.RELEASE</version> <!-- {x-version-update;org.springframework:spring-messaging;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -81,7 +81,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework:spring-messaging:[5.2.8.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-messaging;external_dependency} -->
+                <include>org.springframework:spring-messaging:[5.2.9.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-messaging;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

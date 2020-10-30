@@ -44,13 +44,13 @@ public class TwinTests extends TwinTestBase{
             Iterable<DigitalTwinsModelData> createdList = client.createModels(modelsList);
             logger.info("Created models successfully");
 
-            BasicDigitalTwin createdTwin = client.createDigitalTwin(roomTwinId, deserializeJsonString(roomTwin, BasicDigitalTwin.class), BasicDigitalTwin.class);
+            BasicDigitalTwin createdTwin = client.createOrReplaceDigitalTwin(roomTwinId, deserializeJsonString(roomTwin, BasicDigitalTwin.class), BasicDigitalTwin.class);
 
             logger.info("Created {} twin successfully", createdTwin.getId());
             assertEquals(createdTwin.getId(), roomTwinId);
 
             // Get Twin.
-            DigitalTwinsResponse<String> getTwinResponse = client.getDigitalTwinWithResponse(roomTwinId, String.class, null, Context.NONE);
+            DigitalTwinsResponse<String> getTwinResponse = client.getDigitalTwinWithResponse(roomTwinId, String.class, Context.NONE);
             assertEquals(getTwinResponse.getStatusCode(), HttpURLConnection.HTTP_OK);
 
             // Update Twin.
@@ -64,11 +64,11 @@ public class TwinTests extends TwinTestBase{
 
             BasicDigitalTwin getTwinObject = client.getDigitalTwin(roomTwinId, BasicDigitalTwin.class);
 
-            assertThat(getTwinObject.getCustomProperties().get("Humidity"))
+            assertThat(getTwinObject.getContents().get("Humidity"))
                 .as("Humidity is added")
                 .isEqualTo(30);
 
-            assertThat(getTwinObject.getCustomProperties().get("Temperature"))
+            assertThat(getTwinObject.getContents().get("Temperature"))
                 .as("Temperature is updated")
                 .isEqualTo(70);
 
