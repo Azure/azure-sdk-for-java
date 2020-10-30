@@ -16,13 +16,13 @@ import java.util.Objects;
  * <ul>
  *     <li>
  *         Use {@link #acceptSession(String)} to acquire the lock of a session if you know the session id.
- *         <p>
+ *
  *         {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#nextsession}
  *    </li>
  *    <li>
  *        Use {@link #acceptNextSession()} to acquire the lock of the next available session
  *        without specifying the session id.
- *        <p>
+ *
  *        {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#sessionId}
  *    </li>
  * </ul>

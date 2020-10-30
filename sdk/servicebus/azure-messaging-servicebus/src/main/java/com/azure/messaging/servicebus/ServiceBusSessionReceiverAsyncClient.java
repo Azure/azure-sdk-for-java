@@ -25,13 +25,13 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <ul>
  *     <li>
  *         Use {@link #acceptSession(String)} to acquire the lock of a session if you know the session id.
- *         <p>
+ *
  *         {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#nextsession}
  *    </li>
  *    <li>
  *        Use {@link #acceptNextSession()} to acquire the lock of the next available session
  *        without specifying the session id.
- *        <p>
+ *
  *        {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#sessionId}
  *    </li>
  * </ul>
@@ -99,7 +99,7 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
      * {@link com.azure.core.amqp.exception.AmqpException} is thrown.
      * <p>
      * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#sessionId}
-     *
+     * <p>
      * @param sessionId The session Id.
      * @return A {@link ServiceBusReceiverAsyncClient} that is tied to the specified session.
      * @throws NullPointerException if {@code sessionId} is null.
