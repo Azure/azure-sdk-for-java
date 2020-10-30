@@ -12,7 +12,7 @@ import com.azure.identity.implementation.IdentityClient;
 import reactor.core.publisher.Mono;
 
 /**
- * The Managed Service Identity credential for Azure App Service.
+ * The Managed Service Identity credential for Azure Arc Service.
  */
 @Immutable
 class ArcIdentityCredential extends ManagedIdentityServiceCredential {
@@ -26,9 +26,9 @@ class ArcIdentityCredential extends ManagedIdentityServiceCredential {
      * @param identityClient The identity client to acquire a token with.
      */
     ArcIdentityCredential(String clientId, IdentityClient identityClient) {
-        super(clientId, identityClient, "AZURE ARC IDENTITY_ENDPOINT");
+        super(clientId, identityClient, "AZURE ARC IDENTITY ENDPOINT");
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
-        this.identityEndpoint = configuration.get(ManagedIdentityCredential.PROPERTY_IDENTITY_ENDPOINT);
+        this.identityEndpoint = configuration.get(Configuration.PROPERTY_IDENTITY_ENDPOINT);
         if (identityEndpoint != null) {
             validateEndpointProtocol(this.identityEndpoint, "Identity");
         }
@@ -40,15 +40,6 @@ class ArcIdentityCredential extends ManagedIdentityServiceCredential {
                 new IllegalArgumentException(
                     String.format("%s endpoint should start with 'https' or 'http' scheme.", endpointName)));
         }
-    }
-
-    /**
-     * Gets the client ID of the user assigned or system assigned identity.
-     *
-     * @return The client ID of user assigned or system assigned identity.
-     */
-    public String getClientId() {
-        return this.clientId;
     }
 
     /**
