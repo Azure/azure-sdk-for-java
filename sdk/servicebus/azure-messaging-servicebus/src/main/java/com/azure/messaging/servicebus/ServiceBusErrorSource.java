@@ -30,10 +30,10 @@ public final class ServiceBusErrorSource extends ExpandableStringEnum<ServiceBus
         ServiceBusErrorSource.class);
 
     /** Error while session is accepted.*/
-    public static final ServiceBusErrorSource ACCEPT_MESSAGE_SESSION = fromString("ACCEPT_MESSAGE_SESSION",
+    public static final ServiceBusErrorSource ACCEPT_SESSION = fromString("ACCEPT_SESSION",
         ServiceBusErrorSource.class);
 
     /** Error while session is closed.*/
-    public static final ServiceBusErrorSource CLOSE_MESSAGE_SESSION = fromString("CLOSE_MESSAGE_SESSION",
+    public static final ServiceBusErrorSource CLOSE_SESSION = fromString("CLOSE_SESSION",
         ServiceBusErrorSource.class);
 }
