@@ -3,6 +3,8 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.amqp.AmqpRetryMode;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.Context;
@@ -68,6 +70,30 @@ public final class MessageUtils {
         return clientTimeout.minusMillis(1000);
     }
 
+    /**
+     * Calculate the total time from the retry options assuming all retries are exhausted.
+     */
+    public static Duration calcTotalTimeout(AmqpRetryOptions retryOptions) {
+        long tryTimeout = retryOptions.getTryTimeout().toNanos();
+        long maxDelay = retryOptions.getMaxDelay().toNanos();
+        long totalTimeout = tryTimeout;  // The original attempt not counted as a retry
+        if (retryOptions.getMode() == AmqpRetryMode.FIXED) {
+            totalTimeout += (retryOptions.getDelay().toNanos() + tryTimeout) * retryOptions.getMaxRetries();
+        } else {
+            int multiplier = 1;
+            for (int i = 0; i < retryOptions.getMaxRetries(); i++) {
+                long retryDelay = retryOptions.getDelay().toNanos() * multiplier;
+                if (retryDelay >= maxDelay) {
+                    retryDelay = maxDelay;
+                    totalTimeout += (tryTimeout + retryDelay) * (retryOptions.getMaxRetries() - i);
+                    break;
+                }
+                multiplier *= 2;
+                totalTimeout += tryTimeout + retryDelay;
+            }
+        }
+        return Duration.ofNanos(totalTimeout);
+    }
     /**
      * Converts a .NET GUID to its Java UUID representation.
      *

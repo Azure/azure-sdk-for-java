@@ -25,6 +25,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
+import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
@@ -610,7 +611,7 @@ public final class ServiceBusClientBuilder {
          * @throws IllegalArgumentException if the entity type is not a queue or a topic.
          */
         public ServiceBusSenderClient buildClient() {
-            return new ServiceBusSenderClient(buildAsyncClient(), retryOptions.getTryTimeout());
+            return new ServiceBusSenderClient(buildAsyncClient(), MessageUtils.calcTotalTimeout(retryOptions));
         }
     }
 
@@ -785,7 +786,8 @@ public final class ServiceBusClientBuilder {
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         ServiceBusReceiverClient buildClientForProcessor() {
-            return new ServiceBusReceiverClient(buildAsyncClientForProcessor(false), retryOptions.getTryTimeout());
+            return new ServiceBusReceiverClient(buildAsyncClientForProcessor(false),
+                MessageUtils.calcTotalTimeout(retryOptions));
         }
 
         private ServiceBusReceiverAsyncClient buildAsyncClientForProcessor(boolean isAutoCompleteAllowed) {
@@ -852,7 +854,7 @@ public final class ServiceBusClientBuilder {
          */
         public ServiceBusSessionReceiverClient buildClient() {
             return new ServiceBusSessionReceiverClient(buildAsyncClient(false),
-                retryOptions.getTryTimeout());
+                MessageUtils.calcTotalTimeout(retryOptions));
         }
 
         private ServiceBusSessionReceiverAsyncClient buildAsyncClient(boolean isAutoCompleteAllowed) {
@@ -1050,7 +1052,8 @@ public final class ServiceBusClientBuilder {
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusReceiverClient buildClient() {
-            return new ServiceBusReceiverClient(buildAsyncClient(false), retryOptions.getTryTimeout());
+            return new ServiceBusReceiverClient(buildAsyncClient(false),
+                MessageUtils.calcTotalTimeout(retryOptions));
         }
 
         ServiceBusReceiverAsyncClient buildAsyncClient(boolean isAutoCompleteAllowed) {

@@ -3,12 +3,19 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.amqp.AmqpRetryMode;
+import com.azure.core.amqp.AmqpRetryOptions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -59,5 +66,37 @@ class MessageUtilsTest {
 
         // Assert
         assertArrayEquals(dotNetGuidBytes, convertedBytes, "UUID conversion from Java to DotNet failed");
+    }
+
+    @ParameterizedTest
+    @MethodSource("calcTotalTimeoutTestData")
+    void calcTotalTimeout(List<Object> testData) {
+        AmqpRetryOptions amqpRetryOptions = (AmqpRetryOptions) testData.get(0);
+        long expectedResult = (long) testData.get(1);
+        assertEquals(MessageUtils.calcTotalTimeout(amqpRetryOptions).toMillis(), expectedResult);
+    }
+
+    static Stream<List<Object>> calcTotalTimeoutTestData() {
+        // default value of AmqpRetryTimeOut: Max retries: 3, delay: 800ms, max delay: 1m, try timeout: 1m
+        List<Object> defaultValue = List.of(
+            new AmqpRetryOptions(),
+            (long) (60 * 1000 + (800 + 60 * 1000) + (1600 + 60 * 1000) + (3200 + 60 * 1000)));
+
+        List<Object> reachMaxDelay = List.of(
+            new AmqpRetryOptions().setDelay(Duration.ofSeconds(30)),
+            (long) (60 * 1000 + (30 * 1000 + 60 * 1000) + (60 * 1000 + 60 * 1000) * 2)
+            );
+
+        List<Object> fixedDelay = List.of(
+            new AmqpRetryOptions().setMode(AmqpRetryMode.FIXED),
+            (long) (60 * 1000 + (800 + 60 * 1000) * 3)
+        );
+
+        List<Object> zeroRetry = List.of(
+            new AmqpRetryOptions().setMaxRetries(0),
+            (long) (60 * 1000)
+        );
+
+        return Stream.of(defaultValue, reachMaxDelay, fixedDelay, zeroRetry);
     }
 }
