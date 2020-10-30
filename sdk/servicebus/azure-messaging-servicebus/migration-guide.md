@@ -177,7 +177,7 @@ ServiceBusSenderClient client = new ServiceBusClientBuilder()
 ServiceBusMessage message = new ServiceBusMessage("Hello world!");
 
 // send the message
-sender.SendMessage(message);
+sender.sendMessage(message);
 ```
 
 The feature to send a list of messages in a single call was previously implemented by batching all the messages into a single AMQP
