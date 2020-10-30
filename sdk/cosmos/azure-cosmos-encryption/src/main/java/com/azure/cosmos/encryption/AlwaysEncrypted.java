@@ -31,16 +31,16 @@ public class AlwaysEncrypted {
 
     // TODO: key container should be read as input or config?
     public static final String keyContainerName = "keyContainer";
+    private static final  String CosmosContainerWrappedDekProviderType = "CosmosContainer";
 
     private Logger logger = LoggerFactory.getLogger(AlwaysEncrypted.class);
 
-    private final String CosmosContainerWrappedDekProviderType = "CosmosContainer";
     private final CosmosAsyncContainer container;
     private final EncryptionKeyStoreProvider encryptionKeyStoreProvider;
     private ClientEncryptionPolicy clientEncryptionPolicy;
     private CosmosAsyncContainer keyContainer;
     private WrappedDataEncryptionKeyProvider wrappedDekProvider;
-    private HashMap<String, Settings> settingsByPath;
+    private Map<String, Settings> settingsByPath;
     private SerializerDefaultMappings serializerDefaultMappings;
 
     private AlwaysEncrypted(
@@ -85,7 +85,7 @@ public class AlwaysEncrypted {
     private Mono<Void> initializeAsync(
         CosmosAsyncContainer keyContainer) {
         if (this.settingsByPath != null) {
-            throw new IllegalStateException("Already initialized");
+            throw new IllegalStateException("AlwaysEncrypted already initialized!");
         }
 
         this.populateClientEncryptionPolicyAsync();

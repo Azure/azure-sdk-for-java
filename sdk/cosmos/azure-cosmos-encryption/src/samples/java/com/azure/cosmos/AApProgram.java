@@ -27,6 +27,8 @@ import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.encoders.Hex;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -47,17 +49,20 @@ import java.util.UUID;
 // ----------------------------------------------------------------------------------------------------------
 // Sample - demonstrates the basic usage of client-side encryption support in the Cosmos DB SDK.
 // ----------------------------------------------------------------------------------------------------------
+// TODO: we need to finalize and clean up the sample
 public class AApProgram {
     static {
         Security.addProvider(new BouncyCastleProvider());
     }
 
-    public static final String databaseId = "testdb";
-    private static final String containerId = "encryptedData";
-    private static final String keyContainerId = AlwaysEncrypted.keyContainerName;
-    private static final String dataEncryptionKeyId = "theDataEncryptionKey";
+    // TODO: review the sample once the apis are finalized
+    public static final String DATABASE_ID = "testdb";
+    private static final String CONTAINER_ID = "encryptedData";
+    private static final String KEY_CONTAINER_ID = AlwaysEncrypted.keyContainerName;
+    private static final String DATA_ENCRYPTION_KEY_ID = "theDataEncryptionKey";
     private static CosmosAsyncClient client = null;
     private static AAPContainer containerWithEncryption = null;
+
 
     public static void main(String[] args) throws Exception {
         try {
@@ -103,13 +108,13 @@ public class AApProgram {
      * @throws Exception on failure throws
      */
     private static void initialize(CosmosAsyncClient client, Properties properties) throws Exception {
-        client.createDatabaseIfNotExists(AApProgram.databaseId).block();
-        CosmosAsyncDatabase database = client.getDatabase(AApProgram.databaseId);
+        client.createDatabaseIfNotExists(AApProgram.DATABASE_ID).block();
+        CosmosAsyncDatabase database = client.getDatabase(AApProgram.DATABASE_ID);
 
         // Delete the existing container to prevent create item conflicts.
         try {
-            database.getContainer(AApProgram.containerId).delete().block();
-        } catch (Exception e) {
+            database.getContainer(AApProgram.CONTAINER_ID).delete().block();
+        } catch (CosmosException e) {
         }
 
         System.out.println("The demo will create a 1000 RU/s container, press any key to continue.");
@@ -117,10 +122,10 @@ public class AApProgram {
 
         // Create a container with the appropriate partition key definition (we choose the "AccountNumber" property
         // here) and throughput (we choose 1000 here).
-        database.createContainer(AApProgram.containerId, "/AccountNumber",
+        database.createContainer(AApProgram.CONTAINER_ID, "/AccountNumber",
             ThroughputProperties.createManualThroughput(1000)).block();
 
-        CosmosAsyncContainer container = database.getContainer(AApProgram.containerId);
+        CosmosAsyncContainer container = database.getContainer(AApProgram.CONTAINER_ID);
 
         // Application credentials for authentication with Azure Key Vault.
         // This application must have keys/wrapKey and keys/unwrapKey permissions
@@ -196,8 +201,8 @@ public class AApProgram {
         policy.includedPaths.add(ceip);
 
         policy.dataEncryptionKeyMetadata = new CosmosDataEncryptionKeyProviderMetadata();
-        policy.dataEncryptionKeyMetadata.databaseName = databaseId;
-        policy.dataEncryptionKeyMetadata.ContainerName = keyContainerId;
+        policy.dataEncryptionKeyMetadata.databaseName = DATABASE_ID;
+        policy.dataEncryptionKeyMetadata.ContainerName = KEY_CONTAINER_ID;
 
         if (policy.policyFormatVersion != 1) {
             throw new IllegalArgumentException("not supporter");
@@ -317,7 +322,7 @@ public class AApProgram {
 
     private static void cleanup() {
         try {
-            client.getDatabase(databaseId).delete().block();
+            client.getDatabase(DATABASE_ID).delete().block();
         } catch (Exception e) {
         }
     }

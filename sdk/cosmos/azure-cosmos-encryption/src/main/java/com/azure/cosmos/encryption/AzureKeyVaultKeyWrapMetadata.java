@@ -14,6 +14,8 @@ import static com.azure.cosmos.implementation.encryption.ImplementationBridgeHel
  */
 public final class AzureKeyVaultKeyWrapMetadata extends EncryptionKeyWrapMetadata {
     private static final String TYPE_CONSTANT = "akv";
+    // TODO: where this constant should be loaded from?
+    private static final String ALGO = "RSA-OAEP-256";
 
     // TODO: moderakh use URL vs URI?
     /**
@@ -23,7 +25,7 @@ public final class AzureKeyVaultKeyWrapMetadata extends EncryptionKeyWrapMetadat
      */
     public AzureKeyVaultKeyWrapMetadata(URL masterKeyUri) {
         // masterKeyUri.AbsoluteUri
-        super(AzureKeyVaultKeyWrapMetadata.TYPE_CONSTANT, masterKeyUri.toString(), "RSA-OAEP-256");
+        super(AzureKeyVaultKeyWrapMetadata.TYPE_CONSTANT, masterKeyUri.toString(), ALGO);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
