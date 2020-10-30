@@ -302,7 +302,7 @@ public abstract class CertificateClientTestBase extends TestBase {
     @Test
     public abstract void listPropertyOfCertificatesThroughPoller(HttpClient httpClient, CertificateServiceVersion serviceVersion);
 
-    void listPropertyOfCertificatesRunner(Consumer<List<String>> testRunner){
+    void listPropertyOfCertificatesRunner(Consumer<List<String>> testRunner) {
         List<String> certificates = new ArrayList<>();
         String certificateName;
         for (int i = 0; i < 2; i++) {
@@ -652,7 +652,8 @@ public abstract class CertificateClientTestBase extends TestBase {
             .forEach(httpClient -> {
                 Arrays.stream(CertificateServiceVersion.values()).filter(
                     CertificateClientTestBase::shouldServiceVersionBeTested)
-                    .forEach(serviceVersion -> { argumentsList.add(Arguments.of(httpClient, serviceVersion)); });
+                    .forEach(serviceVersion -> {
+                        argumentsList.add(Arguments.of(httpClient, serviceVersion)); });
             });
         return argumentsList.stream();
     }
