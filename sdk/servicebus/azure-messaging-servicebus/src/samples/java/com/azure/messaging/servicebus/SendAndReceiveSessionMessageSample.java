@@ -50,10 +50,9 @@ public class SendAndReceiveSessionMessageSample {
             .buildAsyncClient();
 
         // Instantiate a client that will be used to receive messages from the session.
-        ServiceBusReceiverAsyncClient receiver = builder.sessionReceiver()
+        ServiceBusSessionReceiverAsyncClient sessionReceiver = builder.sessionReceiver()
             .receiveMode(ReceiveMode.PEEK_LOCK)
             .queueName(queueName)
-            .sessionId(sessionId)
             .buildAsyncClient();
 
         List<ServiceBusMessage> messages = Arrays.asList(
@@ -82,7 +81,7 @@ public class SendAndReceiveSessionMessageSample {
             () -> System.out.println("Batch send complete."));
 
         // After sending that message, we receive the messages for that sessionId.
-        receiver.receiveMessages().flatMap(context -> {
+        sessionReceiver.acceptSession(sessionId).flatMapMany(receiver -> receiver.receiveMessages().flatMap(context -> {
             ServiceBusReceivedMessage message = context.getMessage();
 
             System.out.println("Received Message Id: " + message.getMessageId());
@@ -90,13 +89,13 @@ public class SendAndReceiveSessionMessageSample {
             System.out.println("Received Message: " + new String(message.getBody()));
 
             return receiver.complete(message);
-        }).subscribe();
+        })).subscribe();
 
         // subscribe() is not a blocking call. We sleep here so the program does not end before the send is complete.
         TimeUnit.SECONDS.sleep(10);
 
         // Close the sender and receiver.
         sender.close();
-        receiver.close();
+        sessionReceiver.close();
     }
 }

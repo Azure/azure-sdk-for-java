@@ -3,13 +3,13 @@ package com.azure.digitaltwins.core;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.models.JsonPatchDocument;
 import com.azure.digitaltwins.core.helpers.ConsoleLogger;
 import com.azure.digitaltwins.core.helpers.SamplesArguments;
 import com.azure.digitaltwins.core.helpers.SamplesConstants;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
 import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
-import com.azure.digitaltwins.core.models.UpdateOperationUtility;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -140,11 +140,9 @@ public class ComponentSyncSamples {
 
         // Update Component1 by replacing the property ComponentProp1 value,
         // using the UpdateOperationUtility to build the payload.
-        UpdateOperationUtility updateOperationUtility = new UpdateOperationUtility();
+        JsonPatchDocument updateOp = new JsonPatchDocument().appendReplace("/ComponentProp1", "Some new Value");
 
-        updateOperationUtility.appendReplaceOperation("/ComponentProp1", "Some new Value");
-
-        client.updateComponent(basicDigitalTwinId, "Component1", updateOperationUtility.getUpdateOperations());
+        client.updateComponent(basicDigitalTwinId, "Component1", updateOp);
 
         ConsoleLogger.print("Updated component for digital twin: " + basicDigitalTwinId);
 

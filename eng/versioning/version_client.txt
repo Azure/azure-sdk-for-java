@@ -1,5 +1,27 @@
 # Format;
 # <groupId>:<artifactId>;dependency-version;current-version
+#
+# The dependency-version is used by other Azure SDKs outside of the release group when listing the library as a Maven
+# dependency in its POM. The current-version is used by the library to denote its version and as the Maven dependency
+# version for other Azure SDKs inside the same release group.
+#
+# Given com.azure:azure-example;1.1.0;1.2.0-beta.1 in the release group /sdk/example
+# - com.azure:azure-example2 in release group /sdk/example will use the current-version (1.2.0-beta.1) when using
+# com.azure:azure-example as a dependency.
+# - com.azure:azure-not-an-example in release group /sdk/notanexample will use the dependency-version (1.1.0) when using
+# com.azure:azure-example as a dependency.
+#
+# When releasing a library the current-version should be set to the version being released to Maven. Upon release of the
+# library an automated PR will be submitted to update the dependency-version to the version that was released and the
+# dependency-version to the next in development version.
+#
+# The next in development version is determined by the version that was released.
+# - If a beta version was released the beta number is incremented. (1.2.0-beta.1 -> 1.2.0-beta.2)
+# - If a GA version was released the current-version is the next minor beta. (1.2.0 -> 1.3.0-beta.1)
+#
+# When adding a new library the dependency-version and current-version will be the same until the first release is
+# performed. So, if com.azure:azure-new-library is added with major version 2 it'll use
+# com.azure:azure-new-library;2.0.0-beta.1;2.0.0-beta.1 as its initial version tag.
 
 com.azure:azure-sdk-all;1.0.0;1.0.0
 com.azure:azure-sdk-parent;1.6.0;1.6.0
@@ -34,7 +56,7 @@ com.azure:azure-data-appconfiguration;1.1.6;1.2.0-beta.1
 com.azure:azure-data-schemaregistry;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-data-schemaregistry-avro;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-data-tables;12.0.0-beta.2;12.0.0-beta.3
-com.azure:azure-digitaltwins-core;1.0.0-beta.3;1.0.0
+com.azure:azure-digitaltwins-core;1.0.0;1.1.0-beta.1
 com.azure:azure-e2e;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-identity;1.1.3;1.2.0-beta.3
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
