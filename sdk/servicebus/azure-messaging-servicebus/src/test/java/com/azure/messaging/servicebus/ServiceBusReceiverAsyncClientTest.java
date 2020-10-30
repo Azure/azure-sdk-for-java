@@ -1142,9 +1142,7 @@ class ServiceBusReceiverAsyncClientTest {
 
     private static Stream<Arguments> errorSourceOnSettlement() {
         return Stream.of(
-            Arguments.of(DispositionStatus.DEFERRED, ServiceBusErrorSource.DEFER, DeliveryStateType.Modified),
             Arguments.of(DispositionStatus.COMPLETED, ServiceBusErrorSource.COMPLETE, DeliveryStateType.Accepted),
-            Arguments.of(DispositionStatus.SUSPENDED, ServiceBusErrorSource.DEAD_LETTER, DeliveryStateType.Rejected),
             Arguments.of(DispositionStatus.ABANDONED, ServiceBusErrorSource.ABANDONED, DeliveryStateType.Modified));
     }
 }

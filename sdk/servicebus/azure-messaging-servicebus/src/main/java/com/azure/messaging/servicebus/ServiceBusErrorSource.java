@@ -16,13 +16,6 @@ public final class ServiceBusErrorSource extends ExpandableStringEnum<ServiceBus
     /** Error while completing the message.*/
     public static final ServiceBusErrorSource COMPLETE = fromString("COMPLETE", ServiceBusErrorSource.class);
 
-    /** Error while deferring the message.*/
-    public static final ServiceBusErrorSource DEFER = fromString("DEFER", ServiceBusErrorSource.class);
-
-    /** Error while dead-lettering the message.*/
-    public static final ServiceBusErrorSource DEAD_LETTER = fromString("DEAD_LETTER",
-        ServiceBusErrorSource.class);
-
     /** Error while receiving the message(s).*/
     public static final ServiceBusErrorSource RECEIVE = fromString("RECEIVE", ServiceBusErrorSource.class);
 
@@ -43,6 +36,4 @@ public final class ServiceBusErrorSource extends ExpandableStringEnum<ServiceBus
     /** Error while session is closed.*/
     public static final ServiceBusErrorSource CLOSE_MESSAGE_SESSION = fromString("CLOSE_MESSAGE_SESSION",
         ServiceBusErrorSource.class);
-
-
 }
