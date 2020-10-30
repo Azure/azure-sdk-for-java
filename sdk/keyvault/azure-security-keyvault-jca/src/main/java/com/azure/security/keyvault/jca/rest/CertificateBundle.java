@@ -9,6 +9,11 @@ import java.io.Serializable;
  * The CertificateBundle REST model.
  */
 public class CertificateBundle implements Serializable {
+    
+    /**
+     * Stores the serial version UID.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Stores the CER bytes.

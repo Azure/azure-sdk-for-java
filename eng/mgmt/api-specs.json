@@ -65,7 +65,11 @@
   "commerce/resource-manager": {
     "source": "specification/commerce/resource-manager/readme.md",
     "args": "--multiapi --fluent"
-  },  
+  },
+  "communication/resource-manager": {
+    "source": "specification/communication/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "compute/resource-manager": {
     "source": "specification/compute/resource-manager/readme.md",
     "args": "--multiapi --fluent"

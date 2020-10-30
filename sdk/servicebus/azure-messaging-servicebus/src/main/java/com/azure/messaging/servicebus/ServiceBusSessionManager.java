@@ -55,6 +55,7 @@ class ServiceBusSessionManager implements AutoCloseable {
     private final String entityPath;
     private final MessagingEntityType entityType;
     private final ReceiverOptions receiverOptions;
+    private final ServiceBusReceiveLink receiveLink;
     private final ServiceBusConnectionProcessor connectionProcessor;
     private final Duration operationTimeout;
     private final TracerProvider tracerProvider;
@@ -77,7 +78,7 @@ class ServiceBusSessionManager implements AutoCloseable {
 
     ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
         ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer, ReceiverOptions receiverOptions) {
+        MessageSerializer messageSerializer, ReceiverOptions receiverOptions, ServiceBusReceiveLink receiveLink) {
         this.entityPath = entityPath;
         this.entityType = entityType;
         this.receiverOptions = receiverOptions;
@@ -103,6 +104,14 @@ class ServiceBusSessionManager implements AutoCloseable {
 
         this.processor = EmitterProcessor.create(numberOfSchedulers, false);
         this.sessionReceiveSink = processor.sink();
+        this.receiveLink = receiveLink;
+    }
+
+    ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
+        ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
+        MessageSerializer messageSerializer, ReceiverOptions receiverOptions) {
+        this(entityPath, entityType, connectionProcessor, tracerProvider,
+            messageSerializer, receiverOptions, null);
     }
 
     /**
@@ -247,7 +256,10 @@ class ServiceBusSessionManager implements AutoCloseable {
      * @return A Mono that completes when an unnamed session becomes available.
      * @throws AmqpException if the session manager is already disposed.
      */
-    private Mono<ServiceBusReceiveLink> getActiveLink() {
+    Mono<ServiceBusReceiveLink> getActiveLink() {
+        if (this.receiveLink != null) {
+            return Mono.just(this.receiveLink);
+        }
         return Mono.defer(() -> createSessionReceiveLink()
             .flatMap(link -> link.getEndpointStates()
                 .takeUntil(e -> e == AmqpEndpointState.ACTIVE)
@@ -282,7 +294,7 @@ class ServiceBusSessionManager implements AutoCloseable {
      */
     private Flux<ServiceBusReceivedMessageContext> getSession(Scheduler scheduler, boolean disposeOnIdle) {
         return getActiveLink().flatMap(link -> link.getSessionId()
-            .map(linkName -> sessionReceivers.compute(linkName, (key, existing) -> {
+            .map(sessionId -> sessionReceivers.compute(sessionId, (key, existing) -> {
                 if (existing != null) {
                     return existing;
                 }
@@ -290,7 +302,7 @@ class ServiceBusSessionManager implements AutoCloseable {
                     receiverOptions.getPrefetchCount(), disposeOnIdle, scheduler, this::renewSessionLock,
                     maxSessionLockRenewDuration);
             })))
-            .flatMapMany(session -> session.receive().doFinally(signalType -> {
+            .flatMapMany(sessionReceiver -> sessionReceiver.receive().doFinally(signalType -> {
                 logger.verbose("Adding scheduler back to pool.");
                 availableSchedulers.push(scheduler);
                 if (receiverOptions.isRollingSessionReceiver()) {

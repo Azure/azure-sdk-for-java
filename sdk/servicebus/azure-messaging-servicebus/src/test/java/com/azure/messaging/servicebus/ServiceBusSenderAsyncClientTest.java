@@ -71,6 +71,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -287,6 +288,30 @@ class ServiceBusSenderAsyncClientTest {
             })
             .verifyComplete();
     }
+
+    @Test
+    void scheduleMessageSizeTooBig() {
+        // Arrange
+        int maxLinkSize = 1024;
+        int batchSize = maxLinkSize + 10;
+
+        OffsetDateTime instant = mock(OffsetDateTime.class);
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(batchSize, UUID.randomUUID().toString());
+
+        final AmqpSendLink link = mock(AmqpSendLink.class);
+        when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
+
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull()))
+            .thenReturn(Mono.just(link));
+        when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
+
+        // Act & Assert
+        StepVerifier.create(sender.scheduleMessages(messages, instant))
+            .verifyError(IllegalArgumentException.class);
+
+        verify(managementNode, never()).schedule(any(), eq(instant), anyInt(), eq(LINK_NAME), isNull());
+    }
+
 
     /**
      * Verifies that sending multiple message will result in calling sender.send(MessageBatch, transaction).

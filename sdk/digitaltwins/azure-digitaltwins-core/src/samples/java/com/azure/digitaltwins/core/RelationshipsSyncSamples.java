@@ -84,7 +84,7 @@ public class RelationshipsSyncSamples {
 
         // Create a building digital twin
         BasicDigitalTwin buildingDigitalTwin = new BasicDigitalTwin(buildingTwinId)
-            .setMetadata(new DigitalTwinMetadata()
+            .setMetadata(new BasicDigitalTwinMetadata()
                 .setModelId(sampleBuildingModelId));
 
         client.createOrReplaceDigitalTwin(buildingTwinId, buildingDigitalTwin, BasicDigitalTwin.class);
@@ -92,7 +92,7 @@ public class RelationshipsSyncSamples {
         ConsoleLogger.print("Created twin" + buildingDigitalTwin.getId());
 
         BasicDigitalTwin floorDigitalTwin = new BasicDigitalTwin(floorTwinId)
-            .setMetadata(new DigitalTwinMetadata()
+            .setMetadata(new BasicDigitalTwinMetadata()
                 .setModelId(sampleFloorModelId));
 
         BasicDigitalTwin createdTwin = client.createOrReplaceDigitalTwin(floorTwinId, floorDigitalTwin, BasicDigitalTwin.class);
@@ -120,7 +120,9 @@ public class RelationshipsSyncSamples {
             BasicRelationship retrievedRelationship = getRelationshipResponse.getValue();
             ConsoleLogger.printSuccess("Retrieved relationship: " + retrievedRelationship.getId() + " from twin: " + retrievedRelationship.getSourceId() + "\n\t" +
                 "Prop1: " + retrievedRelationship.getProperties().get("Prop1") + "\n\t" +
-                "Prop2: " + retrievedRelationship.getProperties().get("Prop2"));
+                "Prop2: " + retrievedRelationship.getProperties().get("Prop2") + "\n");
+
+            ConsoleLogger.printSuccess("Retrieved relationship has ETag: " + retrievedRelationship.getETag() + "\n\t");
         }
 
         ConsoleLogger.printHeader("List relationships");

@@ -22,6 +22,7 @@ import com.azure.communication.administration.models.PhonePlanGroup;
 import com.azure.communication.administration.models.PstnConfiguration;
 import com.azure.communication.administration.models.ReleaseRequest;
 import com.azure.communication.administration.models.ReleaseResponse;
+import com.azure.communication.administration.models.ReleaseStatus;
 import com.azure.communication.administration.models.UpdateNumberCapabilitiesResponse;
 import com.azure.communication.administration.models.NumberConfiguration;
 import com.azure.communication.administration.models.PhoneNumberSearch;
@@ -62,6 +63,7 @@ import static com.azure.core.util.FluxUtil.pagedFluxError;
 public final class PhoneNumberAsyncClient {
     private final ClientLogger logger = new ClientLogger(PhoneNumberAsyncClient.class);
     private final PhoneNumberAdministrationsImpl phoneNumberAdministrations;
+    private final Duration defaultPollInterval = Duration.ofSeconds(1);
 
     PhoneNumberAsyncClient(PhoneNumberAdminClientImpl phoneNumberAdminClient) {
         this.phoneNumberAdministrations = phoneNumberAdminClient.getPhoneNumberAdministrations();
@@ -540,8 +542,7 @@ public final class PhoneNumberAsyncClient {
      * @param phoneNumbers {@link List} of {@link PhoneNumber} objects with the phone numbers.
      * @return A {@link Mono} containing a {@link ReleaseResponse} representing the release.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ReleaseResponse> releasePhoneNumbers(List<PhoneNumber> phoneNumbers) {
+    private Mono<ReleaseResponse> releasePhoneNumbers(List<PhoneNumber> phoneNumbers) {
         return releasePhoneNumbersWithResponse(phoneNumbers).flatMap(FluxUtil::toMono);
     }
 
@@ -552,12 +553,12 @@ public final class PhoneNumberAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue()} value returns
      * a {@link ReleaseResponse} representing the release.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ReleaseResponse>> releasePhoneNumbersWithResponse(List<PhoneNumber> phoneNumbers) {
+    private Mono<Response<ReleaseResponse>> releasePhoneNumbersWithResponse(List<PhoneNumber> phoneNumbers) {
         return releasePhoneNumbersWithResponse(phoneNumbers, null);
     }
 
-    Mono<Response<ReleaseResponse>> releasePhoneNumbersWithResponse(List<PhoneNumber> phoneNumbers, Context context) {
+    private Mono<Response<ReleaseResponse>> releasePhoneNumbersWithResponse(
+        List<PhoneNumber> phoneNumbers, Context context) {
         Objects.requireNonNull(phoneNumbers, "'phoneNumbers' cannot be null.");
 
         List<String> phoneNumberStrings = phoneNumbers.stream().map(PhoneNumber::getValue).collect(Collectors.toList());
@@ -735,8 +736,7 @@ public final class PhoneNumberAsyncClient {
      * @param searchId ID of the search
      * @return A {@link Mono} for the asynchronous return
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> purchaseSearch(String searchId) {
+    private Mono<Void> purchaseSearch(String searchId) {
         return purchaseSearchWithResponse(searchId).flatMap(FluxUtil::toMono);
     }
 
@@ -746,12 +746,11 @@ public final class PhoneNumberAsyncClient {
      * @param searchId ID of the search
      * @return A {@link Mono} containing a {@link Response} for the operation
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> purchaseSearchWithResponse(String searchId) {
+    private Mono<Response<Void>> purchaseSearchWithResponse(String searchId) {
         return purchaseSearchWithResponse(searchId, null);
     }
 
-    Mono<Response<Void>> purchaseSearchWithResponse(String searchId, Context context) {
+    private Mono<Response<Void>> purchaseSearchWithResponse(String searchId, Context context) {
         Objects.requireNonNull(searchId, "'searchId' cannot be null.");
 
         try {
@@ -779,7 +778,11 @@ public final class PhoneNumberAsyncClient {
     public PollerFlux<PhoneNumberSearch, PhoneNumberSearch> beginCreateSearch(
         CreateSearchOptions options, Duration pollInterval) {
         Objects.requireNonNull(options, "'options' cannot be null.");
-        Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
+
+        if (pollInterval == null) {
+            pollInterval = defaultPollInterval;
+        }
+
         return new PollerFlux<PhoneNumberSearch, PhoneNumberSearch>(pollInterval,
             createSearchActivationOperation(options),
             createSearchPollOperation(),
@@ -849,7 +852,10 @@ public final class PhoneNumberAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<Void, Void> beginPurchaseSearch(String searchId, Duration pollInterval) {
         Objects.requireNonNull(searchId, "'searchId' can not be null.");
-        Objects.requireNonNull(pollInterval, "'pollInterval' can not be null.");
+        
+        if (pollInterval == null) {
+            pollInterval = defaultPollInterval;
+        }
 
         return new PollerFlux<Void, Void>(pollInterval,
             purchaseSearchActivationOperation(searchId),
@@ -858,11 +864,10 @@ public final class PhoneNumberAsyncClient {
             purchaseSearchFetchResultOperation());
     }
 
-    private Function<PollingContext<Void>, Mono<Void>> purchaseSearchActivationOperation(String searchId) {
-
+    private Function<PollingContext<Void>, 
+        Mono<Void>> purchaseSearchActivationOperation(String searchId) {
         return (pollingContext) -> {
-            Mono<Void> response = purchaseSearch(searchId);
-            return response;
+            return purchaseSearch(searchId);
         };
     }
 
@@ -871,13 +876,12 @@ public final class PhoneNumberAsyncClient {
         return (pollingContext) -> getSearchById(searchId)
             .flatMap(getSearchResponse -> {
                 SearchStatus statusResponse = getSearchResponse.getStatus();
-                if (statusResponse.equals(SearchStatus.RESERVED) 
-                    || statusResponse.equals(SearchStatus.EXPIRED)
-                    || statusResponse.equals(SearchStatus.SUCCESS)) {
+                if (statusResponse.equals(SearchStatus.SUCCESS)) {
                     return Mono.just(new PollResponse<>(
                     LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null));
                 }
-                if (statusResponse.equals(SearchStatus.ERROR)) {
+                if (statusResponse.equals(SearchStatus.ERROR) 
+                    || statusResponse.equals(SearchStatus.EXPIRED)) {
                     return Mono.just(new PollResponse<>(
                     LongRunningOperationStatus.FAILED, null));
                 }
@@ -891,5 +895,71 @@ public final class PhoneNumberAsyncClient {
             return Mono.empty();
         };
 
+    }
+
+ /**
+     * Releases the given phone numbers.
+     * This function returns a Long Running Operation poller that allows you to 
+     * wait indefinitely until the operation is complete.
+     * 
+     * @param phoneNumbers A list of {@link PhoneNumber} with the desired numbers to release
+     * @param pollInterval The time our long running operation will keep on polling 
+     * until it gets a result from the server
+     * @return A {@link PollerFlux} object with the release entity
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<PhoneNumberRelease, PhoneNumberRelease> 
+        beginReleasePhoneNumbers(List<PhoneNumber> phoneNumbers, Duration pollInterval) {
+        Objects.requireNonNull(phoneNumbers, "'phoneNumbers' cannot be null.");
+
+        if (pollInterval == null) {
+            pollInterval = defaultPollInterval;
+        }
+
+        return new PollerFlux<PhoneNumberRelease, PhoneNumberRelease>(pollInterval,
+            releaseNumbersActivationOperation(phoneNumbers),
+            releaseNumbersPollOperation(),
+            (activationResponse, pollingContext) ->
+            monoError(logger, new RuntimeException("Cancellation is not supported")),
+            releaseNumbersFetchResultOperation());
+    }
+
+    private Function<PollingContext<PhoneNumberRelease>, Mono<PhoneNumberRelease>> 
+        releaseNumbersActivationOperation(List<PhoneNumber> phoneNumbers) {
+        return (pollingContext) -> {
+            Mono<PhoneNumberRelease> response = releasePhoneNumbers(phoneNumbers)
+                .flatMap(releaseNumberResponse -> {
+                    String releaseId = releaseNumberResponse.getReleaseId();
+                    Mono<PhoneNumberRelease> phoneNumberRelease = getReleaseById(releaseId);
+                    return phoneNumberRelease;
+                });
+            return response;
+        };
+    }
+
+    private Function<PollingContext<PhoneNumberRelease>, Mono<PollResponse<PhoneNumberRelease>>> 
+        releaseNumbersPollOperation() {
+        return pollingContext ->
+            getReleaseById(pollingContext.getLatestResponse().getValue().getReleaseId())
+                .flatMap(getReleaseResponse -> {
+                    ReleaseStatus status = getReleaseResponse.getStatus();
+                    if (status.equals(ReleaseStatus.COMPLETE) 
+                        || status.equals(ReleaseStatus.EXPIRED)) {
+                        return Mono.just(new PollResponse<>(
+                        LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, getReleaseResponse));
+                    }
+                    if (status.equals(ReleaseStatus.FAILED)) {
+                        return Mono.just(new PollResponse<>(
+                        LongRunningOperationStatus.FAILED, getReleaseResponse));
+                    }
+                    return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, getReleaseResponse));
+                });
+    }
+
+    private Function<PollingContext<PhoneNumberRelease>,
+        Mono<PhoneNumberRelease>> releaseNumbersFetchResultOperation() {
+        return pollingContext -> {
+            return Mono.just(pollingContext.getLatestResponse().getValue());
+        };
     }
 }
