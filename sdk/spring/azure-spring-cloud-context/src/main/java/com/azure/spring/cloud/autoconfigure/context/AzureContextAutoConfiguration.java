@@ -8,6 +8,7 @@ import com.azure.spring.cloud.context.core.api.ResourceManagerProvider;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.AzureResourceManagerProvider;
 import com.azure.spring.cloud.context.core.impl.DefaultCredentialsProvider;
+import com.google.common.annotations.VisibleForTesting;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
@@ -65,10 +66,16 @@ public class AzureContextAutoConfiguration {
             .withInterceptor(new ResourceManagerThrottlingInterceptor()).withUserAgent(SPRING_CLOUD_USER_AGENT)
             .build();
 
-        String subscriptionId = Optional.of(azureProperties.getSubscriptionId())
+        String subscriptionId = Optional.ofNullable(azureProperties.getSubscriptionId())
                                         .orElseGet(credentials::defaultSubscriptionId);
+        
+        return authenticateToAzure(restClient, subscriptionId, credentials);
+    }
+    
+    @VisibleForTesting
+    protected Azure authenticateToAzure(RestClient restClient, String subscriptionId, AzureTokenCredentials credentials) {
         return Azure.authenticate(restClient, credentials.domain())
-                    .withSubscription(subscriptionId);
+                .withSubscription(subscriptionId);
     }
 
     @Bean
