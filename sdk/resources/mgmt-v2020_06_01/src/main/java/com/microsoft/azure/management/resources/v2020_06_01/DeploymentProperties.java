@@ -74,6 +74,14 @@ public class DeploymentProperties {
     private OnErrorDeployment onErrorDeployment;
 
     /**
+     * Specifies whether template expressions are evaluated within the scope of
+     * the parent template or nested template. Only applicable to nested
+     * templates. If not specified, default value is outer.
+     */
+    @JsonProperty(value = "expressionEvaluationOptions")
+    private ExpressionEvaluationOptions expressionEvaluationOptions;
+
+    /**
      * Get the template content. You use this element when you want to pass the template syntax directly in the request rather than link to an existing template. It can be a JObject or well-formed JSON string. Use either the templateLink property or the template property, but not both.
      *
      * @return the template value
@@ -210,6 +218,26 @@ public class DeploymentProperties {
      */
     public DeploymentProperties withOnErrorDeployment(OnErrorDeployment onErrorDeployment) {
         this.onErrorDeployment = onErrorDeployment;
+        return this;
+    }
+
+    /**
+     * Get specifies whether template expressions are evaluated within the scope of the parent template or nested template. Only applicable to nested templates. If not specified, default value is outer.
+     *
+     * @return the expressionEvaluationOptions value
+     */
+    public ExpressionEvaluationOptions expressionEvaluationOptions() {
+        return this.expressionEvaluationOptions;
+    }
+
+    /**
+     * Set specifies whether template expressions are evaluated within the scope of the parent template or nested template. Only applicable to nested templates. If not specified, default value is outer.
+     *
+     * @param expressionEvaluationOptions the expressionEvaluationOptions value to set
+     * @return the DeploymentProperties object itself.
+     */
+    public DeploymentProperties withExpressionEvaluationOptions(ExpressionEvaluationOptions expressionEvaluationOptions) {
+        this.expressionEvaluationOptions = expressionEvaluationOptions;
         return this;
     }
 
