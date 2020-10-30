@@ -3,6 +3,17 @@
 
 package com.azure.spring.eventhub.stream.binder.config;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.stream.binder.Binder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+
 import com.azure.spring.cloud.autoconfigure.context.AzureEnvironmentAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubProperties;
@@ -17,17 +28,7 @@ import com.azure.spring.eventhub.stream.binder.properties.EventHubExtendedBindin
 import com.azure.spring.eventhub.stream.binder.provisioning.EventHubChannelProvisioner;
 import com.azure.spring.eventhub.stream.binder.provisioning.EventHubChannelResourceManagerProvisioner;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.stream.binder.Binder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-
 import com.microsoft.azure.management.Azure;
-
-import javax.annotation.PostConstruct;
 
 /**
  * @author Warren Zhu
@@ -63,10 +64,10 @@ public class EventHubBinderConfiguration {
         // Now, they are not created at all. Should they be?
         if (eventHubNamespaceManager != null && eventHubManager != null && eventHubConsumerGroupManager != null) {
             return new EventHubChannelResourceManagerProvisioner(eventHubNamespaceManager, eventHubManager,
-                eventHubConsumerGroupManager, eventHubProperties.getNamespace());
+                    eventHubConsumerGroupManager, eventHubProperties.getNamespace());
         } else {
             String namespace = eventHubProperties.getNamespace() != null ? eventHubProperties.getNamespace()
-                : EventHubUtils.getNamespace(eventHubProperties.getConnectionString());
+                    : EventHubUtils.getNamespace(eventHubProperties.getConnectionString());
             TelemetryCollector.getInstance().addProperty(EVENT_HUB_BINDER, NAMESPACE, namespace);
         }
 
@@ -76,22 +77,23 @@ public class EventHubBinderConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public EventHubMessageChannelBinder eventHubBinder(EventHubChannelProvisioner eventHubChannelProvisioner,
-                                                       EventHubOperation eventHubOperation,
-                                                       EventHubExtendedBindingProperties bindingProperties) {
+            EventHubOperation eventHubOperation, EventHubExtendedBindingProperties bindingProperties) {
         EventHubMessageChannelBinder binder = new EventHubMessageChannelBinder(null, eventHubChannelProvisioner,
-            eventHubOperation);
+                eventHubOperation);
         binder.setBindingProperties(bindingProperties);
         return binder;
     }
 
     @Bean
     @ConditionalOnMissingBean
+    @ConditionalOnProperty("spring.cloud.azure.resource-group")
     public EventHubManager eventHubManager(Azure azure, AzureProperties azureProperties) {
         return new EventHubManager(azure, azureProperties);
     }
 
     @Bean
     @ConditionalOnMissingBean
+    @ConditionalOnProperty("spring.cloud.azure.resource-group")
     public EventHubConsumerGroupManager eventHubConsumerGroupManager(Azure azure, AzureProperties azureProperties) {
         return new EventHubConsumerGroupManager(azure, azureProperties);
     }

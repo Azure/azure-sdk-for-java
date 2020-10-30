@@ -112,6 +112,7 @@ public class AzureEventHubAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
+    @ConditionalOnProperty("spring.cloud.azure.resource-group")
     public EventHubNamespaceManager eventHubNamespaceManager(Azure azure, AzureProperties azureProperties) {
         return new EventHubNamespaceManager(azure, azureProperties);
     }
