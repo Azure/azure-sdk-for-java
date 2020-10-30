@@ -590,7 +590,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             withAutoComplete = withAutoLockRenewal;
         }
 
-        return withAutoComplete;
+        return withAutoComplete
+            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE));
     }
 
     /**
@@ -711,7 +712,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 String.format("Cannot renew message lock [%s] for a session receiver.", message.getLockToken())));
         }
 
-        return renewMessageLock(message.getLockToken());
+        return renewMessageLock(message.getLockToken())
+            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RENEW_LOCK));
     }
 
     /**
@@ -768,7 +770,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         renewalContainer.addOrUpdate(message.getLockToken(), OffsetDateTime.now().plus(maxLockRenewalDuration),
             operation);
 
-        return operation.getCompletionOperation();
+        return operation.getCompletionOperation()
+            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RENEW_LOCK));
     }
 
     /**
@@ -975,9 +978,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 renewalContainer.remove(lockToken);
             }));
 
+        Mono<Void> updateDispositionOperation;
         if (sessionManager != null) {
-            return sessionManager.updateDisposition(lockToken, sessionId, dispositionStatus, propertiesToModify,
-                deadLetterReason, deadLetterErrorDescription, transactionContext)
+            updateDispositionOperation =  sessionManager.updateDisposition(lockToken, sessionId, dispositionStatus,
+                propertiesToModify, deadLetterReason, deadLetterErrorDescription, transactionContext)
                 .flatMap(isSuccess -> {
                     if (isSuccess) {
                         renewalContainer.remove(lockToken);
@@ -987,20 +991,38 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                     logger.info("Could not perform on session manger. Performing on management node.");
                     return performOnManagement;
                 });
-        }
-
-        final ServiceBusAsyncConsumer existingConsumer = consumer.get();
-        if (isManagementToken(lockToken) || existingConsumer == null) {
-            return performOnManagement;
         } else {
-            return existingConsumer.updateDisposition(lockToken, dispositionStatus, deadLetterReason,
-                deadLetterErrorDescription, propertiesToModify, transactionContext)
-                .then(Mono.fromRunnable(() -> {
-                    logger.info("{}: Update completed. Disposition: {}. Lock: {}.",
-                        entityPath, dispositionStatus, lockToken);
-                    renewalContainer.remove(lockToken);
-                }));
+            final ServiceBusAsyncConsumer existingConsumer = consumer.get();
+            if (isManagementToken(lockToken) || existingConsumer == null) {
+                updateDispositionOperation = performOnManagement;
+            } else {
+                updateDispositionOperation = existingConsumer.updateDisposition(lockToken, dispositionStatus,
+                    deadLetterReason, deadLetterErrorDescription, propertiesToModify, transactionContext)
+                    .then(Mono.fromRunnable(() -> {
+                        logger.info("{}: Update completed. Disposition: {}. Lock: {}.",
+                            entityPath, dispositionStatus, lockToken);
+                        renewalContainer.remove(lockToken);
+                    }));
+            }
         }
+        return updateDispositionOperation
+            .onErrorMap(throwable -> {
+                // We only populate ErrorSource only when AutoComplete is enabled.
+                if (receiverOptions.isEnableAutoComplete() && throwable instanceof AmqpException) {
+                    switch (dispositionStatus) {
+                        case COMPLETED:
+                            return new ServiceBusAmqpException((AmqpException) throwable,
+                                ServiceBusErrorSource.COMPLETE);
+                        case ABANDONED:
+                            return new ServiceBusAmqpException((AmqpException) throwable,
+                                ServiceBusErrorSource.ABANDONED);
+                        default:
+                            // Do nothing
+                    }
+                }
+                return throwable;
+
+            });
     }
 
     private ServiceBusAsyncConsumer getOrCreateConsumer() {
@@ -1077,7 +1099,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(channel -> channel.renewSessionLock(sessionId, linkName));
+            .flatMap(channel -> channel.renewSessionLock(sessionId, linkName))
+            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RENEW_LOCK));
     }
 
     Mono<Void> renewSessionLock(String sessionId, Duration maxLockRenewalDuration) {
@@ -1101,7 +1124,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             maxLockRenewalDuration, true, this::renewSessionLock);
 
         renewalContainer.addOrUpdate(sessionId, OffsetDateTime.now().plus(maxLockRenewalDuration), operation);
-        return operation.getCompletionOperation();
+        return operation.getCompletionOperation()
+            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RENEW_LOCK));
     }
 
     Mono<Void> setSessionState(String sessionId, byte[] sessionState) {
@@ -1133,6 +1157,17 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return connectionProcessor
                 .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
                 .flatMap(channel -> channel.getSessionState(sessionId, getLinkName(sessionId)));
+        }
+    }
+
+    /**
+     * Map the error to {@link ServiceBusAmqpException}
+     */
+    private Throwable mapError(Throwable throwable, ServiceBusErrorSource errorSource) {
+        if ((throwable instanceof ServiceBusAmqpException) || !(throwable instanceof AmqpException)) {
+            return throwable;
+        } else {
+            return new ServiceBusAmqpException((AmqpException) throwable, errorSource);
         }
     }
 }
