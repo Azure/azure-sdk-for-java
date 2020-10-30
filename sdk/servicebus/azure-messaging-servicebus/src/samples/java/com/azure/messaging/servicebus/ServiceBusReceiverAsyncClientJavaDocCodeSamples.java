@@ -16,8 +16,6 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 /**
  * Code snippets demonstrating various {@link ServiceBusReceiverAsyncClient} scenarios.
  */

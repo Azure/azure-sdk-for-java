@@ -406,13 +406,13 @@ public class FluxAutoLockRenewTest {
         // Arrange
         final Long expectedEnqueuedSequenceNumber = 2L;
         final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(1);
-        final ServiceBusReceivedMessage receivedMessage2 = new ServiceBusReceivedMessage(BinaryData.fromString("data"));;
+        final ServiceBusReceivedMessage receivedMessage2 = new ServiceBusReceivedMessage(BinaryData.fromString("data"));
         final ServiceBusReceivedMessageContext message2 = new ServiceBusReceivedMessageContext(receivedMessage2);
         receivedMessage2.setLockToken(UUID.randomUUID());
         receivedMessage2.setLockedUntil(lockedUntil);
         receivedMessage2.setEnqueuedSequenceNumber(1);
 
-        final ServiceBusReceivedMessage receivedMessage3 = new ServiceBusReceivedMessage(BinaryData.fromString("data"));;
+        final ServiceBusReceivedMessage receivedMessage3 = new ServiceBusReceivedMessage(BinaryData.fromString("data"));
         final ServiceBusReceivedMessageContext message3 = new ServiceBusReceivedMessageContext(receivedMessage3);
         receivedMessage2.setLockToken(UUID.randomUUID());
         receivedMessage2.setLockedUntil(lockedUntil);

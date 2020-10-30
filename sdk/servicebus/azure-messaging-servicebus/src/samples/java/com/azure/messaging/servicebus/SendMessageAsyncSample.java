@@ -7,8 +7,6 @@ import com.azure.core.experimental.util.BinaryData;
 
 import java.util.concurrent.TimeUnit;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 /**
  * Sample demonstrates how to send an {@link ServiceBusMessage} to an Azure Service Bus queue.
  */
