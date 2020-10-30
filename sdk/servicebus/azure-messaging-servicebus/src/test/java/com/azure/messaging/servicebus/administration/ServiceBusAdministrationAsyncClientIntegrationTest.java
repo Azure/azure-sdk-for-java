@@ -844,7 +844,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
         } else if (interceptorManager.isLiveMode()) {
-            builder.httpClient(httpClient);
+            builder.httpClient(httpClient)
+                .addPolicy(new RetryPolicy());
         } else {
             builder.httpClient(httpClient)
                 .addPolicy(interceptorManager.getRecordPolicy())
