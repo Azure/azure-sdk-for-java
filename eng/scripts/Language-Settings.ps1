@@ -2,6 +2,7 @@ $Language = "java"
 $PackageRepository = "Maven"
 $packagePattern = "*.pom"
 $MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/java-packages.csv"
+$BlobStorageUrl = "https://azuresdkdocs.blob.core.windows.net/%24web?restype=container&comp=list&prefix=java%2F&delimiter=%2F"
 
 function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory, $pkgName)
 {
@@ -152,4 +153,19 @@ function Publish-java-GithubIODocs ($DocLocation, $PublicArtifactLocation)
       }
     }
   }
+}
+
+function Get-java-GithubIoDocIndex() {
+  # Fetch out all package metadata from csv file.
+  $metadata = Get-CSVMetadata -MetadataUri $MetadataUri
+  # Leave the track 2 packages if multiple packages fetched out.
+  $clientPackages = $metadata | Where-Object { $_.GroupId -eq 'com.azure' } 
+  $nonClientPackages = $metadata | Where-Object { $_.GroupId -ne 'com.azure' -and !$clientPackages.Package.Contains($_.Package) }
+  $uniquePackages = $clientPackages + $nonClientPackages
+  # Get the artifacts name from blob storage
+  $artifacts =  Get-BlobStorage-Artifacts -blobStorageUrl $BlobStorageUrl -blobDirectoryRegex "^java/(.*)/$" -blobArtifactsReplacement '$1'
+  # Build up the artifact to service name mapping for GithubIo toc.
+  $tocContent = Get-TocMapping -metadata $uniquePackages -artifacts $artifacts
+  # Generate yml/md toc files and build site.
+  GenerateDocfxTocContent -tocContent $tocContent -lang "Java"
 }
