@@ -21,6 +21,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+/**
+ * A test implementation of {@link EventHubTemplate}. This is used for testing.
+ */
 public class EventHubTestOperation extends EventHubTemplate {
 
     private final Multimap<String, EventData> eventHubsByName = ArrayListMultimap.create();
@@ -37,7 +40,8 @@ public class EventHubTestOperation extends EventHubTemplate {
     }
 
     @Override
-    public <U> Mono<Void> sendAsync(String eventHubName, @NonNull Message<U> message,
+    public <U> Mono<Void> sendAsync(String eventHubName,
+                                    @NonNull Message<U> message,
                                     PartitionSupplier partitionSupplier) {
         EventData azureMessage = getMessageConverter().fromMessage(message, EventData.class);
 
@@ -52,7 +56,8 @@ public class EventHubTestOperation extends EventHubTemplate {
     }
 
     @Override
-    protected synchronized void createEventProcessorClient(String name, String consumerGroup,
+    protected synchronized void createEventProcessorClient(String name,
+                                                           String consumerGroup,
                                                            EventHubProcessor eventHubProcessor) {
         processorsByNameAndGroup.putIfAbsent(name, new ConcurrentHashMap<>());
 

@@ -7,7 +7,6 @@ import com.azure.security.keyvault.jca.KeyVaultTrustManagerFactoryProvider;
 
 import java.security.Security;
 import java.util.Properties;
-import java.util.logging.Logger;
 import javax.net.ssl.HttpsURLConnection;
 
 import org.springframework.boot.SpringApplication;
@@ -19,13 +18,11 @@ import org.springframework.core.env.PropertiesPropertySource;
 
 import static org.springframework.core.Ordered.LOWEST_PRECEDENCE;
 
+/**
+ * Leverage {@link EnvironmentPostProcessor} to add Key Store property source.
+ */
 @Order(LOWEST_PRECEDENCE)
 public class KeyVaultCertificatesEnvironmentPostProcessor implements EnvironmentPostProcessor {
-
-    /**
-     * Stores the logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(KeyVaultCertificatesEnvironmentPostProcessor.class.getName());
 
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment,
@@ -100,9 +97,7 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
 
             enabled = environment.getProperty("azure.keyvault.jca.disableHostnameVerification");
             if (Boolean.parseBoolean(enabled)) {
-                HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> {
-                    return true;
-                });
+                HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
             }
         }
     }

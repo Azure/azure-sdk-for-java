@@ -3,14 +3,14 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
-import com.microsoft.azure.management.servicebus.AuthorizationKeys;
-import com.microsoft.azure.management.servicebus.ServiceBusNamespace;
-import com.microsoft.azure.servicebus.IMessage;
-import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
 import com.azure.spring.cloud.context.core.api.ResourceManager;
 import com.azure.spring.cloud.context.core.api.ResourceManagerProvider;
 import com.azure.spring.cloud.telemetry.TelemetryCollector;
+import com.microsoft.azure.management.servicebus.AuthorizationKeys;
+import com.microsoft.azure.management.servicebus.ServiceBusNamespace;
+import com.microsoft.azure.servicebus.IMessage;
+import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -42,11 +42,13 @@ public class AzureServiceBusAutoConfiguration {
     private static String buildConnectionString(ResourceManager<ServiceBusNamespace, String> serviceBusNamespaceManager,
                                                 String namespace) {
         return serviceBusNamespaceManager.getOrCreate(namespace).authorizationRules().list().stream().findFirst()
-            .map(com.microsoft.azure.management.servicebus.AuthorizationRule::getKeys)
-            .map(AuthorizationKeys::primaryConnectionString)
-            .map(s -> new ConnectionStringBuilder(s, namespace).toString()).orElseThrow(
-                () -> new RuntimeException(
-                    String.format("Service bus namespace '%s' key is empty", namespace), null));
+                                         .map(com.microsoft.azure.management.servicebus.AuthorizationRule::getKeys)
+                                         .map(AuthorizationKeys::primaryConnectionString)
+                                         .map(s -> new ConnectionStringBuilder(s, namespace).toString())
+                                         .orElseThrow(
+                                             () -> new RuntimeException(
+                                                 String.format("Service bus namespace '%s' key is empty", namespace),
+                                                 null));
     }
 
     @PostConstruct

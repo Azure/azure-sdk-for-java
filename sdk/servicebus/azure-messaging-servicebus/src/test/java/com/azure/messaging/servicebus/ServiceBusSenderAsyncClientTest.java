@@ -26,7 +26,7 @@ import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
-import com.azure.messaging.servicebus.models.CreateBatchOptions;
+import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
 import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
@@ -71,6 +71,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -199,7 +200,7 @@ class ServiceBusSenderAsyncClientTest {
      */
     @Test
     void createBatchNull() {
-        StepVerifier.create(sender.createBatch(null))
+        StepVerifier.create(sender.createMessageBatch(null))
             .verifyErrorMatches(error -> error instanceof NullPointerException);
     }
 
@@ -214,7 +215,7 @@ class ServiceBusSenderAsyncClientTest {
         when(sendLink.getLinkSize()).thenReturn(Mono.just(MAX_MESSAGE_LENGTH_BYTES));
 
         // Act & Assert
-        StepVerifier.create(sender.createBatch())
+        StepVerifier.create(sender.createMessageBatch())
             .assertNext(batch -> {
                 Assertions.assertEquals(MAX_MESSAGE_LENGTH_BYTES, batch.getMaxSizeInBytes());
                 Assertions.assertEquals(0, batch.getCount());
@@ -238,16 +239,16 @@ class ServiceBusSenderAsyncClientTest {
             .thenReturn(Mono.just(link));
 
         // This event is 1024 bytes when serialized.
-        final CreateBatchOptions options = new CreateBatchOptions().setMaximumSizeInBytes(batchSize);
+        final CreateMessageBatchOptions options = new CreateMessageBatchOptions().setMaximumSizeInBytes(batchSize);
 
         // Act & Assert
-        StepVerifier.create(sender.createBatch(options))
+        StepVerifier.create(sender.createMessageBatch(options))
             .expectError(IllegalArgumentException.class)
             .verify();
     }
 
     /**
-     * Verifies that the producer can create a batch with a given {@link CreateBatchOptions#getMaximumSizeInBytes()}.
+     * Verifies that the producer can create a batch with a given {@link CreateMessageBatchOptions#getMaximumSizeInBytes()}.
      */
     @Test
     void createsMessageBatchWithSize() {
@@ -270,23 +271,47 @@ class ServiceBusSenderAsyncClientTest {
         final ServiceBusMessage event = new ServiceBusMessage(new byte[maxEventPayload]);
 
         final ServiceBusMessage tooLargeEvent = new ServiceBusMessage(new byte[maxEventPayload + 1]);
-        final CreateBatchOptions options = new CreateBatchOptions().setMaximumSizeInBytes(batchSize);
+        final CreateMessageBatchOptions options = new CreateMessageBatchOptions().setMaximumSizeInBytes(batchSize);
 
         // Act & Assert
-        StepVerifier.create(sender.createBatch(options))
+        StepVerifier.create(sender.createMessageBatch(options))
             .assertNext(batch -> {
                 Assertions.assertEquals(batchSize, batch.getMaxSizeInBytes());
-                Assertions.assertTrue(batch.tryAdd(event));
+                Assertions.assertTrue(batch.tryAddMessage(event));
             })
             .verifyComplete();
 
-        StepVerifier.create(sender.createBatch(options))
+        StepVerifier.create(sender.createMessageBatch(options))
             .assertNext(batch -> {
                 Assertions.assertEquals(batchSize, batch.getMaxSizeInBytes());
-                Assertions.assertFalse(batch.tryAdd(tooLargeEvent));
+                Assertions.assertFalse(batch.tryAddMessage(tooLargeEvent));
             })
             .verifyComplete();
     }
+
+    @Test
+    void scheduleMessageSizeTooBig() {
+        // Arrange
+        int maxLinkSize = 1024;
+        int batchSize = maxLinkSize + 10;
+
+        OffsetDateTime instant = mock(OffsetDateTime.class);
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(batchSize, UUID.randomUUID().toString());
+
+        final AmqpSendLink link = mock(AmqpSendLink.class);
+        when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
+
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull()))
+            .thenReturn(Mono.just(link));
+        when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
+
+        // Act & Assert
+        StepVerifier.create(sender.scheduleMessages(messages, instant))
+            .verifyError(IllegalArgumentException.class);
+
+        verify(managementNode, never()).schedule(any(), eq(instant), anyInt(), eq(LINK_NAME), isNull());
+    }
+
 
     /**
      * Verifies that sending multiple message will result in calling sender.send(MessageBatch, transaction).
@@ -301,7 +326,7 @@ class ServiceBusSenderAsyncClientTest {
 
         IntStream.range(0, count).forEach(index -> {
             final ServiceBusMessage message = new ServiceBusMessage(contents);
-            Assertions.assertTrue(batch.tryAdd(message));
+            Assertions.assertTrue(batch.tryAddMessage(message));
         });
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))
@@ -340,7 +365,7 @@ class ServiceBusSenderAsyncClientTest {
 
         IntStream.range(0, count).forEach(index -> {
             final ServiceBusMessage message = new ServiceBusMessage(contents);
-            Assertions.assertTrue(batch.tryAdd(message));
+            Assertions.assertTrue(batch.tryAddMessage(message));
         });
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))
@@ -408,7 +433,7 @@ class ServiceBusSenderAsyncClientTest {
 
         IntStream.range(0, count).forEach(index -> {
             final ServiceBusMessage message = new ServiceBusMessage(contents);
-            Assertions.assertTrue(batch.tryAdd(message));
+            Assertions.assertTrue(batch.tryAddMessage(message));
         });
 
         // Act

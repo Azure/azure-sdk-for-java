@@ -3,6 +3,11 @@
     "extension": "revapi.java",
     "configuration": {
       "filter": {
+        "classes": {
+          "exclude": [
+            "com.azure.core.util.Configuration"
+          ]
+        },
         "packages": {
           "regex": true,
           "exclude": [

@@ -36,6 +36,11 @@ public class AzureServiceBusProperties {
         this.connectionString = connectionString;
     }
 
+    /**
+     * Validate properties.
+     *
+     * @throws IllegalArgumentException If namespace or connectionString is empty.
+     */
     @PostConstruct
     public void validate() {
         if (!StringUtils.hasText(namespace) && !StringUtils.hasText(connectionString)) {

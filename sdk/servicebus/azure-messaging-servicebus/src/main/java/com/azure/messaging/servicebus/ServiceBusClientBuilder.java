@@ -101,10 +101,11 @@ public final class ServiceBusClientBuilder {
 
     /**
      * Sets the {@link ClientOptions} to be sent from the client built from this builder, enabling customization of
-     * certain properties, as well as support the addition of custom header information. Refer to the
-     * {@link ClientOptions} documentation for more information.
+     * certain properties, as well as support the addition of custom header information. Refer to the {@link
+     * ClientOptions} documentation for more information.
      *
      * @param clientOptions to be set on the client.
+     *
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
     public ServiceBusClientBuilder clientOptions(ClientOptions clientOptions) {
@@ -153,8 +154,8 @@ public final class ServiceBusClientBuilder {
     /**
      * Sets the configuration store that is used during construction of the service client.
      *
-     * If not specified, the default configuration store is used to configure Service Bus clients. Use
-     * {@link Configuration#NONE} to bypass using configuration settings during construction.
+     * If not specified, the default configuration store is used to configure Service Bus clients. Use {@link
+     * Configuration#NONE} to bypass using configuration settings during construction.
      *
      * @param configuration The configuration store used to configure Service Bus clients.
      *
@@ -461,7 +462,7 @@ public final class ServiceBusClientBuilder {
                     new IllegalArgumentException("Unknown entity type: " + entityType));
         }
 
-        if (subQueue ==  null) {
+        if (subQueue == null) {
             return entityPath;
         }
 
@@ -517,8 +518,8 @@ public final class ServiceBusClientBuilder {
          * @param viaQueueName The initial destination of the message.
          *
          * @return The modified {@link ServiceBusSenderClientBuilder} object.
-         *
-         * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via">Send Via</a>
+         * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via">Send
+         *     Via</a>
          */
         public ServiceBusSenderClientBuilder viaQueueName(String viaQueueName) {
             this.viaQueueName = viaQueueName;
@@ -531,8 +532,8 @@ public final class ServiceBusClientBuilder {
          * @param viaTopicName The initial destination of the message.
          *
          * @return The modified {@link ServiceBusSenderClientBuilder} object.
-         *
-         * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via">Send Via</a>
+         * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via">Send
+         *     Via</a>
          */
         public ServiceBusSenderClientBuilder viaTopicName(String viaTopicName) {
             this.viaTopicName = viaTopicName;
@@ -559,8 +560,8 @@ public final class ServiceBusClientBuilder {
          * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
          *     topicName} are not set or, both of these fields are set. It is also thrown if the Service Bus {@link
          *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
-         *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}. Or the
-         *     {@link #viaQueueName(String) viaQueueName} is specified along with {@link #topicName(String) topicName}.
+         *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}. Or the {@link
+         *     #viaQueueName(String) viaQueueName} is specified along with {@link #topicName(String) topicName}.
          * @throws IllegalArgumentException if the entity type is not a queue or a topic.
          */
         public ServiceBusSenderAsyncClient buildAsyncClient() {
@@ -622,17 +623,29 @@ public final class ServiceBusClientBuilder {
      */
     @ServiceClientBuilder(serviceClients = {ServiceBusReceiverClient.class, ServiceBusReceiverAsyncClient.class})
     public final class ServiceBusSessionReceiverClientBuilder {
-
+        private boolean enableAutoComplete = true;
         private Integer maxConcurrentSessions = null;
         private int prefetchCount = DEFAULT_PREFETCH_COUNT;
         private String queueName;
         private ReceiveMode receiveMode = ReceiveMode.PEEK_LOCK;
-        private String sessionId;
         private String subscriptionName;
         private String topicName;
         private Duration maxAutoLockRenewDuration = MAX_LOCK_RENEW_DEFAULT_DURATION;
 
         private ServiceBusSessionReceiverClientBuilder() {
+        }
+
+        /**
+         * Disables auto-complete and auto-abandon of received messages. By default, a successfully processed message is
+         * {@link ServiceBusReceiverAsyncClient#complete(ServiceBusReceivedMessage) completed}. If an error happens when
+         * the message is processed, it is {@link ServiceBusReceiverAsyncClient#abandon(ServiceBusReceivedMessage)
+         * abandoned}.
+         *
+         * @return The modified {@link ServiceBusSessionReceiverClientBuilder} object.
+         */
+        public ServiceBusSessionReceiverClientBuilder disableAutoComplete() {
+            this.enableAutoComplete = false;
+            return this;
         }
 
         /**
@@ -660,7 +673,7 @@ public final class ServiceBusClientBuilder {
          * @return The modified {@link ServiceBusSessionReceiverClientBuilder} object.
          * @throws IllegalArgumentException if {@code maxConcurrentSessions} is less than 1.
          */
-        public ServiceBusSessionReceiverClientBuilder maxConcurrentSessions(int maxConcurrentSessions) {
+        ServiceBusSessionReceiverClientBuilder maxConcurrentSessions(int maxConcurrentSessions) {
             if (maxConcurrentSessions < 1) {
                 throw logger.logExceptionAsError(new IllegalArgumentException(
                     "maxConcurrentSessions cannot be less than 1."));
@@ -676,7 +689,8 @@ public final class ServiceBusClientBuilder {
          *
          * Prefetch speeds up the message flow by aiming to have a message readily available for local retrieval when
          * and before the application asks for one using {@link ServiceBusReceiverAsyncClient#receiveMessages()}.
-         * Setting a non-zero value will prefetch that number of messages. Setting the value to zero turns prefetch off.
+         * Setting a non-zero value will prefetch that number of messages. Setting the value to zero turns prefetch
+         * off.
          *
          * @param prefetchCount The prefetch count.
          *
@@ -714,18 +728,6 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
-         * Sets the session id.
-         *
-         * @param sessionId session id.
-         *
-         * @return The modified {@link ServiceBusSessionReceiverClientBuilder} object.
-         */
-        public ServiceBusSessionReceiverClientBuilder sessionId(String sessionId) {
-            this.sessionId = sessionId;
-            return this;
-        }
-
-        /**
          * Sets the name of the subscription in the topic to listen to. <b>{@link #topicName(String)} must also be set.
          * </b>
          *
@@ -753,8 +755,8 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
-         * Creates an <b>asynchronous</b>, <b>session-aware</b> Service Bus receiver responsible for reading
-         * {@link ServiceBusMessage messages} from a specific queue or topic.
+         * Creates an <b>asynchronous</b>, <b>session-aware</b> Service Bus receiver responsible for reading {@link
+         * ServiceBusMessage messages} from a specific queue or topic.
          *
          * @return An new {@link ServiceBusReceiverAsyncClient} that receives messages from a queue or topic.
          * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
@@ -765,32 +767,13 @@ public final class ServiceBusClientBuilder {
          * @throws IllegalArgumentException Queue or topic name are not set via {@link #queueName(String)
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
-        public ServiceBusReceiverAsyncClient buildAsyncClient() {
-            final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
-                queueName);
-            final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName,
-                SubQueue.NONE);
-
-            final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
-
-            if (receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
-                maxAutoLockRenewDuration = Duration.ZERO;
-            }
-
-            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
-                sessionId, isRollingSessionReceiver(), maxConcurrentSessions, maxAutoLockRenewDuration);
-
-            final ServiceBusSessionManager sessionManager = new ServiceBusSessionManager(entityPath, entityType,
-                connectionProcessor, tracerProvider, messageSerializer, receiverOptions);
-
-            return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
-                entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
-                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose, sessionManager);
+        ServiceBusReceiverAsyncClient buildAsyncClientForProcessor() {
+            return buildAsyncClientForProcessor(true);
         }
 
         /**
-         * Creates a <b>synchronous</b>, <b>session-aware</b> Service Bus receiver responsible for reading
-         * {@link ServiceBusMessage messages} from a specific queue or topic.
+         * Creates a <b>synchronous</b>, <b>session-aware</b> Service Bus receiver responsible for reading {@link
+         * ServiceBusMessage messages} from a specific queue or topic.
          *
          * @return An new {@link ServiceBusReceiverClient} that receives messages from a queue or topic.
          * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
@@ -801,27 +784,103 @@ public final class ServiceBusClientBuilder {
          * @throws IllegalArgumentException Queue or topic name are not set via {@link #queueName(String)
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
-        public ServiceBusReceiverClient buildClient() {
-            return new ServiceBusReceiverClient(buildAsyncClient(), retryOptions.getTryTimeout());
+        ServiceBusReceiverClient buildClientForProcessor() {
+            return new ServiceBusReceiverClient(buildAsyncClientForProcessor(false), retryOptions.getTryTimeout());
+        }
+
+        private ServiceBusReceiverAsyncClient buildAsyncClientForProcessor(boolean isAutoCompleteAllowed) {
+            final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
+                queueName);
+            final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName,
+                SubQueue.NONE);
+
+            if (!isAutoCompleteAllowed && enableAutoComplete) {
+                logger.warning(
+                    "'enableAutoComplete' is not supported in synchronous client except through callback receive.");
+                enableAutoComplete = false;
+            } else if (enableAutoComplete && receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
+                throw logger.logExceptionAsError(new IllegalStateException(
+                    "'enableAutoComplete' is not valid for RECEIVE_AND_DELETE mode."));
+            }
+
+            if (receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
+                maxAutoLockRenewDuration = Duration.ZERO;
+            }
+
+            final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
+            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
+                maxAutoLockRenewDuration, enableAutoComplete, null,
+                maxConcurrentSessions);
+
+            final ServiceBusSessionManager sessionManager = new ServiceBusSessionManager(entityPath, entityType,
+                connectionProcessor, tracerProvider, messageSerializer, receiverOptions);
+
+            return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
+                entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
+                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose, sessionManager);
         }
 
         /**
-         * This is a rolling session receiver only if maxConcurrentSessions is > 0 AND sessionId is null or empty. If
-         * there is a sessionId, this is going to be a single, named session receiver.
+         * Creates an <b>asynchronous</b>, <b>session-aware</b> Service Bus receiver responsible for reading {@link
+         * ServiceBusMessage messages} from a specific queue or topic.
          *
-         * @return {@code true} if this is an unnamed rolling session receiver; {@code false} otherwise.
+         * @return An new {@link ServiceBusSessionReceiverAsyncClient} that receives messages from a queue or topic.
+         * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
+         *     topicName} are not set or, both of these fields are set. It is also thrown if the Service Bus {@link
+         *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
+         *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}. Lastly, if a {@link
+         *     #topicName(String) topicName} is set, but {@link #subscriptionName(String) subscriptionName} is not.
+         * @throws IllegalArgumentException Queue or topic name are not set via {@link #queueName(String)
+         *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
-        private boolean isRollingSessionReceiver() {
-            if (maxConcurrentSessions == null) {
-                return false;
+        public ServiceBusSessionReceiverAsyncClient buildAsyncClient() {
+            return buildAsyncClient(true);
+        }
+
+        /**
+         * Creates a <b>synchronous</b>, <b>session-aware</b> Service Bus receiver responsible for reading {@link
+         * ServiceBusMessage messages} from a specific queue or topic.
+         *
+         * @return An new {@link ServiceBusReceiverClient} that receives messages from a queue or topic.
+         * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
+         *     topicName} are not set or, both of these fields are set. It is also thrown if the Service Bus {@link
+         *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
+         *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}. Lastly, if a {@link
+         *     #topicName(String) topicName} is set, but {@link #subscriptionName(String) subscriptionName} is not.
+         * @throws IllegalArgumentException Queue or topic name are not set via {@link #queueName(String)
+         *     queueName()} or {@link #topicName(String) topicName()}, respectively.
+         */
+        public ServiceBusSessionReceiverClient buildClient() {
+            return new ServiceBusSessionReceiverClient(buildAsyncClient(false),
+                retryOptions.getTryTimeout());
+        }
+
+        private ServiceBusSessionReceiverAsyncClient buildAsyncClient(boolean isAutoCompleteAllowed) {
+            final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
+                queueName);
+            final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName,
+                SubQueue.NONE);
+
+            if (!isAutoCompleteAllowed && enableAutoComplete) {
+                logger.warning(
+                    "'enableAutoComplete' is not supported in synchronous client except through callback receive.");
+                enableAutoComplete = false;
+            } else if (enableAutoComplete && receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
+                throw logger.logExceptionAsError(new IllegalStateException(
+                    "'enableAutoComplete' is not valid for RECEIVE_AND_DELETE mode."));
             }
 
-            if (maxConcurrentSessions < 1) {
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Maximum number of concurrent sessions must be positive."));
+            if (receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
+                maxAutoLockRenewDuration = Duration.ZERO;
             }
 
-            return CoreUtils.isNullOrEmpty(sessionId);
+            final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
+            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
+                maxAutoLockRenewDuration, enableAutoComplete, null, maxConcurrentSessions);
+
+            return new ServiceBusSessionReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(),
+                entityPath, entityType, receiverOptions, connectionProcessor, tracerProvider, messageSerializer,
+                ServiceBusClientBuilder.this::onClientClose);
         }
     }
 
@@ -834,6 +893,7 @@ public final class ServiceBusClientBuilder {
      */
     @ServiceClientBuilder(serviceClients = {ServiceBusReceiverClient.class, ServiceBusReceiverAsyncClient.class})
     public final class ServiceBusReceiverClientBuilder {
+        private boolean enableAutoComplete = true;
         private int prefetchCount = DEFAULT_PREFETCH_COUNT;
         private String queueName;
         private SubQueue subQueue;
@@ -843,6 +903,19 @@ public final class ServiceBusClientBuilder {
         private Duration maxAutoLockRenewDuration = MAX_LOCK_RENEW_DEFAULT_DURATION;
 
         private ServiceBusReceiverClientBuilder() {
+        }
+
+        /**
+         * Disables auto-complete and auto-abandon of received messages. By default, a successfully processed message is
+         * {@link ServiceBusReceiverAsyncClient#complete(ServiceBusReceivedMessage) completed}. If an error happens when
+         * the message is processed, it is {@link ServiceBusReceiverAsyncClient#abandon(ServiceBusReceivedMessage)
+         * abandoned}.
+         *
+         * @return The modified {@link ServiceBusReceiverClientBuilder} object.
+         */
+        public ServiceBusReceiverClientBuilder disableAutoComplete() {
+            this.enableAutoComplete = false;
+            return this;
         }
 
         /**
@@ -868,7 +941,8 @@ public final class ServiceBusClientBuilder {
          *
          * Prefetch speeds up the message flow by aiming to have a message readily available for local retrieval when
          * and before the application asks for one using {@link ServiceBusReceiverAsyncClient#receiveMessages()}.
-         * Setting a non-zero value will prefetch that number of messages. Setting the value to zero turns prefetch off.
+         * Setting a non-zero value will prefetch that number of messages. Setting the value to zero turns prefetch
+         * off.
          *
          * @param prefetchCount The prefetch count.
          *
@@ -959,28 +1033,13 @@ public final class ServiceBusClientBuilder {
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusReceiverAsyncClient buildAsyncClient() {
-            final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
-                queueName);
-            final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName,
-                subQueue);
-
-            final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
-
-            if (receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
-                maxAutoLockRenewDuration = Duration.ZERO;
-            }
-
-            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
-                maxAutoLockRenewDuration);
-
-            return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
-                entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
-                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose);
+            return buildAsyncClient(true);
         }
 
         /**
          * Creates <b>synchronous</b> Service Bus receiver responsible for reading {@link ServiceBusMessage messages}
          * from a specific queue or topic.
+         *
          * @return An new {@link ServiceBusReceiverClient} that receives messages from a queue or topic.
          * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
          *     topicName} are not set or, both of these fields are set. It is also thrown if the Service Bus {@link
@@ -991,7 +1050,35 @@ public final class ServiceBusClientBuilder {
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusReceiverClient buildClient() {
-            return new ServiceBusReceiverClient(buildAsyncClient(), retryOptions.getTryTimeout());
+            return new ServiceBusReceiverClient(buildAsyncClient(false), retryOptions.getTryTimeout());
+        }
+
+        ServiceBusReceiverAsyncClient buildAsyncClient(boolean isAutoCompleteAllowed) {
+            final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
+                queueName);
+            final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName,
+                subQueue);
+
+            if (!isAutoCompleteAllowed && enableAutoComplete) {
+                logger.warning(
+                    "'enableAutoComplete' is not supported in synchronous client except through callback receive.");
+                enableAutoComplete = false;
+            } else if (enableAutoComplete && receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
+                throw logger.logExceptionAsError(new IllegalStateException(
+                    "'enableAutoComplete' is not valid for RECEIVE_AND_DELETE mode."));
+            }
+
+            if (receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
+                maxAutoLockRenewDuration = Duration.ZERO;
+            }
+
+            final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
+            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
+                maxAutoLockRenewDuration, enableAutoComplete);
+
+            return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
+                entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
+                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose);
         }
     }
 

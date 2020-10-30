@@ -6,7 +6,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
-import com.azure.digitaltwins.core.models.BasicDigitalTwin;
 import com.azure.digitaltwins.core.models.QueryOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -37,14 +36,14 @@ public class QueryTests extends QueryTestBase{
 
         try {
             String roomModelPayload = TestAssetsHelper.getRoomModelPayload(roomModelId, floorModelId);
-            client.createModelsWithResponse(new ArrayList<>(Arrays.asList(roomModelPayload)), null, Context.NONE);
+            client.createModelsWithResponse(new ArrayList<>(Arrays.asList(roomModelPayload)), Context.NONE);
 
             // Create a room twin with property "IsOccupied" : true
             String roomTwin = TestAssetsHelper.getRoomTwinPayload(roomModelId);
             for (int i = 0; i < pageSize + 1; i++) {
                 String roomTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
                 roomTwinIds.add(roomTwinId);
-                client.createDigitalTwinWithResponse(roomTwinId, roomTwin, String.class, null, Context.NONE);
+                client.createOrReplaceDigitalTwinWithResponse(roomTwinId, roomTwin, String.class, null, Context.NONE);
             }
 
             String queryString = "SELECT * FROM digitaltwins where IsOccupied = true";
@@ -52,7 +51,7 @@ public class QueryTests extends QueryTestBase{
             PagedIterable<BasicDigitalTwin> pagedQueryResponse = client.query(queryString, BasicDigitalTwin.class, new QueryOptions().setMaxItemsPerPage(pageSize), Context.NONE);
 
             for(BasicDigitalTwin digitalTwin : pagedQueryResponse){
-                assertThat(digitalTwin.getCustomProperties().get("IsOccupied"))
+                assertThat(digitalTwin.getContents().get("IsOccupied"))
                     .as("IsOccupied should be true")
                     .isEqualTo(true);
             }

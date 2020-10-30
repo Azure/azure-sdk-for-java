@@ -23,9 +23,6 @@ public final class ManagedIdentityCredential implements TokenCredential {
     private final ManagedIdentityServiceCredential managedIdentityServiceCredential;
     private final ClientLogger logger = new ClientLogger(ManagedIdentityCredential.class);
 
-    // TODO: Migrate to Configuration class in Core (https://github.com/Azure/azure-sdk-for-java/issues/14720)
-    static final String PROPERTY_IDENTITY_ENDPOINT = "IDENTITY_ENDPOINT";
-    static final String PROPERTY_IDENTITY_HEADER = "IDENTITY_HEADER";
     static final String PROPERTY_IMDS_ENDPOINT = "IMDS_ENDPOINT";
 
     /**
@@ -39,8 +36,8 @@ public final class ManagedIdentityCredential implements TokenCredential {
             .identityClientOptions(identityClientOptions)
             .build();
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
-        if (configuration.contains(PROPERTY_IDENTITY_ENDPOINT)) {
-            if (configuration.contains(PROPERTY_IDENTITY_HEADER)) {
+        if (configuration.contains(Configuration.PROPERTY_IDENTITY_ENDPOINT)) {
+            if (configuration.contains(Configuration.PROPERTY_IDENTITY_HEADER)) {
                 managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, identityClient);
             } else if (configuration.contains(PROPERTY_IMDS_ENDPOINT)) {
                 managedIdentityServiceCredential = new ArcIdentityCredential(clientId, identityClient);
@@ -49,6 +46,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
             }
         } else if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)) {
             managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, identityClient);
+
         } else {
             managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, identityClient);
         }

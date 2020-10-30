@@ -11,6 +11,7 @@ package com.microsoft.azure.management.avs.v2020_03_20.implementation;
 import com.microsoft.azure.management.avs.v2020_03_20.Operation;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.avs.v2020_03_20.OperationDisplay;
+import com.microsoft.azure.management.avs.v2020_03_20.OperationProperties;
 
 class OperationImpl extends WrapperImpl<OperationInner> implements Operation {
     private final AVSManager manager;
@@ -30,8 +31,23 @@ class OperationImpl extends WrapperImpl<OperationInner> implements Operation {
     }
 
     @Override
+    public Boolean isDataAction() {
+        return this.inner().isDataAction();
+    }
+
+    @Override
     public String name() {
         return this.inner().name();
+    }
+
+    @Override
+    public String origin() {
+        return this.inner().origin();
+    }
+
+    @Override
+    public OperationProperties properties() {
+        return this.inner().properties();
     }
 
 }

@@ -3,7 +3,9 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.implementation.PrivateFieldAccessHelper;
+import com.azure.ai.formrecognizer.implementation.FormPageHelper;
+import com.azure.ai.formrecognizer.implementation.FormSelectionMarkHelper;
+import com.azure.ai.formrecognizer.implementation.RecognizedFormHelper;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.implementation.models.DocumentResult;
 import com.azure.ai.formrecognizer.implementation.models.FieldValue;
@@ -97,11 +99,10 @@ final class Transforms {
                     documentResultItem.getDocType(),
                     formPageRange,
                     formPages.subList(formPageRange.getFirstPageNumber() - 1, formPageRange.getLastPageNumber()));
-                PrivateFieldAccessHelper.set(recognizedForm, "formTypeConfidence",
-                    documentResultItem.getDocTypeConfidence());
+
+                RecognizedFormHelper.setFormTypeConfidence(recognizedForm, documentResultItem.getDocTypeConfidence());
                 if (documentResultItem.getModelId() != null) {
-                    PrivateFieldAccessHelper.set(recognizedForm, "modelId",
-                        documentResultItem.getModelId().toString());
+                    RecognizedFormHelper.setModelId(recognizedForm, documentResultItem.getModelId().toString());
                 }
                 extractedFormList.add(recognizedForm);
             }
@@ -123,7 +124,7 @@ final class Transforms {
                     new FormPageRange(pageNumber, pageNumber),
                     Collections.singletonList(formPages.get(index)));
 
-                PrivateFieldAccessHelper.set(recognizedForm, "modelId", modelId);
+                RecognizedFormHelper.setModelId(recognizedForm, modelId);
                 extractedFormList.add(recognizedForm);
             }));
         }
@@ -197,8 +198,8 @@ final class Transforms {
                     throw LOGGER.logThrowableAsError(new RuntimeException(
                             String.format("%s, unsupported selection mark state.", selectionMarkStateImpl)));
                 }
-                PrivateFieldAccessHelper.set(formSelectionMark, "confidence", selectionMark.getConfidence());
-                PrivateFieldAccessHelper.set(formSelectionMark, "state", selectionMarkState);
+                FormSelectionMarkHelper.setConfidence(formSelectionMark, selectionMark.getConfidence());
+                FormSelectionMarkHelper.setState(formSelectionMark, selectionMarkState);
                 return formSelectionMark;
             })
             .collect(Collectors.toList());
@@ -460,7 +461,7 @@ final class Transforms {
             perPageLineList,
             perPageTableList,
             readResultItem.getPage());
-        PrivateFieldAccessHelper.set(formPage, "selectionMarks", perPageSelectionMarkList);
+        FormPageHelper.setSelectionMarks(formPage, perPageSelectionMarkList);
         return formPage;
     }
 
