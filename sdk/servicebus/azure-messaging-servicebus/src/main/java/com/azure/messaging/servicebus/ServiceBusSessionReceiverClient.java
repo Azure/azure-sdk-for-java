@@ -13,19 +13,13 @@ import java.util.Objects;
 /**
  * This session receiver client is used to acquire session locks from a queue or topic and create
  * {@link ServiceBusReceiverClient} instances that are tied to the locked sessions.
- * <ul>
- *     <li>
- *         Use {@link #acceptSession(String)} to acquire the lock of a session if you know the session id.
+ * Use {@link #acceptSession(String)} to acquire the lock of a session if you know the session id.
  *
- *         {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#nextsession}
- *    </li>
- *    <li>
- *        Use {@link #acceptNextSession()} to acquire the lock of the next available session
- *        without specifying the session id.
+ * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#nextsession}
  *
- *        {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#sessionId}
- *    </li>
- * </ul>
+ * Use {@link #acceptNextSession()} to acquire the lock of the next available session without specifying the session id.
+ *
+ * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#sessionId}
  *
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class)
@@ -42,9 +36,9 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
      * Acquires a session lock for the next available session and create a {@link ServiceBusReceiverClient}
      * to receive messages from the session. It will wait until a session is available if no one is available
      * immediately.
-     * <p>
+     *
      * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#nextsession}
-     * <p>
+     *
      * @return A {@link ServiceBusReceiverClient} that is tied to the available session.
      * @throws UnsupportedOperationException if the queue or topic subscription is not session-enabled.
      * @throws IllegalStateException if the operation times out. The timeout duration is the tryTimeout
@@ -62,9 +56,9 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
      * Acquires a session lock for {@code sessionId} and create a {@link ServiceBusReceiverClient}
      * to receive messages from the session. If the session is already locked by another client, an
      * {@link com.azure.core.amqp.exception.AmqpException} is thrown immediately.
-     * <p>
+     *
      * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#sessionId}
-     * <p>
+     *
      * @param sessionId The session Id.
      * @return A {@link ServiceBusReceiverClient} that is tied to the specified session.
      * @throws NullPointerException if {@code sessionId} is null.
