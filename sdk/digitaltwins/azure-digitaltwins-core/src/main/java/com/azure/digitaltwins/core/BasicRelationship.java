@@ -108,10 +108,11 @@ public final class BasicRelationship {
     /**
      * Sets a string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.
      * @param etag A string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.
-     * @return The BasicDigitalTwin object itself.
+     * @return The BasicRelationship object itself.
      */
-    public void setETag(String etag) {
+    public BasicRelationship setETag(String etag) {
         this.etag = etag;
+        return this;
     }
 
     /**
