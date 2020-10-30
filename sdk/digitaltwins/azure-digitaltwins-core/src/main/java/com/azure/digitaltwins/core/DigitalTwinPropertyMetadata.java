@@ -13,13 +13,13 @@ import java.time.OffsetDateTime;
  */
 public class DigitalTwinPropertyMetadata {
     @JsonProperty(value = DigitalTwinsJsonPropertyNames.METADATA_PROPERTY_LAST_UPDATE_TIME, required = true)
-    private String lastUpdatedOn;
+    private OffsetDateTime lastUpdatedOn;
 
     /**
      * Gets the date and time the property was last updated.
      * @return The date and time the property was last updated.
      */
-    public String getLastUpdatedOn() {
+    public OffsetDateTime getLastUpdatedOn() {
         return lastUpdatedOn;
     }
 
@@ -28,16 +28,8 @@ public class DigitalTwinPropertyMetadata {
      * @param lastUpdatedOn The date and time the property was last updated.
      * @return The DigitalTwinPropertyMetadata object itself.
      */
-    public DigitalTwinPropertyMetadata setLastUpdatedOn(String lastUpdatedOn) {
+    public DigitalTwinPropertyMetadata setLastUpdatedOn(OffsetDateTime lastUpdatedOn) {
         this.lastUpdatedOn = lastUpdatedOn;
         return this;
-    }
-
-    /**
-     * Gets the date and time the property was last updated.
-     * @return The date and time the property was last updated.
-     */
-    public OffsetDateTime getLastUpdatedOnOffsetDateTime() {
-        return OffsetDateTime.parse(lastUpdatedOn);
     }
 }
