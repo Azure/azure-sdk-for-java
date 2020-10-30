@@ -152,6 +152,7 @@ public class ComponentSyncSamples {
         ConsoleLogger.print("Retrieved component for digital twin " + basicDigitalTwinId + " :");
         for (String key : getComponentResponse.getContents().keySet()) {
             ConsoleLogger.print("\t" + key + " : " + getComponentResponse.getContents().get(key));
+            ConsoleLogger.print("\t\tLast updated on: " + getComponentResponse.getMetadata().get(key).getLastUpdatedOn());
         }
 
         // Clean up
