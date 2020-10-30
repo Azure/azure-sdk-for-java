@@ -13,6 +13,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -78,24 +79,21 @@ class MessageUtilsTest {
 
     static Stream<List<Object>> calcTotalTimeoutTestData() {
         // default value of AmqpRetryTimeOut: Max retries: 3, delay: 800ms, max delay: 1m, try timeout: 1m
-        List<Object> defaultValue = List.of(
-            new AmqpRetryOptions(),
-            (long) (60 * 1000 + (800 + 60 * 1000) + (1600 + 60 * 1000) + (3200 + 60 * 1000)));
+        List<Object> defaultValue = new ArrayList<>();
+        defaultValue.add(new AmqpRetryOptions());
+        defaultValue.add((long) (60 * 1000 + (800 + 60 * 1000) + (1600 + 60 * 1000) + (3200 + 60 * 1000)));
 
-        List<Object> reachMaxDelay = List.of(
-            new AmqpRetryOptions().setDelay(Duration.ofSeconds(30)),
-            (long) (60 * 1000 + (30 * 1000 + 60 * 1000) + (60 * 1000 + 60 * 1000) * 2)
-            );
+        List<Object> reachMaxDelay = new ArrayList<>();
+        reachMaxDelay.add(new AmqpRetryOptions().setDelay(Duration.ofSeconds(30)));
+        reachMaxDelay.add((long) (60 * 1000 + (30 * 1000 + 60 * 1000) + (60 * 1000 + 60 * 1000) * 2));
 
-        List<Object> fixedDelay = List.of(
-            new AmqpRetryOptions().setMode(AmqpRetryMode.FIXED),
-            (long) (60 * 1000 + (800 + 60 * 1000) * 3)
-        );
+        List<Object> fixedDelay = new ArrayList<>();
+        fixedDelay.add(new AmqpRetryOptions().setMode(AmqpRetryMode.FIXED));
+        fixedDelay.add((long) (60 * 1000 + (800 + 60 * 1000) * 3));
 
-        List<Object> zeroRetry = List.of(
-            new AmqpRetryOptions().setMaxRetries(0),
-            (long) (60 * 1000)
-        );
+        List<Object> zeroRetry = new ArrayList<>();
+        zeroRetry.add(new AmqpRetryOptions().setMaxRetries(0));
+        zeroRetry.add((long) (60 * 1000));
 
         return Stream.of(defaultValue, reachMaxDelay, fixedDelay, zeroRetry);
     }
