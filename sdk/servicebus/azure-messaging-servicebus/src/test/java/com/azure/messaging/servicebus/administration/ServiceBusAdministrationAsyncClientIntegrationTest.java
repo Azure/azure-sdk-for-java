@@ -14,6 +14,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
+import com.azure.messaging.servicebus.administration.models.CorrelationRuleFilter;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
 import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
@@ -214,6 +215,31 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
                 assertNotNull(contents.getFilter());
                 assertTrue(contents.getFilter() instanceof FalseRuleFilter);
 
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void createRuleDefaults(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
+
+        // There is a single default rule created.
+        final String ruleName = testResourceNamer.randomName("rule", 10);
+        final String topicName = interceptorManager.isPlaybackMode()
+            ? "topic-13"
+            : getEntityName(getTopicBaseName(), 13);
+        final String subscriptionName = interceptorManager.isPlaybackMode()
+            ? "subscription"
+            : getSubscriptionBaseName();
+
+        // Act & Assert
+        StepVerifier.create(client.createRule(topicName, subscriptionName, ruleName))
+            .assertNext(contents -> {
+                assertEquals(ruleName, contents.getName());
+                assertTrue(contents.getFilter() instanceof TrueRuleFilter);
+                assertTrue(contents.getAction() instanceof EmptyRuleAction);
             })
             .verifyComplete();
     }
@@ -831,6 +857,39 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
             .expectNextCount(2)
             .thenCancel()
             .verify();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void updateRuleResponse(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
+
+        // There is a single default rule created.
+        final String ruleName = testResourceNamer.randomName("rule", 10);
+        final String topicName = interceptorManager.isPlaybackMode()
+            ? "topic-13"
+            : getEntityName(getTopicBaseName(), 13);
+        final String subscriptionName = interceptorManager.isPlaybackMode()
+            ? "subscription"
+            : getSubscriptionBaseName();
+        final CorrelationRuleFilter filter = new CorrelationRuleFilter("baz")
+            .setContentType("test-content-type")
+            .setLabel("the-label");
+
+        // Act & Assert
+        StepVerifier.create(client.createRule(topicName, subscriptionName, ruleName))
+            .assertNext(contents -> {
+                assertNotNull(contents);
+                assertEquals(ruleName, contents.getName());
+
+                assertNotNull(contents.getFilter());
+                assertTrue(contents.getFilter() instanceof TrueRuleFilter);
+
+                assertNotNull(contents.getAction());
+                assertTrue(contents.getAction() instanceof EmptyRuleAction);
+            })
+            .verifyComplete();
     }
 
     private ServiceBusAdministrationAsyncClient createClient(HttpClient httpClient) {
