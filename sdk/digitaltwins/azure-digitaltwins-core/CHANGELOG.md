@@ -9,6 +9,8 @@
 
 ### Breaking changes
 
+Note that these breaking changes are only breaking changes from the preview version of this library.
+
 - Replace all Response<string> and Pageable<string> APIs with Response<T> and Pageable<T> respectively
 - Rename CreateDigitalTwin, CreateRelationship and CreateEventRoute APIs to CreateOrReplaceDigitalTwin, CreateOrReplaceRelationship and CreateOrReplaceEventRoute respectively
 - Renamed model type "ModelData" to "DigitalTwinsModelData" to make type less generic, and less likely to conflict with other libraries
