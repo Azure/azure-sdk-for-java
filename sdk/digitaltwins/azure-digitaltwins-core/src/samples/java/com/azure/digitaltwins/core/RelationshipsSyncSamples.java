@@ -120,7 +120,9 @@ public class RelationshipsSyncSamples {
             BasicRelationship retrievedRelationship = getRelationshipResponse.getValue();
             ConsoleLogger.printSuccess("Retrieved relationship: " + retrievedRelationship.getId() + " from twin: " + retrievedRelationship.getSourceId() + "\n\t" +
                 "Prop1: " + retrievedRelationship.getProperties().get("Prop1") + "\n\t" +
-                "Prop2: " + retrievedRelationship.getProperties().get("Prop2"));
+                "Prop2: " + retrievedRelationship.getProperties().get("Prop2") + "\n");
+
+            ConsoleLogger.printSuccess("Retrieved relationship has ETag: " + retrievedRelationship.getETag() + "\n\t");
         }
 
         ConsoleLogger.printHeader("List relationships");
