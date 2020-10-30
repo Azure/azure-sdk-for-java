@@ -804,20 +804,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws IllegalStateException if the receiver is a non-session receiver.
      */
     public Mono<Void> setSessionState(byte[] sessionState) {
-        if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
-                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "setSessionState")));
-        } else if (!receiverOptions.isSessionReceiver()) {
-            return monoError(logger, new IllegalStateException("Cannot set session state on a non-session receiver."));
-        }
-        String sessionId = receiverOptions.getSessionId();
-        final String linkName = sessionManager != null
-            ? sessionManager.getLinkName(sessionId)
-            : null;
-
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(channel -> channel.setSessionState(sessionId, sessionState, linkName));
+        return this.setSessionState(receiverOptions.getSessionId(), sessionState);
     }
 
     /**
