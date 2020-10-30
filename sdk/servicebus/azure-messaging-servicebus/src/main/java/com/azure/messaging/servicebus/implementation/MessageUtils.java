@@ -4,7 +4,13 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.implementation.AmqpConstants;
+import com.azure.core.amqp.implementation.TracerProvider;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.ProcessKind;
+import com.azure.messaging.servicebus.ServiceBusMessage;
+import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -15,15 +21,31 @@ import org.apache.qpid.proton.amqp.messaging.Rejected;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
+import reactor.core.publisher.Signal;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
+
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
+import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
+import static com.azure.core.util.tracing.Tracer.MESSAGE_ENQUEUED_TIME;
+import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_SERVICE_NAME;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_NAMESPACE_VALUE;
+
 
 /**
  * Contains helper methods for message conversions, reading status codes, and getting delivery state.
@@ -252,5 +274,80 @@ public final class MessageUtils {
         transactionalState.setTxnId(new Binary(transactionId.array()));
         transactionalState.setOutcome(outcome);
         return transactionalState;
+    }
+
+    /**
+     * Used in ServiceBusMessageBatch.tryAddMessage() to start tracing for to-be-sent out messages.
+     */
+    public static ServiceBusMessage traceMessageSpan(ServiceBusMessage serviceBusMessage,
+        Context messageContext, String hostname, String entityPath, TracerProvider tracerProvider) {
+        Optional<Object> eventContextData = messageContext.getData(SPAN_CONTEXT_KEY);
+        if (eventContextData.isPresent()) {
+            // if message has context (in case of retries), don't start a message span or add a new context
+            return serviceBusMessage;
+        } else {
+            // Starting the span makes the sampling decision (nothing is logged at this time)
+            Context newMessageContext = messageContext
+                .addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE)
+                .addData(ENTITY_PATH_KEY, entityPath)
+                .addData(HOST_NAME_KEY, hostname);
+            Context eventSpanContext = tracerProvider.startSpan(AZ_TRACING_SERVICE_NAME, newMessageContext,
+                ProcessKind.MESSAGE);
+            Optional<Object> eventDiagnosticIdOptional = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
+            if (eventDiagnosticIdOptional.isPresent()) {
+                serviceBusMessage.getApplicationProperties().put(DIAGNOSTIC_ID_KEY, eventDiagnosticIdOptional.get()
+                    .toString());
+                tracerProvider.endSpan(eventSpanContext, Signal.complete());
+                serviceBusMessage.addContext(SPAN_CONTEXT_KEY, eventSpanContext);
+            }
+        }
+        return serviceBusMessage;
+    }
+
+    /*
+     * Starts a new process tracing span and attaches the returned context to the ServiceBusReceivedMessage object for
+     * users.
+     */
+    public static Context startProcessTracingSpan(ServiceBusReceivedMessage receivedMessage,
+        String hostname, String entityPath, TracerProvider tracerProvider, ProcessKind processKind) {
+        Object diagnosticId = receivedMessage.getApplicationProperties().get(DIAGNOSTIC_ID_KEY);
+        if (diagnosticId == null || !tracerProvider.isEnabled()) {
+            return Context.NONE;
+        }
+
+        Context spanContext = tracerProvider.extractContext(diagnosticId.toString(), Context.NONE)
+            .addData(ENTITY_PATH_KEY, entityPath)
+            .addData(HOST_NAME_KEY, hostname)
+            .addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
+        spanContext = receivedMessage.getEnqueuedTime() == null
+            ? spanContext
+            : spanContext.addData(MESSAGE_ENQUEUED_TIME, receivedMessage.getEnqueuedTime().toEpochSecond());
+        return tracerProvider.startSpan(AZ_TRACING_SERVICE_NAME, spanContext, processKind);
+    }
+
+    /*
+     * Ends the process tracing span and the scope of that span.
+     */
+    public static void endProcessTracingSpan(Context processSpanContext, Signal<Void> signal,
+        TracerProvider tracerProvider, ClientLogger logger) {
+        if (processSpanContext != null) {
+            Optional<Object> spanScope = processSpanContext.getData(SCOPE_KEY);
+            // Disposes of the scope when the trace span closes.
+            if (tracerProvider.isEnabled() && spanScope.isPresent()) {
+                if (spanScope.get() instanceof Closeable) {
+                    Closeable close = (Closeable) spanScope.get();
+                    try {
+                        close.close();
+                        tracerProvider.endSpan(processSpanContext, signal);
+                    } catch (IOException ioException) {
+                        logger.error(Messages.MESSAGE_PROCESSOR_RUN_END, ioException);
+                    }
+
+                } else {
+                    logger.warning(String.format(Locale.US,
+                        Messages.PROCESS_SPAN_SCOPE_TYPE_ERROR, spanScope.getClass()));
+                }
+            }
+        }
     }
 }

@@ -75,7 +75,7 @@ public class SqlRuleFilter extends RuleFilter {
      *
      * @return Whether or not requires preprocessing.
      */
-    Boolean getRequiresPreprocessing() {
+    Boolean isPreprocessingRequired() {
         return requiresPreprocessing;
     }
 
