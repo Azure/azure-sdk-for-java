@@ -1084,30 +1084,20 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
         return updateDispositionOperation
             .onErrorMap(throwable -> {
-                ServiceBusErrorSource errorSource;
-                if (throwable instanceof AmqpException) {
+                // We only populate ErrorSource only when AutoComplete is enabled.
+                if (receiverOptions.isEnableAutoComplete() && throwable instanceof AmqpException) {
                     switch (dispositionStatus) {
                         case COMPLETED:
-                            errorSource = ServiceBusErrorSource.COMPLETE;
-                            break;
-                        case DEFERRED:
-                            errorSource = ServiceBusErrorSource.DEFER;
-                            break;
-                        case SUSPENDED:
-                            errorSource = ServiceBusErrorSource.DEAD_LETTER;
-                            break;
+                            return new ServiceBusAmqpException((AmqpException) throwable,
+                                ServiceBusErrorSource.COMPLETE);
                         case ABANDONED:
-                            errorSource = ServiceBusErrorSource.ABANDONED;
-                            break;
+                            return new ServiceBusAmqpException((AmqpException) throwable,
+                                ServiceBusErrorSource.ABANDONED);
                         default:
-                            errorSource = ServiceBusErrorSource.UNKNOWN;
+                            // Do nothing
                     }
-
-                    return new ServiceBusAmqpException((AmqpException) throwable, errorSource);
-
-                } else {
-                    return throwable;
                 }
+                return throwable;
 
             });
     }

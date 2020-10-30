@@ -490,22 +490,21 @@ class ServiceBusReceiverAsyncClientTest {
     }
 
     /**
-     * Verifies that error source is populated when there is any error during message settlement.
+     * Verifies that error source is not populated when there is no autoComplete. Because user wanted to settle on their
+     * own, we do not need to populate ErrorSource.
      */
     @ParameterizedTest
     @MethodSource
-    void errorSourceOnSettlement(DispositionStatus dispositionStatus, ServiceBusErrorSource expectedErrorSource,
-        DeliveryStateType expectedDeliveryState) {
-        final String lockToken1 = UUID.randomUUID().toString();
+    void errorSourceNoneOnSettlement(DispositionStatus dispositionStatus, DeliveryStateType expectedDeliveryState) {
 
-        final OffsetDateTime expiration = OffsetDateTime.now().plus(Duration.ofMinutes(5));
+        final UUID lockTokenUuid = UUID.randomUUID();
+        final String lockToken1 = lockTokenUuid.toString();
 
         final MessageWithLockToken message = mock(MessageWithLockToken.class);
 
-        when(messageSerializer.deserialize(message, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage);
-
         when(receivedMessage.getLockToken()).thenReturn(lockToken1);
-        when(receivedMessage.getLockedUntil()).thenReturn(expiration);
+
+        when(messageSerializer.deserialize(message, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage);
 
         when(amqpReceiveLink.updateDisposition(eq(lockToken1), argThat(e -> e.getType() == expectedDeliveryState)))
             .thenReturn(Mono.error(new AmqpException(false, "some error occurred.", null)));
@@ -515,29 +514,23 @@ class ServiceBusReceiverAsyncClientTest {
             .flatMap(context -> {
                 final Mono<Void> operation;
                 switch (dispositionStatus) {
-                    case DEFERRED:
-                        operation = receiver.defer(receivedMessage);
-                        break;
                     case ABANDONED:
-                        operation = receiver.abandon(receivedMessage);
+                        operation = receiver.abandon(context.getMessage());
                         break;
                     case COMPLETED:
-                        operation = receiver.complete(receivedMessage);
-                        break;
-                    case SUSPENDED:
-                        operation = receiver.deadLetter(receivedMessage);
+                        operation = receiver.complete(context.getMessage());
                         break;
                     default:
                         throw new IllegalArgumentException("Unrecognized operation: " + dispositionStatus);
                 }
                 return operation;
-            }))
+            })
+            )
             .then(() -> messageSink.next(message))
             .expectNext()
             .verifyErrorSatisfies(throwable -> {
-                Assertions.assertTrue(throwable instanceof ServiceBusAmqpException);
-                final ServiceBusErrorSource actual = ((ServiceBusAmqpException) throwable).getErrorSource();
-                Assertions.assertEquals(expectedErrorSource, actual);
+                Assertions.assertFalse(throwable instanceof ServiceBusAmqpException);
+                Assertions.assertTrue(throwable instanceof AmqpException);
             });
 
         verify(amqpReceiveLink).updateDisposition(eq(lockToken1), any(DeliveryState.class));
@@ -1140,9 +1133,9 @@ class ServiceBusReceiverAsyncClientTest {
             .collect(Collectors.toList());
     }
 
-    private static Stream<Arguments> errorSourceOnSettlement() {
+    private static Stream<Arguments> errorSourceNoneOnSettlement() {
         return Stream.of(
-            Arguments.of(DispositionStatus.COMPLETED, ServiceBusErrorSource.COMPLETE, DeliveryStateType.Accepted),
-            Arguments.of(DispositionStatus.ABANDONED, ServiceBusErrorSource.ABANDONED, DeliveryStateType.Modified));
+            Arguments.of(DispositionStatus.COMPLETED, DeliveryStateType.Accepted),
+            Arguments.of(DispositionStatus.ABANDONED, DeliveryStateType.Modified));
     }
 }
