@@ -12,12 +12,15 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
+import com.azure.identity.ClientSecretCredential;
+import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
 import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.administration.models.EmptyRuleAction;
+import com.azure.messaging.servicebus.administration.models.NamespaceProperties;
 import com.azure.messaging.servicebus.administration.models.NamespaceType;
 import com.azure.messaging.servicebus.administration.models.QueueRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.RuleProperties;
@@ -50,6 +53,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * Tests {@link ServiceBusAdministrationAsyncClient}.
@@ -72,6 +76,34 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         return Stream.of(
             Arguments.of(new NettyAsyncHttpClientBuilder().build())
         );
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    /**
+     * Test to connect to the service bus with an azure identity TokenCredential.
+     * com.azure.identity.ClientSecretCredential is used in this test.
+     * ServiceBusSharedKeyCredential doesn't need a specific test method because other tests below
+     * use connection string, which is converted to a ServiceBusSharedKeyCredential internally.
+     */
+    void azureIdentityCredentials(HttpClient httpClient) {
+        assumeTrue(interceptorManager.isLiveMode(), "Azure Identity test is for live test only");
+        final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
+
+        assumeTrue(fullyQualifiedDomainName != null && !fullyQualifiedDomainName.isEmpty(),
+            "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set when using credentials.");
+
+        final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
+            .clientId(System.getenv("AZURE_CLIENT_ID"))
+            .clientSecret(System.getenv("AZURE_CLIENT_SECRET"))
+            .tenantId(System.getenv("AZURE_TENANT_ID"))
+            .build();
+        ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder()
+            .httpClient(httpClient)
+            .credential(fullyQualifiedDomainName, clientSecretCredential)
+            .buildClient();
+        NamespaceProperties np = client.getNamespaceProperties();
+        assertNotNull(np.getName());
     }
 
     @ParameterizedTest
