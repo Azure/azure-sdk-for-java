@@ -3,7 +3,6 @@
 
 package com.azure.core.amqp.models;
 
-import com.azure.core.experimental.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -37,11 +36,11 @@ public class AmqpAnnotatedMessageTest {
     public void copyConstructorTest() {
         // Arrange
         final int expectedBinaryDataSize = 1;
-        List<BinaryData> expectedBinaryData = new ArrayList<>();
-        expectedBinaryData.add(BinaryData.fromBytes(CONTENTS_BYTES));
+        List<byte[]> expectedBinaryData = new ArrayList<>();
+        expectedBinaryData.add(CONTENTS_BYTES);
 
-        final AmqpDataMessageBody amqpDataMessageBody = new AmqpDataMessageBody(expectedBinaryData);
-        final AmqpAnnotatedMessage expected = new AmqpAnnotatedMessage(amqpDataMessageBody);
+        final AmqpDataBody amqpDataBody = new AmqpDataBody(expectedBinaryData);
+        final AmqpAnnotatedMessage expected = new AmqpAnnotatedMessage(amqpDataBody);
         final Map<String, Object> expectedMessageAnnotations = expected.getMessageAnnotations();
         expectedMessageAnnotations.put("ma-1", "ma-value1");
 
@@ -62,8 +61,6 @@ public class AmqpAnnotatedMessageTest {
         expectedMessageProperties.setCorrelationId("c");
         expectedMessageProperties.setSubject("d");
         expectedMessageProperties.setMessageId("id");
-        expectedMessageProperties.setUserId(BinaryData.fromString("id"));
-
 
         final AmqpMessageHeader expectedMessageHeader = expected.getHeader();
         expectedMessageHeader.setDeliveryCount(5L);
@@ -72,25 +69,23 @@ public class AmqpAnnotatedMessageTest {
 
         final AmqpAnnotatedMessage actual = new AmqpAnnotatedMessage(expected);
 
-        expected.getApplicationProperties().put("ap-10", "ap-value10");
-
         // Act
         // Now update the values after we have created AmqpAnnotatedMessage using copy constructor.
         expectedDeliveryAnnotations.remove("da-1");
         expectedApplicationProperties.put("ap-2", "ap-value2");
         expectedFooter.remove("foo-1");
         expected.getHeader().setDeliveryCount(Long.valueOf(100));
+        expectedBinaryData = new ArrayList<>();
 
         // Assert
         // Ensure the memory references are not same.
-        assertNotSame(expected.getBody(), actual.getBody());
         assertNotSame(expected.getProperties(), actual.getProperties());
         assertNotSame(expected.getApplicationProperties(), actual.getApplicationProperties());
         assertNotSame(expected.getDeliveryAnnotations(), actual.getDeliveryAnnotations());
         assertNotSame(expected.getFooter(), actual.getFooter());
         assertNotSame(expected.getHeader(), actual.getHeader());
         assertNotSame(expected.getMessageAnnotations(), actual.getMessageAnnotations());
-        assertNotSame(expected.getProperties().getUserId().toString(), actual.getProperties().getUserId().toString());
+        assertNotSame(expected.getProperties().getUserId(), actual.getProperties().getUserId());
         assertNotSame(expected.getHeader().getDeliveryCount(), actual.getHeader().getDeliveryCount());
 
         assertEquals(1, actual.getDeliveryAnnotations().size());
@@ -117,12 +112,11 @@ public class AmqpAnnotatedMessageTest {
     @Test
     public void constructorValidValues() {
         // Arrange
-        final List<BinaryData> expectedBinaryData = new ArrayList<>();
-        expectedBinaryData.add(BinaryData.fromBytes(CONTENTS_BYTES));
-        final AmqpDataMessageBody amqpDataMessageBody = new AmqpDataMessageBody(expectedBinaryData);
+        final List<byte[]> expectedBinaryData = Collections.singletonList(CONTENTS_BYTES);
+        final AmqpDataBody amqpDataBody = new AmqpDataBody(expectedBinaryData);
 
         // Act
-        final AmqpAnnotatedMessage actual = new AmqpAnnotatedMessage(amqpDataMessageBody);
+        final AmqpAnnotatedMessage actual = new AmqpAnnotatedMessage(amqpDataBody);
 
         // Assert
         assertMessageCreation(AmqpBodyType.DATA, expectedBinaryData.size(), actual);
@@ -134,9 +128,9 @@ public class AmqpAnnotatedMessageTest {
     @Test
     public void constructorAmqpValidValues() {
         // Arrange
-        final List<BinaryData> expectedBinaryData = Collections.singletonList(BinaryData.fromBytes(CONTENTS_BYTES));
-        final AmqpDataMessageBody amqpDataMessageBody = new AmqpDataMessageBody(expectedBinaryData);
-        final AmqpAnnotatedMessage expected = new AmqpAnnotatedMessage(amqpDataMessageBody);
+        final List<byte[]> expectedBinaryData = Collections.singletonList(CONTENTS_BYTES);
+        final AmqpDataBody amqpDataBody = new AmqpDataBody(expectedBinaryData);
+        final AmqpAnnotatedMessage expected = new AmqpAnnotatedMessage(amqpDataBody);
 
         // Act
         final AmqpAnnotatedMessage actual = new AmqpAnnotatedMessage(expected);
@@ -151,7 +145,7 @@ public class AmqpAnnotatedMessageTest {
     @Test
     public void constructorNullValidValues() {
         // Arrange
-        final AmqpDataMessageBody body = null;
+        final AmqpDataBody body = null;
 
         // Act & Assert
         Assertions.assertThrows(NullPointerException.class, () -> new AmqpAnnotatedMessage(body));
@@ -176,9 +170,9 @@ public class AmqpAnnotatedMessageTest {
         final AmqpBodyType actualType = actual.getBody().getBodyType();
         switch (actualType) {
             case DATA:
-                List<BinaryData> actualData = ((AmqpDataMessageBody) actual.getBody()).getData().stream().collect(Collectors.toList());
+                List<byte[]> actualData = ((AmqpDataBody) actual.getBody()).getData().stream().collect(Collectors.toList());
                 assertEquals(expectedMessageSize, actualData.size());
-                assertArrayEquals(expectedbody, actualData.get(0).toBytes());
+                assertArrayEquals(expectedbody, actualData.get(0));
                 break;
             case VALUE:
             case SEQUENCE:
