@@ -19,7 +19,6 @@ import java.util.regex.Pattern;
  * Utility class for validating parameters.
  */
 public final class ValidationUtil {
-    private static Pattern clientIdentifierCharPattern = Pattern.compile("^(?:[A-Z]|[0-9]|[a-z]|-)+$");
     private static Pattern tenantIdentifierCharPattern = Pattern.compile("^(?:[A-Z]|[0-9]|[a-z]|-|.)+$");
 
     public static void validate(String className, Map<String, Object> parameters) {
@@ -50,41 +49,14 @@ public final class ValidationUtil {
         }
     }
 
-    public static void validateClientIdCharacterRange(String className, String id) {
-        ClientLogger logger = new ClientLogger(className);
-        if (id != null) {
-            if (!clientIdentifierCharPattern.matcher(id).matches()) {
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Client id must have characters in the range of [A-Z], [0-9], [a-z], '-'"));
-            }
-        }
-    }
-
     public static void validateTenantIdCharacterRange(String className, String id) {
         ClientLogger logger = new ClientLogger(className);
         if (id != null) {
             if (!tenantIdentifierCharPattern.matcher(id).matches()) {
                 throw logger.logExceptionAsError(
                     new IllegalArgumentException(
-                        "Tenant id must have characters in the range of [A-Z], [0-9], [a-z], '-', '.'"));
-            }
-        }
-    }
-
-    public static void validateFilePath(String className, String filePath, String pathName) {
-        ClientLogger logger = new ClientLogger(className);
-        if (filePath != null) {
-            File file = new File(filePath);
-            if (!file.isAbsolute()) {
-                Path absolutePath = Paths.get(file.getAbsolutePath());
-                Path normalizedPath = absolutePath.normalize();
-                if (!absolutePath.equals(normalizedPath)) {
-                    throw logger.logExceptionAsError(
-                        new IllegalArgumentException(
-                            String.format(
-                                "%s is not valid. The path contains invalid characters `.` or `..`", pathName)));
-                }
+                        "Invalid tenant id provided. You can locate your tenant id by following the instructions"
+                            + " listed here: https://docs.microsoft.com/partner-center/find-ids-and-domain-names"));
             }
         }
     }

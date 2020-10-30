@@ -7,6 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.util.ArrayList;
@@ -75,8 +76,6 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
                 new IllegalArgumentException("The KeePass database path is either empty or not configured."
                                                    + " Please configure it on the builder."));
         }
-        ValidationUtil.validateFilePath(getClass().getSimpleName(), databasePath,
-            "IntelliJ Kee Pass Database Path");
         this.identityClientOptions.setIntelliJKeePassDatabasePath(databasePath);
         return this;
     }
@@ -91,7 +90,6 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      * @return the DefaultAzureCredentialBuilder itself
      */
     public DefaultAzureCredentialBuilder managedIdentityClientId(String clientId) {
-        ValidationUtil.validateClientIdCharacterRange(getClass().getSimpleName(), clientId);
         this.managedIdentityClientId = clientId;
         return this;
     }
@@ -130,7 +128,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(6);
         output.add(new EnvironmentCredential(identityClientOptions));
         output.add(new ManagedIdentityCredential(managedIdentityClientId, identityClientOptions));
-        output.add(new SharedTokenCacheCredential(null, "04b07795-8ddb-461a-bbee-02f9e1bf7b46",
+        output.add(new SharedTokenCacheCredential(null, IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID,
             tenantId, identityClientOptions));
         output.add(new IntelliJCredential(tenantId, identityClientOptions));
         output.add(new VisualStudioCodeCredential(tenantId, identityClientOptions));

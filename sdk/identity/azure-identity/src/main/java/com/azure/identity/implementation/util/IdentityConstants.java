@@ -1,6 +1,6 @@
 package com.azure.identity.implementation.util;
 
-public class Constants {
+public class IdentityConstants {
     /**
      * The Single Sign On ID.
      */

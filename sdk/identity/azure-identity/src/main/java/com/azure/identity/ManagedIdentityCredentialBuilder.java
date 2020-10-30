@@ -20,7 +20,6 @@ public class ManagedIdentityCredentialBuilder extends CredentialBuilderBase<Mana
      * @return the ManagedIdentityCredentialBuilder itself
      */
     public ManagedIdentityCredentialBuilder clientId(String clientId) {
-        ValidationUtil.validateClientIdCharacterRange(getClass().getSimpleName(), clientId);
         this.clientId = clientId;
         return this;
     }
