@@ -14,6 +14,7 @@ import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.BigDataPoolPatchInfo;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.ErrorContractException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
@@ -106,7 +107,7 @@ public class BigDataPoolsInner {
      * @param workspaceName The name of the workspace
      * @param bigDataPoolName Big Data pool name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BigDataPoolResourceInfoInner object if successful.
      */
@@ -188,10 +189,10 @@ public class BigDataPoolsInner {
             });
     }
 
-    private ServiceResponse<BigDataPoolResourceInfoInner> getDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<BigDataPoolResourceInfoInner, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<BigDataPoolResourceInfoInner> getDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<BigDataPoolResourceInfoInner, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<BigDataPoolResourceInfoInner>() { }.getType())
-                .registerError(ErrorContractInnerException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -203,7 +204,7 @@ public class BigDataPoolsInner {
      * @param workspaceName The name of the workspace
      * @param bigDataPoolName Big Data pool name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BigDataPoolResourceInfoInner object if successful.
      */
@@ -297,7 +298,7 @@ public class BigDataPoolsInner {
      * @param bigDataPoolName Big Data pool name
      * @param tags Updated tags for the Big Data pool
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BigDataPoolResourceInfoInner object if successful.
      */
@@ -385,10 +386,10 @@ public class BigDataPoolsInner {
             });
     }
 
-    private ServiceResponse<BigDataPoolResourceInfoInner> updateDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<BigDataPoolResourceInfoInner, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<BigDataPoolResourceInfoInner> updateDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<BigDataPoolResourceInfoInner, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<BigDataPoolResourceInfoInner>() { }.getType())
-                .registerError(ErrorContractInnerException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -401,7 +402,7 @@ public class BigDataPoolsInner {
      * @param bigDataPoolName Big Data pool name
      * @param bigDataPoolInfo The Big Data pool to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BigDataPoolResourceInfoInner object if successful.
      */
@@ -490,7 +491,7 @@ public class BigDataPoolsInner {
      * @param bigDataPoolInfo The Big Data pool to create.
      * @param force Whether to stop any running jobs in the Big Data pool
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BigDataPoolResourceInfoInner object if successful.
      */
@@ -581,7 +582,7 @@ public class BigDataPoolsInner {
      * @param bigDataPoolName Big Data pool name
      * @param bigDataPoolInfo The Big Data pool to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BigDataPoolResourceInfoInner object if successful.
      */
@@ -681,7 +682,7 @@ public class BigDataPoolsInner {
      * @param bigDataPoolInfo The Big Data pool to create.
      * @param force Whether to stop any running jobs in the Big Data pool
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BigDataPoolResourceInfoInner object if successful.
      */
@@ -773,11 +774,11 @@ public class BigDataPoolsInner {
             });
     }
 
-    private ServiceResponse<BigDataPoolResourceInfoInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<BigDataPoolResourceInfoInner, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<BigDataPoolResourceInfoInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<BigDataPoolResourceInfoInner, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<BigDataPoolResourceInfoInner>() { }.getType())
                 .register(202, new TypeToken<BigDataPoolResourceInfoInner>() { }.getType())
-                .registerError(ErrorContractInnerException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -789,7 +790,7 @@ public class BigDataPoolsInner {
      * @param workspaceName The name of the workspace
      * @param bigDataPoolName Big Data pool name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Object object if successful.
      */
@@ -869,7 +870,7 @@ public class BigDataPoolsInner {
      * @param workspaceName The name of the workspace
      * @param bigDataPoolName Big Data pool name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Object object if successful.
      */
@@ -951,12 +952,12 @@ public class BigDataPoolsInner {
             });
     }
 
-    private ServiceResponse<Object> beginDeleteDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Object, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Object> beginDeleteDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Object, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
                 .register(202, new TypeToken<Object>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorContractInnerException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 

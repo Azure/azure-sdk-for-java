@@ -11,17 +11,17 @@ package com.microsoft.azure.management.synapse.v2019_06_01_preview;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Private endpoint details.
+ * Private Endpoint.
  */
 public class PrivateEndpoint {
     /**
-     * Resource id of the private endpoint.
+     * identifier.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /**
-     * Get resource id of the private endpoint.
+     * Get identifier.
      *
      * @return the id value
      */

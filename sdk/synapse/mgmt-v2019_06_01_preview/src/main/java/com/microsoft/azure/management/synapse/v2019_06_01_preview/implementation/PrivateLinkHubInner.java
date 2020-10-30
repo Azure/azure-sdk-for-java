@@ -8,6 +8,8 @@
 
 package com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation;
 
+import java.util.List;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.PrivateEndpointConnectionForPrivateLinkHubBasic;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -19,18 +21,33 @@ import com.microsoft.azure.Resource;
 public class PrivateLinkHubInner extends Resource {
     /**
      * PrivateLinkHub provisioning state. Possible values include: 'Succeeded',
-     * 'Failed'.
+     * 'Failed', 'Deleting'.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /**
-     * Get privateLinkHub provisioning state. Possible values include: 'Succeeded', 'Failed'.
+     * List of private endpoint connections.
+     */
+    @JsonProperty(value = "properties.privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<PrivateEndpointConnectionForPrivateLinkHubBasic> privateEndpointConnections;
+
+    /**
+     * Get privateLinkHub provisioning state. Possible values include: 'Succeeded', 'Failed', 'Deleting'.
      *
      * @return the provisioningState value
      */
     public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get list of private endpoint connections.
+     *
+     * @return the privateEndpointConnections value
+     */
+    public List<PrivateEndpointConnectionForPrivateLinkHubBasic> privateEndpointConnections() {
+        return this.privateEndpointConnections;
     }
 
 }
