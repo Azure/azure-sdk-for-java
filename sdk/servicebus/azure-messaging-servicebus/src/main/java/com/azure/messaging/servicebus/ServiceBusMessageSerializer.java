@@ -154,9 +154,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             amqpMessage.setGroupSequence(brokeredProperties.getGroupSequence());
         }
         amqpMessage.getProperties().setTo(brokeredMessage.getTo());
-        if (brokeredProperties.getUserId() != null) {
-            amqpMessage.getProperties().setUserId(new Binary(brokeredProperties.getUserId().toBytes()));
-        }
+        amqpMessage.getProperties().setUserId(new Binary(brokeredProperties.getUserId()));
 
         if (brokeredProperties.getAbsoluteExpiryTime() != null) {
             amqpMessage.getProperties().setAbsoluteExpiryTime(Date.from(brokeredProperties.getAbsoluteExpiryTime()
@@ -419,9 +417,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         brokeredProperties.setGroupId(amqpMessage.getGroupId());
         brokeredProperties.setContentEncoding(amqpMessage.getContentEncoding());
         brokeredProperties.setGroupSequence(amqpMessage.getGroupSequence());
-        if (amqpMessage.getUserId() != null) {
-            brokeredProperties.setUserId(BinaryData.fromBytes(amqpMessage.getUserId()));
-        }
+        brokeredProperties.setUserId(amqpMessage.getUserId());
 
         // DeliveryAnnotations
         final DeliveryAnnotations deliveryAnnotations = amqpMessage.getDeliveryAnnotations();

@@ -52,7 +52,7 @@ public final class ServiceBusReceivedMessage {
     }
 
     ServiceBusReceivedMessage(BinaryData body) {
-        amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(body)));
+        amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(body.toBytes())));
     }
 
     /**
@@ -72,7 +72,8 @@ public final class ServiceBusReceivedMessage {
         final AmqpBodyType bodyType = amqpAnnotatedMessage.getBody().getBodyType();
         switch (bodyType) {
             case DATA:
-                return ((AmqpDataBody) amqpAnnotatedMessage.getBody()).getData().stream().findFirst().get();
+                return BinaryData.fromBytes(((AmqpDataBody) amqpAnnotatedMessage.getBody())
+                    .getData().stream().findFirst().get());
             case SEQUENCE:
             case VALUE:
                 throw logger.logExceptionAsError(new UnsupportedOperationException("Body type not supported yet "

@@ -94,7 +94,7 @@ class ServiceBusSenderAsyncClientTest {
     private static final String NAMESPACE = "my-namespace";
     private static final String ENTITY_NAME = "my-servicebus-entity";
     private static final String LINK_NAME = "my-link-name";
-    private static final String TEST_CONTENTS = "My message for service bus queue!";
+    private static final BinaryData TEST_CONTENTS = BinaryData.fromString("My message for service bus queue!");
     private static final  String TXN_ID_STRING = "1";
 
     @Mock
@@ -321,7 +321,7 @@ class ServiceBusSenderAsyncClientTest {
     void sendMultipleMessagesWithTransaction() {
         // Arrange
         final int count = 4;
-        final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
+        final byte[] contents = TEST_CONTENTS.toBytes();
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(256 * 1024,
             errorContextProvider, tracerProvider, serializer, null, null);
 
@@ -360,7 +360,7 @@ class ServiceBusSenderAsyncClientTest {
     void sendMultipleMessages() {
         // Arrange
         final int count = 4;
-        final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
+        final byte[] contents = TEST_CONTENTS.toBytes();
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(256 * 1024,
             errorContextProvider, tracerProvider, serializer, null, null);
 
@@ -392,7 +392,7 @@ class ServiceBusSenderAsyncClientTest {
     void sendMultipleMessagesTracerSpans() {
         // Arrange
         final int count = 4;
-        final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
+        final byte[] contents = TEST_CONTENTS.toBytes();
         final Tracer tracer1 = mock(Tracer.class);
         TracerProvider tracerProvider1 = new TracerProvider(Arrays.asList(tracer1));
 
@@ -488,7 +488,7 @@ class ServiceBusSenderAsyncClientTest {
     void sendMessagesList() {
         // Arrange
         final int count = 4;
-        final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
+        final byte[] contents = TEST_CONTENTS.toBytes();
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString());
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))
@@ -536,7 +536,7 @@ class ServiceBusSenderAsyncClientTest {
     @Test
     void sendSingleMessageWithTransaction() {
         // Arrange
-        final ServiceBusMessage testData = new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
+        final ServiceBusMessage testData = new ServiceBusMessage(TEST_CONTENTS);
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))
             .thenReturn(Mono.just(sendLink));
@@ -569,7 +569,7 @@ class ServiceBusSenderAsyncClientTest {
     void sendSingleMessage() {
         // Arrange
         final ServiceBusMessage testData =
-            new ServiceBusMessage(BinaryData.fromString(TEST_CONTENTS));
+            new ServiceBusMessage(TEST_CONTENTS);
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))

@@ -68,7 +68,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             .subscribe(context -> {
                 ServiceBusReceivedMessage message = context.getMessage();
                 System.out.printf("Received message id: %s%n", message.getMessageId());
-                System.out.printf("Contents of message as string: %s%n", new String(message.getBody(), UTF_8));
+                System.out.printf("Contents of message as string: %s%n", message.getBody().toString());
             }, error -> System.err.print(error));
         // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receiveWithReceiveAndDeleteMode
 

@@ -3,6 +3,8 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.experimental.util.BinaryData;
+
 import java.util.concurrent.TimeUnit;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -36,7 +38,7 @@ public class SendMessageAsyncSample {
             .buildAsyncClient();
 
         // Create a message to send.
-        ServiceBusMessage message = new ServiceBusMessage("Hello world!".getBytes(UTF_8));
+        ServiceBusMessage message = new ServiceBusMessage(BinaryData.fromString("Hello world!"));
 
         // Send that message. This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
         // event has been delivered to the Service queue or topic. It completes with an error if an exception occurred

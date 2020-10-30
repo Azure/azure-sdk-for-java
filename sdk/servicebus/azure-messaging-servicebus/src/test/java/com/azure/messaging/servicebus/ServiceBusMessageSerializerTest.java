@@ -129,7 +129,7 @@ class ServiceBusMessageSerializerTest {
         });
 
         // Verifying the contents of our message is the same.
-        assertEquals(payload, new String(actualMessage.getBody(), UTF_8));
+        assertEquals(payload, actualMessage.getBody().toString());
     }
 
     private void assertValues(Map<Symbol, Object> expected, Map<String, Object> actual) {

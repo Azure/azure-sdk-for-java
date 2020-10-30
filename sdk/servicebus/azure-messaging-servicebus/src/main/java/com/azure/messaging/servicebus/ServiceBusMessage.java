@@ -80,7 +80,8 @@ public class ServiceBusMessage {
      */
     public ServiceBusMessage(BinaryData body) {
         this.context = Context.NONE;
-        this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(body)));
+        this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(
+            new AmqpDataBody(Collections.singletonList(body.toBytes())));
     }
 
     /**
@@ -147,7 +148,8 @@ public class ServiceBusMessage {
         final AmqpBodyType type = amqpAnnotatedMessage.getBody().getBodyType();
         switch (type) {
             case DATA:
-                return ((AmqpDataBody) amqpAnnotatedMessage.getBody()).getData().stream().findFirst().get();
+                return BinaryData.fromBytes(((AmqpDataBody) amqpAnnotatedMessage.getBody())
+                    .getData().stream().findFirst().get());
             case SEQUENCE:
             case VALUE:
                 throw logger.logExceptionAsError(new UnsupportedOperationException("Not supported AmqpBodyType: "
