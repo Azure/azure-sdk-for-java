@@ -282,11 +282,11 @@ To update a component or in other words to replace, remove and/or add a componen
 ```C# Snippet:DigitalTwinsSampleUpdateComponent
 // Update Component1 by replacing the property ComponentProp1 value,
 // using the UpdateOperationUtility to build the payload.
-UpdateOperationUtility updateOperationUtility = new UpdateOperationUtility();
+UpdateOperationUtility jsonPatchDocument = new UpdateOperationUtility();
 
-updateOperationUtility.appendReplaceOperation("/ComponentProp1", "Some new Value");
+jsonPatchDocument.appendReplaceOperation("/ComponentProp1", "Some new Value");
 
-client.updateComponent(basicDigitalTwinId, "Component1", updateOperationUtility.getUpdateOperations());
+client.updateComponent(basicDigitalTwinId, "Component1", jsonPatchDocument.getUpdateOperations());
 ```
 
 ### Get digital twin components
