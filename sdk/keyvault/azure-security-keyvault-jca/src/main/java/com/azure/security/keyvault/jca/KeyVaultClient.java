@@ -66,11 +66,12 @@ class KeyVaultClient extends DelegateRestClient {
      * Stores the client secret.
      */
     private String clientSecret;
-    
+
     /**
-     * Stores the identity (either user-assigned identity or null if system-assigned)
+     * Stores the managed identity (either the user-assigned managed identity
+     * object ID or null if system-assigned)
      */
-    private String identity;
+    private String managedIdentity;
 
     /**
      * Constructor.
@@ -85,21 +86,21 @@ class KeyVaultClient extends DelegateRestClient {
         }
         this.keyVaultUrl = keyVaultUri;
     }
-    
-    
+
     /**
      * Constructor.
      *
      * @param keyVaultUri the Azure Key Vault URI.
-     * @param userAssignedIdentity the user assigned identity.
+     * @param managedIdentity the managed identity object ID.
      */
-    KeyVaultClient(String keyVaultUri, String userAssignedIdentity) {
+    KeyVaultClient(String keyVaultUri, String managedIdentity) {
         super(RestClientFactory.createClient());
         LOGGER.log(INFO, "Using Azure Key Vault: {0}", keyVaultUri);
         if (!keyVaultUri.endsWith("/")) {
             keyVaultUri = keyVaultUri + "/";
         }
         this.keyVaultUrl = keyVaultUri;
+        this.managedIdentity = managedIdentity;
     }
 
     /**
@@ -127,14 +128,16 @@ class KeyVaultClient extends DelegateRestClient {
         String accessToken = null;
         try {
             AuthClient authClient = new AuthClient();
+
             String resource = URLEncoder.encode("https://vault.azure.net", "UTF-8");
+            if (managedIdentity != null) {
+                managedIdentity = URLEncoder.encode(managedIdentity, "UTF-8");
+            }
+
             if (tenantId != null && clientId != null && clientSecret != null) {
                 accessToken = authClient.getAccessToken(resource, tenantId, clientId, clientSecret);
-            } else if (identity != null) {
-                accessToken = authClient.getAccessToken(resource, identity);
-            }
-            else {
-                accessToken = authClient.getAccessToken(resource, identity);
+            } else {
+                accessToken = authClient.getAccessToken(resource, managedIdentity);
             }
         } catch (UnsupportedEncodingException uee) {
             LOGGER.log(WARNING, "Unsupported encoding", uee);
@@ -259,13 +262,12 @@ class KeyVaultClient extends DelegateRestClient {
                 }
             }
         }
-        
+
         // 
         // If the private key is not available the certificate cannot be
         // used for server side certificates or mTLS. Then we do not know
         // the intent of the usage at this stage we skip this key.
         //
-
         LOGGER.exiting("KeyVaultClient", "getKey", key);
         return key;
     }

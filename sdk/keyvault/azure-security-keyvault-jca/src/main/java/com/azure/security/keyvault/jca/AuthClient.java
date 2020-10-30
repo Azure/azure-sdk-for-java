@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.logging.Logger;
 
 import static java.util.logging.Level.FINER;
+import static java.util.logging.Level.INFO;
 
 /**
  * The REST client specific to getting an access token for Azure REST APIs.
@@ -133,12 +134,19 @@ class AuthClient extends DelegateRestClient {
     private String getAccessTokenOnAppService(String resource, String identity) {
         LOGGER.entering("AuthClient", "getAccessTokenOnAppService", resource);
         LOGGER.info("Getting access token using managed identity based on MSI_SECRET");
+        if (identity != null) {
+            LOGGER.log(INFO, "Using managed identity with object ID: {0}", identity);
+        }
         String result = null;
 
         StringBuilder url = new StringBuilder();
         url.append(System.getenv("MSI_ENDPOINT"))
            .append("?api-version=2017-09-01")
            .append(RESOURCE_FRAGMENT).append(resource);
+        
+        if (identity != null) {
+            url.append("&objectid=").append(identity);
+        }
 
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Metadata", "true");
@@ -164,11 +172,19 @@ class AuthClient extends DelegateRestClient {
     private String getAccessTokenOnOthers(String resource, String identity) {
         LOGGER.entering("AuthClient", "getAccessTokenOnOthers", resource);
         LOGGER.info("Getting access token using managed identity");
+        if (identity != null) {
+            LOGGER.log(INFO, "Using managed identity with object ID: {0}", identity);
+        }
+        
         String result = null;
 
         StringBuilder url = new StringBuilder();
         url.append(OAUTH2_MANAGED_IDENTITY_TOKEN_URL)
            .append(RESOURCE_FRAGMENT).append(resource);
+        
+        if (identity != null) {
+            url.append("&object_id=").append(identity);
+        }
 
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Metadata", "true");

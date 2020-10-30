@@ -83,11 +83,11 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
         String tenantId = System.getProperty("azure.keyvault.tenantId");
         String clientId = System.getProperty("azure.keyvault.clientId");
         String clientSecret = System.getProperty("azure.keyvault.clientSecret");
-        String userAssignedIdentity = System.getProperty("azure.keyvault.userAssignedIdentity");
-        if (userAssignedIdentity != null) {
-            keyVaultClient = new KeyVaultClient(keyVaultUri, userAssignedIdentity);
-        } else {
+        String managedIdentity = System.getProperty("azure.keyvault.managedIdentity");
+        if (clientId != null) {
             keyVaultClient = new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret);
+        } else {
+            keyVaultClient = new KeyVaultClient(keyVaultUri, managedIdentity);
         }
     }
 
