@@ -53,7 +53,7 @@ public class AzureContextAutoConfiguration {
     /**
      * Create an {@link Azure} bean.
      * 
-     * @param credentials     The credential to connect to Azure.
+     * @param credentials The credential to connect to Azure.
      * @param azureProperties The configured Azure properties.
      * @return An Azure object.
      * @throws IOException When IOException happens.
