@@ -66,8 +66,6 @@ public class FaultTolerantObject<T extends IOObject> {
                             && (FaultTolerantObject.this.innerObject == null ||
                                 FaultTolerantObject.this.innerObject.getState() == IOObject.IOObjectState.CLOSED ||
                                 FaultTolerantObject.this.innerObject.getState() == IOObject.IOObjectState.CLOSING)) {
-                                    shouldCreateNewInnerObject = true;
-                                    FaultTolerantObject.this.creatingNewInnerObject = true;
                                     if (TRACE_LOGGER.isInfoEnabled()) {
                                         TRACE_LOGGER.info(String.format(Locale.US,
                                             "FaultTolerantObject[%s] client[%s] session[%s] decided to create cNIO[%s] innerObject[%s] iOstate[%s]",
@@ -76,6 +74,8 @@ public class FaultTolerantObject<T extends IOObject> {
                                             FaultTolerantObject.this.innerObject != null ? "not null" : "null",
                                             FaultTolerantObject.this.innerObject != null ? FaultTolerantObject.this.innerObject.getState().toString() : "--"));
                                     }
+                                    shouldCreateNewInnerObject = true;
+                                    FaultTolerantObject.this.creatingNewInnerObject = true;
                         }
                     }
                     if (shouldCreateNewInnerObject) {
