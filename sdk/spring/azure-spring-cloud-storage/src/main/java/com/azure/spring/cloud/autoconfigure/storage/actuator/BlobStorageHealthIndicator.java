@@ -15,9 +15,12 @@ import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.StorageAccountInfo;
 
+/**
+ * Health indicator for blob storage.
+ */
 public class BlobStorageHealthIndicator implements HealthIndicator {
 
-    private BlobServiceAsyncClient internalClient;
+    private final BlobServiceAsyncClient internalClient;
 
     public BlobStorageHealthIndicator(ApplicationContext applicationContext) {
         BlobServiceClientBuilder blobStorageClientBuilder = applicationContext.getBean(BlobServiceClientBuilder.class);

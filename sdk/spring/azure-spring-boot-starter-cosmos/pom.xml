@@ -15,7 +15,7 @@
   <artifactId>azure-spring-boot-starter-cosmos</artifactId>
   <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-cosmos;current} -->
 
-  <name>Azure Cosmos DB Spring Boot Starter</name>
+  <name>Azure Spring Boot Starter for Azure Cosmos DB</name>
   <description>Spring Boot Starter for Azure Document DB service</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 

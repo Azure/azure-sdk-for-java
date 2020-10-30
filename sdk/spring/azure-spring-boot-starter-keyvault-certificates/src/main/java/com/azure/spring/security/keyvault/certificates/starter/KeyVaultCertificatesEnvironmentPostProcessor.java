@@ -18,6 +18,9 @@ import org.springframework.core.env.PropertiesPropertySource;
 
 import static org.springframework.core.Ordered.LOWEST_PRECEDENCE;
 
+/**
+ * Leverage {@link EnvironmentPostProcessor} to add Key Store property source.
+ */
 @Order(LOWEST_PRECEDENCE)
 public class KeyVaultCertificatesEnvironmentPostProcessor implements EnvironmentPostProcessor {
 
