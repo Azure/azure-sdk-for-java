@@ -14,7 +14,6 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
-import com.azure.messaging.servicebus.administration.models.CorrelationRuleFilter;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
 import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
@@ -188,7 +187,6 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         // Arrange
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
 
-        // There is a single default rule created.
         final String ruleName = testResourceNamer.randomName("rule", 10);
         final String topicName = interceptorManager.isPlaybackMode()
             ? "topic-13"
@@ -225,7 +223,6 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         // Arrange
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
 
-        // There is a single default rule created.
         final String ruleName = testResourceNamer.randomName("rule", 10);
         final String topicName = interceptorManager.isPlaybackMode()
             ? "topic-13"
@@ -250,7 +247,6 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         // Arrange
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
 
-        // There is a single default rule created.
         final String ruleName = testResourceNamer.randomName("rule", 10);
         final String topicName = interceptorManager.isPlaybackMode()
             ? "topic-13"
@@ -865,29 +861,34 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         // Arrange
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
 
-        // There is a single default rule created.
-        final String ruleName = testResourceNamer.randomName("rule", 10);
+        final String ruleName = testResourceNamer.randomName("rule", 15);
         final String topicName = interceptorManager.isPlaybackMode()
-            ? "topic-13"
-            : getEntityName(getTopicBaseName(), 13);
+            ? "topic-12"
+            : getEntityName(getTopicBaseName(), 12);
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription"
             : getSubscriptionBaseName();
-        final CorrelationRuleFilter filter = new CorrelationRuleFilter("baz")
-            .setContentType("test-content-type")
-            .setLabel("the-label");
+        final SqlRuleAction expectedAction = new SqlRuleAction("SET MessageId = 'matching-id'");
+        final SqlRuleFilter expectedFilter = new SqlRuleFilter("sys.To = 'telemetry-event'");
+
+        final RuleProperties existingRule = client.createRule(topicName, subscriptionName, ruleName).block(TIMEOUT);
+        assertNotNull(existingRule);
+
+        existingRule.setAction(expectedAction).setFilter(expectedFilter);
 
         // Act & Assert
-        StepVerifier.create(client.createRule(topicName, subscriptionName, ruleName))
+        StepVerifier.create(client.updateRule(topicName, subscriptionName, existingRule))
             .assertNext(contents -> {
                 assertNotNull(contents);
                 assertEquals(ruleName, contents.getName());
 
-                assertNotNull(contents.getFilter());
-                assertTrue(contents.getFilter() instanceof TrueRuleFilter);
+                assertTrue(contents.getFilter() instanceof SqlRuleFilter);
+                assertEquals(expectedFilter.getSqlExpression(),
+                    ((SqlRuleFilter) contents.getFilter()).getSqlExpression());
 
-                assertNotNull(contents.getAction());
-                assertTrue(contents.getAction() instanceof EmptyRuleAction);
+                assertTrue(contents.getAction() instanceof SqlRuleAction);
+                assertEquals(expectedAction.getSqlExpression(),
+                    ((SqlRuleAction) contents.getAction()).getSqlExpression());
             })
             .verifyComplete();
     }
