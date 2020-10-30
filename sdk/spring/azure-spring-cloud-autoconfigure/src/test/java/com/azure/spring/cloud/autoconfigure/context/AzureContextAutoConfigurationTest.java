@@ -3,10 +3,19 @@
 
 package com.azure.spring.cloud.autoconfigure.context;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.io.IOException;
 
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -19,18 +28,6 @@ import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.Azure;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 
 public class AzureContextAutoConfigurationTest {
     private ApplicationContextRunner contextRunner = new ApplicationContextRunner()
@@ -87,14 +84,14 @@ public class AzureContextAutoConfigurationTest {
     public void testDefaultSubscriptionId() throws IOException {
         AzureProperties azureProperties = new AzureProperties();
         String expectedSubscriptionId = "non-default-subscription-id";
-        
-        //Mock credentials
+
+        // Mock credentials
         AzureTokenCredentials mockCredentials = mock(AzureTokenCredentials.class);
         when(mockCredentials.domain()).thenReturn("testdomain");
         when(mockCredentials.environment()).thenReturn(AzureEnvironment.AZURE);
         when(mockCredentials.defaultSubscriptionId()).thenReturn(expectedSubscriptionId);
-        
-        //Call real auto-config logic with stubbed-out connectivity
+
+        // Call real auto-config logic with stubbed-out connectivity
         AzureContextAutoConfiguration mockAutoConfig = mock(AzureContextAutoConfiguration.class);
         when(mockAutoConfig.azure(any(), any())).thenCallRealMethod();
         when(mockAutoConfig.authenticateToAzure(any(), anyString(), any())).then(invocation -> {
