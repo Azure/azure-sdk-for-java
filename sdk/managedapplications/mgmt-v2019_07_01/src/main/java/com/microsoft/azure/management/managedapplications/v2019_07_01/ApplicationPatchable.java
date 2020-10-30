@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.managedapplications.v2019_07_01;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
@@ -48,6 +49,70 @@ public class ApplicationPatchable extends GenericResource {
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /**
+     * The managed application billing details.
+     */
+    @JsonProperty(value = "properties.billingDetails", access = JsonProperty.Access.WRITE_ONLY)
+    private ApplicationBillingDetailsDefinition billingDetails;
+
+    /**
+     * The managed application Jit access policy.
+     */
+    @JsonProperty(value = "properties.jitAccessPolicy")
+    private ApplicationJitAccessPolicy jitAccessPolicy;
+
+    /**
+     * The publisher tenant Id.
+     */
+    @JsonProperty(value = "properties.publisherTenantId", access = JsonProperty.Access.WRITE_ONLY)
+    private String publisherTenantId;
+
+    /**
+     * The  read-only authorizations property that is retrieved from the
+     * application package.
+     */
+    @JsonProperty(value = "properties.authorizations", access = JsonProperty.Access.WRITE_ONLY)
+    private List<ApplicationAuthorization> authorizations;
+
+    /**
+     * The managed application management mode. Possible values include:
+     * 'NotSpecified', 'Unmanaged', 'Managed'.
+     */
+    @JsonProperty(value = "properties.managementMode", access = JsonProperty.Access.WRITE_ONLY)
+    private ApplicationManagementMode managementMode;
+
+    /**
+     * The read-only customer support property that is retrieved from the
+     * application package.
+     */
+    @JsonProperty(value = "properties.customerSupport", access = JsonProperty.Access.WRITE_ONLY)
+    private ApplicationPackageContact customerSupport;
+
+    /**
+     * The read-only support URLs property that is retrieved from the
+     * application package.
+     */
+    @JsonProperty(value = "properties.supportUrls", access = JsonProperty.Access.WRITE_ONLY)
+    private ApplicationPackageSupportUrls supportUrls;
+
+    /**
+     * The collection of managed application artifacts.
+     */
+    @JsonProperty(value = "properties.artifacts", access = JsonProperty.Access.WRITE_ONLY)
+    private List<ApplicationArtifact> artifacts;
+
+    /**
+     * The client entity that created the JIT request.
+     */
+    @JsonProperty(value = "properties.createdBy", access = JsonProperty.Access.WRITE_ONLY)
+    private ApplicationClientDetails createdBy;
+
+    /**
+     * The client entity that last updated the JIT request.
+     */
+    @JsonProperty(value = "properties.updatedBy", access = JsonProperty.Access.WRITE_ONLY)
+    private ApplicationClientDetails updatedBy;
 
     /**
      * The plan information.
@@ -144,6 +209,107 @@ public class ApplicationPatchable extends GenericResource {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the managed application billing details.
+     *
+     * @return the billingDetails value
+     */
+    public ApplicationBillingDetailsDefinition billingDetails() {
+        return this.billingDetails;
+    }
+
+    /**
+     * Get the managed application Jit access policy.
+     *
+     * @return the jitAccessPolicy value
+     */
+    public ApplicationJitAccessPolicy jitAccessPolicy() {
+        return this.jitAccessPolicy;
+    }
+
+    /**
+     * Set the managed application Jit access policy.
+     *
+     * @param jitAccessPolicy the jitAccessPolicy value to set
+     * @return the ApplicationPatchable object itself.
+     */
+    public ApplicationPatchable withJitAccessPolicy(ApplicationJitAccessPolicy jitAccessPolicy) {
+        this.jitAccessPolicy = jitAccessPolicy;
+        return this;
+    }
+
+    /**
+     * Get the publisher tenant Id.
+     *
+     * @return the publisherTenantId value
+     */
+    public String publisherTenantId() {
+        return this.publisherTenantId;
+    }
+
+    /**
+     * Get the  read-only authorizations property that is retrieved from the application package.
+     *
+     * @return the authorizations value
+     */
+    public List<ApplicationAuthorization> authorizations() {
+        return this.authorizations;
+    }
+
+    /**
+     * Get the managed application management mode. Possible values include: 'NotSpecified', 'Unmanaged', 'Managed'.
+     *
+     * @return the managementMode value
+     */
+    public ApplicationManagementMode managementMode() {
+        return this.managementMode;
+    }
+
+    /**
+     * Get the read-only customer support property that is retrieved from the application package.
+     *
+     * @return the customerSupport value
+     */
+    public ApplicationPackageContact customerSupport() {
+        return this.customerSupport;
+    }
+
+    /**
+     * Get the read-only support URLs property that is retrieved from the application package.
+     *
+     * @return the supportUrls value
+     */
+    public ApplicationPackageSupportUrls supportUrls() {
+        return this.supportUrls;
+    }
+
+    /**
+     * Get the collection of managed application artifacts.
+     *
+     * @return the artifacts value
+     */
+    public List<ApplicationArtifact> artifacts() {
+        return this.artifacts;
+    }
+
+    /**
+     * Get the client entity that created the JIT request.
+     *
+     * @return the createdBy value
+     */
+    public ApplicationClientDetails createdBy() {
+        return this.createdBy;
+    }
+
+    /**
+     * Get the client entity that last updated the JIT request.
+     *
+     * @return the updatedBy value
+     */
+    public ApplicationClientDetails updatedBy() {
+        return this.updatedBy;
     }
 
     /**

@@ -15,6 +15,7 @@ import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.managedapplications.v2019_07_01.ApplicationPatchable;
 import com.microsoft.azure.management.managedapplications.v2019_07_01.ErrorResponseException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
@@ -88,7 +89,7 @@ public class ApplicationsInner implements InnerSupportsGet<ApplicationInner>, In
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.managedapplications.v2019_07_01.Applications update" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applications/{applicationName}")
-        Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("applicationName") String applicationName, @Path("subscriptionId") String subscriptionId, @Body ApplicationInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("applicationName") String applicationName, @Path("subscriptionId") String subscriptionId, @Body ApplicationPatchable parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.managedapplications.v2019_07_01.Applications listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applications")
@@ -617,7 +618,7 @@ public class ApplicationsInner implements InnerSupportsGet<ApplicationInner>, In
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        final ApplicationInner parameters = null;
+        final ApplicationPatchable parameters = null;
         return service.update(resourceGroupName, applicationName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ApplicationInner>>>() {
                 @Override
@@ -643,7 +644,7 @@ public class ApplicationsInner implements InnerSupportsGet<ApplicationInner>, In
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ApplicationInner object if successful.
      */
-    public ApplicationInner update(String resourceGroupName, String applicationName, ApplicationInner parameters) {
+    public ApplicationInner update(String resourceGroupName, String applicationName, ApplicationPatchable parameters) {
         return updateWithServiceResponseAsync(resourceGroupName, applicationName, parameters).toBlocking().single().body();
     }
 
@@ -657,7 +658,7 @@ public class ApplicationsInner implements InnerSupportsGet<ApplicationInner>, In
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ApplicationInner> updateAsync(String resourceGroupName, String applicationName, ApplicationInner parameters, final ServiceCallback<ApplicationInner> serviceCallback) {
+    public ServiceFuture<ApplicationInner> updateAsync(String resourceGroupName, String applicationName, ApplicationPatchable parameters, final ServiceCallback<ApplicationInner> serviceCallback) {
         return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, applicationName, parameters), serviceCallback);
     }
 
@@ -670,7 +671,7 @@ public class ApplicationsInner implements InnerSupportsGet<ApplicationInner>, In
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationInner object
      */
-    public Observable<ApplicationInner> updateAsync(String resourceGroupName, String applicationName, ApplicationInner parameters) {
+    public Observable<ApplicationInner> updateAsync(String resourceGroupName, String applicationName, ApplicationPatchable parameters) {
         return updateWithServiceResponseAsync(resourceGroupName, applicationName, parameters).map(new Func1<ServiceResponse<ApplicationInner>, ApplicationInner>() {
             @Override
             public ApplicationInner call(ServiceResponse<ApplicationInner> response) {
@@ -688,7 +689,7 @@ public class ApplicationsInner implements InnerSupportsGet<ApplicationInner>, In
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationInner object
      */
-    public Observable<ServiceResponse<ApplicationInner>> updateWithServiceResponseAsync(String resourceGroupName, String applicationName, ApplicationInner parameters) {
+    public Observable<ServiceResponse<ApplicationInner>> updateWithServiceResponseAsync(String resourceGroupName, String applicationName, ApplicationPatchable parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
