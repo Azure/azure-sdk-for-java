@@ -80,6 +80,7 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -572,7 +573,7 @@ class ServiceBusReceiverAsyncClientTest {
             receiver2.close();
         }
 
-        verify(amqpReceiveLink, times(messagesToReceive)).updateDisposition(lockToken, Accepted.getInstance());
+        verify(amqpReceiveLink, atLeast(messagesToReceive)).updateDisposition(lockToken, Accepted.getInstance());
     }
 
     /**
