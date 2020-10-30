@@ -15,13 +15,17 @@ import com.azure.core.test.TestBase;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
+import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
 import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
 import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.administration.models.EmptyRuleAction;
+import com.azure.messaging.servicebus.administration.models.FalseRuleFilter;
 import com.azure.messaging.servicebus.administration.models.NamespaceType;
 import com.azure.messaging.servicebus.administration.models.QueueRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.RuleProperties;
 import com.azure.messaging.servicebus.administration.models.SharedAccessAuthorizationRule;
+import com.azure.messaging.servicebus.administration.models.SqlRuleAction;
+import com.azure.messaging.servicebus.administration.models.SqlRuleFilter;
 import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
 import com.azure.messaging.servicebus.administration.models.TopicRuntimeProperties;
@@ -173,6 +177,85 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
                 assertNotNull(runtimeProperties.getCreatedAt());
 
                 assertAuthorizationRules(expected.getAuthorizationRules(), actual.getAuthorizationRules());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void createRule(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
+
+        // There is a single default rule created.
+        final String ruleName = testResourceNamer.randomName("rule", 10);
+        final String topicName = interceptorManager.isPlaybackMode()
+            ? "topic-13"
+            : getEntityName(getTopicBaseName(), 13);
+        final String subscriptionName = interceptorManager.isPlaybackMode()
+            ? "subscription"
+            : getSubscriptionBaseName();
+        final SqlRuleAction action = new SqlRuleAction("SET Label = 'test'");
+        final CreateRuleOptions options = new CreateRuleOptions()
+            .setAction(action)
+            .setFilter(new FalseRuleFilter());
+
+        // Act & Assert
+        StepVerifier.create(client.createRule(topicName, subscriptionName, ruleName, options))
+            .assertNext(contents -> {
+
+                assertNotNull(contents);
+                assertEquals(ruleName, contents.getName());
+
+                assertNotNull(contents.getAction());
+                assertTrue(contents.getAction() instanceof SqlRuleAction);
+                assertEquals(action.getSqlExpression(), ((SqlRuleAction) contents.getAction()).getSqlExpression());
+
+                assertNotNull(contents.getFilter());
+                assertTrue(contents.getFilter() instanceof FalseRuleFilter);
+
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void createRuleResponse(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
+
+        // There is a single default rule created.
+        final String ruleName = testResourceNamer.randomName("rule", 10);
+        final String topicName = interceptorManager.isPlaybackMode()
+            ? "topic-13"
+            : getEntityName(getTopicBaseName(), 13);
+        final String subscriptionName = interceptorManager.isPlaybackMode()
+            ? "subscription"
+            : getSubscriptionBaseName();
+        final SqlRuleFilter filter = new SqlRuleFilter("sys.To=[parameters('bar')] OR sys.MessageId IS NULL");
+        filter.getProperties().put("bar", "foo");
+        final CreateRuleOptions options = new CreateRuleOptions()
+            .setAction(new EmptyRuleAction())
+            .setFilter(filter);
+
+        // Act & Assert
+        StepVerifier.create(client.createRuleWithResponse(topicName, subscriptionName, ruleName, options))
+            .assertNext(response -> {
+                assertEquals(201, response.getStatusCode());
+
+                final RuleProperties contents = response.getValue();
+
+                assertNotNull(contents);
+                assertEquals(ruleName, contents.getName());
+
+                assertNotNull(contents.getFilter());
+                assertTrue(contents.getFilter() instanceof SqlRuleFilter);
+
+                final SqlRuleFilter actualFilter = (SqlRuleFilter) contents.getFilter();
+                assertEquals(filter.getSqlExpression(), actualFilter.getSqlExpression());
+
+                assertNotNull(contents.getAction());
+                assertTrue(contents.getAction() instanceof EmptyRuleAction);
             })
             .verifyComplete();
     }
@@ -761,8 +844,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
         } else if (interceptorManager.isLiveMode()) {
-            builder.httpClient(httpClient)
-                .addPolicy(new RetryPolicy());
+            builder.httpClient(httpClient);
         } else {
             builder.httpClient(httpClient)
                 .addPolicy(interceptorManager.getRecordPolicy())
