@@ -220,6 +220,21 @@ public final class Utility {
      * @param data The input data which needs to convert to ByteBuffer.
      * @param length The expected input data length.
      * @param blockSize The size of each ByteBuffer.
+     * @return {@link ByteBuffer} which contains the input data.
+     * @throws UnexpectedLengthException when input data length mismatch input length.
+     * @throws RuntimeException When I/O error occurs.
+     */
+    public static Flux<ByteBuffer> convertStreamToByteBuffer(InputStream data, long length, int blockSize) {
+        return convertStreamToByteBuffer(data, length, blockSize, true);
+    }
+
+    /**
+     * A utility method for converting the input stream to Flux of ByteBuffer. Will check the equality of entity length
+     * and the input length.
+     *
+     * @param data The input data which needs to convert to ByteBuffer.
+     * @param length The expected input data length.
+     * @param blockSize The size of each ByteBuffer.
      * @param markAndReset Whether the stream needs to be marked and reset. This should generally always be true to
      * support retries. It is false in the case of buffered upload to support non markable streams because buffered
      * upload uses its own mechanisms to support retries.
@@ -228,7 +243,7 @@ public final class Utility {
      * @throws RuntimeException When I/O error occurs.
      */
     public static Flux<ByteBuffer> convertStreamToByteBuffer(InputStream data, long length, int blockSize,
-        boolean markAndReset) {
+                                                             boolean markAndReset) {
         if (markAndReset) {
             data.mark(Integer.MAX_VALUE);
         }

@@ -1455,12 +1455,13 @@ class BlockBlobAPITest extends APISpec {
             new TransientFailureInjectingHttpPipelinePolicy()
         )
 
+        when:
         def dataList = [] as List<ByteBuffer>
         dataSizeList.each { size -> dataList.add(getRandomData(size)) }
         def uploadOperation = clientWithFailure.upload(Flux.fromIterable(dataList).publish().autoConnect(),
             new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * Constants.MB), true)
 
-        expect:
+        then:
         StepVerifier.create(uploadOperation.then(collectBytesInBuffer(blockBlobAsyncClient.download())))
             .assertNext({ assert compareListToBuffer(dataList, it) })
             .verifyComplete()
