@@ -33,7 +33,7 @@ public class RuleProperties {
         EntityHelper.setRuleAccessor(new EntityHelper.RuleAccessor() {
             private final EmptyRuleActionImpl emptyRuleAction = new EmptyRuleActionImpl();
             private final SqlFilterImpl trueFilter = new TrueFilterImpl().setSqlExpression("1=1");
-            private final SqlFilterImpl falseFilter = new TrueFilterImpl().setSqlExpression("1=0");
+            private final SqlFilterImpl falseFilter = new FalseFilterImpl().setSqlExpression("1=0");
 
             @Override
             public RuleProperties toModel(RuleDescription description) {
