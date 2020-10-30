@@ -100,7 +100,7 @@ function GenerateDocfxTocContent([Hashtable]$tocContent, [String]$lang) {
     LogDebug "Initializing Default DocFx Site..."
     & $($DocFx) init -q -o "${DocOutDir}"
     # The line below is used for testing in local
-    # docfx init -q -o "${DocOutDir}"
+    #docfx init -q -o "${DocOutDir}"
     LogDebug "Copying template and configuration..."
     New-Item -Path "${DocOutDir}" -Name "templates" -ItemType "directory" -Force
     Copy-Item "${DocGenDir}/templates/*" -Destination "${DocOutDir}/templates" -Force -Recurse
@@ -108,8 +108,8 @@ function GenerateDocfxTocContent([Hashtable]$tocContent, [String]$lang) {
     $YmlPath = "${DocOutDir}/api"
     New-Item -Path $YmlPath -Name "toc.yml" -Force
     $visitedService = @{}
-    # Sort and display toc service name by alphabetical order.
-    foreach ($serviceMapping in $tocContent.getEnumerator() | Sort Value) {
+    # Sort and display toc service name by alphabetical order, and then sort artifact by order.
+    foreach ($serviceMapping in ($tocContent.GetEnumerator() | Sort-Object Value, Key)) {
         $artifact = $serviceMapping.Key
         $serviceName = $serviceMapping.Value
         $fileName = ($serviceName -replace '\s', '').ToLower().Trim()
@@ -136,7 +136,7 @@ function GenerateDocfxTocContent([Hashtable]$tocContent, [String]$lang) {
     LogDebug "Building site..."
     & $($DocFx) build "${DocOutDir}/docfx.json"
     # The line below is used for testing in local
-    # docfx build "${DocOutDir}/docfx.json"
+    #docfx build "${DocOutDir}/docfx.json"
     Copy-Item "${DocGenDir}/assets/logo.svg" -Destination "${DocOutDir}/_site/" -Force    
 }
 
