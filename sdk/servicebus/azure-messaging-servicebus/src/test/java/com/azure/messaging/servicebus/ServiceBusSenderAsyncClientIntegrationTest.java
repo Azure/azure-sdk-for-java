@@ -171,6 +171,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusReceiverAsyncClient destination1Receiver = getReceiverBuilder(useCredentials, entityType,
             destinationEntity, shareConnection)
             .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+            .disableAutoComplete()
             .buildAsyncClient();
 
         final AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
@@ -253,6 +254,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusReceiverAsyncClient destination1Receiver = getReceiverBuilder(useCredentials, entityType,
             destinationEntity, shareConnection)
             .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+            .disableAutoComplete()
             .buildAsyncClient();
 
         final AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
@@ -510,6 +512,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
             .buildAsyncClient();
         this.receiver = getReceiverBuilder(useCredentials, entityType, entityIndex, sharedConnection)
             .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+            .disableAutoComplete()
             .buildAsyncClient();
     }
 }
