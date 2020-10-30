@@ -35,7 +35,6 @@ public final class ServiceBusMessageBatch {
     private final String entityPath;
     private final String hostname;
 
-
     ServiceBusMessageBatch(int maxMessageSize, ErrorContextProvider contextProvider, TracerProvider tracerProvider,
         MessageSerializer serializer, String entityPath, String hostname) {
         this.maxMessageSize = maxMessageSize;
