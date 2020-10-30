@@ -275,7 +275,36 @@ For a more fine grained control and advanced features, you still have the `Servi
 counterpart `ServiceBusReceiverAsyncClient`.
 
 ```java
-TODO: Add processor client sample here
+
+// Sample code that processes a single message
+Consumer<ServiceBusProcessorContext> processMessage = messageContext -> {
+    try {
+        System.out.println(messageContext.getMessage().getMessageId());
+        // other message processing code
+        messageContext.complete(); 
+    } catch (Exception ex) {
+        messageContext.abandon(); 
+    }
+}   
+
+// Sample code that gets called if there's an error
+Consumer<Throwable> processError = throwable -> {
+    logError(throwable);
+    metrics.recordError(throwable);
+}
+
+// create the processor client via the builder and its sub-builder
+ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
+                                .connectionString("connection-string")
+                                .processor()
+                                .queueName("queue-name")
+                                .processMessage(processMessage)
+                                .processError(processError)
+                                .buildProcessorClient();
+
+// Starts the processor in the background and returns immediately
+processorClient.start();
+
 ```
 
 ### Working with sessions
@@ -291,10 +320,37 @@ queues/subscriptions that do not have sessions enabled.
 - To get the session counterpart of the receiver clients, you would use the `sessionReceiver()` on the builder to get an intermediate
 `ServiceBusSessionReceiverClient`/`ServiceBusSessionReceiverAsyncClient` which acts like a factory for you to get receiver clients for individual sessions. 
 
-The below code snippet shows you how to use the processor client to receive messages from multiple sessions as controlled by the `maxConcurentSessions` option.
+The below code snippet shows you how to use the processor client to receive messages from at most three different sessions at a given point.
 
 ```java
-TODO: Add sessionProcessor() example
+// Sample code that processes a single message
+Consumer<ServiceBusProcessorContext> processMessage = messageContext -> {
+    try {
+        System.out.println(messageContext.getMessage().getMessageId());
+        // other message processing code
+        messageContext.complete(); 
+    } catch (Exception ex) {
+        messageContext.abandon(); 
+    }
+}   
+
+// Sample code that gets called if there's an error
+Consumer<Throwable> processError = throwable -> {
+    logError(throwable);
+    metrics.recordError(throwable);
+}
+
+// create the processor client via the builder and its sub-builder
+ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
+                                .connectionString("connection-string")
+                                .processor()
+                                .queueName("queue-name")
+                                .maxConcurrentSessions(3)
+                                .processMessage(processMessage)
+                                .processError(processError)
+                                .buildProcessorClient();
+
+processorClient.start();
 ```
 
 The below code snippet shows you how to get a receiver client tied to a single session and then receive messages from it.
