@@ -2,8 +2,8 @@
 
 ## 5.3.1 (2020-10-30)
 ### Bug fixes
-- Eagerly close top-level client after fetching the list of partitions instead of waiting until the connection times
-out.
+- Eagerly close top-level client in `EventProcessorClient` after fetching the list of partitions instead of waiting until
+ the connection times out.
 - Added checks for matching lost link name with the current link name before propagating the error in
  `AmqpReceiveLinkProcessor`.
 
