@@ -316,9 +316,8 @@ Previously, you had the below options to receive messages from a session enabled
 
 Now, we simplify this by giving session variants of the same methods and classes that are available when working with
 queues/subscriptions that do not have sessions enabled. 
-- To get the session counterpart of the processor client described in the previous section, you would use the `sessionProcessor()` on the builder to get the session variant of the sub builder for the processor client.
-- To get the session counterpart of the receiver clients, you would use the `sessionReceiver()` on the builder to get an intermediate
-`ServiceBusSessionReceiverClient`/`ServiceBusSessionReceiverAsyncClient` which acts like a factory for you to get receiver clients for individual sessions. 
+
+To get the session counterpart of the processor client described in the previous section, you would use the `sessionProcessor()` on the builder to get the session variant of the sub builder for the processor client.
 
 The below code snippet shows you how to use the processor client to receive messages from at most three different sessions at a given point.
 
@@ -353,46 +352,23 @@ ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
 processorClient.start();
 ```
 
-The below code snippet shows you how to get a receiver client tied to a single session and then receive messages from it.
+For a more fine grained control and advanced features, you still have the `ServiceBusReceiverClient` and it's async 
+counterpart `ServiceBusReceiverAsyncClient` which are tied to a single session. To get the such receiver clients, you 
+would use the `sessionReceiver()` on the builder to get an intermediate `ServiceBusSessionReceiverClient`/`ServiceBusSessionReceiverAsyncClient` 
+which acts like a factory for you to get receiver clients for individual sessions. 
+
 Please note that getting such a receiver client is an async operation because the library will need to get a lock on the session by connecting to the service first.
 
 While the below code uses `acceptSession()` that takes a sessionId, you can also use `acceptNextSession()` that will result in the service attempting to get a lock on the next available session for you.
 
 ```java
-ServiceBusSessionReceiverAsyncClient sessionClient = new ServiceBusClientBuilder()
+ServiceBusSessionReceiverClient sessionClient = new ServiceBusClientBuilder()
     .connectionString(connectionString)
     .sessionReceiver()
     .queueName("queue")
-    .buildAsyncClient();
+    .buildClient();
 
-Mono<ServiceBusReceiverAsyncClient> receiverClientMono = sessionClient.acceptSession("my-session-id");
-
-// This is a non-blocking call. You would maintain a reference to this subscription and
-// dispose of it when you are done receiving messages.
-Disposable subscription = receiverClientMono.flatMapMany(asyncReceiver -> {
-    return asyncReceiver.receiveMessages()
-        .flatMap(context -> {
-
-            if (context.hasError()) {
-                System.out.printf("There was an error processing session %s. Error: %s%n",
-                    context.getSessionId(), context.getThrowable());
-                return Mono.empty();
-            }
-
-            ServiceBusReceivedMessage message = context.getMessage();
-            System.out.printf("Processing session '%s' message with Binary body: %s%n",
-                context.getSessionId(), new String(message.getBody()));
-
-            // Completes the message and then we'll return the message's sequence number.
-            return asyncReceiver.complete(message).thenReturn(message.getSequenceNumber());
-        });
-}).subscribe(sequenceNumber -> {
-    System.out.println("Completed message: " + sequenceNumber);
-}, error -> {
-    System.err.printf("Message handler encountered an exception. %s%n", error);
-}, () -> {
-    System.out.println("Completed receiving messages.");
-});
+ServiceBusReceiverClient receiverClient = sessionClient.acceptSession("my-session-id");
 ```
 
 ## Additional samples
