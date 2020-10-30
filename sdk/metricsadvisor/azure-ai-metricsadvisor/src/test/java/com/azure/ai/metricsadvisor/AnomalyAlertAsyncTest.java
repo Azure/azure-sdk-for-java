@@ -17,6 +17,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -86,9 +87,8 @@ public class AnomalyAlertAsyncTest extends AnomalyAlertTestBase {
             expectedAnomalyAlertList.forEach(expectedAnomalyAlert -> validateAnomalyAlertResult(expectedAnomalyAlert,
                 actualList.get(i.get())));
 
-            expectedAnomalyAlertIdList.forEach(inputAnomalyAlertConfigId ->
-                client.deleteAnomalyAlertConfiguration(inputAnomalyAlertList.get(i.get())
-                    .getMetricAlertConfigurations().get(i.get()).getDetectionConfigurationId()).block());
+            expectedAnomalyAlertIdList.forEach(inputConfigId ->
+                StepVerifier.create(client.deleteAnomalyAlertConfiguration(inputConfigId)).verifyComplete());
         });
     }
 
@@ -149,7 +149,9 @@ public class AnomalyAlertAsyncTest extends AnomalyAlertTestBase {
                     validateAnomalyAlertResult(createdAnomalyAlert, anomalyAlertConfigurationResponse.getValue());
                 });
         });
-        client.deleteAnomalyAlertConfiguration(alertConfigurationId.get()).block();
+        Mono<Void> deleteAnomalyAlertConfiguration = client.deleteAnomalyAlertConfiguration(alertConfigurationId.get());
+
+        StepVerifier.create(deleteAnomalyAlertConfiguration).verifyComplete();
     }
 
     // Create Anomaly alert configuration
@@ -160,20 +162,24 @@ public class AnomalyAlertAsyncTest extends AnomalyAlertTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void createAnomalyAlertConfiguration(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
         final AtomicReference<String> alertConfigurationId = new AtomicReference<>();
-        creatAnomalyAlertRunner(inputAnomalyAlert ->
+        try {
+           // Arrange
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+            creatAnomalyAlertRunner(inputAnomalyAlert ->
 
-            // Act & Assert
-            StepVerifier.create(client.createAnomalyAlertConfiguration(inputAnomalyAlert))
-                .assertNext(createdAnomalyAlert -> {
-                    alertConfigurationId.set(createdAnomalyAlert.getId());
-                    validateAnomalyAlertResult(inputAnomalyAlert, createdAnomalyAlert);
-                })
-                .verifyComplete());
-
-        client.deleteAnomalyAlertConfiguration(alertConfigurationId.get()).block();
+                // Act & Assert
+                StepVerifier.create(client.createAnomalyAlertConfiguration(inputAnomalyAlert))
+                    .assertNext(createdAnomalyAlert -> {
+                        alertConfigurationId.set(createdAnomalyAlert.getId());
+                        validateAnomalyAlertResult(inputAnomalyAlert, createdAnomalyAlert);
+                    })
+                    .verifyComplete());
+        } finally {
+            Mono<Void> deleteAnomalyAlertConfiguration
+                = client.deleteAnomalyAlertConfiguration(alertConfigurationId.get());
+            StepVerifier.create(deleteAnomalyAlertConfiguration).verifyComplete();
+        }
     }
 
     /**
@@ -211,44 +217,49 @@ public class AnomalyAlertAsyncTest extends AnomalyAlertTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void updateAnomalyAlertHappyPath(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
         final AtomicReference<String> inputAnomalyAlertConfigId = new AtomicReference<>();
-        creatAnomalyAlertRunner(inputAnomalyAlert -> {
+        try {
             // Arrange
-            final AnomalyAlertConfiguration createdAnomalyAlert =
-                client.createAnomalyAlertConfiguration(inputAnomalyAlert).block();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+            creatAnomalyAlertRunner(inputAnomalyAlert -> {
+                // Arrange
+                final AnomalyAlertConfiguration createdAnomalyAlert =
+                    client.createAnomalyAlertConfiguration(inputAnomalyAlert).block();
 
-            inputAnomalyAlertConfigId.set(createdAnomalyAlert.getId());
+                inputAnomalyAlertConfigId.set(createdAnomalyAlert.getId());
 
-            final MetricAnomalyAlertConfiguration metricAnomalyAlertConfiguration
-                = new MetricAnomalyAlertConfiguration(DETECTION_CONFIGURATION_ID,
-                MetricAnomalyAlertScope.forWholeSeries());
-            final MetricAnomalyAlertConfiguration metricAnomalyAlertConfiguration2
-                = new MetricAnomalyAlertConfiguration("e17f32d4-3ddf-4dc7-84ee-b4130c7e1777",
-                MetricAnomalyAlertScope.forWholeSeries());
+                final MetricAnomalyAlertConfiguration metricAnomalyAlertConfiguration
+                    = new MetricAnomalyAlertConfiguration(DETECTION_CONFIGURATION_ID,
+                    MetricAnomalyAlertScope.forWholeSeries());
+                final MetricAnomalyAlertConfiguration metricAnomalyAlertConfiguration2
+                    = new MetricAnomalyAlertConfiguration("e17f32d4-3ddf-4dc7-84ee-b4130c7e1777",
+                    MetricAnomalyAlertScope.forWholeSeries());
 
-            // Act & Assert
-            // add metricAnomalyAlertConfiguration and operator
-            StepVerifier.create(client.updateAnomalyAlertConfiguration(
-                createdAnomalyAlert.setMetricAlertConfigurations(
-                    Arrays.asList(metricAnomalyAlertConfiguration, metricAnomalyAlertConfiguration2))
-                    .setCrossMetricsOperator(MetricAnomalyAlertConfigurationsOperator.XOR)))
-                .assertNext(updatedAnomalyAlert -> {
-                    validateAnomalyAlertResult(inputAnomalyAlert
-                        .addMetricAlertConfiguration(metricAnomalyAlertConfiguration2), updatedAnomalyAlert);
-                    assertEquals(MetricAnomalyAlertConfigurationsOperator.XOR.toString(),
-                        updatedAnomalyAlert.getCrossMetricsOperator().toString());
-                }).verifyComplete();
+                // Act & Assert
+                // add metricAnomalyAlertConfiguration and operator
+                StepVerifier.create(client.updateAnomalyAlertConfiguration(
+                    createdAnomalyAlert.setMetricAlertConfigurations(
+                        Arrays.asList(metricAnomalyAlertConfiguration, metricAnomalyAlertConfiguration2))
+                        .setCrossMetricsOperator(MetricAnomalyAlertConfigurationsOperator.XOR)))
+                    .assertNext(updatedAnomalyAlert -> {
+                        validateAnomalyAlertResult(inputAnomalyAlert
+                            .addMetricAlertConfiguration(metricAnomalyAlertConfiguration2), updatedAnomalyAlert);
+                        assertEquals(MetricAnomalyAlertConfigurationsOperator.XOR.toString(),
+                            updatedAnomalyAlert.getCrossMetricsOperator().toString());
+                    }).verifyComplete();
 
-            // clear the set configurations, not allowed
-            StepVerifier.create(client.updateAnomalyAlertConfiguration(
-                createdAnomalyAlert.setMetricAlertConfigurations(null)))
-                .verifyErrorSatisfies(throwable -> assertEquals(
-                    "'alertConfiguration.metricAnomalyAlertConfigurations' is required and cannot be empty",
-                    throwable.getMessage()));
-        });
-        client.deleteAnomalyAlertConfigurationWithResponse(inputAnomalyAlertConfigId.get()).block();
+                // clear the set configurations, not allowed
+                StepVerifier.create(client.updateAnomalyAlertConfiguration(
+                    createdAnomalyAlert.setMetricAlertConfigurations(null)))
+                    .verifyErrorSatisfies(throwable -> assertEquals(
+                        "'alertConfiguration.metricAnomalyAlertConfigurations' is required and cannot be empty",
+                        throwable.getMessage()));
+            });
+        } finally {
+            Mono<Void> deleteAnomalyAlertConfiguration
+                = client.deleteAnomalyAlertConfiguration(inputAnomalyAlertConfigId.get());
+            StepVerifier.create(deleteAnomalyAlertConfiguration).verifyComplete();
+        }
     }
 
     // TODO (savaity) update cannot be used to clear a set description?
@@ -292,24 +303,29 @@ public class AnomalyAlertAsyncTest extends AnomalyAlertTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void updateAnomalyAlertRemoveHooks(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
+        final AtomicReference<String> alertConfigurationId = new AtomicReference<>();
         // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
-        final AtomicReference<String> inputAnomalyAlertConfigId = new AtomicReference<>();
-        creatAnomalyAlertRunner(inputAnomalyAlert -> {
-            // Arrange
-            final AnomalyAlertConfiguration createdAnomalyAlert =
-                client.createAnomalyAlertConfiguration(inputAnomalyAlert).block();
+        try {
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+            creatAnomalyAlertRunner(inputAnomalyAlert -> {
+                // Arrange
+                final AnomalyAlertConfiguration createdAnomalyAlert =
+                    client.createAnomalyAlertConfiguration(inputAnomalyAlert).block();
 
-            inputAnomalyAlertConfigId.set(createdAnomalyAlert.getId());
+                alertConfigurationId.set(createdAnomalyAlert.getId());
 
-            // Act & Assert
-            StepVerifier.create(client.updateAnomalyAlertConfiguration(
-                createdAnomalyAlert.removeHookToAlert(ALERT_HOOK_ID)))
-                .assertNext(updatedAnomalyAlert ->
-                    assertEquals(0, updatedAnomalyAlert.getIdOfHooksToAlert().size()))
-                .verifyComplete();
+                // Act & Assert
+                StepVerifier.create(client.updateAnomalyAlertConfiguration(
+                    createdAnomalyAlert.removeHookToAlert(ALERT_HOOK_ID)))
+                    .assertNext(updatedAnomalyAlert ->
+                        assertEquals(0, updatedAnomalyAlert.getIdOfHooksToAlert().size()))
+                    .verifyComplete();
 
-        });
-        client.deleteAnomalyAlertConfigurationWithResponse(inputAnomalyAlertConfigId.get()).block();
+            });
+        } finally {
+            Mono<Void> deleteAnomalyAlertConfiguration
+                = client.deleteAnomalyAlertConfiguration(alertConfigurationId.get());
+            StepVerifier.create(deleteAnomalyAlertConfiguration).verifyComplete();
+        }
     }
 }

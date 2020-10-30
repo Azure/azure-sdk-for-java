@@ -22,6 +22,7 @@ import java.util.HashMap;
 import static com.azure.ai.metricsadvisor.AnomalyAlertTestBase.DETECTION_CONFIGURATION_ID;
 import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_ENDPOINT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class IncidentRootCauseTestBase extends TestBase {
 
@@ -61,7 +62,6 @@ public abstract class IncidentRootCauseTestBase extends TestBase {
                 }
             }))
             .setPath(Collections.singletonList("city"))
-            .setScore(0.34265262137636504)
             .setDescription("Increase on category = Electronics (Consumer) | city = Karachi contributes the most to current incident.");
         return IncidentRootCauseTransforms.fromInner(innerRootCause);
     }
@@ -71,7 +71,7 @@ public abstract class IncidentRootCauseTestBase extends TestBase {
         assertEquals(expectedIncidentRootCause.getSeriesKey(), actualIncidentRootCause.getSeriesKey());
         assertEquals(expectedIncidentRootCause.getDescription(), actualIncidentRootCause.getDescription());
         assertEquals(expectedIncidentRootCause.getPaths(), actualIncidentRootCause.getPaths());
-        assertEquals(expectedIncidentRootCause.getConfidenceScore(), actualIncidentRootCause.getConfidenceScore());
+        assertNotNull(actualIncidentRootCause.getConfidenceScore());
     }
 
     String getEndpoint() {

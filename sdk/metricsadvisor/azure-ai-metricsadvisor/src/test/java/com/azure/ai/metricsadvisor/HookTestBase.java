@@ -97,7 +97,6 @@ public abstract class HookTestBase extends MetricsAdvisorAdministrationClientTes
 //        }
     }
 
-    // Track this with https://github.com/Azure/azure-sdk-for-java/issues/16932
     @Test
     abstract void testListHook(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
 

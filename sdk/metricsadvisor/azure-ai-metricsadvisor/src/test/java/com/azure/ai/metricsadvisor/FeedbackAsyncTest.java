@@ -147,14 +147,18 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
     void testListMetricFeedbackFilterByDimensionFilter(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
+        creatMetricFeedbackRunner(inputMetricFeedback -> {
+            client.createMetricFeedback(METRIC_ID, inputMetricFeedback).block();
 
-        // Act & Assert
-        StepVerifier.create(client.listMetricFeedbacks(METRIC_ID,
-            new ListMetricFeedbackOptions().setFilter(new ListMetricFeedbackFilter()
-                .setDimensionFilter(new DimensionKey(DIMENSION_FILTER))).setTop(10)))
-            .thenConsumeWhile(metricFeedback ->
-                metricFeedback.getDimensionFilter().asMap().keySet().stream().anyMatch(DIMENSION_FILTER::containsKey))
-            .verifyComplete();
+            // Act & Assert
+            StepVerifier.create(client.listMetricFeedbacks(METRIC_ID,
+                new ListMetricFeedbackOptions().setFilter(new ListMetricFeedbackFilter()
+                    .setDimensionFilter(new DimensionKey(DIMENSION_FILTER))).setTop(10)))
+                .thenConsumeWhile(metricFeedback ->
+                    metricFeedback.getDimensionFilter().asMap().keySet().stream().anyMatch(DIMENSION_FILTER::containsKey))
+                .verifyComplete();
+        }, ANOMALY);
+
     }
 
     /**
@@ -192,7 +196,8 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
                 new ListMetricFeedbackOptions().setFilter(new ListMetricFeedbackFilter()
                     .setStartTime(createdMetricFeedback.getCreatedTime())
                     .setTimeMode(FeedbackQueryTimeMode.FEEDBACK_CREATED_TIME))))
-                .thenConsumeWhile(metricFeedback -> metricFeedback.getCreatedTime().isAfter(createdMetricFeedback.getCreatedTime())
+                .thenConsumeWhile(metricFeedback ->
+                    metricFeedback.getCreatedTime().isAfter(createdMetricFeedback.getCreatedTime())
                         || metricFeedback.getCreatedTime().isEqual(createdMetricFeedback.getCreatedTime()))
                 .verifyComplete();
 
@@ -319,9 +324,7 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
         creatMetricFeedbackRunner(expectedMetricFeedback ->
             // Act & Assert
             StepVerifier.create(client.createMetricFeedback(METRIC_ID, expectedMetricFeedback))
-                .assertNext(createdMetricFeedback -> {
-                    validateMetricFeedbackResult(expectedMetricFeedback, createdMetricFeedback, CHANGE_POINT);
-                })
+                .assertNext(createdMetricFeedback -> validateMetricFeedbackResult(expectedMetricFeedback, createdMetricFeedback, CHANGE_POINT))
                 .verifyComplete(), CHANGE_POINT);
     }
 }

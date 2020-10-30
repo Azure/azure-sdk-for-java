@@ -19,6 +19,7 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
@@ -38,33 +39,35 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Override
     public void createDetectionConfigurationForWholeSeries(HttpClient httpClient,
-                                                           MetricsAdvisorServiceVersion serviceVersion) {
+        MetricsAdvisorServiceVersion serviceVersion) {
+        DataFeed dataFeed = null;
         MetricsAdvisorAdministrationAsyncClient client
             = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+        final AtomicReference<String> id = new AtomicReference<>();
+        try {
+            dataFeed = super.createDataFeed(httpClient, serviceVersion);
 
-        DataFeed dataFeed = super.createDataFeed(httpClient, serviceVersion);
+            Optional<Metric> optMetric = dataFeed.getSchema().getMetrics()
+                .stream()
+                .filter(m -> m.getName().equalsIgnoreCase("cost"))
+                .findFirst();
 
-        Optional<Metric> optMetric = dataFeed.getSchema().getMetrics()
-            .stream()
-            .filter(m -> m.getName().equalsIgnoreCase("cost"))
-            .findFirst();
+            final Metric costMetric = optMetric.get();
+            final String costMetricId = costMetric.getId();
 
-        final Metric costMetric = optMetric.get();
-        final String costMetricId = costMetric.getId();
+            StepVerifier.create(client.createMetricAnomalyDetectionConfiguration(costMetricId,
+                CreateDetectionConfigurationForWholeSeriesInput.INSTANCE.detectionConfiguration))
+                .assertNext(configuration -> {
+                    id.set(configuration.getId());
+                    super.assertCreateDetectionConfigurationForWholeSeriesOutput(configuration, costMetricId);
+                })
+                .verifyComplete();
 
-        final String[] id = new String[1];
-        StepVerifier.create(client.createMetricAnomalyDetectionConfiguration(costMetricId,
-            CreateDetectionConfigurationForWholeSeriesInput.INSTANCE.detectionConfiguration))
-            .assertNext(configuration -> {
-                id[0] = configuration.getId();
-                super.assertCreateDetectionConfigurationForWholeSeriesOutput(configuration, costMetricId);
-            })
-            .verifyComplete();
-
-        StepVerifier.create(client.deleteMetricAnomalyDetectionConfiguration(id[0]))
-            .verifyComplete();
-
-        super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
+        } finally {
+            StepVerifier.create(client.deleteMetricAnomalyDetectionConfiguration(id.get()))
+                .verifyComplete();
+            super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
+        }
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -72,32 +75,33 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
     @Override
     public void createDetectionConfigurationForSeriesAndGroup(HttpClient httpClient,
                                                               MetricsAdvisorServiceVersion serviceVersion) {
+        DataFeed dataFeed = null;
         MetricsAdvisorAdministrationAsyncClient client
             = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+        final AtomicReference<String> id = new AtomicReference<>();
+        try {
+            dataFeed = super.createDataFeed(httpClient, serviceVersion);
+            Optional<Metric> optMetric = dataFeed.getSchema().getMetrics()
+                .stream()
+                .filter(m -> m.getName().equalsIgnoreCase("cost"))
+                .findFirst();
 
-        DataFeed dataFeed = super.createDataFeed(httpClient, serviceVersion);
+            final Metric costMetric = optMetric.get();
+            final String costMetricId = costMetric.getId();
 
-        Optional<Metric> optMetric = dataFeed.getSchema().getMetrics()
-            .stream()
-            .filter(m -> m.getName().equalsIgnoreCase("cost"))
-            .findFirst();
+            StepVerifier.create(client.createMetricAnomalyDetectionConfiguration(costMetricId,
+                CreateDetectionConfigurationForSeriesAndGroupInput.INSTANCE.detectionConfiguration))
+                .assertNext(configuration -> {
+                    id.set(configuration.getId());
+                    super.assertCreateDetectionConfigurationForSeriesAndGroupOutput(configuration, costMetricId);
+                })
+                .verifyComplete();
+        } finally {
+            StepVerifier.create(client.deleteMetricAnomalyDetectionConfiguration(id.get()))
+                .verifyComplete();
 
-        final Metric costMetric = optMetric.get();
-        final String costMetricId = costMetric.getId();
-
-        final String[] id = new String[1];
-        StepVerifier.create(client.createMetricAnomalyDetectionConfiguration(costMetricId,
-            CreateDetectionConfigurationForSeriesAndGroupInput.INSTANCE.detectionConfiguration))
-            .assertNext(configuration -> {
-                id[0] = configuration.getId();
-                super.assertCreateDetectionConfigurationForSeriesAndGroupOutput(configuration, costMetricId);
-            })
-            .verifyComplete();
-
-        StepVerifier.create(client.deleteMetricAnomalyDetectionConfiguration(id[0]))
-            .verifyComplete();
-
-        super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
+            super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
+        }
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -105,90 +109,90 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
     @Override
     public void createDetectionConfigurationForMultipleSeriesAndGroup(HttpClient httpClient,
                                                                       MetricsAdvisorServiceVersion serviceVersion) {
+        DataFeed dataFeed = null;
         MetricsAdvisorAdministrationAsyncClient client
             = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+        final AtomicReference<String> id = new AtomicReference<>();
+        try {
+            dataFeed = super.createDataFeed(httpClient, serviceVersion);
 
-        DataFeed dataFeed = super.createDataFeed(httpClient, serviceVersion);
+            Optional<Metric> optMetric = dataFeed.getSchema().getMetrics()
+                .stream()
+                .filter(m -> m.getName().equalsIgnoreCase("cost"))
+                .findFirst();
 
-        Optional<Metric> optMetric = dataFeed.getSchema().getMetrics()
-            .stream()
-            .filter(m -> m.getName().equalsIgnoreCase("cost"))
-            .findFirst();
+            final Metric costMetric = optMetric.get();
+            final String costMetricId = costMetric.getId();
 
-        final Metric costMetric = optMetric.get();
-        final String costMetricId = costMetric.getId();
+            StepVerifier.create(client.createMetricAnomalyDetectionConfiguration(costMetricId,
+                CreateDetectionConfigurationForMultipleSeriesAndGroupInput.INSTANCE.detectionConfiguration))
+                .assertNext(configuration -> {
+                    id.set(configuration.getId());
+                    super.assertCreateDetectionConfigurationForMultipleSeriesAndGroupOutput(configuration, costMetricId);
+                })
+                .verifyComplete();
 
-        final String[] id = new String[1];
-        StepVerifier.create(client.createMetricAnomalyDetectionConfiguration(costMetricId,
-            CreateDetectionConfigurationForMultipleSeriesAndGroupInput.INSTANCE.detectionConfiguration))
-            .assertNext(configuration -> {
-                id[0] = configuration.getId();
-                super.assertCreateDetectionConfigurationForMultipleSeriesAndGroupOutput(configuration, costMetricId);
-            })
-            .verifyComplete();
-
-        StepVerifier.create(client.listMetricAnomalyDetectionConfigurations(costMetricId))
-            // Expect 2 config: Default + the one just created.
-            .assertNext(configuration -> {
-                Assertions.assertNotNull(configuration);
-            })
-            .assertNext(configuration -> {
-                Assertions.assertNotNull(configuration);
-            })
-            .verifyComplete();
-
-        StepVerifier.create(client.deleteMetricAnomalyDetectionConfiguration(id[0]))
-            .verifyComplete();
-
-        super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
+            StepVerifier.create(client.listMetricAnomalyDetectionConfigurations(costMetricId))
+                // Expect 2 config: Default + the one just created.
+                .assertNext(configuration -> Assertions.assertNotNull(configuration))
+                .assertNext(configuration -> Assertions.assertNotNull(configuration))
+                .verifyComplete();
+        } finally {
+            StepVerifier.create(client.deleteMetricAnomalyDetectionConfiguration(id.get()))
+                .verifyComplete();
+            super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
+        }
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Override
     public void updateDetectionConfiguration(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
+        DataFeed dataFeed = null;
         MetricsAdvisorAdministrationAsyncClient client
             = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+        final AtomicReference<String> id = new AtomicReference<>();
+        try {
+            dataFeed = super.createDataFeed(httpClient, serviceVersion);
 
-        DataFeed dataFeed = super.createDataFeed(httpClient, serviceVersion);
+            Optional<Metric> optMetric = dataFeed.getSchema().getMetrics()
+                .stream()
+                .filter(m -> m.getName().equalsIgnoreCase("cost"))
+                .findFirst();
 
-        Optional<Metric> optMetric = dataFeed.getSchema().getMetrics()
-            .stream()
-            .filter(m -> m.getName().equalsIgnoreCase("cost"))
-            .findFirst();
+            final Metric costMetric = optMetric.get();
+            final String costMetricId = costMetric.getId();
 
-        final Metric costMetric = optMetric.get();
-        final String costMetricId = costMetric.getId();
+            final AnomalyDetectionConfiguration[] configs = new AnomalyDetectionConfiguration[1];
+            StepVerifier.create(client.createMetricAnomalyDetectionConfiguration(costMetricId,
+                UpdateDetectionConfigurationInput.INSTANCE.detectionConfiguration))
+                .assertNext(configuration -> {
+                    Assertions.assertNotNull(configuration);
+                    configs[0] = configuration;
+                })
+                .verifyComplete();
 
-        final AnomalyDetectionConfiguration[] configs = new AnomalyDetectionConfiguration[1];
-        StepVerifier.create(client.createMetricAnomalyDetectionConfiguration(costMetricId,
-            UpdateDetectionConfigurationInput.INSTANCE.detectionConfiguration))
-            .assertNext(configuration -> {
-                Assertions.assertNotNull(configuration);
-                configs[0] = configuration;
-            })
-            .verifyComplete();
+            Assertions.assertNotNull(configs[0]);
+            AnomalyDetectionConfiguration config = configs[0];
+            config.removeSingleSeriesDetectionCondition(UpdateDetectionConfigurationInput
+                .INSTANCE
+                .seriesKeyToRemoveOnUpdate);
 
-        Assertions.assertNotNull(configs[0]);
-        AnomalyDetectionConfiguration config = configs[0];
-        config.removeSingleSeriesDetectionCondition(UpdateDetectionConfigurationInput
-            .INSTANCE
-            .seriesKeyToRemoveOnUpdate);
+            config.addSeriesGroupDetectionCondition(UpdateDetectionConfigurationInput
+                .INSTANCE
+                .seriesGroupConditionToAddOnUpdate);
 
-        config.addSeriesGroupDetectionCondition(UpdateDetectionConfigurationInput
-            .INSTANCE
-            .seriesGroupConditionToAddOnUpdate);
+            StepVerifier.create(client.updateMetricAnomalyDetectionConfiguration(config))
+                .assertNext(configuration -> {
+                    id.set(configuration.getId());
+                    super.assertUpdateDetectionConfigurationOutput(configuration, costMetricId);
+                })
+                .verifyComplete();
+        } finally {
+            StepVerifier.create(client.deleteMetricAnomalyDetectionConfiguration(id.get()))
+                .verifyComplete();
 
-        StepVerifier.create(client.updateMetricAnomalyDetectionConfiguration(config))
-            .assertNext(configuration -> {
-                super.assertUpdateDetectionConfigurationOutput(configuration,
-                    costMetricId);
-            })
-            .verifyComplete();
-
-        StepVerifier.create(client.deleteMetricAnomalyDetectionConfiguration(config.getId()))
-            .verifyComplete();
-
-        super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
+            super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
+        }
     }
 }

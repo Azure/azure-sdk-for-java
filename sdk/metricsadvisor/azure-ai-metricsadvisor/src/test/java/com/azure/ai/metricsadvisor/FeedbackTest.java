@@ -4,6 +4,7 @@
 package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.models.DimensionKey;
+import com.azure.ai.metricsadvisor.models.FeedbackQueryTimeMode;
 import com.azure.ai.metricsadvisor.models.FeedbackType;
 import com.azure.ai.metricsadvisor.models.ListMetricFeedbackFilter;
 import com.azure.ai.metricsadvisor.models.ListMetricFeedbackOptions;
@@ -140,15 +141,16 @@ public class FeedbackTest extends FeedbackTestBase {
         MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
-
-        // Act & Assert
-        client.listMetricFeedbacks(METRIC_ID, new ListMetricFeedbackOptions()
-                .setFilter(new ListMetricFeedbackFilter()
-                    .setDimensionFilter(new DimensionKey(DIMENSION_FILTER))).setTop(10),
-            Context.NONE)
-            .stream().iterator()
-            .forEachRemaining(metricFeedback ->
-                metricFeedback.getDimensionFilter().asMap().keySet().stream().anyMatch(DIMENSION_FILTER::containsKey));
+        creatMetricFeedbackRunner(inputMetricFeedback -> {
+            // Act & Assert
+            client.listMetricFeedbacks(METRIC_ID, new ListMetricFeedbackOptions()
+                    .setFilter(new ListMetricFeedbackFilter()
+                        .setDimensionFilter(new DimensionKey(DIMENSION_FILTER))).setTop(10),
+                Context.NONE)
+                .stream().iterator()
+                .forEachRemaining(metricFeedback ->
+                    metricFeedback.getDimensionFilter().asMap().keySet().stream().anyMatch(DIMENSION_FILTER::containsKey));
+        }, ANOMALY);
     }
 
     /**
@@ -171,7 +173,7 @@ public class FeedbackTest extends FeedbackTestBase {
     }
 
     /**
-     * Verifies the result of the list metric feedback method to filter results using
+     * Verifies the result of the list metric feedback  method to filter results using
      * {@link ListMetricFeedbackFilter#setStartTime(OffsetDateTime)}.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -179,18 +181,18 @@ public class FeedbackTest extends FeedbackTestBase {
     void testListMetricFeedbackFilterStartTime(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
-
         creatMetricFeedbackRunner(inputMetricFeedback -> {
             final MetricFeedback createdMetricFeedback = client.createMetricFeedback(METRIC_ID, inputMetricFeedback);
 
             // Act & Assert
             client.listMetricFeedbacks(METRIC_ID,
                 new ListMetricFeedbackOptions().setFilter(new ListMetricFeedbackFilter()
-                    .setStartTime(createdMetricFeedback.getCreatedTime())), Context.NONE)
-                .stream().iterator().forEachRemaining(metricFeedback ->
-                assertTrue(metricFeedback.getCreatedTime().isAfter(createdMetricFeedback.getCreatedTime())
-                    || metricFeedback.getCreatedTime().isEqual(createdMetricFeedback.getCreatedTime())));
-        }, COMMENT);
+                    .setStartTime(createdMetricFeedback.getCreatedTime())
+                    .setTimeMode(FeedbackQueryTimeMode.FEEDBACK_CREATED_TIME)), Context.NONE)
+                .forEach(metricFeedback ->
+                    assertTrue(metricFeedback.getCreatedTime().isAfter(createdMetricFeedback.getCreatedTime())
+                        || metricFeedback.getCreatedTime().isEqual(createdMetricFeedback.getCreatedTime())));
+        }, ANOMALY);
     }
 
     // Get Feedback

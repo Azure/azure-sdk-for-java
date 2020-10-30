@@ -103,6 +103,7 @@ public class RecordingRedactor {
                 content = content.replace(matcher.group(1), replacement);
             }
         }
+
         return content;
     }
 }

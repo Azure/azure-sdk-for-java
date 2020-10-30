@@ -87,9 +87,7 @@ public class AnomalyAlertTest extends AnomalyAlertTestBase {
             expectedAnomalyAlertList.forEach(expectedAnomalyAlert -> validateAnomalyAlertResult(expectedAnomalyAlert,
                 actualList.get(i.get())));
 
-            expectedAnomalyAlertIdList.forEach(inputAnomalyAlertConfigId ->
-                client.deleteAnomalyAlertConfiguration(inputAnomalyAlertList.get(i.get())
-                    .getMetricAlertConfigurations().get(i.get()).getDetectionConfigurationId()));
+            expectedAnomalyAlertIdList.forEach(inputConfigId -> client.deleteAnomalyAlertConfiguration(inputConfigId));
         });
     }
 

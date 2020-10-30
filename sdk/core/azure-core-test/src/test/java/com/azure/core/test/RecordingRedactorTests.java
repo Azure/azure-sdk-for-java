@@ -95,7 +95,7 @@ public class RecordingRedactorTests {
         + "\"url\":\"http://url\"}";
 
     private static final String REDACTED_HTTP_URL_RESPONSE_BODY = "\"dataSourceParameter\":{\"httpMethod\":\"GET\","
-        + "\"url\":\"REDACTED\"}";
+        + "\"url\":\"REDACTED\"}";;
 
     private static final String HOST_RESPONSE_BODY = "\"dataSourceParameter\":{\"port\":\"9200\","
         + "\"query\":\"select * from adsample2 where Timestamp = @StartTime\",\"host\":\"host.azure.com\"}";
@@ -169,7 +169,7 @@ public class RecordingRedactorTests {
             Arguments.of(USERNAME_RESPONSE_BODY, REDACTED_USERNAME_RESPONSE),
             Arguments.of(REDACTED_EMPTY_KEY_RESPONSE_BODY, EMPTY_KEY_RESPONSE_BODY),
             Arguments.of(NON_SENSITIVE_DATA_CONTENT, NON_SENSITIVE_DATA_CONTENT)
-            );
+        );
     }
 
 
