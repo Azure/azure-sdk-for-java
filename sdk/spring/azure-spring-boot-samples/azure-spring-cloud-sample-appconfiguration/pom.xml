@@ -12,14 +12,14 @@
   <artifactId>azure-spring-cloud-sample-appconfiguration</artifactId>
   <groupId>com.azure.spring</groupId>
   <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-sample-appconfiguration;current} -->
-  <name>Azure Spring Cloud App Configuration Sample</name>
+  <name>Azure Spring Cloud Sample App Configuration</name>
 
   <dependencyManagement>
     <dependencies>
       <dependency>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-dependencies</artifactId>
-        <version>Hoxton.SR7</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-dependencies;external_dependency} -->
+        <version>Hoxton.SR8</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-dependencies;external_dependency} -->
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -28,9 +28,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
-      <version>1.2.8-beta.1</version><!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-appconfiguration-config;current} -->
+      <groupId>com.azure.spring</groupId>
+      <artifactId>azure-spring-cloud-appconfiguration-config</artifactId>
+      <version>1.2.8-beta.1</version><!-- {x-version-update;com.azure.spring:azure-spring-cloud-appconfiguration-config;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

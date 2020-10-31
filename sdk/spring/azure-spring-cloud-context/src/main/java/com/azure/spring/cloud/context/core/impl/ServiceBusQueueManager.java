@@ -9,6 +9,9 @@ import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.servicebus.Queue;
 import com.microsoft.azure.management.servicebus.ServiceBusNamespace;
 
+/**
+ * Resource manager for Service Bus queue.
+ */
 public class ServiceBusQueueManager extends AzureManager<Queue, Tuple<ServiceBusNamespace, String>> {
 
     public ServiceBusQueueManager(Azure azure, AzureProperties azureProperties) {

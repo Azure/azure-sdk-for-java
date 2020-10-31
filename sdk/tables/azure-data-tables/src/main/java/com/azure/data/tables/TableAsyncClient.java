@@ -147,11 +147,16 @@ public final class TableAsyncClient {
     }
 
     Mono<Response<Void>> createWithResponse(Context context) {
-        return implementation.getTables().createWithResponseAsync(new TableProperties().setTableName(tableName), null,
-            ResponseFormat.RETURN_NO_CONTENT, null, context).map(response -> {
-                return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                null);
-            });
+        context = context == null ? Context.NONE : context;
+        final TableProperties properties = new TableProperties().setTableName(tableName);
+
+        try {
+            return implementation.getTables().createWithResponseAsync(properties, null,
+                ResponseFormat.RETURN_NO_CONTENT, null, context)
+                .map(response -> new SimpleResponse<>(response, null));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -181,15 +186,17 @@ public final class TableAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createEntityWithResponse(TableEntity entity) {
-        return withContext(context -> createEntityWithResponse(entity, context));
+        return withContext(context -> createEntityWithResponse(entity, null, context));
     }
 
-    Mono<Response<Void>> createEntityWithResponse(TableEntity entity, Context context) {
+    Mono<Response<Void>> createEntityWithResponse(TableEntity entity, Duration timeout, Context context) {
+        context = context == null ? Context.NONE : context;
+        Integer timeoutInt = timeout == null ? null : (int) timeout.getSeconds();
         if (entity == null) {
             return monoError(logger, new NullPointerException("TableEntity cannot be null"));
         }
         EntityHelper.setPropertiesFromGetters(entity, logger);
-        return implementation.getTables().insertEntityWithResponseAsync(tableName, null, null,
+        return implementation.getTables().insertEntityWithResponseAsync(tableName, timeoutInt, null,
             ResponseFormat.RETURN_NO_CONTENT, entity.getProperties(),
             null, context).map(response -> {
                 return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
@@ -259,6 +266,7 @@ public final class TableAsyncClient {
 
     Mono<Response<Void>> upsertEntityWithResponse(TableEntity entity, UpdateMode updateMode, Duration timeout,
                                                   Context context) {
+        context = context == null ? Context.NONE : context;
         Integer timeoutInt = timeout == null ? null : (int) timeout.getSeconds();
         if (entity == null) {
             return monoError(logger, new NullPointerException("TableEntity cannot be null"));
@@ -365,7 +373,8 @@ public final class TableAsyncClient {
     }
 
     Mono<Response<Void>> updateEntityWithResponse(TableEntity entity, UpdateMode updateMode, boolean ifUnchanged,
-                                                  Duration timeout, Context context) {
+                                                  Duration timeout, Context inputContext) {
+        Context context = inputContext == null ? Context.NONE : inputContext;
         Integer timeoutInt = timeout == null ? null : (int) timeout.getSeconds();
         if (entity == null) {
             return monoError(logger, new NullPointerException("TableEntity cannot be null"));
@@ -436,10 +445,9 @@ public final class TableAsyncClient {
     }
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
-        return implementation.getTables().deleteWithResponseAsync(tableName, null, context).map(response -> {
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                null);
-        });
+        context = context == null ? Context.NONE : context;
+        return implementation.getTables().deleteWithResponseAsync(tableName, null, context)
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -498,6 +506,7 @@ public final class TableAsyncClient {
 
     Mono<Response<Void>> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag, Duration timeout,
                                                   Context context) {
+        context = context == null ? Context.NONE : context;
         String matchParam = eTag == null ? "*" : eTag;
         Integer timeoutInt = timeout == null ? null : (int) timeout.getSeconds();
         context = context == null ? Context.NONE : context;
@@ -606,6 +615,7 @@ public final class TableAsyncClient {
     private <T extends TableEntity> Mono<PagedResponse<T>> listEntities(String nextPartitionKey, String nextRowKey,
                                                                         Context context, ListEntitiesOptions options,
                                                                         Class<T> resultType) {
+        context = context == null ? Context.NONE : context;
         QueryOptions queryOptions = new QueryOptions()
             .setFilter(options.getFilter())
             .setTop(options.getTop())

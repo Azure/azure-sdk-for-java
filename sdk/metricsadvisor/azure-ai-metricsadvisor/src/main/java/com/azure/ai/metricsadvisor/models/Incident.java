@@ -3,6 +3,8 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.implementation.util.IncidentHelper;
+
 import java.time.OffsetDateTime;
 
 /**
@@ -18,6 +20,49 @@ public final class Incident {
     private OffsetDateTime startTime;
     private OffsetDateTime lastTime;
 
+    static {
+        IncidentHelper.setAccessor(new IncidentHelper.IncidentAccessor() {
+            @Override
+            public void setId(Incident incident, String id) {
+                incident.setId(id);
+            }
+
+            @Override
+            public void setMetricId(Incident incident, String metricId) {
+                incident.setMetricId(metricId);
+            }
+
+            @Override
+            public void setDetectionConfigurationId(Incident incident, String detectionConfigurationId) {
+                incident.setDetectionConfigurationId(detectionConfigurationId);
+            }
+
+            @Override
+            public void setRootDimensionKey(Incident incident, DimensionKey rootDimensionKey) {
+                incident.setRootDimensionKey(rootDimensionKey);
+            }
+
+            @Override
+            public void setSeverity(Incident incident, Severity severity) {
+                incident.setSeverity(severity);
+            }
+
+            @Override
+            public void setStatus(Incident incident, IncidentStatus status) {
+                incident.setStatus(status);
+            }
+
+            @Override
+            public void setStartTime(Incident incident, OffsetDateTime startTime) {
+                incident.setStartTime(startTime);
+            }
+
+            @Override
+            public void setLastTime(Incident incident, OffsetDateTime lastTime) {
+                incident.setLastTime(lastTime);
+            }
+        });
+    }
     /**
      * Gets the incident id.
      *
@@ -91,5 +136,37 @@ public final class Incident {
      */
     public OffsetDateTime getLastTime() {
         return this.lastTime;
+    }
+
+    void setId(String id) {
+        this.id = id;
+    }
+
+    void setMetricId(String metricId) {
+        this.metricId = metricId;
+    }
+
+    void setDetectionConfigurationId(String detectionConfigurationId) {
+        this.detectionConfigurationId = detectionConfigurationId;
+    }
+
+    void setRootDimensionKey(DimensionKey rootDimensionKey) {
+        this.rootDimensionKey = rootDimensionKey;
+    }
+
+    void setSeverity(Severity severity) {
+        this.severity = severity;
+    }
+
+    void setStatus(IncidentStatus status) {
+        this.status = status;
+    }
+
+    void setStartTime(OffsetDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    void setLastTime(OffsetDateTime lastTime) {
+        this.lastTime = lastTime;
     }
 }

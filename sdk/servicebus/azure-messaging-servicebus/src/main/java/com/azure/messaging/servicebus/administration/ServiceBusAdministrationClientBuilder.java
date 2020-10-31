@@ -376,7 +376,6 @@ public class ServiceBusAdministrationClientBuilder {
 
         return new HttpPipelineBuilder()
             .policies(httpPolicies.toArray(new HttpPipelinePolicy[0]))
-
             .httpClient(httpClient)
             .build();
     }

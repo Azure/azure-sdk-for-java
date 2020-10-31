@@ -378,7 +378,7 @@ public final class ServiceBusReceivedMessage {
      * @return Session Id of the {@link ServiceBusReceivedMessage}.
      */
     public String getSessionId() {
-        return amqpAnnotatedMessage.getProperties().getGroupId();
+        return getAmqpAnnotatedMessage().getProperties().getGroupId();
     }
 
     /**

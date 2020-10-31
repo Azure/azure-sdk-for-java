@@ -8,6 +8,9 @@ import com.azure.storage.queue.models.QueueMessageItem;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * Helper class to process {@link QueueMessageItem}.
+ */
 public class StorageQueueHelper {
 
     public static String toString(QueueMessageItem messageItem) {

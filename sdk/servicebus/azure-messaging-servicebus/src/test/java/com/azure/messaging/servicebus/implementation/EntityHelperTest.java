@@ -38,11 +38,11 @@ class EntityHelperTest {
         assertEquals(expected.getDefaultMessageTimeToLive(), actual.getDefaultMessageTimeToLive());
         assertEquals(expected.getDuplicateDetectionHistoryTimeWindow(),
             actual.getDuplicateDetectionHistoryTimeWindow());
-        assertEquals(expected.enableBatchedOperations(), actual.isEnableBatchedOperations());
-        assertEquals(expected.enablePartitioning(), actual.isEnablePartitioning());
+        assertEquals(expected.isBatchedOperationsEnabled(), actual.isEnableBatchedOperations());
+        assertEquals(expected.isPartitioningEnabled(), actual.isEnablePartitioning());
         assertEquals(expected.getMaxSizeInMegabytes(), actual.getMaxSizeInMegabytes());
         assertEquals(expected.getStatus(), actual.getStatus());
-        assertEquals(expected.requiresDuplicateDetection(), actual.isRequiresDuplicateDetection());
+        assertEquals(expected.isDuplicateDetectionRequired(), actual.isRequiresDuplicateDetection());
         assertEquals(expected.isSupportOrdering(), actual.isSupportOrdering());
         assertEquals(expected.getUserMetadata(), actual.getUserMetadata());
     }
@@ -55,15 +55,15 @@ class EntityHelperTest {
             .setDefaultMessageTimeToLive(Duration.ofSeconds(50))
             .setDeadLetteringOnMessageExpiration(true)
             .setDuplicateDetectionHistoryTimeWindow(Duration.ofSeconds(13))
-            .setEnableBatchedOperations(false)
-            .setEnablePartitioning(true)
+            .setBatchedOperationsEnabled(false)
+            .setPartitioningEnabled(true)
             .setForwardTo("Forward-To-This-Queue")
             .setForwardDeadLetteredMessagesTo("Dead-Lettered-Forward-To")
             .setLockDuration(Duration.ofSeconds(120))
             .setMaxDeliveryCount(15)
             .setMaxSizeInMegabytes(2048)
-            .setRequiresDuplicateDetection(true)
-            .setRequiresSession(true)
+            .setDuplicateDetectionRequired(true)
+            .setSessionRequired(true)
             .setUserMetadata("Test-queue-Metadata")
             .setStatus(EntityStatus.DISABLED);
 
@@ -73,16 +73,16 @@ class EntityHelperTest {
         // Assert
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
         assertEquals(expected.getDefaultMessageTimeToLive(), actual.getDefaultMessageTimeToLive());
-        assertEquals(expected.deadLetteringOnMessageExpiration(), actual.isDeadLetteringOnMessageExpiration());
+        assertEquals(expected.isDeadLetteringOnMessageExpiration(), actual.isDeadLetteringOnMessageExpiration());
         assertEquals(expected.getDuplicateDetectionHistoryTimeWindow(), actual.getDuplicateDetectionHistoryTimeWindow());
-        assertEquals(expected.enableBatchedOperations(), actual.isEnableBatchedOperations());
-        assertEquals(expected.enablePartitioning(), actual.isEnablePartitioning());
+        assertEquals(expected.isBatchedOperationsEnabled(), actual.isEnableBatchedOperations());
+        assertEquals(expected.isPartitioningEnabled(), actual.isEnablePartitioning());
         assertEquals(expected.getForwardTo(), actual.getForwardTo());
         assertEquals(expected.getForwardDeadLetteredMessagesTo(), actual.getForwardDeadLetteredMessagesTo());
         assertEquals(expected.getLockDuration(), actual.getLockDuration());
         assertEquals(expected.getMaxDeliveryCount(), actual.getMaxDeliveryCount());
-        assertEquals(expected.requiresDuplicateDetection(), actual.isRequiresDuplicateDetection());
-        assertEquals(expected.requiresSession(), actual.isRequiresSession());
+        assertEquals(expected.isDuplicateDetectionRequired(), actual.isRequiresDuplicateDetection());
+        assertEquals(expected.isSessionRequired(), actual.isRequiresSession());
         assertEquals(expected.getUserMetadata(), actual.getUserMetadata());
         assertEquals(expected.getStatus(), actual.getStatus());
     }
@@ -122,12 +122,12 @@ class EntityHelperTest {
             .setDefaultMessageTimeToLive(Duration.ofSeconds(50))
             .setDeadLetteringOnMessageExpiration(true)
             .setEnableDeadLetteringOnFilterEvaluationExceptions(true)
-            .setEnableBatchedOperations(false)
+            .setBatchedOperationsEnabled(false)
             .setForwardTo("Forward-To-This-Queue")
             .setForwardDeadLetteredMessagesTo("Dead-Lettered-Forward-To")
             .setLockDuration(Duration.ofSeconds(120))
             .setMaxDeliveryCount(15)
-            .setRequiresSession(true)
+            .setSessionRequired(true)
             .setStatus(EntityStatus.RECEIVE_DISABLED)
             .setUserMetadata("Test-topic-Metadata");
 
@@ -137,15 +137,15 @@ class EntityHelperTest {
         // Assert
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
         assertEquals(expected.getDefaultMessageTimeToLive(), actual.getDefaultMessageTimeToLive());
-        assertEquals(expected.deadLetteringOnMessageExpiration(), actual.isDeadLetteringOnMessageExpiration());
-        assertEquals(expected.enableBatchedOperations(), actual.isEnableBatchedOperations());
-        assertEquals(expected.enableDeadLetteringOnFilterEvaluationExceptions(),
+        assertEquals(expected.isDeadLetteringOnMessageExpiration(), actual.isDeadLetteringOnMessageExpiration());
+        assertEquals(expected.isBatchedOperationsEnabled(), actual.isEnableBatchedOperations());
+        assertEquals(expected.isDeadLetteringOnFilterEvaluationExceptions(),
             actual.isDeadLetteringOnFilterEvaluationExceptions());
         assertEquals(expected.getForwardTo(), actual.getForwardTo());
         assertEquals(expected.getForwardDeadLetteredMessagesTo(), actual.getForwardDeadLetteredMessagesTo());
         assertEquals(expected.getLockDuration(), actual.getLockDuration());
         assertEquals(expected.getMaxDeliveryCount(), actual.getMaxDeliveryCount());
-        assertEquals(expected.requiresSession(), actual.isRequiresSession());
+        assertEquals(expected.isSessionRequired(), actual.isRequiresSession());
         assertEquals(expected.getUserMetadata(), actual.getUserMetadata());
         assertEquals(expected.getStatus(), actual.getStatus());
     }

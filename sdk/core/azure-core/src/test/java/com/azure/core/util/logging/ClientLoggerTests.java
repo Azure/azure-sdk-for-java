@@ -80,6 +80,30 @@ public class ClientLoggerTests {
         assertEquals(logContainsMessage, logValues.contains(logMessage));
     }
 
+    /**
+     * Test whether a log will be captured when the ClientLogger and message are configured to the passed log levels.
+     */
+    @ParameterizedTest
+    @MethodSource("logMaliciousErrorSupplier")
+    @ResourceLock("SYSTEM_OUT")
+    public void logMaliciousMessage(LogLevel logLevelToConfigure, LogLevel logLevelToUse)
+        throws UnsupportedEncodingException {
+        String logMessage = "You have successfully authenticated, \r\n[INFO] User dummy was not"
+                                + " successfully authenticated.";
+
+        String expectedMessage = "You have successfully authenticated, [INFO] User dummy was not"
+                                     + " successfully authenticated.";
+
+        String originalLogLevel = setupLogLevel(logLevelToConfigure.getLogLevel());
+        logMessage(new ClientLogger(ClientLoggerTests.class), logLevelToUse, logMessage);
+
+        setPropertyToOriginalOrClear(originalLogLevel);
+
+        String logValues = logCaptureStream.toString("UTF-8");
+        System.out.println(logValues);
+        assertEquals(true, logValues.contains(expectedMessage));
+    }
+
     @ParameterizedTest
     @MethodSource("singleLevelCheckSupplier")
     @ResourceLock("SYSTEM_OUT")
@@ -458,6 +482,41 @@ public class ClientLoggerTests {
 
             // Checking null.
             Arguments.of(LogLevel.VERBOSE, null, false, false)
+        );
+    }
+
+    private static Stream<Arguments> logMaliciousErrorSupplier() {
+        return Stream.of(
+            // Supported logging level set to VERBOSE.
+            // Checking VERBOSE.
+            Arguments.of(LogLevel.VERBOSE, LogLevel.VERBOSE, true),
+
+            // Checking INFORMATIONAL.
+            Arguments.of(LogLevel.VERBOSE, LogLevel.INFORMATIONAL, true),
+
+            // Checking WARNING.
+            Arguments.of(LogLevel.VERBOSE, LogLevel.WARNING, true),
+
+            // Checking ERROR.
+            Arguments.of(LogLevel.VERBOSE, LogLevel.ERROR, true),
+
+            // Checking INFORMATIONAL.
+            Arguments.of(LogLevel.INFORMATIONAL, LogLevel.INFORMATIONAL, true),
+
+            // Checking WARNING.
+            Arguments.of(LogLevel.INFORMATIONAL, LogLevel.WARNING, true),
+
+            // Checking ERROR.
+            Arguments.of(LogLevel.INFORMATIONAL, LogLevel.ERROR, true),
+
+            // Checking WARNING.
+            Arguments.of(LogLevel.WARNING, LogLevel.WARNING, true),
+
+            // Checking ERROR.
+            Arguments.of(LogLevel.WARNING, LogLevel.ERROR, true),
+
+            // Checking ERROR.
+            Arguments.of(LogLevel.ERROR, LogLevel.ERROR, true)
         );
     }
 

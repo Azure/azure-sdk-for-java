@@ -1,5 +1,6 @@
 package com.azure.storage.blob
 
+import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobType
 import com.azure.storage.blob.options.BlobInputStreamOptions
 import com.azure.storage.blob.specialized.BlobOutputStream
@@ -144,5 +145,32 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         propertiesBefore.getBlobSize() == 5 * Constants.MB
         byte[] randomBytes2 = outputStream.toByteArray()
         assert randomBytes2 == Arrays.copyOfRange(randomBytes, 1 * Constants.MB, 6 * Constants.MB)
+    }
+
+    // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
+    @Requires({ liveMode() })
+    def "Input stream etag lock"() {
+        setup:
+        int length = 6 * Constants.MB
+        byte[] randomBytes = getRandomByteArray(length)
+        BlobOutputStream outStream = bc.getBlobOutputStream()
+        outStream.write(randomBytes, 1 * Constants.MB, 5 * Constants.MB)
+        outStream.close()
+
+        // Read from the input stream
+        // Note: Setting block size to 1 is inefficient but helps demonstrate the purpose of this test.
+        def inputStream = bc.openInputStream(new BlobInputStreamOptions().setBlockSize(1))
+        inputStream.read()
+
+        // Modify the blob again.
+        outStream = bc.getBlobOutputStream(true)
+        outStream.write(randomBytes, 1 * Constants.MB, 5 * Constants.MB)
+        outStream.close()
+
+        when:
+        inputStream.read()
+
+        then:
+        thrown(IOException)
     }
 }
