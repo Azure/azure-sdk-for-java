@@ -58,7 +58,7 @@ public class RuleProperties {
 
                     if (action.getParameters() != null) {
                         for (KeyValueImpl parameter : action.getParameters()) {
-                            returned.getProperties().put(parameter.getKey(), parameter.getValue());
+                            returned.getParameters().put(parameter.getKey(), parameter.getValue());
                         }
                     }
 
@@ -99,7 +99,7 @@ public class RuleProperties {
 
                     if (filter.getParameters() != null) {
                         filter.getParameters().forEach(keyValue ->
-                            returned.getProperties().put(keyValue.getKey(), keyValue.getValue()));
+                            returned.getParameters().put(keyValue.getKey(), keyValue.getValue()));
                     }
 
                     return returned;
@@ -134,8 +134,8 @@ public class RuleProperties {
                         .setCompatibilityLevel(action.getCompatibilityLevel())
                         .setRequiresPreprocessing(action.isPreprocessingRequired());
 
-                    if (!action.getProperties().isEmpty()) {
-                        final List<KeyValueImpl> parameters = action.getProperties().entrySet().stream()
+                    if (!action.getParameters().isEmpty()) {
+                        final List<KeyValueImpl> parameters = action.getParameters().entrySet().stream()
                             .map(entry -> new KeyValueImpl()
                                 .setKey(entry.getKey()).setValue(entry.getValue().toString()))
                             .collect(Collectors.toList());
@@ -185,8 +185,8 @@ public class RuleProperties {
                         .setCompatibilityLevel(filter.getCompatibilityLevel())
                         .setRequiresPreprocessing(filter.isPreprocessingRequired());
 
-                    if (!filter.getProperties().isEmpty()) {
-                        final List<KeyValueImpl> parameters = filter.getProperties().entrySet()
+                    if (!filter.getParameters().isEmpty()) {
+                        final List<KeyValueImpl> parameters = filter.getParameters().entrySet()
                             .stream()
                             .map(entry -> new KeyValueImpl()
                                 .setKey(entry.getKey()).setValue(entry.getValue().toString()))

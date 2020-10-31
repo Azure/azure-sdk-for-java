@@ -287,7 +287,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
             ? "subscription"
             : getSubscriptionBaseName();
         final SqlRuleFilter filter = new SqlRuleFilter("sys.To=[parameters('bar')] OR sys.MessageId IS NULL");
-        filter.getProperties().put("bar", "foo");
+        filter.getParameters().put("bar", "foo");
         final CreateRuleOptions options = new CreateRuleOptions()
             .setAction(new EmptyRuleAction())
             .setFilter(filter);
