@@ -73,7 +73,7 @@ public final class MessageUtils {
     /**
      * Calculate the total time from the retry options assuming all retries are exhausted.
      */
-    public static Duration calcTotalTimeout(AmqpRetryOptions retryOptions) {
+    public static Duration getTotalTimeout(AmqpRetryOptions retryOptions) {
         long tryTimeout = retryOptions.getTryTimeout().toNanos();
         long maxDelay = retryOptions.getMaxDelay().toNanos();
         long totalTimeout = tryTimeout;  // The original attempt not counted as a retry

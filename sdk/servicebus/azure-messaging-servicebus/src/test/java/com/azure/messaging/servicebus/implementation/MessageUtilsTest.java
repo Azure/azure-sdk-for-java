@@ -70,14 +70,14 @@ class MessageUtilsTest {
     }
 
     @ParameterizedTest
-    @MethodSource("calcTotalTimeoutTestData")
-    void calcTotalTimeout(List<Object> testData) {
+    @MethodSource("calculateTotalTimeoutTestData")
+    void calculateTotalTimeout(List<Object> testData) {
         AmqpRetryOptions amqpRetryOptions = (AmqpRetryOptions) testData.get(0);
         long expectedResult = (long) testData.get(1);
-        assertEquals(MessageUtils.calcTotalTimeout(amqpRetryOptions).toMillis(), expectedResult);
+        assertEquals(MessageUtils.getTotalTimeout(amqpRetryOptions).toMillis(), expectedResult);
     }
 
-    static Stream<List<Object>> calcTotalTimeoutTestData() {
+    static Stream<List<Object>> calculateTotalTimeoutTestData() {
         // default value of AmqpRetryTimeOut: Max retries: 3, delay: 800ms, max delay: 1m, try timeout: 1m
         List<Object> defaultValue = new ArrayList<>();
         defaultValue.add(new AmqpRetryOptions());

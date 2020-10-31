@@ -611,7 +611,7 @@ public final class ServiceBusClientBuilder {
          * @throws IllegalArgumentException if the entity type is not a queue or a topic.
          */
         public ServiceBusSenderClient buildClient() {
-            return new ServiceBusSenderClient(buildAsyncClient(), MessageUtils.calcTotalTimeout(retryOptions));
+            return new ServiceBusSenderClient(buildAsyncClient(), MessageUtils.getTotalTimeout(retryOptions));
         }
     }
 
@@ -787,7 +787,7 @@ public final class ServiceBusClientBuilder {
          */
         ServiceBusReceiverClient buildClientForProcessor() {
             return new ServiceBusReceiverClient(buildAsyncClientForProcessor(false),
-                MessageUtils.calcTotalTimeout(retryOptions));
+                MessageUtils.getTotalTimeout(retryOptions));
         }
 
         private ServiceBusReceiverAsyncClient buildAsyncClientForProcessor(boolean isAutoCompleteAllowed) {
@@ -854,7 +854,7 @@ public final class ServiceBusClientBuilder {
          */
         public ServiceBusSessionReceiverClient buildClient() {
             return new ServiceBusSessionReceiverClient(buildAsyncClient(false),
-                MessageUtils.calcTotalTimeout(retryOptions));
+                MessageUtils.getTotalTimeout(retryOptions));
         }
 
         private ServiceBusSessionReceiverAsyncClient buildAsyncClient(boolean isAutoCompleteAllowed) {
@@ -1053,7 +1053,7 @@ public final class ServiceBusClientBuilder {
          */
         public ServiceBusReceiverClient buildClient() {
             return new ServiceBusReceiverClient(buildAsyncClient(false),
-                MessageUtils.calcTotalTimeout(retryOptions));
+                MessageUtils.getTotalTimeout(retryOptions));
         }
 
         ServiceBusReceiverAsyncClient buildAsyncClient(boolean isAutoCompleteAllowed) {
