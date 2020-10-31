@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
@@ -71,30 +72,20 @@ class MessageUtilsTest {
 
     @ParameterizedTest
     @MethodSource("calculateTotalTimeoutTestData")
-    void calculateTotalTimeout(List<Object> testData) {
-        AmqpRetryOptions amqpRetryOptions = (AmqpRetryOptions) testData.get(0);
-        long expectedResult = (long) testData.get(1);
-        assertEquals(MessageUtils.getTotalTimeout(amqpRetryOptions).toMillis(), expectedResult);
+    void calculateTotalTimeout(AmqpRetryOptions amqpRetryOptions, long expectedResult) {
+        assertEquals(expectedResult, MessageUtils.getTotalTimeout(amqpRetryOptions).toMillis());
     }
 
-    static Stream<List<Object>> calculateTotalTimeoutTestData() {
+    static Stream<Arguments> calculateTotalTimeoutTestData() {
         // default value of AmqpRetryTimeOut: Max retries: 3, delay: 800ms, max delay: 1m, try timeout: 1m
-        List<Object> defaultValue = new ArrayList<>();
-        defaultValue.add(new AmqpRetryOptions());
-        defaultValue.add((long) (60 * 1000 + (800 + 60 * 1000) + (1600 + 60 * 1000) + (3200 + 60 * 1000)));
-
-        List<Object> reachMaxDelay = new ArrayList<>();
-        reachMaxDelay.add(new AmqpRetryOptions().setDelay(Duration.ofSeconds(30)));
-        reachMaxDelay.add((long) (60 * 1000 + (30 * 1000 + 60 * 1000) + (60 * 1000 + 60 * 1000) * 2));
-
-        List<Object> fixedDelay = new ArrayList<>();
-        fixedDelay.add(new AmqpRetryOptions().setMode(AmqpRetryMode.FIXED));
-        fixedDelay.add((long) (60 * 1000 + (800 + 60 * 1000) * 3));
-
-        List<Object> zeroRetry = new ArrayList<>();
-        zeroRetry.add(new AmqpRetryOptions().setMaxRetries(0));
-        zeroRetry.add((long) (60 * 1000));
-
+        Arguments defaultValue = Arguments.of(new AmqpRetryOptions(),
+            60 * 1000 + (800 + 60 * 1000) + (1600 + 60 * 1000) + (3200 + 60 * 1000));
+        Arguments reachMaxDelay = Arguments.of(new AmqpRetryOptions().setDelay(Duration.ofSeconds(30)),
+            60 * 1000 + (30 * 1000 + 60 * 1000) + (60 * 1000 + 60 * 1000) * 2);
+        Arguments fixedDelay = Arguments.of(new AmqpRetryOptions().setMode(AmqpRetryMode.FIXED),
+            60 * 1000 + (800 + 60 * 1000) * 3);
+        Arguments zeroRetry = Arguments.of(new AmqpRetryOptions().setMaxRetries(0),
+            60 * 1000);
         return Stream.of(defaultValue, reachMaxDelay, fixedDelay, zeroRetry);
     }
 }
