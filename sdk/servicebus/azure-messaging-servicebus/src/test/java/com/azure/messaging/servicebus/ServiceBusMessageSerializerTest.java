@@ -132,13 +132,6 @@ class ServiceBusMessageSerializerTest {
         assertEquals(payload, new String(actualMessage.getBody(), UTF_8));
     }
 
-    private void assertValues(Map<Symbol, Object> expected, Map<String, Object> actual) {
-        assertEquals(expected.size(), actual.size());
-        for (Map.Entry<Symbol, Object> expectedEntry : expected.entrySet()) {
-            assertEquals(expectedEntry.getValue(), actual.get(expectedEntry.getKey().toString()));
-        }
-    }
-
     /**
      * Verifies that an empty collection is returned if the status code was not {@link AmqpResponseCode#ACCEPTED}.
      */
@@ -158,5 +151,12 @@ class ServiceBusMessageSerializerTest {
         // Assert
         Assertions.assertNotNull(actual);
         Assertions.assertTrue(actual.isEmpty());
+    }
+
+    private void assertValues(Map<Symbol, Object> expected, Map<String, Object> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (Map.Entry<Symbol, Object> expectedEntry : expected.entrySet()) {
+            assertEquals(expectedEntry.getValue(), actual.get(expectedEntry.getKey().toString()));
+        }
     }
 }
