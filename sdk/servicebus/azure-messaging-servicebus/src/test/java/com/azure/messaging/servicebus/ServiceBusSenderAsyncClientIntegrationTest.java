@@ -9,7 +9,6 @@ import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -146,157 +145,157 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can send message to final destination using via-queue.
      */
-    @Test
-    void viaQueueMessageSendTest() {
-        // Arrange
-        final boolean useCredentials = false;
-        final Duration shortTimeout = Duration.ofSeconds(15);
-        final int viaIntermediateEntity = TestUtils.USE_CASE_SEND_VIA_QUEUE_1;
-        final int destinationEntity = TestUtils.USE_CASE_SEND_VIA_QUEUE_2;
-        final boolean shareConnection = true;
-        final MessagingEntityType entityType = MessagingEntityType.QUEUE;
-        final boolean isSessionEnabled = false;
-        final String messageId = UUID.randomUUID().toString();
-        final int total = 1;
-        final int totalToDestination = 2;
-        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(total, messageId, CONTENTS_BYTES);
-        final String viaQueueName = getQueueName(viaIntermediateEntity);
+    // @Test
+    // void viaQueueMessageSendTest() {
+    //     // Arrange
+    //     final boolean useCredentials = false;
+    //     final Duration shortTimeout = Duration.ofSeconds(15);
+    //     final int viaIntermediateEntity = TestUtils.USE_CASE_SEND_VIA_QUEUE_1;
+    //     final int destinationEntity = TestUtils.USE_CASE_SEND_VIA_QUEUE_2;
+    //     final boolean shareConnection = true;
+    //     final MessagingEntityType entityType = MessagingEntityType.QUEUE;
+    //     final boolean isSessionEnabled = false;
+    //     final String messageId = UUID.randomUUID().toString();
+    //     final int total = 1;
+    //     final int totalToDestination = 2;
+    //     final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(total, messageId, CONTENTS_BYTES);
+    //     final String viaQueueName = getQueueName(viaIntermediateEntity);
 
-        setSenderAndReceiver(entityType, viaIntermediateEntity, useCredentials);
+    //     setSenderAndReceiver(entityType, viaIntermediateEntity, useCredentials);
 
-        final ServiceBusSenderAsyncClient destination1ViaSender = getSenderBuilder(useCredentials, entityType,
-            destinationEntity, false, shareConnection)
-            .viaQueueName(viaQueueName)
-            .buildAsyncClient();
-        final ServiceBusReceiverAsyncClient destination1Receiver = getReceiverBuilder(useCredentials, entityType,
-            destinationEntity, shareConnection)
-            .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
-            .buildAsyncClient();
+    //     final ServiceBusSenderAsyncClient destination1ViaSender = getSenderBuilder(useCredentials, entityType,
+    //         destinationEntity, false, shareConnection)
+    //         .viaQueueName(viaQueueName)
+    //         .buildAsyncClient();
+    //     final ServiceBusReceiverAsyncClient destination1Receiver = getReceiverBuilder(useCredentials, entityType,
+    //         destinationEntity, shareConnection)
+    //         .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+    //         .buildAsyncClient();
 
-        final AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
+    //     final AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
 
-        // Act
-        try {
-            StepVerifier.create(destination1ViaSender.createTransaction())
-                .assertNext(transactionContext -> {
-                    transaction.set(transactionContext);
-                    assertNotNull(transaction);
-                })
-                .verifyComplete();
-            assertNotNull(transaction.get());
+    //     // Act
+    //     try {
+    //         StepVerifier.create(destination1ViaSender.createTransaction())
+    //             .assertNext(transactionContext -> {
+    //                 transaction.set(transactionContext);
+    //                 assertNotNull(transaction);
+    //             })
+    //             .verifyComplete();
+    //         assertNotNull(transaction.get());
 
-            StepVerifier.create(sender.sendMessages(messages, transaction.get()))
-                .verifyComplete();
-            StepVerifier.create(destination1ViaSender.sendMessages(messages, transaction.get()))
-                .verifyComplete();
-            StepVerifier.create(destination1ViaSender.sendMessages(messages, transaction.get()))
-                .verifyComplete();
+    //         StepVerifier.create(sender.sendMessages(messages, transaction.get()))
+    //             .verifyComplete();
+    //         StepVerifier.create(destination1ViaSender.sendMessages(messages, transaction.get()))
+    //             .verifyComplete();
+    //         StepVerifier.create(destination1ViaSender.sendMessages(messages, transaction.get()))
+    //             .verifyComplete();
 
-            StepVerifier.create(destination1ViaSender.commitTransaction(transaction.get())
-                .delaySubscription(Duration.ofSeconds(1)))
-                .verifyComplete();
+    //         StepVerifier.create(destination1ViaSender.commitTransaction(transaction.get())
+    //             .delaySubscription(Duration.ofSeconds(1)))
+    //             .verifyComplete();
 
-            // Assert
-            // Verify message is received by final destination Entity
-            StepVerifier.create(destination1Receiver.receiveMessages().take(totalToDestination).timeout(shortTimeout))
-                .assertNext(receivedMessage -> {
-                    assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-                    messagesPending.decrementAndGet();
-                })
-                .assertNext(receivedMessage -> {
-                    assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-                    messagesPending.decrementAndGet();
-                })
-                .verifyComplete();
+    //         // Assert
+    //         // Verify message is received by final destination Entity
+    //         StepVerifier.create(destination1Receiver.receiveMessages().take(totalToDestination).timeout(shortTimeout))
+    //             .assertNext(receivedMessage -> {
+    //                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+    //                 messagesPending.decrementAndGet();
+    //             })
+    //             .assertNext(receivedMessage -> {
+    //                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+    //                 messagesPending.decrementAndGet();
+    //             })
+    //             .verifyComplete();
 
-            // Verify, intermediate-via queue has it delivered to intermediate Entity.
-            StepVerifier.create(receiver.receiveMessages().take(total).timeout(shortTimeout))
-                .assertNext(receivedMessage -> {
-                    assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-                    messagesPending.decrementAndGet();
-                })
-                .verifyComplete();
-        } finally {
-            destination1Receiver.close();
-            destination1ViaSender.close();
-        }
-    }
+    //         // Verify, intermediate-via queue has it delivered to intermediate Entity.
+    //         StepVerifier.create(receiver.receiveMessages().take(total).timeout(shortTimeout))
+    //             .assertNext(receivedMessage -> {
+    //                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+    //                 messagesPending.decrementAndGet();
+    //             })
+    //             .verifyComplete();
+    //     } finally {
+    //         destination1Receiver.close();
+    //         destination1ViaSender.close();
+    //     }
+    // }
 
     /**
      * Verifies that we can send message to final destination using via-topic.
      */
-    @Test
-    void viaTopicMessageSendTest() {
-        // Arrange
-        final boolean useCredentials = false;
-        final Duration shortTimeout = Duration.ofSeconds(15);
-        final int viaIntermediateEntity = TestUtils.USE_CASE_SEND_VIA_TOPIC_1;
-        final int destinationEntity = TestUtils.USE_CASE_SEND_VIA_TOPIC_2;
-        final boolean shareConnection = true;
-        final MessagingEntityType entityType = MessagingEntityType.SUBSCRIPTION;
-        final boolean isSessionEnabled =  false;
-        final String messageId = UUID.randomUUID().toString();
-        final int total = 1;
-        final int totalToDestination = 2;
-        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(total, messageId, CONTENTS_BYTES);
-        final String viaTopicName = getTopicName(viaIntermediateEntity);
+    // @Test
+    // void viaTopicMessageSendTest() {
+    //     // Arrange
+    //     final boolean useCredentials = false;
+    //     final Duration shortTimeout = Duration.ofSeconds(15);
+    //     final int viaIntermediateEntity = TestUtils.USE_CASE_SEND_VIA_TOPIC_1;
+    //     final int destinationEntity = TestUtils.USE_CASE_SEND_VIA_TOPIC_2;
+    //     final boolean shareConnection = true;
+    //     final MessagingEntityType entityType = MessagingEntityType.SUBSCRIPTION;
+    //     final boolean isSessionEnabled =  false;
+    //     final String messageId = UUID.randomUUID().toString();
+    //     final int total = 1;
+    //     final int totalToDestination = 2;
+    //     final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(total, messageId, CONTENTS_BYTES);
+    //     final String viaTopicName = getTopicName(viaIntermediateEntity);
 
-        setSenderAndReceiver(entityType, viaIntermediateEntity, useCredentials);
-        final ServiceBusReceiverAsyncClient intermediateReceiver =  receiver;
-        final ServiceBusSenderAsyncClient intermediateSender = sender;
+    //     setSenderAndReceiver(entityType, viaIntermediateEntity, useCredentials);
+    //     final ServiceBusReceiverAsyncClient intermediateReceiver =  receiver;
+    //     final ServiceBusSenderAsyncClient intermediateSender = sender;
 
-        final ServiceBusSenderAsyncClient destination1ViaSender = getSenderBuilder(useCredentials, entityType,
-            destinationEntity, false, shareConnection)
-            .viaTopicName(viaTopicName)
-            .buildAsyncClient();
+    //     final ServiceBusSenderAsyncClient destination1ViaSender = getSenderBuilder(useCredentials, entityType,
+    //         destinationEntity, false, shareConnection)
+    //         .viaTopicName(viaTopicName)
+    //         .buildAsyncClient();
 
-        final ServiceBusReceiverAsyncClient destination1Receiver = getReceiverBuilder(useCredentials, entityType,
-            destinationEntity, shareConnection)
-            .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
-            .buildAsyncClient();
+    //     final ServiceBusReceiverAsyncClient destination1Receiver = getReceiverBuilder(useCredentials, entityType,
+    //         destinationEntity, shareConnection)
+    //         .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+    //         .buildAsyncClient();
 
-        final AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
+    //     final AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
 
-        // Act
-        StepVerifier.create(destination1ViaSender.createTransaction())
-            .assertNext(transactionContext -> {
-                transaction.set(transactionContext);
-                assertNotNull(transaction);
-            })
-            .verifyComplete();
-        assertNotNull(transaction.get());
+    //     // Act
+    //     StepVerifier.create(destination1ViaSender.createTransaction())
+    //         .assertNext(transactionContext -> {
+    //             transaction.set(transactionContext);
+    //             assertNotNull(transaction);
+    //         })
+    //         .verifyComplete();
+    //     assertNotNull(transaction.get());
 
-        StepVerifier.create(intermediateSender.sendMessages(messages, transaction.get()))
-            .verifyComplete();
-        StepVerifier.create(destination1ViaSender.sendMessages(messages, transaction.get()))
-            .verifyComplete();
-        StepVerifier.create(destination1ViaSender.sendMessages(messages, transaction.get()))
-            .verifyComplete();
+    //     StepVerifier.create(intermediateSender.sendMessages(messages, transaction.get()))
+    //         .verifyComplete();
+    //     StepVerifier.create(destination1ViaSender.sendMessages(messages, transaction.get()))
+    //         .verifyComplete();
+    //     StepVerifier.create(destination1ViaSender.sendMessages(messages, transaction.get()))
+    //         .verifyComplete();
 
-        StepVerifier.create(destination1ViaSender.commitTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
-            .verifyComplete();
+    //     StepVerifier.create(destination1ViaSender.commitTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
+    //         .verifyComplete();
 
-        // Assert
-        // Verify message is received by final destination Entity
-        StepVerifier.create(destination1Receiver.receiveMessages().take(totalToDestination).timeout(shortTimeout))
-            .assertNext(receivedMessage -> {
-                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-                messagesPending.decrementAndGet();
-            })
-            .assertNext(receivedMessage -> {
-                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-                messagesPending.decrementAndGet();
-            })
-            .verifyComplete();
+    //     // Assert
+    //     // Verify message is received by final destination Entity
+    //     StepVerifier.create(destination1Receiver.receiveMessages().take(totalToDestination).timeout(shortTimeout))
+    //         .assertNext(receivedMessage -> {
+    //             assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+    //             messagesPending.decrementAndGet();
+    //         })
+    //         .assertNext(receivedMessage -> {
+    //             assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+    //             messagesPending.decrementAndGet();
+    //         })
+    //         .verifyComplete();
 
-        // Verify, intermediate-via topic has it delivered to intermediate Entity.
-        StepVerifier.create(intermediateReceiver.receiveMessages().take(total).timeout(shortTimeout))
-            .assertNext(receivedMessage -> {
-                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-                messagesPending.decrementAndGet();
-            })
-            .verifyComplete();
-    }
+    //     // Verify, intermediate-via topic has it delivered to intermediate Entity.
+    //     StepVerifier.create(intermediateReceiver.receiveMessages().take(total).timeout(shortTimeout))
+    //         .assertNext(receivedMessage -> {
+    //             assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+    //             messagesPending.decrementAndGet();
+    //         })
+    //         .verifyComplete();
+    // }
 
     /**
      * Verifies that we can do following
