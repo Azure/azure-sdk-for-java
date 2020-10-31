@@ -3,6 +3,7 @@
 ## 12.9.0-beta.3 (Unreleased)
 - Fixed a bug where interspersed element types returned by page listing would deserialize incorrectly.
 - Fixed a bug where BlobInputStream would not eTag lock on the blob, resulting in undesirable behavior if the blob was modified in the middle of reading. 
+- Renamed BlobDownloadToFileOptions.rangeGetContentMd5 to BlobDownloadToFileOptions.retrieveContentRangeMd5
 
 ## 12.9.0-beta.2 (2020-10-08)
 - Added support to specify whether or not a pipeline policy should be added per call or per retry.

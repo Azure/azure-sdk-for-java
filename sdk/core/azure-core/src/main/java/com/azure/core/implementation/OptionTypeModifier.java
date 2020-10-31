@@ -18,9 +18,8 @@
  * Portions Copyright (c) Microsoft Corporation
  */
 
-package com.azure.core.util.serializer;
+package com.azure.core.implementation;
 
-import com.azure.core.util.Option;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.ReferenceType;
 import com.fasterxml.jackson.databind.type.TypeBindings;

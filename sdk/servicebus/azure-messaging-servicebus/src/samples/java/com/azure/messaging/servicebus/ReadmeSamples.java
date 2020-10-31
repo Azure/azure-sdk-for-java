@@ -9,6 +9,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
 import reactor.core.Disposable;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -172,12 +173,12 @@ public class ReadmeSamples {
      */
     public void namedSessionReceiver() {
         // Creates a session-enabled receiver that gets messages from the session "greetings".
-        ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+        ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
             .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
             .sessionReceiver()
             .queueName("<< QUEUE NAME >>")
-            .sessionId("greetings")
             .buildAsyncClient();
+        Mono<ServiceBusReceiverAsyncClient> receiverAsyncClient = sessionReceiver.acceptSession("greetings");
     }
 
     /**
@@ -185,11 +186,12 @@ public class ReadmeSamples {
      */
     public void unnamedSessionReceiver() {
         // Creates a session-enabled receiver that gets messages from the first available session.
-        ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+        ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
             .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
             .sessionReceiver()
             .queueName("<< QUEUE NAME >>")
             .buildAsyncClient();
+        Mono<ServiceBusReceiverAsyncClient> receiverAsyncClient = sessionReceiver.acceptNextSession();
     }
 
     /**

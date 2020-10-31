@@ -10,6 +10,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.models.JsonPatchDocument;
 import com.azure.digitaltwins.core.models.*;
 
 import java.util.List;
@@ -168,10 +169,10 @@ public final class DigitalTwinsClient {
      *
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param jsonPatch The JSON patch to apply to the specified digital twin.
-     *                                    This argument can be created using {@link UpdateOperationUtility}.
+     *                                    This argument can be created using {@link JsonPatchDocument}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateDigitalTwin(String digitalTwinId, List<Object> jsonPatch)
+    public void updateDigitalTwin(String digitalTwinId, JsonPatchDocument jsonPatch)
     {
         updateDigitalTwinWithResponse(digitalTwinId, jsonPatch, null, Context.NONE);
     }
@@ -187,13 +188,13 @@ public final class DigitalTwinsClient {
      *
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param jsonPatch The JSON patch to apply to the specified digital twin.
-     *                                    This argument can be created using {@link UpdateOperationUtility}.
+     *                                    This argument can be created using {@link JsonPatchDocument}.
      * @param options The optional parameters for this request. If null, the default option values will be used.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link DigitalTwinsResponse}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DigitalTwinsResponse<Void> updateDigitalTwinWithResponse(String digitalTwinId, List<Object> jsonPatch, UpdateDigitalTwinOptions options, Context context)
+    public DigitalTwinsResponse<Void> updateDigitalTwinWithResponse(String digitalTwinId, JsonPatchDocument jsonPatch, UpdateDigitalTwinOptions options, Context context)
     {
         return digitalTwinsAsyncClient.updateDigitalTwinWithResponse(digitalTwinId, jsonPatch, options, context).block();
     }
@@ -348,10 +349,10 @@ public final class DigitalTwinsClient {
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be updated.
      * @param jsonPatch The JSON patch to apply to the specified digital twin's relationship.
-     *                                     This argument can be created using {@link UpdateOperationUtility}.
+     *                                     This argument can be created using {@link JsonPatchDocument}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateRelationship(String digitalTwinId, String relationshipId, List<Object> jsonPatch) {
+    public void updateRelationship(String digitalTwinId, String relationshipId, JsonPatchDocument jsonPatch) {
         updateRelationshipWithResponse(digitalTwinId, relationshipId, jsonPatch, null, Context.NONE);
     }
 
@@ -365,13 +366,13 @@ public final class DigitalTwinsClient {
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be updated.
      * @param jsonPatch The JSON patch to apply to the specified digital twin's relationship.
-     *                                     This argument can be created using {@link UpdateOperationUtility}.
+     *                                     This argument can be created using {@link JsonPatchDocument}.
      * @param options The optional parameters for this request. If null, the default option values will be used.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link DigitalTwinsResponse} containing no parsed payload object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DigitalTwinsResponse<Void> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, List<Object> jsonPatch, UpdateRelationshipOptions options, Context context) {
+    public DigitalTwinsResponse<Void> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, JsonPatchDocument jsonPatch, UpdateRelationshipOptions options, Context context) {
         return digitalTwinsAsyncClient.updateRelationshipWithResponse(digitalTwinId, relationshipId, jsonPatch, options, context).block();
     }
 
@@ -701,10 +702,10 @@ public final class DigitalTwinsClient {
      * @param digitalTwinId The Id of the digital twin that has the component to patch.
      * @param componentName The name of the component on the digital twin.
      * @param jsonPatch The JSON patch to apply to the specified digital twin's relationship.
-     *                                  This argument can be created using {@link UpdateOperationUtility}.
+     *                                  This argument can be created using {@link JsonPatchDocument}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateComponent(String digitalTwinId, String componentName, List<Object> jsonPatch) {
+    public void updateComponent(String digitalTwinId, String componentName, JsonPatchDocument jsonPatch) {
         updateComponentWithResponse(digitalTwinId, componentName, jsonPatch, null, Context.NONE);
     }
 
@@ -718,13 +719,13 @@ public final class DigitalTwinsClient {
      * @param digitalTwinId The Id of the digital twin that has the component to patch.
      * @param componentName The name of the component on the digital twin.
      * @param jsonPatch The JSON patch to apply to the specified digital twin's relationship.
-     *                                  This argument can be created using {@link UpdateOperationUtility}.
+     *                                  This argument can be created using {@link JsonPatchDocument}.
      * @param options The optional parameters for this request. If null, the default option values will be used.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link DigitalTwinsResponse} containing no parsed payload object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DigitalTwinsResponse<Void> updateComponentWithResponse(String digitalTwinId, String componentName, List<Object> jsonPatch, UpdateComponentOptions options, Context context) {
+    public DigitalTwinsResponse<Void> updateComponentWithResponse(String digitalTwinId, String componentName, JsonPatchDocument jsonPatch, UpdateComponentOptions options, Context context) {
         return digitalTwinsAsyncClient.updateComponentWithResponse(digitalTwinId, componentName, jsonPatch, options, context).block();
     }
 

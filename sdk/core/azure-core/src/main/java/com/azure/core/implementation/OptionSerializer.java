@@ -18,9 +18,8 @@
  * Portions Copyright (c) Microsoft Corporation
  */
 
-package com.azure.core.util.serializer;
+package com.azure.core.implementation;
 
-import com.azure.core.util.Option;
 import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
@@ -35,19 +34,19 @@ final class OptionSerializer extends ReferenceTypeSerializer<Option<?>> {
     private static final long serialVersionUID = 1L;
 
     OptionSerializer(ReferenceType fullType,
-                     boolean staticTyping,
-                     TypeSerializer typeSerializer,
-                     JsonSerializer<Object> valueSerializer) {
+        boolean staticTyping,
+        TypeSerializer typeSerializer,
+        JsonSerializer<Object> valueSerializer) {
         super(fullType, staticTyping, typeSerializer, valueSerializer);
     }
 
     private OptionSerializer(OptionSerializer base,
-                             BeanProperty property,
-                             TypeSerializer typeSerializer,
-                             JsonSerializer<?> valueSerializer,
-                             NameTransformer transformer,
-                             Object suppressableValue,
-                             boolean suppressNulls) {
+        BeanProperty property,
+        TypeSerializer typeSerializer,
+        JsonSerializer<?> valueSerializer,
+        NameTransformer transformer,
+        Object suppressableValue,
+        boolean suppressNulls) {
         super(base, property, typeSerializer,
             valueSerializer, transformer,
             suppressableValue, suppressNulls);
@@ -55,9 +54,9 @@ final class OptionSerializer extends ReferenceTypeSerializer<Option<?>> {
 
     @Override
     protected ReferenceTypeSerializer<Option<?>> withResolved(BeanProperty property,
-                                                              TypeSerializer typeSerializer,
-                                                              JsonSerializer<?> valueSerializer,
-                                                              NameTransformer transformer) {
+        TypeSerializer typeSerializer,
+        JsonSerializer<?> valueSerializer,
+        NameTransformer transformer) {
         return new OptionSerializer(this, property, typeSerializer,
             valueSerializer, transformer,
             super._suppressableValue, super._suppressNulls);
@@ -65,7 +64,7 @@ final class OptionSerializer extends ReferenceTypeSerializer<Option<?>> {
 
     @Override
     public ReferenceTypeSerializer<Option<?>> withContentInclusion(Object suppressableValue,
-                                                                   boolean suppressNulls) {
+        boolean suppressNulls) {
         return new OptionSerializer(this, super._property, super._valueTypeSerializer,
             super._valueSerializer, super._unwrapper,
             suppressableValue, suppressNulls);

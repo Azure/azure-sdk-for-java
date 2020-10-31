@@ -29,7 +29,7 @@ public final class BasicDigitalTwin {
     private String id;
 
     @JsonProperty(value = DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_ETAG, required = true)
-    private String twinETag;
+    private String etag;
 
     @JsonProperty(value = DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_METADATA, required = true)
     private BasicDigitalTwinMetadata metadata;
@@ -62,16 +62,16 @@ public final class BasicDigitalTwin {
      * @return A string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.
      */
     public String getETag() {
-        return twinETag;
+        return etag;
     }
 
     /**
      * Sets a string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.
-     * @param twinETag A string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.
+     * @param etag A string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.
      * @return The BasicDigitalTwin object itself.
      */
-    public BasicDigitalTwin setETag(String twinETag) {
-        this.twinETag = twinETag;
+    public BasicDigitalTwin setETag(String etag) {
+        this.etag = etag;
         return this;
     }
 

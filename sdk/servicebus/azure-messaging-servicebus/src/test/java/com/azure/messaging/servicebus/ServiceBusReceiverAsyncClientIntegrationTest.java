@@ -68,6 +68,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      * Receiver used to clean up resources in {@link #afterTest()}.
      */
     private ServiceBusReceiverAsyncClient receiveAndDeleteReceiver;
+    private Mono<ServiceBusReceiverAsyncClient> receiveAndDeleteReceiverMono;
 
     ServiceBusReceiverAsyncClientIntegrationTest() {
         super(new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class));
@@ -85,12 +86,19 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final int pendingDeferred = messagesDeferredPending.size();
         if (pending < 1 && pendingDeferred < 1) {
             dispose(receiver, sender, receiveAndDeleteReceiver);
+            if (receiveAndDeleteReceiverMono != null) {
+                dispose(receiveAndDeleteReceiverMono.block());
+            }
             return;
         }
 
         // In the case that this test failed... we're going to drain the queue or subscription.
         try {
+            dispose(receiver, sender);
             if (pending > 0) {
+                if (receiveAndDeleteReceiverMono != null) {
+                    receiveAndDeleteReceiver = receiveAndDeleteReceiverMono.block();
+                }
                 receiveAndDeleteReceiver.receiveMessages()
                     .map(message -> {
                         logger.info("Message received: {}", message.getMessage().getSequenceNumber());
@@ -118,7 +126,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         } catch (Exception e) {
             logger.warning("Error occurred when draining for deferred messages.", e);
         } finally {
-            dispose(receiver, sender, receiveAndDeleteReceiver);
+            dispose(receiveAndDeleteReceiver);
         }
     }
 
@@ -312,18 +320,13 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
             this.receiver = getSessionReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
-                .sessionId(sessionId)
-                .buildAsyncClient();
-            this.receiveAndDeleteReceiver = getSessionReceiverBuilder(useCredentials, entityType, entityIndex,
+                .buildAsyncClient().acceptSession(sessionId).block();
+            this.receiveAndDeleteReceiverMono = getSessionReceiverBuilder(useCredentials, entityType, entityIndex,
                 shareConnection)
-                .sessionId(sessionId)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
-                .buildAsyncClient();
+                .buildAsyncClient().acceptSession(sessionId);
         } else {
             this.receiver = getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
-                .buildAsyncClient();
-            this.receiveAndDeleteReceiver = getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
-                .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildAsyncClient();
         }
 
@@ -360,13 +363,11 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
             this.receiver = getSessionReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
-                .sessionId(sessionId)
-                .buildAsyncClient();
-            this.receiveAndDeleteReceiver = getSessionReceiverBuilder(useCredentials, entityType, entityIndex,
+                .buildAsyncClient().acceptSession(sessionId).block();
+            this.receiveAndDeleteReceiverMono = getSessionReceiverBuilder(useCredentials, entityType, entityIndex,
                 shareConnection)
-                .sessionId(sessionId)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
-                .buildAsyncClient();
+                .buildAsyncClient().acceptSession(sessionId);
         } else {
             this.receiver = getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
                 .buildAsyncClient();
@@ -941,12 +942,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 logger.info("SessionId: {}. LockToken: {}. LockedUntil: {}. Message received.",
                     m.getSessionId(), m.getMessage().getLockToken(), m.getMessage().getLockedUntil());
                 receivedMessage.set(m.getMessage());
-                return receiver.setSessionState(sessionId, sessionState);
+                return receiver.setSessionState(sessionState);
             }))
             .expectComplete()
             .verify();
 
-        StepVerifier.create(receiver.getSessionState(sessionId))
+        StepVerifier.create(receiver.getSessionState())
             .assertNext(state -> {
                 logger.info("State received: {}", new String(state, UTF_8));
                 assertArrayEquals(sessionState, state);
@@ -1265,14 +1266,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             assertNotNull(sessionId, "'sessionId' should have been set.");
             this.receiver = getSessionReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
                 .disableAutoComplete()
-                .sessionId(sessionId)
-                .buildAsyncClient();
-            this.receiveAndDeleteReceiver = getSessionReceiverBuilder(useCredentials, entityType, entityIndex,
+                .buildAsyncClient().acceptSession(sessionId).block();
+            this.receiveAndDeleteReceiverMono = getSessionReceiverBuilder(useCredentials, entityType, entityIndex,
                 shareConnection)
                 .disableAutoComplete()
-                .sessionId(sessionId)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
-                .buildAsyncClient();
+                .buildAsyncClient().acceptSession(sessionId);
         } else {
             this.receiver = getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
                 .disableAutoComplete()
