@@ -101,10 +101,10 @@ function populateIndexList(selector, packageName) {
                         if (responseText) {
                             options = responseText.match(/[^\r\n]+/g)
                             for (var i in options) {
-                                if (options[i].indexOf('beta') >= 0) {
-                                    $(previewPublishedVersions).append('<li><a href="' + getPackageUrl(SELECTED_LANGUAGE, packageName, options[i]) + '" target="_blank">' + packageName + ' - ' + options[i] + '</a></li>')
+                                if (options[i].indexOf('beta') >= 0 || options[i].indexOf('preview') >= 0) {
+                                    $(previewPublishedVersions).append('<li><a href="' + getPackageUrl(SELECTED_LANGUAGE, packageName, options[i]) + '" target="_blank">' + options[i] + '</a></li>')
                                 } else {
-                                    $(gaPublishedVersions).append('<li><a href="' + getPackageUrl(SELECTED_LANGUAGE, packageName, options[i]) + '" target="_blank">' + packageName + ' - ' + options[i] + '</a></li>')
+                                    $(gaPublishedVersions).append('<li><a href="' + getPackageUrl(SELECTED_LANGUAGE, packageName, options[i]) + '" target="_blank">' + options[i] + '</a></li>')
                                 }
                             }
                         }
