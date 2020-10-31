@@ -9,43 +9,60 @@ import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation
 import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperation;
 
 /**
- * This sample demonstrates how to selectively restore a key from key vault backup.
+ * This sample demonstrates how to selectively restore a key from key vault backup synchronously.
  */
 public class ResumeBackupAndRestore {
     /**
-     * Authenticates with the key vault and shows how to selectively restore a key from key vault backup.
+     * Authenticates with the key vault and shows how to re-hydrate long running synchronous operations such as backup
+     * and restore.
      *
      * @param args Unused. Arguments to the program.
      * @throws IllegalArgumentException when an invalid key vault URL is passed.
      */
     public static void main(String[] args) {
-        // Instantiate an backup client that will be used to call the service. Notice that the client is using default
-        // Azure credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
-        // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
+        /* Instantiate a KeyVaultAccessControlClient that will be used to call the service. Notice that the client is
+        using default Azure credentials. To make default credentials work, ensure that environment variables
+        'AZURE_CLIENT_ID', 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
 
-        // To get started, you'll need a URI to an Azure Key Vault. See the README (https://github.com/Azure/azure-sdk-for-net/blob/master/sdk/keyvault/Azure.Security.KeyVault.Administration/README.md)
-        // for links and instructions.
+        To get started, you'll need a URI to an Azure Key Vault. See the README (https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-administration/README.md)
+        for links and instructions. */
         KeyVaultBackupClient backupClient = new KeyVaultBackupClientBuilder()
             .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
-        // Using the getBackupOperation() method, you can check the status and retrieve the result of a previously
-        // started KeyVaultBackupOperation. For example, the ID from a started operation on one client can
-        // be saved to persistent storage instead of waiting for completion immediately. At some later time, another
-        // client can retrieve the persisted operation ID and check for status or wait for completion.
-        SyncPoller<KeyVaultBackupOperation, String> keyVaultBackupOperation =
-            backupClient.getBackupOperation("<backup-operation-id>");
+        /* The ID from a started backup operation on one client can be saved to persistent storage instead of waiting
+        for completion immediately. */
+        String blobStorageUrl = "<blob-storage-url>";
+        String sasToken = "<sas-token>";
 
-        keyVaultBackupOperation.waitForCompletion();
+        SyncPoller<KeyVaultBackupOperation, String> originalBackupPoller =
+            backupClient.beginBackup(blobStorageUrl, sasToken);
 
-        // Get the backup URI to begin a restore operation at some point.
-        String backupUri = keyVaultBackupOperation.getFinalResult();
+        KeyVaultBackupOperation originalBackupOperation = originalBackupPoller.poll().getValue();
+        String backupJobId = originalBackupOperation.getJobId();
 
-        // Similarly, you can check the status and retrieve the result of a previously started KeyVaultRestoreOperation.
-        SyncPoller<KeyVaultRestoreOperation, Void> keyVaultRestoreOperation =
-            backupClient.getRestoreOperation("<restore-operation-id>");
+        /* At some later time, another client can use the persisted operation ID, check the status and retrieve the
+        result of a previously started backup operation. */
+        SyncPoller<KeyVaultBackupOperation, String> anotherBackupPoller =
+            backupClient.getBackupOperation(backupJobId);
 
-        keyVaultBackupOperation.waitForCompletion();
+        anotherBackupPoller.waitForCompletion();
+
+        // Get the backup URL to begin a restore operation at some point.
+        String backupFolderUrl = anotherBackupPoller.getFinalResult();
+
+        SyncPoller<KeyVaultRestoreOperation, Void> originalRestorePoller =
+            backupClient.beginRestore(backupFolderUrl, sasToken);
+
+        KeyVaultRestoreOperation originalRestoreOperation = originalRestorePoller.poll().getValue();
+        String restoreJobId = originalRestoreOperation.getJobId();
+
+        /* Similarly to as with backup operations, you can check the status and retrieve the result of a previously
+        started restore operation. */
+        SyncPoller<KeyVaultRestoreOperation, Void> anotherRestorePoller =
+            backupClient.getRestoreOperation(restoreJobId);
+
+        anotherRestorePoller.waitForCompletion();
     }
 }

@@ -12,31 +12,34 @@ import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperatio
  */
 public class SelectiveRestore {
     /**
-     * Authenticates with the key vault and shows how to selectively restore a key from key vault backup.
+     * Authenticates with the key vault and shows how to selectively restore a key from key vault backup synchronously.
+     * For examples of how to perform async operations, please refer to
+     * {@link BackupAndRestoreHelloWorldAsync the async client samples}.
      *
      * @param args Unused. Arguments to the program.
      * @throws IllegalArgumentException when an invalid key vault URL is passed.
      */
     public static void main(String[] args) {
-        // Instantiate an KeyVaultBackupClient that will be used to call the service. Notice that the client is using
-        // default Azure credentials. To make default credentials work, ensure that environment variables
-        // 'AZURE_CLIENT_ID', 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
+        /* Instantiate an KeyVaultAccessControlClient that will be used to call the service. Notice that the client is
+        using default Azure credentials. To make default credentials work, ensure that environment variables
+        'AZURE_CLIENT_ID', 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
 
-        // To get started, you'll need a URI to an Azure Key Vault. See the README (https://github.com/Azure/azure-sdk-for-net/blob/master/sdk/keyvault/Azure.Security.KeyVault.Administration/README.md)
-        // for links and instructions.
+        To get started, you'll need a URI to an Azure Key Vault. See the README (https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-administration/README.md)
+        for links and instructions. */
         KeyVaultBackupClient backupClient = new KeyVaultBackupClientBuilder()
             .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
-        // Using the KeyVaultBackupClient, you can restore a single key from backup by key name. The data source for a
-        // selective key restore is a storage blob accessed using Shared Access Signature authentication.
+        /* Using the KeyVaultBackupClient, you can restore a single key from backup by key name. The data source for a
+        selective key restore is a storage blob accessed using Shared Access Signature authentication. */
         String keyName = "<key-name>";
-        String blobStorageUrl = "<blob-storage-url>";
+        String backupFolderUrl = "<backup-folder-url>";
         String sasToken = "<sas-token>";
-        String folderName = "<folder-name>";
 
         SyncPoller<KeyVaultRestoreOperation, Void> restorePoller =
-            backupClient.beginSelectiveRestore(keyName, blobStorageUrl, sasToken, folderName);
+            backupClient.beginSelectiveRestore(keyName, backupFolderUrl, sasToken);
+
+        restorePoller.waitForCompletion();
     }
 }
