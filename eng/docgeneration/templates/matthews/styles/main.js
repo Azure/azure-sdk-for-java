@@ -68,6 +68,7 @@ $(function () {
 })
 
 function httpGetAsync(targetUrl, callback) {
+    console.log(targetUrl);
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function () {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
@@ -78,24 +79,57 @@ function httpGetAsync(targetUrl, callback) {
 }
 
 function populateIndexList(selector, packageName) {
-    url = "https://azuresdkdocs.blob.core.windows.net/$web/" + SELECTED_LANGUAGE + "/" + packageName + "/versioning/versions"
-
-    httpGetAsync(url, function (responseText) {
-
-        var publishedversions = document.createElement("ul")
-        if (responseText) {
-            options = responseText.match(/[^\r\n]+/g)
-
-            for (var i in options) {
-                $(publishedversions).append('<li><a href="' + getPackageUrl(SELECTED_LANGUAGE, packageName, options[i]) + '" target="_blank">' + options[i] + '</a></li>')
+    var url = "https://azuresdkdocs.blob.core.windows.net/$web/" + SELECTED_LANGUAGE + "/" + packageName + "/versioning/versions"
+    var gaCollapsible = $('<div class="ga versionarrow">&nbsp;&nbsp;&nbsp;GA versions</div>')
+    var previewCollapsible = $('<div class="preview versionarrow">&nbsp;&nbsp;&nbsp;Preview versions</div>')
+    var gaPublishedVersions = $('<ul style="display: none;"></ul>')
+    var previewPublishedVersions = $('<ul style="display: none;"></ul>')
+    $(selector).after(gaCollapsible)
+    $(gaCollapsible).after(gaPublishedVersions)
+    $(gaPublishedVersions).after(previewCollapsible)
+    $(previewCollapsible).after(previewPublishedVersions)
+    var collapsibleFunc = function(collapsible, publishedVersions) {
+        $(collapsible).on('click', function(event) {
+            event.preventDefault();
+            if (collapsible.hasClass('disable')) {
+                return
             }
-        }
-        else {
-            $(publishedversions).append('<li>No discovered versions present in blob storage.</li>')
-        }
+            $(this).toggleClass('down')
+            if ($(this).hasClass('down')) {
+                if (!$(selector).hasClass('loaded')){
+                    httpGetAsync(url, function (responseText) {
+                        if (responseText) {
+                            options = responseText.match(/[^\r\n]+/g)
+                            for (var i in options) {
+                                if (options[i].indexOf('beta') >= 0) {
+                                    $(previewPublishedVersions).append('<li><a href="' + getPackageUrl(SELECTED_LANGUAGE, packageName, options[i]) + '" target="_blank">' + packageName + ' - ' + options[i] + '</a></li>')
+                                } else {
+                                    $(gaPublishedVersions).append('<li><a href="' + getPackageUrl(SELECTED_LANGUAGE, packageName, options[i]) + '" target="_blank">' + packageName + ' - ' + options[i] + '</a></li>')
+                                }
+                            }
+                        }
+                        else {
+                            $(publishedVersions).append('<li>No discovered versions present in blob storage.</li>')
+                        }                
+                        $(selector).addClass("loaded")
 
-        $(selector).after(publishedversions)
-    })
+                      if ($(previewPublishedVersions).children().length == 0) {
+                            $(previewCollapsible).addClass('disable')
+                        }
+                      if ($(gaPublishedVersions).children().length == 0) {
+                            $(gaCollapsible).addClass('disable')
+                        }
+                    })
+                }
+                $(publishedVersions).show()
+            } else {
+                $(publishedVersions).hide()
+            }
+        });
+    }
+
+    collapsibleFunc($(gaCollapsible), $(gaPublishedVersions))
+    collapsibleFunc($(previewCollapsible), $(previewPublishedVersions))
 }
 
 function getPackageUrl(language, package, version) {
