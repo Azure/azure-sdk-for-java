@@ -83,6 +83,7 @@ public class AzureServiceBusQueueAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
+    @ConditionalOnProperty("spring.cloud.azure.resource-group")
     public ServiceBusQueueManager serviceBusQueueManager(AzureProperties azureProperties) {
         return new ServiceBusQueueManager(azureProperties);
     }

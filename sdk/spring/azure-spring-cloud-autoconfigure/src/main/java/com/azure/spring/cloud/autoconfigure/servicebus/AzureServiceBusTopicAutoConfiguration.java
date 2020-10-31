@@ -74,25 +74,29 @@ public class AzureServiceBusTopicAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
+    @ConditionalOnProperty("spring.cloud.azure.resource-group")
     public ServiceBusNamespaceManager serviceBusNamespaceManager(Azure azure, AzureProperties azureProperties) {
         return new ServiceBusNamespaceManager(azure, azureProperties);
     }
 
     @Bean
     @ConditionalOnMissingBean
+    @ConditionalOnProperty("spring.cloud.azure.resource-group")
     public ServiceBusTopicSubscriptionManager serviceBusTopicSubscriptionManager(AzureProperties azureProperties) {
         return new ServiceBusTopicSubscriptionManager(azureProperties);
     }
 
     @Bean
     @ConditionalOnMissingBean
+    @ConditionalOnProperty("spring.cloud.azure.resource-group")
+    public ServiceBusTopicManager serviceBusTopicManager(AzureProperties azureProperties) {
+        return new ServiceBusTopicManager(azureProperties);
+    }
+    
+    @Bean
+    @ConditionalOnMissingBean
     public ServiceBusTopicOperation topicOperation(ServiceBusTopicClientFactory factory) {
         return new ServiceBusTopicTemplate(factory);
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public ServiceBusTopicManager serviceBusTopicManager(AzureProperties azureProperties) {
-        return new ServiceBusTopicManager(azureProperties);
-    }
 }
