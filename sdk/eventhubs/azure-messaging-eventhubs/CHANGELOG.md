@@ -1,5 +1,8 @@
 # Release History
 
+## 5.4.0-beta.1 (Unreleased)
+
+
 ## 5.3.1 (2020-10-30)
 ### Bug fixes
 - Eagerly close top-level client in `EventProcessorClient` after fetching the list of partitions instead of waiting until
