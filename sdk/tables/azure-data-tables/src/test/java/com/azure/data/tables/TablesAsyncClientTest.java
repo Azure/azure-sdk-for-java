@@ -58,6 +58,7 @@ public class TablesAsyncClientTest extends TestBase {
     protected void beforeTest() {
         final String tableName = testResourceNamer.randomName("tableName", 20);
         final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
+
         final TableClientBuilder builder = new TableClientBuilder()
             .connectionString(connectionString)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
@@ -667,9 +668,18 @@ public class TablesAsyncClientTest extends TestBase {
             .createEntity(new TableEntity(partitionKeyValue, rowKeyValue2));
 
         // Act & Assert
-        StepVerifier.create(batch.submitTransactionWithResponse())
+        batch.submitTransactionWithResponse().block(TIMEOUT);
+
+        StepVerifier.create(tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue, null))
             .assertNext(response -> {
-                assertNotNull(response);
+                final TableEntity entity = response.getValue();
+                assertNotNull(entity);
+                assertEquals(partitionKeyValue, entity.getPartitionKey());
+                assertEquals(rowKeyValue, entity.getRowKey());
+
+                assertNotNull(entity.getTimestamp());
+                assertNotNull(entity.getETag());
+                assertNotNull(entity.getProperties());
             })
             .expectComplete()
             .verify();

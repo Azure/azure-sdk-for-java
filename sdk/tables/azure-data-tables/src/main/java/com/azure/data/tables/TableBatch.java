@@ -7,6 +7,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.data.tables.implementation.models.BatchOperationResponse;
 import com.azure.data.tables.models.BatchOperation;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.UpdateMode;
@@ -69,17 +70,17 @@ public final class TableBatch {
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void submitTransaction() {
-        batch.submitTransaction().block();
+    public List<BatchOperationResponse> submitTransaction() {
+        return batch.submitTransaction().block();
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void submitTransaction(Duration timeout) {
-        blockWithOptionalTimeout(batch.submitTransaction(), timeout);
+    public List<BatchOperationResponse> submitTransaction(Duration timeout) {
+        return blockWithOptionalTimeout(batch.submitTransaction(), timeout);
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> submitTransactionWithResponse(Duration timeout, Context context) {
+    public Response<List<BatchOperationResponse>> submitTransactionWithResponse(Duration timeout, Context context) {
         return blockWithOptionalTimeout(batch.submitTransactionWithResponse(context), timeout);
     }
 }

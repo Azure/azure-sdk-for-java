@@ -7,14 +7,11 @@ package com.azure.data.tables.implementation.models;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
-import java.io.Closeable;
-import java.nio.ByteBuffer;
-import reactor.core.publisher.Flux;
 
 /**
  * Contains all response data for the submitBatch operation.
  */
-public final class BatchSubmitBatchResponse extends ResponseBase<BatchSubmitBatchHeaders, Flux<ByteBuffer>> implements Closeable {
+public final class BatchSubmitBatchResponse extends ResponseBase<BatchSubmitBatchHeaders, BatchOperationResponse[]> {
     /**
      * Creates an instance of BatchSubmitBatchResponse.
      *
@@ -24,7 +21,7 @@ public final class BatchSubmitBatchResponse extends ResponseBase<BatchSubmitBatc
      * @param value the content stream.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public BatchSubmitBatchResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Flux<ByteBuffer> value, BatchSubmitBatchHeaders headers) {
+    public BatchSubmitBatchResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, BatchOperationResponse[] value, BatchSubmitBatchHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
@@ -32,15 +29,7 @@ public final class BatchSubmitBatchResponse extends ResponseBase<BatchSubmitBatc
      * @return the response content stream.
      */
     @Override
-    public Flux<ByteBuffer> getValue() {
+    public BatchOperationResponse[] getValue() {
         return super.getValue();
-    }
-
-    /**
-     * Disposes of the connection associated with this stream response.
-     */
-    @Override
-    public void close() {
-        getValue().subscribe(bb -> { }, t -> { }).dispose();
     }
 }

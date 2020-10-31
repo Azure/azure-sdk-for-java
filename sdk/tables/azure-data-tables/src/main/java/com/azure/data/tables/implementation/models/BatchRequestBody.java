@@ -1,7 +1,6 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.http.HttpRequest;
 
 @Fluent
 public final class BatchRequestBody extends MultipartPart<Object> {
@@ -12,7 +11,7 @@ public final class BatchRequestBody extends MultipartPart<Object> {
         super("batch");
     }
 
-    public BatchRequestBody addQueryOperation(HttpRequest queryRequest) {
+    public BatchRequestBody addQueryOperation(BatchSubRequest queryRequest) {
         if (changeSet != null) {
             throw new IllegalStateException("Cannot add a query operation to a BatchRequestBody containing a changeset.");
         }
@@ -21,7 +20,7 @@ public final class BatchRequestBody extends MultipartPart<Object> {
         return this;
     }
 
-    public BatchRequestBody addChangeOperation(HttpRequest changeRequest) {
+    public BatchRequestBody addChangeOperation(BatchSubRequest changeRequest) {
         if (queryAdded) {
             throw new IllegalStateException("Cannot add a change operation to a BatchRequestBody containing query operations.");
         }

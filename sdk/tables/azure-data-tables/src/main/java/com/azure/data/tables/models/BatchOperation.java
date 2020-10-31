@@ -26,6 +26,14 @@ public interface BatchOperation {
         public Mono<HttpRequest> prepareRequest(TableAsyncClient client) {
             return client.createEntityWithResponse(entity).map(Response::getRequest);
         }
+
+        @Override
+        public String toString() {
+            return "CreateEntity{" +
+                "partitionKey='" + entity.getPartitionKey() + '\'' +
+                ", rowKey='" + entity.getRowKey() + '\'' +
+                '}';
+        }
     }
 
     class UpsertEntity implements BatchOperation {
@@ -48,6 +56,15 @@ public interface BatchOperation {
         @Override
         public Mono<HttpRequest> prepareRequest(TableAsyncClient preparer) {
             return preparer.upsertEntityWithResponse(entity, updateMode).map(Response::getRequest);
+        }
+
+        @Override
+        public String toString() {
+            return "UpsertEntity{" +
+                "partitionKey='" + entity.getPartitionKey() + '\'' +
+                ", rowKey='" + entity.getRowKey() + '\'' +
+                ", updateMode=" + updateMode +
+                '}';
         }
     }
 
@@ -78,6 +95,16 @@ public interface BatchOperation {
         public Mono<HttpRequest> prepareRequest(TableAsyncClient preparer) {
             return preparer.updateEntityWithResponse(entity, updateMode, ifUnchanged).map(Response::getRequest);
         }
+
+        @Override
+        public String toString() {
+            return "UpdateEntity{" +
+                "partitionKey='" + entity.getPartitionKey() + '\'' +
+                ", rowKey='" + entity.getRowKey() + '\'' +
+                ", updateMode=" + updateMode +
+                ", ifUnchanged=" + ifUnchanged +
+                '}';
+        }
     }
 
     class DeleteEntity implements BatchOperation {
@@ -106,6 +133,15 @@ public interface BatchOperation {
         @Override
         public Mono<HttpRequest> prepareRequest(TableAsyncClient preparer) {
             return preparer.deleteEntityWithResponse(partitionKey, rowKey, eTag).map(Response::getRequest);
+        }
+
+        @Override
+        public String toString() {
+            return "DeleteEntity{" +
+                "partitionKey='" + partitionKey + '\'' +
+                ", rowKey='" + rowKey + '\'' +
+                ", eTag='" + eTag + '\'' +
+                '}';
         }
     }
 

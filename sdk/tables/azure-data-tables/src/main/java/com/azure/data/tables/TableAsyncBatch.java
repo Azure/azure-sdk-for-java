@@ -9,10 +9,14 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.tables.implementation.AzureTableImpl;
 import com.azure.data.tables.implementation.BatchImpl;
 import com.azure.data.tables.implementation.TablesMultipartSerializer;
+import com.azure.data.tables.implementation.models.BatchChangeSet;
+import com.azure.data.tables.implementation.models.BatchOperationResponse;
 import com.azure.data.tables.implementation.models.BatchRequestBody;
+import com.azure.data.tables.implementation.models.BatchSubRequest;
+import com.azure.data.tables.implementation.models.TableServiceError;
+import com.azure.data.tables.implementation.models.TableServiceErrorException;
 import com.azure.data.tables.models.BatchOperation;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.UpdateMode;
@@ -20,6 +24,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -93,29 +98,65 @@ public final class TableAsyncBatch {
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public synchronized Mono<Void> submitTransaction() {
+    public synchronized Mono<List<BatchOperationResponse>> submitTransaction() {
         return submitTransactionWithResponse().flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public synchronized Mono<Response<Void>> submitTransactionWithResponse() {
+    public synchronized Mono<Response<List<BatchOperationResponse>>> submitTransactionWithResponse() {
         return withContext(this::submitTransactionWithResponse);
     }
 
-    synchronized Mono<Response<Void>> submitTransactionWithResponse(Context context) {
+    synchronized Mono<Response<List<BatchOperationResponse>>> submitTransactionWithResponse(Context context) {
         this.frozen = true;
         context = context == null ? Context.NONE : context;
 
         final BatchRequestBody body = new BatchRequestBody();
-
         Flux.fromIterable(operations)
             .flatMapSequential(op -> op.prepareRequest(operationClient))
-            .doOnNext(body::addChangeOperation)
+            .zipWith(Flux.fromIterable(operations))
+            .doOnNext(pair -> body.addChangeOperation(new BatchSubRequest(pair.getT2(), pair.getT1())))
             .blockLast();
 
         try {
             return batchImpl.submitBatchWithRestResponseAsync(body, null, context)
-                .map(response -> new SimpleResponse<>(response, null));
+                .map(response -> {
+                    TableServiceError error = null;
+                    BatchChangeSet changes = null;
+                    BatchOperation failedOperation = null;
+
+                    if (body.getContents().get(0) instanceof BatchChangeSet) {
+                        changes = (BatchChangeSet) body.getContents().get(0);
+                    }
+
+                    for (int i = 0; i < response.getValue().length; i++) {
+                        BatchOperationResponse subResponse = response.getValue()[i];
+
+                        // Attempt to attach a sub-request to each batch sub-response
+                        if (changes != null && changes.getContents().get(i) != null) {
+                            subResponse.setRequest(changes.getContents().get(i).getHttpRequest());
+                        }
+
+                        // If one sub-response was an error, we need to throw even though the service responded with 202
+                        if (subResponse.getStatusCode() >= 400 && error == null
+                            && subResponse.getValue() instanceof TableServiceError) {
+                            error = (TableServiceError)subResponse.getValue();
+                            if (changes != null && changes.getContents().get(i) != null) {
+                                failedOperation = changes.getContents().get(i).getOperation();
+                            }
+                        }
+                    }
+
+                    if (error != null) {
+                        String message = "An operation within the batch failed, the transaction has been rolled back.";
+                        if (failedOperation != null) {
+                            message += " The failed operation was: " + failedOperation.toString();
+                        }
+                        throw new TableServiceErrorException(message, null, error);
+                    } else {
+                        return new SimpleResponse<>(response, Arrays.asList(response.getValue()));
+                    }
+                });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
