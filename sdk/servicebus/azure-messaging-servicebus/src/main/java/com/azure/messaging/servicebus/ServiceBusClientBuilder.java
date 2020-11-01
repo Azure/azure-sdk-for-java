@@ -53,10 +53,26 @@ import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 /**
- * The builder to create {@link ServiceBusReceiverAsyncClient} and {@link ServiceBusSenderAsyncClient}.
+ * The builder to create Service Bus clients:
+ *
+ * <p><strong>Clients for sending messages</strong></p>
+ * <li>{@link ServiceBusSenderAsyncClient}</li>
+ * <li>{@link ServiceBusSenderClient}</li>
+ *
+ * <p><strong>Clients for receiving messages</strong></p>
+ * <li>{@link ServiceBusReceiverAsyncClient}</li>
+ * <li>{@link ServiceBusReceiverClient}</li>
+ *
+ * <p><strong>Clients for receiving messages from a session-enabled Service Bus entity</strong></p>
+ * <li>{@link ServiceBusSessionReceiverAsyncClient}</li>
+ * <li>{@link ServiceBusSessionReceiverClient}</li>
+ *
+ * <p><strong>Client for receiving messages using a callback-based processor</strong></p>
+ * <li>{@link ServiceBusProcessorClient}</li>>
  */
 @ServiceClientBuilder(serviceClients = {ServiceBusReceiverAsyncClient.class, ServiceBusSenderAsyncClient.class,
-    ServiceBusSenderClient.class, ServiceBusReceiverClient.class}, protocol = ServiceClientProtocol.AMQP)
+    ServiceBusSenderClient.class, ServiceBusReceiverClient.class, ServiceBusProcessorClient.class},
+    protocol = ServiceClientProtocol.AMQP)
 public final class ServiceBusClientBuilder {
     private static final AmqpRetryOptions DEFAULT_RETRY =
         new AmqpRetryOptions().setTryTimeout(ServiceBusConstants.OPERATION_TIMEOUT);
@@ -278,7 +294,7 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
-     * A new instance of {@link ServiceBusSessionProcessorClientBuilder} use to configure a Service Bus processor
+     * A new instance of {@link ServiceBusSessionProcessorClientBuilder} used to configure a Service Bus processor
      * instance that processes sessions.
      * @return A new instance of {@link ServiceBusSessionProcessorClientBuilder}.
      */

@@ -15,7 +15,7 @@ public final class ServiceBusProcessorClientOptions {
     private int maxConcurrentCalls = 1;
 
     /**
-     * The max concurrent messages that should be processed by the processor
+     * The max concurrent messages that should be processed by the processor.
      * @return The max concurrent message that should be processed by the processor.
      */
     public int getMaxConcurrentCalls() {
@@ -23,7 +23,8 @@ public final class ServiceBusProcessorClientOptions {
     }
 
     /**
-     * Sets the max concurrent messages that can be processed by the processor.
+     * Sets the max concurrent messages that can be processed by the processor. If not set, the default value will be 1.
+     *
      * @param maxConcurrentCalls The max concurrent messages that can be processed by the processor.
      * @return The updated instance of {@link ServiceBusProcessorClientOptions}.
      */

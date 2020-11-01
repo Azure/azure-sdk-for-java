@@ -24,17 +24,17 @@ import java.util.function.Consumer;
  *  {@link ServiceBusProcessorClient} can be created to process messages for a session-enabled Service Bus entity or
  *  a non session-enabled Service Bus entity.
  *
- * <>p<strong>Sample code to start a processor client</strong></p>
+ * <p><strong>Sample code to start a processor client</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusprocessorclient.start}
  *
- * <>p<strong>Sample code to start a session-enabled processor client</strong></p>
+ * <p></p><strong>Sample code to start a session-enabled processor client</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusprocessorclient.startsession}
  *
  * @see ServiceBusClientBuilder
  */
 public final class ServiceBusProcessorClient {
 
-    public static final int SCHEDULER_INTERVAL_IN_SECONDS = 10;
+    private static final int SCHEDULER_INTERVAL_IN_SECONDS = 10;
     private final ClientLogger logger = new ClientLogger(ServiceBusProcessorClient.class);
     private final ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder sessionReceiverBuilder;
     private final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder;
@@ -43,7 +43,7 @@ public final class ServiceBusProcessorClient {
     private final ServiceBusProcessorClientOptions processorOptions;
     private final AtomicReference<Subscription> receiverSubscription = new AtomicReference<>();
     private final AtomicReference<ServiceBusReceiverAsyncClient> asyncClient = new AtomicReference<>();
-    private volatile AtomicBoolean isRunning = new AtomicBoolean();
+    private AtomicBoolean isRunning = new AtomicBoolean();
     private ScheduledExecutorService scheduledExecutor;
 
     /**
@@ -61,7 +61,7 @@ public final class ServiceBusProcessorClient {
             "'sessionReceiverBuilder' cannot be null");
         this.processMessage = Objects.requireNonNull(processMessage, "'processMessage' cannot be null");
         this.processError = Objects.requireNonNull(processError, "'processError' cannot be null");
-        this.processorOptions = processorOptions;
+        this.processorOptions = Objects.requireNonNull(processorOptions, "'processorOptions' cannot be null");
         this.asyncClient.set(sessionReceiverBuilder.buildAsyncClientForProcessor());
         this.receiverBuilder = null;
     }
@@ -80,7 +80,7 @@ public final class ServiceBusProcessorClient {
         this.receiverBuilder = Objects.requireNonNull(receiverBuilder, "'receiverBuilder' cannot be null");
         this.processMessage = Objects.requireNonNull(processMessage, "'processMessage' cannot be null");
         this.processError = Objects.requireNonNull(processError, "'processError' cannot be null");
-        this.processorOptions = processorOptions;
+        this.processorOptions = Objects.requireNonNull(processorOptions, "'processorOptions' cannot be null");
         this.asyncClient.set(receiverBuilder.buildAsyncClient());
         this.sessionReceiverBuilder = null;
     }
@@ -119,7 +119,8 @@ public final class ServiceBusProcessorClient {
     }
 
     /**
-     * Stops message processing and closes the processor. The receiving links and sessions are closed.
+     * Stops message processing and closes the processor. The receiving links and sessions are closed and calling
+     * {@link #start()} will create a new processing cycle with new links and new sessions.
      */
     public synchronized void close() {
         isRunning.set(false);
@@ -131,7 +132,8 @@ public final class ServiceBusProcessorClient {
     }
 
     /**
-     * Method to check if the processor is running.
+     * Returns {@code true} if the processor is running. If the processor is stopped or closed, this method returns
+     * {@code false}.
      *
      * @return {@code true} if the processor is running.
      */
@@ -139,7 +141,7 @@ public final class ServiceBusProcessorClient {
         return isRunning.get();
     }
 
-    private void receiveMessages() {
+    private synchronized void receiveMessages() {
         if (receiverSubscription.get() != null) {
             receiverSubscription.get().request(1);
             return;
@@ -197,13 +199,13 @@ public final class ServiceBusProcessorClient {
         try {
             processError.accept(throwable);
         } catch (Exception ex) {
-            logger.warning("Error from error handler. Ignoring error.", ex);
+            logger.verbose("Error from error handler. Ignoring error.", ex);
         }
     }
 
     private void restartMessageReceiver() {
-        ServiceBusReceiverAsyncClient receiverClient = asyncClient.get();
         receiverSubscription.set(null);
+        ServiceBusReceiverAsyncClient receiverClient = asyncClient.get();
         receiverClient.close();
         ServiceBusReceiverAsyncClient newReceiverClient = this.receiverBuilder == null
             ? this.sessionReceiverBuilder.buildAsyncClientForProcessor()
