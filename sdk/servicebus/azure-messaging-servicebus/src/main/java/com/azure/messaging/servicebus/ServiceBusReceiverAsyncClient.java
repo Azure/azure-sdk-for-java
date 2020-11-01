@@ -134,7 +134,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         this.managementNodeLocks = new LockContainer<>(cleanupInterval);
         this.renewalContainer = new LockContainer<>(Duration.ofMinutes(2), renewal -> {
-            logger.info("Closing expired renewal operation. lockToken[{}]. status[{}]. throwable[{}].",
+            logger.verbose("Closing expired renewal operation. lockToken[{}]. status[{}]. throwable[{}].",
                 renewal.getLockToken(), renewal.getStatus(), renewal.getThrowable());
             renewal.close();
         });
@@ -962,7 +962,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             sessionIdToUse = sessionId;
         }
 
-        logger.info("{}: Update started. Disposition: {}. Lock: {}. SessionId: {}.", entityPath, dispositionStatus,
+        logger.verbose("{}: Update started. Disposition: {}. Lock: {}. SessionId: {}.", entityPath, dispositionStatus,
             lockToken, sessionIdToUse);
 
         // This operation is not kicked off until it is subscribed to.
@@ -999,7 +999,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 updateDispositionOperation = existingConsumer.updateDisposition(lockToken, dispositionStatus,
                     deadLetterReason, deadLetterErrorDescription, propertiesToModify, transactionContext)
                     .then(Mono.fromRunnable(() -> {
-                        logger.info("{}: Update completed. Disposition: {}. Lock: {}.",
+                        logger.verbose("{}: Update completed. Disposition: {}. Lock: {}.",
                             entityPath, dispositionStatus, lockToken);
                         renewalContainer.remove(lockToken);
                     }));
@@ -1169,5 +1169,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         } else {
             return new ServiceBusAmqpException((AmqpException) throwable, errorSource);
         }
+    }
+
+    boolean isConnectionClosed() {
+        return this.connectionProcessor.isChannelClosed();
     }
 }
