@@ -643,6 +643,20 @@ class EncyptedBlockBlobAPITest extends APISpec {
         notThrown(Throwable)
     }
 
+    def "Buffered upload nonMarkableStream"() {
+        setup:
+        def file = getRandomFile(10)
+        def fileStream = new FileInputStream(file)
+        def outFile = getRandomFile(10)
+
+        when:
+        bec.upload(fileStream, file.size(), true)
+
+        then:
+        bec.downloadToFile(outFile.toPath().toString(), true)
+        compareFiles(file, outFile, 0, file.size())
+    }
+
     def "Builder bearer token validation"() {
         setup:
         String endpoint = BlobUrlParts.parse(beac.getBlobUrl()).setScheme("http").toUrl()

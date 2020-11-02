@@ -971,7 +971,7 @@ public class ShareFileClient {
     public Response<ShareFileUploadInfo> uploadWithResponse(InputStream data, long length, Long offset,
         ShareRequestConditions requestConditions, Duration timeout, Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(shareFileAsyncClient.uploadWithResponse(Utility
-                .convertStreamToByteBuffer(data, length, (int) ShareFileAsyncClient.FILE_DEFAULT_BLOCK_SIZE),
+                .convertStreamToByteBuffer(data, length, (int) ShareFileAsyncClient.FILE_DEFAULT_BLOCK_SIZE, true),
             length, offset, requestConditions, context), timeout);
     }
 

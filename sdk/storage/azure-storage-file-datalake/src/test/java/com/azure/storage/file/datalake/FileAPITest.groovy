@@ -7,6 +7,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.blob.models.BlockListType
 import com.azure.storage.file.datalake.models.DownloadRetryOptions
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.ProgressReceiver
@@ -1886,6 +1887,24 @@ class FileAPITest extends APISpec {
         e.getResponse().getStatusCode() == 404
     }
 
+    def "Append data retry on transient failure"() {
+        setup:
+        def clientWithFailure = getFileClient(
+            primaryCredential,
+            fc.getFileUrl(),
+            new TransientFailureInjectingHttpPipelinePolicy()
+        )
+
+        when:
+        clientWithFailure.append(defaultInputStream.get(), 0, defaultDataSize)
+        fc.flush(defaultDataSize)
+
+        then:
+        def os = new ByteArrayOutputStream()
+        fc.read(os)
+        os.toByteArray() == defaultData.array()
+    }
+
     def "Flush data min"() {
         when:
         fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
@@ -2467,6 +2486,66 @@ class FileAPITest extends APISpec {
         [4 * Constants.MB, 4 * Constants.MB] | 2
     }
 
+    @Unroll
+    @Requires({ liveMode() })
+    def "Buffered upload handle pathing hot flux with transient failure"() {
+        setup:
+        def clientWithFailure = getFileAsyncClient(
+            primaryCredential,
+            fc.getFileUrl(),
+            new TransientFailureInjectingHttpPipelinePolicy()
+        )
+
+        when:
+        def dataList = [] as List<ByteBuffer>
+        dataSizeList.each { size -> dataList.add(getRandomData(size)) }
+        def uploadOperation = clientWithFailure.upload(Flux.fromIterable(dataList).publish().autoConnect(),
+            new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * Constants.MB), true)
+
+        then:
+        def fcAsync = getFileAsyncClient(primaryCredential, fc.getFileUrl())
+        StepVerifier.create(uploadOperation.then(collectBytesInBuffer(fcAsync.read())))
+            .assertNext({ assert compareListToBuffer(dataList, it) })
+            .verifyComplete()
+
+        where:
+        dataSizeList                         | blockCount
+        [10, 100, 1000, 10000]               | 0
+        [4 * Constants.MB + 1, 10]           | 2
+        [4 * Constants.MB, 4 * Constants.MB] | 2
+    }
+
+    @Unroll
+    @Requires({ liveMode() })
+    def "Buffered upload sync handle pathing with transient failure"() {
+        /*
+        This test ensures that although we no longer mark and reset the source stream for buffered upload, it still
+        supports retries in all cases for the sync client.
+         */
+        setup:
+        def clientWithFailure = getFileClient(
+            primaryCredential,
+            fc.getFileUrl(),
+            new TransientFailureInjectingHttpPipelinePolicy()
+        )
+
+        when:
+        def data = getRandomByteArray(dataSize)
+        clientWithFailure.uploadWithResponse(new FileParallelUploadOptions(new ByteArrayInputStream(data), dataSize)
+            .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong(2 * Constants.MB)
+                .setBlockSizeLong(2 * Constants.MB)), null, null)
+
+        then:
+        def os = new ByteArrayOutputStream(dataSize)
+        fc.read(os)
+        data == os.toByteArray()
+
+        where:
+        dataSize              | blockCount
+        11110                 | 0
+        2 * Constants.MB + 11 | 2
+    }
+
     def "Buffered upload illegal arguments null"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2789,6 +2868,20 @@ class FileAPITest extends APISpec {
 
         cleanup:
         file.delete()
+    }
+
+    def "Buffered upload nonMarkableStream"() {
+        setup:
+        def file = getRandomFile(10)
+        def fileStream = new FileInputStream(file)
+        def outFile = getRandomFile(10)
+
+        when:
+        fc.upload(fileStream, file.size(), true)
+
+        then:
+        fc.readToFile(outFile.toPath().toString(), true)
+        compareFiles(file, outFile, 0, file.size())
     }
 
     /* Quick Query Tests. */
