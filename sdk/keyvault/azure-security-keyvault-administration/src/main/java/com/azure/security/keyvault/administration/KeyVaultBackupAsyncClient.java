@@ -340,10 +340,10 @@ public final class KeyVaultBackupAsyncClient {
 
         return clientImpl.fullRestoreOperationWithResponseAsync(vaultUrl, restoreOperationParameters,
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.info("Restoring from location - {}{}", containerUrl, folderName))
-            .doOnSuccess(response -> logger.info("Restored from location - {}{}", containerUrl, folderName))
+            .doOnRequest(ignored -> logger.info("Restoring from location - {}", backupFolderUrl))
+            .doOnSuccess(response -> logger.info("Restored from location - {}", backupFolderUrl))
             .doOnError(error ->
-                logger.warning("Failed to restore from location - {}{}", containerUrl, folderName, error))
+                logger.warning("Failed to restore from location - {}", backupFolderUrl, error))
             .map(restoreOperationResponse ->
                 new SimpleResponse<>(restoreOperationResponse.getRequest(), restoreOperationResponse.getStatusCode(),
                     restoreOperationResponse.getHeaders(),
@@ -517,12 +517,11 @@ public final class KeyVaultBackupAsyncClient {
             selectiveKeyRestoreOperationParameters, context.addData(AZ_TRACING_NAMESPACE_KEY,
                 KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored ->
-                logger.info("Restoring key \"{}\" from location - {}{}", keyName, containerUrl, folderName))
+                logger.info("Restoring key \"{}\" from location - {}", keyName, backupFolderUrl))
             .doOnSuccess(response ->
-                logger.info("Restored key \"{}\" from location - {}{}", keyName, containerUrl, folderName))
+                logger.info("Restored key \"{}\" from location - {}", keyName, backupFolderUrl))
             .doOnError(error ->
-                logger.warning("Failed to restore key \"{}\" from location - {}{}", keyName, containerUrl, folderName,
-                    error))
+                logger.warning("Failed to restore key \"{}\" from location - {}", keyName, backupFolderUrl, error))
             .map(restoreOperationResponse ->
                 new SimpleResponse<>(restoreOperationResponse.getRequest(), restoreOperationResponse.getStatusCode(),
                     restoreOperationResponse.getHeaders(),
@@ -601,7 +600,7 @@ public final class KeyVaultBackupAsyncClient {
                 fullBackupOperation.getStartTime(), fullBackupOperation.getEndTime(),
                 fullBackupOperation.getAzureStorageBlobContainerUri());
         } else {
-            throw new UnsupportedOperationException("Operation type not supported");
+            throw new UnsupportedOperationException();
         }
     }
 
