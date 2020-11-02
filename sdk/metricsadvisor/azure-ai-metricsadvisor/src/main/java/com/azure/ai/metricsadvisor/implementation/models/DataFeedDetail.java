@@ -17,10 +17,10 @@ import java.util.UUID;
 
 /** The DataFeedDetail model. */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "dataSourceType",
-        defaultImpl = DataFeedDetail.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "dataSourceType",
+    defaultImpl = DataFeedDetail.class)
 @JsonTypeName("DataFeedDetail")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AzureApplicationInsights", value = AzureApplicationInsightsDataFeed.class),
@@ -304,13 +304,13 @@ public class DataFeedDetail {
     }
 
     /**
-     * Set the dataFeedMetrics property: measure list.
+     * Set the metrics property: measure list.
      *
-     * @param dataFeedMetrics the dataFeedMetrics value to set.
+     * @param metrics the metrics value to set.
      * @return the DataFeedDetail object itself.
      */
-    public DataFeedDetail setMetrics(List<DataFeedMetric> dataFeedMetrics) {
-        this.metrics = dataFeedMetrics;
+    public DataFeedDetail setMetrics(List<DataFeedMetric> metrics) {
+        this.metrics = metrics;
         return this;
     }
 

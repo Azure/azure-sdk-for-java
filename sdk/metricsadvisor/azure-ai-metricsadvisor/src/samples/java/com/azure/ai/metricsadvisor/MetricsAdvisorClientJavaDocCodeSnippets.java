@@ -140,7 +140,7 @@ public class MetricsAdvisorClientJavaDocCodeSnippets {
      * {@link MetricsAdvisorClient#listMetricSeriesData(String, List, OffsetDateTime, OffsetDateTime)}
      */
     public void listMetricSeriesData() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesData#String-List-ListMetricSeriesDataOptions
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesData#String-List-OffsetDateTime-OffsetDateTime
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T12:00:00Z");
 
@@ -156,7 +156,7 @@ public class MetricsAdvisorClientJavaDocCodeSnippets {
                 System.out.printf("Series Key:");
                 System.out.println(metricSeriesData.getSeriesKey().asMap());
             });
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesData#String-List-ListMetricSeriesDataOptions
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesData#String-List-OffsetDateTime-OffsetDateTime
     }
 
     /**

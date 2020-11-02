@@ -35,7 +35,7 @@ public class MetricsAnomalyAlertConfigOperationsSample {
         System.out.println("Creating DataPoint Anomaly alert config%n");
         final AnomalyAlertConfiguration createdAnomalyAlertConfig =
             advisorAdministrationClient.createAnomalyAlertConfig(
-                new AnomalyAlertConfiguration("My AnomalyAlert config name")
+                new AnomalyAlertConfiguration("My Anomaly Alert config name")
                     .setDescription("alert config description")
                     .setMetricAlertConfigurations(Arrays.asList(
                         new MetricAnomalyAlertConfiguration(detectionConfigurationId1,
@@ -64,11 +64,11 @@ public class MetricsAnomalyAlertConfigOperationsSample {
         System.out.println("DataFeedMetric level alert configurations for this anomaly alert config:");
         fetchAnomalyAlertConfig.getMetricAlertConfigurations().
             forEach(metricAnomalyAlertConfiguration -> {
-                System.out.printf("AnomalyAlert detection configuration Id: %s%n",
+                System.out.printf("Anomaly Alert detection configuration Id: %s%n",
                     metricAnomalyAlertConfiguration.getDetectionConfigurationId());
-                System.out.printf("AnomalyAlert configuration negation value",
+                System.out.printf("Anomaly Alert configuration negation value",
                     metricAnomalyAlertConfiguration.isNegationOperationEnabled());
-                System.out.printf("AnomalyAlert configuration scope type",
+                System.out.printf("Anomaly Alert configuration scope type",
                     metricAnomalyAlertConfiguration.getAlertScope().getScopeType().toString());
             });
 

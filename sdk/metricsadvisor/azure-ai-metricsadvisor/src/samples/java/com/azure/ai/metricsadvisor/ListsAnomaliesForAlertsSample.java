@@ -29,11 +29,11 @@ public class ListsAnomaliesForAlertsSample {
             alertId);
 
         for (DataPointAnomaly dataPointAnomaly : anomaliesIterable) {
-            System.out.printf("DataFeedMetric Id: %s%n", dataPointAnomaly.getMetricId());
+            System.out.printf("Data Feed Metric Id: %s%n", dataPointAnomaly.getMetricId());
             System.out.printf("Detection Configuration Id: %s%n", dataPointAnomaly.getDetectionConfigurationId());
             System.out.printf("DataPoint Anomaly Created Time: %s%n", dataPointAnomaly.getCreatedTime());
             System.out.printf("DataPoint Anomaly Modified Time: %s%n", dataPointAnomaly.getModifiedTime());
-            System.out.printf("DataPoint Anomaly AnomalySeverity: %s%n", dataPointAnomaly.getSeverity());
+            System.out.printf("DataPoint Anomaly Severity: %s%n", dataPointAnomaly.getSeverity());
             System.out.printf("DataPoint Anomaly Status: %s%n", dataPointAnomaly.getStatus());
             System.out.printf("Series Key: %s%n", dataPointAnomaly.getSeriesKey().asMap());
         }

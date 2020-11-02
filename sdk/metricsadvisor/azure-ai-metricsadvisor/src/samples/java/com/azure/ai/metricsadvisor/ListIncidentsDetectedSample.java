@@ -31,13 +31,13 @@ public class ListIncidentsDetectedSample {
             = advisorClient.listIncidentsForDetectionConfig(detectionConfigurationId, options);
 
         for (AnomalyIncident anomalyIncident : incidentsIterable) {
-            System.out.printf("DataFeedMetric Id: %s%n", anomalyIncident.getMetricId());
+            System.out.printf("Data Feed Metric Id: %s%n", anomalyIncident.getMetricId());
             System.out.printf("Detection Configuration Id: %s%n", anomalyIncident.getDetectionConfigurationId());
             System.out.printf("Anomaly Incident Id: %s%n", anomalyIncident.getId());
             System.out.printf("Anomaly Incident Start Time: %s%n", anomalyIncident.getStartTime());
-            System.out.printf("Anomaly Incident AnomalySeverity: %s%n", anomalyIncident.getSeverity());
+            System.out.printf("Anomaly Incident Severity: %s%n", anomalyIncident.getSeverity());
             System.out.printf("Anomaly Incident Status: %s%n", anomalyIncident.getStatus());
-            System.out.printf("Root DataFeedDimension Key: %s%n", anomalyIncident.getRootDimensionKey().asMap());
+            System.out.printf("Root Dimension Key: %s%n", anomalyIncident.getRootDimensionKey().asMap());
         }
     }
 }

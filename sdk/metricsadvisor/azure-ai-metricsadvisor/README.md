@@ -44,7 +44,7 @@ az cognitiveservices account show --name "resource-name" --resource-group "resou
 ```
 
 #### Create a Metrics Advisor client using MetricsAdvisorKeyCredential
-<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L63-L67 -->
+<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L64-L68-->
 ```java
 MetricsAdvisorKeyCredential credential = new MetricsAdvisorKeyCredential("subscription_key", "api_key");
 MetricsAdvisorClient metricsAdvisorClient = new MetricsAdvisorClientBuilder()
@@ -54,7 +54,7 @@ MetricsAdvisorClient metricsAdvisorClient = new MetricsAdvisorClientBuilder()
 ```
 
 #### Create a Metrics Administration client using MetricsAdvisorKeyCredential
-<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L74-L79 -->
+<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L75-L80 -->
 ```java
 MetricsAdvisorKeyCredential credential = new MetricsAdvisorKeyCredential("subscription_key", "api_key");
 MetricsAdvisorAdministrationClient metricsAdvisorAdminClient =
@@ -121,7 +121,7 @@ A notification hook is the entry point that allows the users to subscribe to rea
 
 #### Add a data feed from a sample or data source
 This example ingests the user specified `SQLServerDataFeedSource` data feed source data to the service.
-<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L86-L118 -->
+<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L87-L123 -->
 ```java
 DataFeed dataFeed = new DataFeed()
     .setName("dataFeedName")
@@ -129,10 +129,14 @@ DataFeed dataFeed = new DataFeed()
     .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
     .setSchema(new DataFeedSchema(
         Arrays.asList(
-            new DataFeedMetric().setName("metric1"),
-            new DataFeedMetric().setName("metric2")
-        )
-    ))
+            new DataFeedMetric().setName("cost"),
+            new DataFeedMetric().setName("revenue")
+        )).setDimensions(
+        Arrays.asList(
+            new DataFeedDimension().setName("city"),
+            new DataFeedDimension().setName("category")
+        ))
+    )
     .setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse("2020-01-01T00:00:00Z")))
     .setOptions(new DataFeedOptions()
         .setDescription("data feed description")
@@ -160,7 +164,7 @@ if (SQL_SERVER_DB == createdSqlDataFeed.getSourceType()) {
 #### Check ingestion status
 This example checks the ingestion status of a previously provided data feed source.
 
-<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L125-L136 -->
+<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L130-L141 -->
 ```java
 String dataFeedId = "3d48er30-6e6e-4391-b78f-b00dfee1e6f5";
 
@@ -179,7 +183,7 @@ metricsAdvisorAdminClient.listDataFeedIngestionStatus(
 #### Configure anomaly detection configuration
 This example demonstrates how a user can configure an anomaly detection configuration for their data.
 
-<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L143-L173 -->
+<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L148-L178 -->
 ```java
 String metricId = "3d48er30-6e6e-4391-b78f-b00dfee1e6f5";
 
@@ -216,7 +220,7 @@ final AnomalyDetectionConfiguration anomalyDetectionConfiguration =
 
 ### Add hooks for receiving anomaly alerts
 This example creates an email hook that receives anomaly incident alerts.
-<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L180-L191 -->
+<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L185-L197 -->
 ```java
 NotificationHook emailNotificationHook = new EmailNotificationHook("email Hook")
     .setDescription("my email Hook")
@@ -230,14 +234,14 @@ System.out.printf("Email Hook name: %s%n", createdEmailHook.getName());
 System.out.printf("Email Hook description: %s%n", createdEmailHook.getDescription());
 System.out.printf("Email Hook external Link: %s%n", createdEmailHook.getExternalLink());
 System.out.printf("Email Hook emails to alert: %s%n",
+    String.join(",", createdEmailHook.getEmailsToAlert()));
 ```
 
 #### Configure an anomaly alert configuration
 This example demonstrates how a user can configure an alerting configuration for detected anomalies in their data.
 
-<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L198-L218 -->
+<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L204-L224 -->
 ```java
-ic void configureAlert() {
 String detectionConfigurationId1 = "9ol48er30-6e6e-4391-b78f-b00dfee1e6f5";
 String detectionConfigurationId2 = "3e58er30-6e6e-4391-b78f-b00dfee1e6f5";
 String hookId1 = "5f48er30-6e6e-4391-b78f-b00dfee1e6f5";
@@ -258,6 +262,7 @@ final AnomalyAlertConfiguration anomalyAlertConfiguration
                                 .setMaxAlertSeverity(AnomalySeverity.HIGH)))
                 ))
             .setCrossMetricsOperator(MetricAnomalyAlertConfigurationsOperator.AND)
+            .setIdOfHooksToAlert(Arrays.asList(hookId1, hookId2)));
 ```
 
 #### Query anomaly detection results
@@ -293,13 +298,13 @@ Metrics Advisor clients raises `HttpResponseException` [exceptions][http_respons
 to provide a non existing feedback Id an `HttpResponseException` would be raised with an error indicating the failure cause.
 In the following code snippet, the error is handled
 gracefully by catching the exception and display the additional information about the error.
-<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L252-L256 -->
+<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L258-L262 -->
 ```java
-public void handlingException() {
-    try {
-        metricsAdvisorClient.getMetricFeedback("non_existing_feedback_id");
-    } catch (HttpResponseException e) {
-        System.out.println(e.getMessage());
+try {
+    metricsAdvisorClient.getMetricFeedback("non_existing_feedback_id");
+} catch (HttpResponseException e) {
+    System.out.println(e.getMessage());
+}
 ```
 
 ### Enable client logging
@@ -318,13 +323,13 @@ For more details see the [samples README][samples_readme].
 #### Async APIs
 All the examples shown so far have been using synchronous APIs, but we provide full support for async APIs as well.
 You'll need to use `MetricsAdvisorAsyncClient`
-<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L263-L267 -->
+<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L269-L273 -->
 ```java
-public void useMetricsAdvisorKeyCredentialAsyncClient() {
-    MetricsAdvisorKeyCredential credential = new MetricsAdvisorKeyCredential("subscription_key", "api_key");
-    MetricsAdvisorAsyncClient metricsAdvisorAsyncClient = new MetricsAdvisorClientBuilder()
-        .credential(credential)
-        .endpoint("{endpoint}")
+MetricsAdvisorKeyCredential credential = new MetricsAdvisorKeyCredential("subscription_key", "api_key");
+MetricsAdvisorAsyncClient metricsAdvisorAsyncClient = new MetricsAdvisorClientBuilder()
+    .credential(credential)
+    .endpoint("{endpoint}")
+    .buildAsyncClient();
 ```
 
 ### Additional documentation

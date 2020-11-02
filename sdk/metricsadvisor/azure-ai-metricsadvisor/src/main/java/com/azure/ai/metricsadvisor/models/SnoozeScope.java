@@ -10,8 +10,8 @@ import java.util.Collection;
 
 /** Defines values for SnoozeScope. */
 public final class SnoozeScope extends ExpandableStringEnum<SnoozeScope> {
-    /** Static value DataFeedMetric for SnoozeScope. */
-    public static final SnoozeScope METRIC = fromString("DataFeedMetric");
+    /** Static value Metric for SnoozeScope. */
+    public static final SnoozeScope METRIC = fromString("Metric");
 
     /** Static value Series for SnoozeScope. */
     public static final SnoozeScope SERIES = fromString("Series");

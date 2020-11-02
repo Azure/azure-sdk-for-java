@@ -31,13 +31,13 @@ public class ListIncidentsDetectedAsyncSample {
             = advisorAsyncClient.listIncidentsForDetectionConfig(detectionConfigurationId, options);
 
         incidentsFlux.doOnNext(incident -> {
-            System.out.printf("DataFeedMetric Id: %s%n", incident.getMetricId());
+            System.out.printf("Data Feed Metric Id: %s%n", incident.getMetricId());
             System.out.printf("Detection Configuration Id: %s%n", incident.getDetectionConfigurationId());
             System.out.printf("Anomaly Incident Id: %s%n", incident.getId());
             System.out.printf("Anomaly Incident Start Time: %s%n", incident.getStartTime());
-            System.out.printf("Anomaly Incident AnomalySeverity: %s%n", incident.getSeverity());
+            System.out.printf("Anomaly Incident Severity: %s%n", incident.getSeverity());
             System.out.printf("Anomaly Incident Status: %s%n", incident.getStatus());
-            System.out.printf("Root DataFeedDimension Key: %s%n", incident.getRootDimensionKey().asMap());
+            System.out.printf("Root Dimension Key: %s%n", incident.getRootDimensionKey().asMap());
         }).blockLast();
         /*
           'blockLast()' will block until the above operation s completed.

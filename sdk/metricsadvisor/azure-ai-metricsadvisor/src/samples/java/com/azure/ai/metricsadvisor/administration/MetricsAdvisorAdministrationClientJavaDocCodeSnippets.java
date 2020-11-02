@@ -9,6 +9,7 @@ import com.azure.ai.metricsadvisor.models.AnomalySeverity;
 import com.azure.ai.metricsadvisor.models.ChangeThresholdCondition;
 import com.azure.ai.metricsadvisor.models.AnomalyAlertConfiguration;
 import com.azure.ai.metricsadvisor.models.DataFeed;
+import com.azure.ai.metricsadvisor.models.DataFeedDimension;
 import com.azure.ai.metricsadvisor.models.DataFeedGranularity;
 import com.azure.ai.metricsadvisor.models.DataFeedGranularityType;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionProgress;
@@ -106,10 +107,14 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
             .setSchema(new DataFeedSchema(
                 Arrays.asList(
-                    new DataFeedMetric().setName("metric1"),
-                    new DataFeedMetric().setName("metric2")
-                )
-            ))
+                    new DataFeedMetric().setName("cost"),
+                    new DataFeedMetric().setName("revenue")
+                )).setDimensions(
+                Arrays.asList(
+                    new DataFeedDimension().setName("city"),
+                    new DataFeedDimension().setName("category")
+                ))
+            )
             .setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse("2020-01-01T00:00:00Z")))
             .setOptions(new DataFeedOptions()
                 .setDescription("data feed description")
@@ -136,10 +141,14 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
             .setSchema(new DataFeedSchema(
                 Arrays.asList(
-                    new DataFeedMetric().setName("metric1"),
-                    new DataFeedMetric().setName("metric2")
-                )
-            ))
+                    new DataFeedMetric().setName("cost"),
+                    new DataFeedMetric().setName("revenue")
+                )).setDimensions(
+                Arrays.asList(
+                    new DataFeedDimension().setName("city"),
+                    new DataFeedDimension().setName("category")
+                ))
+            )
             .setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse("2020-01-01T00:00:00Z")))
             .setOptions(new DataFeedOptions()
                 .setDescription("data feed description")

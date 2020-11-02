@@ -30,47 +30,47 @@ public class MetricFeedbackAsyncSample {
                 .credential(new MetricsAdvisorKeyCredential("subscription_key", "api_key"))
                 .buildAsyncClient();
 
-        // Create DataFeedMetric Feedback
+        // Create Metric Feedback
         final String metricId = "d3gh4i4-b804-4ab9-a70f-0da0c89cft3l";
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
         final MetricChangePointFeedback metricChangePointFeedback
             = new MetricChangePointFeedback(startTime, endTime, ChangePointValue.AUTO_DETECT);
 
-        System.out.printf("Creating DataFeedMetric Feedback%n");
+        System.out.printf("Creating Metric Feedback%n");
         final Mono<MetricFeedback> createdFeedbackMono
             = advisorAsyncClient.createMetricFeedback(metricId, metricChangePointFeedback);
 
         createdFeedbackMono
             .doOnSubscribe(__ ->
-                System.out.printf("Creating DataFeedMetric Feedback%n"))
+                System.out.printf("Creating Metric Feedback%n"))
             .doOnSuccess(feedback ->
-                System.out.printf("Created DataFeedMetric Feedback: %s%n", feedback.getId()));
+                System.out.printf("Created Metric Feedback: %s%n", feedback.getId()));
 
         // Retrieve the metric feedback that just created.
         Mono<MetricFeedback> fetchFeedbackMono =
             createdFeedbackMono.flatMap(createdFeedback -> {
                 return advisorAsyncClient.getMetricFeedback(createdFeedback.getId())
                     .doOnSubscribe(__ ->
-                        System.out.printf("Fetching DataFeedMetric Feedback: %s%n", createdFeedback.getId()))
+                        System.out.printf("Fetching Metric Feedback: %s%n", createdFeedback.getId()))
                     .doOnSuccess(config ->
-                        System.out.printf("Fetched DataFeedMetric Feedback%n"))
+                        System.out.printf("Fetched Metric Feedback%n"))
                     .doOnNext(feedback -> {
-                        System.out.printf("DataFeedMetric Feedback Id : %s%n", feedback.getId());
-                        System.out.printf("DataFeedMetric Feedback created time : %s%n", feedback.getCreatedTime());
-                        System.out.printf("DataFeedMetric Feedback user principal : %s%n", feedback.getUserPrincipal());
-                        System.out.printf("DataFeedMetric feedback associated dimension filter: %s%n",
+                        System.out.printf("Metric Feedback Id : %s%n", feedback.getId());
+                        System.out.printf("Metric Feedback created time : %s%n", feedback.getCreatedTime());
+                        System.out.printf("Metric Feedback user principal : %s%n", feedback.getUserPrincipal());
+                        System.out.printf("Metric feedback associated dimension filter: %s%n",
                             feedback.getDimensionFilter().asMap());
 
                         if (CHANGE_POINT.equals(createdFeedback.getFeedbackType())) {
                             MetricChangePointFeedback createdMetricChangePointFeedback
                                 = (MetricChangePointFeedback) createdFeedback;
-                            System.out.printf("DataFeedMetric feedback Id: %s%n", createdMetricChangePointFeedback.getId());
-                            System.out.printf("DataFeedMetric feedback change point value: %s%n",
+                            System.out.printf("Metric feedback Id: %s%n", createdMetricChangePointFeedback.getId());
+                            System.out.printf("Metric feedback change point value: %s%n",
                                 createdMetricChangePointFeedback.getChangePointValue().toString());
-                            System.out.printf("DataFeedMetric feedback start time: %s%n",
+                            System.out.printf("Metric feedback start time: %s%n",
                                 createdMetricChangePointFeedback.getStartTime());
-                            System.out.printf("DataFeedMetric feedback end time: %s%n",
+                            System.out.printf("Metric feedback end time: %s%n",
                                 createdMetricChangePointFeedback.getEndTime());
                         }
                     });
@@ -87,39 +87,39 @@ public class MetricFeedbackAsyncSample {
         System.out.printf("Listing metric feedbacks%n");
         advisorAsyncClient.listMetricFeedbacks(metricId)
             .doOnNext(feedbackItem -> {
-                System.out.printf("DataFeedMetric Feedback Id : %s%n", feedbackItem.getId());
-                System.out.printf("DataFeedMetric Feedback created time : %s%n", feedbackItem.getCreatedTime());
-                System.out.printf("DataFeedMetric Feedback user principal : %s%n", feedbackItem.getUserPrincipal());
-                System.out.printf("DataFeedMetric feedback associated dimension filter: %s%n",
+                System.out.printf("Metric Feedback Id : %s%n", feedbackItem.getId());
+                System.out.printf("Metric Feedback created time : %s%n", feedbackItem.getCreatedTime());
+                System.out.printf("Metric Feedback user principal : %s%n", feedbackItem.getUserPrincipal());
+                System.out.printf("Metric feedback associated dimension filter: %s%n",
                     feedbackItem.getDimensionFilter().asMap());
 
                 if (CHANGE_POINT.equals(feedbackItem.getFeedbackType())) {
                     MetricChangePointFeedback changePointFeedback
                         = (MetricChangePointFeedback) feedbackItem;
-                    System.out.printf("DataFeedMetric feedback change point value: %s%n",
+                    System.out.printf("Metric feedback change point value: %s%n",
                         changePointFeedback.getChangePointValue().toString());
-                    System.out.printf("DataFeedMetric feedback start time: %s%n",
+                    System.out.printf("Metric feedback start time: %s%n",
                         changePointFeedback.getStartTime());
-                    System.out.printf("DataFeedMetric feedback end time: %s%n",
+                    System.out.printf("Metric feedback end time: %s%n",
                         changePointFeedback.getEndTime());
                 } else if (PERIOD.equals(feedbackItem.getFeedbackType())) {
                     MetricPeriodFeedback periodFeedback
                         = (MetricPeriodFeedback) feedbackItem;
-                    System.out.printf("DataFeedMetric feedback type: %s%n",
+                    System.out.printf("Metric feedback type: %s%n",
                         periodFeedback.getPeriodType().toString());
-                    System.out.printf("DataFeedMetric feedback period value: %f%n",
+                    System.out.printf("Metric feedback period value: %f%n",
                         periodFeedback.getPeriodValue());
                 } else if (ANOMALY.equals(feedbackItem.getFeedbackType())) {
                     MetricAnomalyFeedback metricAnomalyFeedback
                         = (MetricAnomalyFeedback) feedbackItem;
-                    System.out.printf("DataFeedMetric feedback anomaly value: %s%n",
+                    System.out.printf("Metric feedback anomaly value: %s%n",
                         metricAnomalyFeedback.getAnomalyValue().toString());
-                    System.out.printf("DataFeedMetric feedback associated detection configuration Id: %s%n",
+                    System.out.printf("Metric feedback associated detection configuration Id: %s%n",
                         metricAnomalyFeedback.getDetectionConfigurationId());
                 } else if (COMMENT.equals(feedbackItem.getFeedbackType())) {
                     MetricCommentFeedback metricCommentFeedback
                         = (MetricCommentFeedback) feedbackItem;
-                    System.out.printf("DataFeedMetric feedback comment value: %s%n",
+                    System.out.printf("Metric feedback comment value: %s%n",
                         metricCommentFeedback.getComment());
                 }
             });

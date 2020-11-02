@@ -36,7 +36,7 @@ public class ListsAnomaliesForDetectionConfigSample {
             options);
 
         for (DataPointAnomaly dataPointAnomaly : anomaliesIterable) {
-            System.out.printf("DataPoint Anomaly AnomalySeverity: %s%n", dataPointAnomaly.getSeverity());
+            System.out.printf("DataPoint Anomaly Severity: %s%n", dataPointAnomaly.getSeverity());
             System.out.printf("Series Key: %s%n", dataPointAnomaly.getSeriesKey().asMap().entrySet());
         }
     }

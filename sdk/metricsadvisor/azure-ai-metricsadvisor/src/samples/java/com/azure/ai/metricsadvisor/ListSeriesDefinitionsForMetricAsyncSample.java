@@ -32,7 +32,7 @@ public class ListSeriesDefinitionsForMetricAsyncSample {
 
         advisorAsyncClient.listMetricSeriesDefinitions(metricId, options)
             .doOnNext(metricSeriesDefinition -> {
-                System.out.printf("DataFeedMetric Id : %s%n", metricSeriesDefinition.getMetricId());
+                System.out.printf("Data Feed Metric Id : %s%n", metricSeriesDefinition.getMetricId());
                 System.out.printf("Series Key: %s%n", metricSeriesDefinition.getSeriesKey().asMap());
             }).blockLast();
             /*

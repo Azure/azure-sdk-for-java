@@ -26,9 +26,9 @@ public class ListEnrichmentStatusForMetricSample {
 
         advisorClient.listMetricEnrichmentStatus(metricId, options)
             .forEach(enrichmentStatus -> {
-                System.out.printf("DataFeedMetric enrichment status : %s%n", enrichmentStatus.getStatus());
-                System.out.printf("DataFeedMetric enrichment status message: %s%n", enrichmentStatus.getMessage());
-                System.out.printf("DataFeedMetric enrichment status data slice timestamp : %s%n",
+                System.out.printf("Data Feed Metric enrichment status : %s%n", enrichmentStatus.getStatus());
+                System.out.printf("Data Feed Metric enrichment status message: %s%n", enrichmentStatus.getMessage());
+                System.out.printf("Data Feed Metric enrichment status data slice timestamp : %s%n",
                     enrichmentStatus.getTimestamp());
             });
     }

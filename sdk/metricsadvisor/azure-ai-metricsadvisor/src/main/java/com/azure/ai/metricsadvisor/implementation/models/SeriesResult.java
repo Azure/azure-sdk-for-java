@@ -175,7 +175,7 @@ public final class SeriesResult {
      * @param expectedValueList the expectedValueList value to set.
      * @return the SeriesResult object itself.
      */
-    public SeriesResult setExpectedMetricValues(List<Double> expectedValueList) {
+    public SeriesResult setExpectedValueList(List<Double> expectedValueList) {
         this.expectedValueList = expectedValueList;
         return this;
     }
@@ -195,7 +195,7 @@ public final class SeriesResult {
      * @param lowerBoundaryList the lowerBoundaryList value to set.
      * @return the SeriesResult object itself.
      */
-    public SeriesResult setLowerBoundaryValues(List<Double> lowerBoundaryList) {
+    public SeriesResult setLowerBoundaryList(List<Double> lowerBoundaryList) {
         this.lowerBoundaryList = lowerBoundaryList;
         return this;
     }
@@ -215,7 +215,7 @@ public final class SeriesResult {
      * @param upperBoundaryList the upperBoundaryList value to set.
      * @return the SeriesResult object itself.
      */
-    public SeriesResult setUpperBoundaryValues(List<Double> upperBoundaryList) {
+    public SeriesResult setUpperBoundaryList(List<Double> upperBoundaryList) {
         this.upperBoundaryList = upperBoundaryList;
         return this;
     }

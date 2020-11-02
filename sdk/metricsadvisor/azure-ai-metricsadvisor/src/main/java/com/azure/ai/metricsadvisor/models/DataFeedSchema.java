@@ -54,7 +54,7 @@ public final class DataFeedSchema {
     /**
      * Sets the dimension columns value.
      *
-     * @param dimensions the dataFeedDimensions column value to set.
+     * @param dimensions the dimensions column value to set.
      *
      * @return the DataFeedSchema object itself.
      */

@@ -32,7 +32,7 @@ public class ListsAnomaliesForDetectionConfigAsyncSample {
         advisorAsyncClient.listAnomaliesForDetectionConfig(detectionConfigurationId,
             options)
             .doOnNext(anomaly -> {
-                System.out.printf("DataPoint Anomaly AnomalySeverity: %s%n", anomaly.getSeverity());
+                System.out.printf("DataPoint Anomaly Severity: %s%n", anomaly.getSeverity());
                 System.out.printf("Series Key: %s%n", anomaly.getSeriesKey().asMap().entrySet());
             }).blockLast();
              /*

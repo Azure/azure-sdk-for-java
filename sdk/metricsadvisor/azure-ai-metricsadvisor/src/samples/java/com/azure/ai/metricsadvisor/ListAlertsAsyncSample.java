@@ -37,7 +37,7 @@ public class ListAlertsAsyncSample {
 
         advisorAsyncClient.listAlerts(alertConfigurationId, options)
             .subscribe(alert -> {
-                System.out.printf("AnomalyAlert Id: %s%n", alert.getId());
+                System.out.printf("Anomaly Alert Id: %s%n", alert.getId());
                 System.out.printf("Created Time: %s%n", alert.getCreatedTime());
                 System.out.printf("Modified Time: %s%n", alert.getModifiedTime());
             });
