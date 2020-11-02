@@ -8,20 +8,26 @@ import com.azure.security.keyvault.jca.model.CertificateListResult;
 import com.azure.security.keyvault.jca.model.CertificatePolicy;
 import com.azure.security.keyvault.jca.model.KeyProperties;
 import com.azure.security.keyvault.jca.model.SecretBundle;
+import java.io.BufferedReader;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.Key;
+import java.security.KeyFactory;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
@@ -249,16 +255,25 @@ class KeyVaultClient extends DelegateRestClient {
             if (body != null) {
                 JsonConverter converter = JsonConverterFactory.createJsonConverter();
                 SecretBundle secretBundle = (SecretBundle) converter.fromJson(body, SecretBundle.class);
-                try {
-                    KeyStore keyStore = KeyStore.getInstance("PKCS12");
-                    keyStore.load(
-                            new ByteArrayInputStream(Base64.getDecoder().decode(secretBundle.getValue())),
-                            "".toCharArray()
-                    );
-                    alias = keyStore.aliases().nextElement();
-                    key = keyStore.getKey(alias, "".toCharArray());
-                } catch (IOException | KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException | CertificateException ex) {
-                    LOGGER.log(WARNING, "Unable to decode key", ex);
+                if (secretBundle.getContentType().equals("application/x-pkcs12")) {
+                    try {
+                        KeyStore keyStore = KeyStore.getInstance("PKCS12");
+                        keyStore.load(
+                                new ByteArrayInputStream(Base64.getDecoder().decode(secretBundle.getValue())),
+                                "".toCharArray()
+                        );
+                        alias = keyStore.aliases().nextElement();
+                        key = keyStore.getKey(alias, "".toCharArray());
+                    } catch (IOException | KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException | CertificateException ex) {
+                        LOGGER.log(WARNING, "Unable to decode key", ex);
+                    }
+                }
+                if (secretBundle.getContentType().equals("application/x-pem-file")) {
+                    try {
+                        key = createPrivateKeyFromPem(secretBundle.getValue());
+                    } catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException | IllegalArgumentException ex) {
+                        LOGGER.log(WARNING, "Unable to decode key", ex);
+                    }
                 }
             }
         }
@@ -270,5 +285,38 @@ class KeyVaultClient extends DelegateRestClient {
         //
         LOGGER.exiting("KeyVaultClient", "getKey", key);
         return key;
+    }
+
+    /**
+     * Get the private key from the PEM string.
+     *
+     * @param pemString the PEM file in string format.
+     * @return the private key
+     * @throws IOException when an I/O error occurs.
+     * @throws NoSuchAlgorithmException when algorithm is unavailable.
+     * @throws InvalidKeySpecException when the private key cannot be generated.
+     */
+    private PrivateKey createPrivateKeyFromPem(String pemString) 
+            throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+        
+        StringBuilder builder = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new StringReader(pemString))) {
+            String line = reader.readLine();
+            if (line == null || !line.contains("BEGIN PRIVATE KEY")) {
+                throw new IllegalArgumentException("No PRIVATE KEY found");
+            }
+            line = "";
+            while (line != null) {
+                if (line.contains("END PRIVATE KEY")) {
+                    break;
+                }
+                builder.append(line);
+                line = reader.readLine();
+            }
+        }
+        byte[] bytes = Base64.getDecoder().decode(builder.toString());
+        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(bytes);
+        KeyFactory factory = KeyFactory.getInstance("RSA");
+        return factory.generatePrivate(spec);
     }
 }
