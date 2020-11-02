@@ -309,7 +309,9 @@ public final class FormRecognizerAsyncClient {
             return new PollerFlux<>(
                 recognizeContentOptions.getPollInterval(),
                 urlActivationOperation(
-                    () -> service.analyzeLayoutAsyncWithResponseAsync(new SourcePath().setSource(formUrl), context)
+                    () -> service.analyzeLayoutAsyncWithResponseAsync(null,
+                        new SourcePath().setSource(formUrl),
+                        context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
                     logger),
@@ -387,7 +389,7 @@ public final class FormRecognizerAsyncClient {
             return new PollerFlux<>(
                 recognizeContentOptions.getPollInterval(),
                 streamActivationOperation(
-                    contentType -> service.analyzeLayoutAsyncWithResponseAsync(contentType, form, length, context)
+                    contentType -> service.analyzeLayoutAsyncWithResponseAsync(contentType, form, length, null, context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
                     form, recognizeContentOptions.getContentType()),
