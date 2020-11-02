@@ -70,9 +70,10 @@ public class ResumeBackupAndRestoreAsync {
                 System.out.println(pollResponse.getValue().getStatusDetails());
             })
             .blockLast();
-        /* block(), blockFirst() and blockLast() will block until all the above operations on are completed. This is
-        strongly discouraged for use in production as it eliminates the benefits of asynchronous IO. It is used here for
-        the sake of explaining where to get the jobId and backupFolderUrl parameters and to ensure the sample runs to
-        completion. */
+
+        /* NOTE: block(), blockFirst() and blockLast() will block until all the above operations on are completed. This
+        is strongly discouraged for use in production as it eliminates the benefits of asynchronous IO. It is used here
+        for the sake of explaining where to get the jobId and backupFolderUrl parameters and to ensure the sample runs
+        to completion. */
     }
 }

@@ -50,8 +50,9 @@ public class BackupAndRestoreHelloWorldAsync {
         String backupFolderUrl = backupPollResponse.getValue().getAzureStorageBlobContainerUri();
 
         backupAsyncClient.beginRestore(backupFolderUrl, sasToken).blockLast();
-        /* blockLast() will block until all the above operations are completed. This is strongly discouraged for use in
-        production as it eliminates the benefits of asynchronous IO. It is used here to ensure the sample runs to
+
+        /* NOTE: blockLast() will block until all the above operations are completed. This is strongly discouraged for
+        use in production as it eliminates the benefits of asynchronous IO. It is used here to ensure the sample runs to
         completion. */
     }
 }

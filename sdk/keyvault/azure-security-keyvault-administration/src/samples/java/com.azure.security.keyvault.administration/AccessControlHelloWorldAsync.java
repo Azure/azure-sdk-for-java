@@ -39,19 +39,17 @@ public class AccessControlHelloWorldAsync {
         List<KeyVaultRoleDefinition> roleDefinitions = new ArrayList<>();
 
         accessControlAsyncClient.listRoleDefinitions(KeyVaultRoleAssignmentScope.GLOBAL)
-            .subscribe((roleDefinition) -> {
+            .doOnNext((roleDefinition) -> {
                 roleDefinitions.add(roleDefinition);
                 System.out.printf("Retrieved role definition with name: %s %n", roleDefinition.getName());
-            });
-
-        Thread.sleep(15000);
+            })
+            .blockLast();
 
         // Before assigning any new roles, let's get all the current role assignments.
         accessControlAsyncClient.listRoleAssignments(KeyVaultRoleAssignmentScope.GLOBAL)
-            .subscribe((roleAssignment ->
-                System.out.printf("Retrieved role assignment with name: %s %n", roleAssignment.getName())));
-
-        Thread.sleep(15000);
+            .doOnNext((roleAssignment ->
+                System.out.printf("Retrieved role assignment with name: %s %n", roleAssignment.getName())))
+            .blockLast();
 
         /* Now let's assign a role to a service principal. To do this we'll need a role definition ID and a service
         principal object ID. A role definition ID can be obtained from the 'id' property of one of the role definitions
@@ -74,17 +72,19 @@ public class AccessControlHelloWorldAsync {
         assert createdRoleAssignment != null;
 
         accessControlAsyncClient.getRoleAssignment(KeyVaultRoleAssignmentScope.GLOBAL, createdRoleAssignment.getName())
-            .subscribe((retrievedRoleAssignment) ->
-                System.out.printf("Retrieved role assignment with name: %s %n", retrievedRoleAssignment.getName()));
-
-        Thread.sleep(2000);
+            .doOnSuccess((retrievedRoleAssignment) ->
+                System.out.printf("Retrieved role assignment with name: %s %n", retrievedRoleAssignment.getName()))
+            .block();
 
         /* To remove a role assignment from a service principal, the role assignment must be deleted. Let's delete the
         createdAssignment from the previous example. */
         accessControlAsyncClient.deleteRoleAssignment(KeyVaultRoleAssignmentScope.GLOBAL, createdRoleAssignment.getName())
-            .subscribe((deletedRoleAssignment) ->
-                System.out.printf("Retrieved role assignment with name: %s %n", deletedRoleAssignment.getName()));
+            .doOnSuccess((deletedRoleAssignment) ->
+                System.out.printf("Retrieved role assignment with name: %s %n", deletedRoleAssignment.getName()))
+            .block();
 
-        Thread.sleep(2000);
+        /* NOTE: block() and blockLast() will block until the above operations are completed. This is strongly
+        discouraged for use in production as it eliminates the benefits of asynchronous IO. It is used here to ensure
+        the sample runs to completion. */
     }
 }
