@@ -57,7 +57,7 @@ Both the asynchronous and synchronous Service Bus sender and receiver clients ar
 `ServiceBusClientBuilder`. The snippets below create a synchronous Service Bus sender and an asynchronous receiver,
 respectively.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L30-L34 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L29-L33 -->
 ```java
 ServiceBusSenderClient sender = new ServiceBusClientBuilder()
     .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
@@ -66,7 +66,7 @@ ServiceBusSenderClient sender = new ServiceBusClientBuilder()
     .buildClient();
 ```
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L41-L46 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L40-L45 -->
 ```java
 ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
     .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
@@ -102,7 +102,7 @@ refer to [the associated documentation][aad_authorization].
 
 Use the returned token credential to authenticate the client:
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L53-L59 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L52-L58 -->
 ```java
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .build();
@@ -152,7 +152,7 @@ a topic.
 The snippet below creates a synchronous [`ServiceBusSenderClient`][ServiceBusSenderClient] to publish a message to a
 queue.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L66-L78 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L65-L77 -->
 ```java
 ServiceBusSenderClient sender = new ServiceBusClientBuilder()
     .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
@@ -187,7 +187,7 @@ queue or topic/subscriber.
 The snippet below creates a [`ServiceBusReceiverClient`][ServiceBusReceiverClient] to receive messages from a topic
 subscription.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L85-L102 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L84-L101 -->
 ```java
 ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
     .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
@@ -202,7 +202,7 @@ IterableStream<ServiceBusReceivedMessageContext> messages = receiver.receiveMess
 messages.forEach(context -> {
     ServiceBusReceivedMessage message = context.getMessage();
     System.out.printf("Id: %s. Contents: %s%n", message.getMessageId(),
-        new String(message.getBody(), StandardCharsets.UTF_8));
+        message.getBody().toString());
 });
 
 // When you are done using the receiver, dispose of it.
@@ -214,7 +214,7 @@ receiver.close();
 The asynchronous [`ServiceBusReceiverAsyncClient`][ServiceBusReceiverAsyncClient] continuously fetches messages until
 the `subscription` is disposed.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L109-L131 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L108-L130 -->
 ```java
 ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
     .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
@@ -227,7 +227,7 @@ ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
 Disposable subscription = receiver.receiveMessages().subscribe(context -> {
     ServiceBusReceivedMessage message = context.getMessage();
     System.out.printf("Id: %s%n", message.getMessageId());
-    System.out.printf("Contents: %s%n", new String(message.getBody(), StandardCharsets.UTF_8));
+    System.out.printf("Contents: %s%n", message.getBody().toString());
 }, error -> {
         System.err.println("Error occurred while receiving messages: " + error);
     }, () -> {
@@ -247,7 +247,7 @@ When a message is received, it can be settled using any of the `complete()`, `ab
 overloads. The sample below completes a received message from synchronous
 [`ServiceBusReceiverClient`][ServiceBusReceiverClient].
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L146-L152 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L145-L151 -->
 ```java
 // This fetches a batch of 10 messages or until the default operation timeout has elapsed.
 receiver.receiveMessages(10).forEach(context -> {
@@ -287,7 +287,7 @@ Create a [`ServiceBusSenderClient`][ServiceBusSenderClient] for a session enable
 `ServiceBusMessage.setSessionId(String)` on a `ServiceBusMessage` will publish the message to that session. If the
 session does not exist, it is created.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L165-L169 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L164-L168 -->
 ```java
 // Setting sessionId publishes that message to a specific session, in this case, "greeting".
 ServiceBusMessage message = new ServiceBusMessage("Hello world")
@@ -300,7 +300,7 @@ sender.sendMessage(message);
 
 Receivers can fetch messages from a specific session or the first available, unlocked session.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L176-L182 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L175-L181 -->
 ```java
 // Creates a session-enabled receiver that gets messages from the session "greetings".
 ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
@@ -311,7 +311,7 @@ ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuild
 Mono<ServiceBusReceiverAsyncClient> receiverAsyncClient = sessionReceiver.acceptSession("greetings");
 ```
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L189-L195 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L188-L194 -->
 ```java
 // Creates a session-enabled receiver that gets messages from the first available session.
 ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
@@ -329,7 +329,7 @@ The dead-letter queue doesn't need to be explicitly created and can't be deleted
 of the main entity. For session enabled or non-session queue or topic subscriptions, the dead-letter receiver can be 
 created the same way as shown below. Learn more about dead-letter queue [here][dead-letter-queue].
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L202-L208 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L201-L207 -->
 ```java
 ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
     .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")

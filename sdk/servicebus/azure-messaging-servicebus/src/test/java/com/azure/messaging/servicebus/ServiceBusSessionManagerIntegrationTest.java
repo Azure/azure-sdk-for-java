@@ -15,7 +15,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -140,7 +139,7 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
         }
 
         assertEquals(messageId, message.getMessageId());
-        assertEquals(contents, new String(message.getBody(), StandardCharsets.UTF_8));
+        assertEquals(contents, message.getBody().toString());
 
         assertNull(actual.getThrowable());
     }

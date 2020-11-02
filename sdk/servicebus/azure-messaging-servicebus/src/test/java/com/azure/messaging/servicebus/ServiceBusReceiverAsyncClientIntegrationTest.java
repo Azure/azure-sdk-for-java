@@ -1148,7 +1148,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 assertNotNull(received.getLockToken());
                 AmqpAnnotatedMessage actual = received.getAmqpAnnotatedMessage();
                 try {
-                    assertArrayEquals(CONTENTS_BYTES, message.getBody());
+                    assertArrayEquals(CONTENTS_BYTES, message.getBody().toBytes());
                     assertEquals(expectedAmqpProperties.getHeader().getPriority(), actual.getHeader().getPriority());
                     assertEquals(expectedAmqpProperties.getHeader().isFirstAcquirer(), actual.getHeader().isFirstAcquirer());
                     assertEquals(expectedAmqpProperties.getHeader().isDurable(), actual.getHeader().isDurable());
