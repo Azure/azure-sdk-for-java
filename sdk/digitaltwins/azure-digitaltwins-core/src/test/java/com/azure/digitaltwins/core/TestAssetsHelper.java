@@ -53,18 +53,32 @@ public class TestAssetsHelper {
 
     public static JsonPatchDocument getRoomTwinUpdatePayload()
     {
-        JsonPatchDocument uou = new JsonPatchDocument();
-        uou.appendAdd("/Humidity", 30);
-        uou.appendReplace("/Temperature", 70);
-        uou.appendRemove("/EmployeeId");
-        return uou;
+        JsonPatchDocument jsonPatch = new JsonPatchDocument();
+        jsonPatch.appendAdd("/Humidity", 30);
+        jsonPatch.appendReplace("/Temperature", 70);
+        jsonPatch.appendRemove("/EmployeeId");
+        return jsonPatch;
+    }
+
+    public static JsonPatchDocument getRoomTwinSecondUpdatePayload()
+    {
+        JsonPatchDocument jsonPatch = new JsonPatchDocument();
+        jsonPatch.appendReplace("/Temperature", 80);
+        return jsonPatch;
     }
 
     public static JsonPatchDocument getWifiComponentUpdatePayload()
     {
-        JsonPatchDocument uou = new JsonPatchDocument();
-        uou.appendReplace("/Network", "New Network");
-        return uou;
+        JsonPatchDocument jsonPatch = new JsonPatchDocument();
+        jsonPatch.appendReplace("/Network", "New Network");
+        return jsonPatch;
+    }
+
+    public static JsonPatchDocument getWifiComponentSecondUpdatePayload()
+    {
+        JsonPatchDocument jsonPatch = new JsonPatchDocument();
+        jsonPatch.appendReplace("/Network", "Even newer Network");
+        return jsonPatch;
     }
 
     public static String getFloorTwinPayload(String floorModelId)
@@ -97,9 +111,9 @@ public class TestAssetsHelper {
 
     public static JsonPatchDocument getRelationshipUpdatePayload(String propertyName, boolean propertyValue)
     {
-        JsonPatchDocument uou = new JsonPatchDocument();
-        uou.appendReplace(propertyName, propertyValue);
-        return uou;
+        JsonPatchDocument jsonPatch = new JsonPatchDocument();
+        jsonPatch.appendReplace(propertyName, propertyValue);
+        return jsonPatch;
     }
 
     public static String getWifiModelPayload(String wifiModelId)

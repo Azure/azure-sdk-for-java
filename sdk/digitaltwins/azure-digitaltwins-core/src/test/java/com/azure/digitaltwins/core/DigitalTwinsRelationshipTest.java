@@ -8,6 +8,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.models.JsonPatchDocument;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
 import com.azure.digitaltwins.core.models.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -296,6 +297,543 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
                 client.deleteModel(roomModelId);
                 client.deleteModel(hvacModelId);
             } catch (Exception ex) {
+                fail("Test cleanup failed", ex);
+            }
+        }
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
+    @Override
+    public void createOrReplaceRelationshipFailsWhenIfNoneMatchStar(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
+        DigitalTwinsClient client = getClient(httpClient, serviceVersion);
+
+        String floorModelId = getUniqueModelId(FLOOR_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
+        String roomModelId = getUniqueModelId(ROOM_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
+        String hvacModelId = getUniqueModelId(HVAC_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
+
+        String floorTwinId = getUniqueDigitalTwinId(FLOOR_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+        String roomTwinId = getUniqueDigitalTwinId(ROOM_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+        String hvacTwinId = getUniqueDigitalTwinId(HVAC_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+
+        try {
+            // Create floor, room and hvac model
+            createModelsAndTwins(client, floorModelId, roomModelId, hvacModelId, floorTwinId, roomTwinId, hvacTwinId);
+
+            // Connect the created twins via relationships
+            String floorContainsRoomPayload = getRelationshipWithPropertyPayload(roomTwinId, CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
+            BasicRelationship floorContainsRoomRelationship = deserializeJsonString(floorContainsRoomPayload, BasicRelationship.class);
+
+            // Create relationship from Floor -> Room
+            BasicRelationship floorRoomRelationship = client.createOrReplaceRelationship(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, floorContainsRoomRelationship, BasicRelationship.class);
+            assertThat(floorRoomRelationship.getId())
+                .isEqualTo(FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID)
+                .as("Created relationship from floor -> room");
+            logger.info("Created {} relationship between source = {} and target = {}", floorRoomRelationship.getId(), floorRoomRelationship.getSourceId(), floorRoomRelationship.getTargetId());
+
+            assertRestException(
+                () -> client.createOrReplaceRelationshipWithResponse(
+                    floorTwinId,
+                    FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
+                    floorContainsRoomRelationship,
+                    BasicRelationship.class,
+                    new CreateOrReplaceRelationshipOptions().setIfNoneMatch("*"),
+                    Context.NONE),
+                HTTP_PRECON_FAILED
+            );
+        } finally {
+            // Clean up
+            try {
+                logger.info("Cleaning up test resources.");
+
+                logger.info("Deleting created relationships.");
+                // Delete the created relationships.
+                List<BasicRelationship> relationships = new ArrayList<>();
+                client.listRelationships(floorTwinId, BasicRelationship.class)
+                    .iterableByPage()
+                    .forEach(basicRelationshipPagedResponse -> relationships.addAll(basicRelationshipPagedResponse.getValue()));
+                client.listRelationships(roomTwinId, BasicRelationship.class)
+                    .iterableByPage()
+                    .forEach(basicRelationshipPagedResponse -> relationships.addAll(basicRelationshipPagedResponse.getValue()));
+                client.listRelationships(hvacTwinId, BasicRelationship.class)
+                    .iterableByPage()
+                    .forEach(basicRelationshipPagedResponse -> relationships.addAll(basicRelationshipPagedResponse.getValue()));
+                relationships.forEach(basicRelationship -> client.deleteRelationship(basicRelationship.getSourceId(), basicRelationship.getId()));
+
+                // Now the twins and models can be deleted.
+                logger.info("Deleting created digital twins.");
+                client.deleteDigitalTwin(floorTwinId);
+                client.deleteDigitalTwin(roomTwinId);
+                client.deleteDigitalTwin(hvacTwinId);
+
+                logger.info("Deleting created models.");
+                client.deleteModel(floorModelId);
+                client.deleteModel(roomModelId);
+                client.deleteModel(hvacModelId);
+            }
+            catch (Exception ex) {
+                fail("Test cleanup failed", ex);
+            }
+        }
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
+    @Override
+    public void createOrReplaceRelationshipSucceedsWhenNoIfNoneHeader(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
+        DigitalTwinsClient client = getClient(httpClient, serviceVersion);
+
+        String floorModelId = getUniqueModelId(FLOOR_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
+        String roomModelId = getUniqueModelId(ROOM_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
+        String hvacModelId = getUniqueModelId(HVAC_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
+
+        String floorTwinId = getUniqueDigitalTwinId(FLOOR_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+        String roomTwinId = getUniqueDigitalTwinId(ROOM_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+        String hvacTwinId = getUniqueDigitalTwinId(HVAC_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+
+        try {
+            // Create floor, room and hvac model
+            createModelsAndTwins(client, floorModelId, roomModelId, hvacModelId, floorTwinId, roomTwinId, hvacTwinId);
+
+            // Connect the created twins via relationships
+            String floorContainsRoomPayload = getRelationshipWithPropertyPayload(roomTwinId, CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
+            String floorTwinContainedInRelationshipPayload = getRelationshipPayload(floorTwinId, CONTAINED_IN_RELATIONSHIP);
+
+            // Create relationship from Floor -> Room
+            BasicRelationship floorRoomRelationship = client.createOrReplaceRelationship(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, deserializeJsonString(floorContainsRoomPayload, BasicRelationship.class), BasicRelationship.class);
+            assertThat(floorRoomRelationship.getId())
+                .isEqualTo(FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID)
+                .as("Created relationship from floor -> room");
+            logger.info("Created {} relationship between source = {} and target = {}", floorRoomRelationship.getId(), floorRoomRelationship.getSourceId(), floorRoomRelationship.getTargetId());
+
+            try {
+                client.createOrReplaceRelationshipWithResponse(
+                    roomTwinId,
+                    ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID,
+                    floorTwinContainedInRelationshipPayload,
+                    String.class,
+                    null, //don't set ifNoneMatch header
+                    Context.NONE);
+            } catch (ErrorResponseException ex) {
+                if (ex.getResponse().getStatusCode() == HTTP_PRECON_FAILED) {
+                    fail("Should not have gotten a 412 error since ifNoneMatch header was not sent", ex);
+                } else {
+                    throw ex;
+                }
+            }
+        } finally {
+            // Clean up
+            try {
+                logger.info("Cleaning up test resources.");
+
+                logger.info("Deleting created relationships.");
+                // Delete the created relationships.
+                List<BasicRelationship> relationships = new ArrayList<>();
+                client.listRelationships(floorTwinId, BasicRelationship.class)
+                    .iterableByPage()
+                    .forEach(basicRelationshipPagedResponse -> relationships.addAll(basicRelationshipPagedResponse.getValue()));
+                client.listRelationships(roomTwinId, BasicRelationship.class)
+                    .iterableByPage()
+                    .forEach(basicRelationshipPagedResponse -> relationships.addAll(basicRelationshipPagedResponse.getValue()));
+                client.listRelationships(hvacTwinId, BasicRelationship.class)
+                    .iterableByPage()
+                    .forEach(basicRelationshipPagedResponse -> relationships.addAll(basicRelationshipPagedResponse.getValue()));
+                relationships.forEach(basicRelationship -> client.deleteRelationship(basicRelationship.getSourceId(), basicRelationship.getId()));
+
+                // Now the twins and models can be deleted.
+                logger.info("Deleting created digital twins.");
+                client.deleteDigitalTwin(floorTwinId);
+                client.deleteDigitalTwin(roomTwinId);
+                client.deleteDigitalTwin(hvacTwinId);
+
+                logger.info("Deleting created models.");
+                client.deleteModel(floorModelId);
+                client.deleteModel(roomModelId);
+                client.deleteModel(hvacModelId);
+            }
+            catch (Exception ex) {
+                fail("Test cleanup failed", ex);
+            }
+        }
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
+    @Override
+    public void patchRelationshipFailsWhenETagDoesNotMatch(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
+        DigitalTwinsClient client = getClient(httpClient, serviceVersion);
+
+        String floorModelId = getUniqueModelId(FLOOR_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
+        String roomModelId = getUniqueModelId(ROOM_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
+        String hvacModelId = getUniqueModelId(HVAC_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
+
+        String floorTwinId = getUniqueDigitalTwinId(FLOOR_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+        String roomTwinId = getUniqueDigitalTwinId(ROOM_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+        String hvacTwinId = getUniqueDigitalTwinId(HVAC_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+
+        try {
+            // Create floor, room and hvac model
+            createModelsAndTwins(client, floorModelId, roomModelId, hvacModelId, floorTwinId, roomTwinId, hvacTwinId);
+
+            // Connect the created twins via relationships
+            String floorContainsRoomPayload = getRelationshipWithPropertyPayload(roomTwinId, CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
+            JsonPatchDocument floorContainsRoomUpdatePayload = getRelationshipUpdatePayload("/isAccessRestricted", false);
+
+            // Create relationship from Floor -> Room
+            DigitalTwinsResponse<BasicRelationship> floorRoomRelationship = client.createOrReplaceRelationshipWithResponse(
+                floorTwinId,
+                FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
+                deserializeJsonString(floorContainsRoomPayload, BasicRelationship.class),
+                BasicRelationship.class,
+                null,
+                Context.NONE);
+            logger.info(
+                "Created {} relationship between source = {} and target = {}",
+                floorRoomRelationship.getValue().getId(),
+                floorRoomRelationship.getValue().getSourceId(),
+                floorRoomRelationship.getValue().getTargetId());
+
+            String etagBeforeUpdate = floorRoomRelationship.getDeserializedHeaders().getETag();
+
+            // Update relationship from Floor -> Room
+            client.updateRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, floorContainsRoomUpdatePayload, null, Context.NONE);
+
+            // Update the relationship again, but with the out of date etag
+            JsonPatchDocument floorContainsRoomSecondUpdatePayload = getRelationshipUpdatePayload("/isAccessRestricted", true);
+
+            assertRestException(
+                () -> client.updateRelationshipWithResponse(
+                    floorTwinId,
+                    FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
+                    floorContainsRoomSecondUpdatePayload,
+                    new UpdateRelationshipOptions().setIfMatch(etagBeforeUpdate),
+                    Context.NONE),
+                HTTP_PRECON_FAILED
+            );
+
+            // DELETE the created relationship
+            client.deleteRelationship(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID);
+            logger.info("Deleted relationship {} for twin {}", FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, floorTwinId);
+        } finally {
+            // Clean up
+            try {
+                logger.info("Cleaning up test resources.");
+
+                logger.info("Deleting created relationships.");
+                // Delete the created relationships.
+                List<BasicRelationship> relationships = new ArrayList<>();
+                client.listRelationships(floorTwinId, BasicRelationship.class)
+                    .iterableByPage()
+                    .forEach(basicRelationshipPagedResponse -> relationships.addAll(basicRelationshipPagedResponse.getValue()));
+                client.listRelationships(roomTwinId, BasicRelationship.class)
+                    .iterableByPage()
+                    .forEach(basicRelationshipPagedResponse -> relationships.addAll(basicRelationshipPagedResponse.getValue()));
+                client.listRelationships(hvacTwinId, BasicRelationship.class)
+                    .iterableByPage()
+                    .forEach(basicRelationshipPagedResponse -> relationships.addAll(basicRelationshipPagedResponse.getValue()));
+                relationships.forEach(basicRelationship -> client.deleteRelationship(basicRelationship.getSourceId(), basicRelationship.getId()));
+
+                // Now the twins and models can be deleted.
+                logger.info("Deleting created digital twins.");
+                client.deleteDigitalTwin(floorTwinId);
+                client.deleteDigitalTwin(roomTwinId);
+                client.deleteDigitalTwin(hvacTwinId);
+
+                logger.info("Deleting created models.");
+                client.deleteModel(floorModelId);
+                client.deleteModel(roomModelId);
+                client.deleteModel(hvacModelId);
+            }
+            catch (Exception ex) {
+                fail("Test cleanup failed", ex);
+            }
+        }
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
+    @Override
+    public void patchRelationshipSucceedsWhenETagMatches(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
+        DigitalTwinsClient client = getClient(httpClient, serviceVersion);
+
+        String floorModelId = getUniqueModelId(FLOOR_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
+        String roomModelId = getUniqueModelId(ROOM_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
+        String hvacModelId = getUniqueModelId(HVAC_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
+
+        String floorTwinId = getUniqueDigitalTwinId(FLOOR_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+        String roomTwinId = getUniqueDigitalTwinId(ROOM_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+        String hvacTwinId = getUniqueDigitalTwinId(HVAC_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+
+        try {
+            // Create floor, room and hvac model
+            createModelsAndTwins(client, floorModelId, roomModelId, hvacModelId, floorTwinId, roomTwinId, hvacTwinId);
+
+            // Connect the created twins via relationships
+            String floorContainsRoomPayload = getRelationshipWithPropertyPayload(roomTwinId, CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
+            JsonPatchDocument floorContainsRoomUpdatePayload = getRelationshipUpdatePayload("/isAccessRestricted", false);
+
+            // Create relationship from Floor -> Room
+            DigitalTwinsResponse<BasicRelationship> floorRoomRelationship = client.createOrReplaceRelationshipWithResponse(
+                floorTwinId,
+                FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
+                deserializeJsonString(floorContainsRoomPayload, BasicRelationship.class),
+                BasicRelationship.class,
+                null,
+                Context.NONE);
+            logger.info(
+                "Created {} relationship between source = {} and target = {}",
+                floorRoomRelationship.getValue().getId(),
+                floorRoomRelationship.getValue().getSourceId(),
+                floorRoomRelationship.getValue().getTargetId());
+
+            // Update relationship from Floor -> Room
+            DigitalTwinsResponse<Void> updateResponse = client.updateRelationshipWithResponse(
+                floorTwinId,
+                FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
+                floorContainsRoomUpdatePayload,
+                null,
+                Context.NONE);
+
+            String upToDateETag = updateResponse.getDeserializedHeaders().getETag();
+
+            // Update the relationship again, but with the up to date etag
+            JsonPatchDocument floorContainsRoomSecondUpdatePayload = getRelationshipUpdatePayload("/isAccessRestricted", true);
+
+            try {
+                client.updateRelationshipWithResponse(
+                    floorTwinId,
+                    FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
+                    floorContainsRoomSecondUpdatePayload,
+                    new UpdateRelationshipOptions().setIfMatch(upToDateETag),
+                    Context.NONE);
+            } catch (ErrorResponseException ex) {
+                if (ex.getResponse().getStatusCode() == HTTP_PRECON_FAILED) {
+                    fail("Should not have gotten a 412 error since ifMatch header had up to date etag", ex);
+                } else {
+                    throw ex;
+                }
+            }
+
+            // DELETE the created relationship
+            client.deleteRelationship(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID);
+            logger.info("Deleted relationship {} for twin {}", FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, floorTwinId);
+        } finally {
+            // Clean up
+            try {
+                logger.info("Cleaning up test resources.");
+
+                logger.info("Deleting created relationships.");
+                // Delete the created relationships.
+                List<BasicRelationship> relationships = new ArrayList<>();
+                client.listRelationships(floorTwinId, BasicRelationship.class)
+                    .iterableByPage()
+                    .forEach(basicRelationshipPagedResponse -> relationships.addAll(basicRelationshipPagedResponse.getValue()));
+                client.listRelationships(roomTwinId, BasicRelationship.class)
+                    .iterableByPage()
+                    .forEach(basicRelationshipPagedResponse -> relationships.addAll(basicRelationshipPagedResponse.getValue()));
+                client.listRelationships(hvacTwinId, BasicRelationship.class)
+                    .iterableByPage()
+                    .forEach(basicRelationshipPagedResponse -> relationships.addAll(basicRelationshipPagedResponse.getValue()));
+                relationships.forEach(basicRelationship -> client.deleteRelationship(basicRelationship.getSourceId(), basicRelationship.getId()));
+
+                // Now the twins and models can be deleted.
+                logger.info("Deleting created digital twins.");
+                client.deleteDigitalTwin(floorTwinId);
+                client.deleteDigitalTwin(roomTwinId);
+                client.deleteDigitalTwin(hvacTwinId);
+
+                logger.info("Deleting created models.");
+                client.deleteModel(floorModelId);
+                client.deleteModel(roomModelId);
+                client.deleteModel(hvacModelId);
+            }
+            catch (Exception ex) {
+                fail("Test cleanup failed", ex);
+            }
+        }
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
+    @Override
+    public void deleteRelationshipFailsWhenETagDoesNotMatch(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
+        DigitalTwinsClient client = getClient(httpClient, serviceVersion);
+
+        String floorModelId = getUniqueModelId(FLOOR_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
+        String roomModelId = getUniqueModelId(ROOM_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
+        String hvacModelId = getUniqueModelId(HVAC_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
+
+        String floorTwinId = getUniqueDigitalTwinId(FLOOR_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+        String roomTwinId = getUniqueDigitalTwinId(ROOM_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+        String hvacTwinId = getUniqueDigitalTwinId(HVAC_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+
+        try {
+            // Create floor, room and hvac model
+            createModelsAndTwins(client, floorModelId, roomModelId, hvacModelId, floorTwinId, roomTwinId, hvacTwinId);
+
+            // Connect the created twins via relationships
+            String floorContainsRoomPayload = getRelationshipWithPropertyPayload(roomTwinId, CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
+            JsonPatchDocument floorContainsRoomUpdatePayload = getRelationshipUpdatePayload("/isAccessRestricted", false);
+
+            // Create relationship from Floor -> Room
+            DigitalTwinsResponse<BasicRelationship> floorRoomRelationship = client.createOrReplaceRelationshipWithResponse(
+                floorTwinId,
+                FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
+                deserializeJsonString(floorContainsRoomPayload, BasicRelationship.class),
+                BasicRelationship.class,
+                null,
+                Context.NONE);
+            logger.info(
+                "Created {} relationship between source = {} and target = {}",
+                floorRoomRelationship.getValue().getId(),
+                floorRoomRelationship.getValue().getSourceId(),
+                floorRoomRelationship.getValue().getTargetId());
+
+            String etagBeforeUpdate = floorRoomRelationship.getDeserializedHeaders().getETag();
+
+            // Update relationship from Floor -> Room
+            client.updateRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, floorContainsRoomUpdatePayload, null, Context.NONE);
+
+            // Delete the relationship, but with the out of date etag
+            assertRestException(
+                () -> client.deleteRelationshipWithResponse(
+                    floorTwinId,
+                    FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
+                    new DeleteRelationshipOptions().setIfMatch(etagBeforeUpdate),
+                    Context.NONE),
+                HTTP_PRECON_FAILED
+            );
+
+            // DELETE the created relationship with no etag specified to clean up
+            client.deleteRelationship(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID);
+            logger.info("Deleted relationship {} for twin {}", FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, floorTwinId);
+        } finally {
+            // Clean up
+            try {
+                logger.info("Cleaning up test resources.");
+
+                logger.info("Deleting created relationships.");
+                // Delete the created relationships.
+                List<BasicRelationship> relationships = new ArrayList<>();
+                client.listRelationships(floorTwinId, BasicRelationship.class)
+                    .iterableByPage()
+                    .forEach(basicRelationshipPagedResponse -> relationships.addAll(basicRelationshipPagedResponse.getValue()));
+                client.listRelationships(roomTwinId, BasicRelationship.class)
+                    .iterableByPage()
+                    .forEach(basicRelationshipPagedResponse -> relationships.addAll(basicRelationshipPagedResponse.getValue()));
+                client.listRelationships(hvacTwinId, BasicRelationship.class)
+                    .iterableByPage()
+                    .forEach(basicRelationshipPagedResponse -> relationships.addAll(basicRelationshipPagedResponse.getValue()));
+                relationships.forEach(basicRelationship -> client.deleteRelationship(basicRelationship.getSourceId(), basicRelationship.getId()));
+
+                // Now the twins and models can be deleted.
+                logger.info("Deleting created digital twins.");
+                client.deleteDigitalTwin(floorTwinId);
+                client.deleteDigitalTwin(roomTwinId);
+                client.deleteDigitalTwin(hvacTwinId);
+
+                logger.info("Deleting created models.");
+                client.deleteModel(floorModelId);
+                client.deleteModel(roomModelId);
+                client.deleteModel(hvacModelId);
+            }
+            catch (Exception ex) {
+                fail("Test cleanup failed", ex);
+            }
+        }
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
+    @Override
+    public void deleteRelationshipSucceedsWhenETagMatches(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
+        DigitalTwinsClient client = getClient(httpClient, serviceVersion);
+
+        String floorModelId = getUniqueModelId(FLOOR_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
+        String roomModelId = getUniqueModelId(ROOM_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
+        String hvacModelId = getUniqueModelId(HVAC_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
+
+        String floorTwinId = getUniqueDigitalTwinId(FLOOR_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+        String roomTwinId = getUniqueDigitalTwinId(ROOM_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+        String hvacTwinId = getUniqueDigitalTwinId(HVAC_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+
+        try {
+            // Create floor, room and hvac model
+            createModelsAndTwins(client, floorModelId, roomModelId, hvacModelId, floorTwinId, roomTwinId, hvacTwinId);
+
+            // Connect the created twins via relationships
+            String floorContainsRoomPayload = getRelationshipWithPropertyPayload(roomTwinId, CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
+            JsonPatchDocument floorContainsRoomUpdatePayload = getRelationshipUpdatePayload("/isAccessRestricted", false);
+
+            // Create relationship from Floor -> Room
+            DigitalTwinsResponse<BasicRelationship> floorRoomRelationship = client.createOrReplaceRelationshipWithResponse(
+                floorTwinId,
+                FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
+                deserializeJsonString(floorContainsRoomPayload, BasicRelationship.class),
+                BasicRelationship.class,
+                null,
+                Context.NONE);
+            logger.info(
+                "Created {} relationship between source = {} and target = {}",
+                floorRoomRelationship.getValue().getId(),
+                floorRoomRelationship.getValue().getSourceId(),
+                floorRoomRelationship.getValue().getTargetId());
+
+            // Update relationship from Floor -> Room
+            DigitalTwinsResponse<Void> updateResponse = client.updateRelationshipWithResponse(
+                floorTwinId,
+                FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
+                floorContainsRoomUpdatePayload,
+                null,
+                Context.NONE);
+
+            String upToDateETag = updateResponse.getDeserializedHeaders().getETag();
+
+            // Delete the relationship, but with the up to date etag
+            try {
+                client.deleteRelationshipWithResponse(
+                    floorTwinId,
+                    FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
+                    new DeleteRelationshipOptions().setIfMatch(upToDateETag),
+                    Context.NONE);
+            } catch (ErrorResponseException ex) {
+                if (ex.getResponse().getStatusCode() == HTTP_PRECON_FAILED) {
+                    fail("Should not have gotten a 412 error since ifMatch header had up to date etag", ex);
+                } else {
+                    throw ex;
+                }
+            }
+        } finally {
+            // Clean up
+            try {
+                logger.info("Cleaning up test resources.");
+
+                logger.info("Deleting created relationships.");
+                // Delete the created relationships.
+                List<BasicRelationship> relationships = new ArrayList<>();
+                client.listRelationships(floorTwinId, BasicRelationship.class)
+                    .iterableByPage()
+                    .forEach(basicRelationshipPagedResponse -> relationships.addAll(basicRelationshipPagedResponse.getValue()));
+                client.listRelationships(roomTwinId, BasicRelationship.class)
+                    .iterableByPage()
+                    .forEach(basicRelationshipPagedResponse -> relationships.addAll(basicRelationshipPagedResponse.getValue()));
+                client.listRelationships(hvacTwinId, BasicRelationship.class)
+                    .iterableByPage()
+                    .forEach(basicRelationshipPagedResponse -> relationships.addAll(basicRelationshipPagedResponse.getValue()));
+                relationships.forEach(basicRelationship -> client.deleteRelationship(basicRelationship.getSourceId(), basicRelationship.getId()));
+
+                // Now the twins and models can be deleted.
+                logger.info("Deleting created digital twins.");
+                client.deleteDigitalTwin(floorTwinId);
+                client.deleteDigitalTwin(roomTwinId);
+                client.deleteDigitalTwin(hvacTwinId);
+
+                logger.info("Deleting created models.");
+                client.deleteModel(floorModelId);
+                client.deleteModel(roomModelId);
+                client.deleteModel(hvacModelId);
+            }
+            catch (Exception ex) {
                 fail("Test cleanup failed", ex);
             }
         }
