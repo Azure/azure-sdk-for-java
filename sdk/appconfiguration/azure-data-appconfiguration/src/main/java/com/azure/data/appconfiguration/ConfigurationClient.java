@@ -12,14 +12,14 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 
 import java.time.OffsetDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+
+import static com.azure.core.util.CoreUtils.addTelemetryValue;
+import static com.azure.core.util.CoreUtils.createTelemetryValue;
+import static com.azure.data.appconfiguration.ConfigurationAsyncClient.createConfiguration;
 
 /**
  * This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings}
@@ -37,7 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @ServiceClient(builder = ConfigurationClientBuilder.class, serviceInterfaces = ConfigurationService.class)
 public final class ConfigurationClient {
-    private static final Map<String, String> API_TELEMETRY = new ConcurrentHashMap<>();
+    private static final String CLASS_NAME = ConfigurationClient.class.getSimpleName();
 
     private final ConfigurationAsyncClient client;
 
@@ -71,8 +71,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting addConfigurationSetting(String key, String label, String value) {
-        return addConfigurationSettingWithResponse(
-            new ConfigurationSetting().setKey(key).setLabel(label).setValue(value), Context.NONE).getValue();
+        return addConfigurationSettingWithResponse(createConfiguration(key, label, value), Context.NONE).getValue();
     }
 
     /**
@@ -98,15 +97,8 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> addConfigurationSettingWithResponse(ConfigurationSetting setting,
         Context context) {
-        String telemetry = API_TELEMETRY.computeIfAbsent("addConfigurationSetting", ignored -> {
-            Map<String, String> rawTelemetry = new HashMap<>();
-            rawTelemetry.put("isAsync", Boolean.toString(false));
-            rawTelemetry.put("apiName", "addConfigurationSetting");
-
-            return CoreUtils.createTelemetryValue(rawTelemetry);
-        });
-
-        return client.addConfigurationSetting(setting, CoreUtils.addTelemetryValue(context, telemetry))
+        String telemetry = createTelemetryValue(CLASS_NAME, "addConfigurationSetting", false);
+        return client.addConfigurationSetting(setting, addTelemetryValue(context, telemetry))
             .block();
     }
 
@@ -131,8 +123,8 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting setConfigurationSetting(String key, String label, String value) {
-        return setConfigurationSettingWithResponse(
-            new ConfigurationSetting().setKey(key).setLabel(label).setValue(value), false, Context.NONE).getValue();
+        return setConfigurationSettingWithResponse(createConfiguration(key, label, value), false, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -167,15 +159,8 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> setConfigurationSettingWithResponse(ConfigurationSetting setting,
         boolean ifUnchanged, Context context) {
-        String telemetry = API_TELEMETRY.computeIfAbsent("setConfigurationSetting", ignored -> {
-            Map<String, String> rawTelemetry = new HashMap<>();
-            rawTelemetry.put("isAsync", Boolean.toString(false));
-            rawTelemetry.put("apiName", "setConfigurationSetting");
-
-            return CoreUtils.createTelemetryValue(rawTelemetry);
-        });
-
-        return client.setConfigurationSetting(setting, ifUnchanged, CoreUtils.addTelemetryValue(context, telemetry))
+        String telemetry = createTelemetryValue(CLASS_NAME, "setConfigurationSetting", false);
+        return client.setConfigurationSetting(setting, ifUnchanged, addTelemetryValue(context, telemetry))
             .block();
     }
 
@@ -223,9 +208,8 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting getConfigurationSetting(String key, String label, OffsetDateTime acceptDateTime) {
-        return getConfigurationSettingWithResponse(new ConfigurationSetting().setKey(key).setLabel(label),
-            acceptDateTime, false, Context.NONE)
-            .getValue();
+        return getConfigurationSettingWithResponse(createConfiguration(key, label, null), acceptDateTime, false,
+            Context.NONE).getValue();
     }
 
     /**
@@ -255,16 +239,9 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> getConfigurationSettingWithResponse(ConfigurationSetting setting,
         OffsetDateTime acceptDateTime, boolean ifChanged, Context context) {
-        String telemetry = API_TELEMETRY.computeIfAbsent("getConfigurationSetting", ignored -> {
-            Map<String, String> rawTelemetry = new HashMap<>();
-            rawTelemetry.put("isAsync", Boolean.toString(false));
-            rawTelemetry.put("apiName", "getConfigurationSetting");
-
-            return CoreUtils.createTelemetryValue(rawTelemetry);
-        });
-
+        String telemetry = createTelemetryValue(CLASS_NAME, "getConfigurationSetting", false);
         return client.getConfigurationSetting(setting, acceptDateTime, ifChanged,
-            CoreUtils.addTelemetryValue(context, telemetry))
+            addTelemetryValue(context, telemetry))
             .block();
     }
 
@@ -287,8 +264,8 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting deleteConfigurationSetting(String key, String label) {
-        return deleteConfigurationSettingWithResponse(new ConfigurationSetting().setKey(key).setLabel(label),
-            false, Context.NONE).getValue();
+        return deleteConfigurationSettingWithResponse(createConfiguration(key, label, null), false, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -323,15 +300,8 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> deleteConfigurationSettingWithResponse(ConfigurationSetting setting,
         boolean ifUnchanged, Context context) {
-        String telemetry = API_TELEMETRY.computeIfAbsent("deleteConfigurationSetting", ignored -> {
-            Map<String, String> rawTelemetry = new HashMap<>();
-            rawTelemetry.put("isAsync", Boolean.toString(false));
-            rawTelemetry.put("apiName", "deleteConfigurationSetting");
-
-            return CoreUtils.createTelemetryValue(rawTelemetry);
-        });
-
-        return client.deleteConfigurationSetting(setting, ifUnchanged, CoreUtils.addTelemetryValue(context, telemetry))
+        String telemetry = createTelemetryValue(CLASS_NAME, "deleteConfigurationSetting", false);
+        return client.deleteConfigurationSetting(setting, ifUnchanged, addTelemetryValue(context, telemetry))
             .block();
     }
 
@@ -362,8 +332,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting setReadOnly(String key, String label, boolean isReadOnly) {
-        return setReadOnlyWithResponse(new ConfigurationSetting().setKey(key).setLabel(label), isReadOnly, Context.NONE)
-            .getValue();
+        return setReadOnlyWithResponse(createConfiguration(key, label, null), isReadOnly, Context.NONE).getValue();
     }
 
     /**
@@ -393,15 +362,8 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> setReadOnlyWithResponse(ConfigurationSetting setting, boolean isReadOnly,
         Context context) {
-        String telemetry = API_TELEMETRY.computeIfAbsent("setReadOnly", ignored -> {
-            Map<String, String> rawTelemetry = new HashMap<>();
-            rawTelemetry.put("isAsync", Boolean.toString(false));
-            rawTelemetry.put("apiName", "setReadOnly");
-
-            return CoreUtils.createTelemetryValue(rawTelemetry);
-        });
-
-        return client.setReadOnly(setting, isReadOnly, CoreUtils.addTelemetryValue(context, telemetry)).block();
+        String telemetry = createTelemetryValue(CLASS_NAME, "setReadOnly", false);
+        return client.setReadOnly(setting, isReadOnly, addTelemetryValue(context, telemetry)).block();
     }
 
     /**
@@ -440,16 +402,9 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSetting> listConfigurationSettings(SettingSelector selector, Context context) {
-        String telemetry = API_TELEMETRY.computeIfAbsent("listConfigurationSettings", ignored -> {
-            Map<String, String> rawTelemetry = new HashMap<>();
-            rawTelemetry.put("isAsync", Boolean.toString(false));
-            rawTelemetry.put("apiName", "listConfigurationSettings");
-
-            return CoreUtils.createTelemetryValue(rawTelemetry);
-        });
-
+        String telemetry = createTelemetryValue(CLASS_NAME, "listConfigurationSettings", false);
         return new PagedIterable<>(client.listConfigurationSettings(selector,
-            CoreUtils.addTelemetryValue(context, telemetry)));
+            addTelemetryValue(context, telemetry)));
     }
 
     /**
@@ -497,14 +452,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSetting> listRevisions(SettingSelector selector, Context context) {
-        String telemetry = API_TELEMETRY.computeIfAbsent("listRevisions", ignored -> {
-            Map<String, String> rawTelemetry = new HashMap<>();
-            rawTelemetry.put("isAsync", Boolean.toString(false));
-            rawTelemetry.put("apiName", "listRevisions");
-
-            return CoreUtils.createTelemetryValue(rawTelemetry);
-        });
-
-        return new PagedIterable<>(client.listRevisions(selector, CoreUtils.addTelemetryValue(context, telemetry)));
+        String telemetry = createTelemetryValue(CLASS_NAME, "listRevisions", false);
+        return new PagedIterable<>(client.listRevisions(selector, addTelemetryValue(context, telemetry)));
     }
 }

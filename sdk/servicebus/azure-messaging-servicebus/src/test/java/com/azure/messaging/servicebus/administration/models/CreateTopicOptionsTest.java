@@ -33,13 +33,13 @@ public class CreateTopicOptionsTest {
         assertEquals(MAX_DURATION, actual.getAutoDeleteOnIdle());
         assertEquals(MAX_DURATION, actual.getDefaultMessageTimeToLive());
         assertEquals(DEFAULT_DUPLICATE_DETECTION_DURATION, actual.getDuplicateDetectionHistoryTimeWindow());
-        assertTrue(actual.enableBatchedOperations());
-        assertFalse(actual.enablePartitioning());
+        assertTrue(actual.isBatchedOperationsEnabled());
+        assertFalse(actual.isPartitioningEnabled());
         assertEquals(DEFAULT_LOCK_DURATION, actual.getLockDuration());
         assertEquals(DEFAULT_MAX_DELIVERY_COUNT, actual.getMaxDeliveryCount());
         assertEquals(DEFAULT_TOPIC_SIZE, actual.getMaxSizeInMegabytes());
-        assertFalse(actual.requiresDuplicateDetection());
-        assertFalse(actual.requiresSession());
+        assertFalse(actual.isDuplicateDetectionRequired());
+        assertFalse(actual.isSessionRequired());
         assertNull(actual.getUserMetadata());
         assertEquals(EntityStatus.ACTIVE, actual.getStatus());
     }
@@ -68,9 +68,9 @@ public class CreateTopicOptionsTest {
         assertEquals(expected.getDefaultMessageTimeToLive(), actual.getDefaultMessageTimeToLive());
         assertEquals(expected.getDuplicateDetectionHistoryTimeWindow(),
             actual.getDuplicateDetectionHistoryTimeWindow());
-        assertEquals(expected.enableBatchedOperations(), actual.enableBatchedOperations());
-        assertEquals(expected.enablePartitioning(), actual.enablePartitioning());
-        assertEquals(expected.requiresDuplicateDetection(), actual.requiresDuplicateDetection());
+        assertEquals(expected.isBatchedOperationsEnabled(), actual.isBatchedOperationsEnabled());
+        assertEquals(expected.isPartitioningEnabled(), actual.isPartitioningEnabled());
+        assertEquals(expected.isDuplicateDetectionRequired(), actual.isDuplicateDetectionRequired());
         assertEquals(expected.getUserMetadata(), actual.getUserMetadata());
         assertEquals(expected.getStatus(), actual.getStatus());
     }

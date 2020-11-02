@@ -288,7 +288,6 @@ public class JacksonAdapter implements SerializerAdapter {
             .configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
             .setSerializationInclusion(JsonInclude.Include.NON_NULL)
             .registerModule(new JavaTimeModule())
-            .registerModule(new OptionModule())
             .registerModule(ByteArraySerializer.getModule())
             .registerModule(Base64UrlSerializer.getModule())
             .registerModule(DateTimeSerializer.getModule())
@@ -296,8 +295,6 @@ public class JacksonAdapter implements SerializerAdapter {
             .registerModule(DateTimeRfc1123Serializer.getModule())
             .registerModule(DurationSerializer.getModule())
             .registerModule(HttpHeadersSerializer.getModule())
-            .registerModule(JsonPatchDocumentSerializer.getModule())
-            .registerModule(JsonPatchOperationSerializer.getModule())
             .registerModule(UnixTimeSerializer.getModule());
         mapper.setVisibility(mapper.getSerializationConfig().getDefaultVisibilityChecker()
             .withFieldVisibility(JsonAutoDetect.Visibility.ANY)

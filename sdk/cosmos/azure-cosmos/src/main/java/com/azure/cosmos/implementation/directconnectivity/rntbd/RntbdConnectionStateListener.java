@@ -6,16 +6,12 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
-import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.channels.ClosedChannelException;
 import java.time.Instant;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -26,8 +22,6 @@ public class RntbdConnectionStateListener {
 
     private final IAddressResolver addressResolver;
     private final RntbdEndpoint endpoint;
-    private final Set<PartitionKeyRangeIdentity> partitionAddressCache;
-    private final AtomicBoolean updatingAddressCache = new AtomicBoolean(false);
 
     // endregion
 
@@ -36,7 +30,6 @@ public class RntbdConnectionStateListener {
     public RntbdConnectionStateListener(final IAddressResolver addressResolver, final RntbdEndpoint endpoint) {
         this.addressResolver = checkNotNull(addressResolver, "expected non-null addressResolver");
         this.endpoint = checkNotNull(endpoint, "expected non-null endpoint");
-        this.partitionAddressCache = ConcurrentHashMap.newKeySet();
     }
 
     // endregion
@@ -79,51 +72,13 @@ public class RntbdConnectionStateListener {
         }
     }
 
-    public void updateConnectionState(final RxDocumentServiceRequest request) {
-
-        checkNotNull("expect non-null request");
-
-        PartitionKeyRangeIdentity partitionKeyRangeIdentity = this.getPartitionKeyRangeIdentity(request);
-        checkNotNull(partitionKeyRangeIdentity, "expected non-null partitionKeyRangeIdentity");
-
-        this.partitionAddressCache.add(partitionKeyRangeIdentity);
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(
-                "updateConnectionState({\"time\":{},\"endpoint\":{},\"partitionKeyRangeIdentity\":{}})",
-                RntbdObjectMapper.toJson(Instant.now()),
-                RntbdObjectMapper.toJson(endpoint),
-                RntbdObjectMapper.toJson(partitionKeyRangeIdentity));
-        }
-    }
-
     // endregion
 
     // region Privates
 
-    private PartitionKeyRangeIdentity getPartitionKeyRangeIdentity(final RxDocumentServiceRequest request) {
-        checkNotNull(request, "expect non-null request");
-
-        PartitionKeyRangeIdentity partitionKeyRangeIdentity = request.getPartitionKeyRangeIdentity();
-
-        if (partitionKeyRangeIdentity == null) {
-
-            final String partitionKeyRange = checkNotNull(
-                request.requestContext.resolvedPartitionKeyRange, "expected non-null resolvedPartitionKeyRange").getId();
-
-            final String collectionRid = request.requestContext.resolvedCollectionRid;
-
-            partitionKeyRangeIdentity = collectionRid != null
-                ? new PartitionKeyRangeIdentity(collectionRid, partitionKeyRange)
-                : new PartitionKeyRangeIdentity(partitionKeyRange);
-        }
-
-        return partitionKeyRangeIdentity;
-    }
-
     private void onConnectionEvent(final RntbdConnectionEvent event, final RxDocumentServiceRequest request, final Throwable exception) {
 
-        checkNotNull(request, "expected non-null exception");
+        checkNotNull(request, "expected non-null request");
         checkNotNull(exception, "expected non-null exception");
 
         if (event == RntbdConnectionEvent.READ_EOF) {
@@ -137,27 +92,10 @@ public class RntbdConnectionStateListener {
                         RntbdObjectMapper.toJson(exception));
                 }
 
-                this.updateAddressCache(request);
+                this.addressResolver.updateAddresses(request, this.endpoint.serverKey());
+            } else {
+                logger.warn("Endpoint closed while onConnectionEvent: {}", this.endpoint);
             }
-        }
-    }
-
-    private void updateAddressCache(final RxDocumentServiceRequest request) {
-        try{
-            if (this.updatingAddressCache.compareAndSet(false, true)) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug(
-                        "updateAddressCache ({\"time\":{},\"endpoint\":{},\"partitionAddressCache\":{}})",
-                        RntbdObjectMapper.toJson(Instant.now()),
-                        RntbdObjectMapper.toJson(this.endpoint),
-                        RntbdObjectMapper.toJson(this.partitionAddressCache));
-                }
-
-                this.addressResolver.remove(request, this.partitionAddressCache);
-                this.partitionAddressCache.clear();
-            }
-        } finally {
-            this.updatingAddressCache.set(false);
         }
     }
     // endregion

@@ -3,7 +3,6 @@
 
 package com.azure.core.util;
 
-import com.azure.core.annotation.Telemetry;
 import com.azure.core.http.policy.AzureTelemetryPolicy;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.logging.ClientLogger;
@@ -265,56 +264,41 @@ public final class CoreUtils {
     /**
      * Creates a properly formatted telemetry string from the passed raw telemetry data.
      *
-     * @param rawTelemetry Raw telemetry data in its key-value form.
+     * @param className Name of the client class.
+     * @param methodName Name of the client method.
+     * @param isAsync Flag determining whether the method is asynchronous.
+     * @param additionalTelemetryData Array of key-value pairs. If {@code additionalTelemetryData.length % 2 == 1} the
+     * last key will use null as its value.
      * @return A formatted telemetry string.
      */
-    // Another option would be using String... and for each tuple add a telemetry value
-    public static String createTelemetryValue(Map<String, String> rawTelemetry) {
-        if (CoreUtils.isNullOrEmpty(rawTelemetry)) {
-            return null;
-        }
-
-        StringBuilder telemetryBuilder = new StringBuilder();
-        rawTelemetry.entrySet().forEach(entry -> {
-            if (telemetryBuilder.length() > 0) {
-                telemetryBuilder.append(";");
-            }
-
-            telemetryBuilder.append(entry.getKey())
-                .append(":")
-                .append(entry.getValue());
-        });
-
-        return telemetryBuilder.toString();
-    }
-
-    public static String createTelemetryValue(Telemetry telemetry) {
-        if (telemetry == null) {
+    public static String createTelemetryValue(String className, String methodName, boolean isAsync,
+        String... additionalTelemetryData) {
+        // Telemetry capturing is disabled, no-op.
+        if (Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, false)) {
             return "";
         }
 
-        StringBuilder builder = new StringBuilder("class=")
-            .append(telemetry.className())
+        StringBuilder telemetry = new StringBuilder("class=")
+            .append(className)
             .append(";method=")
-            .append(telemetry.methodName());
+            .append(methodName)
+            .append(";isAsync=")
+            .append(isAsync);
 
-        String[] additionalTelemetry = telemetry.additionalTelemetry();
-        if (CoreUtils.isNullOrEmpty(additionalTelemetry)) {
-            return builder.toString();
-        }
+        if (!CoreUtils.isNullOrEmpty(additionalTelemetryData)) {
+            for (int i = 0; i < additionalTelemetryData.length; i += 2) {
+                String key = additionalTelemetryData[i];
+                String value = (i + 1 == additionalTelemetryData.length) ? "null" : additionalTelemetryData[i + 1];
 
-        for (int i = 0; i < additionalTelemetry.length; i += 2) {
-            if (i > 0) {
-                builder.append(";");
+                if (i > 0) {
+                    telemetry.append(";");
+                }
+
+                telemetry.append(key).append("=").append(value);
             }
-
-            String telemetryValueKey = additionalTelemetry[i];
-            String telemetryValue = (i + 1 >= additionalTelemetry.length) ? null : additionalTelemetry[i + 1];
-
-            builder.append(telemetryValueKey).append("=").append(telemetryValue);
         }
 
-        return builder.toString();
+        return telemetry.toString();
     }
 
     /**

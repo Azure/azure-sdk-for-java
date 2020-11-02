@@ -35,11 +35,11 @@ public class CustomDigitalTwin {
         return this;
     }
 
-    public String getEtag() {
+    public String getETag() {
         return etag;
     }
 
-    public CustomDigitalTwin setEtag(String etag) {
+    public CustomDigitalTwin setETag(String etag) {
         this.etag = etag;
         return this;
     }

@@ -18,9 +18,8 @@
  * Portions Copyright (c) Microsoft Corporation
  */
 
-package com.azure.core.util.serializer;
+package com.azure.core.implementation;
 
-import com.azure.core.util.Option;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.Module;
 

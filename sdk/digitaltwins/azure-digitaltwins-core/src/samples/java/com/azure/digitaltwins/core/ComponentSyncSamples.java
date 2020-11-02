@@ -3,23 +3,25 @@ package com.azure.digitaltwins.core;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.models.JsonPatchDocument;
 import com.azure.digitaltwins.core.helpers.ConsoleLogger;
 import com.azure.digitaltwins.core.helpers.SamplesArguments;
 import com.azure.digitaltwins.core.helpers.SamplesConstants;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
-import com.azure.digitaltwins.core.models.BasicDigitalTwinComponent;
-import com.azure.digitaltwins.core.models.BasicDigitalTwinMetadata;
 import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
-import com.azure.digitaltwins.core.models.BasicDigitalTwin;
-import com.azure.digitaltwins.core.models.UpdateOperationUtility;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 import java.util.function.Function;
 
 public class ComponentSyncSamples {
@@ -48,6 +50,10 @@ public class ComponentSyncSamples {
                 new HttpLogOptions()
                     .setLogLevel(parsedArguments.getHttpLogDetailLevel()))
             .buildClient();
+
+        // This mapper gets used to deserialize a digital twin that has a date time within a property metadata, so it
+        // needs to have this module in order to correctly deserialize that date time
+        mapper.registerModule(new JavaTimeModule());
 
         runComponentSample();
     }
@@ -122,7 +128,7 @@ public class ComponentSyncSamples {
             HashMap component1 = mapper.readValue(component1RawText, HashMap.class);
 
             ConsoleLogger.print("Retrieved digital twin using generic API to use built in deserialization into a BasicDigitalTwin with Id: " + basicDigitalTwin.getId() + ":\n\t"
-                + "Etag: " + basicDigitalTwin.getEtag() + "\n\t"
+                + "ETag: " + basicDigitalTwin.getETag() + "\n\t"
                 + "Prop1: " + basicDigitalTwin.getContents().get("Prop1") + "\n\t"
                 + "Prop2: " + basicDigitalTwin.getContents().get("Prop2") + "\n\t"
                 + "ComponentProp1: " + component1.get("ComponentProp1") + "\n\t"
@@ -134,11 +140,9 @@ public class ComponentSyncSamples {
 
         // Update Component1 by replacing the property ComponentProp1 value,
         // using the UpdateOperationUtility to build the payload.
-        UpdateOperationUtility updateOperationUtility = new UpdateOperationUtility();
+        JsonPatchDocument updateOp = new JsonPatchDocument().appendReplace("/ComponentProp1", "Some new Value");
 
-        updateOperationUtility.appendReplaceOperation("/ComponentProp1", "Some new Value");
-
-        client.updateComponent(basicDigitalTwinId, "Component1", updateOperationUtility.getUpdateOperations());
+        client.updateComponent(basicDigitalTwinId, "Component1", updateOp);
 
         ConsoleLogger.print("Updated component for digital twin: " + basicDigitalTwinId);
 
@@ -148,6 +152,7 @@ public class ComponentSyncSamples {
         ConsoleLogger.print("Retrieved component for digital twin " + basicDigitalTwinId + " :");
         for (String key : getComponentResponse.getContents().keySet()) {
             ConsoleLogger.print("\t" + key + " : " + getComponentResponse.getContents().get(key));
+            ConsoleLogger.print("\t\tLast updated on: " + getComponentResponse.getMetadata().get(key).getLastUpdatedOn());
         }
 
         // Clean up

@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.digitaltwins.core.models;
+package com.azure.digitaltwins.core;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.digitaltwins.core.models.DigitalTwinsJsonPropertyNames;
 import com.fasterxml.jackson.annotation.*;
 
 import java.util.HashMap;
@@ -35,6 +36,9 @@ public final class BasicRelationship {
 
     @JsonProperty(value = DigitalTwinsJsonPropertyNames.RELATIONSHIP_NAME, required = true)
     private String name;
+
+    @JsonProperty(value = DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_ETAG)
+    private String etag;
 
     @JsonIgnore
     private final Map<String, Object> properties = new HashMap<>();
@@ -91,6 +95,24 @@ public final class BasicRelationship {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Gets a string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.
+     * @return A string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.
+     */
+    public String getETag() {
+        return etag;
+    }
+
+    /**
+     * Sets a string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.
+     * @param etag A string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.
+     * @return The BasicRelationship object itself.
+     */
+    public BasicRelationship setETag(String etag) {
+        this.etag = etag;
+        return this;
     }
 
     /**
