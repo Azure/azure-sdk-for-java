@@ -66,13 +66,13 @@ public final class DeploymentExtendedImpl
         return this.serviceManager;
     }
 
-    private Deployment createParameters;
-
     private String resourceGroupName;
 
-    private Deployment updateParameters;
-
     private String deploymentName;
+
+    private Deployment createParameters;
+
+    private Deployment updateParameters;
 
     public DeploymentExtendedImpl withExistingResourcegroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
@@ -154,11 +154,6 @@ public final class DeploymentExtendedImpl
         return this;
     }
 
-    public DeploymentExtendedImpl withRegion(Region location) {
-        this.createParameters.withLocation(location.toString());
-        return this;
-    }
-
     public DeploymentExtendedImpl withProperties(DeploymentProperties properties) {
         if (isInCreateMode()) {
             this.createParameters.withProperties(properties);
@@ -167,6 +162,11 @@ public final class DeploymentExtendedImpl
             this.updateParameters.withProperties(properties);
             return this;
         }
+    }
+
+    public DeploymentExtendedImpl withRegion(Region location) {
+        this.createParameters.withLocation(location.toString());
+        return this;
     }
 
     public DeploymentExtendedImpl withRegion(String location) {

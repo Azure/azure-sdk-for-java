@@ -145,9 +145,24 @@ public final class ResourceGroupImpl implements ResourceGroup, ResourceGroup.Def
         return this;
     }
 
+    public ResourceGroupImpl withRegion(Region location) {
+        this.innerModel().withLocation(location.toString());
+        return this;
+    }
+
     public ResourceGroupImpl withRegion(String location) {
         this.innerModel().withLocation(location);
         return this;
+    }
+
+    public ResourceGroupImpl withTags(Map<String, String> tags) {
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateParameters.withTags(tags);
+            return this;
+        }
     }
 
     public ResourceGroupImpl withProperties(ResourceGroupProperties properties) {
@@ -160,16 +175,6 @@ public final class ResourceGroupImpl implements ResourceGroup, ResourceGroup.Def
         }
     }
 
-    public ResourceGroupImpl withRegion(Region location) {
-        this.innerModel().withLocation(location.toString());
-        return this;
-    }
-
-    public ResourceGroupImpl withName(String name) {
-        this.updateParameters.withName(name);
-        return this;
-    }
-
     public ResourceGroupImpl withManagedBy(String managedBy) {
         if (isInCreateMode()) {
             this.innerModel().withManagedBy(managedBy);
@@ -180,14 +185,9 @@ public final class ResourceGroupImpl implements ResourceGroup, ResourceGroup.Def
         }
     }
 
-    public ResourceGroupImpl withTags(Map<String, String> tags) {
-        if (isInCreateMode()) {
-            this.innerModel().withTags(tags);
-            return this;
-        } else {
-            this.updateParameters.withTags(tags);
-            return this;
-        }
+    public ResourceGroupImpl withName(String name) {
+        this.updateParameters.withName(name);
+        return this;
     }
 
     private boolean isInCreateMode() {

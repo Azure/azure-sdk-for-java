@@ -40,6 +40,63 @@ public final class DeploymentWhatIfProperties extends DeploymentProperties {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public DeploymentWhatIfProperties withTemplate(Object template) {
+        super.withTemplate(template);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DeploymentWhatIfProperties withTemplateLink(TemplateLink templateLink) {
+        super.withTemplateLink(templateLink);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DeploymentWhatIfProperties withParameters(Object parameters) {
+        super.withParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DeploymentWhatIfProperties withParametersLink(ParametersLink parametersLink) {
+        super.withParametersLink(parametersLink);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DeploymentWhatIfProperties withMode(DeploymentMode mode) {
+        super.withMode(mode);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DeploymentWhatIfProperties withDebugSetting(DebugSetting debugSetting) {
+        super.withDebugSetting(debugSetting);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DeploymentWhatIfProperties withOnErrorDeployment(OnErrorDeployment onErrorDeployment) {
+        super.withOnErrorDeployment(onErrorDeployment);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DeploymentWhatIfProperties withExpressionEvaluationOptions(
+        ExpressionEvaluationOptions expressionEvaluationOptions) {
+        super.withExpressionEvaluationOptions(expressionEvaluationOptions);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
