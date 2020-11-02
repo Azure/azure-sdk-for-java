@@ -50,7 +50,7 @@ class ServiceBusSessionReceiverClientTest {
     @Test
     void acceptSessionTimeout() {
         when(sessionAsyncClient.acceptSession(anyString())).thenReturn(Mono.just(asyncClient)
-            .delayElement(Duration.ofMillis(100)));
+            .delayElement(Duration.ofMillis(500)));
         ServiceBusSessionReceiverClient sessionClient = new ServiceBusSessionReceiverClient(sessionAsyncClient,
             Duration.ofMillis(50));
 
@@ -70,7 +70,7 @@ class ServiceBusSessionReceiverClientTest {
     @Test
     void acceptNextSessionTimeout() {
         when(sessionAsyncClient.acceptNextSession()).thenReturn(Mono.just(asyncClient)
-            .delayElement(Duration.ofMillis(100)));
+            .delayElement(Duration.ofMillis(500)));
         ServiceBusSessionReceiverClient sessionClient = new ServiceBusSessionReceiverClient(sessionAsyncClient,
             Duration.ofMillis(50));
 
