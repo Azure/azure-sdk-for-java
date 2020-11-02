@@ -12,7 +12,8 @@ public enum BlobServiceVersion implements ServiceVersion {
     V2019_02_02("2019-02-02"),
     V2019_07_07("2019-07-07"),
     V2019_12_12("2019-12-12"),
-    V2020_02_10("2020-02-10");
+    V2020_02_10("2020-02-10"),
+    V2020_04_08("2020-04-08");
 
     private final String version;
 
