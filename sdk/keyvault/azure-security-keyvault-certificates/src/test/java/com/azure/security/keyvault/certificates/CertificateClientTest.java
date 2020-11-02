@@ -363,14 +363,6 @@ public class CertificateClientTest extends CertificateClientTestBase {
         });
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
-    public void cancelCertificateCreationOperation(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
-        createCertificateClient(httpClient, serviceVersion);
-        cancelCertificateCreationOperationRunner((certName) -> {
-            client.cancelCertificateOperation(certName);
-        });
-    }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
@@ -448,9 +440,9 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void listPropertyOfCertificatesThroughPoller(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
+    public void listPropertiesOfCertificates(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateClient(httpClient, serviceVersion);
-        listPropertyOfCertificatesRunner((certificates) -> {
+        listPropertiesOfCertificatesRunner((certificates) -> {
             HashSet<String> certificatesToList = new HashSet<>(certificates);
             for (String certName : certificatesToList) {
                 SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = client.beginCreateCertificate(certName,
