@@ -23,7 +23,6 @@ import com.azure.data.tables.models.UpdateMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -141,7 +140,7 @@ public final class TableAsyncBatch {
                         // If one sub-response was an error, we need to throw even though the service responded with 202
                         if (subResponse.getStatusCode() >= 400 && error == null
                             && subResponse.getValue() instanceof TableServiceError) {
-                            error = (TableServiceError)subResponse.getValue();
+                            error = (TableServiceError) subResponse.getValue();
 
                             // Make a best effort to locate the failed operation and include it in the message
                             if (changes != null && error.getOdataError() != null
@@ -165,7 +164,7 @@ public final class TableAsyncBatch {
                         if (failedOperation != null) {
                             message += " The failed operation was: " + failedOperation.toString();
                         }
-                        throw new TableServiceErrorException(message, null, error);
+                        throw logger.logExceptionAsError(new TableServiceErrorException(message, null, error));
                     } else {
                         return new SimpleResponse<>(response, Arrays.asList(response.getValue()));
                     }
@@ -185,15 +184,18 @@ public final class TableAsyncBatch {
 
     private synchronized void validate(String partitionKey, String rowKey) {
         if (this.frozen) {
-            throw new IllegalStateException("Operations can't be modified once a batch is submitted.");
+            throw logger.logExceptionAsError(
+                new IllegalStateException("Operations can't be modified once a batch is submitted."));
         }
 
         if (!this.partitionKey.equals(partitionKey)) {
-            throw new IllegalArgumentException("All operations in a batch must share the same partition key.");
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("All operations in a batch must share the same partition key."));
         }
 
         if (rowKeys.contains(rowKey)) {
-            throw new IllegalArgumentException("Every operation in a batch must use a different row key.");
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Every operation in a batch must use a different row key."));
         } else {
             rowKeys.add(rowKey);
         }

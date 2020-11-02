@@ -29,10 +29,10 @@ public interface BatchOperation {
 
         @Override
         public String toString() {
-            return "CreateEntity{" +
-                "partitionKey='" + entity.getPartitionKey() + '\'' +
-                ", rowKey='" + entity.getRowKey() + '\'' +
-                '}';
+            return "CreateEntity{"
+                + "partitionKey='" + entity.getPartitionKey() + '\''
+                + ", rowKey='" + entity.getRowKey() + '\''
+                + '}';
         }
     }
 
@@ -60,11 +60,11 @@ public interface BatchOperation {
 
         @Override
         public String toString() {
-            return "UpsertEntity{" +
-                "partitionKey='" + entity.getPartitionKey() + '\'' +
-                ", rowKey='" + entity.getRowKey() + '\'' +
-                ", updateMode=" + updateMode +
-                '}';
+            return "UpsertEntity{"
+                + "partitionKey='" + entity.getPartitionKey() + '\''
+                + ", rowKey='" + entity.getRowKey() + '\''
+                + ", updateMode=" + updateMode
+                + '}';
         }
     }
 
@@ -98,12 +98,12 @@ public interface BatchOperation {
 
         @Override
         public String toString() {
-            return "UpdateEntity{" +
-                "partitionKey='" + entity.getPartitionKey() + '\'' +
-                ", rowKey='" + entity.getRowKey() + '\'' +
-                ", updateMode=" + updateMode +
-                ", ifUnchanged=" + ifUnchanged +
-                '}';
+            return "UpdateEntity{"
+                + "partitionKey='" + entity.getPartitionKey() + '\''
+                + ", rowKey='" + entity.getRowKey() + '\''
+                + ", updateMode=" + updateMode
+                + ", ifUnchanged=" + ifUnchanged
+                + '}';
         }
     }
 
@@ -137,11 +137,11 @@ public interface BatchOperation {
 
         @Override
         public String toString() {
-            return "DeleteEntity{" +
-                "partitionKey='" + partitionKey + '\'' +
-                ", rowKey='" + rowKey + '\'' +
-                ", eTag='" + eTag + '\'' +
-                '}';
+            return "DeleteEntity{"
+                + "partitionKey='" + partitionKey + '\''
+                + ", rowKey='" + rowKey + '\''
+                + ", eTag='" + eTag + '\''
+                + '}';
         }
     }
 

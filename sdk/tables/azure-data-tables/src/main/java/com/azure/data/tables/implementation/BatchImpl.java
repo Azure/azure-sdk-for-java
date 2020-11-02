@@ -64,7 +64,8 @@ public final class BatchImpl {
      * The Batch operation allows multiple API calls to be embedded into a single HTTP request.
      *
      * @param body Initial data.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *                  analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
@@ -76,6 +77,7 @@ public final class BatchImpl {
         Context context
     ) {
         final String dataServiceVersion = "3.0";
-        return service.submitBatch(this.client.getUrl(), body.getContentType(), this.client.getVersion(), requestId, dataServiceVersion, body, context);
+        return service.submitBatch(this.client.getUrl(), body.getContentType(), this.client.getVersion(), requestId,
+            dataServiceVersion, body, context);
     }
 }

@@ -21,7 +21,8 @@ public final class BatchSubmitBatchResponse extends ResponseBase<BatchSubmitBatc
      * @param value the content stream.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public BatchSubmitBatchResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, BatchOperationResponse[] value, BatchSubmitBatchHeaders headers) {
+    public BatchSubmitBatchResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+                                    BatchOperationResponse[] value, BatchSubmitBatchHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

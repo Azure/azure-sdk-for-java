@@ -45,7 +45,7 @@ public class TablesMultipartSerializer extends TablesJacksonSerializer {
     }
 
     private void writeMultipartPart(Object object, SerializerEncoding encoding, OutputStream os) throws IOException {
-        MultipartPart<?> part = (MultipartPart<?>)object;
+        MultipartPart<?> part = (MultipartPart<?>) object;
 
         if (part instanceof BatchChangeSet) {
             write("Content-Type: " + part.getContentType() + "\r\n\r\n", os);
@@ -61,7 +61,7 @@ public class TablesMultipartSerializer extends TablesJacksonSerializer {
     }
 
     private void writeRequest(Object object, OutputStream os) throws IOException {
-        HttpRequest request = ((BatchSubRequest)object).getHttpRequest();
+        HttpRequest request = ((BatchSubRequest) object).getHttpRequest();
         String method = request.getHttpMethod().toString();
         String urlPath = request.getUrl().getPath();
         String urlQuery = request.getUrl().getQuery();
@@ -109,7 +109,7 @@ public class TablesMultipartSerializer extends TablesJacksonSerializer {
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             String line = reader.readLine();
             if (!line.startsWith(BOUNDARY_DELIMETER + "batchresponse_")) {
-                throw new IOException("Invalid multipart response");
+                throw logger.logThrowableAsError(new IOException("Invalid multipart response"));
             }
 
             BatchOperationResponse response = null;
