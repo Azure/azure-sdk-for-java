@@ -27,7 +27,7 @@ import java.util.function.Consumer;
  * <p><strong>Sample code to start a processor client</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusprocessorclient.start}
  *
- * <p></p><strong>Sample code to start a session-enabled processor client</strong></p>
+ * <p><strong>Sample code to start a session-enabled processor client</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusprocessorclient.startsession}
  *
  * @see ServiceBusClientBuilder
@@ -43,7 +43,7 @@ public final class ServiceBusProcessorClient {
     private final ServiceBusProcessorClientOptions processorOptions;
     private final AtomicReference<Subscription> receiverSubscription = new AtomicReference<>();
     private final AtomicReference<ServiceBusReceiverAsyncClient> asyncClient = new AtomicReference<>();
-    private AtomicBoolean isRunning = new AtomicBoolean();
+    private final AtomicBoolean isRunning = new AtomicBoolean();
     private ScheduledExecutorService scheduledExecutor;
 
     /**
