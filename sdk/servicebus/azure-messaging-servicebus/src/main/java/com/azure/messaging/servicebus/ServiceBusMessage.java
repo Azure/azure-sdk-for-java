@@ -10,6 +10,7 @@ import com.azure.core.amqp.models.AmqpDataBody;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.experimental.util.BinaryData;
+import com.azure.messaging.servicebus.implementation.Messages;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -17,6 +18,7 @@ import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_REASON_ANNOTATION_NAME;
@@ -148,8 +150,17 @@ public class ServiceBusMessage {
         final AmqpBodyType type = amqpAnnotatedMessage.getBody().getBodyType();
         switch (type) {
             case DATA:
-                return BinaryData.fromBytes(((AmqpDataBody) amqpAnnotatedMessage.getBody())
-                    .getData().stream().findFirst().get());
+                Optional<byte[]> byteArrayData = ((AmqpDataBody) amqpAnnotatedMessage.getBody()).getData().stream()
+                    .findFirst();
+                final byte[] bytes;
+
+                if (byteArrayData.isPresent()) {
+                    bytes = byteArrayData.get();
+                } else {
+                    logger.warning("Data not present.");
+                    bytes = new byte[0];
+                }
+                return BinaryData.fromBytes(bytes);
             case SEQUENCE:
             case VALUE:
                 throw logger.logExceptionAsError(new UnsupportedOperationException("Not supported AmqpBodyType: "
