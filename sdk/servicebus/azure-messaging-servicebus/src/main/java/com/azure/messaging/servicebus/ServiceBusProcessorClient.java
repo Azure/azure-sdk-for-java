@@ -170,7 +170,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                         } catch (Exception ex) {
                             handleError(ex);
                             logger.warning("Error when processing message. Abandoning message.", ex);
-                            receiverClient.abandon(serviceBusReceivedMessageContext.getMessage());
+                            abandonMessage(serviceBusReceivedMessageContext, receiverClient);
                         }
                     }
                     if (isRunning.get()) {
@@ -196,6 +196,15 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                     }
                 }
             });
+    }
+
+    private void abandonMessage(ServiceBusReceivedMessageContext serviceBusReceivedMessageContext,
+                                ServiceBusReceiverAsyncClient receiverClient) {
+        try {
+            receiverClient.abandon(serviceBusReceivedMessageContext.getMessage()).block();
+        } catch (Exception exception) {
+            logger.verbose("Failed to abandon message", exception);
+        }
     }
 
     private void handleError(Throwable throwable) {
