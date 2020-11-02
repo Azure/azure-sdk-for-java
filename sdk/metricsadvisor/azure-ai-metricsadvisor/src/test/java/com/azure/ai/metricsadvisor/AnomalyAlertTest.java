@@ -3,9 +3,7 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient;
 import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient;
-import com.azure.ai.metricsadvisor.models.AnomalyAlert;
 import com.azure.ai.metricsadvisor.models.AnomalyAlertConfiguration;
 import com.azure.ai.metricsadvisor.models.ErrorCodeException;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConfiguration;
@@ -13,13 +11,11 @@ import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConfigurationsOperat
 import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertScope;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Context;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -161,7 +157,7 @@ public final class AnomalyAlertTest extends AnomalyAlertTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    public void createAnomalyAlertConfig(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
+    public void createAnomalyAlertConfiguration(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
         client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
         final AtomicReference<String> alertConfigurationId = new AtomicReference<>();
@@ -281,4 +277,28 @@ public final class AnomalyAlertTest extends AnomalyAlertTestBase {
     //     });
     //     client.deleteAnomalyAlertConfigWithResponse(inputAnomalyAlertConfigId.get()).block();
     // }
+
+    /**
+     * Verifies update for a removing hooks from a previously created anomaly alert configuration's.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
+    public void updateAnomalyAlertRemoveHooks(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
+        // Arrange
+        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+        final AtomicReference<String> inputAnomalyAlertConfigId = new AtomicReference<>();
+        creatAnomalyAlertRunner(inputAnomalyAlert -> {
+            // Arrange
+            final AnomalyAlertConfiguration createdAnomalyAlert =
+                client.createAnomalyAlertConfig(inputAnomalyAlert);
+
+            inputAnomalyAlertConfigId.set(createdAnomalyAlert.getId());
+
+            // Act & Assert
+            final AnomalyAlertConfiguration updatedAnomalyAlertConfiguration = client.updateAnomalyAlertConfig(
+                createdAnomalyAlert.removeHookToAlert(ALERT_HOOK_ID));
+            assertEquals(0, updatedAnomalyAlertConfiguration.getIdOfHooksToAlert().size());
+        });
+        client.deleteAnomalyAlertConfig(inputAnomalyAlertConfigId.get());
+    }
 }

@@ -713,7 +713,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
                     .setSource(new PostgreSqlDataFeedSource("conn-string", "query"))
                     .setSchema(new DataFeedSchema(Collections.singletonList(new DataFeedMetric().setName("name"))))
                     .setGranularity(new DataFeedGranularity().setGranularityType(DAILY))));
-            assertEquals("'dataFeedIngestionSettings.ingestionStartTime' cannot be null or empty.",
+            assertEquals("'dataFeedIngestionSettings.ingestionStartTime' is required and cannot be null.",
                 ex.getMessage());
 
         }, SQL_SERVER_DB);

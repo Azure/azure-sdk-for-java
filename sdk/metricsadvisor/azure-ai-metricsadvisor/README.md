@@ -362,7 +362,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [http_clients_wiki]: https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [metrics_advisor_account]: https://ms.portal.azure.com/#create/Microsoft.CognitiveServicesMetricsAdvisor
-[metrics_advisor_doc]: https://docs.microsoft.com/azure/cognitive-services/dataFeedMetrics-advisor/glossary
+[metrics_advisor_doc]: https://docs.microsoft.com/azure/cognitive-services/Metrics-advisor/glossary
 [mvn_package]: https://search.maven.org/artifact/com.azure/azure-ai-metricsadvisor/1.0.0-beta.1/jar
 [product_documentation]: https://docs.microsoft.com/azure/cognitive-services/metrics-advisor/overview
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/metricsadvisor/azure-ai-metricsadvisor/src
