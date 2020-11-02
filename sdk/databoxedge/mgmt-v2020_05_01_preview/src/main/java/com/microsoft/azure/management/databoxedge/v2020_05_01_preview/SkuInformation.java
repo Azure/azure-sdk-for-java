@@ -79,7 +79,7 @@ public class SkuInformation {
      * The cost of the SKU.
      */
     @JsonProperty(value = "costs", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SKUCost> costs;
+    private List<SkuCost> costs;
 
     /**
      * The capabilities of the SKU.
@@ -182,7 +182,7 @@ public class SkuInformation {
      *
      * @return the costs value
      */
-    public List<SKUCost> costs() {
+    public List<SkuCost> costs() {
         return this.costs;
     }
 
