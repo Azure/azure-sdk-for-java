@@ -60,6 +60,7 @@ public class ServerSocketTest {
         KeyStore ks = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
+            null,
             System.getProperty("azure.tenant.id"),
             System.getProperty("azure.client.id"),
             System.getProperty("azure.client.secret"));
@@ -165,6 +166,7 @@ public class ServerSocketTest {
         KeyStore ks = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
+            null,
             System.getProperty("azure.tenant.id"),
             System.getProperty("azure.client.id"),
             System.getProperty("azure.client.secret"));
