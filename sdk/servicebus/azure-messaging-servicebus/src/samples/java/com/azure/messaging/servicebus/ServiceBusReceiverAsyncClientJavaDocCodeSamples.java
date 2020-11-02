@@ -16,8 +16,6 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 /**
  * Code snippets demonstrating various {@link ServiceBusReceiverAsyncClient} scenarios.
  */
@@ -68,7 +66,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             .subscribe(context -> {
                 ServiceBusReceivedMessage message = context.getMessage();
                 System.out.printf("Received message id: %s%n", message.getMessageId());
-                System.out.printf("Contents of message as string: %s%n", new String(message.getBody(), UTF_8));
+                System.out.printf("Contents of message as string: %s%n", message.getBody().toString());
             }, error -> System.err.print(error));
         // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receiveWithReceiveAndDeleteMode
 
@@ -130,7 +128,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
         Disposable subscription = receiver.receiveMessages().flatMap(context -> {
             ServiceBusReceivedMessage message = context.getMessage();
             System.out.printf("Received message id: %s%n", message.getMessageId());
-            System.out.printf("Contents of message as string: %s%n", new String(message.getBody(), UTF_8));
+            System.out.printf("Contents of message as string: %s%n", message.getBody().toString());
             return receiver.complete(message);
         }).subscribe(aVoid -> System.out.println("Processed message."),
             error -> System.out.println("Error occurred: " + error));

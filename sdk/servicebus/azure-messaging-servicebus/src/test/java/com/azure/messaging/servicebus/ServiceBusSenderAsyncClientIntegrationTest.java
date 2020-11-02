@@ -8,6 +8,7 @@ import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -146,6 +147,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can send message to final destination using via-queue.
      */
+    @Disabled("The send via functionality is removing for first GA release, later we will come back to it.")
     @Test
     void viaQueueMessageSendTest() {
         // Arrange
@@ -166,11 +168,12 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
 
         final ServiceBusSenderAsyncClient destination1ViaSender = getSenderBuilder(useCredentials, entityType,
             destinationEntity, false, shareConnection)
-            .viaQueueName(viaQueueName)
+            //.viaQueueName(viaQueueName)
             .buildAsyncClient();
         final ServiceBusReceiverAsyncClient destination1Receiver = getReceiverBuilder(useCredentials, entityType,
             destinationEntity, shareConnection)
             .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+            .disableAutoComplete()
             .buildAsyncClient();
 
         final AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
@@ -222,9 +225,11 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         }
     }
 
+
     /**
      * Verifies that we can send message to final destination using via-topic.
      */
+    @Disabled("The send via functionality is removed for first GA release, later we will come back to it.")
     @Test
     void viaTopicMessageSendTest() {
         // Arrange
@@ -247,12 +252,13 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
 
         final ServiceBusSenderAsyncClient destination1ViaSender = getSenderBuilder(useCredentials, entityType,
             destinationEntity, false, shareConnection)
-            .viaTopicName(viaTopicName)
+            //.viaTopicName(viaTopicName)
             .buildAsyncClient();
 
         final ServiceBusReceiverAsyncClient destination1Receiver = getReceiverBuilder(useCredentials, entityType,
             destinationEntity, shareConnection)
             .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+            .disableAutoComplete()
             .buildAsyncClient();
 
         final AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
@@ -510,6 +516,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
             .buildAsyncClient();
         this.receiver = getReceiverBuilder(useCredentials, entityType, entityIndex, sharedConnection)
             .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+            .disableAutoComplete()
             .buildAsyncClient();
     }
 }

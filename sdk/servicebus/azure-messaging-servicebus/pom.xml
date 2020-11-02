@@ -46,6 +46,11 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-core-experimental</artifactId>
+      <version>1.0.0-beta.9</version> <!-- {x-version-update;unreleased_com.azure:azure-core-experimental;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
       <version>1.7.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core-amqp;dependency} -->
     </dependency>

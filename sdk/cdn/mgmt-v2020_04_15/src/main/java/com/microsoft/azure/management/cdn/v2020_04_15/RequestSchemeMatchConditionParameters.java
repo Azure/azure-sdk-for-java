@@ -36,12 +36,11 @@ public class RequestSchemeMatchConditionParameters {
     /**
      * The match value for the condition of the delivery rule.
      */
-    @JsonProperty(value = "matchValues", required = true)
+    @JsonProperty(value = "matchValues")
     private List<String> matchValues;
 
     /**
      * Creates an instance of RequestSchemeMatchConditionParameters class.
-     * @param matchValues the match value for the condition of the delivery rule.
      */
     public RequestSchemeMatchConditionParameters() {
         odatatype = "#Microsoft.Azure.Cdn.Models.DeliveryRuleRequestSchemeConditionParameters";

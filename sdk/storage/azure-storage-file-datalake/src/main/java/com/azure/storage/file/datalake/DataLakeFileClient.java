@@ -569,7 +569,7 @@ public class DataLakeFileClient extends DataLakePathClient {
                     .setRange(Transforms.toBlobRange(range)).setParallelTransferOptions(parallelTransferOptions)
                     .setDownloadRetryOptions(Transforms.toBlobDownloadRetryOptions(downloadRetryOptions))
                     .setRequestConditions(Transforms.toBlobRequestConditions(requestConditions))
-                    .setRangeGetContentMd5(rangeGetContentMd5).setOpenOptions(openOptions), timeout,
+                    .setRetrieveContentRangeMd5(rangeGetContentMd5).setOpenOptions(openOptions), timeout,
                 context);
             return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue()));
         }, logger);
