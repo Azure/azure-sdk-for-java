@@ -55,20 +55,29 @@ import java.util.regex.Pattern;
 /**
  * The builder to create Service Bus clients:
  *
+ *
  * <p><strong>Clients for sending messages</strong></p>
+ * <ul>
  * <li>{@link ServiceBusSenderAsyncClient}</li>
  * <li>{@link ServiceBusSenderClient}</li>
+ * </ul>
  *
  * <p><strong>Clients for receiving messages</strong></p>
+ * <ul>
  * <li>{@link ServiceBusReceiverAsyncClient}</li>
  * <li>{@link ServiceBusReceiverClient}</li>
+ * </ul>
  *
  * <p><strong>Clients for receiving messages from a session-enabled Service Bus entity</strong></p>
+ * <ul>
  * <li>{@link ServiceBusSessionReceiverAsyncClient}</li>
  * <li>{@link ServiceBusSessionReceiverClient}</li>
+ * </ul>
  *
  * <p><strong>Client for receiving messages using a callback-based processor</strong></p>
- * <li>{@link ServiceBusProcessorClient}</li>>
+ * <ul>
+ * <li>{@link ServiceBusProcessorClient}</li>
+ * </ul>
  */
 @ServiceClientBuilder(serviceClients = {ServiceBusReceiverAsyncClient.class, ServiceBusSenderAsyncClient.class,
     ServiceBusSenderClient.class, ServiceBusReceiverClient.class, ServiceBusProcessorClient.class},
