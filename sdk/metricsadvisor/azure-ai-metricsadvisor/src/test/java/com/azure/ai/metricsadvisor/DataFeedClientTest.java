@@ -17,6 +17,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -53,6 +54,7 @@ import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.POSTGRE_SQL_
 import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.SQL_SERVER_DB;
 import static com.azure.ai.metricsadvisor.models.DataFeedStatus.ACTIVE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -108,7 +110,9 @@ public class DataFeedClientTest extends DataFeedTestBase {
                         actualList.get(i.incrementAndGet()), dataFeedSourceTypes.get(i.get())));
             });
         } finally {
-            expectedDataFeedIdList.get().forEach(client::deleteDataFeed);
+            if (!CoreUtils.isNullOrEmpty(expectedDataFeedIdList.get())) {
+                expectedDataFeedIdList.get().forEach(client::deleteDataFeed);
+            }
         }
     }
 
@@ -147,7 +151,9 @@ public class DataFeedClientTest extends DataFeedTestBase {
                     expectedDataFeed.getSource(), expectedDataFeed.getGranularity(),
                     expectedDataFeed.getSchema(), expectedDataFeed.getIngestionSettings(), expectedDataFeed.getOptions());
 
+                assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
+
                 // Act & Assert
                 client.listDataFeeds(new ListDataFeedOptions()
                         .setListDataFeedFilter(new ListDataFeedFilter()
@@ -157,30 +163,31 @@ public class DataFeedClientTest extends DataFeedTestBase {
 
             }, POSTGRE_SQL_DB);
         } finally {
-            client.deleteDataFeed(dataFeedId.get());
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
         }
     }
 
     /**
      * Verifies the result of the list data feed method using skip and top options.
      */
-    // TODO (savaity) Need concrete list results for testing skip
-    // @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    // @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    // void testListDataFeedSkip(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-    //     // Arrange
-    //     client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
-    //     final ArrayList<DataFeed> actualDataFeedList = new ArrayList<>();
-    //     final ArrayList<DataFeed> expectedList = new ArrayList<>();
-    //
-    //     client.listDataFeeds().stream().iterator().forEachRemaining(expectedList::add);
-    //
-    //     // Act & Assert
-    //     client.listDataFeeds(new ListDataFeedOptions().setSkip(3), Context.NONE)
-    //         .stream().iterator().forEachRemaining(actualDataFeedList::add);
-    //
-    //     assertEquals(expectedList.size() - 3, actualDataFeedList.size());
-    // }
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
+    void testListDataFeedSkip(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
+        // Arrange
+        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+        final ArrayList<DataFeed> actualDataFeedList = new ArrayList<>();
+        final ArrayList<DataFeed> expectedList = new ArrayList<>();
+
+        client.listDataFeeds().stream().iterator().forEachRemaining(expectedList::add);
+
+        // Act & Assert
+        client.listDataFeeds(new ListDataFeedOptions().setSkip(3), Context.NONE)
+            .stream().iterator().forEachRemaining(actualDataFeedList::add);
+
+        assertEquals(expectedList.size(), actualDataFeedList.size() + 3);
+    }
 
     /**
      * Verifies the result of the list data feed method to filter results using
@@ -254,7 +261,9 @@ public class DataFeedClientTest extends DataFeedTestBase {
                     inputDataFeed.getIngestionSettings(),
                     inputDataFeed.getOptions());
 
+                assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
+
                 // Act & Assert
                 client.listDataFeeds(
                     new ListDataFeedOptions()
@@ -264,7 +273,9 @@ public class DataFeedClientTest extends DataFeedTestBase {
                     assertEquals(filterName, createdDataFeed.getName()));
             }, SQL_SERVER_DB);
         } finally {
-            client.deleteDataFeed(dataFeedId.get());
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
         }
     }
 
@@ -316,6 +327,8 @@ public class DataFeedClientTest extends DataFeedTestBase {
                     dataFeed.getSchema(),
                     dataFeed.getIngestionSettings(),
                     dataFeed.getOptions());
+
+                assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
 
                 // Act & Assert
@@ -325,7 +338,9 @@ public class DataFeedClientTest extends DataFeedTestBase {
                 validateDataFeedResult(createdDataFeed, dataFeedResponse.getValue(), SQL_SERVER_DB);
             }, SQL_SERVER_DB);
         } finally {
-            client.deleteDataFeed(dataFeedId.get());
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
         }
     }
 
@@ -350,11 +365,15 @@ public class DataFeedClientTest extends DataFeedTestBase {
                     expectedDataFeed.getIngestionSettings(),
                     expectedDataFeed.getOptions());
 
+                assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
+
                 validateDataFeedResult(expectedDataFeed, createdDataFeed, SQL_SERVER_DB);
             }, SQL_SERVER_DB);
         } finally {
-            client.deleteDataFeed(dataFeedId.get());
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
         }
     }
 
@@ -377,11 +396,15 @@ public class DataFeedClientTest extends DataFeedTestBase {
                     expectedDataFeed.getIngestionSettings(),
                     expectedDataFeed.getOptions());
 
+                assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
+
                 validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_BLOB);
             }, AZURE_BLOB);
         } finally {
-            client.deleteDataFeed(dataFeedId.get());
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
         }
     }
 
@@ -405,11 +428,15 @@ public class DataFeedClientTest extends DataFeedTestBase {
                     expectedDataFeed.getIngestionSettings(),
                     expectedDataFeed.getOptions());
 
+                assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
+
                 validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_COSMOS_DB);
             }, AZURE_COSMOS_DB);
         } finally {
-            client.deleteDataFeed(dataFeedId.get());
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
         }
     }
 
@@ -433,11 +460,15 @@ public class DataFeedClientTest extends DataFeedTestBase {
                     expectedDataFeed.getIngestionSettings(),
                     expectedDataFeed.getOptions());
 
+                assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
+
                 validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_APP_INSIGHTS);
             }, AZURE_APP_INSIGHTS);
         } finally {
-            client.deleteDataFeed(dataFeedId.get());
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
         }
     }
 
@@ -460,11 +491,15 @@ public class DataFeedClientTest extends DataFeedTestBase {
                     expectedDataFeed.getIngestionSettings(),
                     expectedDataFeed.getOptions());
 
+                assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
+
                 validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_DATA_EXPLORER);
             }, AZURE_DATA_EXPLORER);
         } finally {
-            client.deleteDataFeed(dataFeedId.get());
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
         }
     }
 
@@ -487,11 +522,15 @@ public class DataFeedClientTest extends DataFeedTestBase {
                     expectedDataFeed.getIngestionSettings(),
                     expectedDataFeed.getOptions());
 
+                assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
+
                 validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_TABLE);
             }, AZURE_TABLE);
         } finally {
-            client.deleteDataFeed(dataFeedId.get());
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
         }
     }
 
@@ -514,11 +553,15 @@ public class DataFeedClientTest extends DataFeedTestBase {
                     expectedDataFeed.getIngestionSettings(),
                     expectedDataFeed.getOptions());
 
+                assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
+
                 validateDataFeedResult(expectedDataFeed, createdDataFeed, HTTP_REQUEST);
             }, HTTP_REQUEST);
         } finally {
-            client.deleteDataFeed(dataFeedId.get());
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
         }
     }
 
@@ -541,11 +584,15 @@ public class DataFeedClientTest extends DataFeedTestBase {
                     expectedDataFeed.getIngestionSettings(),
                     expectedDataFeed.getOptions());
 
+                assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
+
                 validateDataFeedResult(expectedDataFeed, createdDataFeed, INFLUX_DB);
             }, INFLUX_DB);
         } finally {
-            client.deleteDataFeed(dataFeedId.get());
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
         }
     }
 
@@ -568,11 +615,15 @@ public class DataFeedClientTest extends DataFeedTestBase {
                     expectedDataFeed.getIngestionSettings(),
                     expectedDataFeed.getOptions());
 
+                assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
+
                 validateDataFeedResult(expectedDataFeed, createdDataFeed, MONGO_DB);
             }, MONGO_DB);
         } finally {
-            client.deleteDataFeed(dataFeedId.get());
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
         }
     }
 
@@ -596,11 +647,15 @@ public class DataFeedClientTest extends DataFeedTestBase {
                     expectedDataFeed.getIngestionSettings(),
                     expectedDataFeed.getOptions());
 
+                assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
+
                 validateDataFeedResult(expectedDataFeed, createdDataFeed, MYSQL_DB);
             }, MYSQL_DB);
         }  finally {
-            client.deleteDataFeed(dataFeedId.get());
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
         }
     }
 
@@ -623,11 +678,15 @@ public class DataFeedClientTest extends DataFeedTestBase {
                     expectedDataFeed.getIngestionSettings(),
                     expectedDataFeed.getOptions());
 
+                assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
+
                 validateDataFeedResult(expectedDataFeed, createdDataFeed, POSTGRE_SQL_DB);
             }, POSTGRE_SQL_DB);
         } finally {
-            client.deleteDataFeed(dataFeedId.get());
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
         }
     }
 
@@ -650,11 +709,15 @@ public class DataFeedClientTest extends DataFeedTestBase {
                     expectedDataFeed.getIngestionSettings(),
                     expectedDataFeed.getOptions());
 
+                assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
+
                 validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_DATA_LAKE_STORAGE_GEN2);
             }, AZURE_DATA_LAKE_STORAGE_GEN2);
         } finally {
-            client.deleteDataFeed(dataFeedId.get());
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
         }
     }
 
@@ -677,11 +740,15 @@ public class DataFeedClientTest extends DataFeedTestBase {
                     expectedDataFeed.getIngestionSettings(),
                     expectedDataFeed.getOptions());
 
+                assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
+
                 validateDataFeedResult(expectedDataFeed, createdDataFeed, ELASTIC_SEARCH);
             }, ELASTIC_SEARCH);
         } finally {
-            client.deleteDataFeed(dataFeedId.get());
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
         }
     }
 
@@ -761,9 +828,9 @@ public class DataFeedClientTest extends DataFeedTestBase {
                 client.deleteDataFeedWithResponse(createdDataFeed.getId(), Context.NONE).getStatusCode());
 
             // Act & Assert
-            Exception exception = assertThrows(ErrorCodeException.class, () ->
+            ErrorCodeException exception = assertThrows(ErrorCodeException.class, () ->
                 client.getDataFeedWithResponse(createdDataFeed.getId(), Context.NONE));
-            final ErrorCode errorCode = ((ErrorCodeException) exception).getValue();
+            final ErrorCode errorCode = exception.getValue();
             assertEquals(errorCode.getCode(), "ERROR_INVALID_PARAMETER");
             assertEquals(errorCode.getMessage(), "datafeedId is invalid.");
         }, SQL_SERVER_DB);
@@ -790,14 +857,18 @@ public class DataFeedClientTest extends DataFeedTestBase {
                     expectedDataFeed.getIngestionSettings(),
                     expectedDataFeed.getOptions());
 
+                assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
+
                 // Act & Assert
                 final DataFeed updatedDataFeed = client.updateDataFeed(createdDataFeed.setName(updatedName));
                 assertEquals(updatedName, updatedDataFeed.getName());
                 validateDataFeedResult(expectedDataFeed, updatedDataFeed, SQL_SERVER_DB);
             }, SQL_SERVER_DB);
         } finally {
-            client.deleteDataFeed(dataFeedId.get());
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
         }
     }
 }

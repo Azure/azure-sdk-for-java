@@ -10,8 +10,8 @@ import com.azure.ai.metricsadvisor.models.Metric;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
+import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -22,6 +22,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestBase {
     @BeforeAll
@@ -64,9 +65,13 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
                 .verifyComplete();
 
         } finally {
-            StepVerifier.create(client.deleteMetricAnomalyDetectionConfiguration(id.get()))
-                .verifyComplete();
-            super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
+            if (!CoreUtils.isNullOrEmpty(id.get())) {
+                StepVerifier.create(client.deleteMetricAnomalyDetectionConfiguration(id.get()))
+                    .verifyComplete();
+            }
+            if (dataFeed != null) {
+                super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
+            }
         }
     }
 
@@ -92,15 +97,19 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
             StepVerifier.create(client.createMetricAnomalyDetectionConfiguration(costMetricId,
                 CreateDetectionConfigurationForSeriesAndGroupInput.INSTANCE.detectionConfiguration))
                 .assertNext(configuration -> {
+                    assertNotNull(configuration);
                     id.set(configuration.getId());
                     super.assertCreateDetectionConfigurationForSeriesAndGroupOutput(configuration, costMetricId);
                 })
                 .verifyComplete();
         } finally {
-            StepVerifier.create(client.deleteMetricAnomalyDetectionConfiguration(id.get()))
-                .verifyComplete();
-
-            super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
+            if (!CoreUtils.isNullOrEmpty(id.get())) {
+                StepVerifier.create(client.deleteMetricAnomalyDetectionConfiguration(id.get()))
+                    .verifyComplete();
+            }
+            if (dataFeed != null) {
+                super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
+            }
         }
     }
 
@@ -127,6 +136,7 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
             StepVerifier.create(client.createMetricAnomalyDetectionConfiguration(costMetricId,
                 CreateDetectionConfigurationForMultipleSeriesAndGroupInput.INSTANCE.detectionConfiguration))
                 .assertNext(configuration -> {
+                    assertNotNull(configuration);
                     id.set(configuration.getId());
                     super.assertCreateDetectionConfigurationForMultipleSeriesAndGroupOutput(configuration, costMetricId);
                 })
@@ -134,13 +144,17 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
 
             StepVerifier.create(client.listMetricAnomalyDetectionConfigurations(costMetricId))
                 // Expect 2 config: Default + the one just created.
-                .assertNext(configuration -> Assertions.assertNotNull(configuration))
-                .assertNext(configuration -> Assertions.assertNotNull(configuration))
+                .assertNext(configuration -> assertNotNull(configuration))
+                .assertNext(configuration -> assertNotNull(configuration))
                 .verifyComplete();
         } finally {
-            StepVerifier.create(client.deleteMetricAnomalyDetectionConfiguration(id.get()))
-                .verifyComplete();
-            super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
+            if (!CoreUtils.isNullOrEmpty(id.get())) {
+                StepVerifier.create(client.deleteMetricAnomalyDetectionConfiguration(id.get()))
+                    .verifyComplete();
+            }
+            if (dataFeed != null) {
+                super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
+            }
         }
     }
 
@@ -167,12 +181,12 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
             StepVerifier.create(client.createMetricAnomalyDetectionConfiguration(costMetricId,
                 UpdateDetectionConfigurationInput.INSTANCE.detectionConfiguration))
                 .assertNext(configuration -> {
-                    Assertions.assertNotNull(configuration);
+                    assertNotNull(configuration);
                     configs[0] = configuration;
                 })
                 .verifyComplete();
 
-            Assertions.assertNotNull(configs[0]);
+            assertNotNull(configs[0]);
             AnomalyDetectionConfiguration config = configs[0];
             config.removeSingleSeriesDetectionCondition(UpdateDetectionConfigurationInput
                 .INSTANCE
@@ -189,10 +203,13 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
                 })
                 .verifyComplete();
         } finally {
-            StepVerifier.create(client.deleteMetricAnomalyDetectionConfiguration(id.get()))
-                .verifyComplete();
-
-            super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
+            if (!CoreUtils.isNullOrEmpty(id.get())) {
+                StepVerifier.create(client.deleteMetricAnomalyDetectionConfiguration(id.get()))
+                    .verifyComplete();
+            }
+            if (dataFeed != null) {
+                super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
+            }
         }
     }
 }

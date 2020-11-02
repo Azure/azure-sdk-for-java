@@ -116,6 +116,7 @@
             <configuration>
               <systemPropertyVariables>
                 <!-- Parallel runs disabled due to subscriber timeout issue causing failures in tests. -->
+                <!-- https://github.com/Azure/azure-sdk-for-java/issues/17069 -->
                 <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
               </systemPropertyVariables>
             </configuration>

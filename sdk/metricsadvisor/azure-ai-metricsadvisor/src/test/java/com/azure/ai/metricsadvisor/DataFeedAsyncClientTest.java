@@ -15,6 +15,7 @@ import com.azure.ai.metricsadvisor.models.ListDataFeedOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
+import com.azure.core.util.CoreUtils;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -40,8 +41,8 @@ import static com.azure.ai.metricsadvisor.models.DataFeedGranularityType.DAILY;
 import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_APP_INSIGHTS;
 import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_BLOB;
 import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_COSMOS_DB;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_DATA_LAKE_STORAGE_GEN2;
 import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_DATA_EXPLORER;
+import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_DATA_LAKE_STORAGE_GEN2;
 import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_TABLE;
 import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.ELASTIC_SEARCH;
 import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.HTTP_REQUEST;
@@ -52,6 +53,7 @@ import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.POSTGRE_SQL_
 import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.SQL_SERVER_DB;
 import static com.azure.ai.metricsadvisor.models.DataFeedStatus.ACTIVE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class DataFeedAsyncClientTest extends DataFeedTestBase {
     private MetricsAdvisorAdministrationAsyncClient client;
@@ -110,8 +112,10 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                     actualList.get(i.incrementAndGet()), dataFeedSourceTypes.get(i.get())));
             });
         } finally {
-            expectedDataFeedIdList.get().forEach(dataFeedId ->
-                StepVerifier.create(client.deleteDataFeed(dataFeedId)).verifyComplete());
+            if (!CoreUtils.isNullOrEmpty(expectedDataFeedIdList.get())) {
+                expectedDataFeedIdList.get().forEach(dataFeedId ->
+                    StepVerifier.create(client.deleteDataFeed(dataFeedId)).verifyComplete());
+            }
         }
     }
 
@@ -139,30 +143,39 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     void testListDataFeedFilterByCreator(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
-        final AtomicReference<String> dataFeedId = new AtomicReference<>();
-        creatDataFeedRunner(expectedDataFeed -> {
-            // Act & Assert
-            final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
-                expectedDataFeed.getSource(),
-                expectedDataFeed.getGranularity(),
-                expectedDataFeed.getSchema(),
-                expectedDataFeed.getIngestionSettings(),
-                expectedDataFeed.getOptions())
-                .block();
-            dataFeedId.set(createdDataFeed.getId());
+        final AtomicReference<String> dataFeedId = new AtomicReference<String>();
+        try {
+            // Arrange
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+            creatDataFeedRunner(expectedDataFeed -> {
+                // Act & Assert
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
+                    expectedDataFeed.getSource(),
+                    expectedDataFeed.getGranularity(),
+                    expectedDataFeed.getSchema(),
+                    expectedDataFeed.getIngestionSettings(),
+                    expectedDataFeed.getOptions())
+                    .block();
 
-            // Act & Assert
-            StepVerifier.create(client.listDataFeeds(new ListDataFeedOptions()
-                .setListDataFeedFilter(new ListDataFeedFilter()
-                    .setCreator(createdDataFeed.getCreator()))))
-                .thenConsumeWhile(dataFeed -> createdDataFeed.getCreator().equals(dataFeed.getCreator()))
-                .verifyComplete();
-        }, POSTGRE_SQL_DB);
-        Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
+                assertNotNull(createdDataFeed);
+                dataFeedId.set(createdDataFeed.getId());
 
-        StepVerifier.create(deleteDataFeed).verifyComplete();
+
+                // Act & Assert
+                assert createdDataFeed != null;
+                StepVerifier.create(client.listDataFeeds(new ListDataFeedOptions()
+                    .setListDataFeedFilter(new ListDataFeedFilter()
+                        .setCreator(createdDataFeed.getCreator()))))
+                    .thenConsumeWhile(dataFeed -> createdDataFeed.getCreator().equals(dataFeed.getCreator()))
+                    .verifyComplete();
+            }, POSTGRE_SQL_DB);
+        } finally {
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
+
+                StepVerifier.create(deleteDataFeed).verifyComplete();
+            }
+        }
     }
 
     /**
@@ -264,6 +277,7 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                     inputDataFeed.getIngestionSettings(),
                     inputDataFeed.getOptions()).block();
 
+                assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
                 // Act & Assert
                 StepVerifier.create(client.listDataFeeds(new ListDataFeedOptions()
@@ -276,9 +290,11 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                     .verifyComplete();
             }, SQL_SERVER_DB);
         } finally {
-            Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
-            StepVerifier.create(deleteDataFeed)
-                .verifyComplete();
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
+                StepVerifier.create(deleteDataFeed)
+                    .verifyComplete();
+            }
         }
     }
 
@@ -334,6 +350,7 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                     dataFeed.getIngestionSettings(),
                     dataFeed.getOptions()).block();
 
+                assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
 
                 // Act & Assert
@@ -344,9 +361,11 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                     });
             }, SQL_SERVER_DB);
         } finally {
-            Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
-            StepVerifier.create(deleteDataFeed)
-                .verifyComplete();
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
+                StepVerifier.create(deleteDataFeed)
+                    .verifyComplete();
+            }
         }
     }
 
@@ -378,9 +397,11 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                     .verifyComplete(), SQL_SERVER_DB);
 
         } finally {
-            Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
-            StepVerifier.create(deleteDataFeed)
-                .verifyComplete();
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
+                StepVerifier.create(deleteDataFeed)
+                    .verifyComplete();
+            }
         }
     }
 
@@ -403,15 +424,18 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                     expectedDataFeed.getIngestionSettings(),
                     expectedDataFeed.getOptions()))
                     .assertNext(createdDataFeed -> {
+                        assertNotNull(createdDataFeed);
                         dataFeedId.set(createdDataFeed.getId());
                         validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_BLOB);
                     })
                     .verifyComplete(), AZURE_BLOB);
         } finally {
-            Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
 
-            StepVerifier.create(deleteDataFeed)
-                .verifyComplete();
+                StepVerifier.create(deleteDataFeed)
+                    .verifyComplete();
+            }
         }
     }
 
@@ -434,14 +458,17 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                     expectedDataFeed.getIngestionSettings(),
                     expectedDataFeed.getOptions()))
                     .assertNext(createdDataFeed -> {
+                        assertNotNull(createdDataFeed);
                         dataFeedId.set(createdDataFeed.getId());
                         validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_COSMOS_DB);
                     })
                     .verifyComplete(), AZURE_COSMOS_DB);
         } finally {
-            Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
-            StepVerifier.create(deleteDataFeed)
-                .verifyComplete();
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
+                StepVerifier.create(deleteDataFeed)
+                    .verifyComplete();
+            }
         }
     }
 
@@ -464,14 +491,17 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                     expectedDataFeed.getIngestionSettings(),
                     expectedDataFeed.getOptions()))
                     .assertNext(createdDataFeed -> {
+                        assertNotNull(createdDataFeed);
                         dataFeedId.set(createdDataFeed.getId());
                         validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_APP_INSIGHTS);
                     })
                     .verifyComplete(), AZURE_APP_INSIGHTS);
         } finally {
-            Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
-            StepVerifier.create(deleteDataFeed)
-                .verifyComplete();
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
+                StepVerifier.create(deleteDataFeed)
+                    .verifyComplete();
+            }
         }
     }
 
@@ -494,14 +524,17 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                     expectedDataFeed.getIngestionSettings(),
                     expectedDataFeed.getOptions()))
                     .assertNext(createdDataFeed -> {
+                        assertNotNull(createdDataFeed);
                         dataFeedId.set(createdDataFeed.getId());
                         validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_DATA_EXPLORER);
                     })
                     .verifyComplete(), AZURE_DATA_EXPLORER);
         } finally {
-            Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
-            StepVerifier.create(deleteDataFeed)
-                .verifyComplete();
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
+                StepVerifier.create(deleteDataFeed)
+                    .verifyComplete();
+            }
         }
     }
 
@@ -525,14 +558,17 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                     expectedDataFeed.getIngestionSettings(),
                     expectedDataFeed.getOptions()))
                     .assertNext(createdDataFeed -> {
+                        assertNotNull(createdDataFeed);
                         dataFeedId.set(createdDataFeed.getId());
                         validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_TABLE);
                     })
                     .verifyComplete(), AZURE_TABLE);
         } finally {
-            Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
-            StepVerifier.create(deleteDataFeed)
-                .verifyComplete();
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
+                StepVerifier.create(deleteDataFeed)
+                    .verifyComplete();
+            }
         }
     }
 
@@ -555,15 +591,18 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                     expectedDataFeed.getIngestionSettings(),
                     expectedDataFeed.getOptions()))
                     .assertNext(createdDataFeed -> {
+                        assertNotNull(createdDataFeed);
                         dataFeedId.set(createdDataFeed.getId());
                         validateDataFeedResult(expectedDataFeed, createdDataFeed, HTTP_REQUEST);
                     })
                     .verifyComplete(), HTTP_REQUEST);
         } finally {
-            Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
 
-            StepVerifier.create(deleteDataFeed)
-                .verifyComplete();
+                StepVerifier.create(deleteDataFeed)
+                    .verifyComplete();
+            }
         }
     }
 
@@ -586,15 +625,18 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                     expectedDataFeed.getIngestionSettings(),
                     expectedDataFeed.getOptions()))
                     .assertNext(createdDataFeed -> {
+                        assertNotNull(createdDataFeed);
                         dataFeedId.set(createdDataFeed.getId());
                         validateDataFeedResult(expectedDataFeed, createdDataFeed, INFLUX_DB);
                     })
                     .verifyComplete(), INFLUX_DB);
         } finally {
-            Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
 
-            StepVerifier.create(deleteDataFeed)
-                .verifyComplete();
+                StepVerifier.create(deleteDataFeed)
+                    .verifyComplete();
+            }
         }
     }
 
@@ -618,15 +660,18 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                     expectedDataFeed.getIngestionSettings(),
                     expectedDataFeed.getOptions()))
                     .assertNext(createdDataFeed -> {
+                        assertNotNull(createdDataFeed);
                         dataFeedId.set(createdDataFeed.getId());
                         validateDataFeedResult(expectedDataFeed, createdDataFeed, MONGO_DB);
                     })
                     .verifyComplete(), MONGO_DB);
         } finally {
-            Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
 
-            StepVerifier.create(deleteDataFeed)
-                .verifyComplete();
+                StepVerifier.create(deleteDataFeed)
+                    .verifyComplete();
+            }
         }
     }
 
@@ -649,15 +694,18 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                     expectedDataFeed.getIngestionSettings(),
                     expectedDataFeed.getOptions()))
                     .assertNext(createdDataFeed -> {
+                        assertNotNull(createdDataFeed);
                         dataFeedId.set(createdDataFeed.getId());
                         validateDataFeedResult(expectedDataFeed, createdDataFeed, MYSQL_DB);
                     })
                     .verifyComplete(), MYSQL_DB);
         } finally {
-            Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
 
-            StepVerifier.create(deleteDataFeed)
-                .verifyComplete();
+                StepVerifier.create(deleteDataFeed)
+                    .verifyComplete();
+            }
         }
     }
 
@@ -681,15 +729,18 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                     expectedDataFeed.getIngestionSettings(),
                     expectedDataFeed.getOptions()))
                     .assertNext(createdDataFeed -> {
+                        assertNotNull(createdDataFeed);
                         dataFeedId.set(createdDataFeed.getId());
                         validateDataFeedResult(expectedDataFeed, createdDataFeed, POSTGRE_SQL_DB);
                     })
                     .verifyComplete(), POSTGRE_SQL_DB);
         } finally {
-            Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
 
-            StepVerifier.create(deleteDataFeed)
-                .verifyComplete();
+                StepVerifier.create(deleteDataFeed)
+                    .verifyComplete();
+            }
         }
     }
 
@@ -713,14 +764,17 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                     expectedDataFeed.getIngestionSettings(),
                     expectedDataFeed.getOptions()))
                     .assertNext(createdDataFeed -> {
+                        assertNotNull(createdDataFeed);
                         dataFeedId.set(createdDataFeed.getId());
                         validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_DATA_LAKE_STORAGE_GEN2);
                     })
                     .verifyComplete(), AZURE_DATA_LAKE_STORAGE_GEN2);
         } finally {
-            Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
-            StepVerifier.create(deleteDataFeed)
-                .verifyComplete();
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
+                StepVerifier.create(deleteDataFeed)
+                    .verifyComplete();
+            }
         }
     }
 
@@ -744,14 +798,17 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                     expectedDataFeed.getIngestionSettings(),
                     expectedDataFeed.getOptions()))
                     .assertNext(createdDataFeed -> {
+                        assertNotNull(createdDataFeed);
                         dataFeedId.set(createdDataFeed.getId());
                         validateDataFeedResult(expectedDataFeed, createdDataFeed, ELASTIC_SEARCH);
                     })
                     .verifyComplete(), ELASTIC_SEARCH);
         } finally {
-            Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
-            StepVerifier.create(deleteDataFeed)
-                .verifyComplete();
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
+                StepVerifier.create(deleteDataFeed)
+                    .verifyComplete();
+            }
         }
     }
 
@@ -789,6 +846,7 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                 dataFeed.getIngestionSettings(),
                 dataFeed.getOptions()).block();
 
+            assertNotNull(createdDataFeed);
             StepVerifier.create(client.deleteDataFeedWithResponse(createdDataFeed.getId()))
                 .assertNext(response -> assertEquals(response.getStatusCode(), HttpResponseStatus.NO_CONTENT.code()))
                 .verifyComplete();
@@ -825,6 +883,8 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                     expectedDataFeed.getIngestionSettings(),
                     expectedDataFeed.getOptions())
                     .block();
+
+                assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
 
                 // Act & Assert
@@ -835,10 +895,12 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                     }).verifyComplete();
             }, SQL_SERVER_DB);
         } finally {
-            Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
 
-            StepVerifier.create(deleteDataFeed)
-                .verifyComplete();
+                StepVerifier.create(deleteDataFeed)
+                    .verifyComplete();
+            }
         }
     }
 }

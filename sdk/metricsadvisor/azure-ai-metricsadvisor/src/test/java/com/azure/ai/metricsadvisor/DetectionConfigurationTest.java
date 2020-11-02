@@ -9,6 +9,7 @@ import com.azure.ai.metricsadvisor.models.DataFeed;
 import com.azure.ai.metricsadvisor.models.Metric;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
+import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -17,6 +18,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class DetectionConfigurationTest extends DetectionConfigurationTestBase {
 
@@ -43,13 +45,18 @@ public class DetectionConfigurationTest extends DetectionConfigurationTestBase {
             AnomalyDetectionConfiguration configuration
                 = client.createMetricAnomalyDetectionConfiguration(costMetricId,
                 CreateDetectionConfigurationForWholeSeriesInput.INSTANCE.detectionConfiguration);
+            assertNotNull(configuration);
 
             id.set(configuration.getId());
             super.assertCreateDetectionConfigurationForWholeSeriesOutput(configuration, costMetricId);
 
         } finally {
-            client.deleteMetricAnomalyDetectionConfiguration(id.get());
-            super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
+            if (!CoreUtils.isNullOrEmpty(id.get())) {
+                client.deleteMetricAnomalyDetectionConfiguration(id.get());
+            }
+            if (dataFeed != null) {
+                super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
+            }
         }
     }
 
@@ -76,12 +83,17 @@ public class DetectionConfigurationTest extends DetectionConfigurationTestBase {
             AnomalyDetectionConfiguration configuration
                 = client.createMetricAnomalyDetectionConfiguration(costMetricId,
                 CreateDetectionConfigurationForSeriesAndGroupInput.INSTANCE.detectionConfiguration);
+            assertNotNull(configuration);
             id.set(configuration.getId());
 
             super.assertCreateDetectionConfigurationForSeriesAndGroupOutput(configuration, costMetricId);
         } finally {
-            client.deleteMetricAnomalyDetectionConfiguration(id.get());
-            super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
+            if (!CoreUtils.isNullOrEmpty(id.get())) {
+                client.deleteMetricAnomalyDetectionConfiguration(id.get());
+            }
+            if (dataFeed != null) {
+                super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
+            }
         }
     }
 
@@ -110,13 +122,18 @@ public class DetectionConfigurationTest extends DetectionConfigurationTestBase {
                 CreateDetectionConfigurationForMultipleSeriesAndGroupInput.INSTANCE.detectionConfiguration);
 
             super.assertCreateDetectionConfigurationForMultipleSeriesAndGroupOutput(configuration, costMetricId);
+            assertNotNull(configuration);
             id.set(configuration.getId());
 
             client.listMetricAnomalyDetectionConfigurations(costMetricId)
                 .forEach(config -> Assertions.assertNotNull(config));
         } finally {
-            client.deleteMetricAnomalyDetectionConfiguration(id.get());
-            super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
+            if (!CoreUtils.isNullOrEmpty(id.get())) {
+                client.deleteMetricAnomalyDetectionConfiguration(id.get());
+            }
+            if (dataFeed != null) {
+                super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
+            }
         }
     }
 
@@ -158,8 +175,12 @@ public class DetectionConfigurationTest extends DetectionConfigurationTestBase {
             super.assertUpdateDetectionConfigurationOutput(configuration, costMetricId);
             id.set(configuration.getId());
         } finally {
-            client.deleteMetricAnomalyDetectionConfiguration(id.get());
-            super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
+            if (!CoreUtils.isNullOrEmpty(id.get())) {
+                client.deleteMetricAnomalyDetectionConfiguration(id.get());
+            }
+            if (dataFeed != null) {
+                super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
+            }
         }
     }
 }
