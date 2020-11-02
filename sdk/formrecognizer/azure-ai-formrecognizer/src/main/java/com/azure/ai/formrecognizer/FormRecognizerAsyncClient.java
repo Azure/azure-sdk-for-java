@@ -17,6 +17,7 @@ import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizeBusinessCardsOptions;
 import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
+import com.azure.ai.formrecognizer.models.RecognizeInvoicesOptions;
 import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.annotation.ReturnType;
@@ -757,6 +758,183 @@ public final class FormRecognizerAsyncClient {
         }
     }
 
+    /**
+     * Recognizes invoice data using optical character recognition (OCR) and a prebuilt invoice trained
+     * model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     * See <a href="https://aka.ms/formrecognizer/invoicefields">here</a> for fields found on a invoice.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeInvoicesFromUrl#string}
+     *
+     * @param invoiceUrl The URL of the receipt to analyze.
+     *
+     * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code receiptUrl} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeInvoicesFromUrl(String invoiceUrl) {
+        return beginRecognizeInvoicesFromUrl(invoiceUrl, null);
+    }
+
+    /**
+     * Recognizes invoice data using optical character recognition (OCR) and a prebuilt invoice trained
+     * model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeInvoicesFromUrl#string-RecognizeInvoicesOptions}
+     *
+     * @param invoiceUrl The source URL to the input receipt.
+     * @param recognizeInvoicesOptions The additional configurable {@link RecognizeInvoicesOptions options}
+     * that may be passed when analyzing a invoice.
+     *
+     * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code receiptUrl} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeInvoicesFromUrl(String invoiceUrl, RecognizeInvoicesOptions recognizeInvoicesOptions) {
+        return beginRecognizeInvoicesFromUrl(invoiceUrl, recognizeInvoicesOptions, Context.NONE);
+    }
+
+    PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeInvoicesFromUrl(String invoiceUrl,
+        RecognizeInvoicesOptions recognizeInvoicesOptions, Context context) {
+        try {
+            Objects.requireNonNull(invoiceUrl, "'invoiceUrl' is required and cannot be null.");
+
+            recognizeInvoicesOptions = getRecognizeInvoicesOptions(recognizeInvoicesOptions);
+            final boolean isFieldElementsIncluded = recognizeInvoicesOptions.isFieldElementsIncluded();
+            final String localeInfo  = recognizeInvoicesOptions.getLocale();
+            return new PollerFlux<>(
+                recognizeInvoicesOptions.getPollInterval(),
+                urlActivationOperation(
+                    () -> service.analyzeInvoiceAsyncWithResponseAsync(isFieldElementsIncluded,
+                        localeInfo,
+                        new SourcePath().setSource(invoiceUrl),
+                        context)
+                        .map(response -> new FormRecognizerOperationResult(
+                            parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
+                    logger),
+                pollingOperation(resultId -> service.getAnalyzeInvoiceResultWithResponseAsync(resultId, context)),
+                (activationResponse, pollingContext) -> monoError(logger,
+                    new RuntimeException("Cancellation is not supported")),
+                fetchingOperation(resultId -> service.getAnalyzeInvoiceResultWithResponseAsync(resultId, context))
+                    .andThen(after -> after.map(modelSimpleResponse ->
+                        toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
+                            isFieldElementsIncluded,
+                            null, false))
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
+        }
+    }
+
+    /**
+     * Recognizes invoice data using optical character recognition (OCR) and a prebuilt invoice
+     * trained model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     * See <a href="https://aka.ms/formrecognizer/invoicefields">here</a> for fields found on a invoice.
+     *
+     * Note that the {@code receipt} passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeInvoices#Flux-long}
+     *
+     * @param invoice The data of the document to recognize invoice information from.
+     * @param length The exact length of the data.
+     *
+     * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code receipt} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeInvoices(
+        Flux<ByteBuffer> invoice, long length) {
+        return beginRecognizeInvoices(invoice, length, null);
+    }
+
+    /**
+     * Recognizes invoice data from documents using optical character recognition (OCR)
+     * and a prebuilt invoice trained model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     * See <a href="https://aka.ms/formrecognizer/invoicefields">here</a> for fields found on a invoice.
+     *
+     * Note that the {@code receipt} passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeInvoices#Flux-long-RecognizeInvoicesOptions}
+     *
+     * @param invoice The data of the document to recognize invoice information from.
+     * @param length The exact length of the data.
+     * @param recognizeInvoicesOptions The additional configurable {@link RecognizeInvoicesOptions options}
+     * that may be passed when analyzing a invoice.
+     *
+     * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code receipt} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeInvoices(Flux<ByteBuffer> invoice, long length,
+        RecognizeInvoicesOptions recognizeInvoicesOptions) {
+        return beginRecognizeInvoices(invoice, length, recognizeInvoicesOptions, Context.NONE);
+    }
+
+    PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeInvoices(Flux<ByteBuffer> receipt, long length,
+        RecognizeInvoicesOptions recognizeInvoicesOptions,
+        Context context) {
+        try {
+            Objects.requireNonNull(receipt, "'invoice' is required and cannot be null.");
+            recognizeInvoicesOptions = getRecognizeInvoicesOptions(recognizeInvoicesOptions);
+            final boolean isFieldElementsIncluded = recognizeInvoicesOptions.isFieldElementsIncluded();
+            final String localeInfo = recognizeInvoicesOptions.getLocale();
+            return new PollerFlux<>(
+                recognizeInvoicesOptions.getPollInterval(),
+                streamActivationOperation(
+                    (contentType -> service.analyzeInvoiceAsyncWithResponseAsync(
+                        contentType,
+                        receipt,
+                        length,
+                        isFieldElementsIncluded,
+                        localeInfo,
+                        context)
+                        .map(response -> new FormRecognizerOperationResult(
+                            parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
+                    receipt, recognizeInvoicesOptions.getContentType()),
+                pollingOperation(resultId -> service.getAnalyzeInvoiceResultWithResponseAsync(resultId, context)),
+                (activationResponse, pollingContext) -> monoError(logger,
+                    new RuntimeException("Cancellation is not supported")),
+                fetchingOperation(resultId -> service.getAnalyzeInvoiceResultWithResponseAsync(resultId, context))
+                    .andThen(after -> after.map(modelSimpleResponse ->
+                        toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
+                            isFieldElementsIncluded,
+                            null, false))
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
+        }
+    }
+
     /*
      * Poller's ACTIVATION operation that takes stream as input.
      */
@@ -863,5 +1041,10 @@ public final class FormRecognizerAsyncClient {
     private static RecognizeBusinessCardsOptions getRecognizeBusinessCardsOptions(
         RecognizeBusinessCardsOptions userProvidedOptions) {
         return userProvidedOptions == null ? new RecognizeBusinessCardsOptions() : userProvidedOptions;
+    }
+
+    private static RecognizeInvoicesOptions
+        getRecognizeInvoicesOptions(RecognizeInvoicesOptions userProvidedOptions) {
+        return userProvidedOptions == null ? new RecognizeInvoicesOptions() : userProvidedOptions;
     }
 }

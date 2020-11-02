@@ -11,6 +11,7 @@ import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizeBusinessCardsOptions;
 import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
+import com.azure.ai.formrecognizer.models.RecognizeInvoicesOptions;
 import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.annotation.ReturnType;
@@ -469,4 +470,111 @@ public final class FormRecognizerClient {
         return client.beginRecognizeBusinessCards(toFluxByteBuffer(businessCard), length,
             recognizeBusinessCardsOptions, context).getSyncPoller();
     }
+
+    /**
+     * Recognizes receipt data from document using optical character recognition (OCR) and a prebuilt receipt trained
+     * model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support</p>
+     * See <a href="https://aka.ms/formrecognizer/receiptfields">here</a> for fields found on a receipt.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string}
+     *
+     * @param receiptUrl The URL of the receipt to analyze.
+     *
+     * @return A {@link SyncPoller} to poll the progress of the recognize receipt operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code receiptUrl} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeInvoicesFromUrl(String receiptUrl) {
+        return beginRecognizeInvoicesFromUrl(receiptUrl, null, Context.NONE);
+    }
+
+    /**
+     * Recognizes invoice data from documents using optical character recognition (OCR) and a
+     * prebuilt invoice trained model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeInvoicesFromUrl#string-RecognizeInvoicesOptions-Context}
+     *
+     * @param receiptUrl The source URL to the input receipt.
+     * @param recognizeInvoicesOptions The additional configurable {@link RecognizeInvoicesOptions options}
+     * that may be passed when analyzing an invoice.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return A {@link SyncPoller} to poll the progress of the recognize receipt operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code receiptUrl} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeInvoicesFromUrl(String receiptUrl,
+        RecognizeInvoicesOptions recognizeInvoicesOptions, Context context) {
+        return client.beginRecognizeInvoicesFromUrl(receiptUrl, recognizeInvoicesOptions, context).getSyncPoller();
+    }
+
+    /**
+     * Recognizes data from the provided document data using optical character recognition (OCR)
+     * and a prebuilt trained invoice model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support</p>
+     * See <a href="https://aka.ms/formrecognizer/invoicefields">here</a> for fields found on a receipt.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeInvoices#InputStream-long}
+     *
+     * @param invoice The data of the receipt to recognize receipt information from.
+     * @param length The exact length of the data.
+     *
+     * @return A {@link SyncPoller} that polls the recognize receipt operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code receipt} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeInvoices(InputStream invoice, long length) {
+        return beginRecognizeInvoices(invoice, length, null, Context.NONE);
+    }
+
+    /**
+     * Recognizes data from the provided document data using optical character recognition (OCR) and a prebuilt
+     * trained invoice model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support</p>
+     * See <a href="https://aka.ms/formrecognizer/invoicefields">here</a> for fields found on a invoice.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeInvoices#InputStream-long-RecognizeInvoicesOptions-Context}
+     *
+     * @param invoice The data of the receipt to recognize invoice information from.
+     * @param length The exact length of the data.
+     * @param recognizeInvoicesOptions The additional configurable {@link RecognizeInvoicesOptions options}
+     * that may be passed when analyzing a invoice.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return A {@link SyncPoller} that polls the recognize receipt operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code receipt} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeInvoices(InputStream invoice, long length,
+        RecognizeInvoicesOptions recognizeInvoicesOptions, Context context) {
+        Flux<ByteBuffer> buffer = toFluxByteBuffer(invoice);
+        return client.beginRecognizeInvoices(buffer, length, recognizeInvoicesOptions, context).getSyncPoller();
+    }
+
 }
