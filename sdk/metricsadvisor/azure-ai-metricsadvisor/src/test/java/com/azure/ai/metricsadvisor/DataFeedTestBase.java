@@ -47,7 +47,6 @@ import static com.azure.ai.metricsadvisor.TestUtils.APP_INSIGHTS_API_KEY;
 import static com.azure.ai.metricsadvisor.TestUtils.APP_INSIGHTS_APPLICATION_ID;
 import static com.azure.ai.metricsadvisor.TestUtils.APP_INSIGHTS_QUERY;
 import static com.azure.ai.metricsadvisor.TestUtils.AZURE_DATALAKEGEN2_ACCOUNT_KEY;
-import static com.azure.ai.metricsadvisor.TestUtils.AZURE_DATALAKEGEN2_ACCOUNT_NAME;
 import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_ENDPOINT;
 import static com.azure.ai.metricsadvisor.TestUtils.BLOB_CONNECTION_STRING;
 import static com.azure.ai.metricsadvisor.TestUtils.BLOB_TEMPLATE;
@@ -61,7 +60,6 @@ import static com.azure.ai.metricsadvisor.TestUtils.FILE_TEMPLATE;
 import static com.azure.ai.metricsadvisor.TestUtils.HTTP_URL;
 import static com.azure.ai.metricsadvisor.TestUtils.INFLUX_DB_CONNECTION_STRING;
 import static com.azure.ai.metricsadvisor.TestUtils.INFLUX_DB_PASSWORD;
-import static com.azure.ai.metricsadvisor.TestUtils.INFLUX_DB_USER;
 import static com.azure.ai.metricsadvisor.TestUtils.INGESTION_START_TIME;
 import static com.azure.ai.metricsadvisor.TestUtils.MONGO_COMMAND;
 import static com.azure.ai.metricsadvisor.TestUtils.MONGO_DB_CONNECTION_STRING;
@@ -138,7 +136,7 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
                 break;
             case INFLUX_DB:
                 dataFeed = new DataFeed().setSource(new InfluxDBDataFeedSource(INFLUX_DB_CONNECTION_STRING,
-                    TEST_DB_NAME, INFLUX_DB_USER, INFLUX_DB_PASSWORD, TEMPLATE_QUERY));
+                    TEST_DB_NAME, "adreadonly", INFLUX_DB_PASSWORD, TEMPLATE_QUERY));
                 break;
             case MONGO_DB:
                 dataFeed = new DataFeed().setSource(new MongoDBDataFeedSource(MONGO_DB_CONNECTION_STRING,
@@ -166,7 +164,7 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
                 break;
             case AZURE_DATA_LAKE_STORAGE_GEN2:
                 dataFeed = new DataFeed().setSource(new AzureDataLakeStorageGen2DataFeedSource(
-                    AZURE_DATALAKEGEN2_ACCOUNT_NAME,
+                    "adsampledatalakegen2",
                     AZURE_DATALAKEGEN2_ACCOUNT_KEY,
                     TEST_DB_NAME, DIRECTORY_TEMPLATE, FILE_TEMPLATE));
                 break;
