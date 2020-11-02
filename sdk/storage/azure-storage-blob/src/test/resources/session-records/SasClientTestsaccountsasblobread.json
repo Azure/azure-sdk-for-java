@@ -48,7 +48,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtcaccountsasblobread0sasclienttestsaccountsasblobread25044068/javablobaccountsasblobread119169431833c6ca5c4c7?sv=2020-02-10&ss=b&srt=sco&se=2020-08-14T18%3A55%3A10Z&sp=r&sig=REDACTED",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcaccountsasblobread0sasclienttestsaccountsasblobread25044068/javablobaccountsasblobread119169431833c6ca5c4c7?sv=2020-04-08&ss=b&srt=sco&se=2020-08-14T18%3A55%3A10Z&sp=r&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-02-10",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",
