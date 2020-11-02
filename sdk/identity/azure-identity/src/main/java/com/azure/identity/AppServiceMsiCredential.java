@@ -16,10 +16,8 @@ import reactor.core.publisher.Mono;
  */
 @Immutable
 class AppServiceMsiCredential {
-    private final String identityEndpoint;
     private final String msiEndpoint;
     private final String msiSecret;
-    private final String identityHeader;
     private final IdentityClient identityClient;
     private final String clientId;
     private final ClientLogger logger = new ClientLogger(AppServiceMsiCredential.class);
@@ -32,15 +30,11 @@ class AppServiceMsiCredential {
      */
     AppServiceMsiCredential(String clientId, IdentityClient identityClient) {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
-        this.identityEndpoint = configuration.get(Configuration.PROPERTY_IDENTITY_ENDPOINT);
-        this.identityHeader = configuration.get(Configuration.PROPERTY_IDENTITY_HEADER);
         this.msiEndpoint = configuration.get(Configuration.PROPERTY_MSI_ENDPOINT);
         this.msiSecret = configuration.get(Configuration.PROPERTY_MSI_SECRET);
         this.identityClient = identityClient;
         this.clientId = clientId;
-        if (identityEndpoint != null) {
-            validateEndpointProtocol(this.identityEndpoint, "Identity");
-        }
+
         if (msiEndpoint != null) {
             validateEndpointProtocol(this.msiEndpoint, "MSI");
         }
@@ -70,7 +64,7 @@ class AppServiceMsiCredential {
      * @return A publisher that emits an {@link AccessToken}.
      */
     public Mono<AccessToken> authenticate(TokenRequestContext request) {
-        return identityClient.authenticateToManagedIdentityEndpoint(identityEndpoint, identityHeader, msiEndpoint,
+        return identityClient.authenticateToManagedIdentityEndpoint(null, null, msiEndpoint,
             msiSecret, request);
     }
 }
