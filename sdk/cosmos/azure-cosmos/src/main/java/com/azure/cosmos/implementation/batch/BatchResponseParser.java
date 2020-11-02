@@ -155,6 +155,9 @@ public final class BatchResponseParser {
             documentServiceResponse.getCosmosDiagnostics());
 
         BridgeInternal.addTransactionBatchResultInResponse(response, results);
+
+        assert (response.getResults().size() == request.getOperations().size());
+
         return response;
     }
 
