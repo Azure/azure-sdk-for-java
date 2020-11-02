@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.experimental.util.BinaryData;
 import com.azure.messaging.servicebus.implementation.models.ServiceBusProcessorClientOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -19,8 +20,11 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -38,9 +42,11 @@ public class ServiceBusProcessorTest {
         Flux<ServiceBusReceivedMessageContext> messageFlux =
             Flux.create(emitter -> {
                 for (int i = 0; i < 5; i++) {
-                    ServiceBusReceivedMessage serviceBusReceivedMessage = new ServiceBusReceivedMessage("hello".getBytes());
+                    ServiceBusReceivedMessage serviceBusReceivedMessage =
+                        new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
                     serviceBusReceivedMessage.setMessageId(String.valueOf(i));
-                    ServiceBusReceivedMessageContext serviceBusReceivedMessageContext = new ServiceBusReceivedMessageContext(serviceBusReceivedMessage);
+                    ServiceBusReceivedMessageContext serviceBusReceivedMessageContext =
+                        new ServiceBusReceivedMessageContext(serviceBusReceivedMessage);
                     emitter.next(serviceBusReceivedMessageContext);
                 }
             });
@@ -74,10 +80,12 @@ public class ServiceBusProcessorTest {
         Flux<ServiceBusReceivedMessageContext> messageFlux =
             Flux.create(emitter -> {
                 for (int i = 0; i < numberOfMessages; i++) {
-                    ServiceBusReceivedMessage serviceBusReceivedMessage = new ServiceBusReceivedMessage("hello".getBytes());
+                    ServiceBusReceivedMessage serviceBusReceivedMessage =
+                        new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
                     serviceBusReceivedMessage.setMessageId(String.valueOf(i));
                     serviceBusReceivedMessage.setSessionId(String.valueOf(i % 3));
-                    ServiceBusReceivedMessageContext serviceBusReceivedMessageContext = new ServiceBusReceivedMessageContext(serviceBusReceivedMessage);
+                    ServiceBusReceivedMessageContext serviceBusReceivedMessageContext =
+                        new ServiceBusReceivedMessageContext(serviceBusReceivedMessage);
                     emitter.next(serviceBusReceivedMessageContext);
                 }
             });
@@ -136,7 +144,8 @@ public class ServiceBusProcessorTest {
 
         serviceBusProcessorClient.start();
         for (int i = 0; i < 2; i++) {
-            ServiceBusReceivedMessage serviceBusReceivedMessage = new ServiceBusReceivedMessage("hello".getBytes());
+            ServiceBusReceivedMessage serviceBusReceivedMessage =
+                new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
             serviceBusReceivedMessage.setMessageId(String.valueOf(i));
             ServiceBusReceivedMessageContext serviceBusReceivedMessageContext =
                 new ServiceBusReceivedMessageContext(serviceBusReceivedMessage);
@@ -149,7 +158,8 @@ public class ServiceBusProcessorTest {
         countDownLatch.set(new CountDownLatch(8));
         serviceBusProcessorClient.start();
         for (int i = 2; i < 10; i++) {
-            ServiceBusReceivedMessage serviceBusReceivedMessage = new ServiceBusReceivedMessage("hello".getBytes());
+            ServiceBusReceivedMessage serviceBusReceivedMessage =
+                new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
             serviceBusReceivedMessage.setMessageId(String.valueOf(i));
             ServiceBusReceivedMessageContext serviceBusReceivedMessageContext =
                 new ServiceBusReceivedMessageContext(serviceBusReceivedMessage);
@@ -172,7 +182,8 @@ public class ServiceBusProcessorTest {
 
         List<ServiceBusReceivedMessageContext> messageList = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
-            ServiceBusReceivedMessage serviceBusReceivedMessage = new ServiceBusReceivedMessage("hello".getBytes());
+            ServiceBusReceivedMessage serviceBusReceivedMessage =
+                new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
             serviceBusReceivedMessage.setMessageId(String.valueOf(i));
             ServiceBusReceivedMessageContext serviceBusReceivedMessageContext =
                 new ServiceBusReceivedMessageContext(serviceBusReceivedMessage);
@@ -206,6 +217,53 @@ public class ServiceBusProcessorTest {
         boolean success = countDownLatch.get().await(20, TimeUnit.SECONDS);
         serviceBusProcessorClient.close();
         Assertions.assertTrue(!assertionFailed.get() && success, "Failed to receive all expected messages");
+    }
+
+    /**
+     * Tests user message processing code throwing an error which should result in the message being abandoned.
+     * @throws InterruptedException If the test is interrupted.
+     */
+    @Test
+    public void testUserMessageHandlerError() throws InterruptedException {
+
+        Flux<ServiceBusReceivedMessageContext> messageFlux =
+            Flux.create(emitter -> {
+                for (int i = 0; i < 5; i++) {
+                    ServiceBusReceivedMessage serviceBusReceivedMessage =
+                        new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
+                    serviceBusReceivedMessage.setMessageId(String.valueOf(i));
+                    ServiceBusReceivedMessageContext serviceBusReceivedMessageContext =
+                        new ServiceBusReceivedMessageContext(serviceBusReceivedMessage);
+                    emitter.next(serviceBusReceivedMessageContext);
+                }
+            });
+
+        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder =
+            mock(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class);
+
+        ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        when(receiverBuilder.buildAsyncClient()).thenReturn(asyncClient);
+        when(asyncClient.receiveMessages()).thenReturn(messageFlux);
+        when(asyncClient.isConnectionClosed()).thenReturn(false);
+        doNothing().when(asyncClient).close();
+
+        AtomicInteger messageId = new AtomicInteger();
+        CountDownLatch countDownLatch = new CountDownLatch(5);
+        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder,
+            messageContext -> {
+                System.out.println("Message " + messageContext.getMessage().getMessageId());
+                assertEquals(String.valueOf(messageId.getAndIncrement()), messageContext.getMessage().getMessageId());
+                throw new IllegalStateException(); // throw error from user handler
+            },
+            error -> countDownLatch.countDown(),
+            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1));
+
+        serviceBusProcessorClient.start();
+        boolean success = countDownLatch.await(5, TimeUnit.SECONDS);
+        serviceBusProcessorClient.close();
+        assertTrue(success, "Failed to receive all expected messages");
+
+        verify(asyncClient, times(5)).abandon(any(ServiceBusReceivedMessage.class));
     }
 
     private ServiceBusClientBuilder.ServiceBusReceiverClientBuilder getBuilder(

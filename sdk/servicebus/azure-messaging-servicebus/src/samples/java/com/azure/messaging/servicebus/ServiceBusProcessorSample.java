@@ -21,7 +21,7 @@ public class ServiceBusProcessorSample {
         // Consumer that processes a single message received from Service Bus
         Consumer<ServiceBusProcessorMessageContext> messageProcessor = context -> {
             ServiceBusReceivedMessage message = context.getMessage();
-            System.out.println("Received message " + new String(message.getBody()));
+            System.out.println("Received message " + message.getBody().toString());
         };
 
         // Consumer that handles any errors that occur when receiving messages

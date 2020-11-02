@@ -17,7 +17,7 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
         // BEGIN: com.azure.messaging.servicebus.servicebusprocessorclient.instantiation
         Consumer<ServiceBusProcessorMessageContext> messageProcessor = context -> {
             ServiceBusReceivedMessage message = context.getMessage();
-            System.out.println("Received message " + new String(message.getBody()));
+            System.out.println("Received message " + message.getBody().toString());
         };
 
         Consumer<Throwable> errorHandler = throwable -> {
@@ -45,7 +45,7 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
         // BEGIN: com.azure.messaging.servicebus.servicebusprocessorclient.sessionclientinstantiation
         Consumer<ServiceBusProcessorMessageContext> messageProcessor = context -> {
             ServiceBusReceivedMessage message = context.getMessage();
-            System.out.println("Received message " + new String(message.getBody())
+            System.out.println("Received message " + message.getBody().toString()
                 + " session: " + message.getSessionId());
         };
 
@@ -76,7 +76,7 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
         // BEGIN: com.azure.messaging.servicebus.servicebusprocessorclient.start
         Consumer<ServiceBusProcessorMessageContext> messageProcessor = context -> {
             ServiceBusReceivedMessage message = context.getMessage();
-            System.out.println("Received message " + new String(message.getBody()));
+            System.out.println("Received message " + message.getBody().toString());
         };
 
         Consumer<Throwable> errorHandler = throwable -> {
@@ -107,7 +107,7 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
         // BEGIN: com.azure.messaging.servicebus.servicebusprocessorclient.startsession
         Consumer<ServiceBusProcessorMessageContext> messageProcessor = context -> {
             ServiceBusReceivedMessage message = context.getMessage();
-            System.out.println("Received message " + new String(message.getBody())
+            System.out.println("Received message " + message.getBody().toString()
                 + " session: " + message.getSessionId());
         };
 

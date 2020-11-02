@@ -32,7 +32,7 @@ import java.util.function.Consumer;
  *
  * @see ServiceBusClientBuilder
  */
-public final class ServiceBusProcessorClient {
+public final class ServiceBusProcessorClient implements AutoCloseable {
 
     private static final int SCHEDULER_INTERVAL_IN_SECONDS = 10;
     private final ClientLogger logger = new ClientLogger(ServiceBusProcessorClient.class);
@@ -122,6 +122,7 @@ public final class ServiceBusProcessorClient {
      * Stops message processing and closes the processor. The receiving links and sessions are closed and calling
      * {@link #start()} will create a new processing cycle with new links and new sessions.
      */
+    @Override
     public synchronized void close() {
         isRunning.set(false);
         if (receiverSubscription.get() != null) {
@@ -166,8 +167,10 @@ public final class ServiceBusProcessorClient {
                             ServiceBusProcessorMessageContext serviceBusProcessorMessageContext =
                                 new ServiceBusProcessorMessageContext(receiverClient, serviceBusReceivedMessageContext);
                             processMessage.accept(serviceBusProcessorMessageContext);
-                        } catch (Exception exception) {
-                            handleError(exception);
+                        } catch (Exception ex) {
+                            handleError(ex);
+                            logger.warning("Error when processing message. Abandoning message.", ex);
+                            receiverClient.abandon(serviceBusReceivedMessageContext.getMessage());
                         }
                     }
                     if (isRunning.get()) {

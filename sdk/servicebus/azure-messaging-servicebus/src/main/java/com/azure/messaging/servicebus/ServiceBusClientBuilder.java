@@ -296,7 +296,9 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
-     * A new instance of {@link ServiceBusProcessorClientBuilder} used to configure Service Bus processor instance.
+     * A new instance of {@link ServiceBusProcessorClientBuilder} used to configure {@link ServiceBusProcessorClient}
+     * instance.
+     *
      * @return A new instance of {@link ServiceBusProcessorClientBuilder}.
      */
     public ServiceBusProcessorClientBuilder processor() {
