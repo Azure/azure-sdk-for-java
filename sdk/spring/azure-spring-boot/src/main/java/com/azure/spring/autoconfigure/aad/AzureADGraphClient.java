@@ -185,7 +185,7 @@ public class AzureADGraphClient {
             final OnBehalfOfParameters onBehalfOfParameters = OnBehalfOfParameters.builder(scopes, assertion).build();
             result = application.acquireToken(onBehalfOfParameters).get();
         } catch (ExecutionException | InterruptedException | MalformedURLException e) {
-            // Handle conditional access policy
+            // Handle conditional access policy, step 1.
             final Throwable cause = e.getCause();
             if (cause instanceof MsalServiceException) {
                 final MsalServiceException exception = (MsalServiceException) cause;

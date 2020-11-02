@@ -155,8 +155,7 @@ class ServiceBusSessionManagerTest {
     @Test
     void receiveNull() {
         // Arrange
-        ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null,
-            true, 5);
+        ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null, 5);
         sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             tracerProvider, messageSerializer, receiverOptions);
 
@@ -173,7 +172,7 @@ class ServiceBusSessionManagerTest {
     void singleUnnamedSession() {
         // Arrange
         ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null,
-            true, 5);
+            5);
         sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             tracerProvider, messageSerializer, receiverOptions);
 
@@ -226,7 +225,7 @@ class ServiceBusSessionManagerTest {
     void multipleSessions() {
         // Arrange
         final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, true,
-            null, true, 5);
+            null, 5);
         sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             tracerProvider, messageSerializer, receiverOptions);
 
@@ -348,8 +347,9 @@ class ServiceBusSessionManagerTest {
     void multipleReceiveUnnamedSession() {
         // Arrange
         final int expectedLinksCreated = 2;
+        final Callable<OffsetDateTime> onRenewal = () -> OffsetDateTime.now().plus(Duration.ofSeconds(5));
         final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, Duration.ZERO, false,
-            null, false, 1);
+            null, 1);
 
         sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             tracerProvider, messageSerializer, receiverOptions);
@@ -359,6 +359,7 @@ class ServiceBusSessionManagerTest {
 
         when(amqpReceiveLink.getLinkName()).thenReturn(linkName);
         when(amqpReceiveLink.getSessionId()).thenReturn(Mono.just(sessionId));
+        when(amqpReceiveLink.getSessionLockedUntil()).thenReturn(Mono.fromCallable(onRenewal));
 
         // Session 2's
         final ServiceBusReceiveLink amqpReceiveLink2 = mock(ServiceBusReceiveLink.class);
@@ -373,6 +374,7 @@ class ServiceBusSessionManagerTest {
         when(amqpReceiveLink2.getEndpointStates()).thenReturn(endpointProcessor);
         when(amqpReceiveLink2.getLinkName()).thenReturn(linkName2);
         when(amqpReceiveLink2.getSessionId()).thenReturn(Mono.just(sessionId2));
+        when(amqpReceiveLink2.getSessionLockedUntil()).thenReturn(Mono.fromCallable(onRenewal));
 
         final AtomicInteger count = new AtomicInteger();
         when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ReceiveMode.class), isNull(),

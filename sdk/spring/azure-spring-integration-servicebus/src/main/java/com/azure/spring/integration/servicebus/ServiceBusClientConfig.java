@@ -48,6 +48,9 @@ public final class ServiceBusClientConfig {
         return new ServiceBusClientConfigBuilder();
     }
 
+    /**
+     * Builder class for {@link ServiceBusClientConfig}.
+     */
     public static class ServiceBusClientConfigBuilder {
         private int prefetchCount = 1;
         private int concurrency = 1;

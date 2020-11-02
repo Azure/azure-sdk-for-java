@@ -3,6 +3,10 @@ package com.azure.digitaltwins.core.snippets;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.models.JsonPatchDocument;
+import com.azure.digitaltwins.core.BasicDigitalTwin;
+import com.azure.digitaltwins.core.BasicDigitalTwinMetadata;
+import com.azure.digitaltwins.core.BasicRelationship;
 import com.azure.digitaltwins.core.DigitalTwinsAsyncClient;
 import com.azure.digitaltwins.core.DigitalTwinsClient;
 import com.azure.digitaltwins.core.DigitalTwinsClientBuilder;
@@ -60,7 +64,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
         BasicDigitalTwin basicTwin = new BasicDigitalTwin("myDigitalTwinId")
             .setMetadata(
-                new DigitalTwinMetadata()
+                new BasicDigitalTwinMetadata()
                     .setModelId(modelId)
             );
 
@@ -96,7 +100,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
         BasicDigitalTwin basicDigitalTwin = new BasicDigitalTwin("myDigitalTwinId")
             .setMetadata(
-                new DigitalTwinMetadata()
+                new BasicDigitalTwinMetadata()
                     .setModelId(modelId)
             );
 
@@ -183,37 +187,37 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsClient#updateDigitalTwin(String, List)}
+     * Generates code samples for using {@link DigitalTwinsClient#updateDigitalTwin(String, JsonPatchDocument)}
      */
     @Override
     public void updateDigitalTwin() {
         DigitalTwinsClient digitalTwinsClient = createDigitalTwinsClient();
 
         // BEGIN: com.azure.digitaltwins.core.syncClient.updateDigitalTwin#String-List
-        UpdateOperationUtility updateOperationUtility = new UpdateOperationUtility();
-        updateOperationUtility.appendReplaceOperation("Prop1", "newValue");
+        JsonPatchDocument jsonPatchDocument = new JsonPatchDocument();
+        jsonPatchDocument.appendReplace("Prop1", "newValue");
 
         digitalTwinsClient.updateDigitalTwin(
             "myDigitalTwinId",
-            updateOperationUtility.getUpdateOperations());
+            jsonPatchDocument);
         // END: com.azure.digitaltwins.core.syncClient.updateDigitalTwin#String-List
     }
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsClient#updateDigitalTwinWithResponse(String, List, UpdateDigitalTwinOptions, Context)}
+     * {@link DigitalTwinsClient#updateDigitalTwinWithResponse(String, JsonPatchDocument, UpdateDigitalTwinOptions, Context)}
      */
     @Override
     public void updateDigitalTwinWithResponse() {
         DigitalTwinsClient digitalTwinsClient = createDigitalTwinsClient();
 
         // BEGIN: com.azure.digitaltwins.core.syncClient.updateDigitalTwinWithResponse#String-List-Options-Context
-        UpdateOperationUtility updateOperationUtility = new UpdateOperationUtility();
-        updateOperationUtility.appendReplaceOperation("Prop1", "newValue");
+        JsonPatchDocument jsonPatchDocument = new JsonPatchDocument();
+        jsonPatchDocument.appendReplace("Prop1", "newValue");
 
         Response<Void> response = digitalTwinsClient.updateDigitalTwinWithResponse(
             "myDigitalTwinId",
-            updateOperationUtility.getUpdateOperations(),
+            jsonPatchDocument,
             new UpdateDigitalTwinOptions(),
             new Context("key", "value"));
 
@@ -415,35 +419,35 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsClient#updateRelationship(String, String, List)}
+     * Generates code samples for using {@link DigitalTwinsClient#updateRelationship(String, String, JsonPatchDocument)}
      */
     @Override
     public void updateRelationship() {
         // BEGIN: com.azure.digitaltwins.core.syncClient.updateRelationship#String-String-List
-        UpdateOperationUtility updateOperationUtility = new UpdateOperationUtility();
-        updateOperationUtility.appendReplaceOperation("/relationshipProperty1", "new property value");
+        JsonPatchDocument jsonPatchDocument = new JsonPatchDocument();
+        jsonPatchDocument.appendReplace("/relationshipProperty1", "new property value");
 
         digitalTwinsSyncClient.updateRelationship(
             "myDigitalTwinId",
             "myRelationshipId",
-            updateOperationUtility.getUpdateOperations());
+            jsonPatchDocument);
         // END: com.azure.digitaltwins.core.syncClient.updateRelationship#String-String-List
     }
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsClient#updateRelationshipWithResponse(String, String, List, UpdateRelationshipOptions, Context)}
+     * {@link DigitalTwinsClient#updateRelationshipWithResponse(String, String, JsonPatchDocument, UpdateRelationshipOptions, Context)}
      */
     @Override
     public void updateRelationshipWithResponse() {
         // BEGIN: com.azure.digitaltwins.core.syncClient.updateRelationshipWithResponse#String-String-List-Options-Context
-        UpdateOperationUtility updateOperationUtility = new UpdateOperationUtility();
-        updateOperationUtility.appendReplaceOperation("/relationshipProperty1", "new property value");
+        JsonPatchDocument jsonPatchDocument = new JsonPatchDocument();
+        jsonPatchDocument.appendReplace("/relationshipProperty1", "new property value");
 
         Response<Void> updateResponse = digitalTwinsSyncClient.updateRelationshipWithResponse(
             "myDigitalTwinId",
             "myRelationshipId",
-            updateOperationUtility.getUpdateOperations(),
+            jsonPatchDocument,
             new UpdateRelationshipOptions(),
             new Context("key", "value"));
 
@@ -754,35 +758,35 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsClient#updateComponent(String, String, List)}
+     * Generates code samples for using {@link DigitalTwinsClient#updateComponent(String, String, JsonPatchDocument)}
      */
     @Override
     public void updateComponent() {
         // BEGIN: com.azure.digitaltwins.core.syncClient.updateComponent#String-String-List
-        UpdateOperationUtility updateOperationUtility = new UpdateOperationUtility();
-        updateOperationUtility.appendReplaceOperation("/ComponentProp1", "Some new value");
+        JsonPatchDocument jsonPatchDocument = new JsonPatchDocument();
+        jsonPatchDocument.appendReplace("/ComponentProp1", "Some new value");
 
         digitalTwinsSyncClient.updateComponent(
             "myDigitalTwinId",
             "myComponentName",
-            updateOperationUtility.getUpdateOperations());
+            jsonPatchDocument);
         // END: com.azure.digitaltwins.core.syncClient.updateComponent#String-String-List
     }
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsClient#updateComponentWithResponse(String, String, List, UpdateComponentOptions, Context)}
+     * {@link DigitalTwinsClient#updateComponentWithResponse(String, String, JsonPatchDocument, UpdateComponentOptions, Context)}
      */
     @Override
     public void updateComponentWithResponse() {
         // BEGIN: com.azure.digitaltwins.core.syncClient.updateComponentWithResponse#String-String-List-Options-Context
-        UpdateOperationUtility updateOperationUtility = new UpdateOperationUtility();
-        updateOperationUtility.appendReplaceOperation("/ComponentProp1", "Some new value");
+        JsonPatchDocument jsonPatchDocument = new JsonPatchDocument();
+        jsonPatchDocument.appendReplace("/ComponentProp1", "Some new value");
 
         Response<Void> updateResponse = digitalTwinsSyncClient.updateComponentWithResponse(
             "myDigitalTwinId",
             "myComponentName",
-            updateOperationUtility.getUpdateOperations(),
+            jsonPatchDocument,
             new UpdateComponentOptions(),
             new Context("key", "value"));
 

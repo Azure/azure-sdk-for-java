@@ -8,31 +8,21 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.tracing.ProcessKind;
-import reactor.core.publisher.Signal;
 
 import java.nio.BufferOverflowException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Optional;
 
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
-import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
-import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_SERVICE_NAME;
+import static com.azure.messaging.servicebus.implementation.MessageUtils.traceMessageSpan;
 
 /**
  * A class for aggregating {@link ServiceBusMessage messages} into a single, size-limited, batch. It is treated as a
  * single AMQP message when sent to the Azure Service Bus service.
  */
 public final class ServiceBusMessageBatch {
-    private static final String AZ_TRACING_NAMESPACE_VALUE = "Microsoft.ServiceBus";
     private final ClientLogger logger = new ClientLogger(ServiceBusMessageBatch.class);
     private final Object lock = new Object();
     private final int maxMessageSize;
@@ -102,7 +92,10 @@ public final class ServiceBusMessageBatch {
             throw logger.logExceptionAsWarning(new NullPointerException("'serviceBusMessage' cannot be null"));
         }
         ServiceBusMessage serviceBusMessageUpdated =
-            tracerProvider.isEnabled() ? traceMessageSpan(serviceBusMessage) : serviceBusMessage;
+            tracerProvider.isEnabled()
+                ? traceMessageSpan(serviceBusMessage, serviceBusMessage.getContext(), hostname, entityPath,
+                tracerProvider)
+                : serviceBusMessage;
 
         final int size;
         try {
@@ -133,39 +126,6 @@ public final class ServiceBusMessageBatch {
      */
     List<ServiceBusMessage> getMessages() {
         return serviceBusMessageList;
-    }
-
-    /**
-     * Method to start and end a "Azure.EventHubs.message" span and add the "DiagnosticId" as a property of the
-     * message.
-     *
-     * @param serviceBusMessage The Message to add tracing span for.
-     *
-     * @return the updated Message data object.
-     */
-    private ServiceBusMessage traceMessageSpan(ServiceBusMessage serviceBusMessage) {
-        Optional<Object> eventContextData = serviceBusMessage.getContext().getData(SPAN_CONTEXT_KEY);
-        if (eventContextData.isPresent()) {
-            // if message has context (in case of retries), don't start a message span or add a new context
-            return serviceBusMessage;
-        } else {
-            // Starting the span makes the sampling decision (nothing is logged at this time)
-            Context messageContext = serviceBusMessage.getContext()
-                .addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE)
-                .addData(ENTITY_PATH_KEY, entityPath)
-                .addData(HOST_NAME_KEY, hostname);
-            Context eventSpanContext = tracerProvider.startSpan(AZ_TRACING_SERVICE_NAME, messageContext,
-                ProcessKind.MESSAGE);
-            Optional<Object> eventDiagnosticIdOptional = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
-            if (eventDiagnosticIdOptional.isPresent()) {
-                serviceBusMessage.getApplicationProperties().put(DIAGNOSTIC_ID_KEY, eventDiagnosticIdOptional.get()
-                    .toString());
-                tracerProvider.endSpan(eventSpanContext, Signal.complete());
-                serviceBusMessage.addContext(SPAN_CONTEXT_KEY, eventSpanContext);
-            }
-        }
-
-        return serviceBusMessage;
     }
 
     private int getSize(final ServiceBusMessage serviceBusMessage, final boolean isFirst) {

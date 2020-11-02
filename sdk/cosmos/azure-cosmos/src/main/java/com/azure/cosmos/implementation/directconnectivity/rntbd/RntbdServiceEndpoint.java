@@ -34,7 +34,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.SocketAddress;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
@@ -74,7 +73,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     private final Instant createdTime;
     private final RntbdMetrics metrics;
     private final Provider provider;
-    private final URI remoteURI;
+    private final URI serverKey;
     private final SocketAddress remoteAddress;
     private final RntbdRequestTimer requestTimer;
     private final Tag tag;
@@ -93,20 +92,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         final RntbdRequestTimer timer,
         final URI physicalAddress) {
 
-        try {
-            this.remoteURI = new URI(
-                physicalAddress.getScheme(),
-                null,
-                physicalAddress.getHost(),
-                physicalAddress.getPort(),
-                null,
-                null,
-                null);
-        } catch (URISyntaxException error) {
-            throw new IllegalArgumentException(
-                lenientFormat("physicalAddress %s cannot be parsed as a server-based authority", physicalAddress),
-                error);
-        }
+        this.serverKey = RntbdUtils.getServerKey(physicalAddress);
 
         final Bootstrap bootstrap = new Bootstrap()
             .channel(NioSocketChannel.class)
@@ -116,7 +102,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, config.connectTimeoutInMillis())
             .option(ChannelOption.RCVBUF_ALLOCATOR, receiveBufferAllocator)
             .option(ChannelOption.SO_KEEPALIVE, true)
-            .remoteAddress(this.remoteURI.getHost(), this.remoteURI.getPort());
+            .remoteAddress(this.serverKey.getHost(), this.serverKey.getPort());
 
         this.createdTime = Instant.now();
         this.channelPool = new RntbdClientChannelPool(this, bootstrap, config);
@@ -218,7 +204,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     }
 
     @Override
-    public URI remoteURI() { return this.remoteURI; }
+    public URI serverKey() { return this.serverKey; }
 
     @Override
     public int requestQueueLength() {
@@ -273,10 +259,6 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             finally {
                 concurrentRequests.decrementAndGet();
             }
-        }
-
-        if (this.connectionStateListener != null) {
-            this.connectionStateListener.updateConnectionState(args.serviceRequest());
         }
 
         this.lastRequestNanoTime.set(args.nanoTimeCreated());

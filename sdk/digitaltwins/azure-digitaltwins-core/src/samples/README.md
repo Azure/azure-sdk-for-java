@@ -103,18 +103,18 @@ Both sync and async clients have maximal overloads for getting the Http response
 For example you can get a model by calling:
 
 ```java
-ModelData model = syncClient.getModel(modelId);
+DigitalTwinsModelData model = syncClient.getModel(modelId);
 ```
 
 This will only return the Model payload. The API's response will not contain any REST information.
 To get information about the REST call you can call the maximal overload and have access to both the response body (ModelData) and the HTTP REST information.
 
 ```java
-Response<ModelData> modelResponse = syncClient.getModelWithResponse(modelId, context);
+Response<DigitalTwinsModelData> modelResponse = syncClient.getModelWithResponse(modelId, context);
 
 System.out.println(modelResponse.getStatuscode());
 
-ModelData modelObject = modelResponse.getValue();
+DigitalTwinsModelData modelObject = modelResponse.getValue();
 ```
 
 ## Create, list, decommission, and delete models
@@ -128,16 +128,16 @@ Example of using sync client to create models.
 
 ```java
 List<String> modelsList = new ArrayList<>(Arrays.asList(newComponentModelPayload, newModelPayload));
-List<ModelData> modelList =  syncClient.createModels(modelsList);
+List<DigitalTwinsModelData> modelList =  syncClient.createModels(modelsList);
 
-for (ModelData model : modelList) {
+for (DigitalTwinsModelData model : modelList) {
     ConsoleLogger.print("Created model: " + model.getId());
 }
 ```
 
 ### List models
 
-Using the sync client, `listModels`, all created models are returned as [`PagedIterable<ModelData>`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/rest/PagedIterable.java) while the async API will return a [`PagedFlux<ModelData>`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/rest/PagedFlux.java).
+Using the sync client, `listModels`, all created models are returned as [`PagedIterable<DigitalTwinsModelData>`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/rest/PagedIterable.java) while the async API will return a [`PagedFlux<ModelData>`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/rest/PagedFlux.java).
 
 Example of using the async client to list all models:
 
@@ -203,11 +203,11 @@ BasicDigitalTwin basicTwin = new BasicDigitalTwin()
         new DigitalTwinMetadata()
             .setModelId(modelId)
     )
-    .addProperty("Prop1", "Value1")
-    .addProperty("Prop2", 987)
-    .addProperty(
+    .addToContents("Prop1", "Value1")
+    .addToContents("Prop2", 987)
+    .addToContents(
         "Component1",
-        new ModelProperties()
+        new BasicDigitalTwinComponent()
             .addroperty("ComponentProp1", "Component value 1")
             .addroperty("ComponentProp2", 123)
     );
@@ -253,13 +253,12 @@ Query the Azure Digital Twins instance for digital twins using the [Azure Digita
 PagedIterable<String> pageableResponse = syncClient.query("SELECT * FROM digitaltwins", String.class);
 
 // Iterate over the twin instances in the pageable response.
-foreach (String response in pageableResponse)
-{
+foreach (String response in pageableResponse) {
     System.out.println(response);
 }
 
 // Or you can use the generic API to get a specific type back.
-PagedIterable<BasicDigitalTwin> deserializedResponse = syncClient.query("SELECT * FROM digitaltwins", BasicDigitalTwin.class)
+PagedIterable<BasicDigitalTwin> deserializedResponse = syncClient.query("SELECT * FROM digitaltwins", BasicDigitalTwin.class);
 
 for(BasicDigitalTwin digitalTwin : deserializedResponse){
     System.out.println("Retrieved digital twin with Id: " + digitalTwin.getId());
@@ -283,11 +282,11 @@ To update a component or in other words to replace, remove and/or add a componen
 ```C# Snippet:DigitalTwinsSampleUpdateComponent
 // Update Component1 by replacing the property ComponentProp1 value,
 // using the UpdateOperationUtility to build the payload.
-UpdateOperationUtility updateOperationUtility = new UpdateOperationUtility();
+UpdateOperationUtility jsonPatchDocument = new UpdateOperationUtility();
 
-updateOperationUtility.appendReplaceOperation("/ComponentProp1", "Some new Value");
+jsonPatchDocument.appendReplaceOperation("/ComponentProp1", "Some new Value");
 
-client.updateComponent(basicDigitalTwinId, "Component1", updateOperationUtility.getUpdateOperations());
+client.updateComponent(basicDigitalTwinId, "Component1", jsonPatchDocument.getUpdateOperations());
 ```
 
 ### Get digital twin components

@@ -865,7 +865,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         .setRange(Transforms.toBlobRange(range)).setParallelTransferOptions(parallelTransferOptions)
         .setDownloadRetryOptions(Transforms.toBlobDownloadRetryOptions(options))
         .setRequestConditions(Transforms.toBlobRequestConditions(requestConditions))
-        .setRangeGetContentMd5(rangeGetContentMd5).setOpenOptions(openOptions))
+        .setRetrieveContentRangeMd5(rangeGetContentMd5).setOpenOptions(openOptions))
             .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
             .map(response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue())));
     }

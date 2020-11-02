@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-data-sample-gremlin-web-service</artifactId>
-  <name>Spring Data gremlin - Web Service</name>
+  <name>Azure Spring Data Sample Gremlin - Web Service</name>
 
   <dependencies>
     <dependency>

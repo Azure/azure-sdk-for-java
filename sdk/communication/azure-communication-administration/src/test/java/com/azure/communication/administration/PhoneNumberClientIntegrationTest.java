@@ -17,7 +17,6 @@ import com.azure.communication.administration.models.PhoneNumberSearch;
 import com.azure.communication.administration.models.PhonePlan;
 import com.azure.communication.administration.models.PhonePlanGroup;
 import com.azure.communication.administration.models.PstnConfiguration;
-import com.azure.communication.administration.models.ReleaseResponse;
 import com.azure.communication.administration.models.UpdateNumberCapabilitiesResponse;
 import com.azure.communication.administration.models.UpdatePhoneNumberCapabilitiesResponse;
 import com.azure.communication.common.PhoneNumber;
@@ -256,20 +255,6 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void purchaseSearch(HttpClient httpClient) {
-        this.getClient(httpClient).purchaseSearch(SEARCH_ID_TO_PURCHASE);
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void purchaseSearchWithResponse(HttpClient httpClient) {
-        Response<Void> response = this.getClient(httpClient).purchaseSearchWithResponse(SEARCH_ID_TO_PURCHASE, Context.NONE);
-
-        assertEquals(202, response.getStatusCode());
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void cancelSearch(HttpClient httpClient) {
         this.getClient(httpClient).cancelSearch(SEARCH_ID_TO_CANCEL);
     }
@@ -343,30 +328,6 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
         Response<Void> response = this.getClient(httpClient).unconfigureNumberWithResponse(number, Context.NONE);
 
         assertEquals(200, response.getStatusCode());
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void releasePhoneNumbers(HttpClient httpClient) {
-        List<PhoneNumber> phoneNumbers = new ArrayList<>();
-        phoneNumbers.add(new PhoneNumber(PHONENUMBER_TO_RELEASE));
-
-        ReleaseResponse releaseResponse = this.getClient(httpClient).releasePhoneNumbers(phoneNumbers);
-
-        assertNotNull(releaseResponse.getReleaseId());
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void releasePhoneNumbersWithResponse(HttpClient httpClient) {
-        List<PhoneNumber> phoneNumbers = new ArrayList<>();
-        phoneNumbers.add(new PhoneNumber(PHONENUMBER_TO_RELEASE));
-
-        Response<ReleaseResponse> response =
-            this.getClient(httpClient).releasePhoneNumbersWithResponse(phoneNumbers, Context.NONE);
-
-        assertEquals(200, response.getStatusCode());
-        assertNotNull(response.getValue().getReleaseId());
     }
 
     private PhoneNumberClient getClient(HttpClient httpClient) {

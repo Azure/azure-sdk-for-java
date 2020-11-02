@@ -18,6 +18,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
+/**
+ * Auto-configuration for telemetry.
+ */
 @Configuration
 @PropertySource(value = "classpath:telemetry.config")
 @EnableConfigurationProperties(TelemetryProperties.class)

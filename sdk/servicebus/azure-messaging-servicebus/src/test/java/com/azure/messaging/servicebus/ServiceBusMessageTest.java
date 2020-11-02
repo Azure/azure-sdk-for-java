@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.azure.core.experimental.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +31,7 @@ import java.time.Duration;
 public class ServiceBusMessageTest {
     // Create a giant payload with 10000 characters that are "a".
     private static final String PAYLOAD = new String(new char[10000]).replace("\0", "a");
-    private static final byte[] PAYLOAD_BYTES = PAYLOAD.getBytes(UTF_8);
+    private static final BinaryData PAYLOAD_BINARY = BinaryData.fromString(PAYLOAD);
 
     /**
      * Verifies we correctly set values via copy constructor for {@link ServiceBusMessage}.
@@ -50,7 +51,7 @@ public class ServiceBusMessageTest {
         final Duration expectedTimeToLive = Duration.ofSeconds(20);
         final String expectedPartitionKey = "old-p-key";
 
-        final ServiceBusReceivedMessage expected = new ServiceBusReceivedMessage(PAYLOAD_BYTES);
+        final ServiceBusReceivedMessage expected = new ServiceBusReceivedMessage(PAYLOAD_BINARY);
         expected.getAmqpAnnotatedMessage().getMessageAnnotations().put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), "10");
         expected.getAmqpAnnotatedMessage().getMessageAnnotations().put(DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME.getValue(), "abc");
         expected.getAmqpAnnotatedMessage().getMessageAnnotations().put(ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), "11");
@@ -120,7 +121,7 @@ public class ServiceBusMessageTest {
         final Duration expectedTimeToLive = Duration.ofSeconds(20);
         final String expectedPartitionKey = "old-p-key";
 
-        final ServiceBusReceivedMessage originalMessage = new ServiceBusReceivedMessage(PAYLOAD_BYTES);
+        final ServiceBusReceivedMessage originalMessage = new ServiceBusReceivedMessage(PAYLOAD_BINARY);
         originalMessage.setSubject(expectedSubject);
         originalMessage.setTo(expectedTo);
         originalMessage.setReplyTo(expectedReplyTo);
@@ -168,7 +169,7 @@ public class ServiceBusMessageTest {
         ServiceBusMessage message = new ServiceBusMessage(body);
 
         // Assert
-        assertArrayEquals(encoded, message.getBody());
+        assertArrayEquals(encoded, message.getBody().toBytes());
     }
 
     /**
@@ -177,13 +178,13 @@ public class ServiceBusMessageTest {
     @Test
     void bodyNotNull() {
         assertThrows(NullPointerException.class, () -> new ServiceBusMessage((String) null));
-        assertThrows(NullPointerException.class, () -> new ServiceBusMessage((byte[]) null));
+        assertThrows(NullPointerException.class, () -> new ServiceBusMessage((BinaryData) null));
     }
 
     @Test
     void messagePropertiesShouldNotBeNull() {
         // Act
-        final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage(PAYLOAD_BYTES);
+        final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage(PAYLOAD_BINARY);
 
         // Assert
         Assertions.assertNotNull(serviceBusMessageData.getBody());
@@ -200,10 +201,10 @@ public class ServiceBusMessageTest {
         byte[] byteArray = new byte[0];
 
         // Act
-        final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage(byteArray);
+        final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage(BinaryData.fromBytes(byteArray));
 
         // Assert
-        final byte[] actual = serviceBusMessageData.getBody();
+        final byte[] actual = serviceBusMessageData.getBody().toBytes();
         Assertions.assertNotNull(actual);
         Assertions.assertEquals(0, actual.length);
     }
@@ -214,10 +215,10 @@ public class ServiceBusMessageTest {
     @Test
     void canCreateWithBytePayload() {
         // Act
-        final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage(PAYLOAD_BYTES);
+        final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage(PAYLOAD_BINARY);
 
         // Assert
         Assertions.assertNotNull(serviceBusMessageData.getBody());
-        Assertions.assertEquals(PAYLOAD, new String(serviceBusMessageData.getBody(), UTF_8));
+        Assertions.assertEquals(PAYLOAD, serviceBusMessageData.getBody().toString());
     }
 }
