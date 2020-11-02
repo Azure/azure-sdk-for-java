@@ -10,7 +10,6 @@ import com.azure.core.amqp.models.AmqpDataBody;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.experimental.util.BinaryData;
-import com.azure.messaging.servicebus.implementation.Messages;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
