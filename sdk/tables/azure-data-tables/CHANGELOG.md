@@ -2,6 +2,14 @@
 
 ## 12.0.0-beta.3 (Unreleased)
 
+### New Features
+
+- Developers can now perform multiple insert, update, or delete entity operations as part of a transactional batch. For
+  more information on transactional batching with Azure Tables, see
+  [Performing entity group transactions](https://docs.microsoft.com/rest/api/storageservices/performing-entity-group-transactions).
+  Performing query operations as part of a transactional batch is not currently supported.
+  [#15091](https://github.com/Azure/azure-sdk-for-java/issues/15901)
+
 ### Key Bug Fixes
 
 - The table client returned from a service client's `getTableClient(tableName)` method was incorrectly configured,
