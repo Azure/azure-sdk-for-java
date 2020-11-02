@@ -9,6 +9,11 @@ import io.netty.util.concurrent.SingleThreadEventExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
+
 public class RntbdUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(RntbdUtils.class);
@@ -31,5 +36,22 @@ public class RntbdUtils {
             }
         }
         return -1;
+    }
+
+    public static URI getServerKey(URI physicalAddress) {
+        try {
+            return new URI(
+                physicalAddress.getScheme(),
+                null,
+                physicalAddress.getHost(),
+                physicalAddress.getPort(),
+                null,
+                null,
+                null);
+        } catch (URISyntaxException error) {
+            throw new IllegalArgumentException(
+                lenientFormat("physicalAddress %s cannot be parsed as a server-based authority", physicalAddress),
+                error);
+        }
     }
 }

@@ -1,10 +1,12 @@
 # Release History
 
-## 1.10.0 (2020-10-28)
+## 1.11.0-beta.1 (Unreleased)
+
+
+## 1.10.0 (2020-10-29)
 
 ### New Features
 
-- Added `Option<T>` to represent the states of instantiated, null, and non-null for the wrapped value.
 - Added `JsonPatchDocument` to support `json-patch` functionality.
 - Added new Identity `Configuration` properties.
 

@@ -32,7 +32,7 @@ public class ReceiveSingleSessionAsyncSample {
         // Create a receiver.
         // "<<topic-name>>" will be the name of the Service Bus topic you created inside the Service Bus namespace.
         // "<<subscription-name>>" will be the name of the session-enabled subscription.
-        ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+        ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .sessionReceiver()
             .receiveMode(ReceiveMode.PEEK_LOCK)
@@ -40,7 +40,8 @@ public class ReceiveSingleSessionAsyncSample {
             .subscriptionName("<<subscription-name>>")
             .buildAsyncClient();
 
-        Disposable subscription = receiver.receiveMessages()
+        Mono<ServiceBusReceiverAsyncClient> receiverMono = sessionReceiver.acceptNextSession();
+        Disposable subscription = receiverMono.flatMapMany(receiver -> receiver.receiveMessages()
             .flatMap(context -> {
                 if (context.hasError()) {
                     System.out.printf("An error occurred in session %s. Error: %s%n",
@@ -52,7 +53,7 @@ public class ReceiveSingleSessionAsyncSample {
 
                 // Process message
                 return receiver.complete(context.getMessage());
-            }).subscribe(aVoid -> {
+            })).subscribe(aVoid -> {
             }, error -> System.err.println("Error occurred: " + error));
 
         // Subscribe is not a blocking call so we sleep here so the program does not end.
@@ -62,6 +63,6 @@ public class ReceiveSingleSessionAsyncSample {
         subscription.dispose();
 
         // Close the receiver.
-        receiver.close();
+        sessionReceiver.close();
     }
 }

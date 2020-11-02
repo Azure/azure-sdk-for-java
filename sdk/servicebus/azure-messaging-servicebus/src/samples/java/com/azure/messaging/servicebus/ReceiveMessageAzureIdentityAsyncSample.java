@@ -52,7 +52,7 @@ public class ReceiveMessageAzureIdentityAsyncSample {
                 ServiceBusReceivedMessage message = context.getMessage();
 
                 System.out.println("Received Message Id:" + message.getMessageId());
-                System.out.println("Received Message:" + new String(message.getBody()));
+                System.out.println("Received Message:" + message.getBody().toString());
 
                 return receiverAsyncClient.complete(message);
             })
