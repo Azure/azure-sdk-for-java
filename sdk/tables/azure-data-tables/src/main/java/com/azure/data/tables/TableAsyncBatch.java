@@ -23,6 +23,7 @@ import com.azure.data.tables.models.UpdateMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -141,8 +142,20 @@ public final class TableAsyncBatch {
                         if (subResponse.getStatusCode() >= 400 && error == null
                             && subResponse.getValue() instanceof TableServiceError) {
                             error = (TableServiceError)subResponse.getValue();
-                            if (changes != null && changes.getContents().get(i) != null) {
-                                failedOperation = changes.getContents().get(i).getOperation();
+
+                            // Make a best effort to locate the failed operation and include it in the message
+                            if (changes != null && error.getOdataError() != null
+                                && error.getOdataError().getMessage() != null
+                                && error.getOdataError().getMessage().getValue() != null) {
+
+                                String message = error.getOdataError().getMessage().getValue();
+                                try {
+                                    int failedIndex = Integer.parseInt(message.substring(0, message.indexOf(":")));
+                                    failedOperation = changes.getContents().get(failedIndex).getOperation();
+                                } catch (NumberFormatException e) {
+                                    logger.logThrowableAsWarning(new IllegalArgumentException(
+                                        "Unable to parse failed operation from batch error message.", e));
+                                }
                             }
                         }
                     }
