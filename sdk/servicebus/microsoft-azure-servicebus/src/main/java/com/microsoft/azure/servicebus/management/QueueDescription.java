@@ -12,7 +12,7 @@ import java.util.Objects;
 /**
  * Represents the metadata description of the queue.
  */
-public class QueueDescription extends UnknownPropertiesHolder {
+public class QueueDescription {
     Duration duplicationDetectionHistoryTimeWindow = ManagementClientConstants.DEFAULT_HISTORY_DEDUP_WINDOW;
     String path;
     Duration lockDuration = ManagementClientConstants.DEFAULT_LOCK_DURATION;
@@ -28,11 +28,7 @@ public class QueueDescription extends UnknownPropertiesHolder {
     boolean requiresSession = false;
     boolean enableBatchedOperations = true;
     boolean enablePartitioning = false;
-    boolean enableExpress = false;
     EntityStatus status = EntityStatus.Active;
-    boolean isAnonymousAccessible = false;
-    boolean supportOrdering = false;
-    boolean isSupportOrderingExplicitlySet = false;
     List<AuthorizationRule> authorizationRules = null;
 
     /**
@@ -398,19 +394,6 @@ public class QueueDescription extends UnknownPropertiesHolder {
 
         this.userMetadata = userMetadata;
     }
-    
-    boolean getSupportOrdering() {
-    	if (this.isSupportOrderingExplicitlySet) {
-    		return this.supportOrdering;
-    	} else {
-    		return !this.enablePartitioning;
-    	}
-    }
-    
-    void setSupportOrdering(boolean supportOrdering) {
-    	this.supportOrdering = supportOrdering;
-    	this.isSupportOrderingExplicitlySet = true;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -439,10 +422,7 @@ public class QueueDescription extends UnknownPropertiesHolder {
                 && this.requiresSession == other.requiresSession
                 && this.status.equals(other.status)
                 && (this.userMetadata == null ? other.userMetadata == null : this.userMetadata.equals(other.userMetadata))
-                && AuthorizationRuleSerializer.equals(this.authorizationRules, other.authorizationRules)
-        		&& this.enableExpress == other.enableExpress 
-        		&& this.isAnonymousAccessible == other.isAnonymousAccessible
-        		&& this.supportOrdering == other.supportOrdering ) {
+                && AuthorizationRuleSerializer.equals(this.authorizationRules, other.authorizationRules)) {
             return true;
         }
 

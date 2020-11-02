@@ -11,7 +11,7 @@ import java.time.Duration;
 /**
  * Represents the metadata description of the subscription.
  */
-public class SubscriptionDescription extends UnknownPropertiesHolder {
+public class SubscriptionDescription {
     private String topicPath;
     private String subscriptionName;
     Duration lockDuration = ManagementClientConstants.DEFAULT_LOCK_DURATION;

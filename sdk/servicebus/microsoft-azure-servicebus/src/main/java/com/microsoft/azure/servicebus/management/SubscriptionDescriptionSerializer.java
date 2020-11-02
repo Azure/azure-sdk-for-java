@@ -26,9 +26,12 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+
+import static javax.xml.parsers.DocumentBuilderFactory.newInstance;
 
 class SubscriptionDescriptionSerializer {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(SubscriptionDescriptionSerializer.class);
@@ -103,19 +106,17 @@ class SubscriptionDescriptionSerializer {
                             .appendChild(doc.createTextNode(subscriptionDescription.userMetadata)).getParentNode());
         }
 
-        if (subscriptionDescription.forwardDeadLetteredMessagesTo != null) {
-            sdElement.appendChild(
-                    doc.createElementNS(ManagementClientConstants.SB_NS, "ForwardDeadLetteredMessagesTo")
-                            .appendChild(doc.createTextNode(subscriptionDescription.forwardDeadLetteredMessagesTo)).getParentNode());
-        }
-
         if (subscriptionDescription.autoDeleteOnIdle.compareTo(ManagementClientConstants.MAX_DURATION) < 0) {
             sdElement.appendChild(
                     doc.createElementNS(ManagementClientConstants.SB_NS, "AutoDeleteOnIdle")
                             .appendChild(doc.createTextNode(subscriptionDescription.autoDeleteOnIdle.toString())).getParentNode());
         }
-        
-        subscriptionDescription.appendUnknownPropertiesToDescriptionElement(sdElement);
+
+        if (subscriptionDescription.forwardDeadLetteredMessagesTo != null) {
+            sdElement.appendChild(
+                    doc.createElementNS(ManagementClientConstants.SB_NS, "ForwardDeadLetteredMessagesTo")
+                            .appendChild(doc.createTextNode(subscriptionDescription.forwardDeadLetteredMessagesTo)).getParentNode());
+        }
 
         // Convert dom document to string.
         StringWriter output = new StringWriter();
@@ -200,20 +201,20 @@ class SubscriptionDescriptionSerializer {
                             if (node.getNodeType() == Node.ELEMENT_NODE) {
                                 element = (Element) node;
                                 switch (element.getTagName()) {
-	                                case "LockDuration":
-	                                    sd.lockDuration = Duration.parse(element.getFirstChild().getNodeValue());
-	                                    break;
                                     case "RequiresSession":
                                         sd.requiresSession = Boolean.parseBoolean(element.getFirstChild().getNodeValue());
-                                        break;
-                                    case "DefaultMessageTimeToLive":
-                                        sd.defaultMessageTimeToLive = Duration.parse(element.getFirstChild().getNodeValue());
                                         break;
                                     case "DeadLetteringOnMessageExpiration":
                                         sd.enableDeadLetteringOnMessageExpiration = Boolean.parseBoolean(element.getFirstChild().getNodeValue());
                                         break;
                                     case "DeadLetteringOnFilterEvaluationExceptions":
                                         sd.enableDeadLetteringOnFilterEvaluationException = Boolean.parseBoolean(element.getFirstChild().getNodeValue());
+                                        break;
+                                    case "LockDuration":
+                                        sd.lockDuration = Duration.parse(element.getFirstChild().getNodeValue());
+                                        break;
+                                    case "DefaultMessageTimeToLive":
+                                        sd.defaultMessageTimeToLive = Duration.parse(element.getFirstChild().getNodeValue());
                                         break;
                                     case "MaxDeliveryCount":
                                         sd.maxDeliveryCount = Integer.parseInt(element.getFirstChild().getNodeValue());
@@ -224,14 +225,17 @@ class SubscriptionDescriptionSerializer {
                                     case "Status":
                                         sd.status = EntityStatus.valueOf(element.getFirstChild().getNodeValue());
                                         break;
+                                    case "AutoDeleteOnIdle":
+                                        sd.autoDeleteOnIdle = Duration.parse(element.getFirstChild().getNodeValue());
+                                        break;
+                                    case "UserMetadata":
+                                        sd.userMetadata = element.getFirstChild().getNodeValue();
+                                        break;
                                     case "ForwardTo":
                                         Node fwd = element.getFirstChild();
                                         if (fwd != null) {
                                             sd.forwardTo = fwd.getNodeValue();
                                         }
-                                        break;
-                                    case "UserMetadata":
-                                        sd.userMetadata = element.getFirstChild().getNodeValue();
                                         break;
                                     case "ForwardDeadLetteredMessagesTo":
                                         Node fwdDlq = element.getFirstChild();
@@ -239,21 +243,7 @@ class SubscriptionDescriptionSerializer {
                                             sd.forwardDeadLetteredMessagesTo = fwdDlq.getNodeValue();
                                         }
                                         break;
-                                    case "AutoDeleteOnIdle":
-                                        sd.autoDeleteOnIdle = Duration.parse(element.getFirstChild().getNodeValue());
-                                        break;
-                                    case "AccessedAt":
-                                    case "CreatedAt":
-                                    case "MessageCount":
-                                    case "SizeInBytes":
-                                    case "UpdatedAt":
-                                    case "CountDetails":
-                                    case "DefaultRuleDescription":
-                                        // Ignore known properties
-                                        // Do nothing
-                                        break;
                                     default:
-                                    	sd.addUnknownProperty(element);
                                         break;
                                 }
                             }

@@ -1,10 +1,5 @@
-package com.microsoft.azure.servicebus.management;
+package com.microsoft.azure.servicebus;
 
-import com.microsoft.azure.servicebus.ClientSettings;
-import com.microsoft.azure.servicebus.Message;
-import com.microsoft.azure.servicebus.QueueClient;
-import com.microsoft.azure.servicebus.ReceiveMode;
-import com.microsoft.azure.servicebus.TestUtils;
 import com.microsoft.azure.servicebus.management.ManagementClient;
 import com.microsoft.azure.servicebus.management.QueueDescription;
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;

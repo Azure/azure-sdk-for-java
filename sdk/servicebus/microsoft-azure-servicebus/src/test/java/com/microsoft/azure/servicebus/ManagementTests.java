@@ -1,17 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.microsoft.azure.servicebus.management;
+package com.microsoft.azure.servicebus;
 
-import com.microsoft.azure.servicebus.ClientFactory;
-import com.microsoft.azure.servicebus.ClientSettings;
-import com.microsoft.azure.servicebus.IMessage;
-import com.microsoft.azure.servicebus.IMessageReceiver;
-import com.microsoft.azure.servicebus.IMessageSender;
-import com.microsoft.azure.servicebus.Message;
-import com.microsoft.azure.servicebus.TestBase;
-import com.microsoft.azure.servicebus.TestUtils;
-import com.microsoft.azure.servicebus.Utils;
 import com.microsoft.azure.servicebus.management.AccessRights;
 import com.microsoft.azure.servicebus.management.AuthorizationRule;
 import com.microsoft.azure.servicebus.management.EntityNameHelper;
@@ -37,18 +28,7 @@ import com.microsoft.azure.servicebus.rules.SqlRuleAction;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
-import org.xml.sax.SAXException;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
@@ -58,10 +38,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 public class ManagementTests extends TestBase {
 
@@ -595,202 +571,4 @@ public class ManagementTests extends TestBase {
         Assert.assertNotNull(nsInfo);
         Assert.assertEquals(NamespaceType.ServiceBus, nsInfo.getNamespaceType());
     }
-    
-    @Test
-    public void unknownQueueDescriptionElementsTest() throws Exception {
-    	String queueDescriptionXml = "<entry xmlns=\"http://www.w3.org/2005/Atom\">" +
-                "<title xmlns=\"http://www.w3.org/2005/Atom\">testqueue1</title>" +
-                "<content xmlns=\"http://www.w3.org/2005/Atom\">" +
-                "<QueueDescription xmlns=\"http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\">" +
-                "<LockDuration>PT1M</LockDuration>" +
-                "<MaxSizeInMegabytes>1024</MaxSizeInMegabytes>" +
-                "<RequiresDuplicateDetection>true</RequiresDuplicateDetection>" +
-                "<RequiresSession>true</RequiresSession>" +
-                "<DefaultMessageTimeToLive>PT1H</DefaultMessageTimeToLive>" +
-                "<DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>" +
-                "<DuplicateDetectionHistoryTimeWindow>PT2M</DuplicateDetectionHistoryTimeWindow>" +
-                "<MaxDeliveryCount>10</MaxDeliveryCount>" +
-                "<EnableBatchedOperations>true</EnableBatchedOperations>" +
-                "<IsAnonymousAccessible>false</IsAnonymousAccessible>" +
-                "<Status>Active</Status>" +
-                "<ForwardTo>fq1</ForwardTo>" +
-                "<UserMetadata>abcd</UserMetadata>" +
-                "<SupportOrdering>true</SupportOrdering>" +
-                "<AutoDeleteOnIdle>PT1H</AutoDeleteOnIdle>" +
-                "<EnablePartitioning>false</EnablePartitioning>" +
-                "<EnableExpress>false</EnableExpress>" +
-                "<UnknownElement1>prop1</UnknownElement1>" +
-                "<UnknownElement2>prop2</UnknownElement2>" +
-                "<UnknownElement3>prop3</UnknownElement3>" +
-                "<UnknownElement4>prop4</UnknownElement4>" +
-                "<UnknownElement5><PropertyValue>prop5</PropertyValue></UnknownElement5>" +
-                "</QueueDescription>" +
-                "</content>" +
-                "</entry>";
-    	
-    	QueueDescription queueDesc = QueueDescriptionSerializer.parseFromContent(queueDescriptionXml);
-    	String serializedXml = QueueDescriptionSerializer.serialize(queueDesc);
-    	
-    	// Compare xml nodes
-    	Document expectedDoc = loadXmlFromString(queueDescriptionXml);
-    	Element expectedElement = (Element) expectedDoc.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "QueueDescription").item(0);
-    	Document serializedDoc = loadXmlFromString(serializedXml);
-    	Element serializedElement = (Element) serializedDoc.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "QueueDescription").item(0);
-    	Assert.assertTrue("QueueDescrition parsing and serialization combo didn't work as expected", elementEquals(expectedElement, serializedElement));
-    }
-    
-    @Test
-    public void unknownSubscriptionDescriptionElementsTest() throws Exception {
-    	String subscriptionDescriptionXml = "<entry xmlns=\"http://www.w3.org/2005/Atom\">" +
-                "<title xmlns=\"http://www.w3.org/2005/Atom\">testqueue1</title>" +
-                "<content xmlns=\"http://www.w3.org/2005/Atom\">" +
-                "<SubscriptionDescription xmlns=\"http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\">" +
-                "<LockDuration>PT1M</LockDuration>" +
-                "<RequiresSession>true</RequiresSession>" +
-                "<DefaultMessageTimeToLive>PT1H</DefaultMessageTimeToLive>" +
-                "<DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>" +
-                "<DeadLetteringOnFilterEvaluationExceptions>false</DeadLetteringOnFilterEvaluationExceptions>" +
-                "<MaxDeliveryCount>10</MaxDeliveryCount>" +
-                "<EnableBatchedOperations>true</EnableBatchedOperations>" +
-                "<Status>Active</Status>" +
-                "<ForwardTo>fq1</ForwardTo>" +
-                "<UserMetadata>abcd</UserMetadata>" +
-                "<AutoDeleteOnIdle>PT1H</AutoDeleteOnIdle>" +
-                "<IsClientAffine>prop1</IsClientAffine>" +
-                "<ClientAffineProperties><ClientId>xyz</ClientId><IsDurable>false</IsDurable><IsShared>true</IsShared></ClientAffineProperties>" +
-                "<UnknownElement2>prop2</UnknownElement2>" +
-                "<UnknownElement3>prop3</UnknownElement3>" +
-                "<UnknownElement4>prop4</UnknownElement4>" +
-                "</SubscriptionDescription>" +
-                "</content>" +
-                "</entry>";
-    	
-    	SubscriptionDescription queueDesc = SubscriptionDescriptionSerializer.parseFromContent("abcd", subscriptionDescriptionXml);
-    	String serializedXml = SubscriptionDescriptionSerializer.serialize(queueDesc);
-    	
-    	// Compare xml nodes
-    	Document expectedDoc = loadXmlFromString(subscriptionDescriptionXml);
-    	Element expectedElement = (Element) expectedDoc.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SubscriptionDescription").item(0);
-    	Document serializedDoc = loadXmlFromString(serializedXml);
-    	Element serializedElement = (Element) serializedDoc.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SubscriptionDescription").item(0);
-    	Assert.assertTrue("SubscriptionDescrition parsing and serialization combo didn't work as expected", elementEquals(expectedElement, serializedElement));
-    }
-    
-    @Test
-    public void unknownTopicDescriptionElementsTest() throws Exception {
-    	String topicDescriptionXml = "<entry xmlns=\"http://www.w3.org/2005/Atom\">" +
-                "<title xmlns=\"http://www.w3.org/2005/Atom\">testqueue1</title>" +
-                "<content xmlns=\"http://www.w3.org/2005/Atom\">" +
-                "<TopicDescription xmlns=\"http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\">" +
-                "<DefaultMessageTimeToLive>PT1H</DefaultMessageTimeToLive>" +                
-                "<MaxSizeInMegabytes>1024</MaxSizeInMegabytes>" +
-                "<RequiresDuplicateDetection>true</RequiresDuplicateDetection>" +
-                "<DuplicateDetectionHistoryTimeWindow>PT2M</DuplicateDetectionHistoryTimeWindow>" +
-                "<EnableBatchedOperations>true</EnableBatchedOperations>" +
-                "<FilteringMessagesBeforePublishing>false</FilteringMessagesBeforePublishing>" +
-                "<IsAnonymousAccessible>false</IsAnonymousAccessible>" +
-                "<Status>Active</Status>" +
-                "<UserMetadata>abcd</UserMetadata>" +
-                "<SupportOrdering>true</SupportOrdering>" +
-                "<AutoDeleteOnIdle>PT1H</AutoDeleteOnIdle>" +
-                "<EnablePartitioning>false</EnablePartitioning>" +
-                "<EnableSubscriptionPartitioning>false</EnableSubscriptionPartitioning>" +
-                "<EnableExpress>false</EnableExpress>" +
-                "<UnknownElement1>prop1</UnknownElement1>" +
-                "<UnknownElement2>prop2</UnknownElement2>" +
-                "<UnknownElement3>prop3</UnknownElement3>" +
-                "<UnknownElement4>prop4</UnknownElement4>" +
-                "<UnknownElement5><PropertyValue>prop5</PropertyValue></UnknownElement5>" +
-                "</TopicDescription>" +
-                "</content>" +
-                "</entry>";
-    	
-    	TopicDescription topicDesc = TopicDescriptionSerializer.parseFromContent(topicDescriptionXml);
-    	String serializedXml = TopicDescriptionSerializer.serialize(topicDesc);
-    	
-    	// Compare xml nodes
-    	Document expectedDoc = loadXmlFromString(topicDescriptionXml);
-    	Element expectedElement = (Element) expectedDoc.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "TopicDescription").item(0);
-    	Document serializedDoc = loadXmlFromString(serializedXml);
-    	Element serializedElement = (Element) serializedDoc.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "TopicDescription").item(0);
-    	Assert.assertTrue("TopicDescrition parsing and serialization combo didn't work as expected", elementEquals(expectedElement, serializedElement));
-    }
-    
-    private static Document loadXmlFromString(String xml) throws Exception {    	
-            DocumentBuilderFactory dbf = SerializerUtil.getDocumentBuilderFactory();
-            dbf.setIgnoringComments(true);
-            dbf.setIgnoringElementContentWhitespace(true);
-            dbf.setNamespaceAware(true);
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            Document dom = db.parse(new ByteArrayInputStream(xml.getBytes("utf-8")));            
-            dom.normalize();
-            return dom;
-    }
-    
-    // Basic comparison just sufficient for our test
-    private static boolean elementEquals(Node first, Node second) {    	
-    	if (!first.getLocalName().equals(second.getLocalName()))
-    	{
-    		return false;
-    	}
-    	
-    	NamedNodeMap firstAttributes = first.getAttributes();
-    	NamedNodeMap secondAttributes = second.getAttributes();
-    	if (firstAttributes != null && secondAttributes != null) {
-    		if (firstAttributes.getLength() != secondAttributes.getLength()) {
-    			return false;
-    		}
-    		
-    		for (int i = 0; i < firstAttributes.getLength(); i++) {
-    			Attr firstAttr = (Attr) firstAttributes.item(i);
-    			Attr secondAttr = (Attr) secondAttributes.getNamedItem(firstAttr.getName());
-    			if (secondAttr == null) {
-    				return false;
-    			}
-    			
-    			if (!firstAttr.getValue().equals(secondAttr.getValue())) {
-    				return false;
-    			}
-    		}
-    	}
-    	
-    	NodeList firstChildren = first.getChildNodes();
-    	NodeList secondChildren = second.getChildNodes();
-    	if (firstChildren.getLength() != secondChildren.getLength()) {
-    		return  false;
-    	}
-    	
-    	for (int i = 0; i < firstChildren.getLength(); i++) {
-    		Node childFirst = firstChildren.item(i);
-    		Node childSecond = secondChildren.item(i);
-    		
-    		if (childFirst.getNodeType() != childSecond.getNodeType()) {
-    			return false;
-    		}
-    		
-    		if (childFirst.getNodeType() == Node.TEXT_NODE) {
-    			if (!textEquals((Text)childFirst, (Text)childSecond)) {
-    				return false;
-    			}
-    		}
-    		else if (childFirst.getNodeType() == Node.ELEMENT_NODE){
-    			if (!elementEquals((Element)childFirst, (Element)childSecond)) {
-    				return false;
-    			}
-    		}
-    			
-    	}
-    	
-    	return true;
-    }
-    
-    private static boolean textEquals(Text first, Text second) {
-    	if (first == null ^ second == null)
-    	{
-    		return false;
-    	}
-    	
-    	return first.getNodeValue().equals(second.getNodeValue());
-    }
-    
 }
