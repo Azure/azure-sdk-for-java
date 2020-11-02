@@ -32,7 +32,7 @@ public final class DocumentResult {
     private List<Integer> pageRange;
 
     /*
-     * Confidence score.
+     * Predicted document type confidence.
      */
     @JsonProperty(value = "docTypeConfidence")
     private Float docTypeConfidence;
@@ -104,7 +104,7 @@ public final class DocumentResult {
     }
 
     /**
-     * Get the docTypeConfidence property: Confidence score.
+     * Get the docTypeConfidence property: Predicted document type confidence.
      *
      * @return the docTypeConfidence value.
      */
@@ -113,7 +113,7 @@ public final class DocumentResult {
     }
 
     /**
-     * Set the docTypeConfidence property: Confidence score.
+     * Set the docTypeConfidence property: Predicted document type confidence.
      *
      * @param docTypeConfidence the docTypeConfidence value to set.
      * @return the DocumentResult object itself.

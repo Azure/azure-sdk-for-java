@@ -32,7 +32,7 @@ public final class DataTable {
     /*
      * Bounding box of the table.
      */
-    @JsonProperty(value = "boundingBox")
+    @JsonProperty(value = "boundingBox", required = true)
     private List<Float> boundingBox;
 
     /**
