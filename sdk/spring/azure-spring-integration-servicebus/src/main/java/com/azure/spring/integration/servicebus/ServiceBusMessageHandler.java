@@ -23,6 +23,10 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
+/**
+ * Message handler for Service Bus.
+ * @param <U> The type of message payload.
+ */
 public abstract class ServiceBusMessageHandler<U> implements IMessageHandler {
     private static final Logger LOG = LoggerFactory.getLogger(ServiceBusMessageHandler.class);
     protected final Consumer<Message<U>> consumer;

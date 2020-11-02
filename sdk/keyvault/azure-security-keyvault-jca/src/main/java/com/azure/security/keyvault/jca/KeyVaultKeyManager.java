@@ -50,7 +50,12 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
     public KeyVaultKeyManager(KeyStore keystore, char[] password) {
         LOGGER.entering("KeyVaultKeyManager", "<init>", new Object[] { keystore, password });
         this.keystore = keystore;
-        this.password = password;
+        if (password != null) {
+            this.password = new char[password.length];
+            System.arraycopy(password, 0, this.password, 0, password.length);
+        } else {
+            this.password = null;
+        }
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.azure.digitaltwins.core;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
-import com.azure.digitaltwins.core.models.BasicDigitalTwin;
 import com.azure.digitaltwins.core.models.QueryOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -51,7 +50,7 @@ public class QueryAsyncTests extends QueryTestBase{
             for (int i = 0; i < pageSize + 1; i++) {
                 String roomTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
                 roomTwinIds.add(roomTwinId);
-                StepVerifier.create(asyncClient.createDigitalTwinWithResponse(roomTwinId, roomTwin, String.class, null))
+                StepVerifier.create(asyncClient.createOrReplaceDigitalTwinWithResponse(roomTwinId, roomTwin, String.class, null))
                     .assertNext(response ->
                         assertThat(response.getStatusCode())
                             .as("Created digitaltwin successfully")
@@ -63,7 +62,7 @@ public class QueryAsyncTests extends QueryTestBase{
 
             StepVerifier.create(asyncClient.query(queryString, BasicDigitalTwin.class, null))
                 .thenConsumeWhile(dt ->  {
-                    assertThat(dt.getProperties().get("IsOccupied"))
+                    assertThat(dt.getContents().get("IsOccupied"))
                         .as("IsOccupied should be true")
                         .isEqualTo(true);
                     return true;

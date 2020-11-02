@@ -9,8 +9,8 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
 import reactor.core.Disposable;
+import reactor.core.publisher.Mono;
 
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
@@ -94,7 +94,7 @@ public class ReadmeSamples {
         messages.forEach(context -> {
             ServiceBusReceivedMessage message = context.getMessage();
             System.out.printf("Id: %s. Contents: %s%n", message.getMessageId(),
-                new String(message.getBody(), StandardCharsets.UTF_8));
+                message.getBody().toString());
         });
 
         // When you are done using the receiver, dispose of it.
@@ -116,7 +116,7 @@ public class ReadmeSamples {
         Disposable subscription = receiver.receiveMessages().subscribe(context -> {
             ServiceBusReceivedMessage message = context.getMessage();
             System.out.printf("Id: %s%n", message.getMessageId());
-            System.out.printf("Contents: %s%n", new String(message.getBody(), StandardCharsets.UTF_8));
+            System.out.printf("Contents: %s%n", message.getBody().toString());
         }, error -> {
                 System.err.println("Error occurred while receiving messages: " + error);
             }, () -> {
@@ -173,12 +173,12 @@ public class ReadmeSamples {
      */
     public void namedSessionReceiver() {
         // Creates a session-enabled receiver that gets messages from the session "greetings".
-        ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+        ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
             .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
             .sessionReceiver()
             .queueName("<< QUEUE NAME >>")
-            .sessionId("greetings")
             .buildAsyncClient();
+        Mono<ServiceBusReceiverAsyncClient> receiverAsyncClient = sessionReceiver.acceptSession("greetings");
     }
 
     /**
@@ -186,11 +186,12 @@ public class ReadmeSamples {
      */
     public void unnamedSessionReceiver() {
         // Creates a session-enabled receiver that gets messages from the first available session.
-        ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+        ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
             .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
             .sessionReceiver()
             .queueName("<< QUEUE NAME >>")
             .buildAsyncClient();
+        Mono<ServiceBusReceiverAsyncClient> receiverAsyncClient = sessionReceiver.acceptNextSession();
     }
 
     /**

@@ -132,10 +132,7 @@ jobs:
         displayName: 'Publish Artifacts $(ArtifactName)'
         artifact: '$(ArtifactName)'
 
-      - publish: $(System.DefaultWorkingDirectory)
-        condition: and(eq(variables['CaptureRepositoryOnFailure'], 'true'), failed())
-        displayName: 'Capture repo state for analysis'
-        artifact: repository
+      - template: ../steps/upload-repository-on-failure.yml
 
   - job: 'Analyze'
     condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
@@ -172,6 +169,12 @@ jobs:
           ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
             Directory: sdk/${{ parameters.ServiceDirectory }}
           CheckLinkGuidance: $true
+
+      # Use BasePathLength of 38 instead of the default 49 as some GA'd files fail when the number is higher.
+      - template: /eng/common/pipelines/templates/steps/verify-path-length.yml
+        parameters:
+          SourceDirectory: $(Build.SourcesDirectory)
+          BasePathLength: 38
 
       - ${{if ne(parameters.SDKType, 'data')}}:
         - ${{ each artifact in parameters.Artifacts }}:
@@ -223,6 +226,8 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: 'verify'
+
+      - template: ../steps/upload-repository-on-failure.yml
 
   - job: 'Test'
     condition: and(succeeded(), ne(variables['Skip.Test'], 'true'))
@@ -344,6 +349,8 @@ jobs:
           # compiled and installed in the previous task, this tasks only runs tests.
           goals: 'surefire:test'
         condition: and(succeeded(), and(eq(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
+
+      - template: ../steps/upload-repository-on-failure.yml
 
       - task: PublishTestResults@2
         condition: and(always(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))

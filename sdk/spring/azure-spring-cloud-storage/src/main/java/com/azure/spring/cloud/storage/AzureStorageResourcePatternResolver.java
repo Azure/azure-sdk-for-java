@@ -33,12 +33,12 @@ public class AzureStorageResourcePatternResolver implements ResourcePatternResol
     /**
      * Stores the BlobServiceClient.
      */
-    private Optional<BlobServiceClient> blobServiceClient;
+    private final Optional<BlobServiceClient> blobServiceClient;
 
     /**
      * Stores the ShareServiceClient shareServiceClient
      */
-    private Optional<ShareServiceClient> shareServiceClient;
+    private final Optional<ShareServiceClient> shareServiceClient;
 
     /**
      * Constructor.
