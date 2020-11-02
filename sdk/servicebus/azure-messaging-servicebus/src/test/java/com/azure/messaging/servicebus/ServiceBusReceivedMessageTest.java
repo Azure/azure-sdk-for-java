@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpMessageConstant;
+import com.azure.core.experimental.util.BinaryData;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.message.Message;
@@ -34,6 +35,7 @@ public class ServiceBusReceivedMessageTest {
     // Create a giant payload with 10000 characters that are "a".
     private static final String PAYLOAD = new String(new char[10000]).replace("\0", "a");
     private static final byte[] PAYLOAD_BYTES = PAYLOAD.getBytes(UTF_8);
+    private static final BinaryData PAYLOAD_BINARY = BinaryData.fromString(PAYLOAD);
 
     @Test
     public void byteArrayNotNull() {
@@ -43,7 +45,7 @@ public class ServiceBusReceivedMessageTest {
     @Test
     public void messagePropertiesShouldNotBeNull() {
         // Act
-        final ServiceBusReceivedMessage receivedMessage = new ServiceBusReceivedMessage(PAYLOAD_BYTES);
+        final ServiceBusReceivedMessage receivedMessage = new ServiceBusReceivedMessage(PAYLOAD_BINARY);
 
         // Assert
         assertNotNull(receivedMessage.getBody());
@@ -60,10 +62,10 @@ public class ServiceBusReceivedMessageTest {
         byte[] byteArray = new byte[0];
 
         // Act
-        final ServiceBusReceivedMessage serviceBusMessageData = new ServiceBusReceivedMessage(byteArray);
+        final ServiceBusReceivedMessage serviceBusMessageData = new ServiceBusReceivedMessage(BinaryData.fromBytes(byteArray));
 
         // Assert
-        final byte[] actual = serviceBusMessageData.getBody();
+        final byte[] actual = serviceBusMessageData.getBody().toBytes();
         assertNotNull(actual);
         assertEquals(0, actual.length);
     }
@@ -74,11 +76,11 @@ public class ServiceBusReceivedMessageTest {
     @Test
     public void canCreateWithBytePayload() {
         // Act
-        final ServiceBusReceivedMessage serviceBusMessageData = new ServiceBusReceivedMessage(PAYLOAD_BYTES);
+        final ServiceBusReceivedMessage serviceBusMessageData = new ServiceBusReceivedMessage(PAYLOAD_BINARY);
 
         // Assert
         assertNotNull(serviceBusMessageData.getBody());
-        assertEquals(PAYLOAD, new String(serviceBusMessageData.getBody(), UTF_8));
+        assertEquals(PAYLOAD, serviceBusMessageData.getBody().toString());
     }
 
     @Test
@@ -88,7 +90,7 @@ public class ServiceBusReceivedMessageTest {
         Data data = new Data(new Binary(PAYLOAD_BYTES));
         when(amqpMessage.getBody()).thenReturn(data);
         //
-        final ServiceBusReceivedMessage originalMessage = new ServiceBusReceivedMessage(PAYLOAD_BYTES);
+        final ServiceBusReceivedMessage originalMessage = new ServiceBusReceivedMessage(PAYLOAD_BINARY);
         originalMessage.setMessageId("mid");
         originalMessage.setContentType("type");
         originalMessage.setCorrelationId("cid");
@@ -118,7 +120,7 @@ public class ServiceBusReceivedMessageTest {
         // Assert
         assertNotNull(actual);
         assertNotNull(actual.getBody());
-        assertEquals(PAYLOAD, new String(actual.getBody(), UTF_8));
+        assertEquals(PAYLOAD, actual.getBody().toString());
         assertEquals(originalMessage.getMessageId(), actual.getMessageId());
         assertEquals(originalMessage.getContentType(), actual.getContentType());
         assertEquals(originalMessage.getCorrelationId(), actual.getCorrelationId());
