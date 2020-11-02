@@ -4,44 +4,31 @@
 
 package com.azure.ai.formrecognizer.implementation.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for TextStyle. */
-public enum TextStyle {
-    /** Enum value handwriting. */
-    HANDWRITING("handwriting"),
+public final class TextStyle extends ExpandableStringEnum<TextStyle> {
+    /** Static value other for TextStyle. */
+    public static final TextStyle OTHER = fromString("other");
 
-    /** Enum value printed. */
-    PRINTED("printed");
-
-    /** The actual serialized value for a TextStyle instance. */
-    private final String value;
-
-    TextStyle(String value) {
-        this.value = value;
-    }
+    /** Static value handwriting for TextStyle. */
+    public static final TextStyle HANDWRITING = fromString("handwriting");
 
     /**
-     * Parses a serialized value to a TextStyle instance.
+     * Creates or finds a TextStyle from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed TextStyle object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding TextStyle.
      */
     @JsonCreator
-    public static TextStyle fromString(String value) {
-        TextStyle[] items = TextStyle.values();
-        for (TextStyle item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static TextStyle fromString(String name) {
+        return fromString(name, TextStyle.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known TextStyle values. */
+    public static Collection<TextStyle> values() {
+        return values(TextStyle.class);
     }
 }

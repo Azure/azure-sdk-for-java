@@ -330,7 +330,7 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsync(
                 @HostParam("endpoint") String endpoint,
-                @QueryParam("pageRange") String pageRange,
+                @QueryParam("Pages") String pages,
                 @HeaderParam("Content-Type") ContentType contentType,
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream,
                 @HeaderParam("Content-Length") long contentLength,
@@ -341,7 +341,7 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsync(
                 @HostParam("endpoint") String endpoint,
-                @QueryParam("pageRange") String pageRange,
+                @QueryParam("Pages") String pages,
                 @BodyParam("application/json") SourcePath fileStream,
                 Context context);
 
@@ -2695,7 +2695,7 @@ public final class FormRecognizerClientImpl {
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
      * @param contentLength The contentLength parameter.
-     * @param pageRange Array of Post0ItemsItem.
+     * @param pages Array of PagesItemsItem.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2703,18 +2703,13 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(
-            ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength, List<String> pageRange) {
-        String pageRangeConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pageRange, CollectionFormat.CSV);
+            ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength, List<String> pages) {
+        String pagesConverted =
+                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
         return FluxUtil.withContext(
                 context ->
                         service.analyzeLayoutAsync(
-                                this.getEndpoint(),
-                                pageRangeConverted,
-                                contentType,
-                                fileStream,
-                                contentLength,
-                                context));
+                                this.getEndpoint(), pagesConverted, contentType, fileStream, contentLength, context));
     }
 
     /**
@@ -2725,7 +2720,7 @@ public final class FormRecognizerClientImpl {
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
      * @param contentLength The contentLength parameter.
-     * @param pageRange Array of Post0ItemsItem.
+     * @param pages Array of PagesItemsItem.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2737,12 +2732,12 @@ public final class FormRecognizerClientImpl {
             ContentType contentType,
             Flux<ByteBuffer> fileStream,
             long contentLength,
-            List<String> pageRange,
+            List<String> pages,
             Context context) {
-        String pageRangeConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pageRange, CollectionFormat.CSV);
+        String pagesConverted =
+                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
         return service.analyzeLayoutAsync(
-                this.getEndpoint(), pageRangeConverted, contentType, fileStream, contentLength, context);
+                this.getEndpoint(), pagesConverted, contentType, fileStream, contentLength, context);
     }
 
     /**
@@ -2753,7 +2748,7 @@ public final class FormRecognizerClientImpl {
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
      * @param contentLength The contentLength parameter.
-     * @param pageRange Array of Post0ItemsItem.
+     * @param pages Array of PagesItemsItem.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2761,8 +2756,8 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeLayoutAsyncAsync(
-            ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength, List<String> pageRange) {
-        return analyzeLayoutAsyncWithResponseAsync(contentType, fileStream, contentLength, pageRange)
+            ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength, List<String> pages) {
+        return analyzeLayoutAsyncWithResponseAsync(contentType, fileStream, contentLength, pages)
                 .flatMap((AnalyzeLayoutAsyncResponse res) -> Mono.empty());
     }
 
@@ -2774,7 +2769,7 @@ public final class FormRecognizerClientImpl {
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
      * @param contentLength The contentLength parameter.
-     * @param pageRange Array of Post0ItemsItem.
+     * @param pages Array of PagesItemsItem.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2786,9 +2781,9 @@ public final class FormRecognizerClientImpl {
             ContentType contentType,
             Flux<ByteBuffer> fileStream,
             long contentLength,
-            List<String> pageRange,
+            List<String> pages,
             Context context) {
-        return analyzeLayoutAsyncWithResponseAsync(contentType, fileStream, contentLength, pageRange, context)
+        return analyzeLayoutAsyncWithResponseAsync(contentType, fileStream, contentLength, pages, context)
                 .flatMap((AnalyzeLayoutAsyncResponse res) -> Mono.empty());
     }
 
@@ -2800,15 +2795,15 @@ public final class FormRecognizerClientImpl {
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
      * @param contentLength The contentLength parameter.
-     * @param pageRange Array of Post0ItemsItem.
+     * @param pages Array of PagesItemsItem.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void analyzeLayoutAsync(
-            ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength, List<String> pageRange) {
-        analyzeLayoutAsyncAsync(contentType, fileStream, contentLength, pageRange).block();
+            ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength, List<String> pages) {
+        analyzeLayoutAsyncAsync(contentType, fileStream, contentLength, pages).block();
     }
 
     /**
@@ -2819,7 +2814,7 @@ public final class FormRecognizerClientImpl {
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
      * @param contentLength The contentLength parameter.
-     * @param pageRange Array of Post0ItemsItem.
+     * @param pages Array of PagesItemsItem.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2831,9 +2826,9 @@ public final class FormRecognizerClientImpl {
             ContentType contentType,
             Flux<ByteBuffer> fileStream,
             long contentLength,
-            List<String> pageRange,
+            List<String> pages,
             Context context) {
-        return analyzeLayoutAsyncWithResponseAsync(contentType, fileStream, contentLength, pageRange, context).block();
+        return analyzeLayoutAsyncWithResponseAsync(contentType, fileStream, contentLength, pages, context).block();
     }
 
     /**
@@ -2841,7 +2836,7 @@ public final class FormRecognizerClientImpl {
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
-     * @param pageRange Array of Post0ItemsItem.
+     * @param pages Array of PagesItemsItem.
      * @param fileStream Uri or local path to source data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2850,11 +2845,11 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(
-            List<String> pageRange, SourcePath fileStream) {
-        String pageRangeConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pageRange, CollectionFormat.CSV);
+            List<String> pages, SourcePath fileStream) {
+        String pagesConverted =
+                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
         return FluxUtil.withContext(
-                context -> service.analyzeLayoutAsync(this.getEndpoint(), pageRangeConverted, fileStream, context));
+                context -> service.analyzeLayoutAsync(this.getEndpoint(), pagesConverted, fileStream, context));
     }
 
     /**
@@ -2862,7 +2857,7 @@ public final class FormRecognizerClientImpl {
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
-     * @param pageRange Array of Post0ItemsItem.
+     * @param pages Array of PagesItemsItem.
      * @param fileStream Uri or local path to source data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2872,10 +2867,10 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(
-            List<String> pageRange, SourcePath fileStream, Context context) {
-        String pageRangeConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pageRange, CollectionFormat.CSV);
-        return service.analyzeLayoutAsync(this.getEndpoint(), pageRangeConverted, fileStream, context);
+            List<String> pages, SourcePath fileStream, Context context) {
+        String pagesConverted =
+                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
+        return service.analyzeLayoutAsync(this.getEndpoint(), pagesConverted, fileStream, context);
     }
 
     /**
@@ -2883,7 +2878,7 @@ public final class FormRecognizerClientImpl {
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
-     * @param pageRange Array of Post0ItemsItem.
+     * @param pages Array of PagesItemsItem.
      * @param fileStream Uri or local path to source data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2891,8 +2886,8 @@ public final class FormRecognizerClientImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeLayoutAsyncAsync(List<String> pageRange, SourcePath fileStream) {
-        return analyzeLayoutAsyncWithResponseAsync(pageRange, fileStream)
+    public Mono<Void> analyzeLayoutAsyncAsync(List<String> pages, SourcePath fileStream) {
+        return analyzeLayoutAsyncWithResponseAsync(pages, fileStream)
                 .flatMap((AnalyzeLayoutAsyncResponse res) -> Mono.empty());
     }
 
@@ -2901,7 +2896,7 @@ public final class FormRecognizerClientImpl {
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
-     * @param pageRange Array of Post0ItemsItem.
+     * @param pages Array of PagesItemsItem.
      * @param fileStream Uri or local path to source data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2910,8 +2905,8 @@ public final class FormRecognizerClientImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeLayoutAsyncAsync(List<String> pageRange, SourcePath fileStream, Context context) {
-        return analyzeLayoutAsyncWithResponseAsync(pageRange, fileStream, context)
+    public Mono<Void> analyzeLayoutAsyncAsync(List<String> pages, SourcePath fileStream, Context context) {
+        return analyzeLayoutAsyncWithResponseAsync(pages, fileStream, context)
                 .flatMap((AnalyzeLayoutAsyncResponse res) -> Mono.empty());
     }
 
@@ -2920,15 +2915,15 @@ public final class FormRecognizerClientImpl {
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
-     * @param pageRange Array of Post0ItemsItem.
+     * @param pages Array of PagesItemsItem.
      * @param fileStream Uri or local path to source data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void analyzeLayoutAsync(List<String> pageRange, SourcePath fileStream) {
-        analyzeLayoutAsyncAsync(pageRange, fileStream).block();
+    public void analyzeLayoutAsync(List<String> pages, SourcePath fileStream) {
+        analyzeLayoutAsyncAsync(pages, fileStream).block();
     }
 
     /**
@@ -2936,7 +2931,7 @@ public final class FormRecognizerClientImpl {
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
-     * @param pageRange Array of Post0ItemsItem.
+     * @param pages Array of PagesItemsItem.
      * @param fileStream Uri or local path to source data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2945,9 +2940,8 @@ public final class FormRecognizerClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> analyzeLayoutAsyncWithResponse(
-            List<String> pageRange, SourcePath fileStream, Context context) {
-        return analyzeLayoutAsyncWithResponseAsync(pageRange, fileStream, context).block();
+    public Response<Void> analyzeLayoutAsyncWithResponse(List<String> pages, SourcePath fileStream, Context context) {
+        return analyzeLayoutAsyncWithResponseAsync(pages, fileStream, context).block();
     }
 
     /**

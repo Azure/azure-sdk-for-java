@@ -7,58 +7,32 @@ package com.azure.ai.formrecognizer.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The appearance of extracted text. */
+/** An object representing the appearance of the text line. */
 @Fluent
 public final class Appearance {
     /*
-     * Style of the extracted text: handwriting or printed.
+     * An object representing the style of the text line.
      */
     @JsonProperty(value = "style", required = true)
-    private TextStyle style;
-
-    /*
-     * Confidence value of predicted style.
-     */
-    @JsonProperty(value = "styleConfidence", required = true)
-    private float styleConfidence;
+    private Style style;
 
     /**
-     * Get the style property: Style of the extracted text: handwriting or printed.
+     * Get the style property: An object representing the style of the text line.
      *
      * @return the style value.
      */
-    public TextStyle getStyle() {
+    public Style getStyle() {
         return this.style;
     }
 
     /**
-     * Set the style property: Style of the extracted text: handwriting or printed.
+     * Set the style property: An object representing the style of the text line.
      *
      * @param style the style value to set.
      * @return the Appearance object itself.
      */
-    public Appearance setStyle(TextStyle style) {
+    public Appearance setStyle(Style style) {
         this.style = style;
-        return this;
-    }
-
-    /**
-     * Get the styleConfidence property: Confidence value of predicted style.
-     *
-     * @return the styleConfidence value.
-     */
-    public float getStyleConfidence() {
-        return this.styleConfidence;
-    }
-
-    /**
-     * Set the styleConfidence property: Confidence value of predicted style.
-     *
-     * @param styleConfidence the styleConfidence value to set.
-     * @return the Appearance object itself.
-     */
-    public Appearance setStyleConfidence(float styleConfidence) {
-        this.styleConfidence = styleConfidence;
         return this;
     }
 }
