@@ -17,7 +17,7 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.redis.v2018_03_01.implementation.RedisManager;
+import com.microsoft.azure.management.redis.v2018_03_01.implementation.CacheManager;
 import java.util.Map;
 import java.util.List;
 import com.microsoft.azure.management.redis.v2018_03_01.implementation.RedisResourceInner;
@@ -25,7 +25,7 @@ import com.microsoft.azure.management.redis.v2018_03_01.implementation.RedisReso
 /**
  * Type representing RedisResource.
  */
-public interface RedisResource extends HasInner<RedisResourceInner>, Resource, GroupableResourceCore<RedisManager, RedisResourceInner>, HasResourceGroup, Refreshable<RedisResource>, Updatable<RedisResource.Update>, HasManager<RedisManager> {
+public interface RedisResource extends HasInner<RedisResourceInner>, Resource, GroupableResourceCore<CacheManager, RedisResourceInner>, HasResourceGroup, Refreshable<RedisResource>, Updatable<RedisResource.Update>, HasManager<CacheManager> {
     /**
      * @return the accessKeys value.
      */

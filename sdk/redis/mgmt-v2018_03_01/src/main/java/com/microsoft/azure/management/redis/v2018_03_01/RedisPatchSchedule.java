@@ -16,13 +16,13 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.redis.v2018_03_01.implementation.RedisManager;
+import com.microsoft.azure.management.redis.v2018_03_01.implementation.CacheManager;
 import java.util.List;
 
 /**
  * Type representing RedisPatchSchedule.
  */
-public interface RedisPatchSchedule extends HasInner<RedisPatchScheduleInner>, Indexable, Refreshable<RedisPatchSchedule>, Updatable<RedisPatchSchedule.Update>, HasManager<RedisManager> {
+public interface RedisPatchSchedule extends HasInner<RedisPatchScheduleInner>, Indexable, Refreshable<RedisPatchSchedule>, Updatable<RedisPatchSchedule.Update>, HasManager<CacheManager> {
     /**
      * @return the id value.
      */
@@ -46,7 +46,7 @@ public interface RedisPatchSchedule extends HasInner<RedisPatchScheduleInner>, I
     /**
      * The entirety of the RedisPatchSchedule definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithRedis, DefinitionStages.WithScheduleEntries, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithRedi, DefinitionStages.WithScheduleEntries, DefinitionStages.WithCreate {
     }
 
     /**
@@ -56,20 +56,20 @@ public interface RedisPatchSchedule extends HasInner<RedisPatchScheduleInner>, I
         /**
          * The first stage of a RedisPatchSchedule definition.
          */
-        interface Blank extends WithRedis {
+        interface Blank extends WithRedi {
         }
 
         /**
-         * The stage of the redispatchschedule definition allowing to specify Redis.
+         * The stage of the redispatchschedule definition allowing to specify Redi.
          */
-        interface WithRedis {
+        interface WithRedi {
            /**
             * Specifies resourceGroupName, name.
             * @param resourceGroupName The name of the resource group
             * @param name The name of the Redis cache
             * @return the next definition stage
             */
-            WithScheduleEntries withExistingRedis(String resourceGroupName, String name);
+            WithScheduleEntries withExistingRedi(String resourceGroupName, String name);
         }
 
         /**

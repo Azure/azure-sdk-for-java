@@ -12,14 +12,14 @@ import com.microsoft.azure.management.redis.v2018_03_01.RedisForceRebootResponse
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class RedisForceRebootResponseImpl extends WrapperImpl<RedisForceRebootResponseInner> implements RedisForceRebootResponse {
-    private final RedisManager manager;
-    RedisForceRebootResponseImpl(RedisForceRebootResponseInner inner, RedisManager manager) {
+    private final CacheManager manager;
+    RedisForceRebootResponseImpl(RedisForceRebootResponseInner inner, CacheManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public RedisManager manager() {
+    public CacheManager manager() {
         return this.manager;
     }
 

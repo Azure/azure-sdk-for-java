@@ -18,14 +18,14 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.management.redis.v2018_03_01.RedisFirewallRule;
 
 class FirewallRulesImpl extends WrapperImpl<FirewallRulesInner> implements FirewallRules {
-    private final RedisManager manager;
+    private final CacheManager manager;
 
-    FirewallRulesImpl(RedisManager manager) {
+    FirewallRulesImpl(CacheManager manager) {
         super(manager.inner().firewallRules());
         this.manager = manager;
     }
 
-    public RedisManager manager() {
+    public CacheManager manager() {
         return this.manager;
     }
 
@@ -64,10 +64,14 @@ class FirewallRulesImpl extends WrapperImpl<FirewallRulesInner> implements Firew
     public Observable<RedisFirewallRule> getAsync(String resourceGroupName, String cacheName, String ruleName) {
         FirewallRulesInner client = this.inner();
         return client.getAsync(resourceGroupName, cacheName, ruleName)
-        .map(new Func1<RedisFirewallRuleInner, RedisFirewallRule>() {
+        .flatMap(new Func1<RedisFirewallRuleInner, Observable<RedisFirewallRule>>() {
             @Override
-            public RedisFirewallRule call(RedisFirewallRuleInner inner) {
-                return wrapModel(inner);
+            public Observable<RedisFirewallRule> call(RedisFirewallRuleInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((RedisFirewallRule)wrapModel(inner));
+                }
             }
        });
     }
