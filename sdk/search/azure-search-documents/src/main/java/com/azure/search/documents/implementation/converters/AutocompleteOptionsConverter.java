@@ -3,8 +3,11 @@
 
 package com.azure.search.documents.implementation.converters;
 
+<<<<<<< HEAD
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.models.AutocompleteMode;
+=======
+>>>>>>> bfd056a1647f7232e7d7cb82ca2a5ad85b9bb6ec
 import com.azure.search.documents.models.AutocompleteOptions;
 
 import java.util.ArrayList;
@@ -47,6 +50,7 @@ public final class AutocompleteOptionsConverter {
 
         if (obj.getSearchFields() != null) {
             List<String> searchFields = new ArrayList<>(obj.getSearchFields());
+<<<<<<< HEAD
             PrivateFieldAccessHelper.set(autocompleteOptions, "searchFields", searchFields);
         }
 
@@ -90,6 +94,9 @@ public final class AutocompleteOptionsConverter {
         if (obj.getSearchFields() != null) {
             List<String> searchFields = new ArrayList<>(obj.getSearchFields());
             PrivateFieldAccessHelper.set(autocompleteOptions, "searchFields", searchFields);
+=======
+            AutocompleteOptionsHelper.setSearchFields(autocompleteOptions, searchFields);
+>>>>>>> bfd056a1647f7232e7d7cb82ca2a5ad85b9bb6ec
         }
 
         String highlightPreTag = obj.getHighlightPreTag();

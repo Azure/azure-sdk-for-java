@@ -3,12 +3,7 @@
 
 package com.azure.communication.administration;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-
-import com.azure.communication.common.CommunicationClientCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.logging.ClientLogger;
@@ -19,41 +14,41 @@ import java.util.Locale;
 
 public class CommunicationIdentityClientTestBase extends TestBase {
     protected static final TestMode TEST_MODE = initializeTestMode();
-
     protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
-        .get("ADMINISTRATION_SERVICE_ENDPOINT", "https://yourresource.communication.azure.com");
+        .get("ADMINISTRATION_SERVICE_ENDPOINT", "https://REDACTED.communication.azure.com");
 
-    protected static final String MOCKACCESSTOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
-    protected static final String MOCKACCESSTOKENENCODED = Base64.getEncoder().encodeToString(MOCKACCESSTOKEN.getBytes());
-    protected static final String ACCESSTOKEN = Configuration.getGlobalConfiguration()
-        .get("ADMINISTRATION_SERVICE_ACCESS_TOKEN", MOCKACCESSTOKENENCODED);
+    protected static final String ACCESSKEYRAW = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+    protected static final String ACCESSKEYENCODED = Base64.getEncoder().encodeToString(ACCESSKEYRAW.getBytes());
+    protected static final String ACCESSKEY = Configuration.getGlobalConfiguration()
+        .get("ADMINISTRATION_SERVICE_ACCESS_TOKEN", ACCESSKEYENCODED);
+
+    protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
+        .get("COMMUNICATION_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=" + ACCESSKEYENCODED);
     
-    protected CommunicationIdentityClientBuilder getCommunicationIdentityClient() {
-        try {
-            CommunicationClientCredential credential = new CommunicationClientCredential(ACCESSTOKEN);
-            CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
-            builder.endpoint(ENDPOINT)
-                .credential(credential);
-    
-            if (interceptorManager.isPlaybackMode()) {
-                builder.httpClient(interceptorManager.getPlaybackClient());
-                return builder;
-            } else {
-                HttpClient client = new NettyAsyncHttpClientBuilder().build();
-                builder.httpClient(client);
-            }
-    
-            if (!interceptorManager.isLiveMode()) {
-                builder.addPolicy(interceptorManager.getRecordPolicy());
-            }
-    
-            return builder;
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+    protected CommunicationIdentityClientBuilder getCommunicationIdentityClient(HttpClient httpClient) {
+        CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
+        builder.endpoint(ENDPOINT)
+            .accessKey(ACCESSKEY)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+
+        if (getTestMode() == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
-        return null;
+
+        return builder;
+    }
+
+    protected CommunicationIdentityClientBuilder getCommunicationIdentityClientUsingConnectionString(HttpClient httpClient) {
+        CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
+        builder
+            .connectionString(CONNECTION_STRING)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+
+        if (getTestMode() == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        return builder;
     }
 
     private static TestMode initializeTestMode() {

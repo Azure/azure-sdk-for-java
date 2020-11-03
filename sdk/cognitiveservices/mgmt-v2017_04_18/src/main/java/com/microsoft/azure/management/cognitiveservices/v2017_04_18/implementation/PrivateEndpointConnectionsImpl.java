@@ -14,6 +14,7 @@ import com.microsoft.azure.management.cognitiveservices.v2017_04_18.PrivateEndpo
 import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
+import com.microsoft.azure.management.cognitiveservices.v2017_04_18.PrivateEndpointConnectionListResult;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.PrivateEndpointConnection;
 
 class PrivateEndpointConnectionsImpl extends WrapperImpl<PrivateEndpointConnectionsInner> implements PrivateEndpointConnections {
@@ -39,6 +40,18 @@ class PrivateEndpointConnectionsImpl extends WrapperImpl<PrivateEndpointConnecti
 
     private PrivateEndpointConnectionImpl wrapModel(String name) {
         return new PrivateEndpointConnectionImpl(name, this.manager());
+    }
+
+    @Override
+    public Observable<PrivateEndpointConnectionListResult> listAsync(String resourceGroupName, String accountName) {
+        PrivateEndpointConnectionsInner client = this.inner();
+        return client.listAsync(resourceGroupName, accountName)
+        .map(new Func1<PrivateEndpointConnectionListResultInner, PrivateEndpointConnectionListResult>() {
+            @Override
+            public PrivateEndpointConnectionListResult call(PrivateEndpointConnectionListResultInner inner) {
+                return new PrivateEndpointConnectionListResultImpl(inner, manager());
+            }
+        });
     }
 
     @Override

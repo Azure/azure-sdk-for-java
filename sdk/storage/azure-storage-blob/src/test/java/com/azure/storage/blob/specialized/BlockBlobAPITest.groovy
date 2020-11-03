@@ -173,6 +173,26 @@ class BlockBlobAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    def "Stage block retry on transient failure"() {
+        setup:
+        def clientWithFailure = getBlobClient(
+            primaryCredential,
+            blobClient.getBlobUrl(),
+            new TransientFailureInjectingHttpPipelinePolicy()
+        ).getBlockBlobClient()
+
+        when:
+        def data = getRandomByteArray(10)
+        def blockId = getBlockID()
+        clientWithFailure.stageBlock(blockId, new ByteArrayInputStream(data), data.size())
+        blobClient.getBlockBlobClient().commitBlockList([blockId] as List<String>, true)
+
+        then:
+        def os = new ByteArrayOutputStream()
+        blobClient.download(os)
+        os.toByteArray() == data
+    }
+
     def "Stage block from url"() {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
@@ -546,7 +566,7 @@ class BlockBlobAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null           | null
         null     | null       | null        | receivedEtag | null           | null
         null     | null       | null        | null         | garbageLeaseID | null
-        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
+        null     | null       | null        | null         | null           | "\"notfoo\" = 'notbar'"
     }
 
     def "Commit block list error"() {
@@ -1109,7 +1129,7 @@ class BlockBlobAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null           | null
         null     | null       | null        | receivedEtag | null           | null
         null     | null       | null        | null         | garbageLeaseID | null
-        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
+        null     | null       | null        | null         | null           | "\"notfoo\" = 'notbar'"
     }
 
     def "Upload error"() {
@@ -1150,6 +1170,24 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         notThrown(Throwable)
+    }
+
+    def "Upload retry on transient failure"() {
+        setup:
+        def clientWithFailure = getBlobClient(
+            primaryCredential,
+            blobClient.getBlobUrl(),
+            new TransientFailureInjectingHttpPipelinePolicy()
+        ).getBlockBlobClient()
+
+        when:
+        def data = getRandomByteArray(10)
+        clientWithFailure.upload(new ByteArrayInputStream(data), data.size(), true)
+
+        then:
+        def os = new ByteArrayOutputStream()
+        blobClient.download(os)
+        os.toByteArray() == data
     }
 
     @Requires({ liveMode() })
@@ -1242,10 +1280,10 @@ class BlockBlobAPITest extends APISpec {
         blobAsyncClient.uploadWithResponse(new BlobParallelUploadOptions(flux).setParallelTransferOptions(parallelTransferOptions).setComputeMd5(true)).block().getStatusCode() == 201
 
         where:
-        size           | maxSingleUploadSize | blockSize               | byteBufferCount
-        Constants.KB   | null                | null                    | 1                  // Simple case where uploadFull is called.
-        Constants.KB   | Constants.KB        | 500 * Constants.KB      | 1000               // uploadChunked 2 blocks staged
-        Constants.KB   | Constants.KB        | 5 * Constants.KB        | 1000               // uploadChunked 100 blocks staged
+        size         | maxSingleUploadSize | blockSize          | byteBufferCount
+        Constants.KB | null                | null               | 1                  // Simple case where uploadFull is called.
+        Constants.KB | Constants.KB        | 500 * Constants.KB | 1000               // uploadChunked 2 blocks staged
+        Constants.KB | Constants.KB        | 5 * Constants.KB   | 1000               // uploadChunked 100 blocks staged
     }
 
     def compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {
@@ -1417,12 +1455,13 @@ class BlockBlobAPITest extends APISpec {
             new TransientFailureInjectingHttpPipelinePolicy()
         )
 
+        when:
         def dataList = [] as List<ByteBuffer>
         dataSizeList.each { size -> dataList.add(getRandomData(size)) }
         def uploadOperation = clientWithFailure.upload(Flux.fromIterable(dataList).publish().autoConnect(),
             new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * Constants.MB), true)
 
-        expect:
+        then:
         StepVerifier.create(uploadOperation.then(collectBytesInBuffer(blockBlobAsyncClient.download())))
             .assertNext({ assert compareListToBuffer(dataList, it) })
             .verifyComplete()
@@ -1433,8 +1472,41 @@ class BlockBlobAPITest extends APISpec {
 
         where:
         dataSizeList                         | blockCount
+        [10, 100, 1000, 10000]               | 0
         [4 * Constants.MB + 1, 10]           | 2
         [4 * Constants.MB, 4 * Constants.MB] | 2
+    }
+
+    @Unroll
+    @Requires({ liveMode() })
+    def "Buffered upload sync handle pathing with transient failure"() {
+        /*
+        This test ensures that although we no longer mark and reset the source stream for buffered upload, it still
+        supports retries in all cases for the sync client.
+         */
+        setup:
+        def clientWithFailure = getBlobClient(
+            primaryCredential,
+            blobClient.getBlobUrl(),
+            new TransientFailureInjectingHttpPipelinePolicy()
+        )
+
+        def data = getRandomByteArray(dataSize)
+        clientWithFailure.uploadWithResponse(new ByteArrayInputStream(data), dataSize,
+            new ParallelTransferOptions().setMaxSingleUploadSizeLong(2 * Constants.MB)
+                .setBlockSizeLong(2 * Constants.MB), null, null, null, null, null, null)
+
+        expect:
+        def os = new ByteArrayOutputStream(dataSize)
+        blobClient.download(os)
+        data == os.toByteArray()
+
+        blobClient.getBlockBlobClient().listBlocks(BlockListType.ALL).getCommittedBlocks().size() == blockCount
+
+        where:
+        dataSize              | blockCount
+        11110                 | 0
+        2 * Constants.MB + 11 | 2
     }
 
     def "Buffered upload illegal arguments null"() {
@@ -1447,8 +1519,8 @@ class BlockBlobAPITest extends APISpec {
     def "Buffered upload illegal args out of bounds"() {
         when:
         new ParallelTransferOptions()
-        .setBlockSizeLong(bufferSize)
-        .setMaxConcurrency(numBuffs)
+            .setBlockSizeLong(bufferSize)
+            .setMaxConcurrency(numBuffs)
 
         then:
         thrown(IllegalArgumentException)
@@ -1798,6 +1870,20 @@ class BlockBlobAPITest extends APISpec {
         file.delete()
     }
 
+    def "Buffered upload nonMarkableStream"() {
+        setup:
+        def file = getRandomFile(10)
+        def fileStream = new FileInputStream(file)
+        def outFile = getRandomFile(10)
+
+        when:
+        blobClient.upload(fileStream, file.size(), true)
+
+        then:
+        blobClient.downloadToFile(outFile.toPath().toString(), true)
+        compareFiles(file, outFile, 0, file.size())
+    }
+
     def "Get Container Name"() {
         expect:
         containerName == blockBlobClient.getContainerName()
@@ -1851,5 +1937,19 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         thrown(IllegalArgumentException)
+    }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+    def "Per call policy"() {
+        setup:
+        def specialBlob = getSpecializedBuilder(primaryCredential, blockBlobClient.getBlobUrl(), getPerCallVersionPolicy())
+            .buildBlockBlobClient()
+
+        when:
+        def response = specialBlob.getPropertiesWithResponse(null, null, null)
+
+        then:
+        notThrown(BlobStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
 }

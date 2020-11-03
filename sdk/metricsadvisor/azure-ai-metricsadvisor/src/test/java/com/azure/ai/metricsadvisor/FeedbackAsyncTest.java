@@ -37,7 +37,6 @@ import static com.azure.ai.metricsadvisor.models.FeedbackType.CHANGE_POINT;
 import static com.azure.ai.metricsadvisor.models.FeedbackType.COMMENT;
 import static com.azure.ai.metricsadvisor.models.FeedbackType.PERIOD;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FeedbackAsyncTest extends FeedbackTestBase {
     private MetricsAdvisorAsyncClient client;
@@ -148,14 +147,18 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
     void testListMetricFeedbackFilterByDimensionFilter(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
+        creatMetricFeedbackRunner(inputMetricFeedback -> {
+            client.createMetricFeedback(METRIC_ID, inputMetricFeedback).block();
 
-        // Act & Assert
-        StepVerifier.create(client.listMetricFeedbacks(METRIC_ID,
-            new ListMetricFeedbackOptions().setFilter(new ListMetricFeedbackFilter()
-                .setDimensionFilter(new DimensionKey(DIMENSION_FILTER))).setTop(10)))
-            .thenConsumeWhile(metricFeedback ->
-                metricFeedback.getDimensionFilter().asMap().keySet().stream().anyMatch(DIMENSION_FILTER::containsKey))
-            .verifyComplete();
+            // Act & Assert
+            StepVerifier.create(client.listMetricFeedbacks(METRIC_ID,
+                new ListMetricFeedbackOptions().setFilter(new ListMetricFeedbackFilter()
+                    .setDimensionFilter(new DimensionKey(DIMENSION_FILTER))).setTop(10)))
+                .thenConsumeWhile(metricFeedback ->
+                    metricFeedback.getDimensionFilter().asMap().keySet().stream().anyMatch(DIMENSION_FILTER::containsKey))
+                .verifyComplete();
+        }, ANOMALY);
+
     }
 
     /**
@@ -193,9 +196,9 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
                 new ListMetricFeedbackOptions().setFilter(new ListMetricFeedbackFilter()
                     .setStartTime(createdMetricFeedback.getCreatedTime())
                     .setTimeMode(FeedbackQueryTimeMode.FEEDBACK_CREATED_TIME))))
-                .assertNext(metricFeedback ->
-                    assertTrue(metricFeedback.getCreatedTime().isAfter(createdMetricFeedback.getCreatedTime())
-                        || metricFeedback.getCreatedTime().isEqual(createdMetricFeedback.getCreatedTime())))
+                .thenConsumeWhile(metricFeedback ->
+                    metricFeedback.getCreatedTime().isAfter(createdMetricFeedback.getCreatedTime())
+                        || metricFeedback.getCreatedTime().isEqual(createdMetricFeedback.getCreatedTime()))
                 .verifyComplete();
 
         }, ANOMALY);
@@ -243,14 +246,18 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
     public void getMetricFeedbackValidId(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
-
-        // Act & Assert
-        StepVerifier.create(client.getMetricFeedbackWithResponse(COMMENT_FEEDBACK_ID))
-            .assertNext(metricFeedbackResponse -> {
-                assertEquals(metricFeedbackResponse.getStatusCode(), HttpResponseStatus.OK.code());
-                validateMetricFeedbackResult(getCommentFeedback(), metricFeedbackResponse.getValue(), COMMENT);
-            })
-            .verifyComplete();
+        creatMetricFeedbackRunner(expectedMetricFeedback -> {
+            // Act & Assert
+            MetricFeedback createdMetricFeedback
+                = client.createMetricFeedback(METRIC_ID, expectedMetricFeedback).block();
+            // Act & Assert
+            StepVerifier.create(client.getMetricFeedbackWithResponse(createdMetricFeedback.getId()))
+                .assertNext(metricFeedbackResponse -> {
+                    assertEquals(metricFeedbackResponse.getStatusCode(), HttpResponseStatus.OK.code());
+                    validateMetricFeedbackResult(getCommentFeedback(), metricFeedbackResponse.getValue(), COMMENT);
+                })
+                .verifyComplete();
+        }, COMMENT);
     }
 
     // Create metric feedback
@@ -284,9 +291,8 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
 
             // Act & Assert
             StepVerifier.create(client.createMetricFeedback(METRIC_ID, expectedMetricFeedback))
-                .assertNext(createdMetricFeedback -> {
-                    validateMetricFeedbackResult(expectedMetricFeedback, createdMetricFeedback, ANOMALY);
-                })
+                .assertNext(createdMetricFeedback ->
+                    validateMetricFeedbackResult(expectedMetricFeedback, createdMetricFeedback, ANOMALY))
                 .verifyComplete(), ANOMALY);
     }
 
@@ -318,9 +324,7 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
         creatMetricFeedbackRunner(expectedMetricFeedback ->
             // Act & Assert
             StepVerifier.create(client.createMetricFeedback(METRIC_ID, expectedMetricFeedback))
-                .assertNext(createdMetricFeedback -> {
-                    validateMetricFeedbackResult(expectedMetricFeedback, createdMetricFeedback, CHANGE_POINT);
-                })
+                .assertNext(createdMetricFeedback -> validateMetricFeedbackResult(expectedMetricFeedback, createdMetricFeedback, CHANGE_POINT))
                 .verifyComplete(), CHANGE_POINT);
     }
 }

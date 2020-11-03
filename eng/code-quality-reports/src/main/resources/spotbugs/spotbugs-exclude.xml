@@ -1279,6 +1279,78 @@
     <Bug pattern="SE_BAD_FIELD" />
   </Match>
 
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModel" />
+    <Field name="modelName" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModel" />
+    <Field name="customFormModelProperties" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModelInfo" />
+    <Field name="modelName" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModelInfo" />
+    <Field name="customFormModelProperties" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormSubmodel" />
+    <Field name="modelId" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModelProperties" />
+    <Field name="isComposed" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.training.models.TrainingDocumentInfo" />
+    <Field name="modelId" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.models.RecognizedForm" />
+    <Field name="formTypeConfidence" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.models.RecognizedForm" />
+    <Field name="modelId" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.models.FormSelectionMark" />
+    <Field name="confidence" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.models.FormSelectionMark" />
+    <Field name="state" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.models.FormPage" />
+    <Field name="selectionMarks" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
   <!-- Exception is required to catch, ref: code comment in the OrderbyRowComparer::compare() method  -->
   <Match>
     <Class name="com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer"/>
@@ -1511,6 +1583,13 @@
     <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
     <Method name="rntbdContext"/>
     <Bug pattern="NP_NONNULL_PARAM_VIOLATION"/>
+  </Match>
+
+  <!-- Exception is needed to catch a SslException masked as a RuntimeException by Netty -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
+    <Method name="close"/>
+    <Bug pattern="BC_IMPOSSIBLE_INSTANCEOF"/>
   </Match>
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9092 -->
@@ -2171,11 +2250,19 @@
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
 
+  <!-- Exclude for Fluent Lite generated code -->
+  <Match>
+    <Or>
+      <Package name="~com\.azure\.resourcemanager(\.[^.]+)*\.generated(\.[^.]+)*"/>
+    </Or>
+    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE,SIC_INNER_SHOULD_BE_STATIC_ANON,SKIPPED_CLASS_TOO_BIG,UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
   <!-- Exclude from spring related classes -->
   <Match>
     <Or>
-      <Class name="com.microsoft.azure.utils.PropertyLoader"/> <!-- false positive -->
-      <Class name="com.microsoft.azure.spring.support.GetHashMac"/> <!-- false positive -->
+      <Class name="com.azure.spring.support.GetHashMac"/> <!-- false positive -->
+      <Class name="com.azure.spring.utils.PropertyLoader"/> <!-- false positive -->
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
                   NP_LOAD_OF_KNOWN_NULL_VALUE,
@@ -2185,22 +2272,22 @@
 
   <Match>
     <Or>
-      <Class name="com.microsoft.azure.telemetry.TelemetryEventData$EventData$CustomData"/> <!-- false positive -->
+      <Class name="com.azure.spring.telemetry.TelemetryEventData$EventData$CustomData"/> <!-- false positive -->
     </Or>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
 
   <Match>
     <Or>
-      <Class name="com.microsoft.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate$QueueMessageHandler"/> <!-- false positive -->
-      <Class name="com.microsoft.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate$TopicMessageHandler"/> <!-- false positive -->
+      <Class name="com.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate$QueueMessageHandler"/> <!-- false positive -->
+      <Class name="com.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate$TopicMessageHandler"/> <!-- false positive -->
     </Or>
     <Method name="OnCloseSessionAsync"/>
     <Bug pattern="NM_METHOD_NAMING_CONVENTION"/>
   </Match>
 
   <Match>
-    <Class name="com.microsoft.azure.spring.messaging.config.AzureListenerEndpointRegistrar" />
+    <Class name="com.azure.spring.messaging.config.AzureListenerEndpointRegistrar" />
     <Bug pattern="NP_NULL_ON_SOME_PATH"/>
   </Match>
 
@@ -2296,79 +2383,35 @@
     <Method name="getUserName" />
     <Bug pattern="NM_CONFUSING" />
   </Match>
-
-
-  <!-- id field is set in AnomalyDetectionConfiguration using PrivateFieldAccessHelper -->
-	<Match>
-		<Class name="com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration"/>
-		<Field name="id"/>
-		<Bug pattern="UWF_UNWRITTEN_FIELD"/>
-	</Match>
-
-  <!-- metricId field is set in AnomalyDetectionConfiguration using PrivateFieldAccessHelper -->
-	<Match>
-		<Class name="com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration"/>
-		<Field name="metricId"/>
-		<Bug pattern="UWF_UNWRITTEN_FIELD"/>
-	</Match>
-
-  <!-- id field is set in HookTransforms using PrivateFieldAccessHelper -->
-	<Match>
-		<Class name="com.azure.ai.metricsadvisor.models.WebHook"/>
-		<Field name="id"/>
-		<Bug pattern="UWF_UNWRITTEN_FIELD"/>
-	</Match>
-
-  <!-- admins field is set in HookTransforms using PrivateFieldAccessHelper -->
+ 
+  <!-- Disabling false positives in azure-core -->
+  <!-- This Issue has been resolved as per spotbugs's recommended solution but the static checker still flags it, its a known issue with this rule. -->
   <Match>
-		<Class name="com.azure.ai.metricsadvisor.models.WebHook"/>
-		<Field name="admins"/>
-		<Bug pattern="UWF_UNWRITTEN_FIELD"/>
-	</Match>
-
-  <!-- id field is set in HookTransforms using PrivateFieldAccessHelper -->
-	<Match>
-		<Class name="com.azure.ai.metricsadvisor.models.EmailHook"/>
-		<Field name="id"/>
-		<Bug pattern="UWF_UNWRITTEN_FIELD"/>
-	</Match>
-
-  <!-- admins field is set in HookTransforms using PrivateFieldAccessHelper -->
-  <Match>
-		<Class name="com.azure.ai.metricsadvisor.models.EmailHook"/>
-		<Field name="admins"/>
-		<Bug pattern="UWF_UNWRITTEN_FIELD"/>
-	</Match>
-
-  <!-- All field in set in MetricSeriesData are set using PrivateFieldAccessHelper -->
-  <Match>
-    <Class name="com.azure.ai.metricsadvisor.models.MetricSeriesData" />
-    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+      <Class name="com.azure.core.util.logging.ClientLogger" />
+      <Bug pattern="CRLF_INJECTION_LOGS" />
   </Match>
 
-  <!-- id field is set in AnomalyAlertConfiguration using PrivateFieldAccessHelper -->
+  <!-- The predictable randomness doesn't expose any crucial detail in this case. -->
   <Match>
-    <Class name="com.azure.ai.metricsadvisor.models.AnomalyAlertConfiguration" />
-    <Field name="id" />
-    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+      <Class name="com.azure.core.http.policy.ExponentialBackoff" />
+      <Bug pattern="PREDICTABLE_RANDOM" />
   </Match>
 
-  <!-- All fields in IncidentRootCause are set using PrivateFieldAccessHelper -->
+  <!-- In the default log level azure-core will not print the stack trace, but when the user opt-in for the lowest level log (DEBUG) we'll print it, which is expected. -->
   <Match>
-    <Class name="com.azure.ai.metricsadvisor.models.IncidentRootCause" />
-    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+      <Class name="com.azure.core.implementation.logging.DefaultLogger" />
+      <Bug pattern="INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE" />
   </Match>
 
-  <!-- All fields in MetricSeriesDefinition are set using PrivateFieldAccessHelper -->
+  <!-- False positives -->
   <Match>
-    <Class name="com.azure.ai.metricsadvisor.models.MetricSeriesDefinition" />
-    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+      <Class name="com.azure.security.keyvault.jca.KeyVaultKeyStore" />
+      <Method name="getFilenames" />
+      <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE" />
   </Match>
-
-  <!-- id field is set in MetricAnomalyFeedback using PrivateFieldAccessHelper -->
   <Match>
-    <Class name="com.azure.ai.metricsadvisor.models.MetricAnomalyFeedback" />
-    <Field name="detectionConfiguration" />
-    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+      <Class name="com.azure.security.keyvault.jca.LegacyRestClient" />
+      <Method name="~(get|post)" />
+      <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE" />
   </Match>
 </FindBugsFilter>

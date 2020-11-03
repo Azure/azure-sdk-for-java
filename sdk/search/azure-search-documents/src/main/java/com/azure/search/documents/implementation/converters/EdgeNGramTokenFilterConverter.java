@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.indexes.models.EdgeNGramTokenFilter;
 import com.azure.search.documents.indexes.models.EdgeNGramTokenFilterSide;
 
@@ -25,7 +24,7 @@ public final class EdgeNGramTokenFilterConverter {
             return null;
         }
         EdgeNGramTokenFilter edgeNGramTokenFilter = new EdgeNGramTokenFilter(obj.getName());
-        PrivateFieldAccessHelper.set(edgeNGramTokenFilter, ODATA_FIELD_NAME, V1_ODATA_TYPE);
+        EdgeNGramTokenFilterHelper.setODataType(edgeNGramTokenFilter, V1_ODATA_TYPE);
 
         Integer maxGram = obj.getMaxGram();
         edgeNGramTokenFilter.setMaxGram(maxGram);
@@ -49,7 +48,7 @@ public final class EdgeNGramTokenFilterConverter {
             return null;
         }
         EdgeNGramTokenFilter edgeNGramTokenFilter = new EdgeNGramTokenFilter(obj.getName());
-        PrivateFieldAccessHelper.set(edgeNGramTokenFilter, ODATA_FIELD_NAME, V2_ODATA_TYPE);
+        EdgeNGramTokenFilterHelper.setODataType(edgeNGramTokenFilter, V2_ODATA_TYPE);
 
         Integer maxGram = obj.getMaxGram();
         edgeNGramTokenFilter.setMaxGram(maxGram);
@@ -74,9 +73,14 @@ public final class EdgeNGramTokenFilterConverter {
             return null;
         }
 
+<<<<<<< HEAD
         String identifier = PrivateFieldAccessHelper.get(obj, ODATA_FIELD_NAME, String.class);
         com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenFilterSide side = obj.getSide() == null ?
             null : EdgeNGramTokenFilterSideConverter.map(obj.getSide());
+=======
+        String identifier = EdgeNGramTokenFilterHelper.getODataType(obj);
+        EdgeNGramTokenFilterSide side = obj.getSide() == null ? null : obj.getSide();
+>>>>>>> bfd056a1647f7232e7d7cb82ca2a5ad85b9bb6ec
 
         if (V1_ODATA_TYPE.equals(identifier)) {
             com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenFilter edgeNGramTokenFilter =

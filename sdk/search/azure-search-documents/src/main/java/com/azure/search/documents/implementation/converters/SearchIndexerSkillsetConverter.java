@@ -35,11 +35,13 @@ public final class SearchIndexerSkillsetConverter {
             searchIndexerSkillset.setCognitiveServicesAccount(cognitiveServicesAccount);
         }
 
-        String description = obj.getDescription();
-        searchIndexerSkillset.setDescription(description);
+        searchIndexerSkillset.setDescription(obj.getDescription());
+        searchIndexerSkillset.setETag(obj.getETag());
 
-        String eTag = obj.getETag();
-        searchIndexerSkillset.setETag(eTag);
+        if (obj.getEncryptionKey() != null) {
+            searchIndexerSkillset.setEncryptionKey(SearchResourceEncryptionKeyConverter.map(obj.getEncryptionKey()));
+        }
+
         return searchIndexerSkillset;
     }
 
@@ -64,11 +66,13 @@ public final class SearchIndexerSkillsetConverter {
             searchIndexerSkillset.setCognitiveServicesAccount(cognitiveServicesAccount);
         }
 
-        String description = obj.getDescription();
-        searchIndexerSkillset.setDescription(description);
+        searchIndexerSkillset.setDescription(obj.getDescription());
+        searchIndexerSkillset.setETag(obj.getETag());
 
-        String eTag = obj.getETag();
-        searchIndexerSkillset.setETag(eTag);
+        if (obj.getEncryptionKey() != null) {
+            searchIndexerSkillset.setEncryptionKey(SearchResourceEncryptionKeyConverter.map(obj.getEncryptionKey()));
+        }
+
         return searchIndexerSkillset;
     }
 

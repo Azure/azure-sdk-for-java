@@ -341,7 +341,7 @@ public class DataLakeFileClient extends DataLakePathClient {
 
         Objects.requireNonNull(data);
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
-            BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
+            BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true);
         Mono<Response<Void>> response = dataLakeFileAsyncClient.appendWithResponse(
             fbb.subscribeOn(Schedulers.elastic()), fileOffset, length, contentMd5, leaseId, context);
 
@@ -569,7 +569,7 @@ public class DataLakeFileClient extends DataLakePathClient {
                     .setRange(Transforms.toBlobRange(range)).setParallelTransferOptions(parallelTransferOptions)
                     .setDownloadRetryOptions(Transforms.toBlobDownloadRetryOptions(downloadRetryOptions))
                     .setRequestConditions(Transforms.toBlobRequestConditions(requestConditions))
-                    .setRangeGetContentMd5(rangeGetContentMd5).setOpenOptions(openOptions), timeout,
+                    .setRetrieveContentRangeMd5(rangeGetContentMd5).setOpenOptions(openOptions), timeout,
                 context);
             return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue()));
         }, logger);

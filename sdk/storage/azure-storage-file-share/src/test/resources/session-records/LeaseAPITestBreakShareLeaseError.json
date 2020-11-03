@@ -1,61 +1,61 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.file.core.windows.net/leaseapitestbreakshareleaseerror78059f381a80215a?restype=share",
+    "Uri" : "https://REDACTED.file.core.windows.net/leaseapitestbreakshareleaseerror64468074e8fa4d57?restype=share",
     "Headers" : {
       "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "df664448-b96f-4568-ba6d-bd3dc764c8ef"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "35a320dd-2527-4cfd-9bb5-73b172e8f44c"
     },
     "Response" : {
       "x-ms-version" : "2020-02-10",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D84479C2E3F3FD",
-      "Last-Modified" : "Wed, 19 Aug 2020 19:55:02 GMT",
+      "ETag" : "0x8D8671CA94AE9F5",
+      "Last-Modified" : "Fri, 02 Oct 2020 21:46:46 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "d677cc7a-601a-006f-2262-76d031000000",
-      "Date" : "Wed, 19 Aug 2020 19:55:02 GMT",
-      "x-ms-client-request-id" : "df664448-b96f-4568-ba6d-bd3dc764c8ef"
+      "x-ms-request-id" : "660dd353-301a-00a3-1a05-99f447000000",
+      "Date" : "Fri, 02 Oct 2020 21:46:46 GMT",
+      "x-ms-client-request-id" : "35a320dd-2527-4cfd-9bb5-73b172e8f44c"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.file.core.windows.net/leaseapitestbreakshareleaseerror78059f381a80215a/leaseapitestbreakshareleaseerror1501768bca021c87",
+    "Uri" : "https://REDACTED.file.core.windows.net/leaseapitestbreakshareleaseerror64468074e8fa4d57/leaseapitestbreakshareleaseerror70462778d6686a18",
     "Headers" : {
       "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "d157a4ea-4d98-4181-b58f-8727cbc5dd90"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ee1e29a0-9f0c-4f6f-93c9-e27ddaba7187"
     },
     "Response" : {
       "x-ms-version" : "2020-02-10",
-      "x-ms-file-permission-key" : "4010187179898695473*11459378189709739967",
+      "x-ms-file-permission-key" : "5144323600546320195*17277118026500876237",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2020-08-19T19:55:02.5115857Z",
-      "Last-Modified" : "Wed, 19 Aug 2020 19:55:02 GMT",
+      "x-ms-file-creation-time" : "2020-10-02T21:46:47.0984634Z",
+      "Last-Modified" : "Fri, 02 Oct 2020 21:46:47 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Wed, 19 Aug 2020 19:55:02 GMT",
-      "ETag" : "0x8D84479C2EF3ED1",
+      "Date" : "Fri, 02 Oct 2020 21:46:46 GMT",
+      "ETag" : "0x8D8671CA95B03BA",
       "x-ms-file-attributes" : "Archive",
-      "x-ms-file-change-time" : "2020-08-19T19:55:02.5115857Z",
+      "x-ms-file-change-time" : "2020-10-02T21:46:47.0984634Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "d677cc80-601a-006f-2762-76d031000000",
-      "x-ms-client-request-id" : "d157a4ea-4d98-4181-b58f-8727cbc5dd90",
-      "x-ms-file-last-write-time" : "2020-08-19T19:55:02.5115857Z"
+      "x-ms-request-id" : "660dd355-301a-00a3-1b05-99f447000000",
+      "x-ms-client-request-id" : "ee1e29a0-9f0c-4f6f-93c9-e27ddaba7187",
+      "x-ms-file-last-write-time" : "2020-10-02T21:46:47.0984634Z"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.file.core.windows.net/jtsleaseapitestbreakshareleaseerror017458e77a83b982e?comp=lease&restype=share",
+    "Uri" : "https://REDACTED.file.core.windows.net/jtsleaseapitestbreakshareleaseerror071087a5f225d2e86?comp=lease&restype=share",
     "Headers" : {
       "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9afb12e9-0b9a-4ab3-91e7-4d925f792331"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8e538cdb-4379-4155-88cb-8bf148cdd261"
     },
     "Response" : {
       "x-ms-version" : "2020-02-10",
@@ -64,13 +64,13 @@
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "d677cc81-601a-006f-2862-76d031000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:d677cc81-601a-006f-2862-76d031000000\nTime:2020-08-19T19:55:02.5786810Z</Message></Error>",
-      "Date" : "Wed, 19 Aug 2020 19:55:02 GMT",
-      "x-ms-client-request-id" : "9afb12e9-0b9a-4ab3-91e7-4d925f792331",
+      "x-ms-request-id" : "660dd356-301a-00a3-1c05-99f447000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:660dd356-301a-00a3-1c05-99f447000000\nTime:2020-10-02T21:46:47.1880799Z</Message></Error>",
+      "Date" : "Fri, 02 Oct 2020 21:46:46 GMT",
+      "x-ms-client-request-id" : "8e538cdb-4379-4155-88cb-8bf148cdd261",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "leaseapitestbreakshareleaseerror78059f381a80215a", "leaseapitestbreakshareleaseerror1501768bca021c87", "jtsleaseapitestbreakshareleaseerror017458e77a83b982e" ]
+  "variables" : [ "leaseapitestbreakshareleaseerror64468074e8fa4d57", "leaseapitestbreakshareleaseerror70462778d6686a18", "jtsleaseapitestbreakshareleaseerror071087a5f225d2e86" ]
 }

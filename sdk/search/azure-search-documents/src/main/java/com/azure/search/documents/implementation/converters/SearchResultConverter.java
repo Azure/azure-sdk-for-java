@@ -3,9 +3,9 @@
 
 package com.azure.search.documents.implementation.converters;
 
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.search.documents.SearchDocument;
-import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.models.SearchResult;
 
 import java.util.List;
@@ -30,11 +30,12 @@ public final class SearchResultConverter {
             Map<String, List<String>> highlights =
                 obj.getHighlights().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
                     Map.Entry::getValue));
-            PrivateFieldAccessHelper.set(searchResult, "highlights", highlights);
+            SearchResultHelper.setHighlights(searchResult, highlights);
         }
-        PrivateFieldAccessHelper.set(searchResult, "jsonSerializer", serializer);
+        SearchResultHelper.setJsonSerializer(searchResult, (JsonSerializer) serializer);
 
         SearchDocument additionalProperties = new SearchDocument(obj.getAdditionalProperties());
+<<<<<<< HEAD
         PrivateFieldAccessHelper.set(searchResult, "additionalProperties", additionalProperties);
         return searchResult;
     }
@@ -59,6 +60,9 @@ public final class SearchResultConverter {
         SearchDocument additionalProperties = obj.getDocument(SearchDocument.class);
         PrivateFieldAccessHelper.set(searchResult, "additionalProperties", additionalProperties);
         searchResult.validate();
+=======
+        SearchResultHelper.setAdditionalProperties(searchResult, additionalProperties);
+>>>>>>> bfd056a1647f7232e7d7cb82ca2a5ad85b9bb6ec
         return searchResult;
     }
 

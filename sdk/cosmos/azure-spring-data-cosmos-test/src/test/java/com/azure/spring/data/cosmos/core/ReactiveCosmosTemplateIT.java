@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import static com.azure.spring.data.cosmos.common.TestConstants.ADDRESSES;
+import static com.azure.spring.data.cosmos.common.TestConstants.AGE;
 import static com.azure.spring.data.cosmos.common.TestConstants.FIRST_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.HOBBIES;
 import static com.azure.spring.data.cosmos.common.TestConstants.LAST_NAME;
@@ -57,19 +58,19 @@ import static org.junit.Assert.fail;
 public class ReactiveCosmosTemplateIT {
     private static final Person TEST_PERSON = new Person(TestConstants.ID_1,
         TestConstants.FIRST_NAME,
-        TestConstants.LAST_NAME, TestConstants.HOBBIES, TestConstants.ADDRESSES);
+        TestConstants.LAST_NAME, TestConstants.HOBBIES, TestConstants.ADDRESSES, AGE);
 
     private static final Person TEST_PERSON_2 = new Person(TestConstants.ID_2,
         TestConstants.NEW_FIRST_NAME,
-        TestConstants.NEW_LAST_NAME, TestConstants.HOBBIES, TestConstants.ADDRESSES);
+        TestConstants.NEW_LAST_NAME, TestConstants.HOBBIES, TestConstants.ADDRESSES, AGE);
 
     private static final Person TEST_PERSON_3 = new Person(TestConstants.ID_3,
         TestConstants.NEW_FIRST_NAME,
-        TestConstants.NEW_LAST_NAME, TestConstants.HOBBIES, TestConstants.ADDRESSES);
+        TestConstants.NEW_LAST_NAME, TestConstants.HOBBIES, TestConstants.ADDRESSES, AGE);
 
     private static final Person TEST_PERSON_4 = new Person(TestConstants.ID_4,
         TestConstants.NEW_FIRST_NAME,
-        TestConstants.NEW_LAST_NAME, TestConstants.HOBBIES, TestConstants.ADDRESSES);
+        TestConstants.NEW_LAST_NAME, TestConstants.HOBBIES, TestConstants.ADDRESSES, AGE);
 
     private static final String PRECONDITION_IS_NOT_MET = "is not met";
     private static final String WRONG_ETAG = "WRONG_ETAG";
@@ -233,7 +234,7 @@ public class ReactiveCosmosTemplateIT {
 
     @Test
     public void testInsertShouldFailIfColumnNotAnnotatedWithAutoGenerate() {
-        final Person person = new Person(null, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES);
+        final Person person = new Person(null, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES, AGE);
         Mono<GenIdEntity> entityMono = cosmosTemplate.insert(Person.class.getSimpleName(),
             person, new PartitionKey(person.getLastName()));
         StepVerifier.create(entityMono).verifyError(CosmosAccessException.class);
@@ -269,7 +270,7 @@ public class ReactiveCosmosTemplateIT {
     public void testOptimisticLockWhenUpdatingWithWrongEtag() {
         final Person updated = new Person(TEST_PERSON.getId(), TestConstants.UPDATED_FIRST_NAME,
             TEST_PERSON.getLastName(), TEST_PERSON.getHobbies(),
-            TEST_PERSON.getShippingAddresses());
+            TEST_PERSON.getShippingAddresses(), AGE);
         updated.set_etag(WRONG_ETAG);
 
         try {

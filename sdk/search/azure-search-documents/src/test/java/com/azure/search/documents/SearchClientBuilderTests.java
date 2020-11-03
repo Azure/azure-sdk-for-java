@@ -4,17 +4,25 @@
 package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Header;
 import com.azure.search.documents.indexes.SearchIndexClientBuilderTests;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.net.MalformedURLException;
 import java.security.SecureRandom;
+import java.util.Collections;
 
 import static com.azure.search.documents.indexes.SearchIndexClientBuilderTests.request;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SearchClientBuilderTests {
     private final AzureKeyCredential searchApiKeyCredential = new AzureKeyCredential("0123");
@@ -134,5 +142,55 @@ public class SearchClientBuilderTests {
             request(searchAsyncClient.getEndpoint())))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
+    }
+
+    @Test
+    public void clientOptionsIsPreferredOverLogOptions() {
+        SearchClient searchClient = new SearchClientBuilder()
+            .endpoint(searchEndpoint)
+            .credential(searchApiKeyCredential)
+            .indexName("test_builder")
+            .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
+            .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
+            .httpClient(httpRequest -> {
+                assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("aNewApplication"));
+                return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
+            })
+            .buildClient();
+
+        assertThrows(RuntimeException.class, searchClient::getDocumentCount);
+    }
+
+    @Test
+    public void applicationIdFallsBackToLogOptions() {
+        SearchClient searchClient = new SearchClientBuilder()
+            .endpoint(searchEndpoint)
+            .credential(searchApiKeyCredential)
+            .indexName("test_builder")
+            .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
+            .httpClient(httpRequest -> {
+                assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("anOldApplication"));
+                return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
+            })
+            .buildClient();
+
+        assertThrows(RuntimeException.class, searchClient::getDocumentCount);
+    }
+
+    @Test
+    public void clientOptionHeadersAreAddedLast() {
+        SearchClient searchClient = new SearchClientBuilder()
+            .endpoint(searchEndpoint)
+            .credential(searchApiKeyCredential)
+            .indexName("test_builder")
+            .clientOptions(new ClientOptions()
+                .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
+            .httpClient(httpRequest -> {
+                assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
+                return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
+            })
+            .buildClient();
+
+        assertThrows(RuntimeException.class, searchClient::getDocumentCount);
     }
 }

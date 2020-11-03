@@ -32,7 +32,11 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-search-documents</artifactId>
+<<<<<<< HEAD
       <version>11.1.1</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
+=======
+      <version>11.2.0-beta.3</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
+>>>>>>> bfd056a1647f7232e7d7cb82ca2a5ad85b9bb6ec
     </dependency>
   </dependencies>
 

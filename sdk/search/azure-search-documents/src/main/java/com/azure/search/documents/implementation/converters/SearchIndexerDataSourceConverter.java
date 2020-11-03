@@ -43,8 +43,7 @@ public final class SearchIndexerDataSourceConverter {
             searchIndexerDataSourceConnection.setDataChangeDetectionPolicy(dataChangeDetectionPolicy);
         }
 
-        String description = obj.getDescription();
-        searchIndexerDataSourceConnection.setDescription(description);
+        searchIndexerDataSourceConnection.setDescription(obj.getDescription());
 
         if (obj.getDataDeletionDetectionPolicy() != null) {
             DataDeletionDetectionPolicy dataDeletionDetectionPolicy =
@@ -52,8 +51,12 @@ public final class SearchIndexerDataSourceConverter {
             searchIndexerDataSourceConnection.setDataDeletionDetectionPolicy(dataDeletionDetectionPolicy);
         }
 
-        String eTag = obj.getETag();
-        searchIndexerDataSourceConnection.setETag(eTag);
+        searchIndexerDataSourceConnection.setETag(obj.getETag());
+
+        if (obj.getEncryptionKey() != null) {
+            searchIndexerDataSourceConnection
+                .setEncryptionKey(SearchResourceEncryptionKeyConverter.map(obj.getEncryptionKey()));
+        }
 
         return searchIndexerDataSourceConnection;
     }
@@ -85,8 +88,7 @@ public final class SearchIndexerDataSourceConverter {
             searchIndexerDataSource.setDataChangeDetectionPolicy(dataChangeDetectionPolicy);
         }
 
-        String description = obj.getDescription();
-        searchIndexerDataSource.setDescription(description);
+        searchIndexerDataSource.setDescription(obj.getDescription());
 
         if (obj.getDataDeletionDetectionPolicy() != null) {
             com.azure.search.documents.indexes.implementation.models.DataDeletionDetectionPolicy dataDeletionDetectionPolicy
@@ -94,8 +96,11 @@ public final class SearchIndexerDataSourceConverter {
             searchIndexerDataSource.setDataDeletionDetectionPolicy(dataDeletionDetectionPolicy);
         }
 
-        String eTag = obj.getETag();
-        searchIndexerDataSource.setETag(eTag);
+        searchIndexerDataSource.setETag(obj.getETag());
+
+        if (obj.getEncryptionKey() != null) {
+            searchIndexerDataSource.setEncryptionKey(SearchResourceEncryptionKeyConverter.map(obj.getEncryptionKey()));
+        }
 
         return searchIndexerDataSource;
     }

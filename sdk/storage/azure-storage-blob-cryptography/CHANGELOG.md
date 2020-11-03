@@ -1,7 +1,7 @@
 # Release History
 
 ## 12.9.0-beta.2 (Unreleased)
-
+- Added support to specify whether or not a pipeline policy should be added per call or per retry.
 
 ## 12.9.0-beta.1 (2020-10-01)
 - Added support to set BlobParallelUploadOptions.computeMd5 so the service can perform an md5 verification.

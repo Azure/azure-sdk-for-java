@@ -7,7 +7,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
 
@@ -42,7 +41,7 @@ public final class IndexActionConverter {
 
         if (obj.getAdditionalProperties() != null) {
             Map<String, Object> properties = obj.getAdditionalProperties();
-            PrivateFieldAccessHelper.set(indexAction, "properties", properties);
+            IndexActionHelper.setProperties(indexAction, properties);
         }
         return indexAction;
     }
@@ -65,8 +64,7 @@ public final class IndexActionConverter {
             indexAction.setActionType(actionType);
         }
 
-
-        Map<String, Object> mapProperties = PrivateFieldAccessHelper.get(obj, "properties", Map.class);
+        Map<String, Object> mapProperties = IndexActionHelper.getProperties(obj);
         if (mapProperties == null) {
             T properties = obj.getDocument();
             if (serializer == null) {

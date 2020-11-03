@@ -1708,4 +1708,20 @@ class ContainerAPITest extends APISpec {
         then:
         thrown(IllegalArgumentException)
     }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+    def "Per call policy"() {
+        setup:
+        def cc = getContainerClientBuilder(cc.getBlobContainerUrl())
+            .credential(primaryCredential)
+            .addPolicy(getPerCallVersionPolicy())
+            .buildClient()
+
+        when:
+        def response = cc.getPropertiesWithResponse(null, null, null)
+
+        then:
+        notThrown(BlobStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2017-11-09"
+    }
 }

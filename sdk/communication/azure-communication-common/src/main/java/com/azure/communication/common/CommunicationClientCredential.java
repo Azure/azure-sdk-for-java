@@ -43,9 +43,12 @@ public final class CommunicationClientCredential {
 
     // Previously DateTimeFormatter.RFC_1123_DATE_TIME was being used. There
     // was an issue with the day of month part. RFC_1123_DATE_TIME does not
-    // append a leading '0' on days that are less than 10. 
+    // append a leading '0' on days that are less than 10. It is important
+    // that the locale remain US. In other locals the values that are generated
+    // for the day and month strings may be different. (e.g. Canada day strings 
+    // have a '.' at the end)
     static final DateTimeFormatter HMAC_DATETIMEFORMATTER_PATTERN = 
-        DateTimeFormatter.ofPattern("E, dd MMM YYYY HH:mm:ss 'GMT'");
+        DateTimeFormatter.ofPattern("E, dd MMM YYYY HH:mm:ss 'GMT'", Locale.US);
 
     private final ClientLogger logger = new ClientLogger(CommunicationClientCredential.class);
     private final Mac sha256HMAC;
@@ -53,14 +56,20 @@ public final class CommunicationClientCredential {
     /**
      * Requires resource access key to create the credential
      * @param accessKey resource access key as provided by Azure in Base64 format
-     * @throws NoSuchAlgorithmException if HmacSHA256 is not available
-     * @throws InvalidKeyException if accessKey provided is not valid
      */
-    public CommunicationClientCredential(String accessKey) throws NoSuchAlgorithmException, InvalidKeyException {
+    public CommunicationClientCredential(String accessKey) {
         Objects.requireNonNull(accessKey, "'accessKey' cannot be null");
         byte[] key = Base64.getDecoder().decode(accessKey);
-        sha256HMAC = Mac.getInstance("HmacSHA256");
-        sha256HMAC.init(new SecretKeySpec(key, "HmacSHA256"));
+        Mac sha256HMAC = null;
+        try {
+            sha256HMAC = Mac.getInstance("HmacSHA256");
+            sha256HMAC.init(new SecretKeySpec(key, "HmacSHA256"));
+        } catch (NoSuchAlgorithmException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e));
+        } catch (InvalidKeyException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e));
+        }
+        this.sha256HMAC = sha256HMAC;
     }
 
     Mono<Map<String, String>> appendAuthorizationHeaders(URL url, String httpMethod, Flux<ByteBuffer> contents) {

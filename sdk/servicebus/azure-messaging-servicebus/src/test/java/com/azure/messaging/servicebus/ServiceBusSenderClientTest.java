@@ -3,7 +3,8 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.messaging.servicebus.models.CreateBatchOptions;
+import com.azure.core.experimental.util.BinaryData;
+import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -43,6 +44,7 @@ public class ServiceBusSenderClientTest {
 
     private static final Duration RETRY_TIMEOUT = Duration.ofSeconds(10);
     private static final String TEST_CONTENTS = "My message for service bus queue!";
+    private static final BinaryData TEST_CONTENTS_BINARY = BinaryData.fromString(TEST_CONTENTS);
 
     @BeforeAll
     static void beforeAll() {
@@ -79,7 +81,7 @@ public class ServiceBusSenderClientTest {
      */
     @Test
     void createBatchNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> sender.createBatch(null));
+        Assertions.assertThrows(NullPointerException.class, () -> sender.createMessageBatch(null));
     }
 
     /**
@@ -89,16 +91,16 @@ public class ServiceBusSenderClientTest {
     void createBatchDefault() {
         // Arrange
         ServiceBusMessageBatch batch =  new ServiceBusMessageBatch(MAX_MESSAGE_LENGTH_BYTES, null, null,
-            null);
-        when(asyncSender.createBatch()).thenReturn(Mono.just(batch));
+            null, null, null);
+        when(asyncSender.createMessageBatch()).thenReturn(Mono.just(batch));
 
         //Act
-        ServiceBusMessageBatch batchMessage = sender.createBatch();
+        ServiceBusMessageBatch batchMessage = sender.createMessageBatch();
 
         //Assert
         Assertions.assertEquals(MAX_MESSAGE_LENGTH_BYTES, batchMessage.getMaxSizeInBytes());
         Assertions.assertEquals(0, batchMessage.getCount());
-        verify(asyncSender).createBatch();
+        verify(asyncSender).createMessageBatch();
     }
 
     /**
@@ -111,29 +113,29 @@ public class ServiceBusSenderClientTest {
         int batchSize = maxLinkSize + 10;
 
         // This event is 1024 bytes when serialized.
-        final CreateBatchOptions options = new CreateBatchOptions().setMaximumSizeInBytes(batchSize);
-        when(asyncSender.createBatch(options)).thenThrow(new IllegalArgumentException("too large size"));
+        final CreateMessageBatchOptions options = new CreateMessageBatchOptions().setMaximumSizeInBytes(batchSize);
+        when(asyncSender.createMessageBatch(options)).thenThrow(new IllegalArgumentException("too large size"));
 
         // Act & Assert
-        Assertions.assertThrows(IllegalArgumentException.class, () -> sender.createBatch(options));
-        verify(asyncSender, times(1)).createBatch(options);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> sender.createMessageBatch(options));
+        verify(asyncSender, times(1)).createMessageBatch(options);
     }
 
     /**
-     * Verifies that the producer can create a batch with a given {@link CreateBatchOptions#getMaximumSizeInBytes()}.
+     * Verifies that the producer can create a batch with a given {@link CreateMessageBatchOptions#getMaximumSizeInBytes()}.
      */
     @Test
     void createsMessageBatchWithSize() {
         // Arrange
         int batchSize = 1024;
 
-        final CreateBatchOptions options = new CreateBatchOptions().setMaximumSizeInBytes(batchSize);
+        final CreateMessageBatchOptions options = new CreateMessageBatchOptions().setMaximumSizeInBytes(batchSize);
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(batchSize, null, null,
-            null);
-        when(asyncSender.createBatch(options)).thenReturn(Mono.just(batch));
+            null, null, null);
+        when(asyncSender.createMessageBatch(options)).thenReturn(Mono.just(batch));
 
         // Act
-        ServiceBusMessageBatch messageBatch = sender.createBatch(options);
+        ServiceBusMessageBatch messageBatch = sender.createMessageBatch(options);
 
         //Assert
         Assertions.assertEquals(batch, messageBatch);
@@ -187,7 +189,7 @@ public class ServiceBusSenderClientTest {
         // Arrange
         final ServiceBusTransactionContext nullTransaction = null;
         final ServiceBusMessage testData =
-            new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
+            new ServiceBusMessage(TEST_CONTENTS_BINARY);
         List<ServiceBusMessage> messages = new ArrayList<>();
         messages.add(testData);
         when(asyncSender.sendMessages(messages, transactionContext)).thenReturn(Mono.empty());
@@ -210,7 +212,7 @@ public class ServiceBusSenderClientTest {
         // Arrange
         final ServiceBusTransactionContext nullTransaction = null;
         final ServiceBusMessage testData =
-            new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
+            new ServiceBusMessage(TEST_CONTENTS_BINARY);
 
         when(asyncSender.sendMessage(testData, transactionContext)).thenReturn(Mono.empty());
 
@@ -231,7 +233,7 @@ public class ServiceBusSenderClientTest {
     void sendSingleMessageWithTransaction() {
         // Arrange
         final ServiceBusMessage testData =
-            new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
+            new ServiceBusMessage(TEST_CONTENTS_BINARY);
 
         when(asyncSender.sendMessage(testData, transactionContext)).thenReturn(Mono.empty());
 
@@ -249,7 +251,7 @@ public class ServiceBusSenderClientTest {
     void sendSingleMessage() {
         // Arrange
         final ServiceBusMessage testData =
-            new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
+            new ServiceBusMessage(TEST_CONTENTS_BINARY);
 
         when(asyncSender.sendMessage(testData)).thenReturn(Mono.empty());
 
@@ -267,7 +269,7 @@ public class ServiceBusSenderClientTest {
     void scheduleMessage() {
         // Arrange
         final ServiceBusMessage testData =
-            new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
+            new ServiceBusMessage(TEST_CONTENTS_BINARY);
         final OffsetDateTime scheduledEnqueueTime = OffsetDateTime.now();
         final long expected = 1;
 
@@ -289,7 +291,7 @@ public class ServiceBusSenderClientTest {
     void scheduleMessageWithTransaction() {
         // Arrange
         final ServiceBusMessage testData =
-            new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
+            new ServiceBusMessage(TEST_CONTENTS_BINARY);
         final OffsetDateTime scheduledEnqueueTime = OffsetDateTime.now();
         final long expected = 1;
 
@@ -311,7 +313,7 @@ public class ServiceBusSenderClientTest {
         // Arrange
         final long totalMessages = 2;
         final ServiceBusMessage testData =
-            new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
+            new ServiceBusMessage(TEST_CONTENTS_BINARY);
         final OffsetDateTime scheduledEnqueueTime = OffsetDateTime.now();
         final List<ServiceBusMessage> testDataMessages = new ArrayList<>();
         testDataMessages.add(testData);
@@ -343,7 +345,7 @@ public class ServiceBusSenderClientTest {
         // Arrange
         final long totalMessages = 2;
         final ServiceBusMessage testData =
-            new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
+            new ServiceBusMessage(TEST_CONTENTS_BINARY);
         final OffsetDateTime scheduledEnqueueTime = OffsetDateTime.now();
         final List<ServiceBusMessage> testDataMessages = new ArrayList<>();
         testDataMessages.add(testData);

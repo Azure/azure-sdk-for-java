@@ -59,6 +59,10 @@ public final class SearchIndexerConverter {
                 obj.getOutputFieldMappings().stream().map(FieldMappingConverter::map).collect(Collectors.toList());
             searchIndexer.setOutputFieldMappings(outputFieldMappings);
         }
+
+        if (obj.getEncryptionKey() != null) {
+            searchIndexer.setEncryptionKey(SearchResourceEncryptionKeyConverter.map(obj.getEncryptionKey()));
+        }
         return searchIndexer;
     }
 
@@ -108,6 +112,10 @@ public final class SearchIndexerConverter {
             List<com.azure.search.documents.indexes.implementation.models.FieldMapping> outputFieldMappings =
                 obj.getOutputFieldMappings().stream().map(FieldMappingConverter::map).collect(Collectors.toList());
             searchIndexer.setOutputFieldMappings(outputFieldMappings);
+        }
+
+        if (obj.getEncryptionKey() != null) {
+            searchIndexer.setEncryptionKey(SearchResourceEncryptionKeyConverter.map(obj.getEncryptionKey()));
         }
         return searchIndexer;
     }

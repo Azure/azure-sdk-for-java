@@ -42,12 +42,42 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
 
         SyncPoller<KeyVaultBackupOperation, String> backupPoller = client.beginBackup(blobStorageUrl, sasToken);
 
-        PollResponse<KeyVaultBackupOperation> backupResponse = backupPoller.waitForCompletion();
+        backupPoller.waitForCompletion();
 
         String backupBlobUri = backupPoller.getFinalResult();
 
         assertNotNull(backupBlobUri);
         assertTrue(backupBlobUri.startsWith(blobStorageUrl));
+    }
+
+    /**
+     * Tests that a backup operation can be obtained by using its {@code jobId}.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME)
+    @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
+    public void getBackupStatus(HttpClient httpClient) {
+        if (getTestMode() != TestMode.PLAYBACK) {
+            // Currently there is no Managed HSM environment for pipeline testing.
+            // TODO: Remove once there is a proper cloud environment available.
+            return;
+        }
+
+        client = getClientBuilder(httpClient, false).buildClient();
+
+        SyncPoller<KeyVaultBackupOperation, String> backupPoller = client.beginBackup(blobStorageUrl, sasToken);
+        String jobId = backupPoller.poll().getValue().getJobId();
+
+        SyncPoller<KeyVaultBackupOperation, String> backupStatusPoller = client.getBackupOperation(jobId);
+
+        KeyVaultBackupOperation backupOperation = backupPoller.waitForCompletion().getValue();
+        KeyVaultBackupOperation backupStatusOperation = backupStatusPoller.waitForCompletion().getValue();
+
+        String backupBlobUri = backupPoller.getFinalResult();
+        String backupStatusBlobUri = backupStatusPoller.getFinalResult();
+
+        assertEquals(backupBlobUri, backupStatusBlobUri);
+        assertEquals(backupOperation.getStartTime(), backupStatusOperation.getStartTime());
+        assertEquals(backupOperation.getEndTime(), backupStatusOperation.getEndTime());
     }
 
     /**
@@ -70,18 +100,48 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
         backupPoller.waitForCompletion();
 
         // Restore the backup
-        String backupBlobUri = backupPoller.getFinalResult();
-        String[] segments = backupBlobUri.split("/");
-        String folderName = segments[segments.length - 1];
-
-        SyncPoller<KeyVaultRestoreOperation, Void> restorePoller =
-            client.beginRestore(blobStorageUrl, sasToken, folderName);
+        String backupFolderUrl = backupPoller.getFinalResult();
+        SyncPoller<KeyVaultRestoreOperation, Void> restorePoller = client.beginRestore(backupFolderUrl, sasToken);
 
         restorePoller.waitForCompletion();
 
         PollResponse<KeyVaultRestoreOperation> restoreResponse = restorePoller.poll();
 
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, restoreResponse.getStatus());
+    }
+
+    /**
+     * Tests that a restore operation can be obtained by using its {@code jobId}.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME)
+    @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
+    public void getRestoreStatus(HttpClient httpClient) {
+        if (getTestMode() != TestMode.PLAYBACK) {
+            // Currently there is no Managed HSM environment for pipeline testing.
+            // TODO: Remove once there is a proper cloud environment available.
+            return;
+        }
+
+        client = getClientBuilder(httpClient, false).buildClient();
+
+        // Create a backup
+        SyncPoller<KeyVaultBackupOperation, String> backupPoller = client.beginBackup(blobStorageUrl, sasToken);
+
+        backupPoller.waitForCompletion();
+
+        // Restore the backup
+        String backupFolderUrl = backupPoller.getFinalResult();
+        SyncPoller<KeyVaultRestoreOperation, Void> restorePoller = client.beginRestore(backupFolderUrl, sasToken);
+
+        // Get job status via its ID
+        String jobId = restorePoller.poll().getValue().getJobId();
+        SyncPoller<KeyVaultRestoreOperation, Void> restoreStatusPoller = client.getRestoreOperation(jobId);
+
+        KeyVaultRestoreOperation restoreOperation = restorePoller.waitForCompletion().getValue();
+        KeyVaultRestoreOperation restoreStatusOperation = restoreStatusPoller.waitForCompletion().getValue();
+
+        assertEquals(restoreOperation.getStartTime(), restoreStatusOperation.getStartTime());
+        assertEquals(restoreOperation.getEndTime(), restoreStatusOperation.getEndTime());
     }
 
     /**
@@ -104,12 +164,9 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
         backupPoller.waitForCompletion();
 
         // Restore one key from said backup
-        String backupBlobUri = backupPoller.getFinalResult();
-        String[] segments = backupBlobUri.split("/");
-        String folderName = segments[segments.length - 1];
-
+        String backupFolderUrl = backupPoller.getFinalResult();
         SyncPoller<KeyVaultRestoreOperation, Void> selectiveRestorePoller =
-            client.beginSelectiveRestore("testKey", blobStorageUrl, sasToken, folderName);
+            client.beginSelectiveRestore("testKey", backupFolderUrl, sasToken);
 
         PollResponse<KeyVaultRestoreOperation> response = selectiveRestorePoller.poll();
 

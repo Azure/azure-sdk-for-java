@@ -14,6 +14,10 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact
 [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
+## Code style
+
+Please [import](https://www.jetbrains.com/help/idea/copying-code-style-settings.html) `AzureSpringCodeStyle.xml` to your Intellij Idea to format your code.
+
 ## Getting started
 
 Before working on a contribution, it would be beneficial to familiarize yourself with the project so that your

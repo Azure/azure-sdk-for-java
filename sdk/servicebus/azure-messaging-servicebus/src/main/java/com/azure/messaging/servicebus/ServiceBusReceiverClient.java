@@ -7,7 +7,10 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
-import com.azure.messaging.servicebus.administration.models.DeadLetterOptions;
+import com.azure.messaging.servicebus.models.AbandonOptions;
+import com.azure.messaging.servicebus.models.CompleteOptions;
+import com.azure.messaging.servicebus.models.DeadLetterOptions;
+import com.azure.messaging.servicebus.models.DeferOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -88,35 +91,20 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * available again for processing. Abandoning a message will increase the delivery count on the message.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param propertiesToModify Properties to modify on the message.
+     * @param options to abandon the message. You can specify
+     *     {@link AbandonOptions#setPropertiesToModify(Map) properties} to modify on the Message. The
+     *     {@code transactionContext} can be set using
+     *     {@link AbandonOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be
+     *     created first by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
+     *     {@link ServiceBusSenderAsyncClient#createTransaction()}.
      *
-     * @throws NullPointerException if {@code message} is null.
+     * @throws NullPointerException if {@code message} or {@code options} is null. Also if
+     *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      */
-    public void abandon(ServiceBusReceivedMessage message, Map<String, Object> propertiesToModify) {
-        asyncClient.abandon(message, propertiesToModify).block(operationTimeout);
-    }
-
-    /**
-     * Abandon a {@link ServiceBusReceivedMessage message} updates the message's properties. This will make the message
-     * available again for processing. Abandoning a message will increase the delivery count on the message.
-     *
-     * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param propertiesToModify Properties to modify on the message.
-     * @param transactionContext in which this operation is taking part in. The transaction should be created first
-     *     by {@link ServiceBusReceiverClient#createTransaction()} or
-     *     {@link ServiceBusSenderClient#createTransaction()}.
-     *
-     * @throws NullPointerException if {@code message}, {@code transactionContext} or {@code
-     *     transactionContext.transactionId} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
-     */
-    public void abandon(ServiceBusReceivedMessage message, Map<String, Object> propertiesToModify,
-        ServiceBusTransactionContext transactionContext) {
-
-        asyncClient.abandon(message, propertiesToModify, transactionContext).block(operationTimeout);
+    public void abandon(ServiceBusReceivedMessage message, AbandonOptions options) {
+        asyncClient.abandon(message, options).block(operationTimeout);
     }
 
     /**
@@ -136,17 +124,18 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * Completes a {@link ServiceBusReceivedMessage message}. This will delete the message from the service.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param transactionContext in which this operation is taking part in. The transaction should be created first
-     *     by {@link ServiceBusReceiverClient#createTransaction()} or
-     *     {@link ServiceBusSenderClient#createTransaction()}.
+     * @param options to complete the message. The {@code transactionContext} can be set using
+     *     {@link CompleteOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be
+     *     created first by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
+     *     {@link ServiceBusSenderAsyncClient#createTransaction()}.
      *
-     * @throws NullPointerException if {@code message}, {@code transactionContext} or {@code
-     *     transactionContext.transactionId} is null.
+     * @throws NullPointerException if {@code message} or {@code options} is null. Also if
+     *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      */
-    public void complete(ServiceBusReceivedMessage message, ServiceBusTransactionContext transactionContext) {
-        asyncClient.complete(message, transactionContext).block(operationTimeout);
+    public void complete(ServiceBusReceivedMessage message, CompleteOptions options) {
+        asyncClient.complete(message, options).block(operationTimeout);
     }
 
     /**
@@ -168,36 +157,20 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * move message into the deferred subqueue.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param propertiesToModify Message properties to modify.
+     * @param options to defer the message. You can specify {@link DeferOptions#setPropertiesToModify(Map) properties}
+     *     to modify on the Message. The {@code transactionContext} can be set using
+     *     {@link DeferOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be
+     *     created first by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
+     *     {@link ServiceBusSenderAsyncClient#createTransaction()}.
      *
-     * @throws NullPointerException if {@code message} is null.
+     * @throws NullPointerException if {@code message} or {@code options} is null. Also if
+     *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
-    public void defer(ServiceBusReceivedMessage message, Map<String, Object> propertiesToModify) {
-        asyncClient.defer(message, propertiesToModify).block(operationTimeout);
-    }
-
-    /**
-     * Defers a {@link ServiceBusReceivedMessage message} with modified message property. This will move message into
-     * the deferred subqueue.
-     *
-     * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param propertiesToModify Message properties to modify.
-     * @param transactionContext in which this operation is taking part in. The transaction should be created first
-     *     by {@link ServiceBusReceiverClient#createTransaction()} or
-     *     {@link ServiceBusSenderClient#createTransaction()}.
-     *
-     * @throws NullPointerException if {@code message}, {@code transactionContext} or {@code
-     *     transactionContext.transactionId} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
-     */
-    public void defer(ServiceBusReceivedMessage message, Map<String, Object> propertiesToModify,
-        ServiceBusTransactionContext transactionContext) {
-        asyncClient.defer(message, propertiesToModify, transactionContext).block(operationTimeout);
+    public void defer(ServiceBusReceivedMessage message, DeferOptions options) {
+        asyncClient.defer(message, options).block(operationTimeout);
     }
 
     /**
@@ -220,46 +193,30 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * description, and/or modified properties.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param deadLetterOptions The options to specify when moving message to the deadletter sub-queue.
+     * @param options to deadLetter the message. You can specify
+     *     {@link DeadLetterOptions#setPropertiesToModify(Map) properties} to modify on the Message. The
+     *     {@code transactionContext} can be set using
+     *     {@link DeadLetterOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be
+     *     created first by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
+     *     {@link ServiceBusSenderAsyncClient#createTransaction()}.
      *
-     * @throws NullPointerException if {@code message} is null.
+     * @throws NullPointerException if {@code message} or {@code options} is null. Also if
+     *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      */
-    public void deadLetter(ServiceBusReceivedMessage message, DeadLetterOptions deadLetterOptions) {
-        asyncClient.deadLetter(message, deadLetterOptions).block(operationTimeout);
+    public void deadLetter(ServiceBusReceivedMessage message, DeadLetterOptions options) {
+        asyncClient.deadLetter(message, options).block(operationTimeout);
     }
 
     /**
-     * Moves a {@link ServiceBusReceivedMessage message} to the deadletter subqueue with deadletter reason, error
-     * description, and/or modified properties.
-     *
-     * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param deadLetterOptions The options to specify when moving message to the deadletter sub-queue.
-     * @param transactionContext in which this operation is taking part in. The transaction should be created first
-     *     by {@link ServiceBusReceiverClient#createTransaction()} or
-     *     {@link ServiceBusSenderClient#createTransaction()}.
-     *
-     * @throws NullPointerException if {@code message}, {@code transactionContext} or {@code
-     *     transactionContext.transactionId} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
-     */
-    public void deadLetter(ServiceBusReceivedMessage message, DeadLetterOptions deadLetterOptions,
-        ServiceBusTransactionContext transactionContext) {
-        asyncClient.deadLetter(message, deadLetterOptions, transactionContext).block(operationTimeout);
-    }
-
-    /**
-     * Gets the state of a session given its identifier.
-     *
-     * @param sessionId Identifier of session to get.
+     * Gets the state of the session if this receiver is a session receiver.
      *
      * @return The session state or null if there is no state set for the session.
      * @throws IllegalStateException if the receiver is a non-session receiver.
      */
-    public byte[] getSessionState(String sessionId) {
-        return asyncClient.getSessionState(sessionId).block(operationTimeout);
+    public byte[] getSessionState() {
+        return this.getSessionState(asyncClient.getReceiverOptions().getSessionId());
     }
 
     /**
@@ -271,7 +228,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     public ServiceBusReceivedMessage peekMessage() {
-        return asyncClient.peekMessage().block(operationTimeout);
+        return this.peekMessage(asyncClient.getReceiverOptions().getSessionId());
     }
 
     /**
@@ -284,10 +241,9 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @return A peeked {@link ServiceBusReceivedMessage}.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public ServiceBusReceivedMessage peekMessage(String sessionId) {
+    ServiceBusReceivedMessage peekMessage(String sessionId) {
         return asyncClient.peekMessage(sessionId).block(operationTimeout);
     }
-
     /**
      * Starting from the given sequence number, reads next the active message without changing the state of the receiver
      * or the message source.
@@ -298,7 +254,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     public ServiceBusReceivedMessage peekMessageAt(long sequenceNumber) {
-        return asyncClient.peekMessageAt(sequenceNumber).block(operationTimeout);
+        return this.peekMessageAt(sequenceNumber, asyncClient.getReceiverOptions().getSessionId());
     }
 
     /**
@@ -311,7 +267,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @return A peeked {@link ServiceBusReceivedMessage}.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public ServiceBusReceivedMessage peekMessageAt(long sequenceNumber, String sessionId) {
+    ServiceBusReceivedMessage peekMessageAt(long sequenceNumber, String sessionId) {
         return asyncClient.peekMessageAt(sequenceNumber, sessionId).block(operationTimeout);
     }
 
@@ -325,18 +281,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     public IterableStream<ServiceBusReceivedMessage> peekMessages(int maxMessages) {
-        if (maxMessages <= 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
-        }
-
-        final Flux<ServiceBusReceivedMessage> messages = asyncClient.peekMessages(maxMessages)
-            .timeout(operationTimeout);
-
-        // Subscribe so we can kick off this operation.
-        messages.subscribe();
-
-        return new IterableStream<>(messages);
+        return this.peekMessages(maxMessages, asyncClient.getReceiverOptions().getSessionId());
     }
 
     /**
@@ -349,7 +294,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public IterableStream<ServiceBusReceivedMessage> peekMessages(int maxMessages, String sessionId) {
+    IterableStream<ServiceBusReceivedMessage> peekMessages(int maxMessages, String sessionId) {
         if (maxMessages <= 0) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
@@ -376,18 +321,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     public IterableStream<ServiceBusReceivedMessage> peekMessagesAt(int maxMessages, long sequenceNumber) {
-        if (maxMessages <= 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
-        }
-
-        final Flux<ServiceBusReceivedMessage> messages = asyncClient.peekMessagesAt(maxMessages, sequenceNumber)
-            .timeout(operationTimeout);
-
-        // Subscribe so we can kick off this operation.
-        messages.subscribe();
-
-        return new IterableStream<>(messages);
+        return this.peekMessagesAt(maxMessages, sequenceNumber, asyncClient.getReceiverOptions().getSessionId());
     }
 
     /**
@@ -402,7 +336,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public IterableStream<ServiceBusReceivedMessage> peekMessagesAt(int maxMessages, long sequenceNumber,
+    IterableStream<ServiceBusReceivedMessage> peekMessagesAt(int maxMessages, long sequenceNumber,
         String sessionId) {
         if (maxMessages <= 0) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
@@ -428,7 +362,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @return An {@link IterableStream} of at most {@code maxMessages} messages from the Service Bus entity.
      * @throws IllegalArgumentException if {@code maxMessages} is zero or a negative value.
      */
-    public IterableStream<ServiceBusReceivedMessageContext> receiveMessages(int maxMessages) {
+    public IterableStream<ServiceBusReceivedMessage> receiveMessages(int maxMessages) {
         return receiveMessages(maxMessages, operationTimeout);
     }
 
@@ -443,8 +377,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @return An {@link IterableStream} of at most {@code maxMessages} messages from the Service Bus entity.
      * @throws IllegalArgumentException if {@code maxMessages} or {@code maxWaitTime} is zero or a negative value.
      */
-    public IterableStream<ServiceBusReceivedMessageContext> receiveMessages(int maxMessages,
-        Duration maxWaitTime) {
+    public IterableStream<ServiceBusReceivedMessage> receiveMessages(int maxMessages,
+                                                                    Duration maxWaitTime) {
         if (maxMessages <= 0) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
@@ -456,7 +390,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
                 new IllegalArgumentException("'maxWaitTime' cannot be zero or less. maxWaitTime: " + maxWaitTime));
         }
 
-        final Flux<ServiceBusReceivedMessageContext> messages = Flux.create(emitter -> queueWork(maxMessages,
+        final Flux<ServiceBusReceivedMessage> messages = Flux.create(emitter -> queueWork(maxMessages,
             maxWaitTime, emitter));
 
         return new IterableStream<>(messages);
@@ -472,7 +406,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @return A deferred message with the matching {@code sequenceNumber}.
      */
     public ServiceBusReceivedMessage receiveDeferredMessage(long sequenceNumber) {
-        return asyncClient.receiveDeferredMessage(sequenceNumber).block(operationTimeout);
+        return this.receiveDeferredMessage(sequenceNumber, asyncClient.getReceiverOptions().getSessionId());
     }
 
     /**
@@ -485,7 +419,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @return A deferred message with the matching {@code sequenceNumber}.
      */
-    public ServiceBusReceivedMessage receiveDeferredMessage(long sequenceNumber, String sessionId) {
+    ServiceBusReceivedMessage receiveDeferredMessage(long sequenceNumber, String sessionId) {
         return asyncClient.receiveDeferredMessage(sequenceNumber, sessionId).block(operationTimeout);
     }
 
@@ -498,13 +432,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @return An {@link IterableStream} of deferred {@link ServiceBusReceivedMessage messages}.
      */
     public IterableStream<ServiceBusReceivedMessage> receiveDeferredMessageBatch(Iterable<Long> sequenceNumbers) {
-        final Flux<ServiceBusReceivedMessage> messages = asyncClient.receiveDeferredMessages(sequenceNumbers)
-            .timeout(operationTimeout);
-
-        // Subscribe so we can kick off this operation.
-        messages.subscribe();
-
-        return new IterableStream<>(messages);
+        return this.receiveDeferredMessageBatch(sequenceNumbers, asyncClient.getReceiverOptions().getSessionId());
     }
 
     /**
@@ -516,7 +444,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @return An {@link IterableStream} of deferred {@link ServiceBusReceivedMessage messages}.
      */
-    public IterableStream<ServiceBusReceivedMessage> receiveDeferredMessageBatch(Iterable<Long> sequenceNumbers,
+    IterableStream<ServiceBusReceivedMessage> receiveDeferredMessageBatch(Iterable<Long> sequenceNumbers,
         String sessionId) {
         final Flux<ServiceBusReceivedMessage> messages = asyncClient.receiveDeferredMessages(sequenceNumbers,
             sessionId).timeout(operationTimeout);
@@ -570,23 +498,20 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     /**
-     * Sets the state of a session given its identifier.
-     *
-     * @param sessionId Identifier of session to get.
+     * Sets the state of the session if this receiver is a session receiver.
      *
      * @return The next expiration time for the session lock.
      * @throws NullPointerException if {@code sessionId} is null.
      * @throws IllegalArgumentException if {@code sessionId} is an empty string.
      * @throws IllegalStateException if the receiver is a non-session receiver.
      */
-    public OffsetDateTime renewSessionLock(String sessionId) {
-        return asyncClient.renewSessionLock(sessionId).block(operationTimeout);
+    public OffsetDateTime renewSessionLock() {
+        return this.renewSessionLock(asyncClient.getReceiverOptions().getSessionId());
     }
 
     /**
-     * Starts the auto lock renewal for a session id.
+     * Starts the auto lock renewal for the session that this receiver works for.
      *
-     * @param sessionId Id for the session to renew.
      * @param maxLockRenewalDuration Maximum duration to keep renewing the session.
      * @param onError A function to call when an error occurs during lock renewal.
      *
@@ -594,27 +519,19 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code sessionId} is an empty string.
      * @throws IllegalStateException if the receiver is a non-session receiver or the receiver is disposed.
      */
-    public void renewSessionLock(String sessionId, Duration maxLockRenewalDuration, Consumer<Throwable> onError) {
-        final Consumer<Throwable> throwableConsumer = onError != null
-            ? onError
-            : error -> logger.warning("Exception occurred while renewing session: '{}'.", sessionId, error);
-
-        asyncClient.renewSessionLock(sessionId, maxLockRenewalDuration).subscribe(
-            v -> logger.verbose("Completed renewing session: '{}'", sessionId),
-            throwableConsumer,
-            () -> logger.verbose("Auto session lock renewal operation completed: {}", sessionId));
+    public void renewSessionLock(Duration maxLockRenewalDuration, Consumer<Throwable> onError) {
+        this.renewSessionLock(asyncClient.getReceiverOptions().getSessionId(), maxLockRenewalDuration, onError);
     }
 
     /**
-     * Sets the state of a session given its identifier.
+     * Sets the state of the session if this receiver is a session receiver.
      *
-     * @param sessionId Identifier of session to get.
      * @param sessionState State to set on the session.
      *
      * @throws IllegalStateException if the receiver is a non-session receiver.
      */
-    public void setSessionState(String sessionId, byte[] sessionState) {
-        asyncClient.setSessionState(sessionId, sessionState).block(operationTimeout);
+    public void setSessionState(byte[] sessionState) {
+        this.setSessionState(asyncClient.getReceiverOptions().getSessionId(), sessionState);
     }
 
     /**
@@ -671,7 +588,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * entity.
      */
     private void queueWork(int maximumMessageCount, Duration maxWaitTime,
-        FluxSink<ServiceBusReceivedMessageContext> emitter) {
+                           FluxSink<ServiceBusReceivedMessage> emitter) {
         final long id = idGenerator.getAndIncrement();
         final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maxWaitTime, emitter);
 
@@ -691,5 +608,28 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
             messageSubscriber.queueWork(work);
         }
         logger.verbose("[{}] Receive request queued up.", work.getId());
+    }
+
+    OffsetDateTime renewSessionLock(String sessionId) {
+        return asyncClient.renewSessionLock(sessionId).block(operationTimeout);
+    }
+
+    void renewSessionLock(String sessionId, Duration maxLockRenewalDuration, Consumer<Throwable> onError) {
+        final Consumer<Throwable> throwableConsumer = onError != null
+            ? onError
+            : error -> logger.warning("Exception occurred while renewing session: '{}'.", sessionId, error);
+
+        asyncClient.renewSessionLock(maxLockRenewalDuration).subscribe(
+            v -> logger.verbose("Completed renewing session: '{}'", sessionId),
+            throwableConsumer,
+            () -> logger.verbose("Auto session lock renewal operation completed: {}", sessionId));
+    }
+
+    void setSessionState(String sessionId, byte[] sessionState) {
+        asyncClient.setSessionState(sessionId, sessionState).block(operationTimeout);
+    }
+
+    byte[] getSessionState(String sessionId) {
+        return asyncClient.getSessionState(sessionId).block(operationTimeout);
     }
 }
