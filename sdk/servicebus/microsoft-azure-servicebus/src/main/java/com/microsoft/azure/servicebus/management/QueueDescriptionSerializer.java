@@ -301,6 +301,8 @@ class QueueDescriptionSerializer {
                                     case "SizeInBytes":
                                     case "UpdatedAt":
                                     case "CountDetails":
+                                    case "EntityAvailabilityStatus":
+                                    case "SkippedUpdate":
                                         // Ignore known properties
                                         // Do nothing
                                         break;                                    
