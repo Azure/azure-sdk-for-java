@@ -7,13 +7,12 @@ package com.azure.messaging.servicebus.perf;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusMessage;
-import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
+import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import com.azure.messaging.servicebus.perf.core.ServiceBusStressOptions;
 import com.azure.messaging.servicebus.perf.core.ServiceTest;
 import reactor.core.publisher.Mono;
 
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -41,7 +40,7 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
             int total = options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
             List<ServiceBusMessage> messages = new ArrayList<>();
             for (int i = 0; i < total; ++i) {
-                ServiceBusMessage message =  new ServiceBusMessage(CONTENTS.getBytes(Charset.defaultCharset()));
+                ServiceBusMessage message =  new ServiceBusMessage(CONTENTS);
                 message.setMessageId(UUID.randomUUID().toString());
                 messages.add(message);
             }
@@ -51,12 +50,12 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
 
     @Override
     public void run() {
-        IterableStream<ServiceBusReceivedMessageContext> messages = receiver
+        IterableStream<ServiceBusReceivedMessage> messages = receiver
             .receiveMessages(options.getMessagesToReceive());
 
         int count = 0;
-        for (ServiceBusReceivedMessageContext messageContext : messages) {
-            receiver.complete(messageContext.getMessage());
+        for (ServiceBusReceivedMessage message : messages) {
+            receiver.complete(message);
             ++count;
         }
 
@@ -70,8 +69,8 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
         return receiverAsync
             .receiveMessages()
             .take(options.getMessagesToReceive())
-            .flatMap(messageContext -> {
-                return receiverAsync.complete(messageContext.getMessage()).thenReturn(true);
+            .flatMap(message -> {
+                return receiverAsync.complete(message).thenReturn(true);
             }, 1).then();
     }
 }

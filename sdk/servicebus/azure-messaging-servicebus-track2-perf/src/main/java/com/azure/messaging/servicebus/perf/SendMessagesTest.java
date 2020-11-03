@@ -9,7 +9,6 @@ import com.azure.messaging.servicebus.perf.core.ServiceBusStressOptions;
 import com.azure.messaging.servicebus.perf.core.ServiceTest;
 import reactor.core.publisher.Mono;
 
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -28,7 +27,7 @@ public class SendMessagesTest extends ServiceTest<ServiceBusStressOptions> {
         super(options, ReceiveMode.PEEK_LOCK);
         messages = new ArrayList<>();
         for (int i = 0; i < options.getMessagesToSend(); ++i) {
-            ServiceBusMessage message =  new ServiceBusMessage(CONTENTS.getBytes(Charset.defaultCharset()));
+            ServiceBusMessage message =  new ServiceBusMessage(CONTENTS);
             message.setMessageId(UUID.randomUUID().toString());
             messages.add(message);
         }

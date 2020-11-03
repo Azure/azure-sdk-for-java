@@ -7,10 +7,8 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import com.azure.messaging.servicebus.perf.core.ServiceBusStressOptions;
 import com.azure.messaging.servicebus.perf.core.ServiceTest;
-import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Mono;
 
-import java.nio.charset.Charset;
 import java.util.UUID;
 
 /**
