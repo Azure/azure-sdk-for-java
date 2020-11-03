@@ -18,10 +18,10 @@ For more information, please read [introduction to Application Insights][applica
 
 ### Include the Package
 
-[//]: # ({x-version-update-start;com.azure:microsoft-opentelemetry-exporter-azuremonitor;current})
+[//]: # ({x-version-update-start;com.microsoft:microsoft-opentelemetry-exporter-azuremonitor;current})
 ```xml
 <dependency>
-  <groupId>com.azure</groupId>
+  <groupId>com.microsoft</groupId>
   <artifactId>microsoft-opentelemetry-exporter-azuremonitor</artifactId>
   <version>1.0.0-beta.1</version>
 </dependency>
@@ -38,7 +38,7 @@ search for your resource. On the overview page of your resource, you will find t
 right corner.
 
 ### Creating exporter for Azure Monitor
-<!-- embedme ./src/samples/java/com/microsoft/opentelemetry/exporters/azuremonitor/ReadmeSamples.java#L26-L28 -->
+<!-- embedme ./src/samples/java/com/microsoft/opentelemetry/exporter/azuremonitor/ReadmeSamples.java#L26-L28 -->
 ```java
 AzureMonitorExporter azureMonitorExporter = new AzureMonitorExporterBuilder()
     .instrumentationKey("{instrumentation-key}")
@@ -50,7 +50,7 @@ AzureMonitorExporter azureMonitorExporter = new AzureMonitorExporterBuilder()
 The following example shows how to export a collection of available [Spans][span_data] to Azure Monitor through the
  `AzureMonitorExporter`
 
-<!-- embedme ./src/samples/java/com/microsoft/opentelemetry/exporters/azuremonitor/ReadmeSamples.java#L35-L40 -->
+<!-- embedme ./src/samples/java/com/microsoft/opentelemetry/exporter/azuremonitor/ReadmeSamples.java#L35-L40 -->
 ```java
 AzureMonitorExporter azureMonitorExporter = new AzureMonitorExporterBuilder()
     .instrumentationKey("{instrumentation-key}")

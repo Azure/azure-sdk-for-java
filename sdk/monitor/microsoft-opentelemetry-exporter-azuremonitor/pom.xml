@@ -14,7 +14,7 @@
 
   <groupId>com.microsoft</groupId>
   <artifactId>microsoft-opentelemetry-exporter-azuremonitor</artifactId>
-  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:microsoft-opentelemetry-exporter-azuremonitor;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.microsoft:microsoft-opentelemetry-exporter-azuremonitor;current} -->
 
   <name>Microsoft Azure SDK for OpenTelemetry Azure Monitor Exporter</name>
   <description>This package contains Microsoft Azure SDK for OpenTelemetry Azure Monitor Exporter.</description>
