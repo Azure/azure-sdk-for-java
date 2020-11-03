@@ -192,8 +192,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
                 client.deleteModel(floorModelId);
                 client.deleteModel(roomModelId);
                 client.deleteModel(hvacModelId);
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 fail("Test cleanup failed", ex);
             }
         }
@@ -248,7 +247,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
             listOutgoingRelationships.iterableByPage().forEach(relationshipsPagedResponse -> {
                 outgoingRelationshipsPageCount.getAndIncrement();
                 logger.info("content for this page " + outgoingRelationshipsPageCount);
-                for (BasicRelationship data: relationshipsPagedResponse.getValue()) {
+                for (BasicRelationship data : relationshipsPagedResponse.getValue()) {
                     logger.info(data.getId());
                 }
 
@@ -266,7 +265,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
             listIncomingRelationships.iterableByPage().forEach(relationshipsPagedResponse -> {
                 incomingRelationshipsPageCount.getAndIncrement();
                 logger.info("content for this page " + incomingRelationshipsPageCount);
-                for (IncomingRelationship data: relationshipsPagedResponse.getValue()) {
+                for (IncomingRelationship data : relationshipsPagedResponse.getValue()) {
                     logger.info(data.getRelationshipId());
                 }
 
@@ -370,8 +369,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
                 client.deleteModel(floorModelId);
                 client.deleteModel(roomModelId);
                 client.deleteModel(hvacModelId);
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 fail("Test cleanup failed", ex);
             }
         }
@@ -450,8 +448,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
                 client.deleteModel(floorModelId);
                 client.deleteModel(roomModelId);
                 client.deleteModel(hvacModelId);
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 fail("Test cleanup failed", ex);
             }
         }
@@ -543,8 +540,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
                 client.deleteModel(floorModelId);
                 client.deleteModel(roomModelId);
                 client.deleteModel(hvacModelId);
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 fail("Test cleanup failed", ex);
             }
         }
@@ -646,8 +642,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
                 client.deleteModel(floorModelId);
                 client.deleteModel(roomModelId);
                 client.deleteModel(hvacModelId);
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 fail("Test cleanup failed", ex);
             }
         }
@@ -736,8 +731,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
                 client.deleteModel(floorModelId);
                 client.deleteModel(roomModelId);
                 client.deleteModel(hvacModelId);
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 fail("Test cleanup failed", ex);
             }
         }
@@ -832,8 +826,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
                 client.deleteModel(floorModelId);
                 client.deleteModel(roomModelId);
                 client.deleteModel(hvacModelId);
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 fail("Test cleanup failed", ex);
             }
         }

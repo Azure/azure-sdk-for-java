@@ -70,23 +70,17 @@ public class ComponentsAsyncTests extends ComponentsTestBase {
                 })
                 .verifyComplete();
         } finally {
-            try
-            {
-                if (roomWithWifiTwinId != null)
-                {
+            try {
+                if (roomWithWifiTwinId != null) {
                     asyncClient.deleteDigitalTwin(roomWithWifiTwinId).block();
                 }
-                if (roomWithWifiModelId != null)
-                {
+                if (roomWithWifiModelId != null) {
                     asyncClient.deleteModel(roomWithWifiModelId).block();
                 }
-                if (wifiModelId != null)
-                {
+                if (wifiModelId != null) {
                     asyncClient.deleteModel(wifiModelId).block();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 fail("Test cleanup failed", ex);
             }
         }
@@ -143,23 +137,17 @@ public class ComponentsAsyncTests extends ComponentsTestBase {
                     new UpdateComponentOptions().setIfMatch(etagBeforeUpdate.get())))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_PRECON_FAILED));
         } finally {
-            try
-            {
-                if (roomWithWifiTwinId != null)
-                {
+            try {
+                if (roomWithWifiTwinId != null) {
                     asyncClient.deleteDigitalTwin(roomWithWifiTwinId).block();
                 }
-                if (roomWithWifiModelId != null)
-                {
+                if (roomWithWifiModelId != null) {
                     asyncClient.deleteModel(roomWithWifiModelId).block();
                 }
-                if (wifiModelId != null)
-                {
+                if (wifiModelId != null) {
                     asyncClient.deleteModel(wifiModelId).block();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 fail("Test cleanup failed", ex);
             }
         }
@@ -224,23 +212,17 @@ public class ComponentsAsyncTests extends ComponentsTestBase {
                 .assertNext(response -> { /* don't care as long as it is a success status code */ })
                 .verifyComplete();
         } finally {
-            try
-            {
-                if (roomWithWifiTwinId != null)
-                {
+            try {
+                if (roomWithWifiTwinId != null) {
                     asyncClient.deleteDigitalTwin(roomWithWifiTwinId).block();
                 }
-                if (roomWithWifiModelId != null)
-                {
+                if (roomWithWifiModelId != null) {
                     asyncClient.deleteModel(roomWithWifiModelId).block();
                 }
-                if (wifiModelId != null)
-                {
+                if (wifiModelId != null) {
                     asyncClient.deleteModel(wifiModelId).block();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 fail("Test cleanup failed", ex);
             }
         }

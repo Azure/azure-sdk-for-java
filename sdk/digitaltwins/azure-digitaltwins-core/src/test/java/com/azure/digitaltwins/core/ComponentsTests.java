@@ -72,23 +72,17 @@ public class ComponentsTests extends ComponentsTestBase {
         }
         // clean up
         finally {
-            try
-            {
-                if (roomWithWifiTwinId != null)
-                {
+            try {
+                if (roomWithWifiTwinId != null) {
                     client.deleteDigitalTwin(roomWithWifiTwinId);
                 }
-                if (roomWithWifiModelId != null)
-                {
+                if (roomWithWifiModelId != null) {
                     client.deleteModel(roomWithWifiModelId);
                 }
-                if (wifiModelId != null)
-                {
+                if (wifiModelId != null) {
                     client.deleteModel(wifiModelId);
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new AssertionFailedError("Test celanup failed", ex);
             }
         }
@@ -144,16 +138,13 @@ public class ComponentsTests extends ComponentsTestBase {
             );
         } finally {
             try {
-                if (roomWithWifiTwinId != null)
-                {
+                if (roomWithWifiTwinId != null) {
                     client.deleteDigitalTwin(roomWithWifiTwinId);
                 }
-                if (roomWithWifiModelId != null)
-                {
+                if (roomWithWifiModelId != null) {
                     client.deleteModel(roomWithWifiModelId);
                 }
-                if (wifiModelId != null)
-                {
+                if (wifiModelId != null) {
                     client.deleteModel(wifiModelId);
                 }
             } catch (Exception ex) {
@@ -216,23 +207,17 @@ public class ComponentsTests extends ComponentsTestBase {
                 }
             }
         } finally {
-            try
-            {
-                if (roomWithWifiTwinId != null)
-                {
+            try {
+                if (roomWithWifiTwinId != null) {
                     client.deleteDigitalTwin(roomWithWifiTwinId);
                 }
-                if (roomWithWifiModelId != null)
-                {
+                if (roomWithWifiModelId != null) {
                     client.deleteModel(roomWithWifiModelId);
                 }
-                if (wifiModelId != null)
-                {
+                if (wifiModelId != null) {
                     client.deleteModel(wifiModelId);
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new AssertionFailedError("Test celanup failed", ex);
             }
         }

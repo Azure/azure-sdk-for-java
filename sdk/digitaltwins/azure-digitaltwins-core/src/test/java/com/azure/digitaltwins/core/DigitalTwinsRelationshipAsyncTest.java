@@ -247,8 +247,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                 asyncClient.deleteModel(floorModelId).block();
                 asyncClient.deleteModel(roomModelId).block();
                 asyncClient.deleteModel(hvacModelId).block();
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 fail("Test cleanup failed", ex);
             }
         }
@@ -352,11 +351,9 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                 .verifyComplete();
 
             assertThat(incomingRelationshipsPageCount.get()).isGreaterThan(1);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             fail("Test run failed", ex);
-        }
-        finally {
+        } finally {
             // Clean up
             try {
                 logger.info("Cleaning up test resources.");
@@ -376,8 +373,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                 asyncClient.deleteModel(floorModelId).block();
                 asyncClient.deleteModel(roomModelId).block();
                 asyncClient.deleteModel(hvacModelId).block();
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 fail("Test cleanup failed", ex);
             }
         }
@@ -456,8 +452,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                 asyncClient.deleteModel(floorModelId).block();
                 asyncClient.deleteModel(roomModelId).block();
                 asyncClient.deleteModel(hvacModelId).block();
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 fail("Test cleanup failed", ex);
             }
         }
@@ -537,8 +532,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                 asyncClient.deleteModel(floorModelId).block();
                 asyncClient.deleteModel(roomModelId).block();
                 asyncClient.deleteModel(hvacModelId).block();
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 fail("Test cleanup failed", ex);
             }
         }
@@ -640,8 +634,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                 asyncClient.deleteModel(floorModelId).block();
                 asyncClient.deleteModel(roomModelId).block();
                 asyncClient.deleteModel(hvacModelId).block();
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 fail("Test cleanup failed", ex);
             }
         }
@@ -743,8 +736,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                 asyncClient.deleteModel(floorModelId).block();
                 asyncClient.deleteModel(roomModelId).block();
                 asyncClient.deleteModel(hvacModelId).block();
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 fail("Test cleanup failed", ex);
             }
         }
@@ -839,8 +831,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                 asyncClient.deleteModel(floorModelId).block();
                 asyncClient.deleteModel(roomModelId).block();
                 asyncClient.deleteModel(hvacModelId).block();
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 fail("Test cleanup failed", ex);
             }
         }
@@ -935,8 +926,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                 asyncClient.deleteModel(floorModelId).block();
                 asyncClient.deleteModel(roomModelId).block();
                 asyncClient.deleteModel(hvacModelId).block();
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 fail("Test cleanup failed", ex);
             }
         }

@@ -23,8 +23,7 @@ import static com.azure.digitaltwins.core.TestHelper.assertRestException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TwinAsyncTests extends TwinTestBase
-{
+public class TwinAsyncTests extends TwinTestBase {
     private final ClientLogger logger = new ClientLogger(TwinAsyncTests.class);
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -82,25 +81,20 @@ public class TwinAsyncTests extends TwinTestBase
                     assertThat(response.getContents().get("Temperature"))
                         .as("Temperature is updated")
                         .isEqualTo(70);
-                    })
+                })
                 .verifyComplete();
         }
 
         // clean up
         finally {
-            try
-            {
-                if (roomTwinId != null)
-                {
+            try {
+                if (roomTwinId != null) {
                     asyncClient.deleteDigitalTwin(roomTwinId).block();
                 }
-                if (roomModelId != null)
-                {
+                if (roomModelId != null) {
                     asyncClient.deleteModel(roomModelId).block();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new AssertionFailedError("Test cleanup failed", ex);
             }
         }
@@ -109,8 +103,7 @@ public class TwinAsyncTests extends TwinTestBase
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void twinNotExistThrowsNotFoundException(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion)
-    {
+    public void twinNotExistThrowsNotFoundException(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
         String twinId = testResourceNamer.randomUuid();
 
@@ -166,19 +159,14 @@ public class TwinAsyncTests extends TwinTestBase
         }
         // clean up
         finally {
-            try
-            {
-                if (roomTwinId != null)
-                {
+            try {
+                if (roomTwinId != null) {
                     asyncClient.deleteDigitalTwin(roomTwinId).block();
                 }
-                if (roomModelId != null)
-                {
+                if (roomModelId != null) {
                     asyncClient.deleteModel(roomModelId).block();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new AssertionFailedError("Test cleanup failed", ex);
             }
         }
@@ -233,19 +221,14 @@ public class TwinAsyncTests extends TwinTestBase
         }
         // clean up
         finally {
-            try
-            {
-                if (roomTwinId != null)
-                {
+            try {
+                if (roomTwinId != null) {
                     asyncClient.deleteDigitalTwin(roomTwinId).block();
                 }
-                if (roomModelId != null)
-                {
+                if (roomModelId != null) {
                     asyncClient.deleteModel(roomModelId).block();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new AssertionFailedError("Test cleanup failed", ex);
             }
         }
@@ -299,19 +282,14 @@ public class TwinAsyncTests extends TwinTestBase
         }
         // clean up
         finally {
-            try
-            {
-                if (roomTwinId != null)
-                {
+            try {
+                if (roomTwinId != null) {
                     asyncClient.deleteDigitalTwin(roomTwinId).block();
                 }
-                if (roomModelId != null)
-                {
+                if (roomModelId != null) {
                     asyncClient.deleteModel(roomModelId).block();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new AssertionFailedError("Test cleanup failed", ex);
             }
         }
@@ -366,19 +344,14 @@ public class TwinAsyncTests extends TwinTestBase
         }
         // clean up
         finally {
-            try
-            {
-                if (roomTwinId != null)
-                {
+            try {
+                if (roomTwinId != null) {
                     asyncClient.deleteDigitalTwin(roomTwinId).block();
                 }
-                if (roomModelId != null)
-                {
+                if (roomModelId != null) {
                     asyncClient.deleteModel(roomModelId).block();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new AssertionFailedError("Test cleanup failed", ex);
             }
         }
@@ -431,19 +404,14 @@ public class TwinAsyncTests extends TwinTestBase
         }
         // clean up
         finally {
-            try
-            {
-                if (roomTwinId != null)
-                {
+            try {
+                if (roomTwinId != null) {
                     asyncClient.deleteDigitalTwin(roomTwinId).block();
                 }
-                if (roomModelId != null)
-                {
+                if (roomModelId != null) {
                     asyncClient.deleteModel(roomModelId).block();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new AssertionFailedError("Test cleanup failed", ex);
             }
         }
@@ -497,15 +465,11 @@ public class TwinAsyncTests extends TwinTestBase
         }
         // clean up
         finally {
-            try
-            {
-                if (roomModelId != null)
-                {
+            try {
+                if (roomModelId != null) {
                     asyncClient.deleteModel(roomModelId).block();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new AssertionFailedError("Test cleanup failed", ex);
             }
         }

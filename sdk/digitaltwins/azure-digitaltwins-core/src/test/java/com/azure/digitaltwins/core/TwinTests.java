@@ -28,7 +28,7 @@ import static java.net.HttpURLConnection.HTTP_PRECON_FAILED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TwinTests extends TwinTestBase{
+public class TwinTests extends TwinTestBase {
 
     private final ClientLogger logger = new ClientLogger(TwinTests.class);
 
@@ -83,19 +83,14 @@ public class TwinTests extends TwinTestBase{
         }
         // clean up
         finally {
-            try
-            {
-                if (roomTwinId != null)
-                {
+            try {
+                if (roomTwinId != null) {
                     client.deleteDigitalTwin(roomTwinId);
                 }
-                if (roomModelId != null)
-                {
+                if (roomModelId != null) {
                     client.deleteModel(roomModelId);
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new AssertionFailedError("Test cleanup failed", ex);
             }
         }
@@ -104,8 +99,7 @@ public class TwinTests extends TwinTestBase{
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void twinNotExistThrowsNotFoundException(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion)
-    {
+    public void twinNotExistThrowsNotFoundException(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
         String twinId = testResourceNamer.randomUuid();
 
@@ -151,19 +145,14 @@ public class TwinTests extends TwinTestBase{
         }
         // clean up
         finally {
-            try
-            {
-                if (roomTwinId != null)
-                {
+            try {
+                if (roomTwinId != null) {
                     client.deleteDigitalTwin(roomTwinId);
                 }
-                if (roomModelId != null)
-                {
+                if (roomModelId != null) {
                     client.deleteModel(roomModelId);
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new AssertionFailedError("Test cleanup failed", ex);
             }
         }
@@ -213,19 +202,14 @@ public class TwinTests extends TwinTestBase{
         }
         // clean up
         finally {
-            try
-            {
-                if (roomTwinId != null)
-                {
+            try {
+                if (roomTwinId != null) {
                     client.deleteDigitalTwin(roomTwinId);
                 }
-                if (roomModelId != null)
-                {
+                if (roomModelId != null) {
                     client.deleteModel(roomModelId);
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new AssertionFailedError("Test cleanup failed", ex);
             }
         }
@@ -275,19 +259,14 @@ public class TwinTests extends TwinTestBase{
         }
         // clean up
         finally {
-            try
-            {
-                if (roomTwinId != null)
-                {
+            try {
+                if (roomTwinId != null) {
                     client.deleteDigitalTwin(roomTwinId);
                 }
-                if (roomModelId != null)
-                {
+                if (roomModelId != null) {
                     client.deleteModel(roomModelId);
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new AssertionFailedError("Test cleanup failed", ex);
             }
         }
@@ -343,19 +322,14 @@ public class TwinTests extends TwinTestBase{
         }
         // clean up
         finally {
-            try
-            {
-                if (roomTwinId != null)
-                {
+            try {
+                if (roomTwinId != null) {
                     client.deleteDigitalTwin(roomTwinId);
                 }
-                if (roomModelId != null)
-                {
+                if (roomModelId != null) {
                     client.deleteModel(roomModelId);
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new AssertionFailedError("Test cleanup failed", ex);
             }
         }
@@ -404,19 +378,14 @@ public class TwinTests extends TwinTestBase{
         }
         // clean up
         finally {
-            try
-            {
-                if (roomTwinId != null)
-                {
+            try {
+                if (roomTwinId != null) {
                     client.deleteDigitalTwin(roomTwinId);
                 }
-                if (roomModelId != null)
-                {
+                if (roomModelId != null) {
                     client.deleteModel(roomModelId);
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new AssertionFailedError("Test cleanup failed", ex);
             }
         }
@@ -474,15 +443,11 @@ public class TwinTests extends TwinTestBase{
         }
         // clean up
         finally {
-            try
-            {
-                if (roomModelId != null)
-                {
+            try {
+                if (roomModelId != null) {
                     client.deleteModel(roomModelId);
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new AssertionFailedError("Test cleanup failed", ex);
             }
         }
