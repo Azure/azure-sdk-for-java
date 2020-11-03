@@ -131,7 +131,6 @@ public class ServiceBusProcessorTest {
         ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder,
             messageContext -> {
                 try {
-                    System.out.println("Received message " + messageContext.getMessage().getMessageId());
                     assertEquals(String.valueOf(messageId.getAndIncrement()),
                         messageContext.getMessage().getMessageId());
                 } catch (AssertionError error) {
@@ -253,11 +252,15 @@ public class ServiceBusProcessorTest {
         CountDownLatch countDownLatch = new CountDownLatch(5);
         ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder,
             messageContext -> {
-                System.out.println("Message " + messageContext.getMessage().getMessageId());
                 assertEquals(String.valueOf(messageId.getAndIncrement()), messageContext.getMessage().getMessageId());
                 throw new IllegalStateException(); // throw error from user handler
             },
-            error -> countDownLatch.countDown(),
+            error -> {
+                assertTrue(error instanceof ServiceBusReceiverException);
+                ServiceBusReceiverException exception = (ServiceBusReceiverException) error;
+                assertTrue(exception.getErrorSource() == ServiceBusErrorSource.USER_CALLBACK);
+                countDownLatch.countDown();
+            },
             new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1));
 
         serviceBusProcessorClient.start();
