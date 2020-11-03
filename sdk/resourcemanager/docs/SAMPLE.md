@@ -1,5 +1,7 @@
 # Code snippets and samples
 
+**If you are looking for general documentation on how to use the management libraries, please [visit here](https://aka.ms/azsdk/java/mgmt)**
+
 ### Azure Authentication
 
 The `AzureResourceManager` class is the simplest entry point for creating and interacting with Azure resources.

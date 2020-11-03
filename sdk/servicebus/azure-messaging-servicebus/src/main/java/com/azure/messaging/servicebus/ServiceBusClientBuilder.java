@@ -641,7 +641,7 @@ public final class ServiceBusClientBuilder {
     public final class ServiceBusSessionProcessorClientBuilder {
         private final ServiceBusProcessorClientOptions processorClientOptions;
         private final ServiceBusSessionReceiverClientBuilder sessionReceiverClientBuilder;
-        private Consumer<ServiceBusProcessorMessageContext> processMessage;
+        private Consumer<ServiceBusReceivedMessageContext> processMessage;
         private Consumer<Throwable> processError;
 
         private ServiceBusSessionProcessorClientBuilder() {
@@ -739,7 +739,7 @@ public final class ServiceBusClientBuilder {
          * @return The updated {@link ServiceBusProcessorClientBuilder} object.
          */
         public ServiceBusSessionProcessorClientBuilder processMessage(
-            Consumer<ServiceBusProcessorMessageContext> processMessage) {
+            Consumer<ServiceBusReceivedMessageContext> processMessage) {
             this.processMessage = processMessage;
             return this;
         }
@@ -1080,7 +1080,7 @@ public final class ServiceBusClientBuilder {
     public final class ServiceBusProcessorClientBuilder {
         private final ServiceBusReceiverClientBuilder serviceBusReceiverClientBuilder;
         private final ServiceBusProcessorClientOptions processorClientOptions;
-        private Consumer<ServiceBusProcessorMessageContext> processMessage;
+        private Consumer<ServiceBusReceivedMessageContext> processMessage;
         private Consumer<Throwable> processError;
 
         private ServiceBusProcessorClientBuilder() {
@@ -1159,7 +1159,7 @@ public final class ServiceBusClientBuilder {
          * @return The updated {@link ServiceBusProcessorClientBuilder} object.
          */
         public ServiceBusProcessorClientBuilder processMessage(
-            Consumer<ServiceBusProcessorMessageContext> processMessage) {
+            Consumer<ServiceBusReceivedMessageContext> processMessage) {
             this.processMessage = processMessage;
             return this;
         }

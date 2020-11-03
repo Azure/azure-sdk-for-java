@@ -1,5 +1,7 @@
 # Authentication in Azure Management Libraries for Java
 
+**If you are looking for general documentation on how to use the management libraries, please [visit here](https://aka.ms/azsdk/java/mgmt)**
+
 To use the APIs in the Azure Management Libraries for Java, as the first step you need to create an authenticated client. This document is to introduce several possible approaches for authentication.
 
 ## Getting Started
