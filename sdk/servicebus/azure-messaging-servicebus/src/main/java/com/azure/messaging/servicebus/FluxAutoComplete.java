@@ -128,13 +128,19 @@ final class FluxAutoComplete extends FluxOperator<ServiceBusReceivedMessageConte
          * Applies a function and catches then logs and closes any exceptions.
          *
          * @param function Function to apply.
-         * @param message received message to apply function to.
+         * @param context received message to apply function to.
          * @param operation The operation name.
          */
         private void applyWithCatch(Function<ServiceBusReceivedMessageContext, Mono<Void>> function,
-            ServiceBusReceivedMessageContext message, String operation) {
+            ServiceBusReceivedMessageContext context, String operation) {
+
+            // Do not settle the message again if it has already been settled.
+            if (context.getMessage() != null && context.getMessage().isSettled()) {
+                return;
+            }
+
             try {
-                function.apply(message).block();
+                function.apply(context).block();
             } catch (Exception e) {
                 logger.warning("Unable to '{}' message.", operation, e);
                 onError(e);

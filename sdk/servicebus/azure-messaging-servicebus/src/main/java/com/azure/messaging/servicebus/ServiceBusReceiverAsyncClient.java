@@ -365,7 +365,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return monoError(logger, new NullPointerException(
                 "'options.transactionContext.transactionId' cannot be null."));
         }
-        return  updateDisposition(message, DispositionStatus.SUSPENDED, options.getDeadLetterReason(),
+        return updateDisposition(message, DispositionStatus.SUSPENDED, options.getDeadLetterReason(),
             options.getDeadLetterErrorDescription(), options.getPropertiesToModify(),
             options.getTransactionContext());
     }
@@ -976,16 +976,18 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 logger.info("{}: Management node Update completed. Disposition: {}. Lock: {}.",
                     entityPath, dispositionStatus, lockToken);
 
+                message.setIsSettled(true);
                 managementNodeLocks.remove(lockToken);
                 renewalContainer.remove(lockToken);
             }));
 
         Mono<Void> updateDispositionOperation;
         if (sessionManager != null) {
-            updateDispositionOperation =  sessionManager.updateDisposition(lockToken, sessionId, dispositionStatus,
+            updateDispositionOperation = sessionManager.updateDisposition(lockToken, sessionId, dispositionStatus,
                 propertiesToModify, deadLetterReason, deadLetterErrorDescription, transactionContext)
                 .flatMap(isSuccess -> {
                     if (isSuccess) {
+                        message.setIsSettled(true);
                         renewalContainer.remove(lockToken);
                         return Mono.empty();
                     }
@@ -1003,10 +1005,13 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                     .then(Mono.fromRunnable(() -> {
                         logger.info("{}: Update completed. Disposition: {}. Lock: {}.",
                             entityPath, dispositionStatus, lockToken);
+
+                        message.setIsSettled(true);
                         renewalContainer.remove(lockToken);
                     }));
             }
         }
+
         return updateDispositionOperation
             .onErrorMap(throwable -> {
                 // We only populate ErrorSource only when AutoComplete is enabled.
@@ -1023,7 +1028,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                     }
                 }
                 return throwable;
-
             });
     }
 
