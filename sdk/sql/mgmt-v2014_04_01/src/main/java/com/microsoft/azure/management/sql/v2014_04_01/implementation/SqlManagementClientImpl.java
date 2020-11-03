@@ -159,32 +159,6 @@ public class SqlManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The BackupLongTermRetentionPoliciesInner object to access its operations.
-     */
-    private BackupLongTermRetentionPoliciesInner backupLongTermRetentionPolicies;
-
-    /**
-     * Gets the BackupLongTermRetentionPoliciesInner object to access its operations.
-     * @return the BackupLongTermRetentionPoliciesInner object.
-     */
-    public BackupLongTermRetentionPoliciesInner backupLongTermRetentionPolicies() {
-        return this.backupLongTermRetentionPolicies;
-    }
-
-    /**
-     * The BackupLongTermRetentionVaultsInner object to access its operations.
-     */
-    private BackupLongTermRetentionVaultsInner backupLongTermRetentionVaults;
-
-    /**
-     * Gets the BackupLongTermRetentionVaultsInner object to access its operations.
-     * @return the BackupLongTermRetentionVaultsInner object.
-     */
-    public BackupLongTermRetentionVaultsInner backupLongTermRetentionVaults() {
-        return this.backupLongTermRetentionVaults;
-    }
-
-    /**
      * The RecoverableDatabasesInner object to access its operations.
      */
     private RecoverableDatabasesInner recoverableDatabases;
@@ -676,8 +650,6 @@ public class SqlManagementClientImpl extends AzureServiceClient {
         this.generateClientRequestId = true;
         this.serverAdvisors = new ServerAdvisorsInner(restClient().retrofit(), this);
         this.databaseAdvisors = new DatabaseAdvisorsInner(restClient().retrofit(), this);
-        this.backupLongTermRetentionPolicies = new BackupLongTermRetentionPoliciesInner(restClient().retrofit(), this);
-        this.backupLongTermRetentionVaults = new BackupLongTermRetentionVaultsInner(restClient().retrofit(), this);
         this.recoverableDatabases = new RecoverableDatabasesInner(restClient().retrofit(), this);
         this.restorableDroppedDatabases = new RestorableDroppedDatabasesInner(restClient().retrofit(), this);
         this.capabilities = new CapabilitiesInner(restClient().retrofit(), this);
