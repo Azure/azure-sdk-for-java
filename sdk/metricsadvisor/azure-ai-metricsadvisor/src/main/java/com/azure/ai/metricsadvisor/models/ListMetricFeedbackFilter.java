@@ -63,7 +63,6 @@ public final class ListMetricFeedbackFilter {
         return this.timeMode;
     }
 
-
     /**
      * Set the feedback dimension filter to filter the feedbacks.
      *

@@ -40,11 +40,13 @@ public class RecognizeCustomFormsFromUrl {
             final RecognizedForm form = recognizedForms.get(i);
             System.out.printf("----------- Recognized custom form info for page %d -----------%n", i);
             System.out.printf("Form type: %s%n", form.getFormType());
+            System.out.printf("Form has form type confidence : %.2f%n", form.getFormTypeConfidence());
+            System.out.printf("Form was analyzed with model with ID: ", form.getModelId());
             form.getFields().forEach((label, formField) ->
                 // label data is populated if you are using a model trained with unlabeled data,
                 // since the service needs to make predictions for labels if not explicitly given to it.
-                System.out.printf("Field '%s' has label '%s' with a confidence "
-                    + "score of %.2f.%n", label, formField.getLabelData().getText(), formField.getConfidence()));
+                System.out.printf("Field '%s' has label '%s' with a confidence score of %.2f.%n",
+                    label, formField.getLabelData().getText(), formField.getConfidence()));
         }
     }
 }

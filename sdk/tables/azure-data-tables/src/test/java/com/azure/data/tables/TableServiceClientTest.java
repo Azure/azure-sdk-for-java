@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 
 public class TableServiceClientTest extends TestBase {
+    private static final Duration TIMEOUT = Duration.ofSeconds(100);
     private TableServiceClient serviceClient;
 
     @Override
@@ -48,6 +49,33 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
+    void serviceCreateTableWithTimeout() {
+        // Arrange
+        String tableName = testResourceNamer.randomName("test", 20);
+
+        // Act & Assert
+        serviceClient.createTable(tableName, TIMEOUT);
+    }
+
+    @Test
+    void serviceCreateTableWithNullTimeout() {
+        // Arrange
+        String tableName = testResourceNamer.randomName("test", 20);
+
+        // Act & Assert
+        serviceClient.createTable(tableName, null);
+    }
+
+    @Test
+    void serviceCreateTableWithResponseWithNullTimeoutAndContext() {
+        // Arrange
+        String tableName = testResourceNamer.randomName("test", 20);
+
+        // Act & Assert
+        serviceClient.createTableWithResponse(tableName, null, null);
+    }
+
+    @Test
     void serviceCreateTableFailsIfExists() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
@@ -75,20 +103,5 @@ public class TableServiceClientTest extends TestBase {
 
         //Act & Assert
         serviceClient.createTableIfNotExists(tableName);
-    }
-
-    @Test
-    void serviceDeleteTable() {
-        // Arrange
-        String tableName = testResourceNamer.randomName("test", 20);
-
-        // Act & Assert
-    }
-
-    @Test
-    void serviceDeleteTableWithResponse() {
-        // Arrange
-        String tableName = testResourceNamer.randomName("test", 20);
-        int expectedStatusCode = 204;
     }
 }

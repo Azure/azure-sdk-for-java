@@ -6,6 +6,7 @@ import com.azure.core.http.HttpHeaders
 import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpPipelinePosition
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.ProxyOptions
@@ -42,6 +43,9 @@ import java.nio.ByteBuffer
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import java.time.OffsetDateTime
+import java.util.concurrent.ConcurrentHashMap
+import java.util.function.BiFunction
+import java.util.function.Function
 import java.util.function.Supplier
 
 class APISpec extends Specification {
@@ -906,6 +910,59 @@ class APISpec extends Specification {
             @Override
             Mono<String> getBodyAsString(Charset charset) {
                 return Mono.just("")
+            }
+        }
+    }
+
+    def getPerCallVersionPolicy() {
+        return new HttpPipelinePolicy() {
+            @Override
+            Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                context.getHttpRequest().setHeader("x-ms-version","2019-02-02")
+                return next.process()
+            }
+            @Override
+            HttpPipelinePosition getPipelinePosition() {
+                return HttpPipelinePosition.PER_CALL
+            }
+        }
+    }
+
+    /**
+     * Injects one retry-able IOException failure per url.
+     */
+    class TransientFailureInjectingHttpPipelinePolicy implements HttpPipelinePolicy {
+
+        private ConcurrentHashMap<String, Boolean> failureTracker = new ConcurrentHashMap<>();
+
+        @Override
+        Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext, HttpPipelineNextPolicy httpPipelineNextPolicy) {
+            def request = httpPipelineCallContext.httpRequest
+            def key = request.url.toString()
+            // Make sure that failure happens once per url.
+            if (failureTracker.get(key, false)) {
+                return httpPipelineNextPolicy.process()
+            } else {
+                failureTracker.put(key, true)
+                if (request.getBody() != null) {
+                    return request.getBody().flatMap {
+                        byteBuffer ->
+                            // Read a byte from each buffer to simulate that failure occurred in the middle of transfer.
+                            byteBuffer.get()
+                            return Flux.just(byteBuffer)
+                    }.reduce(0L, {
+                            // Reduce in order to force processing of all buffers.
+                        a, byteBuffer ->
+                            return a + byteBuffer.remaining()
+                    } as BiFunction<Long, ByteBuffer, Long>
+                    ).flatMap({
+                        aLong ->
+                            // Throw retry-able error.
+                            return Mono.error(new IOException("KABOOM!"))
+                    } as Function<Long, Mono<HttpResponse>>)
+                } else {
+                    return Mono.error(new IOException("KABOOM!"))
+                }
             }
         }
     }

@@ -13,6 +13,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
 public class IncidentDetectedTest extends IncidentDetectedTestBase {
+
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Override

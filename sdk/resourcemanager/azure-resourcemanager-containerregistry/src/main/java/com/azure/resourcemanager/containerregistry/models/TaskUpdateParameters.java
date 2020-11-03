@@ -18,6 +18,12 @@ public class TaskUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TaskUpdateParameters.class);
 
     /*
+     * Identity for the resource.
+     */
+    @JsonProperty(value = "identity")
+    private IdentityProperties identity;
+
+    /*
      * The ARM resource tags.
      */
     @JsonProperty(value = "tags")
@@ -65,6 +71,26 @@ public class TaskUpdateParameters {
      */
     @JsonProperty(value = "properties.credentials")
     private Credentials credentials;
+
+    /**
+     * Get the identity property: Identity for the resource.
+     *
+     * @return the identity value.
+     */
+    public IdentityProperties identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Identity for the resource.
+     *
+     * @param identity the identity value to set.
+     * @return the TaskUpdateParameters object itself.
+     */
+    public TaskUpdateParameters withIdentity(IdentityProperties identity) {
+        this.identity = identity;
+        return this;
+    }
 
     /**
      * Get the tags property: The ARM resource tags.
@@ -234,6 +260,9 @@ public class TaskUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
         if (platform() != null) {
             platform().validate();
         }

@@ -3,10 +3,12 @@
 
 package com.azure.storage.file.datalake.models;
 
+import com.azure.core.exception.AzureException;
+
 /**
  * An exception thrown when an operation is interrupted and can be continued later on.
  */
-public class DataLakeAclChangeFailedException extends RuntimeException {
+public class DataLakeAclChangeFailedException extends AzureException {
 
     private final String continuationToken;
 

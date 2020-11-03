@@ -132,7 +132,7 @@ public abstract class CertificateClientTestBase extends TestBase {
     @Test
     public abstract void createCertificateNullPolicy(HttpClient httpClient, CertificateServiceVersion serviceVersion);
 
-    @Test public abstract void createCertoificateNull(HttpClient httpClient, CertificateServiceVersion serviceVersion);
+    @Test public abstract void createCertificateNull(HttpClient httpClient, CertificateServiceVersion serviceVersion);
 
     @Test
     public abstract void updateCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion);

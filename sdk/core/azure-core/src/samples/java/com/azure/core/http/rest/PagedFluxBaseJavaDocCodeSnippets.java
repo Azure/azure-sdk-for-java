@@ -62,6 +62,7 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
 
     /**
      * Code snippets for creating an instance of {@link PagedFluxBase}
+     *
      * @return An instance of {@link PagedFluxBase}
      */
     private PagedFluxBase<Integer, PagedResponse<Integer>> createAnInstance() {
@@ -82,8 +83,9 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
         // A supplier that fetches the first page of data from source/service
         Supplier<Mono<PagedResponse<Integer>>> firstPageRetrieverFunction = () -> getFirstPage();
 
-        PagedFluxBase<Integer, PagedResponse<Integer>> pagedFluxBaseInstance = new PagedFluxBase<>(firstPageRetrieverFunction,
-            nextPageRetriever);
+        PagedFluxBase<Integer, PagedResponse<Integer>> pagedFluxBaseInstance =
+            new PagedFluxBase<>(firstPageRetrieverFunction,
+                nextPageRetriever);
         // END: com.azure.core.http.rest.pagedfluxbase.singlepage.instantiation
         return pagedFluxBase;
     }
@@ -128,22 +130,22 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
 
         // BEGIN: com.azure.core.http.rest.pagedfluxbase.subscribe
         pagedFluxBase.subscribe(new BaseSubscriber<Integer>() {
-                @Override
-                protected void hookOnSubscribe(Subscription subscription) {
-                    System.out.println("Subscribed to paged flux processing items");
-                    super.hookOnSubscribe(subscription);
-                }
+            @Override
+            protected void hookOnSubscribe(Subscription subscription) {
+                System.out.println("Subscribed to paged flux processing items");
+                super.hookOnSubscribe(subscription);
+            }
 
-                @Override
-                protected void hookOnNext(Integer value) {
-                    System.out.println("Processing item with value: " + value);
-                }
+            @Override
+            protected void hookOnNext(Integer value) {
+                System.out.println("Processing item with value: " + value);
+            }
 
-                @Override
-                protected void hookOnComplete() {
-                    System.out.println("Processing complete.");
-                }
-            });
+            @Override
+            protected void hookOnComplete() {
+                System.out.println("Processing complete.");
+            }
+        });
         // END: com.azure.core.http.rest.pagedfluxbase.subscribe
     }
 

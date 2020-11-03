@@ -8,13 +8,13 @@ With this starter you could easily use Spring JMS Queue and Topic with Azure Ser
 ### Prerequisites
 - [Java Development Kit (JDK)][jdk_link] with version 8 or above
 - [Azure Subscription][azure_subscription]
-- [Maven](http://maven.apache.org/) 3.0 and above
+- [Maven](https://maven.apache.org/) 3.0 and above
 
 ### Include the package
-[//]: # ({x-version-update-start;com.azure:azure-spring-boot-starter-servicebus-jms;current})
+[//]: # ({x-version-update-start;com.azure.spring:azure-spring-boot-starter-servicebus-jms;current})
 ```xml
 <dependency>
-    <groupId>com.azure</groupId>
+    <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-servicebus-jms</artifactId>
     <version>3.0.0-beta.1</version>
 </dependency>
@@ -58,8 +58,8 @@ In this section, you create the necessary Java classes for sending messages to y
 #### Define a test Java class
 
 Create a Java file named *User.java* in the package directory of your app. Define a generic user class that stores and retrieves user's name:
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/User.java#L11-L30 -->
 
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/User.java#L11-L30 -->
 ```java
 import java.io.Serializable;
 
@@ -88,46 +88,46 @@ public class User implements Serializable {
 #### Create a new class for the message send controller
 
 1. Create a Java file named *SendController.java* in the package directory of your app. Add the following code to the new file:
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/SendController.java#L11-L35 -->
-
-```java
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-@RestController
-public class SendController {
-
-    private static final String DESTINATION_NAME = "<DestinationName>";
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(SendController.class);
-
-    @Autowired
-    private JmsTemplate jmsTemplate;
-
-    @PostMapping("/messages")
-    public String postMessage(@RequestParam String message) {
-        LOGGER.info("Sending message");
-        jmsTemplate.convertAndSend(DESTINATION_NAME, new User(message));
-        return message;
+    
+    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/SendController.java#L11-L35 -->
+    ```java
+    import org.slf4j.Logger;
+    import org.slf4j.LoggerFactory;
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.jms.core.JmsTemplate;
+    import org.springframework.web.bind.annotation.PostMapping;
+    import org.springframework.web.bind.annotation.RequestParam;
+    import org.springframework.web.bind.annotation.RestController;
+    
+    @RestController
+    public class SendController {
+    
+        private static final String DESTINATION_NAME = "<DestinationName>";
+    
+        private static final Logger LOGGER = LoggerFactory.getLogger(SendController.class);
+    
+        @Autowired
+        private JmsTemplate jmsTemplate;
+    
+        @PostMapping("/messages")
+        public String postMessage(@RequestParam String message) {
+            LOGGER.info("Sending message");
+            jmsTemplate.convertAndSend(DESTINATION_NAME, new User(message));
+            return message;
+        }
     }
-}
-```
+    ```
 
-> [!NOTE]
-> Replace `<DestinationName>` with your own queue name or topic name configured in your Service Bus namespace.
+    > [!NOTE]
+    > Replace `<DestinationName>` with your own queue name or topic name configured in your Service Bus namespace.
 
 #### Create a class for the message receive controller
 
 - Receive messages from a Service Bus queue
 
     Create a Java file named *QueueReceiveController.java* in the package directory of your app. Add the following code to the new file:
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/QueueReceiveController.java#L11-L27 -->
-
+    
+    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/QueueReceiveController.java#L11-L27 -->
     ```java
     import org.slf4j.Logger;
     import org.slf4j.LoggerFactory;
@@ -154,8 +154,8 @@ public class SendController {
 - Receive messages from a Service Bus subscription
 
     Create a Java file named *TopicReceiveController.java* in the package directory of your app. Add the following code to the new file. Replace the `<ServiceBusTopicName>` placeholder with your own topic name configured in your Service Bus namespace. Replace the `<ServiceBusSubscriptionName>` placeholder with your own subscription name for your Service Bus topic.
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/TopicReceiveController.java#L11-L30 -->
-
+    
+    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/TopicReceiveController.java#L11-L30 -->
     ```java
     import org.slf4j.Logger;
     import org.slf4j.LoggerFactory;

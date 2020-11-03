@@ -135,17 +135,13 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
      * @param provider the provider that when called returns Page Retriever Function
      * @param continuationToken the token to identify the pages to be retrieved
      * @param pageSize the preferred page size
-     * @param <C> the type of Continuation token
-     * @param <T> The type of items in a {@link ContinuablePage}
-     * @param <P> The {@link ContinuablePage} holding items of type {@code T}
      * @return a Flux of {@link ContinuablePage} identified by the given continuation token
      */
-    private static <C, T, P extends ContinuablePage<C, T>> Flux<P> byPage(Supplier<PageRetriever<C, P>> provider,
-        C continuationToken, Integer pageSize) {
+    private Flux<P> byPage(Supplier<PageRetriever<C, P>> provider, C continuationToken, Integer pageSize) {
         return Flux.defer(() -> {
             final PageRetriever<C, P> pageRetriever = provider.get();
             final ContinuationState<C> state = new ContinuationState<>(continuationToken);
-            return concatFluxOfPage(state, pageRetriever, pageSize);
+            return retrievePages(state, pageRetriever, pageSize);
         });
     }
 
@@ -156,13 +152,23 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
      * @param state the state to be used across multiple Page Retriever Function calls
      * @param pageRetriever the Page Retriever Function
      * @param pageSize the preferred page size
-     * @param <C> the type of Continuation token
-     * @param <T> The type of items in a {@link ContinuablePage}
-     * @param <P> The {@link ContinuablePage} holding items of type {@code T}
      * @return a Flux of {@link ContinuablePage}
      */
-    private static <C, T, P extends ContinuablePage<C, T>> Flux<P> concatFluxOfPage(ContinuationState<C> state,
-        PageRetriever<C, P> pageRetriever, Integer pageSize) {
+    private Flux<P> retrievePages(ContinuationState<C> state, PageRetriever<C, P> pageRetriever, Integer pageSize) {
+        /*
+         * The second argument for 'expand' is an initial capacity hint to the expand subscriber to indicate what size
+         * buffer it should instantiate. 4 is used as PageRetriever's 'get' returns a Flux so an implementation may
+         * return multiple pages, but in the case only one page is retrieved the buffer won't need to be resized or
+         * request additional pages from the service.
+         */
+        return retrievePage(state, pageRetriever, pageSize)
+            .expand(page -> {
+                state.setLastContinuationToken(page.getContinuationToken());
+                return Flux.defer(() -> retrievePage(state, pageRetriever, pageSize));
+            }, 4);
+    }
+
+    private Flux<P> retrievePage(ContinuationState<C> state, PageRetriever<C, P> pageRetriever, Integer pageSize) {
         if (state.isDone()) {
             return Flux.empty();
         } else {
@@ -170,9 +176,7 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
                 .switchIfEmpty(Flux.defer(() -> {
                     state.setLastContinuationToken(null);
                     return Mono.empty();
-                }))
-                .doOnNext(page -> state.setLastContinuationToken(page.getContinuationToken()))
-                .concatWith(Flux.defer(() -> concatFluxOfPage(state, pageRetriever, pageSize)));
+                }));
         }
     }
 }

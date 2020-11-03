@@ -198,11 +198,11 @@ ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
 
 // Receives a batch of messages when 10 messages are received or until 30 seconds have elapsed, whichever
 // happens first.
-IterableStream<ServiceBusReceivedMessageContext> messages = receiver.receiveMessages(10, Duration.ofSeconds(30));
-messages.forEach(context -> {
-    ServiceBusReceivedMessage message = context.getMessage();
+IterableStream<ServiceBusReceivedMessage> messages = receiver.receiveMessages(10, Duration.ofSeconds(30));
+messages.forEach(message -> {
+
     System.out.printf("Id: %s. Contents: %s%n", message.getMessageId(),
-        new String(message.getBody(), StandardCharsets.UTF_8));
+        message.getBody().toString());
 });
 
 // When you are done using the receiver, dispose of it.
@@ -224,10 +224,10 @@ ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
 
 // receive() operation continuously fetches messages until the subscription is disposed.
 // The stream is infinite, and completes when the subscription or receiver is closed.
-Disposable subscription = receiver.receiveMessages().subscribe(context -> {
-    ServiceBusReceivedMessage message = context.getMessage();
+Disposable subscription = receiver.receiveMessages().subscribe(message -> {
+
     System.out.printf("Id: %s%n", message.getMessageId());
-    System.out.printf("Contents: %s%n", new String(message.getBody(), StandardCharsets.UTF_8));
+    System.out.printf("Contents: %s%n", message.getBody().toString());
 }, error -> {
         System.err.println("Error occurred while receiving messages: " + error);
     }, () -> {
@@ -250,10 +250,10 @@ overloads. The sample below completes a received message from synchronous
 <!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L145-L151 -->
 ```java
 // This fetches a batch of 10 messages or until the default operation timeout has elapsed.
-receiver.receiveMessages(10).forEach(context -> {
-    ServiceBusReceivedMessage message = context.getMessage();
-
+receiver.receiveMessages(10).forEach(message -> {
     // Process message and then complete it.
+    System.out.println("Completing message " + message.getLockToken());
+
     receiver.complete(message);
 });
 ```
@@ -303,22 +303,23 @@ Receivers can fetch messages from a specific session or the first available, unl
 <!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L175-L181 -->
 ```java
 // Creates a session-enabled receiver that gets messages from the session "greetings".
-ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
     .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
     .sessionReceiver()
     .queueName("<< QUEUE NAME >>")
-    .sessionId("greetings")
     .buildAsyncClient();
+Mono<ServiceBusReceiverAsyncClient> receiverAsyncClient = sessionReceiver.acceptSession("greetings");
 ```
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L188-L193 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L188-L194 -->
 ```java
 // Creates a session-enabled receiver that gets messages from the first available session.
-ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
     .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
     .sessionReceiver()
     .queueName("<< QUEUE NAME >>")
     .buildAsyncClient();
+Mono<ServiceBusReceiverAsyncClient> receiverAsyncClient = sessionReceiver.acceptNextSession();
 ```
 
 ### Create a dead-letter queue Receiver
@@ -328,7 +329,7 @@ The dead-letter queue doesn't need to be explicitly created and can't be deleted
 of the main entity. For session enabled or non-session queue or topic subscriptions, the dead-letter receiver can be 
 created the same way as shown below. Learn more about dead-letter queue [here][dead-letter-queue].
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L200-L206 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L201-L207 -->
 ```java
 ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
     .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
@@ -413,10 +414,10 @@ Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [maven]: https://maven.apache.org/
 [message-sessions]: https://docs.microsoft.com/azure/service-bus-messaging/message-sessions
-[oasis_amqp_v1_error]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-error
+[oasis_amqp_v1_error]: https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-error
 [oasis_amqp_v1]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
 [product_docs]: https://docs.microsoft.com/azure/service-bus-messaging
-[qpid_proton_j_apache]: http://qpid.apache.org/proton/
+[qpid_proton_j_apache]: https://qpid.apache.org/proton/
 [queue_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview#queues
 [ReceiveMode]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/main/java/com/azure/messaging/servicebus/models/ReceiveMode.java
 [RetryOptions]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-amqp/src/main/java/com/azure/core/amqp/AmqpRetryOptions.java

@@ -24,7 +24,7 @@ Maven dependency for Azure Secret Client library. Add it to your project's pom f
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.1.2</version>
+    <version>1.1.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -397,7 +397,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [secrets_client_library]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-security-keyvault-secrets
 [eventhubs_client_library]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/eventhubs/azure-messaging-eventhubs
 [azure_core_library]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/core
-[javadoc]: http://azure.github.io/azure-sdk-for-java
+[javadoc]: https://azure.github.io/azure-sdk-for-java
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fidentity%2Fazure-identity%2FREADME.png)

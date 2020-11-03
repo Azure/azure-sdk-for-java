@@ -1,61 +1,61 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.file.core.windows.net/leaseapitestreleaseshareleaseerror50316c2364e0f3c?restype=share",
+    "Uri" : "https://REDACTED.file.core.windows.net/leaseapitestreleaseshareleaseerror15143865bcddf70?restype=share",
     "Headers" : {
       "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b4cafa45-5bb5-4182-9db5-9cf8cfd9b8b2"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b0f4bca4-8877-4483-86c8-7e2f3ebad4d6"
     },
     "Response" : {
       "x-ms-version" : "2020-02-10",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D84479AB9AA19F",
-      "Last-Modified" : "Wed, 19 Aug 2020 19:54:23 GMT",
+      "ETag" : "0x8D8671C91E38EF6",
+      "Last-Modified" : "Fri, 02 Oct 2020 21:46:07 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "d677cb8b-601a-006f-7962-76d031000000",
-      "Date" : "Wed, 19 Aug 2020 19:54:23 GMT",
-      "x-ms-client-request-id" : "b4cafa45-5bb5-4182-9db5-9cf8cfd9b8b2"
+      "x-ms-request-id" : "660dd2ce-301a-00a3-5805-99f447000000",
+      "Date" : "Fri, 02 Oct 2020 21:46:06 GMT",
+      "x-ms-client-request-id" : "b0f4bca4-8877-4483-86c8-7e2f3ebad4d6"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.file.core.windows.net/leaseapitestreleaseshareleaseerror50316c2364e0f3c/leaseapitestreleaseshareleaseerror83803ee93f853aa",
+    "Uri" : "https://REDACTED.file.core.windows.net/leaseapitestreleaseshareleaseerror15143865bcddf70/leaseapitestreleaseshareleaseerror261717cf5cf811e",
     "Headers" : {
       "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "41e8d866-38fb-419a-bd38-041efacd302b"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8ca22b1f-4a87-4c6e-b21e-dca6b0a6c876"
     },
     "Response" : {
       "x-ms-version" : "2020-02-10",
-      "x-ms-file-permission-key" : "4010187179898695473*11459378189709739967",
+      "x-ms-file-permission-key" : "5144323600546320195*17277118026500876237",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2020-08-19T19:54:23.4577389Z",
-      "Last-Modified" : "Wed, 19 Aug 2020 19:54:23 GMT",
+      "x-ms-file-creation-time" : "2020-10-02T21:46:07.8307610Z",
+      "Last-Modified" : "Fri, 02 Oct 2020 21:46:07 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Wed, 19 Aug 2020 19:54:23 GMT",
-      "ETag" : "0x8D84479ABA819ED",
+      "Date" : "Fri, 02 Oct 2020 21:46:07 GMT",
+      "ETag" : "0x8D8671C91F33D1A",
       "x-ms-file-attributes" : "Archive",
-      "x-ms-file-change-time" : "2020-08-19T19:54:23.4577389Z",
+      "x-ms-file-change-time" : "2020-10-02T21:46:07.8307610Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "d677cb8d-601a-006f-7a62-76d031000000",
-      "x-ms-client-request-id" : "41e8d866-38fb-419a-bd38-041efacd302b",
-      "x-ms-file-last-write-time" : "2020-08-19T19:54:23.4577389Z"
+      "x-ms-request-id" : "660dd2d0-301a-00a3-5905-99f447000000",
+      "x-ms-client-request-id" : "8ca22b1f-4a87-4c6e-b21e-dca6b0a6c876",
+      "x-ms-file-last-write-time" : "2020-10-02T21:46:07.8307610Z"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.file.core.windows.net/jtsleaseapitestreleaseshareleaseerror019741fd690a7bb2?comp=lease&restype=share",
+    "Uri" : "https://REDACTED.file.core.windows.net/jtsleaseapitestreleaseshareleaseerror0459698ae180d767?comp=lease&restype=share",
     "Headers" : {
       "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "986622b1-0b69-4e63-bc25-874f71dd5df5"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7265051f-a9e3-45a5-b4cb-f234e3a38bf7"
     },
     "Response" : {
       "x-ms-version" : "2020-02-10",
@@ -64,13 +64,13 @@
       "retry-after" : "0",
       "Content-Length" : "321",
       "StatusCode" : "400",
-      "x-ms-request-id" : "d677cb8f-601a-006f-7b62-76d031000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:d677cb8f-601a-006f-7b62-76d031000000\nTime:2020-08-19T19:54:23.5215706Z</Message><HeaderName>x-ms-lease-id</HeaderName><HeaderValue>id</HeaderValue></Error>",
-      "Date" : "Wed, 19 Aug 2020 19:54:23 GMT",
-      "x-ms-client-request-id" : "986622b1-0b69-4e63-bc25-874f71dd5df5",
+      "x-ms-request-id" : "660dd2d1-301a-00a3-5a05-99f447000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:660dd2d1-301a-00a3-5a05-99f447000000\nTime:2020-10-02T21:46:07.9281364Z</Message><HeaderName>x-ms-lease-id</HeaderName><HeaderValue>id</HeaderValue></Error>",
+      "Date" : "Fri, 02 Oct 2020 21:46:07 GMT",
+      "x-ms-client-request-id" : "7265051f-a9e3-45a5-b4cb-f234e3a38bf7",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "leaseapitestreleaseshareleaseerror50316c2364e0f3c", "leaseapitestreleaseshareleaseerror83803ee93f853aa", "jtsleaseapitestreleaseshareleaseerror019741fd690a7bb2" ]
+  "variables" : [ "leaseapitestreleaseshareleaseerror15143865bcddf70", "leaseapitestreleaseshareleaseerror261717cf5cf811e", "jtsleaseapitestreleaseshareleaseerror0459698ae180d767" ]
 }

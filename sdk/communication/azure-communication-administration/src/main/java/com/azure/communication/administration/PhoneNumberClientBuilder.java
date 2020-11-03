@@ -5,6 +5,7 @@ package com.azure.communication.administration;
 import com.azure.communication.administration.implementation.PhoneNumberAdminClientImpl;
 import com.azure.communication.administration.implementation.PhoneNumberAdminClientImplBuilder;
 import com.azure.communication.common.CommunicationClientCredential;
+import com.azure.communication.common.ConnectionString;
 import com.azure.communication.common.HmacAuthenticationPolicy;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpClient;
@@ -101,12 +102,31 @@ public final class PhoneNumberClientBuilder {
     /**
      * Set CommunicationClientCredential for authorization
      *
-     * @param credential valid CommunicationClientCredential object
+     * @param accessKey access key for initalizing CommunicationClientCredential
      * @return The updated {@link PhoneNumberClientBuilder} object.
-     * @throws NullPointerException If {@code credential} is {@code null}.
+     * @throws NullPointerException If {@code accessKey} is {@code null}.
      */
-    public PhoneNumberClientBuilder credential(CommunicationClientCredential credential) {
-        this.credential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+    public PhoneNumberClientBuilder accessKey(String accessKey) {
+        Objects.requireNonNull(accessKey, "'accessKey' cannot be null.");
+        this.credential = new CommunicationClientCredential(accessKey);
+        return this;
+    }
+
+    /**
+     * Set the endpoint and CommunicationClientCredential for authorization
+     *
+     * @param connectionString connection string for setting endpoint and initalizing CommunicationClientCredential
+     * @return The updated {@link PhoneNumberClientBuilder} object.
+     * @throws NullPointerException If {@code connectionString} is {@code null}.
+     */
+    public PhoneNumberClientBuilder connectionString(String connectionString) {
+        Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
+        ConnectionString connectionStringObject = new ConnectionString(connectionString);
+        String endpoint = connectionStringObject.getEndpoint();
+        String accessKey = connectionStringObject.getAccessKey();
+        this
+            .endpoint(endpoint)
+            .accessKey(accessKey);
         return this;
     }
 

@@ -7,8 +7,9 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
-import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
+import com.azure.cosmos.implementation.directconnectivity.TransportException;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -37,7 +38,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -48,7 +48,6 @@ import java.util.stream.Stream;
 import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders;
 import static com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient.Options;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
@@ -74,10 +73,13 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     private final Instant createdTime;
     private final RntbdMetrics metrics;
     private final Provider provider;
+    private final URI serverKey;
     private final SocketAddress remoteAddress;
     private final RntbdRequestTimer requestTimer;
     private final Tag tag;
     private final int maxConcurrentRequests;
+
+    private final RntbdConnectionStateListener connectionStateListener;
 
     // endregion
 
@@ -90,6 +92,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         final RntbdRequestTimer timer,
         final URI physicalAddress) {
 
+        this.serverKey = RntbdUtils.getServerKey(physicalAddress);
+
         final Bootstrap bootstrap = new Bootstrap()
             .channel(NioSocketChannel.class)
             .group(group)
@@ -98,7 +102,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, config.connectTimeoutInMillis())
             .option(ChannelOption.RCVBUF_ALLOCATOR, receiveBufferAllocator)
             .option(ChannelOption.SO_KEEPALIVE, true)
-            .remoteAddress(physicalAddress.getHost(), physicalAddress.getPort());
+            .remoteAddress(this.serverKey.getHost(), this.serverKey.getPort());
 
         this.createdTime = Instant.now();
         this.channelPool = new RntbdClientChannelPool(this, bootstrap, config);
@@ -120,6 +124,10 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
         this.metrics = new RntbdMetrics(provider.transportClient, this);
         this.maxConcurrentRequests = config.maxConcurrentRequestsPerEndpoint();
+
+        this.connectionStateListener = this.provider.addressResolver != null && config.isConnectionEndpointRediscoveryEnabled()
+            ? new RntbdConnectionStateListener(this.provider.addressResolver, this)
+            : null;
     }
 
     // endregion
@@ -196,6 +204,9 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     }
 
     @Override
+    public URI serverKey() { return this.serverKey; }
+
+    @Override
     public int requestQueueLength() {
         return this.channelPool.requestQueueLength();
     }
@@ -234,7 +245,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         int concurrentRequestSnapshot = this.concurrentRequests.incrementAndGet();
 
         RntbdEndpointStatistics stat = endpointMetricsSnapshot(concurrentRequestSnapshot);
-        
+
         if (concurrentRequestSnapshot > this.maxConcurrentRequests) {
             try {
                 FailFastRntbdRequestRecord requestRecord = FailFastRntbdRequestRecord.createAndFailFast(
@@ -258,16 +269,20 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         record.whenComplete((response, error) -> {
             this.concurrentRequests.decrementAndGet();
             this.metrics.markComplete(record);
-            onResponse(response, error);
+            onResponse(error, record);
         });
 
         return record;
     }
 
-    private void onResponse(StoreResponse storeResponse, Throwable exception) {
+    private void onResponse(Throwable exception, RntbdRequestRecord record) {
         if (exception == null) {
             this.lastSuccessfulRequestNanoTime.set(System.nanoTime());
             return;
+        }
+
+        if (this.connectionStateListener != null) {
+            this.connectionStateListener.onException(record.args().serviceRequest(), exception);
         }
 
         // exception != null
@@ -306,7 +321,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     // endregion
 
     // region Privates
-    
+
     private void ensureSuccessWhenReleasedToPool(Channel channel, Future<Void> released) {
         if (released.isSuccess()) {
             logger.debug("\n  [{}]\n  {}\n  release succeeded", this, channel);
@@ -330,12 +345,15 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     }
 
     private void throwIfClosed() {
-        checkState(!this.closed.get(), "%s is closed", this);
+        if (this.closed.get()) {
+            throw new TransportException(lenientFormat("%s is closed", this), new IllegalStateException());
+        }
     }
 
     private RntbdRequestRecord write(final RntbdRequestArgs requestArgs) {
 
         final RntbdRequestRecord requestRecord = new AsyncRntbdRequestRecord(requestArgs, this.requestTimer);
+        requestRecord.stage(RntbdRequestRecord.Stage.CHANNEL_ACQUISITION_STARTED);
         final Future<Channel> connectedChannel = this.channelPool.acquire();
 
         logger.debug("\n  [{}]\n  {}\n  WRITE WHEN CONNECTED {}", this, requestArgs, connectedChannel);
@@ -404,12 +422,21 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         @Override
         public void serialize(RntbdServiceEndpoint value, JsonGenerator generator, SerializerProvider provider)
             throws IOException {
+
+            final RntbdTransportClient transportClient = value.provider.transportClient;
+
             generator.writeStartObject();
             generator.writeNumberField("id", value.id);
-            generator.writeBooleanField("isClosed", value.isClosed());
+            generator.writeBooleanField("closed", value.isClosed());
             generator.writeNumberField("concurrentRequests", value.concurrentRequests());
             generator.writeStringField("remoteAddress", value.remoteAddress.toString());
             generator.writeObjectField("channelPool", value.channelPool);
+            generator.writeObjectFieldStart("transportClient");
+            generator.writeNumberField("id", transportClient.id());
+            generator.writeBooleanField("closed", transportClient.isClosed());
+            generator.writeNumberField("endpointCount", transportClient.endpointCount());
+            generator.writeNumberField("endpointEvictionCount", transportClient.endpointEvictionCount());
+            generator.writeEndObject();
             generator.writeEndObject();
         }
     }
@@ -426,11 +453,13 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         private final RntbdEndpointMonitoringProvider monitoring;
         private final RntbdRequestTimer requestTimer;
         private final RntbdTransportClient transportClient;
+        private final IAddressResolver addressResolver;
 
         public Provider(
             final RntbdTransportClient transportClient,
             final Options options,
-            final SslContext sslContext) {
+            final SslContext sslContext,
+            final IAddressResolver addressResolver) {
 
             checkNotNull(transportClient, "expected non-null provider");
             checkNotNull(options, "expected non-null options");
@@ -445,6 +474,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                 wireLogLevel = null;
             }
 
+            this.addressResolver = addressResolver;
             this.transportClient = transportClient;
             this.config = new Config(options, sslContext, wireLogLevel);
 
@@ -515,6 +545,11 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         }
 
         @Override
+        public IAddressResolver getAddressResolver() {
+            return this.addressResolver;
+        }
+
+        @Override
         public Stream<RntbdEndpoint> list() {
             return this.endpoints.values().stream();
         }
@@ -543,7 +578,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         RntbdEndpointMonitoringProvider(Provider provider) {
             this.provider = provider;
         }
-        
+
         synchronized void init() {
             logger.info("Starting RntbdClientChannelPoolMonitoringProvider ...");
             this.future = RntbdEndpointMonitoringProvider.monitoringRntbdChannelPool.scheduleAtFixedRate(() -> {

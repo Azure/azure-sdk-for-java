@@ -1,14 +1,18 @@
 # Release History
 
-## 12.9.0-beta.2 (Unreleased)
+## 12.9.0-beta.3 (Unreleased)
+- Fixed a bug where interspersed element types returned by page listing would deserialize incorrectly.
+- Fixed a bug where BlobInputStream would not eTag lock on the blob, resulting in undesirable behavior if the blob was modified in the middle of reading. 
+- Renamed BlobDownloadToFileOptions.rangeGetContentMd5 to BlobDownloadToFileOptions.retrieveContentRangeMd5
 
+## 12.9.0-beta.2 (2020-10-08)
+- Added support to specify whether or not a pipeline policy should be added per call or per retry.
 
 ## 12.9.0-beta.1 (2020-10-01)
 - Added support for the 2020-02-10 service version.
 - Added support to specify Arrow Output Serialization when querying a blob. 
 - Added support to undelete a container. 
 - Added support to set BlobParallelUploadOptions.computeMd5 so the service can perform an md5 verification.
-- Added support to specify block size when using BlobInputStream.
 - Added support to specify block size when using BlobInputStream.
 - Fixed a bug where users could not download more than 5000MB of data in one shot in the downloadToFile API.
 - Fixed a bug where the TokenCredential scope would be incorrect for custom URLs.
@@ -33,7 +37,7 @@
 ## 12.8.0-beta.1 (2020-07-07)
 - Added support for the 2019-12-12 service version.
 - Added support for blob tags. Added get/setTags method to Blob(Async)ClientBase. Added filterTags api to BlobServiceClient. Added ability to specify tags on all methods that create a blob. Tag count returned on getProperties/getBlob. Option to include returning tags on listing. 
-- Added support to query a blob. Added query and opernQueryInputStream methods to Blob(Async)ClientBase.
+- Added support to query a blob. Added query and openQueryInputStream methods to Blob(Async)ClientBase.
 - Added support to version a blob. Added `getVersionClient` to clients that returns a new client associated to the version. 
 - Added support to increase the maximum size of data that can be sent via a stage block. 
 

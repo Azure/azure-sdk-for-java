@@ -397,6 +397,11 @@ public class BlobAsyncClientBase {
 
     /**
      * Copies the data at the source URL to a blob.
+     * <p>
+     * This method triggers a long-running, asynchronous operations. The source may be another blob or an Azure File. If
+     * the source is in another account, the source must either be public or authenticated with a SAS token. If the
+     * source is in the same account, the Shared Key authorization on the destination will also be applied to the
+     * source. The source URL must be URL encoded.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -417,6 +422,11 @@ public class BlobAsyncClientBase {
 
     /**
      * Copies the data at the source URL to a blob.
+     * <p>
+     * This method triggers a long-running, asynchronous operations. The source may be another blob or an Azure File. If
+     * the source is in another account, the source must either be public or authenticated with a SAS token. If the
+     * source is in the same account, the Shared Key authorization on the destination will also be applied to the
+     * source. The source URL must be URL encoded.
      *
      * <p><strong>Starting a copy operation</strong></p>
      * Starting a copy operation and polling on the responses.
@@ -451,6 +461,11 @@ public class BlobAsyncClientBase {
 
     /**
      * Copies the data at the source URL to a blob.
+     * <p>
+     * This method triggers a long-running, asynchronous operations. The source may be another blob or an Azure File. If
+     * the source is in another account, the source must either be public or authenticated with a SAS token. If the
+     * source is in the same account, the Shared Key authorization on the destination will also be applied to the
+     * source. The source URL must be URL encoded.
      *
      * <p><strong>Starting a copy operation</strong></p>
      * Starting a copy operation and polling on the responses.
@@ -664,6 +679,9 @@ public class BlobAsyncClientBase {
 
     /**
      * Copies the data at the source URL to a blob and waits for the copy to complete before returning a response.
+     * <p>
+     * The source must be a block blob no larger than 256MB. The source must also be either public or have a sas token
+     * attached. The URL must be URL encoded.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -685,6 +703,9 @@ public class BlobAsyncClientBase {
 
     /**
      * Copies the data at the source URL to a blob and waits for the copy to complete before returning a response.
+     * <p>
+     * The source must be a block blob no larger than 256MB. The source must also be either public or have a sas token
+     * attached. The URL must be URL encoded.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -713,6 +734,9 @@ public class BlobAsyncClientBase {
 
     /**
      * Copies the data at the source URL to a blob and waits for the copy to complete before returning a response.
+     * <p>
+     * The source must be a block blob no larger than 256MB. The source must also be either public or have a sas token
+     * attached. The URL must be URL encoded.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -960,7 +984,7 @@ public class BlobAsyncClientBase {
                 downloadToFileWithResponse(new BlobDownloadToFileOptions(filePath).setRange(range)
                         .setParallelTransferOptions(finalParallelTransferOptions)
                         .setDownloadRetryOptions(options).setRequestConditions(requestConditions)
-                        .setRangeGetContentMd5(rangeGetContentMd5).setOpenOptions(openOptions), context));
+                        .setRetrieveContentRangeMd5(rangeGetContentMd5).setOpenOptions(openOptions), context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1014,7 +1038,7 @@ public class BlobAsyncClientBase {
         AsynchronousFileChannel channel = downloadToFileResourceSupplier(options.getFilePath(), openOptions);
         return Mono.just(channel)
             .flatMap(c -> this.downloadToFileImpl(c, finalRange, finalParallelTransferOptions,
-                options.getDownloadRetryOptions(), finalConditions, options.isRangeGetContentMd5(), context))
+                options.getDownloadRetryOptions(), finalConditions, options.isRetrieveContentRangeMd5(), context))
             .doFinally(signalType -> this.downloadToFileCleanup(channel, options.getFilePath(), signalType));
     }
 

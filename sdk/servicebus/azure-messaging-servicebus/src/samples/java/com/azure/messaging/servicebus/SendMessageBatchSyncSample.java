@@ -3,12 +3,11 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.messaging.servicebus.models.CreateBatchOptions;
+import com.azure.core.experimental.util.BinaryData;
+import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
 
 import java.util.Arrays;
 import java.util.List;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Sample demonstrates how to send {@link ServiceBusMessageBatch} to an Azure Service Bus Topic with the synchronous
@@ -22,10 +21,10 @@ public class SendMessageBatchSyncSample {
      */
     public static void main(String[] args) {
         List<ServiceBusMessage> testMessages = Arrays.asList(
-            new ServiceBusMessage("Green".getBytes(UTF_8)),
-            new ServiceBusMessage("Red".getBytes(UTF_8)),
-            new ServiceBusMessage("Blue".getBytes(UTF_8)),
-            new ServiceBusMessage("Orange".getBytes(UTF_8)));
+            new ServiceBusMessage(BinaryData.fromString("Green")),
+            new ServiceBusMessage(BinaryData.fromString("Red")),
+            new ServiceBusMessage(BinaryData.fromString("Blue")),
+            new ServiceBusMessage(BinaryData.fromString("Orange")));
 
         // The connection string value can be obtained by:
         // 1. Going to your Service Bus namespace in Azure Portal.
@@ -42,25 +41,25 @@ public class SendMessageBatchSyncSample {
             .buildClient();
 
         // Creates an ServiceBusMessageBatch where the ServiceBus.
-        ServiceBusMessageBatch currentBatch = senderClient.createBatch(
-            new CreateBatchOptions().setMaximumSizeInBytes(1024));
+        ServiceBusMessageBatch currentBatch = senderClient.createMessageBatch(
+            new CreateMessageBatchOptions().setMaximumSizeInBytes(1024));
 
         // We try to add as many messages as a batch can fit based on the maximum size and send to Service Bus when
         // the batch can hold no more messages. Create a new batch for next set of messages and repeat until all
         // messages are sent.
         for (ServiceBusMessage message : testMessages) {
-            if (currentBatch.tryAdd(message)) {
+            if (currentBatch.tryAddMessage(message)) {
                 continue;
             }
 
             // The batch is full, so we create a new batch and send the batch.
             senderClient.sendMessages(currentBatch);
-            currentBatch = senderClient.createBatch();
+            currentBatch = senderClient.createMessageBatch();
 
             // Add that message that we couldn't before.
-            if (!currentBatch.tryAdd(message)) {
+            if (!currentBatch.tryAddMessage(message)) {
                 System.err.printf("Message is too large for an empty batch. Skipping. Max size: %s. Message: %s%n",
-                    currentBatch.getMaxSizeInBytes(), new String(message.getBody(), UTF_8));
+                    currentBatch.getMaxSizeInBytes(), message.getBody().toString());
             }
         }
 

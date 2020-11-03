@@ -19,7 +19,16 @@ public enum DataSourceType {
     CUSTOM_LOGS("CustomLogs"),
 
     /** Enum value AzureWatson. */
-    AZURE_WATSON("AzureWatson");
+    AZURE_WATSON("AzureWatson"),
+
+    /** Enum value Query. */
+    QUERY("Query"),
+
+    /** Enum value Ingestion. */
+    INGESTION("Ingestion"),
+
+    /** Enum value Alerts. */
+    ALERTS("Alerts");
 
     /** The actual serialized value for a DataSourceType instance. */
     private String value;

@@ -16,8 +16,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Context;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +44,7 @@ public class SmsClientTests extends SmsTestBase {
     }
 
     @Test
-    public void sendSmsRequestWithHttpPipeline() throws NoSuchAlgorithmException, InvalidKeyException {
+    public void sendSmsRequestWithHttpPipeline() {
         smsOptions.setEnableDeliveryReport(true); 
         
         HttpClient httpClient = getHttpClient(from, to, body, smsOptions);        
@@ -68,25 +66,25 @@ public class SmsClientTests extends SmsTestBase {
     }
 
     @Test
-    public void sendSmsRequest() throws NoSuchAlgorithmException {
+    public void sendSmsRequest() {
         getTestSmsClient(from, to, body, smsOptions, null)
             .sendMessage(from, to, body, smsOptions);
     }
 
     @Test
-    public void sendSmsMessageWithResponse() throws NoSuchAlgorithmException {
+    public void sendSmsMessageWithResponse() {
         getTestSmsClient(from, to, body, smsOptions, null)
             .sendMessageWithResponse(from, to, body, smsOptions, Context.NONE);
     }
 
     @Test
-    public void sendSmsMessageWithResponseNullContext() throws NoSuchAlgorithmException {
+    public void sendSmsMessageWithResponseNullContext() {
         getTestSmsClient(from, to, body, smsOptions, null)
             .sendMessageWithResponse(from, to, body, smsOptions, null);
     }
 
     @Test
-    public void sendSmsRequestAdditionalPolicy() throws NoSuchAlgorithmException {
+    public void sendSmsRequestAdditionalPolicy() {
         HttpPipelinePolicy policy = new HttpPipelinePolicy() {
             @Override
             public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
@@ -100,7 +98,7 @@ public class SmsClientTests extends SmsTestBase {
     }
 
     @Test
-    public void sendSmsRequestNoDeliverReport() throws NoSuchAlgorithmException {
+    public void sendSmsRequestNoDeliverReport() {
         smsOptions.setEnableDeliveryReport(false); 
 
         getTestSmsClient(from, to, body, smsOptions, null)
@@ -108,7 +106,7 @@ public class SmsClientTests extends SmsTestBase {
     }
 
     @Test
-    public void sendSmsRequestSingleNumberNoDeliverReport() throws NoSuchAlgorithmException {
+    public void sendSmsRequestSingleNumberNoDeliverReport() {
         smsOptions.setEnableDeliveryReport(false); 
 
         getTestSmsClient(from, to, body, smsOptions, null)
@@ -116,7 +114,7 @@ public class SmsClientTests extends SmsTestBase {
     }
 
     @Test
-    public void sendSmsRequestNoDeliverReportExplicit() throws NoSuchAlgorithmException {
+    public void sendSmsRequestNoDeliverReportExplicit() {
         smsOptions.setEnableDeliveryReport(false);
 
         getTestSmsClient(from, to, body, smsOptions, null)
@@ -124,7 +122,7 @@ public class SmsClientTests extends SmsTestBase {
     }
 
     @Test
-    public void sendSmsRequestComplicated() throws NoSuchAlgorithmException {
+    public void sendSmsRequestComplicated() {
         body = "今日は"; // "Hello" - Japanese
 
         getTestSmsClient(from, to, body, smsOptions, null)
@@ -132,7 +130,7 @@ public class SmsClientTests extends SmsTestBase {
     }
 
     @Test
-    public void sendSmsRequestNullFrom() throws NoSuchAlgorithmException {
+    public void sendSmsRequestNullFrom() {
         boolean threwException = false;
 
         try {
@@ -146,7 +144,7 @@ public class SmsClientTests extends SmsTestBase {
     }    
 
     @Test
-    public void sendSmsRequestNullTo() throws NoSuchAlgorithmException {
+    public void sendSmsRequestNullTo() {
         boolean threwException = false;
         PhoneNumber toNull = null;
 
