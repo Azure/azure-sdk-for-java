@@ -610,8 +610,6 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
             composedModel.getSubmodels().forEach(customFormSubmodel ->
                 assertTrue(modelIdList.contains(customFormSubmodel.getModelId())));
             validateCustomModelData(composedModel, false, true);
-
-
         });
     }
 
