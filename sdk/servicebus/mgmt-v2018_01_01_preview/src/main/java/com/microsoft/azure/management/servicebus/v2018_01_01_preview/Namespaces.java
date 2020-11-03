@@ -15,12 +15,13 @@ import com.microsoft.azure.arm.resources.collection.SupportsGettingByResourceGro
 import rx.Observable;
 import com.microsoft.azure.arm.resources.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.arm.collection.SupportsListing;
+import rx.Completable;
 import com.microsoft.azure.management.servicebus.v2018_01_01_preview.implementation.NamespacesInner;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.servicebus.v2018_01_01_preview.IpFilterRule;
-import rx.Completable;
-import com.microsoft.azure.management.servicebus.v2018_01_01_preview.VirtualNetworkRule;
 import com.microsoft.azure.management.servicebus.v2018_01_01_preview.implementation.NetworkRuleSetInner;
+import com.microsoft.azure.management.servicebus.v2018_01_01_preview.VirtualNetworkRule;
+import com.microsoft.azure.management.servicebus.v2018_01_01_preview.NamespaceSBAuthorizationRule;
 
 /**
  * Type representing Namespaces.
@@ -39,6 +40,33 @@ public interface Namespaces extends SupportsCreating<SBNamespace.DefinitionStage
      * @return the first stage of the new Virtualnetworkrule definition.
      */
     VirtualNetworkRule.DefinitionStages.Blank defineVirtualnetworkrule(String name);
+
+    /**
+     * Begins definition for a new AuthorizationRule resource.
+     * @param name resource name.
+     * @return the first stage of the new AuthorizationRule definition.
+     */
+    NamespaceSBAuthorizationRule.DefinitionStages.Blank defineAuthorizationRule(String name);
+
+    /**
+     * This operation Migrate the given namespace to provided name type.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param targetNamespaceType Type of namespaces. Possible values include: 'Messaging', 'NotificationHub', 'Mixed', 'EventHub', 'Relay'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable migrateAsync(String resourceGroupName, String namespaceName, NameSpaceType targetNamespaceType);
+
+    /**
+     * Check the give namespace name availability.
+     *
+     * @param name The Name to check the namespace name availability and The namespace name can contain only letters, numbers, and hyphens. The namespace must start with a letter, and it must end with a letter or number.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<CheckNameAvailabilityResult> checkNameAvailabilityMethodAsync(String name);
 
     /**
      * Gets an IpFilterRule for a Namespace by rule name.
@@ -73,6 +101,27 @@ public interface Namespaces extends SupportsCreating<SBNamespace.DefinitionStage
     Completable deleteIpFilterRuleAsync(String resourceGroupName, String namespaceName, String ipFilterRuleName);
 
     /**
+     * Gets NetworkRuleSet for a Namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param parameters The Namespace NetworkRuleSet.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<NetworkRuleSet> createOrUpdateNetworkRuleSetAsync(String resourceGroupName, String namespaceName, NetworkRuleSetInner parameters);
+
+    /**
+     * Gets NetworkRuleSet for a Namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<NetworkRuleSet> getNetworkRuleSetAsync(String resourceGroupName, String namespaceName);
+
+    /**
      * Gets an VirtualNetworkRule for a Namespace by rule name.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
@@ -105,24 +154,58 @@ public interface Namespaces extends SupportsCreating<SBNamespace.DefinitionStage
     Completable deleteVirtualNetworkRuleAsync(String resourceGroupName, String namespaceName, String virtualNetworkRuleName);
 
     /**
-     * Gets NetworkRuleSet for a Namespace.
+     * Gets an authorization rule for a namespace by rule name.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @param parameters The Namespace IpFilterRule.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<NetworkRuleSet> createOrUpdateNetworkRuleSetAsync(String resourceGroupName, String namespaceName, NetworkRuleSetInner parameters);
+    Observable<NamespaceSBAuthorizationRule> getAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String authorizationRuleName);
 
     /**
-     * Gets NetworkRuleSet for a Namespace.
+     * Gets the authorization rules for a namespace.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<NetworkRuleSet> getNetworkRuleSetAsync(String resourceGroupName, String namespaceName);
+    Observable<NamespaceSBAuthorizationRule> listAuthorizationRulesAsync(final String resourceGroupName, final String namespaceName);
+
+    /**
+     * Deletes a namespace authorization rule.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param authorizationRuleName The authorization rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable deleteAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String authorizationRuleName);
+
+    /**
+     * Gets the primary and secondary connection strings for the namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param authorizationRuleName The authorization rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<AccessKeys> listKeysAsync(String resourceGroupName, String namespaceName, String authorizationRuleName);
+
+    /**
+     * Regenerates the primary or secondary connection strings for the namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param authorizationRuleName The authorization rule name.
+     * @param parameters Parameters supplied to regenerate the authorization rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<AccessKeys> regenerateKeysAsync(String resourceGroupName, String namespaceName, String authorizationRuleName, RegenerateAccessKeyParameters parameters);
 
 }

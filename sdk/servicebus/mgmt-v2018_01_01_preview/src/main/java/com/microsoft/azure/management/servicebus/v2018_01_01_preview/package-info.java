@@ -6,6 +6,5 @@
 
 /**
  * This package contains the classes for ServiceBusManagementClient.
- * Azure Service Bus client for managing Namespace, IPFilter Rules, VirtualNetworkRules and Zone Redundant.
  */
 package com.microsoft.azure.management.servicebus.v2018_01_01_preview;

@@ -9,7 +9,9 @@
 package com.microsoft.azure.management.servicebus.v2018_01_01_preview.implementation;
 
 import com.microsoft.azure.management.servicebus.v2018_01_01_preview.SBSku;
+import com.microsoft.azure.management.servicebus.v2018_01_01_preview.Identity;
 import org.joda.time.DateTime;
+import com.microsoft.azure.management.servicebus.v2018_01_01_preview.Encryption;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -24,6 +26,12 @@ public class SBNamespaceInner extends Resource {
      */
     @JsonProperty(value = "sku")
     private SBSku sku;
+
+    /**
+     * Properties of BYOK Identity description.
+     */
+    @JsonProperty(value = "identity")
+    private Identity identity;
 
     /**
      * Provisioning state of the namespace.
@@ -63,6 +71,12 @@ public class SBNamespaceInner extends Resource {
     private Boolean zoneRedundant;
 
     /**
+     * Properties of BYOK Encryption description.
+     */
+    @JsonProperty(value = "properties.encryption")
+    private Encryption encryption;
+
+    /**
      * Get properties of SKU.
      *
      * @return the sku value
@@ -79,6 +93,26 @@ public class SBNamespaceInner extends Resource {
      */
     public SBNamespaceInner withSku(SBSku sku) {
         this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get properties of BYOK Identity description.
+     *
+     * @return the identity value
+     */
+    public Identity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set properties of BYOK Identity description.
+     *
+     * @param identity the identity value to set
+     * @return the SBNamespaceInner object itself.
+     */
+    public SBNamespaceInner withIdentity(Identity identity) {
+        this.identity = identity;
         return this;
     }
 
@@ -144,6 +178,26 @@ public class SBNamespaceInner extends Resource {
      */
     public SBNamespaceInner withZoneRedundant(Boolean zoneRedundant) {
         this.zoneRedundant = zoneRedundant;
+        return this;
+    }
+
+    /**
+     * Get properties of BYOK Encryption description.
+     *
+     * @return the encryption value
+     */
+    public Encryption encryption() {
+        return this.encryption;
+    }
+
+    /**
+     * Set properties of BYOK Encryption description.
+     *
+     * @param encryption the encryption value to set
+     * @return the SBNamespaceInner object itself.
+     */
+    public SBNamespaceInner withEncryption(Encryption encryption) {
+        this.encryption = encryption;
         return this;
     }
 
