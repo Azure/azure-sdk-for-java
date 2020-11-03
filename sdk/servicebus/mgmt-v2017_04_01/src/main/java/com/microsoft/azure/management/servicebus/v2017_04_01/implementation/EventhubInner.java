@@ -54,7 +54,7 @@ public class EventhubInner extends ProxyResource {
     private Long partitionCount;
 
     /**
-     * Enumerates the possible values for the status of the Event Hub. Possible
+     * Enumerates the possible values for the status of a Event Hub. Possible
      * values include: 'Active', 'Disabled', 'Restoring', 'SendDisabled',
      * 'ReceiveDisabled', 'Creating', 'Deleting', 'Renaming', 'Unknown'.
      */
@@ -135,7 +135,7 @@ public class EventhubInner extends ProxyResource {
     }
 
     /**
-     * Get enumerates the possible values for the status of the Event Hub. Possible values include: 'Active', 'Disabled', 'Restoring', 'SendDisabled', 'ReceiveDisabled', 'Creating', 'Deleting', 'Renaming', 'Unknown'.
+     * Get enumerates the possible values for the status of a Event Hub. Possible values include: 'Active', 'Disabled', 'Restoring', 'SendDisabled', 'ReceiveDisabled', 'Creating', 'Deleting', 'Renaming', 'Unknown'.
      *
      * @return the status value
      */
@@ -144,7 +144,7 @@ public class EventhubInner extends ProxyResource {
     }
 
     /**
-     * Set enumerates the possible values for the status of the Event Hub. Possible values include: 'Active', 'Disabled', 'Restoring', 'SendDisabled', 'ReceiveDisabled', 'Creating', 'Deleting', 'Renaming', 'Unknown'.
+     * Set enumerates the possible values for the status of a Event Hub. Possible values include: 'Active', 'Disabled', 'Restoring', 'SendDisabled', 'ReceiveDisabled', 'Creating', 'Deleting', 'Renaming', 'Unknown'.
      *
      * @param status the status value to set
      * @return the EventhubInner object itself.

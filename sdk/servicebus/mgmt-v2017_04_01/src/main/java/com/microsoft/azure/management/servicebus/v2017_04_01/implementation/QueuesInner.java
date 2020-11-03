@@ -64,22 +64,6 @@ public class QueuesInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface QueuesService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.v2017_04_01.Queues listByNamespace" })
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/queues")
-        Observable<Response<ResponseBody>> listByNamespace(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$skip") Integer skip, @Query("$top") Integer top, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.v2017_04_01.Queues createOrUpdate" })
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/queues/{queueName}")
-        Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("queueName") String queueName, @Path("subscriptionId") String subscriptionId, @Body SBQueueInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.v2017_04_01.Queues delete" })
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/queues/{queueName}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("queueName") String queueName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.v2017_04_01.Queues get" })
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/queues/{queueName}")
-        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("queueName") String queueName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.v2017_04_01.Queues listAuthorizationRules" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/queues/{queueName}/authorizationRules")
         Observable<Response<ResponseBody>> listAuthorizationRules(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("queueName") String queueName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -104,552 +88,30 @@ public class QueuesInner {
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/queues/{queueName}/authorizationRules/{authorizationRuleName}/regenerateKeys")
         Observable<Response<ResponseBody>> regenerateKeys(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("queueName") String queueName, @Path("authorizationRuleName") String authorizationRuleName, @Path("subscriptionId") String subscriptionId, @Body RegenerateAccessKeyParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.v2017_04_01.Queues listByNamespaceNext" })
-        @GET
-        Observable<Response<ResponseBody>> listByNamespaceNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.v2017_04_01.Queues listByNamespace" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/queues")
+        Observable<Response<ResponseBody>> listByNamespace(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$skip") Integer skip, @Query("$top") Integer top, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.v2017_04_01.Queues createOrUpdate" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/queues/{queueName}")
+        Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("queueName") String queueName, @Path("subscriptionId") String subscriptionId, @Body SBQueueInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.v2017_04_01.Queues delete" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/queues/{queueName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("queueName") String queueName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.v2017_04_01.Queues get" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/queues/{queueName}")
+        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("queueName") String queueName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.v2017_04_01.Queues listAuthorizationRulesNext" })
         @GET
         Observable<Response<ResponseBody>> listAuthorizationRulesNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-    }
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.v2017_04_01.Queues listByNamespaceNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByNamespaceNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-    /**
-     * Gets the queues within a namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;SBQueueInner&gt; object if successful.
-     */
-    public PagedList<SBQueueInner> listByNamespace(final String resourceGroupName, final String namespaceName) {
-        ServiceResponse<Page<SBQueueInner>> response = listByNamespaceSinglePageAsync(resourceGroupName, namespaceName).toBlocking().single();
-        return new PagedList<SBQueueInner>(response.body()) {
-            @Override
-            public Page<SBQueueInner> nextPage(String nextPageLink) {
-                return listByNamespaceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
-            }
-        };
-    }
-
-    /**
-     * Gets the queues within a namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<SBQueueInner>> listByNamespaceAsync(final String resourceGroupName, final String namespaceName, final ListOperationCallback<SBQueueInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listByNamespaceSinglePageAsync(resourceGroupName, namespaceName),
-            new Func1<String, Observable<ServiceResponse<Page<SBQueueInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<SBQueueInner>>> call(String nextPageLink) {
-                    return listByNamespaceNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Gets the queues within a namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;SBQueueInner&gt; object
-     */
-    public Observable<Page<SBQueueInner>> listByNamespaceAsync(final String resourceGroupName, final String namespaceName) {
-        return listByNamespaceWithServiceResponseAsync(resourceGroupName, namespaceName)
-            .map(new Func1<ServiceResponse<Page<SBQueueInner>>, Page<SBQueueInner>>() {
-                @Override
-                public Page<SBQueueInner> call(ServiceResponse<Page<SBQueueInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Gets the queues within a namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;SBQueueInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<SBQueueInner>>> listByNamespaceWithServiceResponseAsync(final String resourceGroupName, final String namespaceName) {
-        return listByNamespaceSinglePageAsync(resourceGroupName, namespaceName)
-            .concatMap(new Func1<ServiceResponse<Page<SBQueueInner>>, Observable<ServiceResponse<Page<SBQueueInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<SBQueueInner>>> call(ServiceResponse<Page<SBQueueInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(listByNamespaceNextWithServiceResponseAsync(nextPageLink));
-                }
-            });
-    }
-
-    /**
-     * Gets the queues within a namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;SBQueueInner&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public Observable<ServiceResponse<Page<SBQueueInner>>> listByNamespaceSinglePageAsync(final String resourceGroupName, final String namespaceName) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (namespaceName == null) {
-            throw new IllegalArgumentException("Parameter namespaceName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final Integer skip = null;
-        final Integer top = null;
-        return service.listByNamespace(resourceGroupName, namespaceName, this.client.subscriptionId(), this.client.apiVersion(), skip, top, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SBQueueInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<SBQueueInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<SBQueueInner>> result = listByNamespaceDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SBQueueInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Gets the queues within a namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting point to use for subsequent calls.
-     * @param top May be used to limit the number of results to the most recent N usageDetails.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;SBQueueInner&gt; object if successful.
-     */
-    public PagedList<SBQueueInner> listByNamespace(final String resourceGroupName, final String namespaceName, final Integer skip, final Integer top) {
-        ServiceResponse<Page<SBQueueInner>> response = listByNamespaceSinglePageAsync(resourceGroupName, namespaceName, skip, top).toBlocking().single();
-        return new PagedList<SBQueueInner>(response.body()) {
-            @Override
-            public Page<SBQueueInner> nextPage(String nextPageLink) {
-                return listByNamespaceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
-            }
-        };
-    }
-
-    /**
-     * Gets the queues within a namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting point to use for subsequent calls.
-     * @param top May be used to limit the number of results to the most recent N usageDetails.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<SBQueueInner>> listByNamespaceAsync(final String resourceGroupName, final String namespaceName, final Integer skip, final Integer top, final ListOperationCallback<SBQueueInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listByNamespaceSinglePageAsync(resourceGroupName, namespaceName, skip, top),
-            new Func1<String, Observable<ServiceResponse<Page<SBQueueInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<SBQueueInner>>> call(String nextPageLink) {
-                    return listByNamespaceNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Gets the queues within a namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting point to use for subsequent calls.
-     * @param top May be used to limit the number of results to the most recent N usageDetails.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;SBQueueInner&gt; object
-     */
-    public Observable<Page<SBQueueInner>> listByNamespaceAsync(final String resourceGroupName, final String namespaceName, final Integer skip, final Integer top) {
-        return listByNamespaceWithServiceResponseAsync(resourceGroupName, namespaceName, skip, top)
-            .map(new Func1<ServiceResponse<Page<SBQueueInner>>, Page<SBQueueInner>>() {
-                @Override
-                public Page<SBQueueInner> call(ServiceResponse<Page<SBQueueInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Gets the queues within a namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting point to use for subsequent calls.
-     * @param top May be used to limit the number of results to the most recent N usageDetails.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;SBQueueInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<SBQueueInner>>> listByNamespaceWithServiceResponseAsync(final String resourceGroupName, final String namespaceName, final Integer skip, final Integer top) {
-        return listByNamespaceSinglePageAsync(resourceGroupName, namespaceName, skip, top)
-            .concatMap(new Func1<ServiceResponse<Page<SBQueueInner>>, Observable<ServiceResponse<Page<SBQueueInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<SBQueueInner>>> call(ServiceResponse<Page<SBQueueInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(listByNamespaceNextWithServiceResponseAsync(nextPageLink));
-                }
-            });
-    }
-
-    /**
-     * Gets the queues within a namespace.
-     *
-    ServiceResponse<PageImpl<SBQueueInner>> * @param resourceGroupName Name of the Resource group within the Azure subscription.
-    ServiceResponse<PageImpl<SBQueueInner>> * @param namespaceName The namespace name
-    ServiceResponse<PageImpl<SBQueueInner>> * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting point to use for subsequent calls.
-    ServiceResponse<PageImpl<SBQueueInner>> * @param top May be used to limit the number of results to the most recent N usageDetails.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;SBQueueInner&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public Observable<ServiceResponse<Page<SBQueueInner>>> listByNamespaceSinglePageAsync(final String resourceGroupName, final String namespaceName, final Integer skip, final Integer top) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (namespaceName == null) {
-            throw new IllegalArgumentException("Parameter namespaceName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.listByNamespace(resourceGroupName, namespaceName, this.client.subscriptionId(), this.client.apiVersion(), skip, top, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SBQueueInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<SBQueueInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<SBQueueInner>> result = listByNamespaceDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SBQueueInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<PageImpl<SBQueueInner>> listByNamespaceDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<SBQueueInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<SBQueueInner>>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
-    /**
-     * Creates or updates a Service Bus queue. This operation is idempotent.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param queueName The queue name.
-     * @param parameters Parameters supplied to create or update a queue resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the SBQueueInner object if successful.
-     */
-    public SBQueueInner createOrUpdate(String resourceGroupName, String namespaceName, String queueName, SBQueueInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, namespaceName, queueName, parameters).toBlocking().single().body();
-    }
-
-    /**
-     * Creates or updates a Service Bus queue. This operation is idempotent.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param queueName The queue name.
-     * @param parameters Parameters supplied to create or update a queue resource.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<SBQueueInner> createOrUpdateAsync(String resourceGroupName, String namespaceName, String queueName, SBQueueInner parameters, final ServiceCallback<SBQueueInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, namespaceName, queueName, parameters), serviceCallback);
-    }
-
-    /**
-     * Creates or updates a Service Bus queue. This operation is idempotent.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param queueName The queue name.
-     * @param parameters Parameters supplied to create or update a queue resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SBQueueInner object
-     */
-    public Observable<SBQueueInner> createOrUpdateAsync(String resourceGroupName, String namespaceName, String queueName, SBQueueInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, namespaceName, queueName, parameters).map(new Func1<ServiceResponse<SBQueueInner>, SBQueueInner>() {
-            @Override
-            public SBQueueInner call(ServiceResponse<SBQueueInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Creates or updates a Service Bus queue. This operation is idempotent.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param queueName The queue name.
-     * @param parameters Parameters supplied to create or update a queue resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SBQueueInner object
-     */
-    public Observable<ServiceResponse<SBQueueInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String namespaceName, String queueName, SBQueueInner parameters) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (namespaceName == null) {
-            throw new IllegalArgumentException("Parameter namespaceName is required and cannot be null.");
-        }
-        if (queueName == null) {
-            throw new IllegalArgumentException("Parameter queueName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Validator.validate(parameters);
-        return service.createOrUpdate(resourceGroupName, namespaceName, queueName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SBQueueInner>>>() {
-                @Override
-                public Observable<ServiceResponse<SBQueueInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<SBQueueInner> clientResponse = createOrUpdateDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<SBQueueInner> createOrUpdateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<SBQueueInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<SBQueueInner>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
-    /**
-     * Deletes a queue from the specified namespace in a resource group.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param queueName The queue name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    public void delete(String resourceGroupName, String namespaceName, String queueName) {
-        deleteWithServiceResponseAsync(resourceGroupName, namespaceName, queueName).toBlocking().single().body();
-    }
-
-    /**
-     * Deletes a queue from the specified namespace in a resource group.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param queueName The queue name.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String namespaceName, String queueName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, namespaceName, queueName), serviceCallback);
-    }
-
-    /**
-     * Deletes a queue from the specified namespace in a resource group.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param queueName The queue name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> deleteAsync(String resourceGroupName, String namespaceName, String queueName) {
-        return deleteWithServiceResponseAsync(resourceGroupName, namespaceName, queueName).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Deletes a queue from the specified namespace in a resource group.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param queueName The queue name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String namespaceName, String queueName) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (namespaceName == null) {
-            throw new IllegalArgumentException("Parameter namespaceName is required and cannot be null.");
-        }
-        if (queueName == null) {
-            throw new IllegalArgumentException("Parameter queueName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.delete(resourceGroupName, namespaceName, queueName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
-    /**
-     * Returns a description for the specified queue.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param queueName The queue name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the SBQueueInner object if successful.
-     */
-    public SBQueueInner get(String resourceGroupName, String namespaceName, String queueName) {
-        return getWithServiceResponseAsync(resourceGroupName, namespaceName, queueName).toBlocking().single().body();
-    }
-
-    /**
-     * Returns a description for the specified queue.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param queueName The queue name.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<SBQueueInner> getAsync(String resourceGroupName, String namespaceName, String queueName, final ServiceCallback<SBQueueInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, namespaceName, queueName), serviceCallback);
-    }
-
-    /**
-     * Returns a description for the specified queue.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param queueName The queue name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SBQueueInner object
-     */
-    public Observable<SBQueueInner> getAsync(String resourceGroupName, String namespaceName, String queueName) {
-        return getWithServiceResponseAsync(resourceGroupName, namespaceName, queueName).map(new Func1<ServiceResponse<SBQueueInner>, SBQueueInner>() {
-            @Override
-            public SBQueueInner call(ServiceResponse<SBQueueInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Returns a description for the specified queue.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param queueName The queue name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SBQueueInner object
-     */
-    public Observable<ServiceResponse<SBQueueInner>> getWithServiceResponseAsync(String resourceGroupName, String namespaceName, String queueName) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (namespaceName == null) {
-            throw new IllegalArgumentException("Parameter namespaceName is required and cannot be null.");
-        }
-        if (queueName == null) {
-            throw new IllegalArgumentException("Parameter queueName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.get(resourceGroupName, namespaceName, queueName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SBQueueInner>>>() {
-                @Override
-                public Observable<ServiceResponse<SBQueueInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<SBQueueInner> clientResponse = getDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<SBQueueInner> getDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<SBQueueInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<SBQueueInner>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
     }
 
     /**
@@ -1304,14 +766,15 @@ public class QueuesInner {
     /**
      * Gets the queues within a namespace.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SBQueueInner&gt; object if successful.
      */
-    public PagedList<SBQueueInner> listByNamespaceNext(final String nextPageLink) {
-        ServiceResponse<Page<SBQueueInner>> response = listByNamespaceNextSinglePageAsync(nextPageLink).toBlocking().single();
+    public PagedList<SBQueueInner> listByNamespace(final String resourceGroupName, final String namespaceName) {
+        ServiceResponse<Page<SBQueueInner>> response = listByNamespaceSinglePageAsync(resourceGroupName, namespaceName).toBlocking().single();
         return new PagedList<SBQueueInner>(response.body()) {
             @Override
             public Page<SBQueueInner> nextPage(String nextPageLink) {
@@ -1323,15 +786,15 @@ public class QueuesInner {
     /**
      * Gets the queues within a namespace.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<SBQueueInner>> listByNamespaceNextAsync(final String nextPageLink, final ServiceFuture<List<SBQueueInner>> serviceFuture, final ListOperationCallback<SBQueueInner> serviceCallback) {
+    public ServiceFuture<List<SBQueueInner>> listByNamespaceAsync(final String resourceGroupName, final String namespaceName, final ListOperationCallback<SBQueueInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listByNamespaceNextSinglePageAsync(nextPageLink),
+            listByNamespaceSinglePageAsync(resourceGroupName, namespaceName),
             new Func1<String, Observable<ServiceResponse<Page<SBQueueInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SBQueueInner>>> call(String nextPageLink) {
@@ -1344,12 +807,13 @@ public class QueuesInner {
     /**
      * Gets the queues within a namespace.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SBQueueInner&gt; object
      */
-    public Observable<Page<SBQueueInner>> listByNamespaceNextAsync(final String nextPageLink) {
-        return listByNamespaceNextWithServiceResponseAsync(nextPageLink)
+    public Observable<Page<SBQueueInner>> listByNamespaceAsync(final String resourceGroupName, final String namespaceName) {
+        return listByNamespaceWithServiceResponseAsync(resourceGroupName, namespaceName)
             .map(new Func1<ServiceResponse<Page<SBQueueInner>>, Page<SBQueueInner>>() {
                 @Override
                 public Page<SBQueueInner> call(ServiceResponse<Page<SBQueueInner>> response) {
@@ -1361,12 +825,13 @@ public class QueuesInner {
     /**
      * Gets the queues within a namespace.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SBQueueInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SBQueueInner>>> listByNamespaceNextWithServiceResponseAsync(final String nextPageLink) {
-        return listByNamespaceNextSinglePageAsync(nextPageLink)
+    public Observable<ServiceResponse<Page<SBQueueInner>>> listByNamespaceWithServiceResponseAsync(final String resourceGroupName, final String namespaceName) {
+        return listByNamespaceSinglePageAsync(resourceGroupName, namespaceName)
             .concatMap(new Func1<ServiceResponse<Page<SBQueueInner>>, Observable<ServiceResponse<Page<SBQueueInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SBQueueInner>>> call(ServiceResponse<Page<SBQueueInner>> page) {
@@ -1382,21 +847,32 @@ public class QueuesInner {
     /**
      * Gets the queues within a namespace.
      *
-    ServiceResponse<PageImpl<SBQueueInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SBQueueInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<SBQueueInner>>> listByNamespaceNextSinglePageAsync(final String nextPageLink) {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+    public Observable<ServiceResponse<Page<SBQueueInner>>> listByNamespaceSinglePageAsync(final String resourceGroupName, final String namespaceName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
-        String nextUrl = String.format("%s", nextPageLink);
-        return service.listByNamespaceNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+        if (namespaceName == null) {
+            throw new IllegalArgumentException("Parameter namespaceName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final Integer skip = null;
+        final Integer top = null;
+        return service.listByNamespace(resourceGroupName, namespaceName, this.client.subscriptionId(), this.client.apiVersion(), skip, top, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SBQueueInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SBQueueInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<SBQueueInner>> result = listByNamespaceNextDelegate(response);
+                        ServiceResponse<PageImpl<SBQueueInner>> result = listByNamespaceDelegate(response);
                         return Observable.just(new ServiceResponse<Page<SBQueueInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1405,9 +881,422 @@ public class QueuesInner {
             });
     }
 
-    private ServiceResponse<PageImpl<SBQueueInner>> listByNamespaceNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+    /**
+     * Gets the queues within a namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting point to use for subsequent calls.
+     * @param top May be used to limit the number of results to the most recent N usageDetails.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;SBQueueInner&gt; object if successful.
+     */
+    public PagedList<SBQueueInner> listByNamespace(final String resourceGroupName, final String namespaceName, final Integer skip, final Integer top) {
+        ServiceResponse<Page<SBQueueInner>> response = listByNamespaceSinglePageAsync(resourceGroupName, namespaceName, skip, top).toBlocking().single();
+        return new PagedList<SBQueueInner>(response.body()) {
+            @Override
+            public Page<SBQueueInner> nextPage(String nextPageLink) {
+                return listByNamespaceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets the queues within a namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting point to use for subsequent calls.
+     * @param top May be used to limit the number of results to the most recent N usageDetails.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<SBQueueInner>> listByNamespaceAsync(final String resourceGroupName, final String namespaceName, final Integer skip, final Integer top, final ListOperationCallback<SBQueueInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByNamespaceSinglePageAsync(resourceGroupName, namespaceName, skip, top),
+            new Func1<String, Observable<ServiceResponse<Page<SBQueueInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SBQueueInner>>> call(String nextPageLink) {
+                    return listByNamespaceNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets the queues within a namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting point to use for subsequent calls.
+     * @param top May be used to limit the number of results to the most recent N usageDetails.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SBQueueInner&gt; object
+     */
+    public Observable<Page<SBQueueInner>> listByNamespaceAsync(final String resourceGroupName, final String namespaceName, final Integer skip, final Integer top) {
+        return listByNamespaceWithServiceResponseAsync(resourceGroupName, namespaceName, skip, top)
+            .map(new Func1<ServiceResponse<Page<SBQueueInner>>, Page<SBQueueInner>>() {
+                @Override
+                public Page<SBQueueInner> call(ServiceResponse<Page<SBQueueInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets the queues within a namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting point to use for subsequent calls.
+     * @param top May be used to limit the number of results to the most recent N usageDetails.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SBQueueInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SBQueueInner>>> listByNamespaceWithServiceResponseAsync(final String resourceGroupName, final String namespaceName, final Integer skip, final Integer top) {
+        return listByNamespaceSinglePageAsync(resourceGroupName, namespaceName, skip, top)
+            .concatMap(new Func1<ServiceResponse<Page<SBQueueInner>>, Observable<ServiceResponse<Page<SBQueueInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SBQueueInner>>> call(ServiceResponse<Page<SBQueueInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByNamespaceNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets the queues within a namespace.
+     *
+    ServiceResponse<PageImpl<SBQueueInner>> * @param resourceGroupName Name of the Resource group within the Azure subscription.
+    ServiceResponse<PageImpl<SBQueueInner>> * @param namespaceName The namespace name
+    ServiceResponse<PageImpl<SBQueueInner>> * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting point to use for subsequent calls.
+    ServiceResponse<PageImpl<SBQueueInner>> * @param top May be used to limit the number of results to the most recent N usageDetails.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;SBQueueInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SBQueueInner>>> listByNamespaceSinglePageAsync(final String resourceGroupName, final String namespaceName, final Integer skip, final Integer top) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (namespaceName == null) {
+            throw new IllegalArgumentException("Parameter namespaceName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listByNamespace(resourceGroupName, namespaceName, this.client.subscriptionId(), this.client.apiVersion(), skip, top, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SBQueueInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SBQueueInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SBQueueInner>> result = listByNamespaceDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SBQueueInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<SBQueueInner>> listByNamespaceDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<SBQueueInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SBQueueInner>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Creates or updates a Service Bus queue. This operation is idempotent.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param queueName The queue name.
+     * @param parameters Parameters supplied to create or update a queue resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SBQueueInner object if successful.
+     */
+    public SBQueueInner createOrUpdate(String resourceGroupName, String namespaceName, String queueName, SBQueueInner parameters) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, namespaceName, queueName, parameters).toBlocking().single().body();
+    }
+
+    /**
+     * Creates or updates a Service Bus queue. This operation is idempotent.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param queueName The queue name.
+     * @param parameters Parameters supplied to create or update a queue resource.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SBQueueInner> createOrUpdateAsync(String resourceGroupName, String namespaceName, String queueName, SBQueueInner parameters, final ServiceCallback<SBQueueInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, namespaceName, queueName, parameters), serviceCallback);
+    }
+
+    /**
+     * Creates or updates a Service Bus queue. This operation is idempotent.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param queueName The queue name.
+     * @param parameters Parameters supplied to create or update a queue resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SBQueueInner object
+     */
+    public Observable<SBQueueInner> createOrUpdateAsync(String resourceGroupName, String namespaceName, String queueName, SBQueueInner parameters) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, namespaceName, queueName, parameters).map(new Func1<ServiceResponse<SBQueueInner>, SBQueueInner>() {
+            @Override
+            public SBQueueInner call(ServiceResponse<SBQueueInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Creates or updates a Service Bus queue. This operation is idempotent.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param queueName The queue name.
+     * @param parameters Parameters supplied to create or update a queue resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SBQueueInner object
+     */
+    public Observable<ServiceResponse<SBQueueInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String namespaceName, String queueName, SBQueueInner parameters) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (namespaceName == null) {
+            throw new IllegalArgumentException("Parameter namespaceName is required and cannot be null.");
+        }
+        if (queueName == null) {
+            throw new IllegalArgumentException("Parameter queueName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        return service.createOrUpdate(resourceGroupName, namespaceName, queueName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SBQueueInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SBQueueInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SBQueueInner> clientResponse = createOrUpdateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SBQueueInner> createOrUpdateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SBQueueInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SBQueueInner>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Deletes a queue from the specified namespace in a resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param queueName The queue name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void delete(String resourceGroupName, String namespaceName, String queueName) {
+        deleteWithServiceResponseAsync(resourceGroupName, namespaceName, queueName).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes a queue from the specified namespace in a resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param queueName The queue name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String namespaceName, String queueName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, namespaceName, queueName), serviceCallback);
+    }
+
+    /**
+     * Deletes a queue from the specified namespace in a resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param queueName The queue name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> deleteAsync(String resourceGroupName, String namespaceName, String queueName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, namespaceName, queueName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes a queue from the specified namespace in a resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param queueName The queue name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String namespaceName, String queueName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (namespaceName == null) {
+            throw new IllegalArgumentException("Parameter namespaceName is required and cannot be null.");
+        }
+        if (queueName == null) {
+            throw new IllegalArgumentException("Parameter queueName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.delete(resourceGroupName, namespaceName, queueName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Returns a description for the specified queue.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param queueName The queue name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SBQueueInner object if successful.
+     */
+    public SBQueueInner get(String resourceGroupName, String namespaceName, String queueName) {
+        return getWithServiceResponseAsync(resourceGroupName, namespaceName, queueName).toBlocking().single().body();
+    }
+
+    /**
+     * Returns a description for the specified queue.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param queueName The queue name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SBQueueInner> getAsync(String resourceGroupName, String namespaceName, String queueName, final ServiceCallback<SBQueueInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, namespaceName, queueName), serviceCallback);
+    }
+
+    /**
+     * Returns a description for the specified queue.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param queueName The queue name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SBQueueInner object
+     */
+    public Observable<SBQueueInner> getAsync(String resourceGroupName, String namespaceName, String queueName) {
+        return getWithServiceResponseAsync(resourceGroupName, namespaceName, queueName).map(new Func1<ServiceResponse<SBQueueInner>, SBQueueInner>() {
+            @Override
+            public SBQueueInner call(ServiceResponse<SBQueueInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Returns a description for the specified queue.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param queueName The queue name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SBQueueInner object
+     */
+    public Observable<ServiceResponse<SBQueueInner>> getWithServiceResponseAsync(String resourceGroupName, String namespaceName, String queueName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (namespaceName == null) {
+            throw new IllegalArgumentException("Parameter namespaceName is required and cannot be null.");
+        }
+        if (queueName == null) {
+            throw new IllegalArgumentException("Parameter queueName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.get(resourceGroupName, namespaceName, queueName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SBQueueInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SBQueueInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SBQueueInner> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SBQueueInner> getDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SBQueueInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SBQueueInner>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
@@ -1519,6 +1408,117 @@ public class QueuesInner {
     private ServiceResponse<PageImpl<SBAuthorizationRuleInner>> listAuthorizationRulesNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<SBAuthorizationRuleInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SBAuthorizationRuleInner>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the queues within a namespace.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;SBQueueInner&gt; object if successful.
+     */
+    public PagedList<SBQueueInner> listByNamespaceNext(final String nextPageLink) {
+        ServiceResponse<Page<SBQueueInner>> response = listByNamespaceNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<SBQueueInner>(response.body()) {
+            @Override
+            public Page<SBQueueInner> nextPage(String nextPageLink) {
+                return listByNamespaceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets the queues within a namespace.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<SBQueueInner>> listByNamespaceNextAsync(final String nextPageLink, final ServiceFuture<List<SBQueueInner>> serviceFuture, final ListOperationCallback<SBQueueInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByNamespaceNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<SBQueueInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SBQueueInner>>> call(String nextPageLink) {
+                    return listByNamespaceNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets the queues within a namespace.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SBQueueInner&gt; object
+     */
+    public Observable<Page<SBQueueInner>> listByNamespaceNextAsync(final String nextPageLink) {
+        return listByNamespaceNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<SBQueueInner>>, Page<SBQueueInner>>() {
+                @Override
+                public Page<SBQueueInner> call(ServiceResponse<Page<SBQueueInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets the queues within a namespace.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SBQueueInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SBQueueInner>>> listByNamespaceNextWithServiceResponseAsync(final String nextPageLink) {
+        return listByNamespaceNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<SBQueueInner>>, Observable<ServiceResponse<Page<SBQueueInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SBQueueInner>>> call(ServiceResponse<Page<SBQueueInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByNamespaceNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets the queues within a namespace.
+     *
+    ServiceResponse<PageImpl<SBQueueInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;SBQueueInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SBQueueInner>>> listByNamespaceNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByNamespaceNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SBQueueInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SBQueueInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SBQueueInner>> result = listByNamespaceNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SBQueueInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<SBQueueInner>> listByNamespaceNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SBQueueInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<SBQueueInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }

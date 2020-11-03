@@ -25,7 +25,7 @@ public class SqlFilter {
      * This property is reserved for future use. An integer value showing the
      * compatibility level, currently hard-coded to 20.
      */
-    @JsonProperty(value = "compatibilityLevel", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "compatibilityLevel")
     private Integer compatibilityLevel;
 
     /**
@@ -61,6 +61,17 @@ public class SqlFilter {
      */
     public Integer compatibilityLevel() {
         return this.compatibilityLevel;
+    }
+
+    /**
+     * Set this property is reserved for future use. An integer value showing the compatibility level, currently hard-coded to 20.
+     *
+     * @param compatibilityLevel the compatibilityLevel value to set
+     * @return the SqlFilter object itself.
+     */
+    public SqlFilter withCompatibilityLevel(Integer compatibilityLevel) {
+        this.compatibilityLevel = compatibilityLevel;
+        return this;
     }
 
     /**

@@ -91,10 +91,14 @@ class DisasterRecoveryConfigsImpl extends WrapperImpl<DisasterRecoveryConfigsInn
     public Observable<ArmDisasterRecovery> getAsync(String resourceGroupName, String namespaceName, String alias) {
         DisasterRecoveryConfigsInner client = this.inner();
         return client.getAsync(resourceGroupName, namespaceName, alias)
-        .map(new Func1<ArmDisasterRecoveryInner, ArmDisasterRecovery>() {
+        .flatMap(new Func1<ArmDisasterRecoveryInner, Observable<ArmDisasterRecovery>>() {
             @Override
-            public ArmDisasterRecovery call(ArmDisasterRecoveryInner inner) {
-                return wrapModel(inner);
+            public Observable<ArmDisasterRecovery> call(ArmDisasterRecoveryInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ArmDisasterRecovery)wrapModel(inner));
+                }
             }
        });
     }
@@ -122,10 +126,14 @@ class DisasterRecoveryConfigsImpl extends WrapperImpl<DisasterRecoveryConfigsInn
     public Observable<DisasterRecoveryConfigNamespaceSBAuthorizationRule> getAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String alias, String authorizationRuleName) {
         DisasterRecoveryConfigsInner client = this.inner();
         return client.getAuthorizationRuleAsync(resourceGroupName, namespaceName, alias, authorizationRuleName)
-        .map(new Func1<SBAuthorizationRuleInner, DisasterRecoveryConfigNamespaceSBAuthorizationRule>() {
+        .flatMap(new Func1<SBAuthorizationRuleInner, Observable<DisasterRecoveryConfigNamespaceSBAuthorizationRule>>() {
             @Override
-            public DisasterRecoveryConfigNamespaceSBAuthorizationRule call(SBAuthorizationRuleInner inner) {
-                return wrapDisasterRecoveryConfigNamespaceSBAuthorizationRuleModel(inner);
+            public Observable<DisasterRecoveryConfigNamespaceSBAuthorizationRule> call(SBAuthorizationRuleInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((DisasterRecoveryConfigNamespaceSBAuthorizationRule)wrapDisasterRecoveryConfigNamespaceSBAuthorizationRuleModel(inner));
+                }
             }
        });
     }

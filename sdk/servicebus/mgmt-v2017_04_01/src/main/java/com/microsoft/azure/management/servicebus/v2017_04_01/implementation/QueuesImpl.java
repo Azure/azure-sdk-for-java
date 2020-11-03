@@ -67,10 +67,14 @@ class QueuesImpl extends WrapperImpl<QueuesInner> implements Queues {
     public Observable<SBQueue> getAsync(String resourceGroupName, String namespaceName, String queueName) {
         QueuesInner client = this.inner();
         return client.getAsync(resourceGroupName, namespaceName, queueName)
-        .map(new Func1<SBQueueInner, SBQueue>() {
+        .flatMap(new Func1<SBQueueInner, Observable<SBQueue>>() {
             @Override
-            public SBQueue call(SBQueueInner inner) {
-                return wrapModel(inner);
+            public Observable<SBQueue> call(SBQueueInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((SBQueue)wrapModel(inner));
+                }
             }
        });
     }
@@ -107,10 +111,14 @@ class QueuesImpl extends WrapperImpl<QueuesInner> implements Queues {
     public Observable<QueueNamespaceSBAuthorizationRule> getAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName) {
         QueuesInner client = this.inner();
         return client.getAuthorizationRuleAsync(resourceGroupName, namespaceName, queueName, authorizationRuleName)
-        .map(new Func1<SBAuthorizationRuleInner, QueueNamespaceSBAuthorizationRule>() {
+        .flatMap(new Func1<SBAuthorizationRuleInner, Observable<QueueNamespaceSBAuthorizationRule>>() {
             @Override
-            public QueueNamespaceSBAuthorizationRule call(SBAuthorizationRuleInner inner) {
-                return wrapQueueNamespaceSBAuthorizationRuleModel(inner);
+            public Observable<QueueNamespaceSBAuthorizationRule> call(SBAuthorizationRuleInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((QueueNamespaceSBAuthorizationRule)wrapQueueNamespaceSBAuthorizationRuleModel(inner));
+                }
             }
        });
     }

@@ -16,17 +16,17 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
-import com.microsoft.azure.management.servicebus.v2017_04_01.Operations;
 import com.microsoft.azure.management.servicebus.v2017_04_01.Namespaces;
-import com.microsoft.azure.management.servicebus.v2017_04_01.DisasterRecoveryConfigs;
-import com.microsoft.azure.management.servicebus.v2017_04_01.MigrationConfigs;
 import com.microsoft.azure.management.servicebus.v2017_04_01.Queues;
 import com.microsoft.azure.management.servicebus.v2017_04_01.Topics;
-import com.microsoft.azure.management.servicebus.v2017_04_01.Subscriptions;
+import com.microsoft.azure.management.servicebus.v2017_04_01.DisasterRecoveryConfigs;
+import com.microsoft.azure.management.servicebus.v2017_04_01.EventHubs;
+import com.microsoft.azure.management.servicebus.v2017_04_01.MigrationConfigs;
+import com.microsoft.azure.management.servicebus.v2017_04_01.Operations;
+import com.microsoft.azure.management.servicebus.v2017_04_01.PremiumMessagingRegions;
 import com.microsoft.azure.management.servicebus.v2017_04_01.Rules;
 import com.microsoft.azure.management.servicebus.v2017_04_01.Regions;
-import com.microsoft.azure.management.servicebus.v2017_04_01.PremiumMessagingRegions;
-import com.microsoft.azure.management.servicebus.v2017_04_01.EventHubs;
+import com.microsoft.azure.management.servicebus.v2017_04_01.Subscriptions;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -34,17 +34,17 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  * Entry point to Azure ServiceBus resource management.
  */
 public final class ServiceBusManager extends ManagerCore<ServiceBusManager, ServiceBusManagementClientImpl> {
-    private Operations operations;
     private Namespaces namespaces;
-    private DisasterRecoveryConfigs disasterRecoveryConfigs;
-    private MigrationConfigs migrationConfigs;
     private Queues queues;
     private Topics topics;
-    private Subscriptions subscriptions;
+    private DisasterRecoveryConfigs disasterRecoveryConfigs;
+    private EventHubs eventHubs;
+    private MigrationConfigs migrationConfigs;
+    private Operations operations;
+    private PremiumMessagingRegions premiumMessagingRegions;
     private Rules rules;
     private Regions regions;
-    private PremiumMessagingRegions premiumMessagingRegions;
-    private EventHubs eventHubs;
+    private Subscriptions subscriptions;
     /**
     * Get a Configurable instance that can be used to create ServiceBusManager with optional configuration.
     *
@@ -93,16 +93,6 @@ public final class ServiceBusManager extends ManagerCore<ServiceBusManager, Serv
     }
 
     /**
-     * @return Entry point to manage Operations.
-     */
-    public Operations operations() {
-        if (this.operations == null) {
-            this.operations = new OperationsImpl(this);
-        }
-        return this.operations;
-    }
-
-    /**
      * @return Entry point to manage Namespaces.
      */
     public Namespaces namespaces() {
@@ -110,26 +100,6 @@ public final class ServiceBusManager extends ManagerCore<ServiceBusManager, Serv
             this.namespaces = new NamespacesImpl(this);
         }
         return this.namespaces;
-    }
-
-    /**
-     * @return Entry point to manage DisasterRecoveryConfigs.
-     */
-    public DisasterRecoveryConfigs disasterRecoveryConfigs() {
-        if (this.disasterRecoveryConfigs == null) {
-            this.disasterRecoveryConfigs = new DisasterRecoveryConfigsImpl(this);
-        }
-        return this.disasterRecoveryConfigs;
-    }
-
-    /**
-     * @return Entry point to manage MigrationConfigs.
-     */
-    public MigrationConfigs migrationConfigs() {
-        if (this.migrationConfigs == null) {
-            this.migrationConfigs = new MigrationConfigsImpl(this);
-        }
-        return this.migrationConfigs;
     }
 
     /**
@@ -153,13 +123,53 @@ public final class ServiceBusManager extends ManagerCore<ServiceBusManager, Serv
     }
 
     /**
-     * @return Entry point to manage Subscriptions.
+     * @return Entry point to manage DisasterRecoveryConfigs.
      */
-    public Subscriptions subscriptions() {
-        if (this.subscriptions == null) {
-            this.subscriptions = new SubscriptionsImpl(this);
+    public DisasterRecoveryConfigs disasterRecoveryConfigs() {
+        if (this.disasterRecoveryConfigs == null) {
+            this.disasterRecoveryConfigs = new DisasterRecoveryConfigsImpl(this);
         }
-        return this.subscriptions;
+        return this.disasterRecoveryConfigs;
+    }
+
+    /**
+     * @return Entry point to manage EventHubs.
+     */
+    public EventHubs eventHubs() {
+        if (this.eventHubs == null) {
+            this.eventHubs = new EventHubsImpl(this);
+        }
+        return this.eventHubs;
+    }
+
+    /**
+     * @return Entry point to manage MigrationConfigs.
+     */
+    public MigrationConfigs migrationConfigs() {
+        if (this.migrationConfigs == null) {
+            this.migrationConfigs = new MigrationConfigsImpl(this);
+        }
+        return this.migrationConfigs;
+    }
+
+    /**
+     * @return Entry point to manage Operations.
+     */
+    public Operations operations() {
+        if (this.operations == null) {
+            this.operations = new OperationsImpl(this);
+        }
+        return this.operations;
+    }
+
+    /**
+     * @return Entry point to manage PremiumMessagingRegions.
+     */
+    public PremiumMessagingRegions premiumMessagingRegions() {
+        if (this.premiumMessagingRegions == null) {
+            this.premiumMessagingRegions = new PremiumMessagingRegionsImpl(this);
+        }
+        return this.premiumMessagingRegions;
     }
 
     /**
@@ -183,23 +193,13 @@ public final class ServiceBusManager extends ManagerCore<ServiceBusManager, Serv
     }
 
     /**
-     * @return Entry point to manage PremiumMessagingRegions.
+     * @return Entry point to manage Subscriptions.
      */
-    public PremiumMessagingRegions premiumMessagingRegions() {
-        if (this.premiumMessagingRegions == null) {
-            this.premiumMessagingRegions = new PremiumMessagingRegionsImpl(this);
+    public Subscriptions subscriptions() {
+        if (this.subscriptions == null) {
+            this.subscriptions = new SubscriptionsImpl(this);
         }
-        return this.premiumMessagingRegions;
-    }
-
-    /**
-     * @return Entry point to manage EventHubs.
-     */
-    public EventHubs eventHubs() {
-        if (this.eventHubs == null) {
-            this.eventHubs = new EventHubsImpl(this);
-        }
-        return this.eventHubs;
+        return this.subscriptions;
     }
 
     /**
