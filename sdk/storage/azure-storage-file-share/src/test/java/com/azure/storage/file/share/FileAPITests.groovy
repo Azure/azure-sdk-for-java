@@ -271,6 +271,25 @@ class FileAPITests extends APISpec {
         assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
     }
 
+    def "Upload data retry on transient failure"() {
+        setup:
+        def clientWithFailure = getFileClient(
+            primaryCredential,
+            primaryFileClient.getFileUrl(),
+            new TransientFailureInjectingHttpPipelinePolicy()
+        )
+
+        primaryFileClient.create(1024)
+
+        when:
+        clientWithFailure.upload(defaultData, defaultDataLength)
+
+        then:
+        def os = new ByteArrayOutputStream()
+        primaryFileClient.downloadWithResponse(os, new ShareFileRange(0, defaultDataLength - 1), null, null, null)
+        os.toByteArray() == data
+    }
+
     def "Upload and clear range"() {
         given:
         def fullInfoString = "please clear the range"

@@ -3,11 +3,13 @@
 
 package com.azure.core.models;
 
-import com.azure.core.util.Option;
+import com.azure.core.implementation.Option;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -23,9 +25,13 @@ public final class JsonPatchDocument {
     private static final Object SERIALIZER_INSTANTIATION_SYNCHRONIZER = new Object();
     private static volatile JsonSerializer defaultSerializer;
 
+    @JsonIgnore
     private final ClientLogger logger = new ClientLogger(JsonPatchDocument.class);
 
+    @JsonIgnore
     private final JsonSerializer serializer;
+
+    @JsonValue
     private final List<JsonPatchOperation> operations;
 
     /**
@@ -54,7 +60,7 @@ public final class JsonPatchDocument {
      *
      * @return The JSON patch operations in this JSON patch document.
      */
-    public List<JsonPatchOperation> getOperations() {
+    List<JsonPatchOperation> getOperations() {
         return new ArrayList<>(operations);
     }
 

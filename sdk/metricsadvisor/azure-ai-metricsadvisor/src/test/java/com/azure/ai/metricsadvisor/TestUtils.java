@@ -61,19 +61,19 @@ public final class TestUtils {
 
     static final String SQL_SERVER_CONNECTION_STRING = Configuration
         .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_SQL_SERVER_CONNECTION_STRING", "con-string");
+        .get("AZURE_METRICS_ADVISOR_SQL_SERVER_CONNECTION_STRING", "conn-string");
 
     static final String BLOB_CONNECTION_STRING = Configuration
         .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_BLOB_CONNECTION_STRING", "con-string");
+        .get("AZURE_METRICS_ADVISOR_AZURE_BLOB_CONNECTION_STRING", "con-string");
 
     static final String DATA_EXPLORER_CONNECTION_STRING = Configuration
         .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_DATA_EXPLORER_CONNECTION_STRING", "con-string");
+        .get("AZURE_METRICS_ADVISOR_AZURE_DATA_EXPLORER_CONNECTION_STRING", "con-string");
 
     static final String TABLE_CONNECTION_STRING = Configuration
         .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_TABLE_CONNECTION_STRING", "con-string");
+        .get("AZURE_METRICS_ADVISOR_AZURE_TABLE_CONNECTION_STRING", "con-string");
 
     static final String INFLUX_DB_CONNECTION_STRING = Configuration
         .getGlobalConfiguration()
@@ -81,15 +81,15 @@ public final class TestUtils {
 
     static final String MONGO_DB_CONNECTION_STRING = Configuration
         .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_MONGO_DB_CONNECTION_STRING", "con-string");
+        .get("AZURE_METRICS_ADVISOR_AZURE_MONGODB_CONNECTION_STRING", "con-string");
 
     static final String POSTGRE_SQL_DB_CONNECTION_STRING = Configuration
         .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_POSTGRE_SQL_DB_CONNECTION_STRING", "con-string");
+        .get("AZURE_METRICS_ADVISOR_POSTGRESQL_CONNECTION_STRING", "con-string");
 
     static final String MYSQL_DB_CONNECTION_STRING = Configuration
         .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_MYSQL_DB_CONNECTION_STRING", "con-string");
+        .get("AZURE_METRICS_ADVISOR_MYSQL_CONNECTION_STRING", "con-string");
 
     static final String COSMOS_DB_CONNECTION_STRING = Configuration
         .getGlobalConfiguration()
@@ -97,22 +97,19 @@ public final class TestUtils {
 
     static final String APP_INSIGHTS_API_KEY = Configuration
         .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_APP_INSIGHTS_API_KEY", "apiKey");
+        .get("AZURE_METRICS_ADVISOR_APPLICATION_INSIGHTS_API_KEY", "apiKey");
 
     static final String APP_INSIGHTS_APPLICATION_ID = Configuration
         .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_APP_INSIGHTS_APPLICATION_ID", "applicationId");
+        .get("AZURE_METRICS_ADVISOR_APPLICATION_INSIGHTS_APPLICATION_ID", "applicationId");
 
-    static final String INFLUX_DB_USER = Configuration
-        .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_INFLUX_DB_USER", "testUser");
     static final String INFLUX_DB_PASSWORD = Configuration
         .getGlobalConfiguration()
         .get("AZURE_METRICS_ADVISOR_INFLUX_DB_PASSWORD", "testPassword");
 
     static final String HTTP_URL = Configuration
         .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_HTTP_SOURCE_URL", "httpUrl");
+        .get("AZURE_METRICS_ADVISOR_HTTP_GET_URL", "httpUrl");
 
     static final String ELASTIC_SEARCH_HOST = Configuration
         .getGlobalConfiguration()
@@ -120,15 +117,11 @@ public final class TestUtils {
 
     static final String ELASTIC_SEARCH_AUTH_HEADER = Configuration
         .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_ELASTIC_SEARCH_AUTH_HEADER", "authHeader");
-
-    static final String AZURE_DATALAKEGEN2_ACCOUNT_NAME = Configuration
-        .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_DATALAKEGEN2_ACCOUNT_NAME", "azDataLakeAccountName");
+        .get("AZURE_METRICS_ADVISOR_ELASTICSEARCH_AUTH_HEADER", "authHeader");
 
     static final String AZURE_DATALAKEGEN2_ACCOUNT_KEY = Configuration
         .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_DATALAKEGEN2_ACCOUNT_KEY", "azDataLakeAccountKey");
+        .get("AZURE_METRICS_ADVISOR_AZURE_DATALAKE_ACCOUNT_KEY", "azDataLakeAccountKey");
 
     private TestUtils() {
     }

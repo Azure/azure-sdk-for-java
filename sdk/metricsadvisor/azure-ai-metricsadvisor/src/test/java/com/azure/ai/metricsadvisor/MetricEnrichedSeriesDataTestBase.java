@@ -20,11 +20,11 @@ public abstract class MetricEnrichedSeriesDataTestBase extends MetricsAdvisorCli
     protected static class GetEnrichedSeriesDataInput {
         static final GetEnrichedSeriesDataInput INSTANCE = new GetEnrichedSeriesDataInput();
         final DimensionKey seriesKey = new DimensionKey()
-            .put("Dim1", "Common Lime")
-            .put("Dim2", "Antelope");
-        final String detectionConfigurationId = "e87d899d-a5a0-4259-b752-11aea34d5e34";
-        final OffsetDateTime startTime = OffsetDateTime.parse("2020-08-12T00:00:00Z");
-        final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-12T00:00:00Z");
+            .put("city", "Miami")
+            .put("category", "Health & Personal Care");
+        final String detectionConfigurationId = "e17f32d4-3ddf-4dc7-84ee-b4130c7e1777";
+        final OffsetDateTime startTime = OffsetDateTime.parse("2020-09-22T00:00:00Z");
+        final OffsetDateTime endTime = OffsetDateTime.parse("2020-10-22T00:00:00Z");
 
         List<DimensionKey> getSeriesKeys() {
             final List<DimensionKey> seriesKeys = new ArrayList<DimensionKey>();
@@ -40,7 +40,7 @@ public abstract class MetricEnrichedSeriesDataTestBase extends MetricsAdvisorCli
         Assertions.assertTrue(GetEnrichedSeriesDataInput.INSTANCE.seriesKey.equals(enrichedSeriesKey));
         // Fixed test data has exactly 27 data points in the time range.
         List<OffsetDateTime> timestamps = enrichedSeriesData.getTimestampList();
-        Assertions.assertEquals(27, timestamps.size());
+        Assertions.assertEquals(30, timestamps.size());
         // Ensure the received data points are in requested range.
         for (OffsetDateTime timestamp : timestamps) {
             Assertions.assertNotNull(timestamp);
