@@ -130,7 +130,6 @@ com.azure.spring:azure-spring-boot-test-servicebus-jms;1.0.0;1.0.0
 com.azure.spring:azure-spring-cloud-test-eventhubs;1.0.0;1.0.0
 com.azure.spring:azure-spring-cloud-test-storage;1.0.0;1.0.0
 com.azure.spring:azure-spring-cloud-test-appconfiguration-config;1.0.0;1.0.0
-com.azure:opentelemetry-exporters-azuremonitor;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager;2.0.0-beta.4;2.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-appplatform;2.0.0-beta.5;2.0.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-appservice;2.0.0-beta.4;2.1.0-beta.1
@@ -157,6 +156,7 @@ com.azure.resourcemanager:azure-resourcemanager-sql;2.0.0-beta.5;2.0.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-storage;2.0.0;2.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-trafficmanager;2.0.0-beta.5;2.0.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-test;2.0.0-beta.1;2.0.0-beta.1
+com.microsoft:microsoft-opentelemetry-exporter-azuremonitor;1.0.0-beta.1;1.0.0-beta.2
 
 
 # Unreleased dependencies: Copy the entry from above, prepend "unreleased_" and remove the current
