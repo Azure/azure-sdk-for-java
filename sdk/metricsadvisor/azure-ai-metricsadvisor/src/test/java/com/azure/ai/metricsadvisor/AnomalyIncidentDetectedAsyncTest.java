@@ -42,6 +42,7 @@ public class AnomalyIncidentDetectedAsyncTest extends IncidentDetectedTestBase {
         PagedFlux<AnomalyIncident> incidentsFlux
             = client.listIncidentsForDetectionConfig(
             ListIncidentsDetectedInput.INSTANCE.detectionConfigurationId,
+            ListIncidentsDetectedInput.INSTANCE.startTime, ListIncidentsDetectedInput.INSTANCE.endTime,
             ListIncidentsDetectedInput.INSTANCE.options);
 
         Assertions.assertNotNull(incidentsFlux);

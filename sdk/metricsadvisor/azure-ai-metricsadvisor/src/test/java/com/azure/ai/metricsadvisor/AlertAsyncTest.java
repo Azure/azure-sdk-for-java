@@ -22,7 +22,9 @@ public final class AlertAsyncTest extends AlertTestBase {
         MetricsAdvisorAsyncClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
 
         PagedFlux<AnomalyAlert> alertsFlux
-            = client.listAlerts(ListAlertsInput.INSTANCE.alertConfigurationId, ListAlertsInput.INSTANCE.options);
+            = client.listAlerts(ListAlertsInput.INSTANCE.alertConfigurationId, ListAlertsInput.INSTANCE.startTime,
+            ListAlertsInput.INSTANCE.endTime, ListAlertsInput.INSTANCE.options
+        );
 
         Assertions.assertNotNull(alertsFlux);
 

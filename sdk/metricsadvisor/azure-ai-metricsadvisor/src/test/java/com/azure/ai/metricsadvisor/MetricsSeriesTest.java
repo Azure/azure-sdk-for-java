@@ -131,7 +131,7 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
         List<EnrichmentStatus> enrichmentStatuses =
             client.listMetricEnrichmentStatus(ListEnrichmentStatusInput.INSTANCE.metricId,
-                ListEnrichmentStatusInput.INSTANCE.options)
+                    TIME_SERIES_START_TIME, TIME_SERIES_END_TIME)
                 .stream()
                 .collect(Collectors.toList());
 

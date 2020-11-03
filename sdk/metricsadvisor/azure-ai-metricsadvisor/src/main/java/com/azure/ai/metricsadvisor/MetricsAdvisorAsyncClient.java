@@ -211,7 +211,7 @@ public class MetricsAdvisorAsyncClient {
      * @return A {@link PagedFlux} of the {@link MetricSeriesData metric series data points}.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
-     * @throws NullPointerException thrown if the {@code metricId}, {@code options.startTime} or {@code options.endTime}
+     * @throws NullPointerException thrown if the {@code metricId}, {@code startTime} or {@code endTime}
      * is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -370,28 +370,30 @@ public class MetricsAdvisorAsyncClient {
      * List the enrichment status for a metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricEnrichmentStatus#String-ListMetricEnrichmentStatusOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricEnrichmentStatus#String-OffsetDateTime-OffsetDateTime-ListMetricEnrichmentStatusOptions}
      *
      * @param metricId metric unique id.
+     * @param startTime The start time for querying the time series data.
+     * @param endTime The end time for querying the time series data.
      * @param options th e additional configurable options to specify when querying the result..
      *
      * @return the list of enrichment status's for the specified metric.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
-     * @throws NullPointerException thrown if {@code metricId}, {@code options.startTime} and {@code options.endTime}
+     * @throws NullPointerException thrown if {@code metricId}, {@code startTime} and {@code endTime}
      * is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<EnrichmentStatus> listMetricEnrichmentStatus(
         String metricId,
-        ListMetricEnrichmentStatusOptions options) {
+        OffsetDateTime startTime, OffsetDateTime endTime, ListMetricEnrichmentStatusOptions options) {
         try {
             return new PagedFlux<>(() ->
                 withContext(context ->
-                    listMetricEnrichmentStatusSinglePageAsync(metricId, options, context)),
+                    listMetricEnrichmentStatusSinglePageAsync(metricId, startTime, endTime, options, context)),
                 continuationToken ->
                     withContext(context -> listMetricEnrichmentStatusNextPageAsync(continuationToken,
-                        options, context)));
+                        startTime, endTime, options, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
@@ -399,20 +401,23 @@ public class MetricsAdvisorAsyncClient {
 
     PagedFlux<EnrichmentStatus> listMetricEnrichmentStatus(
         String metricId,
-        ListMetricEnrichmentStatusOptions options, Context context) {
-        return new PagedFlux<>(() -> listMetricEnrichmentStatusSinglePageAsync(metricId, options, context),
-            continuationToken -> listMetricEnrichmentStatusNextPageAsync(continuationToken, options, context));
+        OffsetDateTime startTime, OffsetDateTime endTime, ListMetricEnrichmentStatusOptions options, Context context) {
+        return new PagedFlux<>(() -> listMetricEnrichmentStatusSinglePageAsync(metricId, startTime, endTime,
+            options, context),
+            continuationToken -> listMetricEnrichmentStatusNextPageAsync(continuationToken, startTime, endTime,
+                options, context));
     }
 
     private Mono<PagedResponse<EnrichmentStatus>> listMetricEnrichmentStatusSinglePageAsync(String metricId,
-        ListMetricEnrichmentStatusOptions options, Context context) {
+        OffsetDateTime startTime, OffsetDateTime endTime, ListMetricEnrichmentStatusOptions options, Context context) {
         Objects.requireNonNull(metricId, "'metricId' is required.");
-        Objects.requireNonNull(options, "'options' is required.");
-        Objects.requireNonNull(options.getStartTime(), "'options.startTime' is required.");
-        Objects.requireNonNull(options.getEndTime(), "'options.endTime' is required.");
-
+        Objects.requireNonNull(startTime, "'startTime' is required.");
+        Objects.requireNonNull(endTime, "'endTime' is required.");
+        if (options == null) {
+            options = new ListMetricEnrichmentStatusOptions();
+        }
         final EnrichmentStatusQueryOption enrichmentStatusQueryOption =
-            new EnrichmentStatusQueryOption().setStartTime(options.getStartTime()).setEndTime(options.getEndTime());
+            new EnrichmentStatusQueryOption().setStartTime(startTime).setEndTime(endTime);
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
 
         return service.getEnrichmentStatusByMetricSinglePageAsync(
@@ -434,16 +439,15 @@ public class MetricsAdvisorAsyncClient {
     }
 
     private Mono<PagedResponse<EnrichmentStatus>> listMetricEnrichmentStatusNextPageAsync(String nextPageLink,
-        ListMetricEnrichmentStatusOptions options, Context context) {
+        OffsetDateTime startTime, OffsetDateTime endTime, ListMetricEnrichmentStatusOptions options, Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
         }
-        Objects.requireNonNull(options, "'options' is required.");
-        Objects.requireNonNull(options.getStartTime(), "'options.startTime' is required.");
-        Objects.requireNonNull(options.getEndTime(), "'options.endTime' is required.");
+        Objects.requireNonNull(startTime, "'startTime' is required.");
+        Objects.requireNonNull(endTime, "'endTime' is required.");
 
         final EnrichmentStatusQueryOption enrichmentStatusQueryOption =
-            new EnrichmentStatusQueryOption().setStartTime(options.getStartTime()).setEndTime(options.getEndTime());
+            new EnrichmentStatusQueryOption().setStartTime(startTime).setEndTime(endTime);
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
 
         return service.getEnrichmentStatusByMetricNextSinglePageAsync(nextPageLink, enrichmentStatusQueryOption,
@@ -471,8 +475,8 @@ public class MetricsAdvisorAsyncClient {
      * @param seriesKeys The time series key list, each key identifies a specific time series.
      * @param detectionConfigurationId The id of the configuration used to enrich the time series
      *     identified by the keys in {@code seriesKeys}.
-     * @param startTime The start time.
-     * @param endTime The end time.
+     * @param startTime The start time of the time range within which the enriched data is returned.
+     * @param endTime The end time of the time range within which the enriched data is returned.
      * @return The enriched time series.
      * @throws IllegalArgumentException thrown if {@code detectionConfigurationId} fail the UUID format validation
      *     or if {@code seriesKeys} is empty.
@@ -549,29 +553,32 @@ public class MetricsAdvisorAsyncClient {
      * Fetch the anomalies identified by an anomaly detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomaliesForDetectionConfig#String-ListAnomaliesDetectedOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomaliesForDetectionConfig#String-OffsetDateTime-OffsetDateTime-ListAnomaliesDetectedOptions}
      *
      * @param detectionConfigurationId The anomaly detection configuration id.
+     * @param startTime The start time of the time range within which the anomalies were detected.
+     * @param endTime The end time of the time range within which the anomalies were detected.
      * @param options The additional parameters.
+     *
      * @return The anomalies.
      * @throws IllegalArgumentException thrown if {@code detectionConfigurationId} does not conform
      *     to the UUID format specification
      *     or {@code options.filter} is used to set severity but either min or max severity is missing.
      * @throws NullPointerException thrown if the {@code detectionConfigurationId} or {@code options}
-     *     or {@code options.startTime} or {@code options.endTime} is null.
+     *     or {@code startTime} or {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataPointAnomaly> listAnomaliesForDetectionConfig(
         String detectionConfigurationId,
-        ListAnomaliesDetectedOptions options) {
+        OffsetDateTime startTime, OffsetDateTime endTime, ListAnomaliesDetectedOptions options) {
         try {
             return new PagedFlux<>(() ->
                 withContext(context ->
                     listAnomaliesForDetectionConfigSinglePageAsync(detectionConfigurationId,
-                        options, context)),
+                        startTime, endTime, options, context)),
                 continuationToken ->
                     withContext(context -> listAnomaliesForDetectionConfigNextPageAsync(continuationToken,
-                        options, context)));
+                        startTime, endTime, options, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> FluxUtil.monoError(logger, ex));
         }
@@ -579,25 +586,25 @@ public class MetricsAdvisorAsyncClient {
 
     PagedFlux<DataPointAnomaly> listAnomaliesForDetectionConfig(
         String detectionConfigurationId,
-        ListAnomaliesDetectedOptions options, Context context) {
+        OffsetDateTime startTime, OffsetDateTime endTime, ListAnomaliesDetectedOptions options, Context context) {
         return new PagedFlux<>(() ->
-            listAnomaliesForDetectionConfigSinglePageAsync(detectionConfigurationId, options, context),
+            listAnomaliesForDetectionConfigSinglePageAsync(detectionConfigurationId, startTime, endTime, options,
+                context),
             continuationToken ->
-                listAnomaliesForDetectionConfigNextPageAsync(continuationToken, options, context));
+                listAnomaliesForDetectionConfigNextPageAsync(continuationToken, startTime, endTime, options, context));
     }
 
     private Mono<PagedResponse<DataPointAnomaly>> listAnomaliesForDetectionConfigSinglePageAsync(
         String detectionConfigurationId,
-        ListAnomaliesDetectedOptions options,
+        OffsetDateTime startTime, OffsetDateTime endTime, ListAnomaliesDetectedOptions options,
         Context context) {
         Objects.requireNonNull(detectionConfigurationId, "'detectionConfigurationId' is required.");
-        Objects.requireNonNull(options, "'options' is required.");
-        Objects.requireNonNull(options.getStartTime(), "'options.startTime' is required.");
-        Objects.requireNonNull(options.getEndTime(), "'options.endTime' is required.");
+        Objects.requireNonNull(startTime, "'startTime' is required.");
+        Objects.requireNonNull(endTime, "'endTime' is required.");
 
         DetectionAnomalyResultQuery query = new DetectionAnomalyResultQuery()
-            .setStartTime(options.getStartTime())
-            .setEndTime(options.getEndTime());
+            .setStartTime(startTime)
+            .setEndTime(endTime);
 
         if (options.getFilter() != null) {
             DetectionAnomalyFilterCondition innerFilter = AnomalyTransforms.toInnerFilter(options.getFilter(),
@@ -622,15 +629,15 @@ public class MetricsAdvisorAsyncClient {
 
     private Mono<PagedResponse<DataPointAnomaly>> listAnomaliesForDetectionConfigNextPageAsync(
         String nextPageLink,
-        ListAnomaliesDetectedOptions options,
+        OffsetDateTime startTime, OffsetDateTime endTime, ListAnomaliesDetectedOptions options,
         Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
         }
 
         DetectionAnomalyResultQuery query = new DetectionAnomalyResultQuery()
-            .setStartTime(options.getStartTime())
-            .setEndTime(options.getEndTime());
+            .setStartTime(startTime)
+            .setEndTime(endTime);
 
         if (options.getFilter() != null) {
             DetectionAnomalyFilterCondition innerFilter = AnomalyTransforms.toInnerFilter(options.getFilter(),
@@ -657,28 +664,31 @@ public class MetricsAdvisorAsyncClient {
      * Fetch the incidents identified by an anomaly detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidentsForDetectionConfig#String-ListIncidentsDetectedOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidentsForDetectionConfig#String-OffsetDateTime-OffsetDateTime-ListIncidentsDetectedOptions}
      *
      * @param detectionConfigurationId The anomaly detection configuration id.
+     * @param startTime The start time of the time range within which the incidents were detected.
+     * @param endTime The end time of the time range within which the incidents were detected.
      * @param options The additional parameters.
      * @return The incidents.
      * @throws IllegalArgumentException thrown if {@code detectionConfigurationId} does not conform
      *     to the UUID format specification.
      * @throws NullPointerException thrown if the {@code detectionConfigurationId} or {@code options}
-     *     or {@code options.startTime} or {@code options.endTime} is null.
+     *     or {@code startTime} or {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AnomalyIncident> listIncidentsForDetectionConfig(
         String detectionConfigurationId,
-        ListIncidentsDetectedOptions options) {
+        OffsetDateTime startTime, OffsetDateTime endTime, ListIncidentsDetectedOptions options) {
         try {
             return new PagedFlux<>(() ->
                 withContext(context ->
-                    listIncidentsForDetectionConfigSinglePageAsync(detectionConfigurationId,
+                    listIncidentsForDetectionConfigSinglePageAsync(detectionConfigurationId, startTime, endTime,
                         options,
                         context)),
                 continuationToken ->
-                    withContext(context -> listIncidentsForDetectionConfigNextPageAsync(continuationToken,
+                    withContext(context -> listIncidentsForDetectionConfigNextPageAsync(continuationToken, startTime,
+                        endTime,
                         context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> FluxUtil.monoError(logger, ex));
@@ -687,25 +697,28 @@ public class MetricsAdvisorAsyncClient {
 
     PagedFlux<AnomalyIncident> listIncidentsForDetectionConfig(
         String detectionConfigurationId,
-        ListIncidentsDetectedOptions options, Context context) {
+        OffsetDateTime startTime, OffsetDateTime endTime, ListIncidentsDetectedOptions options, Context context) {
         return new PagedFlux<>(() ->
-            listIncidentsForDetectionConfigSinglePageAsync(detectionConfigurationId, options, context),
+            listIncidentsForDetectionConfigSinglePageAsync(detectionConfigurationId, startTime, endTime, options,
+                context),
             continuationToken ->
-                listIncidentsForDetectionConfigNextPageAsync(continuationToken, context));
+                listIncidentsForDetectionConfigNextPageAsync(continuationToken, startTime, endTime, context));
     }
 
     private Mono<PagedResponse<AnomalyIncident>> listIncidentsForDetectionConfigSinglePageAsync(
         String detectionConfigurationId,
-        ListIncidentsDetectedOptions options,
+        OffsetDateTime startTime, OffsetDateTime endTime, ListIncidentsDetectedOptions options,
         Context context) {
         Objects.requireNonNull(detectionConfigurationId, "'detectionConfigurationId' is required.");
-        Objects.requireNonNull(options, "'options' is required.");
-        Objects.requireNonNull(options.getStartTime(), "'options.startTime' is required.");
-        Objects.requireNonNull(options.getEndTime(), "'options.endTime' is required.");
+        Objects.requireNonNull(startTime, "'startTime' is required.");
+        Objects.requireNonNull(endTime, "'endTime' is required.");
 
         DetectionIncidentResultQuery query = new DetectionIncidentResultQuery()
-            .setStartTime(options.getStartTime())
-            .setEndTime(options.getEndTime());
+            .setStartTime(startTime)
+            .setEndTime(endTime);
+        if (options == null) {
+            options = new ListIncidentsDetectedOptions();
+        }
         if (options.getDimensionsToFilter() != null) {
             List<DimensionGroupIdentity> innerDimensionsToFilter = new ArrayList<>();
             for (DimensionKey dimensionToFilter : options.getDimensionsToFilter()) {
@@ -732,7 +745,7 @@ public class MetricsAdvisorAsyncClient {
 
     private Mono<PagedResponse<AnomalyIncident>> listIncidentsForDetectionConfigNextPageAsync(
         String nextPageLink,
-        Context context) {
+        OffsetDateTime startTime, OffsetDateTime endTime, Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
         }
@@ -779,10 +792,12 @@ public class MetricsAdvisorAsyncClient {
     PagedFlux<IncidentRootCause> listIncidentRootCauses(
         String detectionConfigurationId,
         String incidentId, Context context) {
-        AnomalyIncident anomalyIncident = new AnomalyIncident();
-        IncidentHelper.setId(anomalyIncident, incidentId);
-        IncidentHelper.setDetectionConfigurationId(anomalyIncident, detectionConfigurationId);
         try {
+            Objects.requireNonNull(detectionConfigurationId, "'detectionConfigurationId' is required.");
+            Objects.requireNonNull(incidentId, "'incidentId' is required.");
+            AnomalyIncident anomalyIncident = new AnomalyIncident();
+            IncidentHelper.setId(anomalyIncident, incidentId);
+            IncidentHelper.setDetectionConfigurationId(anomalyIncident, detectionConfigurationId);
             return new PagedFlux<>(() -> listIncidentRootCausesInternal(anomalyIncident, context), null);
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
@@ -841,32 +856,38 @@ public class MetricsAdvisorAsyncClient {
      * Fetch the values of a dimension that have anomalies.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listDimensionValuesWithAnomalies#String-String-ListDimensionValuesWithAnomaliesOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listDimensionValuesWithAnomalies#String-String-OffsetDateTime-OffsetDateTime-ListDimensionValuesWithAnomaliesOptions}
      *
      * @param detectionConfigurationId Identifies the configuration used to detect the anomalies.
      * @param dimensionName The dimension name to retrieve the values for.
+     * @param startTime The start time of the time range within which the anomalies were identified.
+     * @param endTime The end time of the time range within which the anomalies were identified.
      * @param options The additional parameters.
      * @return The dimension values with anomalies.
      * @throws IllegalArgumentException thrown if {@code detectionConfigurationId} does not conform
      *     to the UUID format specification.
      * @throws NullPointerException thrown if the {@code detectionConfigurationId} or {@code dimensionName}
-     *     or {@code options} or {@code options.startTime} or {@code options.endTime} is null.
+     *     or {@code options} or {@code startTime} or {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> listDimensionValuesWithAnomalies(
         String detectionConfigurationId,
         String dimensionName,
-        ListDimensionValuesWithAnomaliesOptions options) {
+        OffsetDateTime startTime, OffsetDateTime endTime, ListDimensionValuesWithAnomaliesOptions options) {
         try {
             return new PagedFlux<>(() ->
                 withContext(context ->
                     listDimensionValuesWithAnomaliesSinglePageAsync(detectionConfigurationId,
                         dimensionName,
+                        startTime,
+                        endTime,
                         options,
                         context)),
                 continuationToken ->
                     withContext(context -> listDimensionValuesWithAnomaliesNextPageAsync(continuationToken,
                         dimensionName,
+                        startTime,
+                        endTime,
                         options,
                         context)));
         } catch (RuntimeException ex) {
@@ -877,16 +898,20 @@ public class MetricsAdvisorAsyncClient {
     PagedFlux<String> listDimensionValuesWithAnomalies(
         String detectionConfigurationId,
         String dimensionName,
-        ListDimensionValuesWithAnomaliesOptions options,
+        OffsetDateTime startTime, OffsetDateTime endTime, ListDimensionValuesWithAnomaliesOptions options,
         Context context) {
         return new PagedFlux<>(() ->
             listDimensionValuesWithAnomaliesSinglePageAsync(detectionConfigurationId,
                 dimensionName,
+                startTime,
+                endTime,
                 options,
                 context),
             continuationToken ->
                 listDimensionValuesWithAnomaliesNextPageAsync(continuationToken,
                     dimensionName,
+                    startTime,
+                    endTime,
                     options,
                     context));
     }
@@ -894,18 +919,20 @@ public class MetricsAdvisorAsyncClient {
     private Mono<PagedResponse<String>> listDimensionValuesWithAnomaliesSinglePageAsync(
         String detectionConfigurationId,
         String dimensionName,
-        ListDimensionValuesWithAnomaliesOptions options,
+        OffsetDateTime startTime, OffsetDateTime endTime, ListDimensionValuesWithAnomaliesOptions options,
         Context context) {
         Objects.requireNonNull(detectionConfigurationId, "'detectionConfigurationId' is required.");
         Objects.requireNonNull(dimensionName, "'dimensionName' is required.");
-        Objects.requireNonNull(options, "'options' is required.");
-        Objects.requireNonNull(options.getStartTime(), "'options.startTime' is required.");
-        Objects.requireNonNull(options.getEndTime(), "'options.endTime' is required.");
+        Objects.requireNonNull(startTime, "'startTime' is required.");
+        Objects.requireNonNull(endTime, "'endTime' is required.");
 
         AnomalyDimensionQuery query = new AnomalyDimensionQuery();
         query.setDimensionName(dimensionName);
-        query.setStartTime(options.getStartTime());
-        query.setEndTime(options.getEndTime());
+        query.setStartTime(startTime);
+        query.setEndTime(endTime);
+        if (options == null) {
+            options = new ListDimensionValuesWithAnomaliesOptions();
+        }
         if (options.getDimensionToFilter() != null) {
             query.setDimensionFilter(new DimensionGroupIdentity()
                 .setDimension(options.getDimensionToFilter().asMap()));
@@ -926,7 +953,7 @@ public class MetricsAdvisorAsyncClient {
     private Mono<PagedResponse<String>> listDimensionValuesWithAnomaliesNextPageAsync(
         String nextPageLink,
         String dimensionName,
-        ListDimensionValuesWithAnomaliesOptions options,
+        OffsetDateTime startTime, OffsetDateTime endTime, ListDimensionValuesWithAnomaliesOptions options,
         Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
@@ -934,8 +961,8 @@ public class MetricsAdvisorAsyncClient {
 
         AnomalyDimensionQuery query = new AnomalyDimensionQuery();
         query.setDimensionName(dimensionName);
-        query.setStartTime(options.getStartTime());
-        query.setEndTime(options.getEndTime());
+        query.setStartTime(startTime);
+        query.setEndTime(endTime);
         if (options.getDimensionToFilter() != null) {
             query.setDimensionFilter(new DimensionGroupIdentity()
                 .setDimension(options.getDimensionToFilter().asMap()));
@@ -955,26 +982,29 @@ public class MetricsAdvisorAsyncClient {
      * Fetch the alerts triggered by an anomaly alert configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAlerts#String-ListAlertOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAlerts#String-OffsetDateTime-OffsetDateTime-ListAlertOptions}
      *
      * @param alertConfigurationId The anomaly alert configuration id.
+     * @param startTime The start time of the time range within which the alerts were triggered.
+     * @param endTime The end time of the time range within which the alerts were triggered.
      * @param options The additional parameters.
      * @return The alerts.
      * @throws IllegalArgumentException thrown if {@code alertConfigurationId} does not conform
      *     to the UUID format specification.
-     * @throws NullPointerException thrown if the {@code alertConfigurationId} or {@code options}
-     *     or {@code options.startTime} or {@code options.endTime} is null.
+     * @throws NullPointerException thrown if the {@code alertConfigurationId}
+     *     or {@code startTime} or {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AnomalyAlert> listAlerts(
-        String alertConfigurationId,
-        ListAlertOptions options) {
+        String alertConfigurationId, OffsetDateTime startTime, OffsetDateTime endTime, ListAlertOptions options) {
         try {
             return new PagedFlux<>(() ->
                 withContext(context ->
-                    listAlertsSinglePageAsync(alertConfigurationId, options, context)),
+                    listAlertsSinglePageAsync(alertConfigurationId, startTime, endTime,
+                        options, context)),
                 continuationToken ->
                     withContext(context -> listAlertsNextPageAsync(continuationToken,
+                        startTime, endTime,
                         options,
                         context)));
         } catch (RuntimeException ex) {
@@ -984,27 +1014,29 @@ public class MetricsAdvisorAsyncClient {
 
     PagedFlux<AnomalyAlert> listAlerts(
         String alertConfigurationId,
-        ListAlertOptions options, Context context) {
+        OffsetDateTime startTime, OffsetDateTime endTime, ListAlertOptions options, Context context) {
         return new PagedFlux<>(() ->
-            listAlertsSinglePageAsync(alertConfigurationId, options, context),
+            listAlertsSinglePageAsync(alertConfigurationId, startTime, endTime, options, context),
             continuationToken ->
                 listAlertsNextPageAsync(continuationToken,
-                    options,
+                    startTime, endTime, options,
                     context));
     }
 
     private Mono<PagedResponse<AnomalyAlert>> listAlertsSinglePageAsync(
         String alertConfigurationId,
-        ListAlertOptions options,
+        OffsetDateTime startTime, OffsetDateTime endTime, ListAlertOptions options,
         Context context) {
         Objects.requireNonNull(alertConfigurationId, "'alertConfigurationId' is required.");
-        Objects.requireNonNull(options, "'options' is required.");
-        Objects.requireNonNull(options.getStartTime(), "'options.startTime' is required.");
-        Objects.requireNonNull(options.getEndTime(), "'options.endTime' is required.");
+        Objects.requireNonNull(startTime, "'startTime' is required.");
+        Objects.requireNonNull(endTime, "'endTime' is required.");
 
+        if (options == null) {
+            options = new ListAlertOptions();
+        }
         AlertingResultQuery query = new AlertingResultQuery();
-        query.setStartTime(options.getStartTime());
-        query.setEndTime(options.getEndTime());
+        query.setStartTime(startTime);
+        query.setEndTime(endTime);
         query.setTimeMode(options.getTimeMode());
 
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
@@ -1021,15 +1053,15 @@ public class MetricsAdvisorAsyncClient {
 
     private Mono<PagedResponse<AnomalyAlert>> listAlertsNextPageAsync(
         String nextPageLink,
-        ListAlertOptions options,
+        OffsetDateTime startTime, OffsetDateTime endTime, ListAlertOptions options,
         Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
         }
 
         AlertingResultQuery query = new AlertingResultQuery();
-        query.setStartTime(options.getStartTime());
-        query.setEndTime(options.getEndTime());
+        query.setStartTime(startTime);
+        query.setEndTime(endTime);
         query.setTimeMode(options.getTimeMode());
 
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);

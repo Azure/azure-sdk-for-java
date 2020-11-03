@@ -8,6 +8,7 @@ import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.TestBase;
+import com.azure.core.util.Context;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -38,7 +39,8 @@ public final class AlertTest extends AlertTestBase {
         MetricsAdvisorClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
 
         PagedIterable<AnomalyAlert> alertsIterable
-            = client.listAlerts(ListAlertsInput.INSTANCE.alertConfigurationId, ListAlertsInput.INSTANCE.options);
+            = client.listAlerts(ListAlertsInput.INSTANCE.alertConfigurationId, ListAlertsInput.INSTANCE.startTime,
+            ListAlertsInput.INSTANCE.endTime, ListAlertsInput.INSTANCE.options, Context.NONE);
 
         int[] cnt = new int[1];
         for (AnomalyAlert alert : alertsIterable) {

@@ -40,6 +40,8 @@ public final class ValuesOfDimensionWithAnomaliesAsyncTest extends ValuesOfDimen
         PagedFlux<String> dimensionValuesFlux = client.listDimensionValuesWithAnomalies(
             ListValuesOfDimensionWithAnomaliesInput.INSTANCE.detectionConfigurationId,
             ListValuesOfDimensionWithAnomaliesInput.INSTANCE.dimensionName,
+            ListValuesOfDimensionWithAnomaliesInput.INSTANCE.startTime,
+            ListValuesOfDimensionWithAnomaliesInput.INSTANCE.endTime,
             ListValuesOfDimensionWithAnomaliesInput.INSTANCE.options);
 
         Assertions.assertNotNull(dimensionValuesFlux);

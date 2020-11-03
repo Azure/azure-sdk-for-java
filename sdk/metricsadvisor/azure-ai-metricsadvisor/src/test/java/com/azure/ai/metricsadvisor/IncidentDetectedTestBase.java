@@ -23,7 +23,7 @@ public abstract class IncidentDetectedTestBase extends MetricsAdvisorClientTestB
         static final ListIncidentsDetectedInput INSTANCE = new ListIncidentsDetectedInput();
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-10-20T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-10-21T00:00:00Z");
-        final ListIncidentsDetectedOptions options = new ListIncidentsDetectedOptions(startTime, endTime)
+        final ListIncidentsDetectedOptions options = new ListIncidentsDetectedOptions()
             .setTop(1000);
         final String detectionConfigurationId = DETECTION_CONFIGURATION_ID;
     }

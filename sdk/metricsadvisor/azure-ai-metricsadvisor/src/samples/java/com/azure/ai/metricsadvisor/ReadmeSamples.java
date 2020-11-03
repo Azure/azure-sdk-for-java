@@ -24,7 +24,6 @@ import com.azure.ai.metricsadvisor.models.DetectionConditionsOperator;
 import com.azure.ai.metricsadvisor.models.EmailNotificationHook;
 import com.azure.ai.metricsadvisor.models.HardThresholdCondition;
 import com.azure.ai.metricsadvisor.models.NotificationHook;
-import com.azure.ai.metricsadvisor.models.ListAlertOptions;
 import com.azure.ai.metricsadvisor.models.ListDataFeedIngestionOptions;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConditions;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConfiguration;
@@ -37,7 +36,6 @@ import com.azure.ai.metricsadvisor.models.SQLServerDataFeedSource;
 import com.azure.ai.metricsadvisor.models.SeverityCondition;
 import com.azure.ai.metricsadvisor.models.SmartDetectionCondition;
 import com.azure.ai.metricsadvisor.models.SuppressCondition;
-import com.azure.ai.metricsadvisor.models.AlertQueryTimeMode;
 import com.azure.core.exception.HttpResponseException;
 
 import java.time.OffsetDateTime;
@@ -229,11 +227,11 @@ public class ReadmeSamples {
      */
     public void queryAlertsForDetection() {
         String alertConfigurationId = "9ol48er30-6e6e-4391-b78f-b00dfee1e6f5";
+        final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
+        final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
         metricsAdvisorClient.listAlerts(
             alertConfigurationId,
-            new ListAlertOptions(OffsetDateTime.parse("2020-01-01T00:00:00Z"),
-                OffsetDateTime.now(),
-                AlertQueryTimeMode.ANOMALY_TIME))
+                startTime, endTime)
             .forEach(alert -> {
                 System.out.printf("AnomalyAlert Id: %s%n", alert.getId());
                 System.out.printf("AnomalyAlert created on: %s%n", alert.getCreatedTime());

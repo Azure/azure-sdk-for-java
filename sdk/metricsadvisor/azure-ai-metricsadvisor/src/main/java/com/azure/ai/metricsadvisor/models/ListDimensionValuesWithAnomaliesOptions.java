@@ -3,47 +3,13 @@
 
 package com.azure.ai.metricsadvisor.models;
 
-import java.time.OffsetDateTime;
-
 /**
  * Describes the additional parameters for the API to list values of a dimension that have anomalies.
  */
 public final class ListDimensionValuesWithAnomaliesOptions {
-    private final OffsetDateTime startTime;
-    private final OffsetDateTime endTime;
     private Integer top;
     private Integer skip;
     private DimensionKey dimensionToFilter;
-
-    /**
-     * Creates a new instance of ListDimensionValuesWithAnomaliesOptions.
-     *
-     * @param startTime The start time of the time range within which the anomalies were identified.
-     * @param endTime The end time of the time range within which the anomalies were identified.
-     */
-    public ListDimensionValuesWithAnomaliesOptions(OffsetDateTime startTime,
-                                                     OffsetDateTime endTime) {
-        this.startTime = startTime;
-        this.endTime = endTime;
-    }
-
-    /**
-     * Gets the start time of the time range within which the anomalies were identified.
-     *
-     * @return The start time.
-     */
-    public OffsetDateTime getStartTime() {
-        return this.startTime;
-    }
-
-    /**
-     * Gets the end time of the time range within which the anomalies were identified.
-     *
-     * @return The end time.
-     */
-    public OffsetDateTime getEndTime() {
-        return this.endTime;
-    }
 
     /**
      * Gets limit indicating the number of items that will be included in a service returned page.

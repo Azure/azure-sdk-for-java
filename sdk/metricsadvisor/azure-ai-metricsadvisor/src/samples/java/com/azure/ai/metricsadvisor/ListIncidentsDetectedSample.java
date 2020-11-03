@@ -7,6 +7,7 @@ import com.azure.ai.metricsadvisor.models.AnomalyIncident;
 import com.azure.ai.metricsadvisor.models.ListIncidentsDetectedOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
 
 import java.time.OffsetDateTime;
 
@@ -24,11 +25,12 @@ public class ListIncidentsDetectedSample {
         final String detectionConfigurationId = "c0f2539f-b804-4ab9-a70f-0da0c89c76d8";
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T12:00:00Z");
-        final ListIncidentsDetectedOptions options = new ListIncidentsDetectedOptions(startTime, endTime)
+        final ListIncidentsDetectedOptions options = new ListIncidentsDetectedOptions()
             .setTop(1000);
 
         PagedIterable<AnomalyIncident> incidentsIterable
-            = advisorClient.listIncidentsForDetectionConfig(detectionConfigurationId, options);
+            = advisorClient.listIncidentsForDetectionConfig(detectionConfigurationId, startTime, endTime, options,
+            Context.NONE);
 
         for (AnomalyIncident anomalyIncident : incidentsIterable) {
             System.out.printf("Data Feed Metric Id: %s%n", anomalyIncident.getMetricId());

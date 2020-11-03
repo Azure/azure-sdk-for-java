@@ -28,12 +28,12 @@ public class ListsAnomaliesForDetectionConfigSample {
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T12:00:00Z");
         final ListAnomaliesDetectedFilter filter = new ListAnomaliesDetectedFilter()
             .setSeverityRange(AnomalySeverity.LOW, AnomalySeverity.MEDIUM);
-        final ListAnomaliesDetectedOptions options = new ListAnomaliesDetectedOptions(startTime, endTime)
+        final ListAnomaliesDetectedOptions options = new ListAnomaliesDetectedOptions()
             .setTop(10)
             .setFilter(filter);
         PagedIterable<DataPointAnomaly> anomaliesIterable
             = advisorClient.listAnomaliesForDetectionConfig(detectionConfigurationId,
-            options);
+                startTime, endTime);
 
         for (DataPointAnomaly dataPointAnomaly : anomaliesIterable) {
             System.out.printf("DataPoint Anomaly Severity: %s%n", dataPointAnomaly.getSeverity());

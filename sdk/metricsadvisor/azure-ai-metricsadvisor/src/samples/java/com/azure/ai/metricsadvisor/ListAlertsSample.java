@@ -34,10 +34,11 @@ public class ListAlertsSample {
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
         //
-        final ListAlertOptions options = new ListAlertOptions(startTime, endTime, timeMode)
+        final ListAlertOptions options = new ListAlertOptions()
+            .setAlertQueryTimeMode(timeMode)
             .setTop(10);
 
-        PagedIterable<AnomalyAlert> alertsIterable = advisorClient.listAlerts(alertConfigurationId, options);
+        PagedIterable<AnomalyAlert> alertsIterable = advisorClient.listAlerts(alertConfigurationId, startTime, endTime);
         for (AnomalyAlert anomalyAlert : alertsIterable) {
             System.out.printf("Anomaly Alert Id: %s%n", anomalyAlert.getId());
             System.out.printf("Created Time: %s%n", anomalyAlert.getCreatedTime());

@@ -32,10 +32,11 @@ public class ListAlertsAsyncSample {
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
         //
-        final ListAlertOptions options = new ListAlertOptions(startTime, endTime, timeMode)
+        final ListAlertOptions options = new ListAlertOptions()
+            .setAlertQueryTimeMode(timeMode)
             .setTop(10);
 
-        advisorAsyncClient.listAlerts(alertConfigurationId, options)
+        advisorAsyncClient.listAlerts(alertConfigurationId, startTime, endTime, options)
             .subscribe(alert -> {
                 System.out.printf("Anomaly Alert Id: %s%n", alert.getId());
                 System.out.printf("Created Time: %s%n", alert.getCreatedTime());

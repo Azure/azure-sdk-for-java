@@ -28,7 +28,7 @@ public abstract class ValuesOfDimensionWithAnomaliesTestBase extends MetricsAdvi
         final OffsetDateTime startTime = TIME_SERIES_START_TIME;
         final OffsetDateTime endTime = TIME_SERIES_END_TIME;
         final ListDimensionValuesWithAnomaliesOptions options
-            = new ListDimensionValuesWithAnomaliesOptions(startTime, endTime)
+            = new ListDimensionValuesWithAnomaliesOptions()
             .setTop(10);
         final String detectionConfigurationId = DETECTION_CONFIGURATION_ID;
         final String dimensionName = DIMENSION_NAME;

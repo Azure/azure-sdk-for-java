@@ -7,6 +7,7 @@ import com.azure.ai.metricsadvisor.models.AnomalyIncident;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -23,7 +24,8 @@ public class AnomalyIncidentDetectedTest extends IncidentDetectedTestBase {
         PagedIterable<AnomalyIncident> incidentsIterable
             = client.listIncidentsForDetectionConfig(
                 ListIncidentsDetectedInput.INSTANCE.detectionConfigurationId,
-                ListIncidentsDetectedInput.INSTANCE.options);
+            ListIncidentsDetectedInput.INSTANCE.startTime, ListIncidentsDetectedInput.INSTANCE.endTime,
+            ListIncidentsDetectedInput.INSTANCE.options, Context.NONE);
 
         for (AnomalyIncident anomalyIncident : incidentsIterable) {
             assertListIncidentsDetectedOutput(anomalyIncident);

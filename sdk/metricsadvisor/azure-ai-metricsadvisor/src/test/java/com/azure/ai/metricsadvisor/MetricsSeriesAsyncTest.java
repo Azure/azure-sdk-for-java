@@ -139,7 +139,7 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
         List<EnrichmentStatus> enrichmentStatuses = new ArrayList<>();
         StepVerifier.create(
             client.listMetricEnrichmentStatus(ListEnrichmentStatusInput.INSTANCE.metricId,
-                ListEnrichmentStatusInput.INSTANCE.options))
+                TIME_SERIES_START_TIME, TIME_SERIES_END_TIME, ListEnrichmentStatusInput.INSTANCE.options))
             .thenConsumeWhile(enrichmentStatuses::add)
             .verifyComplete();
 

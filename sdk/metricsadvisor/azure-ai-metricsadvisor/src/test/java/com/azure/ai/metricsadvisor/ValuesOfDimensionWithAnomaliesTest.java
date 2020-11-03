@@ -6,6 +6,7 @@ package com.azure.ai.metricsadvisor;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -23,7 +24,9 @@ public final class ValuesOfDimensionWithAnomaliesTest extends ValuesOfDimensionW
         PagedIterable<String> dimensionValuesIterable = client.listDimensionValuesWithAnomalies(
             ListValuesOfDimensionWithAnomaliesInput.INSTANCE.detectionConfigurationId,
             ListValuesOfDimensionWithAnomaliesInput.INSTANCE.dimensionName,
-            ListValuesOfDimensionWithAnomaliesInput.INSTANCE.options);
+            ListValuesOfDimensionWithAnomaliesInput.INSTANCE.startTime,
+            ListValuesOfDimensionWithAnomaliesInput.INSTANCE.endTime,
+            ListValuesOfDimensionWithAnomaliesInput.INSTANCE.options, Context.NONE);
 
         int[] cnt = new int[1];
         dimensionValuesIterable.forEach(value -> {

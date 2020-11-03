@@ -26,11 +26,11 @@ public class ListsAnomaliesForDetectionConfigAsyncSample {
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T12:00:00Z");
         final ListAnomaliesDetectedFilter filter = new ListAnomaliesDetectedFilter()
             .setSeverityRange(AnomalySeverity.LOW, AnomalySeverity.MEDIUM);
-        final ListAnomaliesDetectedOptions options = new ListAnomaliesDetectedOptions(startTime, endTime)
+        final ListAnomaliesDetectedOptions options = new ListAnomaliesDetectedOptions()
             .setTop(10)
             .setFilter(filter);
         advisorAsyncClient.listAnomaliesForDetectionConfig(detectionConfigurationId,
-            options)
+                startTime, endTime, options)
             .doOnNext(anomaly -> {
                 System.out.printf("DataPoint Anomaly Severity: %s%n", anomaly.getSeverity());
                 System.out.printf("Series Key: %s%n", anomaly.getSeriesKey().asMap().entrySet());
