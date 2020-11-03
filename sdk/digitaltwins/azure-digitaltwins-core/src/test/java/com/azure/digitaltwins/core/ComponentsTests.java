@@ -142,11 +142,8 @@ public class ComponentsTests extends ComponentsTestBase {
                     Context.NONE),
                 HTTP_PRECON_FAILED
             );
-        }
-        // clean up
-        finally {
-            try
-            {
+        } finally {
+            try {
                 if (roomWithWifiTwinId != null)
                 {
                     client.deleteDigitalTwin(roomWithWifiTwinId);
@@ -159,9 +156,7 @@ public class ComponentsTests extends ComponentsTestBase {
                 {
                     client.deleteModel(wifiModelId);
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new AssertionFailedError("Test celanup failed", ex);
             }
         }
@@ -220,9 +215,7 @@ public class ComponentsTests extends ComponentsTestBase {
                     throw ex;
                 }
             }
-        }
-        // clean up
-        finally {
+        } finally {
             try
             {
                 if (roomWithWifiTwinId != null)

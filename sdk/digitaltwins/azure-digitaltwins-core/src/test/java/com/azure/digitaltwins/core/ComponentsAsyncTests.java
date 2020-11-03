@@ -69,8 +69,7 @@ public class ComponentsAsyncTests extends ComponentsTestBase {
                     logger.info("Updated the component successfully");
                 })
                 .verifyComplete();
-        }
-        finally {
+        } finally {
             try
             {
                 if (roomWithWifiTwinId != null)
@@ -143,8 +142,7 @@ public class ComponentsAsyncTests extends ComponentsTestBase {
                     TestAssetsHelper.getWifiComponentSecondUpdatePayload(),
                     new UpdateComponentOptions().setIfMatch(etagBeforeUpdate.get())))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_PRECON_FAILED));
-        }
-        finally {
+        } finally {
             try
             {
                 if (roomWithWifiTwinId != null)
@@ -191,18 +189,25 @@ public class ComponentsAsyncTests extends ComponentsTestBase {
                 .assertNext(createResponseList -> logger.info("Created models successfully"))
                 .verifyComplete();
 
-            StepVerifier.create(asyncClient.createOrReplaceDigitalTwinWithResponse(
-                roomWithWifiTwinId,
-                deserializeJsonString(roomWithWifiTwin, BasicDigitalTwin.class),
-                BasicDigitalTwin.class,
-                null))
+            StepVerifier
+                .create(asyncClient.createOrReplaceDigitalTwinWithResponse(
+                    roomWithWifiTwinId,
+                    deserializeJsonString(roomWithWifiTwin, BasicDigitalTwin.class),
+                    BasicDigitalTwin.class,
+                    null))
                 .assertNext(createdTwinResponse -> {
                     logger.info("Updated the component successfully");
                 })
                 .verifyComplete();
 
             AtomicReference<String> upToDateETag = new AtomicReference<>();
-            StepVerifier.create(asyncClient.updateComponentWithResponse(roomWithWifiTwinId, wifiComponentName, TestAssetsHelper.getWifiComponentUpdatePayload(), null))
+            StepVerifier
+                .create(
+                    asyncClient.updateComponentWithResponse(
+                        roomWithWifiTwinId,
+                        wifiComponentName,
+                        TestAssetsHelper.getWifiComponentUpdatePayload(),
+                        null))
                 .assertNext(updateResponse -> {
                     upToDateETag.set(updateResponse.getDeserializedHeaders().getETag());
                     logger.info("Updated the component successfully");
@@ -218,8 +223,7 @@ public class ComponentsAsyncTests extends ComponentsTestBase {
                     new UpdateComponentOptions().setIfMatch(upToDateETag.get())))
                 .assertNext(response -> { /* don't care as long as it is a success status code */ })
                 .verifyComplete();
-        }
-        finally {
+        } finally {
             try
             {
                 if (roomWithWifiTwinId != null)
