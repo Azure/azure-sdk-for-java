@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-/** The FieldValue model. */
+/** Recognized field value. */
 @Fluent
 public final class FieldValue {
     /*
