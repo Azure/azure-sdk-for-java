@@ -19,16 +19,8 @@ public final class ServiceBusReceiverException extends AzureException {
      * @param errorSource indicating which api caused the error.
      */
     ServiceBusReceiverException(Throwable throwable, ServiceBusErrorSource errorSource) {
-        super(throwable.getMessage(), throwable.getCause());
+        super(throwable.getMessage(), throwable);
         this.errorSource = errorSource;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Throwable getCause() {
-        return super.getCause();
     }
 
     /**

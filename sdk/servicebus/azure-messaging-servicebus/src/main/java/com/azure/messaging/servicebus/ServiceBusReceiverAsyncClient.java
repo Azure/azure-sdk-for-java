@@ -1038,13 +1038,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 if (receiverOptions.isEnableAutoComplete() && throwable instanceof AmqpException) {
                     switch (dispositionStatus) {
                         case COMPLETED:
-                            return new ServiceBusReceiverException((AmqpException) throwable,
-                                ServiceBusErrorSource.COMPLETE);
+                            return new ServiceBusReceiverException(throwable, ServiceBusErrorSource.COMPLETE);
                         case ABANDONED:
-                            return new ServiceBusReceiverException((AmqpException) throwable,
-                                ServiceBusErrorSource.ABANDONED);
+                            return new ServiceBusReceiverException(throwable, ServiceBusErrorSource.ABANDONED);
                         default:
-                            // Do nothing
+                            return new ServiceBusReceiverException(throwable, ServiceBusErrorSource.UNKNOWN);
                     }
                 }
                 return throwable;
@@ -1192,7 +1190,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     private Throwable mapError(Throwable throwable, ServiceBusErrorSource errorSource) {
         // If it is already `ServiceBusReceiverException`, we can just throw it.
-        if (!(throwable instanceof AmqpException) && !(throwable instanceof ServiceBusReceiverException)) {
+        if (!(throwable instanceof ServiceBusReceiverException)) {
             return new ServiceBusReceiverException(throwable, errorSource);
         }
         return throwable;
