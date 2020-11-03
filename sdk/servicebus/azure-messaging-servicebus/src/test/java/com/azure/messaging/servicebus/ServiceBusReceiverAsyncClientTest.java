@@ -565,8 +565,8 @@ class ServiceBusReceiverAsyncClientTest {
                 .then(() -> messages.forEach(m -> messageSink.next(m)))
                 .expectNextCount(messagesToReceive)
                 .verifyErrorSatisfies(throwable -> {
-                    Assertions.assertTrue(throwable instanceof ServiceBusReceiverException);
-                    final ServiceBusErrorSource actual = ((ServiceBusReceiverException) throwable).getErrorSource();
+                    Assertions.assertTrue(throwable.getCause() instanceof ServiceBusReceiverException);
+                    final ServiceBusErrorSource actual = ((ServiceBusReceiverException) throwable.getCause()).getErrorSource();
                     Assertions.assertEquals(ServiceBusErrorSource.COMPLETE, actual);
                 });
         } finally {
