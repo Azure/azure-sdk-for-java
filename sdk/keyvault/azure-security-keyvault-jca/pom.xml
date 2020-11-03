@@ -123,14 +123,6 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>com.github.spotbugs</groupId>
-                <artifactId>spotbugs-maven-plugin</artifactId>
-                <version>3.1.12.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.revapi</groupId>
                 <artifactId>revapi-maven-plugin</artifactId>
                 <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
@@ -148,12 +140,12 @@
             <version>5.0.3</version> <!-- {x-version-update;org.apache.httpcomponents.client5:httpclient5;external_dependency} -->
             <optional>true</optional>
         </dependency>
+        <!-- Conscrypt -->
         <dependency>
             <groupId>org.conscrypt</groupId>
             <artifactId>conscrypt-openjdk-uber</artifactId>
-            <scope>compile</scope>
+            <scope>provided</scope>
             <version>2.2.1</version> <!-- {x-version-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
-            <optional>true</optional>
         </dependency>
         <!-- Jackson Databind -->
         <dependency>

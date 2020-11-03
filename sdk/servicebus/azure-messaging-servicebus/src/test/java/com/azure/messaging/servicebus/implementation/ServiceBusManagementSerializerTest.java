@@ -88,12 +88,12 @@ class ServiceBusManagementSerializerTest {
             .setDuplicateDetectionHistoryTimeWindow(null)
             .setLockDuration(Duration.ofMinutes(10))
             .setMaxSizeInMegabytes(1028)
-            .setRequiresDuplicateDetection(false)
-            .setRequiresSession(true)
+            .setDuplicateDetectionRequired(false)
+            .setSessionRequired(true)
             .setDeadLetteringOnMessageExpiration(false)
             .setMaxDeliveryCount(5)
-            .setEnableBatchedOperations(true)
-            .setEnablePartitioning(false);
+            .setBatchedOperationsEnabled(true)
+            .setPartitioningEnabled(false);
 
         expected.getAuthorizationRules().add(rule);
 
@@ -124,15 +124,15 @@ class ServiceBusManagementSerializerTest {
         final CreateQueueOptions expected = new CreateQueueOptions()
             .setLockDuration(Duration.ofMinutes(5))
             .setMaxSizeInMegabytes(1024)
-            .setRequiresDuplicateDetection(true)
-            .setRequiresSession(true)
+            .setDuplicateDetectionRequired(true)
+            .setSessionRequired(true)
             .setDefaultMessageTimeToLive(Duration.parse("PT3H20M10S"))
             .setDeadLetteringOnMessageExpiration(false)
             .setDuplicateDetectionHistoryTimeWindow(Duration.ofMinutes(10))
             .setMaxDeliveryCount(10)
-            .setEnableBatchedOperations(true)
+            .setBatchedOperationsEnabled(true)
             .setAutoDeleteOnIdle(Duration.ofHours(5))
-            .setEnablePartitioning(true);
+            .setPartitioningEnabled(true);
 
         // Act
         final QueueDescriptionEntry entry = serializer.deserialize(contents, QueueDescriptionEntry.class);
@@ -204,15 +204,15 @@ class ServiceBusManagementSerializerTest {
         final CreateQueueOptions options = new CreateQueueOptions()
             .setLockDuration(Duration.ofMinutes(10))
             .setMaxSizeInMegabytes(102)
-            .setRequiresDuplicateDetection(true)
-            .setRequiresSession(true)
+            .setDuplicateDetectionRequired(true)
+            .setSessionRequired(true)
             .setDefaultMessageTimeToLive(Duration.ofSeconds(10))
             .setDeadLetteringOnMessageExpiration(false)
             .setDuplicateDetectionHistoryTimeWindow(Duration.ofMinutes(10))
             .setMaxDeliveryCount(10)
-            .setEnableBatchedOperations(true)
+            .setBatchedOperationsEnabled(true)
             .setAutoDeleteOnIdle(Duration.ofSeconds(5))
-            .setEnablePartitioning(true);
+            .setPartitioningEnabled(true);
         final QueueDescription queueProperties = EntityHelper.getQueueDescription(options);
 
         final QueueDescriptionEntry entry1 = new QueueDescriptionEntry()
@@ -368,7 +368,7 @@ class ServiceBusManagementSerializerTest {
             new CreateSubscriptionOptions()
                 .setAutoDeleteOnIdle(Duration.parse("P10675199DT2H48M5.477S"))
                 .setDefaultMessageTimeToLive(Duration.parse("P10675199DT2H48M5.477S"))
-                .setRequiresSession(false)
+                .setSessionRequired(false)
                 .setLockDuration(Duration.ofSeconds(45))
                 .setMaxDeliveryCount(7));
 
@@ -446,12 +446,12 @@ class ServiceBusManagementSerializerTest {
                 .setAutoDeleteOnIdle(Duration.ofDays(1)));
         final SubscriptionDescription subscription2 = EntityHelper.getSubscriptionDescription(
             new CreateSubscriptionOptions()
-                .setRequiresSession(true)
+                .setSessionRequired(true)
                 .setLockDuration(Duration.ofSeconds(15))
                 .setMaxDeliveryCount(5));
         final SubscriptionDescription subscription3 = EntityHelper.getSubscriptionDescription(
             new CreateSubscriptionOptions()
-                .setRequiresSession(true)
+                .setSessionRequired(true)
                 .setLockDuration(Duration.ofSeconds(15))
                 .setMaxDeliveryCount(5));
         final List<SubscriptionDescription> expectedDescriptions = Arrays.asList(
@@ -703,6 +703,56 @@ class ServiceBusManagementSerializerTest {
         }
     }
 
+    @Test
+    void deserializeRuleEntry() throws IOException {
+        // Arrange
+        final String contents = getContents("CreateRuleEntry.xml");
+
+        final RuleDescription description = new RuleDescription()
+            .setName("connies-bar")
+            .setAction(new SqlRuleActionImpl().setSqlExpression("SET Label = 'my-label'"))
+            .setFilter(new TrueFilterImpl().setSqlExpression("1=1"));
+        final RuleDescriptionEntryContent content = new RuleDescriptionEntryContent()
+            .setRuleDescription(description)
+            .setType("application/xml");
+        final RuleDescriptionEntry expected = new RuleDescriptionEntry().setContent(content);
+
+        // Act
+        final RuleDescriptionEntry actual = serializer.deserialize(contents, RuleDescriptionEntry.class);
+
+        // Assert
+        assertRuleEntryEquals(expected, actual);
+    }
+
+    @Test
+    void deserializeRuleEntryResponse() throws IOException {
+        // Arrange
+        final String contents = getContents("CreateRuleEntryResponse.xml");
+
+        final RuleDescription description = new RuleDescription()
+            .setName("connies-bar")
+            .setAction(new SqlRuleActionImpl().setSqlExpression("SET Label = 'my-label'").setCompatibilityLevel("20"))
+            .setFilter(new TrueFilterImpl().setSqlExpression("1=1").setCompatibilityLevel("20"))
+            .setCreatedAt(OffsetDateTime.parse("2020-10-05T23:34:21.5963322Z"));
+        final RuleDescriptionEntryContent content = new RuleDescriptionEntryContent()
+            .setRuleDescription(description)
+            .setType("application/xml");
+        final RuleDescriptionEntry expected = new RuleDescriptionEntry()
+            .setId("https://sb-java.servicebus.windows.net/topic-1/Subscriptions/subscription/Rules/connies-bar?api-version=2017-04")
+            .setPublished(OffsetDateTime.parse("2020-10-05T23:31:21Z"))
+            .setUpdated(OffsetDateTime.parse("2020-10-05T23:30:21Z"))
+            .setLink(new ResponseLink()
+                .setRel("self")
+                .setHref("https://sb-java.servicebus.windows.net/topic-1/Subscriptions/subscription/Rules/connies-bar?api-version=2017-04"))
+            .setContent(content);
+
+        // Act
+        final RuleDescriptionEntry actual = serializer.deserialize(contents, RuleDescriptionEntry.class);
+
+        // Assert
+        assertRuleEntryEquals(expected, actual);
+    }
+
     /**
      * Given a file name, gets the corresponding resource and its contents as a string.
      *
@@ -732,16 +782,16 @@ class ServiceBusManagementSerializerTest {
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
         assertEquals(expected.getLockDuration(), actual.getLockDuration());
         assertEquals(expected.getMaxSizeInMegabytes(), actual.getMaxSizeInMegabytes());
-        assertEquals(expected.requiresDuplicateDetection(), actual.isRequiresDuplicateDetection());
-        assertEquals(expected.requiresSession(), actual.isRequiresSession());
+        assertEquals(expected.isDuplicateDetectionRequired(), actual.isRequiresDuplicateDetection());
+        assertEquals(expected.isSessionRequired(), actual.isRequiresSession());
         assertEquals(expected.getDefaultMessageTimeToLive(), actual.getDefaultMessageTimeToLive());
-        assertEquals(expected.deadLetteringOnMessageExpiration(), actual.isDeadLetteringOnMessageExpiration());
+        assertEquals(expected.isDeadLetteringOnMessageExpiration(), actual.isDeadLetteringOnMessageExpiration());
         assertEquals(expected.getDuplicateDetectionHistoryTimeWindow(), actual.getDuplicateDetectionHistoryTimeWindow());
         assertEquals(expected.getMaxDeliveryCount(), actual.getMaxDeliveryCount());
-        assertEquals(expected.enableBatchedOperations(), actual.isEnableBatchedOperations());
+        assertEquals(expected.isBatchedOperationsEnabled(), actual.isEnableBatchedOperations());
 
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
-        assertEquals(expected.enablePartitioning(), actual.isEnablePartitioning());
+        assertEquals(expected.isPartitioningEnabled(), actual.isEnablePartitioning());
 
         assertEquals(expectedStatus, actual.getStatus());
     }

@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/eventroutes?api-version=2020-10-31",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.0.0 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "10c6450d-5957-48bb-94b9-c6c377f2043a"
+      "x-ms-client-request-id" : "acc7b85d-5b8b-4d8e-9c54-e15cc34b5ed2"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
@@ -12,16 +12,16 @@
       "Content-Length" : "28",
       "StatusCode" : "200",
       "Body" : "{\"value\":[],\"nextLink\":null}",
-      "Date" : "Mon, 26 Oct 2020 18:32:24 GMT",
+      "Date" : "Fri, 30 Oct 2020 16:35:00 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/eventroutes/23fd9a4b-d518-4002-ba1b-042b7ac9fa28?api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/eventroutes/6195f0e6-4d8c-4097-9eba-ab97d61d0b80?api-version=2020-10-31",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.0.0 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "cc6812f1-20cd-48d3-978f-e988b21cfc08"
+      "x-ms-client-request-id" : "43b67393-2f29-402b-ad0d-b2cc8ae188e2"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
@@ -29,10 +29,10 @@
       "Content-Length" : "222",
       "StatusCode" : "404",
       "Body" : "{\"error\":{\"code\":\"EventRouteNotFound\",\"message\":\"There is no route available that matches the provided input. Check for all valid event routes by calling EventRoute_List. See Swagger example (http://aka.ms/RouteSwSmpl).\"}}",
-      "Date" : "Mon, 26 Oct 2020 18:32:25 GMT",
+      "Date" : "Fri, 30 Oct 2020 16:35:00 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "23fd9a4b-d518-4002-ba1b-042b7ac9fa28" ]
+  "variables" : [ "6195f0e6-4d8c-4097-9eba-ab97d61d0b80" ]
 }

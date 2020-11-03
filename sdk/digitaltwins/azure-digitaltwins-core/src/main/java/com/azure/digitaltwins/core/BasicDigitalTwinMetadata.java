@@ -25,7 +25,7 @@ public final class BasicDigitalTwinMetadata {
     private String modelId;
 
     @JsonIgnore
-    private final Map<String, Object> propertyMetadata = new HashMap<>();
+    private final Map<String, DigitalTwinPropertyMetadata> propertyMetadata = new HashMap<>();
 
     /**
      * Creates an instance of digital twin metadata.
@@ -56,7 +56,7 @@ public final class BasicDigitalTwinMetadata {
      * @return The metadata about changes on properties on a component.
      */
     @JsonAnyGetter
-    public Map<String, Object> getPropertyMetadata() {
+    public Map<String, DigitalTwinPropertyMetadata> getPropertyMetadata() {
         return propertyMetadata;
     }
 
@@ -68,7 +68,7 @@ public final class BasicDigitalTwinMetadata {
      * @return The BasicDigitalTwin object itself.
      */
     @JsonAnySetter
-    public BasicDigitalTwinMetadata addPropertyMetadata(String key, Object value) {
+    public BasicDigitalTwinMetadata addPropertyMetadata(String key, DigitalTwinPropertyMetadata value) {
         this.propertyMetadata.put(key, value);
         return this;
     }

@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.experimental.util.BinaryData;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.Mono;
 
@@ -50,16 +51,15 @@ public class SendAndReceiveSessionMessageSample {
             .buildAsyncClient();
 
         // Instantiate a client that will be used to receive messages from the session.
-        ServiceBusReceiverAsyncClient receiver = builder.sessionReceiver()
+        ServiceBusSessionReceiverAsyncClient sessionReceiver = builder.sessionReceiver()
             .receiveMode(ReceiveMode.PEEK_LOCK)
             .queueName(queueName)
-            .sessionId(sessionId)
             .buildAsyncClient();
 
         List<ServiceBusMessage> messages = Arrays.asList(
-            new ServiceBusMessage("Hello".getBytes(UTF_8)).setSessionId(sessionId),
-            new ServiceBusMessage("Bonjour".getBytes(UTF_8)).setSessionId(sessionId),
-            new ServiceBusMessage("Guten tag".getBytes(UTF_8)).setSessionId(sessionId)
+            new ServiceBusMessage(BinaryData.fromBytes("Hello".getBytes(UTF_8))).setSessionId(sessionId),
+            new ServiceBusMessage(BinaryData.fromBytes("Bonjour".getBytes(UTF_8))).setSessionId(sessionId),
+            new ServiceBusMessage(BinaryData.fromBytes("Guten tag".getBytes(UTF_8))).setSessionId(sessionId)
         );
 
         // Create a message batch and send all messages.
@@ -82,21 +82,19 @@ public class SendAndReceiveSessionMessageSample {
             () -> System.out.println("Batch send complete."));
 
         // After sending that message, we receive the messages for that sessionId.
-        receiver.receiveMessages().flatMap(context -> {
-            ServiceBusReceivedMessage message = context.getMessage();
-
+        sessionReceiver.acceptSession(sessionId).flatMapMany(receiver -> receiver.receiveMessages().flatMap(message -> {
             System.out.println("Received Message Id: " + message.getMessageId());
             System.out.println("Received Message Session Id: " + message.getSessionId());
-            System.out.println("Received Message: " + new String(message.getBody()));
+            System.out.println("Received Message: " + message.getBody().toString());
 
             return receiver.complete(message);
-        }).subscribe();
+        })).subscribe();
 
         // subscribe() is not a blocking call. We sleep here so the program does not end before the send is complete.
         TimeUnit.SECONDS.sleep(10);
 
         // Close the sender and receiver.
         sender.close();
-        receiver.close();
+        sessionReceiver.close();
     }
 }
