@@ -28,7 +28,7 @@ public final class ServiceBusReceiverException extends AzureException {
      * {@inheritDoc}
      */
     @Override
-    public Throwable getCause(){
+    public Throwable getCause() {
         return super.getCause();
     }
 
