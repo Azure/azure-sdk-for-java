@@ -1,10 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.data.tables.models;
+package com.azure.data.tables.implementation.models;
 
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Response;
 import com.azure.data.tables.TableAsyncClient;
+import com.azure.data.tables.models.TableEntity;
+import com.azure.data.tables.models.UpdateMode;
 import reactor.core.publisher.Mono;
 
 public interface BatchOperation {
