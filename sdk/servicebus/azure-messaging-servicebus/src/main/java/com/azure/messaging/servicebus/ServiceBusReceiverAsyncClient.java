@@ -570,12 +570,37 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *
      * @return An <b>infinite</b> stream of messages from the Service Bus entity.
      */
-    public Flux<ServiceBusReceivedMessageContext> receiveMessages() {
-        final Flux<ServiceBusReceivedMessageContext> messageFlux = sessionManager != null
-            ? sessionManager.receive()
-            : getOrCreateConsumer().receive().map(ServiceBusReceivedMessageContext::new);
+    public Flux<ServiceBusReceivedMessage> receiveMessages() {
+        return receiveMessagesWithContext()
+            .handle((serviceBusMessageContext, sink) -> {
+                if (serviceBusMessageContext.hasError()) {
+                    sink.error(serviceBusMessageContext.getThrowable());
+                    return;
+                }
+                sink.next(serviceBusMessageContext.getMessage());
+            });
+    }
 
-        final Flux<ServiceBusReceivedMessageContext> withAutoLockRenewal;
+    /**
+     * Receives an <b>infinite</b> stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity.
+     * This Flux continuously receives messages from a Service Bus entity until either:
+     *
+     * <ul>
+     *     <li>The receiver is closed.</li>
+     *     <li>The subscription to the Flux is disposed.</li>
+     *     <li>A terminal signal from a downstream subscriber is propagated upstream (ie. {@link Flux#take(long)} or
+     *     {@link Flux#take(Duration)}).</li>
+     *     <li>An {@link AmqpException} occurs that causes the receive link to stop.</li>
+     * </ul>
+     *
+     * @return An <b>infinite</b> stream of messages from the Service Bus entity.
+     */
+    Flux<ServiceBusMessageContext> receiveMessagesWithContext() {
+        final Flux<ServiceBusMessageContext> messageFlux = sessionManager != null
+            ? sessionManager.receive()
+            : getOrCreateConsumer().receive().map(ServiceBusMessageContext::new);
+
+        final Flux<ServiceBusMessageContext> withAutoLockRenewal;
         if (receiverOptions.isAutoLockRenewEnabled()) {
             withAutoLockRenewal = new FluxAutoLockRenew(messageFlux, receiverOptions.getMaxLockRenewDuration(),
                 renewalContainer, this::renewMessageLock);
@@ -583,7 +608,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             withAutoLockRenewal = messageFlux;
         }
 
-        final Flux<ServiceBusReceivedMessageContext> withAutoComplete;
+        final Flux<ServiceBusMessageContext> withAutoComplete;
         if (receiverOptions.isEnableAutoComplete()) {
             withAutoComplete = new FluxAutoComplete(withAutoLockRenewal, completionLock,
                 context -> context.getMessage() != null ? complete(context.getMessage()) : Mono.empty(),

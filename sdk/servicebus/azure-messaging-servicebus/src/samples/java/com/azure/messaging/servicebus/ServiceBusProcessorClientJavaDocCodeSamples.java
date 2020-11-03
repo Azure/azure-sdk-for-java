@@ -15,7 +15,7 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
      */
     public void createServiceBusProcessorClient() {
         // BEGIN: com.azure.messaging.servicebus.servicebusprocessorclient.instantiation
-        Consumer<ServiceBusProcessorMessageContext> messageProcessor = context -> {
+        Consumer<ServiceBusReceivedMessageContext> messageProcessor = context -> {
             ServiceBusReceivedMessage message = context.getMessage();
             System.out.println("Received message " + message.getBody().toString());
         };
@@ -43,7 +43,7 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
      */
     public void createSessionEnabledServiceBusProcessorClient() {
         // BEGIN: com.azure.messaging.servicebus.servicebusprocessorclient.sessionclientinstantiation
-        Consumer<ServiceBusProcessorMessageContext> messageProcessor = context -> {
+        Consumer<ServiceBusReceivedMessageContext> messageProcessor = context -> {
             ServiceBusReceivedMessage message = context.getMessage();
             System.out.println("Received message " + message.getBody().toString()
                 + " session: " + message.getSessionId());
@@ -74,7 +74,7 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
     public void createAndStartServiceBusProcessorClient() throws InterruptedException {
 
         // BEGIN: com.azure.messaging.servicebus.servicebusprocessorclient.start
-        Consumer<ServiceBusProcessorMessageContext> messageProcessor = context -> {
+        Consumer<ServiceBusReceivedMessageContext> messageProcessor = context -> {
             ServiceBusReceivedMessage message = context.getMessage();
             System.out.println("Received message " + message.getBody().toString());
         };
@@ -105,7 +105,7 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
      */
     public void createAndStartSessionEnabledServiceBusProcessorClient() {
         // BEGIN: com.azure.messaging.servicebus.servicebusprocessorclient.startsession
-        Consumer<ServiceBusProcessorMessageContext> messageProcessor = context -> {
+        Consumer<ServiceBusReceivedMessageContext> messageProcessor = context -> {
             ServiceBusReceivedMessage message = context.getMessage();
             System.out.println("Received message " + message.getBody().toString()
                 + " session: " + message.getSessionId());

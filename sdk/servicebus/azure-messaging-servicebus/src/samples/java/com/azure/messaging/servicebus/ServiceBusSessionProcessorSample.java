@@ -19,7 +19,7 @@ public class ServiceBusSessionProcessorSample {
      */
     public static void main(String[] args) throws InterruptedException {
         // Consumer that processes a single message received from Service Bus
-        Consumer<ServiceBusProcessorMessageContext> messageProcessor = context -> {
+        Consumer<ServiceBusReceivedMessageContext> messageProcessor = context -> {
             ServiceBusReceivedMessage message = context.getMessage();
             System.out.println("Received message " + message.getBody().toString()
                 + " session: " + message.getSessionId());
