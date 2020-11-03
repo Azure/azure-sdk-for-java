@@ -9,7 +9,7 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
-    <module>azure-identity-spring-library</module>
+    <module>azure-identity-spring</module>
     <module>azure-spring-boot</module>
     <module>azure-spring-boot-starter</module>
     <module>azure-spring-boot-starter-active-directory</module>

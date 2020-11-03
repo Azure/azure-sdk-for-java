@@ -67,20 +67,20 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager</artifactId>
-      <version>2.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;current} -->
+      <version>2.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-storage</artifactId>
-      <version>2.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storage;current} -->
+      <version>2.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storage;dependency} -->
     </dependency>
 
     <!-- Identity -->
     <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-identity-spring-library</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-identity-spring-library;current} -->
+      <groupId>com.azure.spring</groupId>
+      <artifactId>azure-identity-spring</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-identity-spring;current} -->
     </dependency>
 
     <!-- test -->
