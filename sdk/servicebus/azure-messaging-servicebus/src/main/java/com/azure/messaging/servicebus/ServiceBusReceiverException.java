@@ -24,9 +24,12 @@ public final class ServiceBusReceiverException extends AmqpException {
         this.errorSource = errorSource;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Throwable getCause(){
-        return getCause();
+        return super.getCause();
     }
 
     /**

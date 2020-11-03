@@ -1191,11 +1191,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * Map the error to {@link ServiceBusReceiverException}
      */
     private Throwable mapError(Throwable throwable, ServiceBusErrorSource errorSource) {
-        if ((throwable instanceof ServiceBusReceiverException) || !(throwable instanceof AmqpException)) {
-            return throwable;
-        } else {
+        // If it is already `ServiceBusReceiverException`, we can just throw it.
+        if ((throwable instanceof AmqpException) && !(throwable instanceof ServiceBusReceiverException)) {
             return new ServiceBusReceiverException((AmqpException) throwable, errorSource);
         }
+        return throwable;
     }
 
     boolean isConnectionClosed() {
