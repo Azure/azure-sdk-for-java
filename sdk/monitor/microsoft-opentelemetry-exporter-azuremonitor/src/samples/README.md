@@ -42,12 +42,12 @@ If you would like to become an active contributor to this project please refer t
 Guidelines][SDK_README_CONTRIBUTING] for more information.
 
 <!-- LINKS -->
-[SDK_README_CONTRIBUTING]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/microsoft-opentelemetry-exporter-azuremonitor/README.md#contributing
-[SDK_README_GETTING_STARTED]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/microsoft-opentelemetry-exporter-azuremonitor/README.md#getting-started
-[SDK_README_TROUBLESHOOTING]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/microsoft-opentelemetry-exporter-azuremonitor/README.md#troubleshooting
-[SDK_README_KEY_CONCEPTS]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/microsoft-opentelemetry-exporter-azuremonitor/README.md#key-concepts
-[SDK_README_DEPENDENCY]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/microsoft-opentelemetry-exporter-azuremonitor/README.md#include-the-package
-[SDK_README_NEXT_STEPS]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/microsoft-opentelemetry-exporter-azuremonitor/README.md#next-steps
-[monitor_exporter]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/microsoft-opentelemetry-exporter-azuremonitor/src/samples/java/com/microsoft/opentelemetry/exporter/azuremonitor/AzureMonitorExporterSample
+[SDK_README_CONTRIBUTING]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor
+[SDK_README_GETTING_STARTED]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor
+[SDK_README_TROUBLESHOOTING]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor
+[SDK_README_KEY_CONCEPTS]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor
+[SDK_README_DEPENDENCY]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor
+[SDK_README_NEXT_STEPS]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor
+[monitor_exporter]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor
 .java
 

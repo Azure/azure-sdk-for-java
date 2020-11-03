@@ -94,8 +94,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 <!-- LINKS -->
 [jdk]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[samples]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/microsoft-opentelemetry-exporter-azuremonitor/src/samples/java/
-[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/microsoft-opentelemetry-exporter-azuremonitor/src
+[samples]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor
+[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor
 [azure_subscription]: https://azure.microsoft.com/free/
 [api_reference_doc]: https://docs.microsoft.com/azure/azure-monitor/overview
 [product_documentation]: https://docs.microsoft.com/azure/azure-monitor/overview
@@ -112,6 +112,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [azure_portal]: https://ms.portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/microsoft.insights%2Fcomponents
 [opentelemetry_io]: https://opentelemetry.io/ 
 [span_data]: https://opentelemetry.lightstep.com/spans
-[sample_readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/microsoft-opentelemetry-exporter-azuremonitor/src/samples/README.md
+[sample_readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%monitor%2Fmicrosoft-opentelemetry-exporter-azuremonitor%2FREADME.png)
