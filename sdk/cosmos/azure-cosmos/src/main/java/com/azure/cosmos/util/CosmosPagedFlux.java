@@ -184,10 +184,10 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             statusCode, containerId, databaseId
             , operationType, resourceType, consistencyLevel, ClientTelemetry.REQUEST_LATENCY_NAME,
             ClientTelemetry.REQUEST_LATENCY_UNIT);
-        if (telemetry.getClientTelemetryInfo().getOperationInfoMap().containsKey(reportPayloadLatency)) {
-            ClientTelemetry.recordValue(telemetry.getClientTelemetryInfo().getOperationInfoMap().get(reportPayloadLatency), latency.toNanos() / 1000);
+        ConcurrentDoubleHistogram latencyHistogram = telemetry.getClientTelemetryInfo().getOperationInfoMap().get(reportPayloadLatency);
+        if (latencyHistogram != null) {
+            ClientTelemetry.recordValue(latencyHistogram, latency.toNanos() / 1000);
         } else {
-            ConcurrentDoubleHistogram latencyHistogram;
             if (statusCode == HttpConstants.StatusCodes.OK) {
                 latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX,
                     ClientTelemetry.REQUEST_LATENCY_SUCCESS_PRECISION);
@@ -205,10 +205,11 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             statusCode, containerId, databaseId
             , operationType, resourceType, consistencyLevel, ClientTelemetry.REQUEST_CHARGE_NAME,
             ClientTelemetry.REQUEST_CHARGE_UNIT);
-        if (telemetry.getClientTelemetryInfo().getOperationInfoMap().containsKey(reportPayloadRequestCharge)) {
-            ClientTelemetry.recordValue(telemetry.getClientTelemetryInfo().getOperationInfoMap().get(reportPayloadRequestCharge), requestCharge);
+        ConcurrentDoubleHistogram requestChargeHistogram = telemetry.getClientTelemetryInfo().getOperationInfoMap().get(reportPayloadRequestCharge);
+        if (requestChargeHistogram != null) {
+            ClientTelemetry.recordValue(requestChargeHistogram, requestCharge);
         } else {
-            ConcurrentDoubleHistogram requestChargeHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_CHARGE_MAX, ClientTelemetry.REQUEST_CHARGE_PRECISION);
+            requestChargeHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_CHARGE_MAX, ClientTelemetry.REQUEST_CHARGE_PRECISION);
             requestChargeHistogram.setAutoResize(true);
             ClientTelemetry.recordValue(requestChargeHistogram, requestCharge);
             telemetry.getClientTelemetryInfo().getOperationInfoMap().put(reportPayloadRequestCharge,

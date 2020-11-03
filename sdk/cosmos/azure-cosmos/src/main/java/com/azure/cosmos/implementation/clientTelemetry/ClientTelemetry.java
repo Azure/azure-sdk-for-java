@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.http.HttpResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.handler.codec.http.HttpMethod;
+import org.HdrHistogram.ConcurrentDoubleHistogram;
 import org.HdrHistogram.DoubleHistogram;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -181,7 +182,7 @@ public class ClientTelemetry {
 
     private void readHistogram() {
         //Filling cpu information
-        DoubleHistogram cpuHistogram = new DoubleHistogram(ClientTelemetry.CPU_MAX,
+        ConcurrentDoubleHistogram cpuHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.CPU_MAX,
             ClientTelemetry.CPU_PRECISION);
         cpuHistogram.setAutoResize(true);
         for(double val : CpuMemoryMonitor.getClientTelemetryCpuLatestList()) {
@@ -191,7 +192,7 @@ public class ClientTelemetry {
         clientTelemetryInfo.getSystemInfoMap().put(cpuReportPayload, cpuHistogram);
 
         //Filling memory information
-        DoubleHistogram memoryHistogram = new DoubleHistogram(ClientTelemetry.MEMORY_MAX,
+        ConcurrentDoubleHistogram memoryHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.MEMORY_MAX,
             ClientTelemetry.MEMORY_PRECISION);
         memoryHistogram.setAutoResize(true);
         for(double val : CpuMemoryMonitor.getClientTelemetryMemoryLatestList()) {
@@ -201,14 +202,14 @@ public class ClientTelemetry {
         clientTelemetryInfo.getSystemInfoMap().put(memoryReportPayload, memoryHistogram);
 
         this.clientTelemetryInfo.setTimeStamp(Instant.now().toString());
-        for (Map.Entry<ReportPayload, DoubleHistogram> entry : this.clientTelemetryInfo.getSystemInfoMap().entrySet()) {
+        for (Map.Entry<ReportPayload, ConcurrentDoubleHistogram> entry : this.clientTelemetryInfo.getSystemInfoMap().entrySet()) {
             fillMetricsInfo(entry.getKey(), entry.getValue());
         }
-        for (Map.Entry<ReportPayload, DoubleHistogram> entry :
+        for (Map.Entry<ReportPayload, ConcurrentDoubleHistogram> entry :
             this.clientTelemetryInfo.getCacheRefreshInfoMap().entrySet()) {
             fillMetricsInfo(entry.getKey(), entry.getValue());
         }
-        for (Map.Entry<ReportPayload, DoubleHistogram> entry : this.clientTelemetryInfo.getOperationInfoMap().entrySet()) {
+        for (Map.Entry<ReportPayload, ConcurrentDoubleHistogram> entry : this.clientTelemetryInfo.getOperationInfoMap().entrySet()) {
             fillMetricsInfo(entry.getKey(), entry.getValue());
         }
     }

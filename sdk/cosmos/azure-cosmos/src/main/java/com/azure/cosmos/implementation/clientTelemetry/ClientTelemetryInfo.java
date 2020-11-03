@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation.clientTelemetry;
 
 import com.azure.cosmos.ConnectionMode;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.HdrHistogram.ConcurrentDoubleHistogram;
 import org.HdrHistogram.DoubleHistogram;
 
 import java.util.Map;
@@ -21,9 +22,9 @@ public class ClientTelemetryInfo {
     private String applicationRegion;
     private String hostEnvInfo;
     private Boolean acceleratedNetworking;
-    private Map<ReportPayload, DoubleHistogram> systemInfoMap;
-    private Map<ReportPayload, DoubleHistogram> cacheRefreshInfoMap;
-    private Map<ReportPayload, DoubleHistogram> operationInfoMap;
+    private Map<ReportPayload, ConcurrentDoubleHistogram> systemInfoMap;
+    private Map<ReportPayload, ConcurrentDoubleHistogram> cacheRefreshInfoMap;
+    private Map<ReportPayload, ConcurrentDoubleHistogram> operationInfoMap;
 
     public ClientTelemetryInfo(String clientId,
                                String processId,
@@ -118,27 +119,27 @@ public class ClientTelemetryInfo {
         this.acceleratedNetworking = acceleratedNetworking;
     }
 
-    public Map<ReportPayload, DoubleHistogram> getSystemInfoMap() {
+    public Map<ReportPayload, ConcurrentDoubleHistogram> getSystemInfoMap() {
         return systemInfoMap;
     }
 
-    public void setSystemInfoMap(Map<ReportPayload, DoubleHistogram> systemInfoMap) {
+    public void setSystemInfoMap(Map<ReportPayload, ConcurrentDoubleHistogram> systemInfoMap) {
         this.systemInfoMap = systemInfoMap;
     }
 
-    public Map<ReportPayload, DoubleHistogram> getCacheRefreshInfoMap() {
+    public Map<ReportPayload, ConcurrentDoubleHistogram> getCacheRefreshInfoMap() {
         return cacheRefreshInfoMap;
     }
 
-    public void setCacheRefreshInfoMap(Map<ReportPayload, DoubleHistogram> cacheRefreshInfoMap) {
+    public void setCacheRefreshInfoMap(Map<ReportPayload, ConcurrentDoubleHistogram> cacheRefreshInfoMap) {
         this.cacheRefreshInfoMap = cacheRefreshInfoMap;
     }
 
-    public Map<ReportPayload, DoubleHistogram> getOperationInfoMap() {
+    public Map<ReportPayload, ConcurrentDoubleHistogram> getOperationInfoMap() {
         return operationInfoMap;
     }
 
-    public void setOperationInfoMap(Map<ReportPayload, DoubleHistogram> operationInfoMap) {
+    public void setOperationInfoMap(Map<ReportPayload, ConcurrentDoubleHistogram> operationInfoMap) {
         this.operationInfoMap = operationInfoMap;
     }
 }

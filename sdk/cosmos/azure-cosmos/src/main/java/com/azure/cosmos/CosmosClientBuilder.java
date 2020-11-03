@@ -580,6 +580,16 @@ public class CosmosClientBuilder {
         return this;
     }
 
+    /**
+     * Sets the flag to enable client telemetry which will periodically collect
+     * database operations aggregation statistics, system information like cpu/memory
+     * and send it to cosmos monitoring service, which will be helpful during debugging.
+     *<p/>
+     * DEFAULT value is false indicating this is opt in feature, by default no telemetry collection.
+     *
+     * @param clientTelemetryEnabled flag to enable client telemetry.
+     * @return current CosmosClientBuilder
+     */
     public CosmosClientBuilder clientTelemetryEnabled(boolean clientTelemetryEnabled) {
         this.clientTelemetryEnabled = clientTelemetryEnabled;
         return this;

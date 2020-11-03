@@ -100,9 +100,11 @@ public class ClientTelemetryTest extends TestSuiteBase {
             assertThat(ex.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
         }
 
-        cosmosContainer.readItem(internalObjectNode.getId(),
-            new PartitionKey(internalObjectNode.getId()),
-            InternalObjectNode.class); //read operation
+        for (int i = 0; i < 10; i++) {
+            cosmosContainer.readItem(internalObjectNode.getId(),
+                new PartitionKey(internalObjectNode.getId()),
+                InternalObjectNode.class);
+        }//read operation 10 times will have one entry in telemetry
 
         cosmosContainer.replaceItem(internalObjectNode, internalObjectNode.getId(),
             new PartitionKey(internalObjectNode.getId()), new CosmosItemRequestOptions()); // replace operation
