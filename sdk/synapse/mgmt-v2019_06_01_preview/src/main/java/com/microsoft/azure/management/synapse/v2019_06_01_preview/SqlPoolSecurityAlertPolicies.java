@@ -29,4 +29,16 @@ public interface SqlPoolSecurityAlertPolicies extends SupportsCreating<SqlPoolSe
      */
     Observable<SqlPoolSecurityAlertPolicy> getAsync(String resourceGroupName, String workspaceName, String sqlPoolName);
 
+    /**
+     * List Sql pool's security alert policies.
+     * Get a list of Sql pool's security alert policies.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param sqlPoolName SQL pool name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SqlPoolSecurityAlertPolicy> listAsync(final String resourceGroupName, final String workspaceName, final String sqlPoolName);
+
 }

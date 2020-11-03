@@ -10,7 +10,7 @@ package com.microsoft.azure.management.synapse.v2019_06_01_preview.implementatio
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.ErrorContractException;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.TransparentDataEncryptionStatus;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
@@ -72,7 +72,7 @@ public class SqlPoolTransparentDataEncryptionsInner {
      * @param workspaceName The name of the workspace
      * @param sqlPoolName SQL pool name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TransparentDataEncryptionInner object if successful.
      */
@@ -155,10 +155,10 @@ public class SqlPoolTransparentDataEncryptionsInner {
             });
     }
 
-    private ServiceResponse<TransparentDataEncryptionInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<TransparentDataEncryptionInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<TransparentDataEncryptionInner> getDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<TransparentDataEncryptionInner, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<TransparentDataEncryptionInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -170,7 +170,7 @@ public class SqlPoolTransparentDataEncryptionsInner {
      * @param workspaceName The name of the workspace
      * @param sqlPoolName SQL pool name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TransparentDataEncryptionInner object if successful.
      */
@@ -265,7 +265,7 @@ public class SqlPoolTransparentDataEncryptionsInner {
      * @param sqlPoolName SQL pool name
      * @param status The status of the database transparent data encryption. Possible values include: 'Enabled', 'Disabled'
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TransparentDataEncryptionInner object if successful.
      */
@@ -353,11 +353,11 @@ public class SqlPoolTransparentDataEncryptionsInner {
             });
     }
 
-    private ServiceResponse<TransparentDataEncryptionInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<TransparentDataEncryptionInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<TransparentDataEncryptionInner> createOrUpdateDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<TransparentDataEncryptionInner, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<TransparentDataEncryptionInner>() { }.getType())
                 .register(201, new TypeToken<TransparentDataEncryptionInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 

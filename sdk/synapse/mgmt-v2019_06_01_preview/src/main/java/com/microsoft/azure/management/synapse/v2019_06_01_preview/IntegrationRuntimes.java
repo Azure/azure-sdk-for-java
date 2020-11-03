@@ -55,6 +55,17 @@ public interface IntegrationRuntimes extends SupportsCreating<IntegrationRuntime
     Completable stopAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName);
 
     /**
+     * Enable interactive query in integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param integrationRuntimeName Integration runtime name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable enableInteractiveQueryAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName);
+
+    /**
      * Get integration runtime.
      * Get an integration runtime.
      *
