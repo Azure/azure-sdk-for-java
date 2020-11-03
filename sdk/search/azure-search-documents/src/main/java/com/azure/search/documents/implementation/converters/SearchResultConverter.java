@@ -35,7 +35,6 @@ public final class SearchResultConverter {
         SearchResultHelper.setJsonSerializer(searchResult, (JsonSerializer) serializer);
 
         SearchDocument additionalProperties = new SearchDocument(obj.getAdditionalProperties());
-<<<<<<< HEAD
         PrivateFieldAccessHelper.set(searchResult, "additionalProperties", additionalProperties);
         return searchResult;
     }
@@ -60,9 +59,6 @@ public final class SearchResultConverter {
         SearchDocument additionalProperties = obj.getDocument(SearchDocument.class);
         PrivateFieldAccessHelper.set(searchResult, "additionalProperties", additionalProperties);
         searchResult.validate();
-=======
-        SearchResultHelper.setAdditionalProperties(searchResult, additionalProperties);
->>>>>>> bfd056a1647f7232e7d7cb82ca2a5ad85b9bb6ec
         return searchResult;
     }
 

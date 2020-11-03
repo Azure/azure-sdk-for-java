@@ -67,11 +67,7 @@ These settings apply only when `--tag=package-2020-06-searchindex` is specified 
 ``` yaml $(tag) == 'package-2020-06-searchindex'
 namespace: com.azure.search.documents
 input-file:
-<<<<<<< HEAD
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/0bc7853cb4d824bb6c310344dcc1b5f77cbe6bdd/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchindex.json
-=======
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/55c3979124d193ab8cd4c5409a3e9f67739ca571/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchindex.json
->>>>>>> bfd056a1647f7232e7d7cb82ca2a5ad85b9bb6ec
 models-subpackage: implementation.models
 custom-types-subpackage: models
 ```
@@ -83,11 +79,7 @@ These settings apply only when `--tag=package-2019-05-searchservice-preview` is 
 ``` yaml $(tag) == 'package-2019-05-searchservice-preview'
 namespace: com.azure.search.documents.indexes
 input-file:
-<<<<<<< HEAD
-- https://github.com/Azure/azure-rest-api-specs/blob/master/specification/search/data-plane/Azure.Search/preview/2019-05-06-preview/searchservice.json
-=======
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/55c3979124d193ab8cd4c5409a3e9f67739ca571/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchservice.json
->>>>>>> bfd056a1647f7232e7d7cb82ca2a5ad85b9bb6ec
 models-subpackage: implementation.models
 custom-types-subpackage: models
 ```

@@ -28,7 +28,6 @@ public final class IndexDocumentsResultConverter {
         return new IndexDocumentsResult(results);
     }
 
-<<<<<<< HEAD
     /**
      * Maps from {@link IndexDocumentsResult} to
      * {@link com.azure.search.documents.implementation.models.IndexDocumentsResult}.
@@ -47,8 +46,6 @@ public final class IndexDocumentsResultConverter {
         return indexDocumentsResult;
     }
 
-=======
->>>>>>> bfd056a1647f7232e7d7cb82ca2a5ad85b9bb6ec
     private IndexDocumentsResultConverter() {
     }
 }
