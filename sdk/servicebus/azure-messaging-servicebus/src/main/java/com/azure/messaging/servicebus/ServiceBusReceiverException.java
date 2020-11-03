@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.exception.AzureException;
 
 /**
@@ -16,11 +15,11 @@ public final class ServiceBusReceiverException extends AzureException {
     private final transient ServiceBusErrorSource errorSource;
 
     /**
-     * @param amqpException for the error happened.
+     * @param throwable for the error happened.
      * @param errorSource indicating which api caused the error.
      */
-    ServiceBusReceiverException(AmqpException amqpException, ServiceBusErrorSource errorSource) {
-        super(amqpException.getMessage(), amqpException.getCause());
+    ServiceBusReceiverException(Throwable throwable, ServiceBusErrorSource errorSource) {
+        super(throwable.getMessage(), throwable.getCause());
         this.errorSource = errorSource;
     }
 

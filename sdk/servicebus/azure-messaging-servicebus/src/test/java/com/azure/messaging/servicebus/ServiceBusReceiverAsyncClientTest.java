@@ -13,6 +13,7 @@ import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.exception.AzureException;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
@@ -460,7 +461,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         when(receivedMessage.getLockToken()).thenReturn(lockToken);
         when(managementNode.renewMessageLock(lockToken, null))
-            .thenReturn(Mono.error(new AmqpException(false, "some error occurred.", null)));
+            .thenReturn(Mono.error(new AzureException("some error occurred.")));
 
         // Act & Assert
         StepVerifier.create(receiver.renewMessageLock(receivedMessage, maxDuration))
@@ -479,7 +480,7 @@ class ServiceBusReceiverAsyncClientTest {
     @Test
     void errorSourceOnSessionLock() {
         // Arrange
-        when(managementNode.renewSessionLock(SESSION_ID, null)).thenReturn(Mono.error(new AmqpException(false, "some error occurred.", null)));
+        when(managementNode.renewSessionLock(SESSION_ID, null)).thenReturn(Mono.error(new AzureException("some error occurred.")));
 
         // Act & Assert
         StepVerifier.create(sessionReceiver.renewSessionLock(SESSION_ID))
@@ -508,7 +509,7 @@ class ServiceBusReceiverAsyncClientTest {
         when(messageSerializer.deserialize(message, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage);
 
         when(amqpReceiveLink.updateDisposition(eq(lockToken1), argThat(e -> e.getType() == expectedDeliveryState)))
-            .thenReturn(Mono.error(new AmqpException(false, "some error occurred.", null)));
+            .thenReturn(Mono.error(new AzureException("some error occurred.")));
 
         // Act & Assert
         StepVerifier.create(receiver.receiveMessages().take(1)
@@ -531,7 +532,7 @@ class ServiceBusReceiverAsyncClientTest {
             .expectNext()
             .verifyErrorSatisfies(throwable -> {
                 Assertions.assertFalse(throwable instanceof ServiceBusReceiverException);
-                Assertions.assertTrue(throwable instanceof AmqpException);
+                Assertions.assertTrue(throwable instanceof AzureException);
             });
 
         verify(amqpReceiveLink).updateDisposition(eq(lockToken1), any(DeliveryState.class));
@@ -593,7 +594,7 @@ class ServiceBusReceiverAsyncClientTest {
         when(receivedMessage.getLockedUntil()).thenReturn(expiration);
 
         when(connection.createReceiveLink(anyString(), anyString(), any(ReceiveMode.class), any(),
-            any(MessagingEntityType.class))).thenReturn(Mono.error(new AmqpException(false, "some receive link Error.", null)));
+            any(MessagingEntityType.class))).thenReturn(Mono.error(new AzureException("some receive link Error.")));
 
         // Act & Assert
         StepVerifier.create(receiver.receiveMessages().take(1))
