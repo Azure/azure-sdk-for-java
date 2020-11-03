@@ -22,9 +22,9 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
 
         Consumer<Throwable> errorHandler = throwable -> {
             System.out.println("Error when receiving messages " + throwable.getMessage());
-            if (throwable instanceof ServiceBusAmqpException) {
-                ServiceBusAmqpException serviceBusAmqpException = (ServiceBusAmqpException) throwable;
-                System.out.println("Error source " + serviceBusAmqpException.getErrorSource());
+            if (throwable instanceof ServiceBusReceiverException) {
+                ServiceBusReceiverException serviceBusReceiverException = (ServiceBusReceiverException) throwable;
+                System.out.println("Error source " + serviceBusReceiverException.getErrorSource());
             }
         };
 
@@ -51,9 +51,9 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
 
         Consumer<Throwable> errorHandler = throwable -> {
             System.out.println("Error when receiving messages " + throwable.getMessage());
-            if (throwable instanceof ServiceBusAmqpException) {
-                ServiceBusAmqpException serviceBusAmqpException = (ServiceBusAmqpException) throwable;
-                System.out.println("Error source " + serviceBusAmqpException.getErrorSource());
+            if (throwable instanceof ServiceBusReceiverException) {
+                ServiceBusReceiverException serviceBusReceiverException = (ServiceBusReceiverException) throwable;
+                System.out.println("Error source " + serviceBusReceiverException.getErrorSource());
             }
         };
 
@@ -81,9 +81,9 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
 
         Consumer<Throwable> errorHandler = throwable -> {
             System.out.println("Error when receiving messages " + throwable.getMessage());
-            if (throwable instanceof ServiceBusAmqpException) {
-                ServiceBusAmqpException serviceBusAmqpException = (ServiceBusAmqpException) throwable;
-                System.out.println("Error source " + serviceBusAmqpException.getErrorSource());
+            if (throwable instanceof ServiceBusReceiverException) {
+                ServiceBusReceiverException serviceBusReceiverException = (ServiceBusReceiverException) throwable;
+                System.out.println("Error source " + serviceBusReceiverException.getErrorSource());
             }
         };
 
@@ -113,9 +113,9 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
 
         Consumer<Throwable> errorHandler = throwable -> {
             System.out.println("Error when receiving messages " + throwable.getMessage());
-            if (throwable instanceof ServiceBusAmqpException) {
-                ServiceBusAmqpException serviceBusAmqpException = (ServiceBusAmqpException) throwable;
-                System.out.println("Error source " + serviceBusAmqpException.getErrorSource());
+            if (throwable instanceof ServiceBusReceiverException) {
+                ServiceBusReceiverException serviceBusReceiverException = (ServiceBusReceiverException) throwable;
+                System.out.println("Error source " + serviceBusReceiverException.getErrorSource());
             }
         };
 

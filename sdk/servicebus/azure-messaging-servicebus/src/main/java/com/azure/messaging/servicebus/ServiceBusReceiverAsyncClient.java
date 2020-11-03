@@ -1034,20 +1034,18 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
         return updateDispositionOperation
             .onErrorMap(throwable -> {
-                // We only populate ErrorSource only when AutoComplete is enabled.
-                if (receiverOptions.isEnableAutoComplete() && throwable instanceof AmqpException) {
-                    switch (dispositionStatus) {
-                        case COMPLETED:
-                            return new ServiceBusAmqpException((AmqpException) throwable,
-                                ServiceBusErrorSource.COMPLETE);
-                        case ABANDONED:
-                            return new ServiceBusAmqpException((AmqpException) throwable,
-                                ServiceBusErrorSource.ABANDONED);
-                        default:
-                            // Do nothing
-                    }
+                if (throwable instanceof ServiceBusReceiverException) {
+                    return throwable;
                 }
-                return throwable;
+                
+                switch (dispositionStatus) {
+                    case COMPLETED:
+                        return new ServiceBusReceiverException(throwable, ServiceBusErrorSource.COMPLETE);
+                    case ABANDONED:
+                        return new ServiceBusReceiverException(throwable, ServiceBusErrorSource.ABANDONED);
+                    default:
+                        return new ServiceBusReceiverException(throwable, ServiceBusErrorSource.UNKNOWN);
+                }
 
             });
     }
@@ -1188,14 +1186,14 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Map the error to {@link ServiceBusAmqpException}
+     * Map the error to {@link ServiceBusReceiverException}
      */
     private Throwable mapError(Throwable throwable, ServiceBusErrorSource errorSource) {
-        if ((throwable instanceof ServiceBusAmqpException) || !(throwable instanceof AmqpException)) {
-            return throwable;
-        } else {
-            return new ServiceBusAmqpException((AmqpException) throwable, errorSource);
+        // If it is already `ServiceBusReceiverException`, we can just throw it.
+        if (!(throwable instanceof ServiceBusReceiverException)) {
+            return new ServiceBusReceiverException(throwable, errorSource);
         }
+        return throwable;
     }
 
     boolean isConnectionClosed() {
