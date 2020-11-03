@@ -1034,6 +1034,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
         return updateDispositionOperation
             .onErrorMap(throwable -> {
+                if (throwable instanceof ServiceBusReceiverException) {
+                    return throwable;
+                }
                 // We only populate ErrorSource for scenario covered by ServiceBusErrorSource enum.
                 switch (dispositionStatus) {
                     case COMPLETED:
