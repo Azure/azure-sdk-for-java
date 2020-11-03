@@ -40,8 +40,7 @@ public class ReceiveMessageAsyncSample {
             .buildAsyncClient();
 
         Disposable subscription = receiver.receiveMessages()
-            .flatMap(context -> {
-                ServiceBusReceivedMessage message = context.getMessage();
+            .flatMap(message -> {
 
                 // process message
                 System.out.println("Received Message Id: " + message.getMessageId());

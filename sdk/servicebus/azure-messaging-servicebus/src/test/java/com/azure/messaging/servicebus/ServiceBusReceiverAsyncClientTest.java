@@ -441,7 +441,7 @@ class ServiceBusReceiverAsyncClientTest {
         // Act & Assert
         StepVerifier.create(receiver.receiveMessages()
             .take(1)
-            .flatMap(context -> receiver.deadLetter(context.getMessage(), deadLetterOptions)))
+            .flatMap(receivedMessage -> receiver.deadLetter(receivedMessage, deadLetterOptions)))
             .then(() -> messageSink.next(message))
             .expectNext()
             .verifyComplete();
@@ -512,14 +512,14 @@ class ServiceBusReceiverAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(receiver.receiveMessages().take(1)
-            .flatMap(context -> {
+            .flatMap(receivedMessage -> {
                 final Mono<Void> operation;
                 switch (dispositionStatus) {
                     case ABANDONED:
-                        operation = receiver.abandon(context.getMessage());
+                        operation = receiver.abandon(receivedMessage);
                         break;
                     case COMPLETED:
-                        operation = receiver.complete(context.getMessage());
+                        operation = receiver.complete(receivedMessage);
                         break;
                     default:
                         throw new IllegalArgumentException("Unrecognized operation: " + dispositionStatus);

@@ -63,8 +63,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
         // Keep a reference to `subscription`. When the program is finished receiving messages, call
         // subscription.dispose(). This will stop fetching messages from the Service Bus.
         Disposable subscription = receiver.receiveMessages()
-            .subscribe(context -> {
-                ServiceBusReceivedMessage message = context.getMessage();
+            .subscribe(message -> {
                 System.out.printf("Received message id: %s%n", message.getMessageId());
                 System.out.printf("Contents of message as string: %s%n", message.getBody().toString());
             }, error -> System.err.print(error));
@@ -87,7 +86,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             .buildAsyncClient();
 
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#basesubscriber
-        receiver.receiveMessages().subscribe(new BaseSubscriber<ServiceBusReceivedMessageContext>() {
+        receiver.receiveMessages().subscribe(new BaseSubscriber<ServiceBusReceivedMessage>() {
             private static final int NUMBER_OF_MESSAGES = 5;
             private final AtomicInteger currentNumberOfMessages = new AtomicInteger();
 
@@ -98,10 +97,8 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             }
 
             @Override
-            protected void hookOnNext(ServiceBusReceivedMessageContext value) {
+            protected void hookOnNext(ServiceBusReceivedMessage message) {
                 // Process the ServiceBusReceivedMessage
-                ServiceBusReceivedMessage message = value.getMessage();
-
                 // If the number of messages we have currently received is a multiple of 5, that means we have reached
                 // the last message the Subscriber will provide to us. Invoking request(long) here, tells the Publisher
                 // that the subscriber is ready to get more messages from upstream.
@@ -125,8 +122,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             .buildAsyncClient();
 
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#all
-        Disposable subscription = receiver.receiveMessages().flatMap(context -> {
-            ServiceBusReceivedMessage message = context.getMessage();
+        Disposable subscription = receiver.receiveMessages().flatMap(message -> {
             System.out.printf("Received message id: %s%n", message.getMessageId());
             System.out.printf("Contents of message as string: %s%n", message.getBody().toString());
             return receiver.complete(message);
@@ -256,16 +252,15 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             .buildAsyncClient();
 
         ServiceBusTransactionContext transactionContext = null;
-        ServiceBusReceivedMessageContext messageContext = null;
+        ServiceBusReceivedMessage message = null;
 
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.completeMessageWithTransaction
 
-        // messageContext: This is instance `ServiceBusReceivedMessageContext` which you have received previously.
         // transactionContext: This is the transaction which you have created previously.
 
         // Keep a reference to `subscription`. When the program is finished receiving messages, call
         // subscription.dispose(). This will dispose it cleanly.
-        Disposable subscriber = receiver.complete(messageContext.getMessage(), new CompleteOptions()
+        Disposable subscriber = receiver.complete(message, new CompleteOptions()
             .setTransactionContext(transactionContext))
             .subscribe();
 
@@ -285,18 +280,17 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             .buildAsyncClient();
 
         ServiceBusTransactionContext transactionContext = null;
-        ServiceBusReceivedMessageContext messageContext = null;
+        ServiceBusReceivedMessage message = null;
         Map<String, Object> propertiesToModify = null;
 
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.abandonMessageWithTransaction
 
-        // messageContext: This is instance `ServiceBusReceivedMessageContext` which you have received previously.
         // propertiesToModify : This is Map of any properties to modify while abandoning the message.
         // transactionContext: This is the transaction which you have created previously.
 
         // Keep a reference to `subscription`. When the program is finished receiving messages, call
         // subscription.dispose(). This will dispose it cleanly.
-        Disposable subscriber = receiver.abandon(messageContext.getMessage(), new AbandonOptions()
+        Disposable subscriber = receiver.abandon(message, new AbandonOptions()
             .setTransactionContext(transactionContext)
             .setPropertiesToModify(propertiesToModify)).subscribe();
 
