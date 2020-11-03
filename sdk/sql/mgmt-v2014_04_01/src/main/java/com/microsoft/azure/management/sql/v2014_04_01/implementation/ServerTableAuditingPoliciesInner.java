@@ -156,7 +156,7 @@ public class ServerTableAuditingPoliciesInner {
     }
 
     /**
-     * Creates or updates a servers's table auditing policy. Table auditing is deprecated, use blob auditing instead.
+     * Creates or updates a server's table auditing policy. Table auditing is deprecated, use blob auditing instead.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
@@ -171,7 +171,7 @@ public class ServerTableAuditingPoliciesInner {
     }
 
     /**
-     * Creates or updates a servers's table auditing policy. Table auditing is deprecated, use blob auditing instead.
+     * Creates or updates a server's table auditing policy. Table auditing is deprecated, use blob auditing instead.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
@@ -185,7 +185,7 @@ public class ServerTableAuditingPoliciesInner {
     }
 
     /**
-     * Creates or updates a servers's table auditing policy. Table auditing is deprecated, use blob auditing instead.
+     * Creates or updates a server's table auditing policy. Table auditing is deprecated, use blob auditing instead.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
@@ -203,7 +203,7 @@ public class ServerTableAuditingPoliciesInner {
     }
 
     /**
-     * Creates or updates a servers's table auditing policy. Table auditing is deprecated, use blob auditing instead.
+     * Creates or updates a server's table auditing policy. Table auditing is deprecated, use blob auditing instead.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
@@ -252,7 +252,7 @@ public class ServerTableAuditingPoliciesInner {
     }
 
     /**
-     * Lists a servers's table auditing policies. Table auditing is deprecated, use blob auditing instead.
+     * Lists a server's table auditing policies. Table auditing is deprecated, use blob auditing instead.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
@@ -266,7 +266,7 @@ public class ServerTableAuditingPoliciesInner {
     }
 
     /**
-     * Lists a servers's table auditing policies. Table auditing is deprecated, use blob auditing instead.
+     * Lists a server's table auditing policies. Table auditing is deprecated, use blob auditing instead.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
@@ -279,7 +279,7 @@ public class ServerTableAuditingPoliciesInner {
     }
 
     /**
-     * Lists a servers's table auditing policies. Table auditing is deprecated, use blob auditing instead.
+     * Lists a server's table auditing policies. Table auditing is deprecated, use blob auditing instead.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
@@ -296,7 +296,7 @@ public class ServerTableAuditingPoliciesInner {
     }
 
     /**
-     * Lists a servers's table auditing policies. Table auditing is deprecated, use blob auditing instead.
+     * Lists a server's table auditing policies. Table auditing is deprecated, use blob auditing instead.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
