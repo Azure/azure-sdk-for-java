@@ -106,10 +106,10 @@ public class TablesMultipartSerializer extends TablesJacksonSerializer {
     public <U> U deserialize(InputStream inputStream, Type type, SerializerEncoding serializerEncoding)
         throws IOException {
         if (type == BatchOperationResponse[].class) {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
             String line = reader.readLine();
-            if (!line.startsWith(BOUNDARY_DELIMETER + "batchresponse_")) {
-                throw logger.logThrowableAsError(new IOException("Invalid multipart response"));
+            if (line == null || !line.startsWith(BOUNDARY_DELIMETER + "batchresponse_")) {
+                throw logger.logExceptionAsError(new IllegalStateException("Invalid multipart response"));
             }
 
             BatchOperationResponse response = null;
