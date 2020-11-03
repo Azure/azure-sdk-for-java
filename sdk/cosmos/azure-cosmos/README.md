@@ -219,7 +219,7 @@ Also add a log4j config.
 ```properties
 # this is a sample log4j configuration
 
-# Set root logger level to DEBUG and its only appender to A1.
+# Set root logger level to INFO and its only appender to A1.
 log4j.rootLogger=INFO, A1
 
 log4j.category.com.azure.cosmos=INFO
