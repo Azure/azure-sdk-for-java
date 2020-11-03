@@ -62,7 +62,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
     private static final AtomicLong instanceCount = new AtomicLong();
     private static final Logger logger = LoggerFactory.getLogger(RntbdServiceEndpoint.class);
-    private static final AdaptiveRecvByteBufAllocator receiveBufferAllocator = new AdaptiveRecvByteBufAllocator();
+    private static final AdaptiveRecvByteBufAllocator receiveBufferAllocator = new AdaptiveRecvByteBufAllocator(64, 1024, 1024);
 
     private final RntbdClientChannelPool channelPool;
     private final AtomicBoolean closed;

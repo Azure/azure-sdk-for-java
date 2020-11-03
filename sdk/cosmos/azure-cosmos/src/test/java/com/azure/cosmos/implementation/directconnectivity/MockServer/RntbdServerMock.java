@@ -98,8 +98,8 @@ public class RntbdServerMock {
                         }
                     }
                 })
-                .childOption(ChannelOption.SO_KEEPALIVE, true);
-               // .childOption(ChannelOption.SO_LINGER, 0);
+                .childOption(ChannelOption.SO_KEEPALIVE, true)
+                .childOption(ChannelOption.SO_LINGER, 0);
 
             ChannelFuture channelFuture = bootstrap.bind(port).sync();
 

@@ -514,6 +514,8 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         if (message instanceof RntbdRequestRecord) {
 
             final RntbdRequestRecord record = (RntbdRequestRecord) message;
+            logger.info(record.args().physicalAddress().toString());
+
             this.timestamps.channelWriteAttempted();
             record.setSendingRequestHasStarted();
 
