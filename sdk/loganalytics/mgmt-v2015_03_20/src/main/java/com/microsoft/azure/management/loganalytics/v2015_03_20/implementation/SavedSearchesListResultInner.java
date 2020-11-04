@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class SavedSearchesListResultInner {
     /**
-     * The metadata from search results.
+     * Unused legacy property, kept here for backward compatibility.
      */
     @JsonProperty(value = "__metadata")
     private SearchMetadata metadata;
@@ -29,7 +29,7 @@ public class SavedSearchesListResultInner {
     private List<SavedSearchInner> value;
 
     /**
-     * Get the metadata from search results.
+     * Get unused legacy property, kept here for backward compatibility.
      *
      * @return the metadata value
      */
@@ -38,7 +38,7 @@ public class SavedSearchesListResultInner {
     }
 
     /**
-     * Set the metadata from search results.
+     * Set unused legacy property, kept here for backward compatibility.
      *
      * @param metadata the metadata value to set
      * @return the SavedSearchesListResultInner object itself.

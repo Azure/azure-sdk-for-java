@@ -16,7 +16,6 @@ import rx.Observable;
 import rx.functions.Func1;
 import com.microsoft.azure.management.loganalytics.v2015_03_20.SavedSearchesListResult;
 import com.microsoft.azure.management.loganalytics.v2015_03_20.SavedSearch;
-import com.microsoft.azure.management.loganalytics.v2015_03_20.SearchResultsResponse;
 
 class SavedSearchesImpl extends WrapperImpl<SavedSearchesInner> implements SavedSearches {
     private final LogAnalyticsManager manager;
@@ -59,10 +58,14 @@ class SavedSearchesImpl extends WrapperImpl<SavedSearchesInner> implements Saved
     public Observable<SavedSearch> getAsync(String resourceGroupName, String workspaceName, String savedSearchId) {
         SavedSearchesInner client = this.inner();
         return client.getAsync(resourceGroupName, workspaceName, savedSearchId)
-        .map(new Func1<SavedSearchInner, SavedSearch>() {
+        .flatMap(new Func1<SavedSearchInner, Observable<SavedSearch>>() {
             @Override
-            public SavedSearch call(SavedSearchInner inner) {
-                return wrapModel(inner);
+            public Observable<SavedSearch> call(SavedSearchInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((SavedSearch)wrapModel(inner));
+                }
             }
        });
     }
@@ -71,18 +74,6 @@ class SavedSearchesImpl extends WrapperImpl<SavedSearchesInner> implements Saved
     public Completable deleteAsync(String resourceGroupName, String workspaceName, String savedSearchId) {
         SavedSearchesInner client = this.inner();
         return client.deleteAsync(resourceGroupName, workspaceName, savedSearchId).toCompletable();
-    }
-
-    @Override
-    public Observable<SearchResultsResponse> getResultsAsync(String resourceGroupName, String workspaceName, String savedSearchId) {
-        SavedSearchesInner client = this.inner();
-        return client.getResultsAsync(resourceGroupName, workspaceName, savedSearchId)
-        .map(new Func1<SearchResultsResponseInner, SearchResultsResponse>() {
-            @Override
-            public SearchResultsResponse call(SearchResultsResponseInner inner) {
-                return new SearchResultsResponseImpl(inner, manager());
-            }
-        });
     }
 
 }
