@@ -35,15 +35,15 @@ public class IdentitySSLUtil {
 
     /**
      *
-     * Configures and pins the specified HTTPS URL Connection to work against a specific server-side certificate with
+     * Pins the specified HTTPS URL Connection to work against a specific server-side certificate with
      * the specified thumbprint only.
      *
      * @param className The class calling the method.
      * @param httpsUrlConnection The https url connection to configure
      * @param certificateThumbprint The thumbprint of the certificate
      */
-    public static void configureTrustedCertificateThumbprint(String className, HttpsURLConnection httpsUrlConnection,
-                                                   String certificateThumbprint) {
+    public static void addTrustedCertificateThumbprint(String className, HttpsURLConnection httpsUrlConnection,
+                                                       String certificateThumbprint) {
 
         ClientLogger logger = new ClientLogger(className);
 
@@ -53,54 +53,51 @@ public class IdentitySSLUtil {
             httpsUrlConnection.setHostnameVerifier(ALL_HOSTS_ACCEPT_HOSTNAME_VERIFIER);
         }
 
+        // Create a Trust manager that trusts only certificate with specified thumbprint.
+        TrustManager[] certificateTrust = new TrustManager[]{new X509TrustManager() {
+            public X509Certificate[] getAcceptedIssuers() {
+                return new X509Certificate[]{};
+            }
+
+            public void checkClientTrusted(X509Certificate[] certificates, String authenticationType)
+                throws CertificateException {
+                throw logger.logExceptionAsError(new RuntimeException("No client side certificate configured."));
+            }
+
+            public void checkServerTrusted(X509Certificate[] certificates, String authenticationType)
+                throws CertificateException {
+                if (certificates == null || certificates.length == 0) {
+                    throw logger.logExceptionAsError(
+                        new RuntimeException("Did not receive any certificate from the server."));
+                }
+
+                for (X509Certificate x509Certificate : certificates) {
+                    String sslCertificateThumbprint = extractCertificateThumbprint(x509Certificate, logger);
+                    if (certificateThumbprint.equalsIgnoreCase(sslCertificateThumbprint)) {
+                        return;
+                    }
+                }
+                throw logger.logExceptionAsError(new RuntimeException(
+                    "Thumbprint of certificates receieved did not match the "
+                        + "expected thumbprint."));
+            }
+        }
+        };
+
+        SSLSocketFactory sslSocketFactory;
+        try {
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, certificateTrust, null);
+            sslSocketFactory = sslContext.getSocketFactory();
+        } catch (NoSuchAlgorithmException | KeyManagementException e) {
+            throw logger.logExceptionAsError(new RuntimeException("Error Creating SSL Context", e));
+        }
+
         // Pin the connection to a specific certificate with specified thumbprint.
-        SSLSocketFactory sslSocketFactory = generateSSLSocketFactoryFromThumbprint(certificateThumbprint, logger);
         if (httpsUrlConnection.getSSLSocketFactory() != sslSocketFactory) {
             httpsUrlConnection.setSSLSocketFactory(sslSocketFactory);
         }
     }
-
-
-    private static SSLSocketFactory generateSSLSocketFactoryFromThumbprint(String certificateThumbprint,
-                                                                           ClientLogger logger) {
-        TrustManager[] certificateTrust = new TrustManager[]{new X509TrustManager() {
-                public X509Certificate[] getAcceptedIssuers() {
-                    return new X509Certificate[]{};
-                }
-
-                public void checkClientTrusted(X509Certificate[] certificates, String authenticationType)
-                    throws CertificateException {
-                    throw new CertificateException();
-                }
-
-                public void checkServerTrusted(X509Certificate[] certificates, String authenticationType)
-                    throws CertificateException {
-                    if (certificates == null || certificates.length == 0) {
-                        throw new CertificateException();
-                    }
-
-                    for (X509Certificate x509Certificate : certificates) {
-                        String sslCertificateThumbprint = extractCertificateThumbprint(x509Certificate, logger);
-                        if (certificateThumbprint.equalsIgnoreCase(sslCertificateThumbprint)) {
-                            return;
-                        }
-                    }
-                    throw logger.logExceptionAsError(new RuntimeException(
-                        "Thumbprint of certificates receieved did not match the "
-                                                       + "expected thumbprint."));
-                }
-            }
-        };
-
-        try {
-            SSLContext sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(null, certificateTrust, null);
-            return sslContext.getSocketFactory();
-        } catch (NoSuchAlgorithmException | KeyManagementException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e));
-        }
-    }
-
 
     private static String extractCertificateThumbprint(Certificate certificate, ClientLogger logger) {
         try {

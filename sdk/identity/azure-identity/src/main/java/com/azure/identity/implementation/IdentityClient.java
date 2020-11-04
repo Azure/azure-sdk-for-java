@@ -785,7 +785,7 @@ public class IdentityClient {
                 URL url = new URL(String.format("%s?%s", endpoint, payload));
                 connection = (HttpsURLConnection) url.openConnection();
 
-                IdentitySSLUtil.configureTrustedCertificateThumbprint(getClass().getSimpleName(), connection,
+                IdentitySSLUtil.addTrustedCertificateThumbprint(getClass().getSimpleName(), connection,
                     thumbprint);
                 connection.setRequestMethod("GET");
                 if (headerValue != null) {
