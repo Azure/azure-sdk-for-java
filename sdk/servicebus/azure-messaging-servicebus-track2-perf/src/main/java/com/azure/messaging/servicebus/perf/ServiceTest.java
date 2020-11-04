@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.servicebus.perf.core;
+package com.azure.messaging.servicebus.perf;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
@@ -33,10 +33,10 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
     private static final String AZURE_SERVICEBUS_TOPIC_NAME = "AZURE_SERVICEBUS_TOPIC_NAME";
     private static final String AZURE_SERVICEBUS_SUBSCRIPTION_NAME = "AZURE_SERVICEBUS_SUBSCRIPTION_NAME";
 
-    protected final ServiceBusReceiverClient receiver;
-    protected final ServiceBusReceiverAsyncClient receiverAsync;
-    protected final ServiceBusSenderClient sender;
-    protected final ServiceBusSenderAsyncClient senderAsync;
+    final ServiceBusReceiverClient receiver;
+    final ServiceBusReceiverAsyncClient receiverAsync;
+    final ServiceBusSenderClient sender;
+    final ServiceBusSenderAsyncClient senderAsync;
 
     /**
      *

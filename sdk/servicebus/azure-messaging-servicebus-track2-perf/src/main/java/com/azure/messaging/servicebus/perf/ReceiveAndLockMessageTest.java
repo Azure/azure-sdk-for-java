@@ -9,8 +9,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.models.ReceiveMode;
-import com.azure.messaging.servicebus.perf.core.ServiceBusStressOptions;
-import com.azure.messaging.servicebus.perf.core.ServiceTest;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
