@@ -302,18 +302,12 @@ public final class TableAsyncClient {
         EntityHelper.setPropertiesFromGetters(entity, logger);
         if (updateMode == UpdateMode.REPLACE) {
             return implementation.getTables().updateEntityWithResponseAsync(tableName, entity.getPartitionKey(),
-                entity.getRowKey(), timeoutInt, null, "*",
-                entity.getProperties(), null, context).map(response -> {
-                    return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                    null);
-                });
+                entity.getRowKey(), timeoutInt, null, null, entity.getProperties(), null, context).map(response ->
+                new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
         } else {
             return implementation.getTables().mergeEntityWithResponseAsync(tableName, entity.getPartitionKey(),
-                entity.getRowKey(), timeoutInt, null, "*",
-                entity.getProperties(), null, context).map(response -> {
-                    return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                    null);
-                });
+                entity.getRowKey(), timeoutInt, null, null, entity.getProperties(), null, context).map(response ->
+                new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
         }
     }
 
@@ -401,52 +395,22 @@ public final class TableAsyncClient {
     }
 
     Mono<Response<Void>> updateEntityWithResponse(TableEntity entity, UpdateMode updateMode, boolean ifUnchanged,
-                                                  Duration timeout, Context inputContext) {
-        Context context = inputContext == null ? Context.NONE : inputContext;
+                                                  Duration timeout, Context context) {
+        context = context == null ? Context.NONE : context;
         Integer timeoutInt = timeout == null ? null : (int) timeout.getSeconds();
         if (entity == null) {
             return monoError(logger, new NullPointerException("TableEntity cannot be null"));
         }
+        String eTag = ifUnchanged ? entity.getETag() : "*";
         EntityHelper.setPropertiesFromGetters(entity, logger);
-        if (updateMode == null || updateMode == UpdateMode.MERGE) {
-            if (ifUnchanged) {
-                return implementation.getTables().mergeEntityWithResponseAsync(tableName, entity.getPartitionKey(),
-                    entity.getRowKey(), timeoutInt, null, entity.getETag(), entity.getProperties(), null,
-                    context).map(response -> {
-                        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), null);
-                    });
-            } else {
-                return getEntity(entity.getPartitionKey(), entity.getRowKey())
-                    .flatMap(entityReturned -> {
-                        return implementation.getTables().mergeEntityWithResponseAsync(tableName,
-                            entity.getPartitionKey(), entity.getRowKey(), timeoutInt, null,
-                            "*", entity.getProperties(), null, context);
-                    }).map(response -> {
-                        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                            response.getHeaders(), null);
-                    });
-            }
+        if (updateMode == UpdateMode.REPLACE) {
+            return implementation.getTables().updateEntityWithResponseAsync(tableName, entity.getPartitionKey(),
+                entity.getRowKey(), timeoutInt, null, eTag, entity.getProperties(), null, context).map(response ->
+                new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
         } else {
-            if (ifUnchanged) {
-                return implementation.getTables().updateEntityWithResponseAsync(tableName, entity.getPartitionKey(),
-                    entity.getRowKey(), timeoutInt, null, entity.getETag(), entity.getProperties(),
-                    null, context).map(response -> {
-                        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), null);
-                    });
-            } else {
-                return getEntity(entity.getPartitionKey(), entity.getRowKey())
-                    .flatMap(entityReturned -> {
-                        return implementation.getTables().updateEntityWithResponseAsync(tableName,
-                            entity.getPartitionKey(), entity.getRowKey(),
-                            timeoutInt, null, "*", entity.getProperties(), null,
-                            context);
-                    }).map(response -> {
-                        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                            response.getHeaders(), null);
-                    });
-            }
+            return implementation.getTables().mergeEntityWithResponseAsync(tableName, entity.getPartitionKey(),
+                entity.getRowKey(), timeoutInt, null, eTag, entity.getProperties(), null, context).map(response ->
+                new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
         }
     }
 
