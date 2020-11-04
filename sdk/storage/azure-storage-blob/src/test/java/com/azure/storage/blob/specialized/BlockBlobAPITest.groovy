@@ -8,6 +8,7 @@ import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
+import com.azure.core.http.RequestConditions
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
 import com.azure.identity.DefaultAzureCredentialBuilder
@@ -2063,5 +2064,54 @@ class BlockBlobAPITest extends APISpec {
         destinationProperties.getContentLanguage() == "en-GB"
         destinationProperties.getContentType() == "text"
         destinationProperties.getAccessTier() == AccessTier.COOL
+    }
+
+    def "Upload from Url source request conditions"() {
+        setup:
+        def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
+        sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
+        def sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)))
+        blobClient.upload(new ByteArrayInputStream(), 0, true)
+
+        when:
+        def options = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas).setSourceRequestConditions(requestConditions)
+        blobClient.uploadFromUrlWithResponse(options, null, null)
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == errorCode
+
+        where:
+        requestConditions | errorCode
+        new BlobRequestConditions().setIfMatch("dummy") | BlobErrorCode.SOURCE_CONDITION_NOT_MET
+        new BlobRequestConditions().setIfModifiedSince(OffsetDateTime.now().plusSeconds(10)) | BlobErrorCode.CANNOT_VERIFY_COPY_SOURCE
+        new BlobRequestConditions().setIfUnmodifiedSince(OffsetDateTime.now().minusDays(1)) | BlobErrorCode.CANNOT_VERIFY_COPY_SOURCE
+    }
+
+    def "Upload from Url destination request conditions"() {
+        setup:
+        def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
+        sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
+        def sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)))
+        blobClient.upload(new ByteArrayInputStream(), 0, true)
+        createLeaseClient(blobClient).acquireLease(60)
+
+        when:
+        def options = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas).setDestinationRequestConditions(requestConditions)
+        blobClient.uploadFromUrlWithResponse(options, null, null)
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == errorCode
+
+        where:
+        requestConditions | errorCode
+        new BlobRequestConditions().setIfMatch("dummy") | BlobErrorCode.TARGET_CONDITION_NOT_MET
+        new BlobRequestConditions().setIfNoneMatch("*") | BlobErrorCode.BLOB_ALREADY_EXISTS
+        new BlobRequestConditions().setIfModifiedSince(OffsetDateTime.now().plusSeconds(10)) | BlobErrorCode.CONDITION_NOT_MET
+        new BlobRequestConditions().setIfUnmodifiedSince(OffsetDateTime.now().minusDays(1)) | BlobErrorCode.CONDITION_NOT_MET
+        new BlobRequestConditions().setLeaseId(UUID.randomUUID().toString())| BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
     }
 }
