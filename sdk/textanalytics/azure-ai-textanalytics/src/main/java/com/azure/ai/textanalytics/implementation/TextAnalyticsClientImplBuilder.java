@@ -60,7 +60,7 @@ public final class TextAnalyticsClientImplBuilder {
                             .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                             .build();
         }
-        TextAnalyticsClientImpl client = new TextAnalyticsClientImpl(pipeline, endpoint);
+        TextAnalyticsClientImpl client = new TextAnalyticsClientImpl(pipeline).setEndpoint(endpoint);
         return client;
     }
 }

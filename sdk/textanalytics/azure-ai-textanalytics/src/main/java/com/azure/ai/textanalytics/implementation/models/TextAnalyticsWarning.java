@@ -7,7 +7,9 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TextAnalyticsWarning model. */
+/**
+ * The TextAnalyticsWarning model.
+ */
 @Fluent
 public final class TextAnalyticsWarning {
     /*
@@ -30,7 +32,7 @@ public final class TextAnalyticsWarning {
 
     /**
      * Get the code property: Error code.
-     *
+     * 
      * @return the code value.
      */
     public WarningCodeValue getCode() {
@@ -39,7 +41,7 @@ public final class TextAnalyticsWarning {
 
     /**
      * Set the code property: Error code.
-     *
+     * 
      * @param code the code value to set.
      * @return the TextAnalyticsWarning object itself.
      */
@@ -50,7 +52,7 @@ public final class TextAnalyticsWarning {
 
     /**
      * Get the message property: Warning message.
-     *
+     * 
      * @return the message value.
      */
     public String getMessage() {
@@ -59,7 +61,7 @@ public final class TextAnalyticsWarning {
 
     /**
      * Set the message property: Warning message.
-     *
+     * 
      * @param message the message value to set.
      * @return the TextAnalyticsWarning object itself.
      */
@@ -69,8 +71,9 @@ public final class TextAnalyticsWarning {
     }
 
     /**
-     * Get the targetRef property: A JSON pointer reference indicating the target object.
-     *
+     * Get the targetRef property: A JSON pointer reference indicating the
+     * target object.
+     * 
      * @return the targetRef value.
      */
     public String getTargetRef() {
@@ -78,8 +81,9 @@ public final class TextAnalyticsWarning {
     }
 
     /**
-     * Set the targetRef property: A JSON pointer reference indicating the target object.
-     *
+     * Set the targetRef property: A JSON pointer reference indicating the
+     * target object.
+     * 
      * @param targetRef the targetRef value to set.
      * @return the TextAnalyticsWarning object itself.
      */
