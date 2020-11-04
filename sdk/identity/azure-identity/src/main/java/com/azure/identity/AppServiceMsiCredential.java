@@ -15,13 +15,11 @@ import reactor.core.publisher.Mono;
  * The Managed Service Identity credential for Azure App Service.
  */
 @Immutable
-class AppServiceMsiCredential {
+class AppServiceMsiCredential extends ManagedIdentityServiceCredential {
     private final String identityEndpoint;
     private final String msiEndpoint;
     private final String msiSecret;
     private final String identityHeader;
-    private final IdentityClient identityClient;
-    private final String clientId;
     private final ClientLogger logger = new ClientLogger(AppServiceMsiCredential.class);
 
     /**
@@ -31,13 +29,12 @@ class AppServiceMsiCredential {
      * @param identityClient The identity client to acquire a token with.
      */
     AppServiceMsiCredential(String clientId, IdentityClient identityClient) {
+        super(clientId, identityClient, "AZURE APP SERVICE MSI/IDENTITY ENDPOINT");
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
-        this.identityEndpoint = configuration.get(ManagedIdentityCredential.PROPERTY_IDENTITY_ENDPOINT);
-        this.identityHeader = configuration.get(ManagedIdentityCredential.PROPERTY_IDENTITY_HEADER);
+        this.identityEndpoint = configuration.get(Configuration.PROPERTY_IDENTITY_ENDPOINT);
+        this.identityHeader = configuration.get(Configuration.PROPERTY_IDENTITY_HEADER);
         this.msiEndpoint = configuration.get(Configuration.PROPERTY_MSI_ENDPOINT);
         this.msiSecret = configuration.get(Configuration.PROPERTY_MSI_SECRET);
-        this.identityClient = identityClient;
-        this.clientId = clientId;
         if (identityEndpoint != null) {
             validateEndpointProtocol(this.identityEndpoint, "Identity");
         }

@@ -20,15 +20,12 @@ import reactor.core.publisher.Mono;
  */
 @Immutable
 public final class ManagedIdentityCredential implements TokenCredential {
-    private final AppServiceMsiCredential appServiceMSICredential;
-    private final ServiceFabricMsiCredential serviceFabricMsiCredential;
-    private final VirtualMachineMsiCredential virtualMachineMSICredential;
+    private final ManagedIdentityServiceCredential managedIdentityServiceCredential;
     private final ClientLogger logger = new ClientLogger(ManagedIdentityCredential.class);
 
-    // TODO: Migrate to Configuration class in Core (https://github.com/Azure/azure-sdk-for-java/issues/14720)
-    static final String PROPERTY_IDENTITY_ENDPOINT = "IDENTITY_ENDPOINT";
-    static final String PROPERTY_IDENTITY_HEADER = "IDENTITY_HEADER";
+    static final String PROPERTY_IMDS_ENDPOINT = "IMDS_ENDPOINT";
     static final String PROPERTY_IDENTITY_SERVER_THUMBPRINT = "IDENTITY_SERVER_THUMBPRINT";
+
 
     /**
      * Creates an instance of the ManagedIdentityCredential.
@@ -37,28 +34,23 @@ public final class ManagedIdentityCredential implements TokenCredential {
      */
     ManagedIdentityCredential(String clientId, IdentityClientOptions identityClientOptions) {
         IdentityClient identityClient = new IdentityClientBuilder()
-            .clientId(clientId)
-            .identityClientOptions(identityClientOptions)
-            .build();
+                                            .clientId(clientId)
+                                            .identityClientOptions(identityClientOptions)
+                                            .build();
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
-        if (configuration.contains(PROPERTY_IDENTITY_ENDPOINT)
-                        && configuration.contains(PROPERTY_IDENTITY_HEADER)) {
-            if (configuration.contains(PROPERTY_IDENTITY_SERVER_THUMBPRINT)) {
-                serviceFabricMsiCredential = new ServiceFabricMsiCredential(clientId, identityClient);
-                appServiceMSICredential = null;
-            } else {
-                appServiceMSICredential = new AppServiceMsiCredential(clientId, identityClient);
-                serviceFabricMsiCredential = null;
+        if (configuration.contains(Configuration.PROPERTY_IDENTITY_ENDPOINT)) {
+            if (configuration.contains(Configuration.PROPERTY_IDENTITY_HEADER)) {
+                managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, identityClient);
+            }  else if (configuration.contains(PROPERTY_IDENTITY_SERVER_THUMBPRINT)) {
+                managedIdentityServiceCredential = new ServiceFabricMsiCredential(clientId, identityClient);
+            }  else {
+                managedIdentityServiceCredential = null;
             }
-            virtualMachineMSICredential = null;
-        } else  if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)) {
-            appServiceMSICredential = new AppServiceMsiCredential(clientId, identityClient);
-            virtualMachineMSICredential = null;
-            serviceFabricMsiCredential = null;
+        } else if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)) {
+            managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, identityClient);
+
         } else {
-            virtualMachineMSICredential = new VirtualMachineMsiCredential(clientId, identityClient);
-            appServiceMSICredential = null;
-            serviceFabricMsiCredential = null;
+            managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, identityClient);
         }
         LoggingUtil.logAvailableEnvironmentVariables(logger, configuration);
     }
@@ -68,28 +60,22 @@ public final class ManagedIdentityCredential implements TokenCredential {
      * @return the client ID of user assigned or system assigned identity.
      */
     public String getClientId() {
-        return this.serviceFabricMsiCredential != null
-            ? this.serviceFabricMsiCredential.getClientId()
-            : this.appServiceMSICredential != null
-                ? this.appServiceMSICredential.getClientId()
-                  : this.virtualMachineMSICredential.getClientId();
+        return managedIdentityServiceCredential.getClientId();
     }
 
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
-        Mono<AccessToken> accessTokenMono;
-        if (appServiceMSICredential != null) {
-            accessTokenMono = appServiceMSICredential.authenticate(request)
-                .doOnSuccess((t -> logger.info("Azure Identity => Managed Identity environment: MSI_ENDPOINT")));
-        } else if (serviceFabricMsiCredential != null) {
-            accessTokenMono = serviceFabricMsiCredential.authenticate(request)
-                  .doOnSuccess((t -> logger.info("Azure Identity => Managed Identity environment: IDENTITY_ENDPOINT")));
-        } else {
-            accessTokenMono = virtualMachineMSICredential.authenticate(request)
-                .doOnSuccess((t -> logger.info("Azure Identity => Managed Identity environment: IMDS")));
+        if (managedIdentityServiceCredential == null) {
+            return Mono.error(logger.logExceptionAsError(
+                new CredentialUnavailableException("ManagedIdentityCredential authentication unavailable. "
+                                + "The Target Azure platform could not be determined from environment variables.")));
         }
-        return accessTokenMono
-            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
-            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
+        return managedIdentityServiceCredential.authenticate(request)
+                   .doOnSuccess((t -> logger.info(String.format("Azure Identity => Managed Identity environment: %s",
+                       managedIdentityServiceCredential.getEnvironment()))))
+                   .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
+                   .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
     }
 }
+
+

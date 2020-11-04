@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
  * The Managed Service Identity credential for Azure App Service.
  */
 @Immutable
-class ServiceFabricMsiCredential {
+class ServiceFabricMsiCredential extends ManagedIdentityServiceCredential {
     private final String identityEndpoint;
     private final String identityHeader;
     private final String identityServerThumbprint;
@@ -30,9 +30,10 @@ class ServiceFabricMsiCredential {
      * @param identityClient The identity client to acquire a token with.
      */
     ServiceFabricMsiCredential(String clientId, IdentityClient identityClient) {
+        super(clientId, identityClient, "AZURE SERVICE FABRIC IMDS ENDPOINT");
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
-        this.identityEndpoint = configuration.get(ManagedIdentityCredential.PROPERTY_IDENTITY_ENDPOINT);
-        this.identityHeader = configuration.get(ManagedIdentityCredential.PROPERTY_IDENTITY_HEADER);
+        this.identityEndpoint = configuration.get(Configuration.PROPERTY_IDENTITY_ENDPOINT);
+        this.identityHeader = configuration.get(Configuration.PROPERTY_IDENTITY_HEADER);
         this.identityServerThumbprint = configuration
                                             .get(ManagedIdentityCredential.PROPERTY_IDENTITY_SERVER_THUMBPRINT);
         this.identityClient = identityClient;
@@ -48,15 +49,6 @@ class ServiceFabricMsiCredential {
                 new IllegalArgumentException(
                     String.format("%s endpoint should start with 'https' or 'http' scheme.", endpointName)));
         }
-    }
-
-    /**
-     * Gets the client ID of the user assigned or system assigned identity.
-     *
-     * @return The client ID of user assigned or system assigned identity.
-     */
-    public String getClientId() {
-        return this.clientId;
     }
 
     /**
