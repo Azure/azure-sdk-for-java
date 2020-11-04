@@ -17,6 +17,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -30,6 +31,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.metricsadvisor.TestUtils.DATAFEED_ID_REQUIRED_ERROR;
@@ -52,6 +54,7 @@ import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.POSTGRE_SQL_
 import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.SQL_SERVER_DB;
 import static com.azure.ai.metricsadvisor.models.DataFeedStatus.ACTIVE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -74,41 +77,48 @@ public class DataFeedClientTest extends DataFeedTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     void testListDataFeed(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+        final AtomicReference<List<String>> expectedDataFeedIdList = new AtomicReference<List<String>>();
+        try {
+            // Arrange
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            listDataFeedRunner(inputDataFeedList -> {
+                List<DataFeed> actualDataFeedList = new ArrayList<>();
+                List<DataFeed> expectedDataFeedList =
+                    inputDataFeedList.stream().map(dataFeed -> client.createDataFeed(dataFeed.getName(),
+                        dataFeed.getSource(), dataFeed.getGranularity(),
+                        dataFeed.getSchema(), dataFeed.getIngestionSettings(), dataFeed.getOptions()))
+                        .collect(Collectors.toList());
 
-        listDataFeedRunner(inputDataFeedList -> {
-            List<DataFeed> actualDataFeedList = new ArrayList<>();
-            List<DataFeed> expectedDataFeedList =
-                inputDataFeedList.stream().map(dataFeed -> client.createDataFeed(dataFeed.getName(),
-                    dataFeed.getSource(), dataFeed.getGranularity(),
-                    dataFeed.getSchema(), dataFeed.getIngestionSettings(), dataFeed.getOptions()))
-                    .collect(Collectors.toList());
+                // Act & Assert
+                client.listDataFeeds().forEach(actualDataFeedList::add);
 
-            // Act & Assert
-            client.listDataFeeds().forEach(actualDataFeedList::add);
+                expectedDataFeedIdList.set(expectedDataFeedList.stream()
+                    .map(DataFeed::getId)
+                    .collect(Collectors.toList()));
+                final List<DataFeed> actualList =
+                    actualDataFeedList.stream()
+                        .filter(dataFeed -> expectedDataFeedIdList.get().contains(dataFeed.getId()))
+                        .collect(Collectors.toList());
 
-            final List<String> expectedDataFeedIdList = expectedDataFeedList.stream().map(DataFeed::getId)
-                .collect(Collectors.toList());
-            final List<DataFeed> actualList =
-                actualDataFeedList.stream().filter(dataFeed -> expectedDataFeedIdList.contains(dataFeed.getId()))
-                    .collect(Collectors.toList());
-
-            assertEquals(inputDataFeedList.size(), actualList.size());
-            expectedDataFeedList.sort(Comparator.comparing(DataFeed::getSourceType));
-            actualList.sort(Comparator.comparing(DataFeed::getSourceType));
-            final AtomicInteger i = new AtomicInteger(-1);
-            final List<DataFeedSourceType> dataFeedSourceTypes = Arrays.asList(AZURE_BLOB, SQL_SERVER_DB);
-            expectedDataFeedList.forEach(expectedDataFeed -> validateDataFeedResult(expectedDataFeed,
-                actualList.get(i.incrementAndGet()), dataFeedSourceTypes.get(i.get())));
-
-            expectedDataFeedIdList.forEach(client::deleteDataFeed);
-        });
+                assertEquals(inputDataFeedList.size(), actualList.size());
+                expectedDataFeedList.sort(Comparator.comparing(DataFeed::getSourceType));
+                actualList.sort(Comparator.comparing(DataFeed::getSourceType));
+                final AtomicInteger i = new AtomicInteger(-1);
+                final List<DataFeedSourceType> dataFeedSourceTypes = Arrays.asList(AZURE_BLOB, SQL_SERVER_DB);
+                expectedDataFeedList.forEach(expectedDataFeed ->
+                    validateDataFeedResult(expectedDataFeed,
+                        actualList.get(i.incrementAndGet()), dataFeedSourceTypes.get(i.get())));
+            });
+        } finally {
+            if (!CoreUtils.isNullOrEmpty(expectedDataFeedIdList.get())) {
+                expectedDataFeedIdList.get().forEach(client::deleteDataFeed);
+            }
+        }
     }
 
     /**
      * Verifies the result of the list data feed method to return only 3 results using
-     * {@link ListDataFeedOptions#setTop(Integer)}.
+     * {@link ListDataFeedOptions#setTop(int)}.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
@@ -131,45 +141,53 @@ public class DataFeedClientTest extends DataFeedTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     void testListDataFeedFilterByCreator(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+        final AtomicReference<String> dataFeedId = new AtomicReference<>();
+        try {
+            // Arrange
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            creatDataFeedRunner(expectedDataFeed -> {
+                // Act & Assert
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
+                    expectedDataFeed.getSource(), expectedDataFeed.getGranularity(),
+                    expectedDataFeed.getSchema(), expectedDataFeed.getIngestionSettings(), expectedDataFeed.getOptions());
 
-        creatDataFeedRunner(expectedDataFeed -> {
-            // Act & Assert
-            final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
-                expectedDataFeed.getSource(), expectedDataFeed.getGranularity(),
-                expectedDataFeed.getSchema(), expectedDataFeed.getIngestionSettings(), expectedDataFeed.getOptions());
+                assertNotNull(createdDataFeed);
+                dataFeedId.set(createdDataFeed.getId());
 
-            // Act & Assert
-            client.listDataFeeds(new ListDataFeedOptions().setListDataFeedFilter(new ListDataFeedFilter()
-                .setCreator(createdDataFeed.getCreator())), Context.NONE)
-                .forEach(dataFeed -> assertEquals(createdDataFeed.getCreator(), dataFeed.getCreator()));
+                // Act & Assert
+                client.listDataFeeds(new ListDataFeedOptions()
+                        .setListDataFeedFilter(new ListDataFeedFilter()
+                        .setCreator(createdDataFeed.getCreator())),
+                    Context.NONE)
+                    .forEach(dataFeed -> assertEquals(createdDataFeed.getCreator(), dataFeed.getCreator()));
 
-            client.deleteDataFeed(createdDataFeed.getId());
-
-        }, POSTGRE_SQL_DB);
+            }, POSTGRE_SQL_DB);
+        } finally {
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
+        }
     }
 
     /**
      * Verifies the result of the list data feed method using skip and top options.
      */
-    // TODO (savaity) Need concrete list results for testing skip
-    // @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    // @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    // void testListDataFeedSkip(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-    //     // Arrange
-    //     client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
-    //     final ArrayList<DataFeed> actualDataFeedList = new ArrayList<>();
-    //     final ArrayList<DataFeed> expectedList = new ArrayList<>();
-    //
-    //     client.listDataFeeds().stream().iterator().forEachRemaining(expectedList::add);
-    //
-    //     // Act & Assert
-    //     client.listDataFeeds(new ListDataFeedOptions().setSkip(3), Context.NONE)
-    //         .stream().iterator().forEachRemaining(actualDataFeedList::add);
-    //
-    //     assertEquals(expectedList.size() - 3, actualDataFeedList.size());
-    // }
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
+    void testListDataFeedSkip(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
+        // Arrange
+        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+        final ArrayList<DataFeed> actualDataFeedList = new ArrayList<>();
+        final ArrayList<DataFeed> expectedList = new ArrayList<>();
+
+        client.listDataFeeds().stream().iterator().forEachRemaining(expectedList::add);
+
+        // Act & Assert
+        client.listDataFeeds(new ListDataFeedOptions().setSkip(3), Context.NONE)
+            .stream().iterator().forEachRemaining(actualDataFeedList::add);
+
+        assertEquals(expectedList.size(), actualDataFeedList.size() + 3);
+    }
 
     /**
      * Verifies the result of the list data feed method to filter results using
@@ -230,23 +248,35 @@ public class DataFeedClientTest extends DataFeedTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     void testListDataFeedFilterByName(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+        final AtomicReference<String> dataFeedId = new AtomicReference<>();
+        String filterName = "test_filter_by_name";
+        try {
+            // Arrange
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            creatDataFeedRunner(inputDataFeed -> {
+                final DataFeed createdDataFeed = client.createDataFeed(filterName,
+                    inputDataFeed.getSource(),
+                    inputDataFeed.getGranularity(),
+                    inputDataFeed.getSchema(),
+                    inputDataFeed.getIngestionSettings(),
+                    inputDataFeed.getOptions());
 
-        creatDataFeedRunner(inputDataFeed -> {
-            final DataFeed createdDataFeed = client.createDataFeed("test_filter_by_name",
-                inputDataFeed.getSource(), inputDataFeed.getGranularity(),
-                inputDataFeed.getSchema(), inputDataFeed.getIngestionSettings(), inputDataFeed.getOptions());
+                assertNotNull(createdDataFeed);
+                dataFeedId.set(createdDataFeed.getId());
 
-            // Act & Assert
-            client.listDataFeeds(
-                new ListDataFeedOptions().setListDataFeedFilter(new ListDataFeedFilter()
-                    .setName("test_filter_by_name")), Context.NONE)
-                .stream().iterator().forEachRemaining(dataFeed ->
-                assertEquals("test_filter_by_name", createdDataFeed.getName()));
-            client.deleteDataFeed(createdDataFeed.getId());
-        }, SQL_SERVER_DB);
-
+                // Act & Assert
+                client.listDataFeeds(
+                    new ListDataFeedOptions()
+                        .setListDataFeedFilter(new ListDataFeedFilter()
+                        .setName(filterName)), Context.NONE)
+                    .stream().iterator().forEachRemaining(dataFeed ->
+                    assertEquals(filterName, createdDataFeed.getName()));
+            }, SQL_SERVER_DB);
+        } finally {
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
+        }
     }
 
     // Get Data feed
@@ -286,21 +316,32 @@ public class DataFeedClientTest extends DataFeedTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void getDataFeedValidId(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+        final AtomicReference<String> dataFeedId = new AtomicReference<>();
+        try {
+            // Arrange
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            creatDataFeedRunner(dataFeed -> {
+                final DataFeed createdDataFeed = client.createDataFeed(dataFeed.getName(),
+                    dataFeed.getSource(),
+                    dataFeed.getGranularity(),
+                    dataFeed.getSchema(),
+                    dataFeed.getIngestionSettings(),
+                    dataFeed.getOptions());
 
-        creatDataFeedRunner(dataFeed -> {
-            final DataFeed createdDataFeed = client.createDataFeed(dataFeed.getName(),
-                dataFeed.getSource(), dataFeed.getGranularity(),
-                dataFeed.getSchema(), dataFeed.getIngestionSettings(), dataFeed.getOptions());
+                assertNotNull(createdDataFeed);
+                dataFeedId.set(createdDataFeed.getId());
 
-            // Act & Assert
-            final Response<DataFeed> dataFeedResponse =
-                client.getDataFeedWithResponse(createdDataFeed.getId(), Context.NONE);
-            assertEquals(dataFeedResponse.getStatusCode(), HttpResponseStatus.OK.code());
-            validateDataFeedResult(createdDataFeed, dataFeedResponse.getValue(), SQL_SERVER_DB);
-            client.deleteDataFeed(createdDataFeed.getId());
-        }, SQL_SERVER_DB);
+                // Act & Assert
+                final Response<DataFeed> dataFeedResponse =
+                    client.getDataFeedWithResponse(createdDataFeed.getId(), Context.NONE);
+                assertEquals(dataFeedResponse.getStatusCode(), HttpResponseStatus.OK.code());
+                validateDataFeedResult(createdDataFeed, dataFeedResponse.getValue(), SQL_SERVER_DB);
+            }, SQL_SERVER_DB);
+        } finally {
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
+        }
     }
 
     // Create data feed
@@ -311,16 +352,29 @@ public class DataFeedClientTest extends DataFeedTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void createSQLServerDataFeed(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
-        creatDataFeedRunner(expectedDataFeed -> {
-            // Act & Assert
-            final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
-                expectedDataFeed.getSource(), expectedDataFeed.getGranularity(),
-                expectedDataFeed.getSchema(), expectedDataFeed.getIngestionSettings(), expectedDataFeed.getOptions());
-            validateDataFeedResult(expectedDataFeed, createdDataFeed, SQL_SERVER_DB);
-            client.deleteDataFeed(createdDataFeed.getId());
-        }, SQL_SERVER_DB);
+        final AtomicReference<String> dataFeedId = new AtomicReference<>();
+        try {
+            // Arrange
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            creatDataFeedRunner(expectedDataFeed -> {
+                // Act & Assert
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
+                    expectedDataFeed.getSource(),
+                    expectedDataFeed.getGranularity(),
+                    expectedDataFeed.getSchema(),
+                    expectedDataFeed.getIngestionSettings(),
+                    expectedDataFeed.getOptions());
+
+                assertNotNull(createdDataFeed);
+                dataFeedId.set(createdDataFeed.getId());
+
+                validateDataFeedResult(expectedDataFeed, createdDataFeed, SQL_SERVER_DB);
+            }, SQL_SERVER_DB);
+        } finally {
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
+        }
     }
 
     /**
@@ -329,18 +383,29 @@ public class DataFeedClientTest extends DataFeedTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void createBlobDataFeed(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+        final AtomicReference<String> dataFeedId = new AtomicReference<>();
+        try {
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            // Arrange
+            creatDataFeedRunner(expectedDataFeed -> {
+                // Act & Assert
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
+                    expectedDataFeed.getSource(),
+                    expectedDataFeed.getGranularity(),
+                    expectedDataFeed.getSchema(),
+                    expectedDataFeed.getIngestionSettings(),
+                    expectedDataFeed.getOptions());
 
-        creatDataFeedRunner(expectedDataFeed -> {
-            // Act & Assert
-            final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
-                expectedDataFeed.getSource(), expectedDataFeed.getGranularity(),
-                expectedDataFeed.getSchema(), expectedDataFeed.getIngestionSettings(), expectedDataFeed.getOptions());
+                assertNotNull(createdDataFeed);
+                dataFeedId.set(createdDataFeed.getId());
 
-            validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_BLOB);
-            client.deleteDataFeed(createdDataFeed.getId());
-        }, AZURE_BLOB);
+                validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_BLOB);
+            }, AZURE_BLOB);
+        } finally {
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
+        }
     }
 
     /**
@@ -349,18 +414,30 @@ public class DataFeedClientTest extends DataFeedTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void createCosmosDataFeed(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+        final AtomicReference<String> dataFeedId = new AtomicReference<>();
+        try {
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            // Arrange
+            creatDataFeedRunner(expectedDataFeed -> {
 
-        creatDataFeedRunner(expectedDataFeed -> {
+                // Act & Assert
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
+                    expectedDataFeed.getSource(),
+                    expectedDataFeed.getGranularity(),
+                    expectedDataFeed.getSchema(),
+                    expectedDataFeed.getIngestionSettings(),
+                    expectedDataFeed.getOptions());
 
-            // Act & Assert
-            final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
-                expectedDataFeed.getSource(), expectedDataFeed.getGranularity(),
-                expectedDataFeed.getSchema(), expectedDataFeed.getIngestionSettings(), expectedDataFeed.getOptions());
-            validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_COSMOS_DB);
-            client.deleteDataFeed(createdDataFeed.getId());
-        }, AZURE_COSMOS_DB);
+                assertNotNull(createdDataFeed);
+                dataFeedId.set(createdDataFeed.getId());
+
+                validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_COSMOS_DB);
+            }, AZURE_COSMOS_DB);
+        } finally {
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
+        }
     }
 
     /**
@@ -369,18 +446,30 @@ public class DataFeedClientTest extends DataFeedTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void createAppInsightsDataFeed(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+        final AtomicReference<String> dataFeedId = new AtomicReference<>();
+        try {
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            // Arrange
+            creatDataFeedRunner(expectedDataFeed -> {
 
-        creatDataFeedRunner(expectedDataFeed -> {
+                // Act & Assert
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
+                    expectedDataFeed.getSource(),
+                    expectedDataFeed.getGranularity(),
+                    expectedDataFeed.getSchema(),
+                    expectedDataFeed.getIngestionSettings(),
+                    expectedDataFeed.getOptions());
 
-            // Act & Assert
-            final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
-                expectedDataFeed.getSource(), expectedDataFeed.getGranularity(),
-                expectedDataFeed.getSchema(), expectedDataFeed.getIngestionSettings(), expectedDataFeed.getOptions());
-            validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_APP_INSIGHTS);
-            client.deleteDataFeed(createdDataFeed.getId());
-        }, AZURE_APP_INSIGHTS);
+                assertNotNull(createdDataFeed);
+                dataFeedId.set(createdDataFeed.getId());
+
+                validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_APP_INSIGHTS);
+            }, AZURE_APP_INSIGHTS);
+        } finally {
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
+        }
     }
 
     /**
@@ -389,18 +478,29 @@ public class DataFeedClientTest extends DataFeedTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void createExplorerDataFeed(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+        final AtomicReference<String> dataFeedId = new AtomicReference<>();
+        try {
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            // Arrange
+            creatDataFeedRunner(expectedDataFeed -> {
+                // Act & Assert
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
+                    expectedDataFeed.getSource(),
+                    expectedDataFeed.getGranularity(),
+                    expectedDataFeed.getSchema(),
+                    expectedDataFeed.getIngestionSettings(),
+                    expectedDataFeed.getOptions());
 
-        creatDataFeedRunner(expectedDataFeed -> {
-            // Act & Assert
-            final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
-                expectedDataFeed.getSource(), expectedDataFeed.getGranularity(),
-                expectedDataFeed.getSchema(), expectedDataFeed.getIngestionSettings(), expectedDataFeed.getOptions());
-            validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_DATA_EXPLORER);
+                assertNotNull(createdDataFeed);
+                dataFeedId.set(createdDataFeed.getId());
 
-            client.deleteDataFeed(createdDataFeed.getId());
-        }, AZURE_DATA_EXPLORER);
+                validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_DATA_EXPLORER);
+            }, AZURE_DATA_EXPLORER);
+        } finally {
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
+        }
     }
 
     /**
@@ -409,18 +509,29 @@ public class DataFeedClientTest extends DataFeedTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void createAzureTableDataFeed(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+        final AtomicReference<String> dataFeedId = new AtomicReference<>();
+        try {
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            // Arrange
+            creatDataFeedRunner(expectedDataFeed -> {
+                // Act & Assert
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
+                    expectedDataFeed.getSource(),
+                    expectedDataFeed.getGranularity(),
+                    expectedDataFeed.getSchema(),
+                    expectedDataFeed.getIngestionSettings(),
+                    expectedDataFeed.getOptions());
 
-        creatDataFeedRunner(expectedDataFeed -> {
-            // Act & Assert
-            final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
-                expectedDataFeed.getSource(), expectedDataFeed.getGranularity(),
-                expectedDataFeed.getSchema(), expectedDataFeed.getIngestionSettings(), expectedDataFeed.getOptions());
-            validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_TABLE);
+                assertNotNull(createdDataFeed);
+                dataFeedId.set(createdDataFeed.getId());
 
-            client.deleteDataFeed(createdDataFeed.getId());
-        }, AZURE_TABLE);
+                validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_TABLE);
+            }, AZURE_TABLE);
+        } finally {
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
+        }
     }
 
     /**
@@ -429,19 +540,29 @@ public class DataFeedClientTest extends DataFeedTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void createHttpRequestDataFeed(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+        final AtomicReference<String> dataFeedId = new AtomicReference<>();
+        try {
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            // Arrange
+            creatDataFeedRunner(expectedDataFeed -> {
+                // Act & Assert
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
+                    expectedDataFeed.getSource(),
+                    expectedDataFeed.getGranularity(),
+                    expectedDataFeed.getSchema(),
+                    expectedDataFeed.getIngestionSettings(),
+                    expectedDataFeed.getOptions());
 
-        creatDataFeedRunner(expectedDataFeed -> {
+                assertNotNull(createdDataFeed);
+                dataFeedId.set(createdDataFeed.getId());
 
-            // Act & Assert
-            final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
-                expectedDataFeed.getSource(), expectedDataFeed.getGranularity(),
-                expectedDataFeed.getSchema(), expectedDataFeed.getIngestionSettings(), expectedDataFeed.getOptions());
-            validateDataFeedResult(expectedDataFeed, createdDataFeed, HTTP_REQUEST);
-
-            client.deleteDataFeed(createdDataFeed.getId());
-        }, HTTP_REQUEST);
+                validateDataFeedResult(expectedDataFeed, createdDataFeed, HTTP_REQUEST);
+            }, HTTP_REQUEST);
+        } finally {
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
+        }
     }
 
     /**
@@ -450,18 +571,29 @@ public class DataFeedClientTest extends DataFeedTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void createInfluxDataFeed(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+        final AtomicReference<String> dataFeedId = new AtomicReference<>();
+        try {
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            // Arrange
+            creatDataFeedRunner(expectedDataFeed -> {
+                // Act & Assert
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
+                    expectedDataFeed.getSource(),
+                    expectedDataFeed.getGranularity(),
+                    expectedDataFeed.getSchema(),
+                    expectedDataFeed.getIngestionSettings(),
+                    expectedDataFeed.getOptions());
 
-        creatDataFeedRunner(expectedDataFeed -> {
-            // Act & Assert
-            final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
-                expectedDataFeed.getSource(), expectedDataFeed.getGranularity(),
-                expectedDataFeed.getSchema(), expectedDataFeed.getIngestionSettings(), expectedDataFeed.getOptions());
-            validateDataFeedResult(expectedDataFeed, createdDataFeed, INFLUX_DB);
+                assertNotNull(createdDataFeed);
+                dataFeedId.set(createdDataFeed.getId());
 
-            client.deleteDataFeed(createdDataFeed.getId());
-        }, INFLUX_DB);
+                validateDataFeedResult(expectedDataFeed, createdDataFeed, INFLUX_DB);
+            }, INFLUX_DB);
+        } finally {
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
+        }
     }
 
     /**
@@ -470,18 +602,29 @@ public class DataFeedClientTest extends DataFeedTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void createMongoDBDataFeed(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+        final AtomicReference<String> dataFeedId = new AtomicReference<>();
+        try {
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            // Arrange
+            creatDataFeedRunner(expectedDataFeed -> {
+                // Act & Assert
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
+                    expectedDataFeed.getSource(),
+                    expectedDataFeed.getGranularity(),
+                    expectedDataFeed.getSchema(),
+                    expectedDataFeed.getIngestionSettings(),
+                    expectedDataFeed.getOptions());
 
-        creatDataFeedRunner(expectedDataFeed -> {
-            // Act & Assert
-            final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
-                expectedDataFeed.getSource(), expectedDataFeed.getGranularity(),
-                expectedDataFeed.getSchema(), expectedDataFeed.getIngestionSettings(), expectedDataFeed.getOptions());
-            validateDataFeedResult(expectedDataFeed, createdDataFeed, MONGO_DB);
+                assertNotNull(createdDataFeed);
+                dataFeedId.set(createdDataFeed.getId());
 
-            client.deleteDataFeed(createdDataFeed.getId());
-        }, MONGO_DB);
+                validateDataFeedResult(expectedDataFeed, createdDataFeed, MONGO_DB);
+            }, MONGO_DB);
+        } finally {
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
+        }
     }
 
     /**
@@ -490,18 +633,30 @@ public class DataFeedClientTest extends DataFeedTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void createMYSQLDataFeed(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+        final AtomicReference<String> dataFeedId = new AtomicReference<>();
+        try {
+            // Arrange
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
 
-        creatDataFeedRunner(expectedDataFeed -> {
-            // Act & Assert
-            final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
-                expectedDataFeed.getSource(), expectedDataFeed.getGranularity(),
-                expectedDataFeed.getSchema(), expectedDataFeed.getIngestionSettings(), expectedDataFeed.getOptions());
-            validateDataFeedResult(expectedDataFeed, createdDataFeed, MYSQL_DB);
+            creatDataFeedRunner(expectedDataFeed -> {
+                // Act & Assert
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
+                    expectedDataFeed.getSource(),
+                    expectedDataFeed.getGranularity(),
+                    expectedDataFeed.getSchema(),
+                    expectedDataFeed.getIngestionSettings(),
+                    expectedDataFeed.getOptions());
 
-            client.deleteDataFeed(createdDataFeed.getId());
-        }, MYSQL_DB);
+                assertNotNull(createdDataFeed);
+                dataFeedId.set(createdDataFeed.getId());
+
+                validateDataFeedResult(expectedDataFeed, createdDataFeed, MYSQL_DB);
+            }, MYSQL_DB);
+        }  finally {
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
+        }
     }
 
     /**
@@ -510,18 +665,29 @@ public class DataFeedClientTest extends DataFeedTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void createPostgreSQLDataFeed(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+        final AtomicReference<String> dataFeedId = new AtomicReference<>();
+        try {
+            // Arrange
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            creatDataFeedRunner(expectedDataFeed -> {
+                // Act & Assert
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
+                    expectedDataFeed.getSource(),
+                    expectedDataFeed.getGranularity(),
+                    expectedDataFeed.getSchema(),
+                    expectedDataFeed.getIngestionSettings(),
+                    expectedDataFeed.getOptions());
 
-        creatDataFeedRunner(expectedDataFeed -> {
-            // Act & Assert
-            final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
-                expectedDataFeed.getSource(), expectedDataFeed.getGranularity(),
-                expectedDataFeed.getSchema(), expectedDataFeed.getIngestionSettings(), expectedDataFeed.getOptions());
-            validateDataFeedResult(expectedDataFeed, createdDataFeed, POSTGRE_SQL_DB);
+                assertNotNull(createdDataFeed);
+                dataFeedId.set(createdDataFeed.getId());
 
-            client.deleteDataFeed(createdDataFeed.getId());
-        }, POSTGRE_SQL_DB);
+                validateDataFeedResult(expectedDataFeed, createdDataFeed, POSTGRE_SQL_DB);
+            }, POSTGRE_SQL_DB);
+        } finally {
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
+        }
     }
 
     /**
@@ -530,18 +696,29 @@ public class DataFeedClientTest extends DataFeedTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void createDataLakeStorageDataFeed(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+        final AtomicReference<String> dataFeedId = new AtomicReference<>();
+        try {
+            // Arrange
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            creatDataFeedRunner(expectedDataFeed -> {
+                // Act & Assert
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
+                    expectedDataFeed.getSource(),
+                    expectedDataFeed.getGranularity(),
+                    expectedDataFeed.getSchema(),
+                    expectedDataFeed.getIngestionSettings(),
+                    expectedDataFeed.getOptions());
 
-        creatDataFeedRunner(expectedDataFeed -> {
-            // Act & Assert
-            final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
-                expectedDataFeed.getSource(), expectedDataFeed.getGranularity(),
-                expectedDataFeed.getSchema(), expectedDataFeed.getIngestionSettings(), expectedDataFeed.getOptions());
-            validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_DATA_LAKE_STORAGE_GEN2);
+                assertNotNull(createdDataFeed);
+                dataFeedId.set(createdDataFeed.getId());
 
-            client.deleteDataFeed(createdDataFeed.getId());
-        }, AZURE_DATA_LAKE_STORAGE_GEN2);
+                validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_DATA_LAKE_STORAGE_GEN2);
+            }, AZURE_DATA_LAKE_STORAGE_GEN2);
+        } finally {
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
+        }
     }
 
     /**
@@ -550,18 +727,29 @@ public class DataFeedClientTest extends DataFeedTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void createElasticsearchDataFeed(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+        final AtomicReference<String> dataFeedId = new AtomicReference<>();
+        try {
+            // Arrange
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            creatDataFeedRunner(expectedDataFeed -> {
+                // Act & Assert
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
+                    expectedDataFeed.getSource(),
+                    expectedDataFeed.getGranularity(),
+                    expectedDataFeed.getSchema(),
+                    expectedDataFeed.getIngestionSettings(),
+                    expectedDataFeed.getOptions());
 
-        creatDataFeedRunner(expectedDataFeed -> {
-            // Act & Assert
-            final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
-                expectedDataFeed.getSource(), expectedDataFeed.getGranularity(),
-                expectedDataFeed.getSchema(), expectedDataFeed.getIngestionSettings(), expectedDataFeed.getOptions());
-            validateDataFeedResult(expectedDataFeed, createdDataFeed, ELASTIC_SEARCH);
+                assertNotNull(createdDataFeed);
+                dataFeedId.set(createdDataFeed.getId());
 
-            client.deleteDataFeed(createdDataFeed.getId());
-        }, ELASTIC_SEARCH);
+                validateDataFeedResult(expectedDataFeed, createdDataFeed, ELASTIC_SEARCH);
+            }, ELASTIC_SEARCH);
+        } finally {
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
+        }
     }
 
     /**
@@ -630,16 +818,19 @@ public class DataFeedClientTest extends DataFeedTestBase {
         client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
         creatDataFeedRunner(dataFeed -> {
             final DataFeed createdDataFeed = client.createDataFeed(dataFeed.getName(),
-                dataFeed.getSource(), dataFeed.getGranularity(),
-                dataFeed.getSchema(), dataFeed.getIngestionSettings(), dataFeed.getOptions());
+                dataFeed.getSource(),
+                dataFeed.getGranularity(),
+                dataFeed.getSchema(),
+                dataFeed.getIngestionSettings(),
+                dataFeed.getOptions());
 
             assertEquals(HttpResponseStatus.NO_CONTENT.code(),
                 client.deleteDataFeedWithResponse(createdDataFeed.getId(), Context.NONE).getStatusCode());
 
             // Act & Assert
-            Exception exception = assertThrows(ErrorCodeException.class, () ->
+            ErrorCodeException exception = assertThrows(ErrorCodeException.class, () ->
                 client.getDataFeedWithResponse(createdDataFeed.getId(), Context.NONE));
-            final ErrorCode errorCode = ((ErrorCodeException) exception).getValue();
+            final ErrorCode errorCode = exception.getValue();
             assertEquals(errorCode.getCode(), "ERROR_INVALID_PARAMETER");
             assertEquals(errorCode.getMessage(), "datafeedId is invalid.");
         }, SQL_SERVER_DB);
@@ -653,17 +844,31 @@ public class DataFeedClientTest extends DataFeedTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void updateDataFeedHappyPath(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
-        creatDataFeedRunner(expectedDataFeed -> {
-            final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
-                expectedDataFeed.getSource(), expectedDataFeed.getGranularity(),
-                expectedDataFeed.getSchema(), expectedDataFeed.getIngestionSettings(), expectedDataFeed.getOptions());
-            // Act & Assert
-            final DataFeed updatedDataFeed = client.updateDataFeed(createdDataFeed.setName("test_updated_dataFeed_name"));
-            assertEquals("test_updated_dataFeed_name", updatedDataFeed.getName());
-            validateDataFeedResult(expectedDataFeed, updatedDataFeed, SQL_SERVER_DB);
-            client.deleteDataFeed(createdDataFeed.getId());
-        }, SQL_SERVER_DB);
+        final AtomicReference<String> dataFeedId = new AtomicReference<>();
+        try {
+            String updatedName = "test_updated_dataFeed_name";
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            // Arrange
+            creatDataFeedRunner(expectedDataFeed -> {
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
+                    expectedDataFeed.getSource(),
+                    expectedDataFeed.getGranularity(),
+                    expectedDataFeed.getSchema(),
+                    expectedDataFeed.getIngestionSettings(),
+                    expectedDataFeed.getOptions());
+
+                assertNotNull(createdDataFeed);
+                dataFeedId.set(createdDataFeed.getId());
+
+                // Act & Assert
+                final DataFeed updatedDataFeed = client.updateDataFeed(createdDataFeed.setName(updatedName));
+                assertEquals(updatedName, updatedDataFeed.getName());
+                validateDataFeedResult(expectedDataFeed, updatedDataFeed, SQL_SERVER_DB);
+            }, SQL_SERVER_DB);
+        } finally {
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
+        }
     }
 }

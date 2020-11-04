@@ -169,7 +169,7 @@ public class RecordingRedactorTests {
             Arguments.of(USERNAME_RESPONSE_BODY, REDACTED_USERNAME_RESPONSE),
             Arguments.of(REDACTED_EMPTY_KEY_RESPONSE_BODY, EMPTY_KEY_RESPONSE_BODY),
             Arguments.of(NON_SENSITIVE_DATA_CONTENT, NON_SENSITIVE_DATA_CONTENT)
-            );
+        );
     }
 
 

@@ -71,10 +71,10 @@ class ServiceBusSessionManager implements AutoCloseable {
      * SessionId to receiver mapping.
      */
     private final ConcurrentHashMap<String, ServiceBusSessionReceiver> sessionReceivers = new ConcurrentHashMap<>();
-    private final EmitterProcessor<Flux<ServiceBusReceivedMessageContext>> processor;
-    private final FluxSink<Flux<ServiceBusReceivedMessageContext>> sessionReceiveSink;
+    private final EmitterProcessor<Flux<ServiceBusMessageContext>> processor;
+    private final FluxSink<Flux<ServiceBusMessageContext>> sessionReceiveSink;
 
-    private volatile Flux<ServiceBusReceivedMessageContext> receiveFlux;
+    private volatile Flux<ServiceBusMessageContext> receiveFlux;
 
     ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
         ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
@@ -149,7 +149,7 @@ class ServiceBusSessionManager implements AutoCloseable {
      *
      * @return A Flux of messages merged from different sessions.
      */
-    Flux<ServiceBusReceivedMessageContext> receive() {
+    Flux<ServiceBusMessageContext> receive() {
         if (!isStarted.getAndSet(true)) {
             this.sessionReceiveSink.onRequest(this::onSessionRequest);
 
@@ -292,7 +292,7 @@ class ServiceBusSessionManager implements AutoCloseable {
      * @param disposeOnIdle true to dispose receiver when it idles; false otherwise.
      * @return A Mono that completes with an unnamed session receiver.
      */
-    private Flux<ServiceBusReceivedMessageContext> getSession(Scheduler scheduler, boolean disposeOnIdle) {
+    private Flux<ServiceBusMessageContext> getSession(Scheduler scheduler, boolean disposeOnIdle) {
         return getActiveLink().flatMap(link -> link.getSessionId()
             .map(sessionId -> sessionReceivers.compute(sessionId, (key, existing) -> {
                 if (existing != null) {
@@ -340,7 +340,7 @@ class ServiceBusSessionManager implements AutoCloseable {
                 return;
             }
 
-            Flux<ServiceBusReceivedMessageContext> session = getSession(scheduler, true);
+            Flux<ServiceBusMessageContext> session = getSession(scheduler, true);
 
             sessionReceiveSink.next(session);
         }
