@@ -216,6 +216,7 @@ public final class TableBatch {
      * @throws TableServiceErrorException if any operation within the batch fails. See the documentation for the client
      *                                    methods in {@link TableClient} to understand the conditions that may cause a
      *                                    given operation to fail.
+     * @throws IllegalStateException if no operations have been added to the batch.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<BatchOperationResponse> submitTransaction() {
@@ -231,6 +232,7 @@ public final class TableBatch {
      * @throws TableServiceErrorException if any operation within the batch fails. See the documentation for the client
      *                                    methods in {@link TableClient} to understand the conditions that may cause a
      *                                    given operation to fail.
+     * @throws IllegalStateException if no operations have been added to the batch.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<BatchOperationResponse> submitTransaction(Duration timeout) {
@@ -248,6 +250,7 @@ public final class TableBatch {
      * @throws TableServiceErrorException if any operation within the batch fails. See the documentation for the client
      *                                    methods in {@link TableClient} to understand the conditions that may cause a
      *                                    given operation to fail.
+     * @throws IllegalStateException if no operations have been added to the batch.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<BatchOperationResponse>> submitTransactionWithResponse(Duration timeout, Context context) {

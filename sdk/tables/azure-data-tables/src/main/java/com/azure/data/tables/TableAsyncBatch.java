@@ -243,6 +243,7 @@ public final class TableAsyncBatch {
      * @throws TableServiceErrorException if any operation within the batch fails. See the documentation for the client
      *                                    methods in {@link TableAsyncClient} to understand the conditions that may
      *                                    cause a given operation to fail.
+     * @throws IllegalStateException if no operations have been added to the batch.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public synchronized Mono<List<BatchOperationResponse>> submitTransaction() {
@@ -258,6 +259,7 @@ public final class TableAsyncBatch {
      * @throws TableServiceErrorException if any operation within the batch fails. See the documentation for the client
      *                                    methods in {@link TableAsyncClient} to understand the conditions that may
      *                                    cause a given operation to fail.
+     * @throws IllegalStateException if no operations have been added to the batch.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public synchronized Mono<Response<List<BatchOperationResponse>>> submitTransactionWithResponse() {
@@ -267,6 +269,10 @@ public final class TableAsyncBatch {
     synchronized Mono<Response<List<BatchOperationResponse>>> submitTransactionWithResponse(Context context) {
         this.frozen = true;
         context = context == null ? Context.NONE : context;
+
+        if (operations.size() == 0) {
+            throw logger.logExceptionAsError(new IllegalStateException("A batch must contain at least one operation."));
+        }
 
         final BatchRequestBody body = new BatchRequestBody();
         Flux.fromIterable(operations)
