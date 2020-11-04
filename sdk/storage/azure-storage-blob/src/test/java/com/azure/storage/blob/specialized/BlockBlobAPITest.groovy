@@ -25,6 +25,7 @@ import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.blob.options.BlobUploadFromUrlOptions
 import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions
 import com.azure.storage.blob.options.BlockBlobListBlocksOptions
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions
@@ -1998,5 +1999,69 @@ class BlockBlobAPITest extends APISpec {
         blockBlobItem.ETag != null
         blockBlobItem.lastModified != null
         os.toByteArray() == defaultData.array()
+    }
+
+    def "Upload from Url overwrite fails on existing blob"() {
+        setup:
+        def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
+        sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
+        def sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)))
+        blobClient.upload(new ByteArrayInputStream(), 0, true)
+
+        when:
+        blobClient.uploadFromUrl(sourceBlob.getBlobUrl() + "?" + sas, false)
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.BLOB_ALREADY_EXISTS
+
+        when:
+        blobClient.uploadFromUrl(sourceBlob.getBlobUrl() + "?" + sas)
+
+        then:
+        e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.BLOB_ALREADY_EXISTS
+    }
+
+    def "Upload from Url max"() {
+        setup:
+        def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
+        sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
+        sourceBlob.setHttpHeaders(new BlobHttpHeaders().setContentLanguage("en-GB"))
+        def sourceProperties = sourceBlob.getProperties()
+        def sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)))
+        blobClient.upload(new ByteArrayInputStream(), 0, true)
+        def destinationPropertiesBefore = blobClient.getProperties()
+
+        when:
+        def options = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas)
+            .setContentMd5(sourceProperties.getContentMd5())
+            .setCopySourceBlobProperties(true)
+            .setMetadata(Collections.singletonMap("newkey", "newvalue"))
+            .setDestinationRequestConditions(new BlobRequestConditions().setIfMatch(destinationPropertiesBefore.getETag()))
+            .setSourceRequestConditions(new BlobRequestConditions().setIfMatch(sourceProperties.getETag()))
+            .setHeaders(new BlobHttpHeaders().setContentType("text"))
+            .setTier(AccessTier.COOL)
+        def response = blobClient.uploadFromUrlWithResponse(options, null, null)
+        def destinationProperties = blobClient.getProperties()
+        def os = new ByteArrayOutputStream()
+        blobClient.download(os)
+
+        then:
+        notThrown(BlobStorageException)
+        response != null
+        response.request != null
+        response.headers != null
+        def blockBlobItem = response.value
+        blockBlobItem != null
+        blockBlobItem.ETag != null
+        blockBlobItem.lastModified != null
+        os.toByteArray() == defaultData.array()
+        destinationProperties.getMetadata().get("newkey") == "newvalue"
+        destinationProperties.getContentLanguage() == "en-GB"
+        destinationProperties.getContentType() == "text"
+        destinationProperties.getAccessTier() == AccessTier.COOL
     }
 }
