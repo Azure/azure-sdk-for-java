@@ -32,13 +32,16 @@ baseCommand = 'mvn clean install -f pom.xml -pl "{}" -am {}'
 xmlNamespace = '{http://maven.apache.org/POM/4.0.0}'
 
 def getArtifactsFromPOM(pomPath: str, artifacts: list, debug: bool):
+    # Skip files that don't exist as there still may be artifacts to build.
     if not os.path.exists(pomPath):
-        if debug:
-            print("POM {} doesn't exist, skipping".format(pomPath))
+        print("POM {} doesn't exist, skipping".format(pomPath))
         return
 
+    # Turn the POM into an XML tree so we can walk it.
     tree = ET.parse(pomPath)
     modulesElement = tree.getroot().find(xmlNamespace + 'modules')
+
+    # If the POM has a <modules> tag assume that it is an aggregate POM.
     if modulesElement != None:
         pomBasedir = os.path.dirname(pomPath)
         for modulePomElement in modulesElement.iterfind(xmlNamespace + 'module'):
@@ -50,6 +53,7 @@ def getArtifactsFromPOM(pomPath: str, artifacts: list, debug: bool):
 
             getArtifactsFromPOM(modulePomPath, artifacts, debug)
 
+    # Otherwise grab its groupId and artifactId to determine the artifact identifier.
     else:
         groupId = tree.getroot().findtext(xmlNamespace + "groupId")
         artifactId = tree.getroot().findtext(xmlNamespace + "artifactId")
@@ -85,6 +89,10 @@ def main():
     if args.artifacts != None:
         buildArtifacts.extend(args.artifacts.split(','))
 
+    # If all passed POMs are invalid fail.
+    if buildArtifacts.count == 0:
+        raise ValueError('No build artifacts found.')
+
     skipArguments = []
     if args.skip_tests:
         skipArguments.append('-DskipTests')
@@ -105,7 +113,7 @@ def main():
 
     print('Running Maven command: {}'.format(mavenCommand))
 
-    os.system('cmd /c {}'.format(mavenCommand))
+    os.system(mavenCommand)
 
 if __name__ == '__main__':
     main()
