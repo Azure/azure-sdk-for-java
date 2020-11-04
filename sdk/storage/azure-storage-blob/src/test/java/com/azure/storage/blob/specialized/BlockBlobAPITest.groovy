@@ -2112,6 +2112,6 @@ class BlockBlobAPITest extends APISpec {
         new BlobRequestConditions().setIfNoneMatch("*") | BlobErrorCode.BLOB_ALREADY_EXISTS
         new BlobRequestConditions().setIfModifiedSince(OffsetDateTime.now().plusSeconds(10)) | BlobErrorCode.CONDITION_NOT_MET
         new BlobRequestConditions().setIfUnmodifiedSince(OffsetDateTime.now().minusDays(1)) | BlobErrorCode.CONDITION_NOT_MET
-        new BlobRequestConditions().setLeaseId(UUID.randomUUID().toString())| BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
+        new BlobRequestConditions().setLeaseId("9260fd2d-34c1-42b5-9217-8fb7c6484bfb")| BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
     }
 }
