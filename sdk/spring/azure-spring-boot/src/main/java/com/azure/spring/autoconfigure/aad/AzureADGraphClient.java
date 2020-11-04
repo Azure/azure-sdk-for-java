@@ -141,8 +141,9 @@ public class AzureADGraphClient {
      * @return rest url
      */
     private String getAadMembershipRestUri() {
-        if (AADAuthenticationProperties.getDefaultGroupRelationship()
-                                       .equalsIgnoreCase(aadAuthenticationProperties.getGroupRelationship())) {
+        if (AADAuthenticationProperties.getDirectGroupRelationship()
+                                       .equalsIgnoreCase(aadAuthenticationProperties
+                                           .getUserGroup().getGroupRelationship())) {
             return serviceEndpoints.getAadMembershipRestUri();
         } else {
             return serviceEndpoints.getAadTransitiveMemberRestUri();

@@ -84,7 +84,7 @@ public class UserPrincipalMicrosoftGraphTest {
 
     @Test
     public void getAuthoritiesByUserGroups() throws Exception {
-        aadAuthenticationProperties.setGroupRelationship("direct");
+        aadAuthenticationProperties.getUserGroup().setGroupRelationship("direct");
         aadAuthenticationProperties.getUserGroup().setAllowedGroups(Collections.singletonList("group1"));
         serviceEndpointsProperties.getServiceEndpoints("global-v2-graph")
                                   .setAadMembershipRestUri("http://localhost:9519/memberOf");
@@ -109,7 +109,7 @@ public class UserPrincipalMicrosoftGraphTest {
 
     @Test
     public void getDirectGroups() throws Exception {
-        aadAuthenticationProperties.setGroupRelationship("direct");
+        aadAuthenticationProperties.getUserGroup().setGroupRelationship("direct");
         AADAuthenticationProperties.UserGroupProperties userGroupProperties = aadAuthenticationProperties.getUserGroup();
         userGroupProperties.setAllowedGroups(Arrays.asList("group1", "group2", "group3"));
         aadAuthenticationProperties.setUserGroup(userGroupProperties);
@@ -137,7 +137,7 @@ public class UserPrincipalMicrosoftGraphTest {
 
     @Test
     public void getTransitiveGroups() throws Exception {
-        aadAuthenticationProperties.setGroupRelationship("transitive");
+        aadAuthenticationProperties.getUserGroup().setGroupRelationship("transitive");
         AADAuthenticationProperties.UserGroupProperties userGroupProperties = aadAuthenticationProperties.getUserGroup();
         userGroupProperties.setAllowedGroups(Arrays.asList("group1", "group2", "group3"));
         aadAuthenticationProperties.setUserGroup(userGroupProperties);

@@ -35,7 +35,7 @@ The authorization flow is composed of 3 phrases:
 * Evaluate the permission based on membership info to grant or deny access
 
 ### Group membership
-The way to obtain group relationship.
+The way to obtain group relationship that will determine which graph api will be used. You can change it using the `azure.activedirectory.user-group.group-relationship` configuration.
 * **direct**: the default value, get groups that the user is a direct member of. For details, see [list memberOf][graph-api-list-member-of] api.
 * **transitive**: Get groups that the user is a member of, and will also return all groups the user is a nested member of. For details, see [list transitive memberOf][graph-api-list-transitive-member-of] api.
 
