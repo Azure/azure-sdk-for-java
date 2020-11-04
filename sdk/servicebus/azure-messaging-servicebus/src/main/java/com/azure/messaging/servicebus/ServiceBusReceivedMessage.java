@@ -55,7 +55,7 @@ public final class ServiceBusReceivedMessage {
         amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(body.toBytes())));
     }
 
-    public ServiceBusReceivedMessage(byte[] body) {
+    ServiceBusReceivedMessage(byte[] body) {
         this(BinaryData.fromBytes(body));
     }
 
