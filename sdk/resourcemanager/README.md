@@ -80,7 +80,7 @@ With above configuration, `azure` client can be authenticated by following code:
 ```java
 AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
-    .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+    .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
     .build();
 AzureResourceManager azure = AzureResourceManager
     .authenticate(credential, profile)
