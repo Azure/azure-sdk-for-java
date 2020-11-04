@@ -122,14 +122,14 @@
                     </rules>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.revapi</groupId>
-                <artifactId>revapi-maven-plugin</artifactId>
-                <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.revapi</groupId>-->
+<!--                <artifactId>revapi-maven-plugin</artifactId>-->
+<!--                <version>0.11.2</version> &lt;!&ndash; {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} &ndash;&gt;-->
+<!--                <configuration>-->
+<!--                    <skip>true</skip>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
         </plugins>
     </build>
     <dependencies>
