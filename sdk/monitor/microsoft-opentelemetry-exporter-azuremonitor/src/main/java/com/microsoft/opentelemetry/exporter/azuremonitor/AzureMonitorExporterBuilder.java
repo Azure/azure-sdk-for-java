@@ -20,6 +20,7 @@ import io.opentelemetry.sdk.trace.export.SpanExporter;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -134,13 +135,28 @@ public final class AzureMonitorExporterBuilder {
     }
 
     /**
-     * Sets the instrumentation key to use for exporting telemetry events to Azure Monitor.
-     * @param instrumentationKey The instrumentation key of the Azure Monitor resource.
+     * The connection string to use for exporting telemetry events to Azure Monitor.
+     * @param connectionString The connection string for the Azure Monitor resource.
      * @return The updated {@link AzureMonitorExporterBuilder} object.
+     * @throws NullPointerException If the connection string is {@code null}.
+     * @throws IllegalArgumentException If the connection string is invalid.
      */
-    public AzureMonitorExporterBuilder instrumentationKey(String instrumentationKey) {
-        this.instrumentationKey = instrumentationKey;
+    public AzureMonitorExporterBuilder connectionString(String connectionString) {
+        this.instrumentationKey = extractInstrumentationKey(connectionString);
         return this;
+    }
+
+    private String extractInstrumentationKey(String connectionString) {
+        Objects.requireNonNull(connectionString);
+
+        return Arrays.stream(connectionString.split(";"))
+            .filter(keyValue -> {
+                String[] keyValuePair = keyValue.split("=");
+                return keyValuePair.length == 2 && keyValuePair[0].equalsIgnoreCase("InstrumentationKey");
+            })
+            .map(instrumentationKeyValue -> instrumentationKeyValue.split("=")[1])
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("'InstrumentationKey' not found in connectionString"));
     }
 
     /**
