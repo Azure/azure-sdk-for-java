@@ -265,12 +265,12 @@ public final class BlobSasPermission {
             builder.append('x');
         }
 
-        if (this.tagsPermission) {
-            builder.append('t');
-        }
-
         if (this.permanentlyDeleteBlobVersionOrSnapshot) {
             builder.append('y');
+        }
+
+        if (this.tagsPermission) {
+            builder.append('t');
         }
 
         return builder.toString();

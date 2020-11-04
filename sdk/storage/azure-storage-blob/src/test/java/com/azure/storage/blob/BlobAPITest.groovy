@@ -24,6 +24,7 @@ import com.azure.storage.blob.models.DeleteSnapshotsOptionType
 import com.azure.storage.blob.models.DownloadRetryOptions
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.LeaseStatusType
+import com.azure.storage.blob.models.ListBlobsOptions
 import com.azure.storage.blob.models.ObjectReplicationPolicy
 import com.azure.storage.blob.models.ObjectReplicationStatus
 import com.azure.storage.blob.models.ParallelTransferOptions

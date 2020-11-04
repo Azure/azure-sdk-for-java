@@ -91,24 +91,26 @@ class SasModelsTest extends Specification {
             .setDeleteVersionPermission(deleteVersion)
             .setTagsPermission(tags)
             .setFilterTagsPermission(filterTags)
+            .setPermanentlyDeleteVersionOrSnapshot(permanentDelete)
 
         expect:
         perms.toString() == expectedString
 
         where:
-        read  | write | delete | list  | add   | create | update | process | deleteVersion | tags  | filterTags || expectedString
-        true  | false | false  | false | false | false  | false  | false   | false         | false | false      || "r"
-        false | true  | false  | false | false | false  | false  | false   | false         | false | false      || "w"
-        false | false | true   | false | false | false  | false  | false   | false         | false | false      || "d"
-        false | false | false  | true  | false | false  | false  | false   | false         | false | false      || "l"
-        false | false | false  | false | true  | false  | false  | false   | false         | false | false      || "a"
-        false | false | false  | false | false | true   | false  | false   | false         | false | false      || "c"
-        false | false | false  | false | false | false  | true   | false   | false         | false | false      || "u"
-        false | false | false  | false | false | false  | false  | true    | false         | false | false      || "p"
-        false | false | false  | false | false | false  | false  | false   | true          | false | false      || "x"
-        false | false | false  | false | false | false  | false  | false   | false         | true  | false      || "t"
-        false | false | false  | false | false | false  | false  | false   | false         | false | true       || "f"
-        true  | true  | true   | true  | true  | true   | true   | true    | true          | true  | true       || "rwdxlacuptf"
+        read  | write | delete | list  | add   | create | update | process | deleteVersion | tags  | filterTags | permanentDelete || expectedString
+        true  | false | false  | false | false | false  | false  | false   | false         | false | false      | false           || "r"
+        false | true  | false  | false | false | false  | false  | false   | false         | false | false      | false           || "w"
+        false | false | true   | false | false | false  | false  | false   | false         | false | false      | false           || "d"
+        false | false | false  | true  | false | false  | false  | false   | false         | false | false      | false           || "l"
+        false | false | false  | false | true  | false  | false  | false   | false         | false | false      | false           || "a"
+        false | false | false  | false | false | true   | false  | false   | false         | false | false      | false           || "c"
+        false | false | false  | false | false | false  | true   | false   | false         | false | false      | false           || "u"
+        false | false | false  | false | false | false  | false  | true    | false         | false | false      | false           || "p"
+        false | false | false  | false | false | false  | false  | false   | true          | false | false      | false           || "x"
+        false | false | false  | false | false | false  | false  | false   | false         | true  | false      | false           || "t"
+        false | false | false  | false | false | false  | false  | false   | false         | false | true       | false           || "f"
+        false | false | false  | false | false | false  | false  | false   | false         | false | false      | true            || "y"
+        true  | true  | true   | true  | true  | true   | true   | true    | true          | true  | true       | true            || "rwdxylacuptf"
     }
 
     @Unroll
@@ -128,22 +130,24 @@ class SasModelsTest extends Specification {
         perms.hasDeleteVersionPermission() == deleteVersion
         perms.hasTagsPermission() == tags
         perms.hasFilterTagsPermission() == filterTags
+        perms.hasPermanentlyDeleteVersionOrSnapshotPermission() == permanentDelete
 
         where:
-        permString    || read  | write | delete | list  | add   | create | update | process | deleteVersion | tags  | filterTags
-        "r"           || true  | false | false  | false | false | false  | false  | false   | false         | false | false
-        "w"           || false | true  | false  | false | false | false  | false  | false   | false         | false | false
-        "d"           || false | false | true   | false | false | false  | false  | false   | false         | false | false
-        "l"           || false | false | false  | true  | false | false  | false  | false   | false         | false | false
-        "a"           || false | false | false  | false | true  | false  | false  | false   | false         | false | false
-        "c"           || false | false | false  | false | false | true   | false  | false   | false         | false | false
-        "u"           || false | false | false  | false | false | false  | true   | false   | false         | false | false
-        "p"           || false | false | false  | false | false | false  | false  | true    | false         | false | false
-        "x"           || false | false | false  | false | false | false  | false  | false   | true          | false | false
-        "t"           || false | false | false  | false | false | false  | false  | false   | false         | true  | false
-        "f"           || false | false | false  | false | false | false  | false  | false   | false         | false | true
-        "rwdxlacuptf" || true  | true  | true   | true  | true  | true   | true   | true    | true          | true  | true
-        "lwfrutpcaxd" || true  | true  | true   | true  | true  | true   | true   | true    | true          | true  | true
+        permString     || read  | write | delete | list  | add   | create | update | process | deleteVersion | tags  | filterTags | permanentDelete
+        "r"            || true  | false | false  | false | false | false  | false  | false   | false         | false | false      | false
+        "w"            || false | true  | false  | false | false | false  | false  | false   | false         | false | false      | false
+        "d"            || false | false | true   | false | false | false  | false  | false   | false         | false | false      | false
+        "l"            || false | false | false  | true  | false | false  | false  | false   | false         | false | false      | false
+        "a"            || false | false | false  | false | true  | false  | false  | false   | false         | false | false      | false
+        "c"            || false | false | false  | false | false | true   | false  | false   | false         | false | false      | false
+        "u"            || false | false | false  | false | false | false  | true   | false   | false         | false | false      | false
+        "p"            || false | false | false  | false | false | false  | false  | true    | false         | false | false      | false
+        "x"            || false | false | false  | false | false | false  | false  | false   | true          | false | false      | false
+        "t"            || false | false | false  | false | false | false  | false  | false   | false         | true  | false      | false
+        "f"            || false | false | false  | false | false | false  | false  | false   | false         | false | true       | false
+        "y"            || false | false | false  | false | false | false  | false  | false   | false         | false | false      | true
+        "rwdxylacuptf" || true  | true  | true   | true  | true  | true   | true   | true    | true          | true  | true       | true
+        "lwfrutpycaxd" || true  | true  | true   | true  | true  | true   | true   | true    | true          | true  | true       | true
     }
 
     def "AccountSASPermissions parse IA"() {

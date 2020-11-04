@@ -45,6 +45,8 @@ public final class AccountSasPermission {
 
     private boolean filterTagsPermission;
 
+    private boolean permanentlyDeleteBlobVersionOrSnapshot;
+
     /**
      * Initializes an {@link AccountSasPermission} object with all fields set to false.
      */
@@ -100,6 +102,9 @@ public final class AccountSasPermission {
                     break;
                 case 'f':
                     permissions.filterTagsPermission = true;
+                    break;
+                case 'y':
+                    permissions.permanentlyDeleteBlobVersionOrSnapshot = true;
                     break;
                 default:
                     throw new IllegalArgumentException(
@@ -324,6 +329,24 @@ public final class AccountSasPermission {
     }
 
     /**
+     * @return the permanently delete version or snapshot permission status.
+     */
+    public boolean hasPermanentlyDeleteVersionOrSnapshotPermission() {
+        return permanentlyDeleteBlobVersionOrSnapshot;
+    }
+
+    /**
+     * Sets the permanently delete version or snapshot permission status.
+     *
+     * @param hasPermanentlyDeleteVersionOrSnapshot Permission status to set
+     * @return the updated BlobSasPermission object.
+     */
+    public AccountSasPermission setPermanentlyDeleteVersionOrSnapshot(boolean hasPermanentlyDeleteVersionOrSnapshot) {
+        this.permanentlyDeleteBlobVersionOrSnapshot = hasPermanentlyDeleteVersionOrSnapshot;
+        return this;
+    }
+
+    /**
      * Converts the given permissions to a {@link String}. Using this method will guarantee the permissions are in an
      * order accepted by the service.
      *
@@ -349,6 +372,10 @@ public final class AccountSasPermission {
 
         if (this.deleteVersionPermission) {
             builder.append('x');
+        }
+
+        if (this.permanentlyDeleteBlobVersionOrSnapshot) {
+            builder.append('y');
         }
 
         if (this.listPermission) {

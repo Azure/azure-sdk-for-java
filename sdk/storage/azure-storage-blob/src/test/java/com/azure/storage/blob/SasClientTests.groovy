@@ -74,7 +74,7 @@ class SasClientTests extends APISpec {
         setup:
         def identifier = new BlobSignedIdentifier()
             .setId("0000")
-            .setAccessPolicy(new BlobAccessPolicy().setPermissions("racwdl")
+            .setAccessPolicy(new BlobAccessPolicy().setPermissions("racwdyl")
                 .setExpiresOn(getUTCNow().plusDays(1)))
         cc.setAccessPolicy(null, Arrays.asList(identifier))
 
@@ -86,7 +86,7 @@ class SasClientTests extends APISpec {
             .setCreatePermission(true)
             .setDeletePermission(true)
             .setAddPermission(true)
-            .setListPermission(true)
+            .setPermanentlyDeleteVersionOrSnapshot(true)
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
@@ -113,6 +113,7 @@ class SasClientTests extends APISpec {
             .setCreatePermission(true)
             .setDeletePermission(true)
             .setAddPermission(true)
+            .setPermanentlyDeleteVersionOrSnapshot(true)
 
         def sasValues = generateValues(permissions)
 
@@ -526,6 +527,30 @@ class SasClientTests extends APISpec {
 
         then:
         notThrown(BlobStorageException)
+    }
+
+    def "blob sas permanent delete"() {
+
+    }
+
+    def "blob sas permanent delete fail"() {
+
+    }
+
+    def "container sas permanent delete"() {
+
+    }
+
+    def "container sas permanent delete fail"() {
+
+    }
+
+    def "account sas permanent delete"() {
+
+    }
+
+    def "account sas permanent delete fail"() {
+
     }
 
     def "account sas on endpoint"() {

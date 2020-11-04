@@ -408,6 +408,7 @@ class ServiceAPITest extends APISpec {
 
             received.getDeleteRetentionPolicy().isEnabled() == sent.getDeleteRetentionPolicy().isEnabled() &&
             received.getDeleteRetentionPolicy().getDays() == sent.getDeleteRetentionPolicy().getDays() &&
+            received.getDeleteRetentionPolicy().isAllowPermanentDelete() == sent.getDeleteRetentionPolicy().isAllowPermanentDelete() &&
 
             received.getStaticWebsite().isEnabled() == sent.getStaticWebsite().isEnabled() &&
             received.getStaticWebsite().getIndexDocument() == sent.getStaticWebsite().getIndexDocument() &&
@@ -417,6 +418,7 @@ class ServiceAPITest extends APISpec {
     def "Set get properties"() {
         when:
         def retentionPolicy = new BlobRetentionPolicy().setDays(5).setEnabled(true)
+        def deleteRetentionPolicy = new BlobRetentionPolicy().setDays(5).setEnabled(true).setAllowPermanentDelete(true)
         def logging = new BlobAnalyticsLogging().setRead(true).setVersion("1.0")
             .setRetentionPolicy(retentionPolicy)
         def corsRules = new ArrayList<BlobCorsRule>()
@@ -437,7 +439,7 @@ class ServiceAPITest extends APISpec {
         def sentProperties = new BlobServiceProperties()
             .setLogging(logging).setCors(corsRules).setDefaultServiceVersion(defaultServiceVersion)
             .setMinuteMetrics(minuteMetrics).setHourMetrics(hourMetrics)
-            .setDeleteRetentionPolicy(retentionPolicy)
+            .setDeleteRetentionPolicy(deleteRetentionPolicy)
             .setStaticWebsite(website)
 
         def headers = primaryBlobServiceClient.setPropertiesWithResponse(sentProperties, null, null).getHeaders()
@@ -458,6 +460,7 @@ class ServiceAPITest extends APISpec {
     def "Set props min"() {
         setup:
         def retentionPolicy = new BlobRetentionPolicy().setDays(5).setEnabled(true)
+        def deleteRetentionPolicy = new BlobRetentionPolicy().setDays(5).setEnabled(true).setAllowPermanentDelete(true)
         def logging = new BlobAnalyticsLogging().setRead(true).setVersion("1.0")
             .setRetentionPolicy(retentionPolicy)
         def corsRules = new ArrayList<BlobCorsRule>()
@@ -478,7 +481,7 @@ class ServiceAPITest extends APISpec {
         def sentProperties = new BlobServiceProperties()
             .setLogging(logging).setCors(corsRules).setDefaultServiceVersion(defaultServiceVersion)
             .setMinuteMetrics(minuteMetrics).setHourMetrics(hourMetrics)
-            .setDeleteRetentionPolicy(retentionPolicy)
+            .setDeleteRetentionPolicy(deleteRetentionPolicy)
             .setStaticWebsite(website)
 
         expect:

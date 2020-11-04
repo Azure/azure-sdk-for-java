@@ -31,6 +31,8 @@ public final class BlobContainerSasPermission {
 
     private boolean tagsPermission;
 
+    private boolean permanentlyDeleteBlobVersionOrSnapshot;
+
     /**
      * Initializes an {@code BlobContainerSasPermission} object with all fields set to false.
      */
@@ -74,6 +76,9 @@ public final class BlobContainerSasPermission {
                     break;
                 case 't':
                     permissions.tagsPermission = true;
+                    break;
+                case 'y':
+                    permissions.permanentlyDeleteBlobVersionOrSnapshot = true;
                     break;
                 default:
                     throw new IllegalArgumentException(
@@ -229,6 +234,24 @@ public final class BlobContainerSasPermission {
     }
 
     /**
+     * @return the permanently delete version or snapshot permission status.
+     */
+    public boolean hasPermanentlyDeleteVersionOrSnapshotPermission() {
+        return permanentlyDeleteBlobVersionOrSnapshot;
+    }
+
+    /**
+     * Sets the permanently delete version or snapshot permission status.
+     *
+     * @param hasPermanentlyDeleteVersionOrSnapshot Permission status to set
+     * @return the updated BlobSasPermission object.
+     */
+    public BlobContainerSasPermission setPermanentlyDeleteVersionOrSnapshot(boolean hasPermanentlyDeleteVersionOrSnapshot) {
+        this.permanentlyDeleteBlobVersionOrSnapshot = hasPermanentlyDeleteVersionOrSnapshot;
+        return this;
+    }
+
+    /**
      * Converts the given permissions to a {@code String}. Using this method will guarantee the permissions are in an
      * order accepted by the service.
      *
@@ -264,6 +287,10 @@ public final class BlobContainerSasPermission {
             builder.append('x');
         }
 
+        if (this.permanentlyDeleteBlobVersionOrSnapshot) {
+            builder.append('y');
+        }
+
         if (this.listPermission) {
             builder.append('l');
         }
@@ -271,6 +298,7 @@ public final class BlobContainerSasPermission {
         if (this.tagsPermission) {
             builder.append('t');
         }
+
 
         return builder.toString();
     }
