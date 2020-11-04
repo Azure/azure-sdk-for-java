@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
  * The Managed Service Identity credential for Virtual Machines.
  */
 @Immutable
-class VirtualMachineMsiCredential extends ManagedIdentityServiceCredential{
+class VirtualMachineMsiCredential extends ManagedIdentityServiceCredential {
 
     /**
      * Creates an instance of VirtualMachineMSICredential.

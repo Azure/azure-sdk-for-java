@@ -30,15 +30,7 @@ class ArcIdentityCredential extends ManagedIdentityServiceCredential {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
         this.identityEndpoint = configuration.get(Configuration.PROPERTY_IDENTITY_ENDPOINT);
         if (identityEndpoint != null) {
-            validateEndpointProtocol(this.identityEndpoint, "Identity");
-        }
-    }
-
-    private void validateEndpointProtocol(String endpoint, String endpointName) {
-        if (!(endpoint.startsWith("https") || endpoint.startsWith("http"))) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException(
-                    String.format("%s endpoint should start with 'https' or 'http' scheme.", endpointName)));
+            validateEndpointProtocol(this.identityEndpoint, "Identity", logger);
         }
     }
 

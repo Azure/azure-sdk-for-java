@@ -80,7 +80,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.TreeMap;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -786,8 +785,8 @@ public class IdentityClient {
 
                 if (realm == null) {
                     throw logger.logExceptionAsError(new ClientAuthenticationException("Did not receive a value"
-                       + " for WWW-Authenticate header in the response from Azure Arc Managed Identity Endpoint"
-                        , null));
+                       + " for WWW-Authenticate header in the response from Azure Arc Managed Identity Endpoint",
+                        null));
                 }
 
                 int separatorIndex = realm.indexOf("=");
