@@ -58,6 +58,17 @@ public class ServiceBusMessage {
     private Context context;
 
     /**
+     * Creates a {@link ServiceBusMessage} with given byte array body.
+     *
+     * @param body The content of the Service bus message.
+     *
+     * @throws NullPointerException if {@code body} is null.
+     */
+    public ServiceBusMessage(byte[] body) {
+        this(BinaryData.fromBytes(Objects.requireNonNull(body, "'body' cannot be null.")));
+    }
+
+    /**
      * Creates a {@link ServiceBusMessage} with a {@link java.nio.charset.StandardCharsets#UTF_8 UTF_8} encoded body.
      *
      * @param body The content of the Service bus message.
@@ -80,6 +91,7 @@ public class ServiceBusMessage {
      * @see BinaryData
      */
     public ServiceBusMessage(BinaryData body) {
+        Objects.requireNonNull(body, "'body' cannot be null.");
         this.context = Context.NONE;
         this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(
             new AmqpDataBody(Collections.singletonList(body.toBytes())));
