@@ -27,6 +27,12 @@ public class KeyVaultKey {
     @JsonProperty(value = "key")
     private JsonWebKey key;
 
+    /**
+     * The key release policy.
+     */
+    @JsonProperty(value = "release_policy")
+    private KeyReleasePolicy keyReleasePolicy;
+
     KeyVaultKey() {
         properties = new KeyProperties();
     }
@@ -95,6 +101,15 @@ public class KeyVaultKey {
      */
     public List<KeyOperation> getKeyOperations() {
         return key.getKeyOps();
+    }
+
+    /**
+     * Get the key release policy of the key.
+     *
+     * @return The key release policy.
+     */
+    public KeyReleasePolicy getKeyReleasePolicy() {
+        return this.keyReleasePolicy;
     }
 
     /**

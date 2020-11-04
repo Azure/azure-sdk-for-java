@@ -6,6 +6,7 @@ package com.azure.security.keyvault.keys;
 import com.azure.core.annotation.Fluent;
 import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
+import com.azure.security.keyvault.keys.models.KeyReleasePolicy;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -51,6 +52,18 @@ class KeyRequestParameters {
      */
     @JsonProperty(value = "crv")
     private KeyCurveName curve;
+
+    /**
+     * The policy rules under which the key can be exported.
+     */
+    @JsonProperty(value = "release_policy")
+    private KeyReleasePolicy keyReleasePolicy;
+
+    /**
+     * The public exponent for an RSA key.
+     */
+    @JsonProperty(value = "public_exponent")
+    private int publicExponent;
 
     /**
      * Get the keyType value.
@@ -169,6 +182,46 @@ class KeyRequestParameters {
      */
     public KeyRequestParameters setCurve(KeyCurveName curve) {
         this.curve = curve;
+        return this;
+    }
+
+    /**
+     * Get the policy rules under which the key can be exported.
+     *
+     * @return The key release policy.
+     */
+    public KeyReleasePolicy getKeyReleasePolicy() {
+        return keyReleasePolicy;
+    }
+
+    /**
+     * Set the policy rules under which the key can be exported.
+     *
+     * @param keyReleasePolicy The key release policy to set.
+     * @return The updated {@link KeyRequestParameters} object.
+     */
+    public KeyRequestParameters setKeyReleasePolicy(KeyReleasePolicy keyReleasePolicy) {
+        this.keyReleasePolicy = keyReleasePolicy;
+        return this;
+    }
+
+    /**
+     * Get the public exponent for the key.
+     *
+     * @return The public exponent.
+     */
+    public int getPublicExponent() {
+        return publicExponent;
+    }
+
+    /**
+     * Set the public exponent for the key.
+     *
+     * @param publicExponent The public exponent to set.
+     * @return The updated {@link KeyRequestParameters} object.
+     */
+    public KeyRequestParameters setPublicExponent(int publicExponent) {
+        this.publicExponent = publicExponent;
         return this;
     }
 }

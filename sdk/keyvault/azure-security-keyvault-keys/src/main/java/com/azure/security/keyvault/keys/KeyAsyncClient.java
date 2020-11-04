@@ -26,6 +26,7 @@ import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
+import com.azure.security.keyvault.keys.models.ExportKeyOptions;
 import com.azure.security.keyvault.keys.models.ImportKeyOptions;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyCurveName;
@@ -213,7 +214,8 @@ public final class KeyAsyncClient {
         KeyRequestParameters parameters = new KeyRequestParameters()
             .setKty(createKeyOptions.getKeyType())
             .setKeyOps(createKeyOptions.getKeyOperations())
-            .setKeyAttributes(new KeyRequestAttributes(createKeyOptions));
+            .setKeyAttributes(new KeyRequestAttributes(createKeyOptions))
+            .setKeyReleasePolicy(createKeyOptions.getKeyReleasePolicy());
         return service.createKey(vaultUrl, createKeyOptions.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.info("Creating key - {}", createKeyOptions.getName()))
@@ -293,7 +295,9 @@ public final class KeyAsyncClient {
             .setKty(createRsaKeyOptions.getKeyType())
             .setKeySize(createRsaKeyOptions.getKeySize())
             .setKeyOps(createRsaKeyOptions.getKeyOperations())
-            .setKeyAttributes(new KeyRequestAttributes(createRsaKeyOptions));
+            .setKeyAttributes(new KeyRequestAttributes(createRsaKeyOptions))
+            .setKeyReleasePolicy(createRsaKeyOptions.getKeyReleasePolicy())
+            .setPublicExponent(createRsaKeyOptions.getPublicExponent());
         return service.createKey(vaultUrl, createRsaKeyOptions.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.info("Creating Rsa key - {}", createRsaKeyOptions.getName()))
@@ -379,7 +383,8 @@ public final class KeyAsyncClient {
             .setKty(createEcKeyOptions.getKeyType())
             .setCurve(createEcKeyOptions.getCurveName())
             .setKeyOps(createEcKeyOptions.getKeyOperations())
-            .setKeyAttributes(new KeyRequestAttributes(createEcKeyOptions));
+            .setKeyAttributes(new KeyRequestAttributes(createEcKeyOptions))
+            .setKeyReleasePolicy(createEcKeyOptions.getKeyReleasePolicy());
         return service.createKey(vaultUrl, createEcKeyOptions.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.info("Creating Ec key - {}", createEcKeyOptions.getName()))
@@ -492,12 +497,109 @@ public final class KeyAsyncClient {
         KeyImportRequestParameters parameters = new KeyImportRequestParameters()
             .setKey(importKeyOptions.getKey())
             .setHsm(importKeyOptions.isHardwareProtected())
-            .setKeyAttributes(new KeyRequestAttributes(importKeyOptions));
+            .setKeyAttributes(new KeyRequestAttributes(importKeyOptions))
+            .setKeyReleasePolicy(importKeyOptions.getKeyReleasePolicy());
         return service.importKey(vaultUrl, importKeyOptions.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.info("Importing key - {}", importKeyOptions.getName()))
             .doOnSuccess(response -> logger.info("Imported key - {}", response.getValue().getName()))
             .doOnError(error -> logger.warning("Failed to import key - {}", importKeyOptions.getName(), error));
+    }
+
+    /**
+     * Exports the latest version of a key from the key vault. The export key operation may be used to import any key
+     * from the Azure Key Vault as long as it is marked as exportable and its release policy is satisfied.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
+     * details when a response has been received.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.keyasyncclient.exportKey#name-options}
+     *
+     * @param name The name of the key to be exported.
+     * @param exportKeyOptions The key export configuration object.
+     * @return A {@link Mono} containing the {@link KeyVaultKey exported key}.
+     * @throws NullPointerException If the specified {@code name}, {@code version} or {@code exportKeyOptions} are
+     * {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KeyVaultKey> exportKey(String name, ExportKeyOptions exportKeyOptions) {
+        try {
+            return exportKeyWithResponse(name, "", exportKeyOptions).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Exports a key from the key vault. The export key operation may be used to import any key from the Azure Key Vault
+     * as long as it is marked as exportable and its release policy is satisfied.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
+     * details when a response has been received.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.keyasyncclient.exportKey#name-version-options}
+     *
+     * @param name The name of the key to be exported.
+     * @param version The key version.
+     * @param exportKeyOptions The key export configuration object.
+     * @return A {@link Mono} containing the {@link KeyVaultKey exported key}.
+     * @throws NullPointerException If the specified {@code name}, {@code version} or {@code exportKeyOptions} are
+     * {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KeyVaultKey> exportKey(String name, String version, ExportKeyOptions exportKeyOptions) {
+        try {
+            return exportKeyWithResponse(name, version, exportKeyOptions).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Exports a key from the key vault. The export key operation may be used to import any key from the Azure Key Vault
+     * as long as it is marked as exportable and its release policy is satisfied.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
+     * details when a response has been received.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.keyasyncclient.exportKeyWithResponse#name-version-options-response}
+     *
+     * @param name The name of the key to be exported.
+     * @param version The key version.
+     * @param exportKeyOptions The key export configuration object.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
+     * {@link KeyVaultKey exported key}.
+     * @throws NullPointerException If the specified {@code name}, {@code version} or {@code exportKeyOptions} are
+     * {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<KeyVaultKey>> exportKeyWithResponse(String name, String version,
+                                                             ExportKeyOptions exportKeyOptions) {
+        try {
+            return withContext(context -> exportKeyWithResponse(name, version, exportKeyOptions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<KeyVaultKey>> exportKeyWithResponse(String name, String version, ExportKeyOptions exportKeyOptions,
+                                                      Context context) {
+        Objects.requireNonNull(name, "The key name cannot be null.");
+        Objects.requireNonNull(version, "The key version cannot be null.");
+        Objects.requireNonNull(exportKeyOptions, "The exportKeyOptions parameter cannot be null.");
+        context = context == null ? Context.NONE : context;
+
+        KeyExportRequestParameters parameters = new KeyExportRequestParameters()
+            .setEnvironment(exportKeyOptions.getEnvironment());
+
+        return service.exportKey(vaultUrl, name, version, apiVersion, ACCEPT_LANGUAGE, parameters,
+            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+            .doOnRequest(ignored -> logger.info("Exporting key - {}", name))
+            .doOnSuccess(response -> logger.info("Exported key - {}", response.getValue().getName()))
+            .doOnError(error -> logger.warning("Failed to export key - {}", name, error));
     }
 
     /**
@@ -659,7 +761,8 @@ public final class KeyAsyncClient {
         context = context == null ? Context.NONE : context;
         KeyRequestParameters parameters = new KeyRequestParameters()
             .setTags(keyProperties.getTags())
-            .setKeyAttributes(new KeyRequestAttributes(keyProperties));
+            .setKeyAttributes(new KeyRequestAttributes(keyProperties))
+            .setKeyReleasePolicy(keyProperties.getKeyReleasePolicy());
         if (keyOperations.length > 0) {
             parameters.setKeyOps(Arrays.asList(keyOperations));
         }

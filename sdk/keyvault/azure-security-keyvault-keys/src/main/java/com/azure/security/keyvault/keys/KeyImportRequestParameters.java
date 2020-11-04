@@ -5,6 +5,7 @@ package com.azure.security.keyvault.keys;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
+import com.azure.security.keyvault.keys.models.KeyReleasePolicy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;
@@ -35,6 +36,12 @@ class KeyImportRequestParameters {
      */
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
+
+    /**
+     * The policy rules under which the key can be exported.
+     */
+    @JsonProperty(value = "release_policy")
+    private KeyReleasePolicy keyReleasePolicy;
 
     /**
      * Get the keyAttributes value.
@@ -113,6 +120,26 @@ class KeyImportRequestParameters {
      */
     public KeyImportRequestParameters setKey(JsonWebKey key) {
         this.key = key;
+        return this;
+    }
+
+    /**
+     * Get the policy rules under which the key can be exported.
+     *
+     * @return The key release policy.
+     */
+    public KeyReleasePolicy getKeyReleasePolicy() {
+        return keyReleasePolicy;
+    }
+
+    /**
+     * Set the policy rules under which the key can be exported.
+     *
+     * @param keyReleasePolicy The key release policy to set.
+     * @return The updated {@link KeyImportRequestParameters} object.
+     */
+    public KeyImportRequestParameters setKeyReleasePolicy(KeyReleasePolicy keyReleasePolicy) {
+        this.keyReleasePolicy = keyReleasePolicy;
         return this;
     }
 }

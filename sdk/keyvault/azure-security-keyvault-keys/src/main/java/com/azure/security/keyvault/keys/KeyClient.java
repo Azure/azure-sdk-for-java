@@ -16,6 +16,7 @@ import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
+import com.azure.security.keyvault.keys.models.ExportKeyOptions;
 import com.azure.security.keyvault.keys.models.ImportKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
@@ -317,6 +318,69 @@ public final class KeyClient {
      */
     public Response<KeyVaultKey> importKeyWithResponse(ImportKeyOptions importKeyOptions, Context context) {
         return client.importKeyWithResponse(importKeyOptions, context).block();
+    }
+
+    /**
+     * Exports the latest version of a key from the key vault. The export key operation may be used to import any key
+     * from the Azure Key Vault as long as it is marked as exportable and its release policy is satisfied.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
+     * details when a response has been received.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.keyclient.exportKey#name-options}
+     *
+     * @param name The name of the key to be exported.
+     * @param exportKeyOptions The key export configuration object.
+     * @return The {@link KeyVaultKey exported key}.
+     * @throws NullPointerException If the specified {@code name}, {@code version} or {@code exportKeyOptions} are
+     * {@code null}.
+     */
+    public KeyVaultKey exportKey(String name, ExportKeyOptions exportKeyOptions) {
+        return client.exportKey(name, exportKeyOptions).block();
+    }
+
+    /**
+     * Exports a key from the key vault. The export key operation may be used to import any key from the Azure Key Vault
+     * as long as it is marked as exportable and its release policy is satisfied.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
+     * details when a response has been received.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.keyclient.exportKey#name-version-options}
+     *
+     * @param name The name of the key to be exported.
+     * @param version The key version.
+     * @param exportKeyOptions The key export configuration object.
+     * @return The {@link KeyVaultKey exported key}.
+     * @throws NullPointerException If the specified {@code name}, {@code version} or {@code exportKeyOptions} are
+     * {@code null}.
+     */
+    public KeyVaultKey exportKey(String name, String version, ExportKeyOptions exportKeyOptions) {
+        return client.exportKey(name, version, exportKeyOptions).block();
+    }
+
+    /**
+     * Exports a key from the key vault. The export key operation may be used to import any key from the Azure Key Vault
+     * as long as it is marked as exportable and its release policy is satisfied.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
+     * details when a response has been received.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.keyclient.exportKeyWithResponse#name-version-options-response}
+     *
+     * @param name The name of the key to be exported.
+     * @param version The key version.
+     * @param exportKeyOptions The key export configuration object.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultKey exported key}.
+     * @throws NullPointerException If the specified {@code name}, {@code version} or {@code exportKeyOptions} are
+     * {@code null}.
+     */
+    public Response<KeyVaultKey> exportKeyWithResponse(String name, String version, ExportKeyOptions exportKeyOptions,
+                                                       Context context) {
+        return client.exportKeyWithResponse(name, version, exportKeyOptions, context).block();
     }
 
     /**
