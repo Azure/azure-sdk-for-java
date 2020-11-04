@@ -16,11 +16,8 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
+import com.azure.storage.blob.options.*;
 import com.azure.storage.blob.models.BlockBlobItem;
-import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
-import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
-import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.CpkInfo;
@@ -312,6 +309,32 @@ public final class BlockBlobClient extends BlobClientBase {
         Context context) {
         StorageImplUtils.assertNotNull("options", options);
         Mono<Response<BlockBlobItem>> upload = client.uploadWithResponse(options, context);
+        try {
+            return blockWithOptionalTimeout(upload, timeout);
+        } catch (UncheckedIOException e) {
+            throw logger.logExceptionAsError(e);
+        }
+    }
+
+    public BlockBlobItem uploadFromUrl(String sourceUrl) {
+        return uploadFromUrl(sourceUrl, false);
+    }
+
+    public BlockBlobItem uploadFromUrl(String sourceUrl, boolean overwrite) {
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
+        if (!overwrite) {
+            blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
+        return uploadFromUrlWithResponse(
+            new BlobUploadFromUrlOptions(sourceUrl).setDestinationRequestConditions(blobRequestConditions),
+            null, Context.NONE)
+            .getValue();
+    }
+
+    public Response<BlockBlobItem> uploadFromUrlWithResponse(BlobUploadFromUrlOptions options, Duration timeout,
+                                                             Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+        Mono<Response<BlockBlobItem>> upload = client.uploadFromUrlWithResponse(options, context);
         try {
             return blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
