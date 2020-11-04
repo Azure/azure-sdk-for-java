@@ -3,6 +3,7 @@
 
 package com.microsoft.opentelemetry.exporter.azuremonitor;
 
+import com.azure.core.util.CoreUtils;
 import com.microsoft.opentelemetry.exporter.azuremonitor.implementation.ApplicationInsightsClientImpl;
 import com.microsoft.opentelemetry.exporter.azuremonitor.implementation.ApplicationInsightsClientImplBuilder;
 import com.microsoft.opentelemetry.exporter.azuremonitor.implementation.NdJsonSerializer;
@@ -155,6 +156,7 @@ public final class AzureMonitorExporterBuilder {
                 return keyValuePair.length == 2 && keyValuePair[0].equalsIgnoreCase("InstrumentationKey");
             })
             .map(instrumentationKeyValue -> instrumentationKeyValue.split("=")[1])
+            .filter(iKey -> !CoreUtils.isNullOrEmpty(iKey))
             .findFirst()
             .orElseThrow(() -> new IllegalArgumentException("'InstrumentationKey' not found in connectionString"));
     }
@@ -206,7 +208,9 @@ public final class AzureMonitorExporterBuilder {
      * @throws NullPointerException if the instrumentation key is not set.
      */
     public AzureMonitorExporter buildExporter() {
-        Objects.requireNonNull(instrumentationKey, "'instrumentationKey' cannot be null");
+        // instrumentationKey is extracted from connectionString, so, if instrumentationKey is null
+        // then the error message should read "connectionString cannot be null".
+        Objects.requireNonNull(instrumentationKey, "'connectionString' cannot be null");
         return new AzureMonitorExporter(buildClient(), instrumentationKey);
     }
 
