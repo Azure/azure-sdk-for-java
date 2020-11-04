@@ -13,7 +13,7 @@ import com.azure.data.tables.implementation.BatchImpl;
 import com.azure.data.tables.implementation.TablesMultipartSerializer;
 import com.azure.data.tables.implementation.models.BatchChangeSet;
 import com.azure.data.tables.implementation.models.BatchOperation;
-import com.azure.data.tables.implementation.models.BatchOperationResponse;
+import com.azure.data.tables.models.BatchOperationResponse;
 import com.azure.data.tables.implementation.models.BatchRequestBody;
 import com.azure.data.tables.implementation.models.BatchSubRequest;
 import com.azure.data.tables.implementation.models.TableServiceError;

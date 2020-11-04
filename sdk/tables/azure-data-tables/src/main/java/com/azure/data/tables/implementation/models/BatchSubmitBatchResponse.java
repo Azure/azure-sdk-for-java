@@ -7,6 +7,7 @@ package com.azure.data.tables.implementation.models;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
+import com.azure.data.tables.models.BatchOperationResponse;
 
 /**
  * Contains all response data for the submitBatch operation.
