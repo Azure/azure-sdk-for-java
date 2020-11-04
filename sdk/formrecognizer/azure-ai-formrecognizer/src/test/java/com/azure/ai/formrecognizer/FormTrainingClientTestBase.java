@@ -418,20 +418,6 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         }
     }
 
-    void dataRunner(BiConsumer<InputStream, Long> testRunner, String fileName) {
-        final long fileLength = new File(LOCAL_FILE_PATH + fileName).length();
-
-        if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream(TEST_DATA_PNG.getBytes(StandardCharsets.UTF_8)), fileLength);
-        } else {
-            try {
-                testRunner.accept(new FileInputStream(LOCAL_FILE_PATH + fileName), fileLength);
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException("Local file not found.", e);
-            }
-        }
-    }
-
     private String getTrainingFilesContainerUrl() {
         return interceptorManager.isPlaybackMode()
             ? "https://isPlaybackmode"

@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The DataTableCell model. */
+/** Information about the extracted cell in a table. */
 @Fluent
 public final class DataTableCell {
     /*
