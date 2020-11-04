@@ -91,8 +91,10 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
     private boolean isSessionLockLost;
     private ConcurrentLinkedQueue<MessageWithDeliveryTag> prefetchedMessages;
     private Receiver receiveLink;
+    private Session receiveSession;
     private RequestResponseLink requestResponseLink;
     private WorkItem<CoreMessageReceiver> linkOpen;
+    private TransactionContext transactionContext;
 
     private Exception lastKnownLinkError;
     private Instant lastKnownErrorReportedAt;
@@ -117,7 +119,8 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
             final String sessionId,
             final int prefetchCount,
             final SettleModePair settleModePair,
-            final MessagingEntityType entityType) {
+            final MessagingEntityType entityType,
+            final TransactionContext transactionContext) {
         super(name);
 
         this.underlyingFactory = factory;
@@ -135,6 +138,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
         this.prefetchCountSync = new Object();
         this.retryPolicy = factory.getRetryPolicy();
         this.pendingReceives = new ConcurrentLinkedQueue<>();
+        this.transactionContext = transactionContext;
 
         this.pendingUpdateStateRequests = new ConcurrentHashMap<>();
         this.tagsToDeliveriesMap = new ConcurrentHashMap<>();
@@ -209,7 +213,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
             final String recvPath,
             final int prefetchCount,
             final SettleModePair settleModePair) {
-        return create(factory, name, recvPath, prefetchCount, settleModePair, null);
+        return create(factory, name, recvPath, prefetchCount, settleModePair, null, null);
     }
 
     @Deprecated
@@ -230,7 +234,8 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
             final String recvPath,
             final int prefetchCount,
             final SettleModePair settleModePair,
-            final MessagingEntityType entityType) {
+            final MessagingEntityType entityType,
+            final TransactionContext transactionContext) {
         TRACE_LOGGER.info("Creating core message receiver to '{}'", recvPath);
         CoreMessageReceiver msgReceiver = new CoreMessageReceiver(
                 factory,
@@ -239,7 +244,8 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
                 null,
                 prefetchCount,
                 settleModePair,
-                entityType);
+                entityType,
+                transactionContext);
         return msgReceiver.createLink();
     }
 
@@ -252,6 +258,19 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
             final int prefetchCount,
             final SettleModePair settleModePair,
             final MessagingEntityType entityType) {
+        return create(factory, name, recvPath, sessionId, isBrowsableSession, prefetchCount, settleModePair, entityType, null);
+    }
+    
+    public static CompletableFuture<CoreMessageReceiver> create(
+            final MessagingFactory factory,
+            final String name,
+            final String recvPath,
+            final String sessionId,
+            final boolean isBrowsableSession,
+            final int prefetchCount,
+            final SettleModePair settleModePair,
+            final MessagingEntityType entityType,
+            final TransactionContext transactionContext) {
         TRACE_LOGGER.info("Creating core session receiver to '{}', sessionId '{}', browseonly session '{}'", recvPath, sessionId, isBrowsableSession);
         CoreMessageReceiver msgReceiver = new CoreMessageReceiver(
                 factory,
@@ -260,7 +279,8 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
                 sessionId,
                 prefetchCount,
                 settleModePair,
-                entityType);
+                entityType,
+                transactionContext);
         msgReceiver.isSessionReceiver = true;
         msgReceiver.isBrowsableSession = isBrowsableSession;
         return msgReceiver.createLink();
@@ -276,10 +296,12 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
                 this.linkOpen.getWork().completeExceptionally(cause);
             } else {
                 try {
+                    Session linkSession = this.transactionContext == null ? 
+                            null : this.underlyingFactory.getOrCreateController(this.transactionContext.getTransactionId()).join().getSession();
                     this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler() {
                         @Override
                         public void onEvent() {
-                            CoreMessageReceiver.this.createReceiveLink();
+                            CoreMessageReceiver.this.createReceiveLink(linkSession);
                         }
                     });
                 } catch (IOException ioException) {
@@ -330,7 +352,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
         }
     }
 
-    private void createReceiveLink() {
+    private void createReceiveLink(Session session) {
         TRACE_LOGGER.info("Creating receive link to '{}'", this.receivePath);
         Connection connection = this.underlyingFactory.getActiveConnectionOrNothing();
 
@@ -352,16 +374,19 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 			return;
 		}
 
-        final Session session = connection.session();
-        session.setIncomingCapacity(Integer.MAX_VALUE);
-        session.open();
-        BaseHandler.setHandler(session, new SessionHandler(this.receivePath));
+		Session linkSession = session;
+		if (linkSession == null) {
+	        linkSession = connection.session();
+	        linkSession.setIncomingCapacity(Integer.MAX_VALUE);
+	        linkSession.open();
+	        BaseHandler.setHandler(linkSession, new SessionHandler(this.receivePath));
+		}
 
         final String receiveLinkNamePrefix = "Receiver".concat(TrackingUtil.TRACKING_ID_TOKEN_SEPARATOR).concat(StringUtil.getShortRandomString());
         final String receiveLinkName = !StringUtil.isNullOrEmpty(connection.getRemoteContainer())
             ? receiveLinkNamePrefix.concat(TrackingUtil.TRACKING_ID_TOKEN_SEPARATOR).concat(connection.getRemoteContainer())
             : receiveLinkNamePrefix;
-        final Receiver receiver = session.receiver(receiveLinkName);
+        final Receiver receiver = linkSession.receiver(receiveLinkName);
 
         Source source = new Source();
         source.setAddress(receivePath);
@@ -1053,10 +1078,12 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
                         this.completeAllPendingUpdateStateWorkItems(sendTokenEx);
                     } else {
                         try {
+                            Session linkSession = this.transactionContext == null ? 
+                                    null : this.underlyingFactory.getOrCreateController(this.transactionContext.getTransactionId()).join().getSession();
                             this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler() {
                                 @Override
                                 public void onEvent() {
-                                    CoreMessageReceiver.this.createReceiveLink();
+                                    CoreMessageReceiver.this.createReceiveLink(linkSession);
                                 }
                             });
                         } catch (IOException ioEx) {

@@ -53,6 +53,7 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
     private boolean isInitialized = false;
     private MessageBrowser browser = null;
     private int messagePrefetchCount;
+    private TransactionContext transactionContext;
     private ScheduledFuture<?> requestResponseLockTokenPruner = null;
 
     private final ConcurrentHashMap<UUID, Instant> requestResponseLockTokensToLockTimesMap;
@@ -68,12 +69,13 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
         }
     }
 
-    private MessageReceiver(MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType, boolean ownsMessagingFactory, ReceiveMode receiveMode) {
+    private MessageReceiver(MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType, TransactionContext transactionContext, boolean ownsMessagingFactory, ReceiveMode receiveMode) {
         this(receiveMode);
 
         this.messagingFactory = messagingFactory;
         this.entityPath = entityPath;
         this.entityType = entityType;
+        this.transactionContext = transactionContext;
         this.ownsMessagingFactory = ownsMessagingFactory;
     }
     
@@ -87,8 +89,8 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
         this.ownsMessagingFactory = true;
     }
 
-    MessageReceiver(MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType, ReceiveMode receiveMode) {
-        this(messagingFactory, entityPath, entityType, false, receiveMode);
+    MessageReceiver(MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType, TransactionContext transactionContext, ReceiveMode receiveMode) {
+        this(messagingFactory, entityPath, entityType, transactionContext, false, receiveMode);
     }
 
     @Override
@@ -117,11 +119,11 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
 
                     CompletableFuture<CoreMessageReceiver> receiverFuture;
                     if (MessageReceiver.this.isSessionReceiver()) {
-                        TRACE_LOGGER.info("Creating SessionReceiver to entity '{}', requestedSessionId '{}', browsable session '{}', ReceiveMode '{}'", this.entityPath, this.getRequestedSessionId(), this.isBrowsableSession(), this.receiveMode);
-                        receiverFuture = CoreMessageReceiver.create(this.messagingFactory, StringUtil.getShortRandomString(), this.entityPath, this.getRequestedSessionId(), this.isBrowsableSession(), this.messagePrefetchCount, getSettleModePairForRecevieMode(this.receiveMode), this.entityType);
+                        TRACE_LOGGER.info("Creating SessionReceiver to entity '{}', requestedSessionId '{}', browsable session '{}', ReceiveMode '{}', isTransacted '{}'", this.entityPath, this.getRequestedSessionId(), this.isBrowsableSession(), this.receiveMode);
+                        receiverFuture = CoreMessageReceiver.create(this.messagingFactory, StringUtil.getShortRandomString(), this.entityPath, this.getRequestedSessionId(), this.isBrowsableSession(), this.messagePrefetchCount, getSettleModePairForRecevieMode(this.receiveMode), this.entityType, this.transactionContext);
                     } else {
-                        TRACE_LOGGER.info("Creating MessageReceiver to entity '{}', ReceiveMode '{}'", this.entityPath, this.receiveMode);
-                        receiverFuture = CoreMessageReceiver.create(this.messagingFactory, StringUtil.getShortRandomString(), this.entityPath, this.messagePrefetchCount, getSettleModePairForRecevieMode(this.receiveMode), this.entityType);
+                        TRACE_LOGGER.info("Creating MessageReceiver to entity '{}', ReceiveMode '{}', isTransacted '{}'", this.entityPath, this.receiveMode);
+                        receiverFuture = CoreMessageReceiver.create(this.messagingFactory, StringUtil.getShortRandomString(), this.entityPath, this.messagePrefetchCount, getSettleModePairForRecevieMode(this.receiveMode), this.entityType, this.transactionContext);
                     }
 
                     acceptReceiverFuture = receiverFuture.whenCompleteAsync((r, coreReceiverCreationEx) -> {
@@ -205,7 +207,7 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
 
     @Override
     public CompletableFuture<Void> abandonAsync(UUID lockToken) {
-        return this.abandonAsync(lockToken, TransactionContext.NULL_TXN);
+        return this.abandonAsync(lockToken, this.transactionContext == null ? TransactionContext.NULL_TXN : this.transactionContext);
     }
 
     @Override
@@ -215,7 +217,7 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
 
     @Override
     public CompletableFuture<Void> abandonAsync(UUID lockToken, Map<String, Object> propertiesToModify) {
-        return this.abandonAsync(lockToken, propertiesToModify, TransactionContext.NULL_TXN);
+        return this.abandonAsync(lockToken, propertiesToModify, this.transactionContext == null ? TransactionContext.NULL_TXN : this.transactionContext);
     }
 
     @Override
@@ -234,7 +236,7 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
 
     @Override
     public void complete(UUID lockToken) throws InterruptedException, ServiceBusException {
-        this.complete(lockToken, TransactionContext.NULL_TXN);
+        this.complete(lockToken, this.transactionContext == null ? TransactionContext.NULL_TXN : this.transactionContext);
     }
 
     @Override
@@ -250,7 +252,7 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
 
     @Override
     public CompletableFuture<Void> completeAsync(UUID lockToken) {
-        return this.completeAsync(lockToken, TransactionContext.NULL_TXN);
+        return this.completeAsync(lockToken, this.transactionContext == null ? TransactionContext.NULL_TXN : this.transactionContext);
     }
 
     @Override
@@ -297,7 +299,7 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
 
     @Override
     public CompletableFuture<Void> deferAsync(UUID lockToken) {
-        return this.deferAsync(lockToken, null, TransactionContext.NULL_TXN);
+        return this.deferAsync(lockToken, null, this.transactionContext == null ? TransactionContext.NULL_TXN : this.transactionContext);
     }
 
     @Override
@@ -307,7 +309,7 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
 
     @Override
     public CompletableFuture<Void> deferAsync(UUID lockToken, Map<String, Object> propertiesToModify) {
-        return this.deferAsync(lockToken, propertiesToModify, TransactionContext.NULL_TXN);
+        return this.deferAsync(lockToken, propertiesToModify, this.transactionContext == null ? TransactionContext.NULL_TXN : this.transactionContext);
     }
 
     @Override
@@ -366,7 +368,7 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
 
     @Override
     public CompletableFuture<Void> deadLetterAsync(UUID lockToken) {
-        return this.deadLetterAsync(lockToken, null, null, null, TransactionContext.NULL_TXN);
+        return this.deadLetterAsync(lockToken, null, null, null, this.transactionContext == null ? TransactionContext.NULL_TXN : this.transactionContext);
     }
 
     @Override
@@ -376,7 +378,7 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
 
     @Override
     public CompletableFuture<Void> deadLetterAsync(UUID lockToken, Map<String, Object> propertiesToModify) {
-        return this.deadLetterAsync(lockToken, null, null, propertiesToModify, TransactionContext.NULL_TXN);
+        return this.deadLetterAsync(lockToken, null, null, propertiesToModify, this.transactionContext == null ? TransactionContext.NULL_TXN : this.transactionContext);
     }
 
     @Override
@@ -386,17 +388,17 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
 
     @Override
     public CompletableFuture<Void> deadLetterAsync(UUID lockToken, String deadLetterReason, String deadLetterErrorDescription) {
-        return this.deadLetterAsync(lockToken, deadLetterReason, deadLetterErrorDescription, null, TransactionContext.NULL_TXN);
+        return this.deadLetterAsync(lockToken, deadLetterReason, deadLetterErrorDescription, null, this.transactionContext == null ? TransactionContext.NULL_TXN : this.transactionContext);
     }
 
     @Override
     public CompletableFuture<Void> deadLetterAsync(UUID lockToken, String deadLetterReason, String deadLetterErrorDescription, TransactionContext transaction) {
-        return this.deadLetterAsync(lockToken, deadLetterReason, deadLetterErrorDescription, null, TransactionContext.NULL_TXN);
+        return this.deadLetterAsync(lockToken, deadLetterReason, deadLetterErrorDescription, null, this.transactionContext == null ? TransactionContext.NULL_TXN : this.transactionContext);
     }
 
     @Override
     public CompletableFuture<Void> deadLetterAsync(UUID lockToken, String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify) {
-        return this.deadLetterAsync(lockToken, deadLetterReason, deadLetterErrorDescription, propertiesToModify, TransactionContext.NULL_TXN);
+        return this.deadLetterAsync(lockToken, deadLetterReason, deadLetterErrorDescription, propertiesToModify, this.transactionContext == null ? TransactionContext.NULL_TXN : this.transactionContext);
     }
 
     @Override

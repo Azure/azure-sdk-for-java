@@ -30,6 +30,7 @@ final class MessageSender extends InitializableEntity implements IMessageSender 
     private boolean isInitialized = false;
     private URI namespaceEndpointURI;
     private ClientSettings clientSettings;
+    private TransactionContext transactionContext;
 
     private MessageSender() {
         super(StringUtil.getShortRandomString());
@@ -47,14 +48,18 @@ final class MessageSender extends InitializableEntity implements IMessageSender 
     }
 
     MessageSender(MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType) {
-        this(messagingFactory, entityPath, null, entityType, false);
+        this(messagingFactory, entityPath, null, entityType, null, false);
     }
 
     MessageSender(MessagingFactory messagingFactory, String entityPath, String transferDestinationPath, MessagingEntityType entityType) {
-        this(messagingFactory, entityPath, transferDestinationPath, entityType, false);
+        this(messagingFactory, entityPath, transferDestinationPath, entityType, null, false);
     }
-
-    private MessageSender(MessagingFactory messagingFactory, String entityPath, String transferDestinationPath, MessagingEntityType entityType, boolean ownsMessagingFactory) {
+    
+    MessageSender(MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType, TransactionContext transactionContext) {
+        this(messagingFactory, entityPath, null, entityType, transactionContext, false);
+    }
+    
+    private MessageSender(MessagingFactory messagingFactory, String entityPath, String transferDestinationPath, MessagingEntityType entityType, TransactionContext transactionContext, boolean ownsMessagingFactory) {
         this();
 
         this.messagingFactory = messagingFactory;
@@ -62,6 +67,7 @@ final class MessageSender extends InitializableEntity implements IMessageSender 
         this.transferDestinationPath = transferDestinationPath;
         this.ownsMessagingFactory = ownsMessagingFactory;
         this.entityType = entityType;
+        this.transactionContext = transactionContext;
     }
 
     @Override
@@ -86,7 +92,7 @@ final class MessageSender extends InitializableEntity implements IMessageSender 
 
             return factoryFuture.thenComposeAsync((v) -> {
                 TRACE_LOGGER.info("Creating MessageSender to entity '{}'", this.entityPath);
-                CompletableFuture<CoreMessageSender> senderFuture = CoreMessageSender.create(this.messagingFactory, StringUtil.getShortRandomString(), this.entityPath, this.transferDestinationPath, this.entityType);
+                CompletableFuture<CoreMessageSender> senderFuture = CoreMessageSender.create(this.messagingFactory, StringUtil.getShortRandomString(), this.entityPath, this.transferDestinationPath, this.entityType, this.transactionContext);
                 CompletableFuture<Void> postSenderCreationFuture = new CompletableFuture<Void>();
                 senderFuture.handleAsync((s, coreSenderCreationEx) -> {
                     if (coreSenderCreationEx == null) {
@@ -116,7 +122,7 @@ final class MessageSender extends InitializableEntity implements IMessageSender 
 
     @Override
     public void send(IMessage message) throws InterruptedException, ServiceBusException {
-        this.send(message, TransactionContext.NULL_TXN);
+        this.send(message, this.transactionContext == null ? TransactionContext.NULL_TXN : this.transactionContext);
     }
 
     @Override
@@ -136,7 +142,7 @@ final class MessageSender extends InitializableEntity implements IMessageSender 
 
     @Override
     public CompletableFuture<Void> sendAsync(IMessage message) {
-        return this.sendAsync(message, TransactionContext.NULL_TXN);
+        return this.sendAsync(message, this.transactionContext == null ? TransactionContext.NULL_TXN : this.transactionContext);
     }
 
     @Override
@@ -147,7 +153,7 @@ final class MessageSender extends InitializableEntity implements IMessageSender 
 
     @Override
     public CompletableFuture<Void> sendBatchAsync(Collection<? extends IMessage> messages) {
-        return this.sendBatchAsync(messages, TransactionContext.NULL_TXN);
+        return this.sendBatchAsync(messages, this.transactionContext == null ? TransactionContext.NULL_TXN : this.transactionContext);
     }
 
     @Override
@@ -188,7 +194,7 @@ final class MessageSender extends InitializableEntity implements IMessageSender 
 
     @Override
     public CompletableFuture<Long> scheduleMessageAsync(IMessage message, Instant scheduledEnqueueTimeUtc) {
-        return this.scheduleMessageAsync(message, scheduledEnqueueTimeUtc, TransactionContext.NULL_TXN);
+        return this.scheduleMessageAsync(message, scheduledEnqueueTimeUtc, this.transactionContext == null ? TransactionContext.NULL_TXN : this.transactionContext);
     }
 
     @Override

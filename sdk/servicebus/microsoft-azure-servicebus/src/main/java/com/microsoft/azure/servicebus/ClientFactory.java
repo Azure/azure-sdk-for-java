@@ -113,10 +113,15 @@ public final class ClientFactory {
      * @throws InterruptedException if the current thread was interrupted while waiting
      * @throws ServiceBusException if the sender cannot be created
      */
+    @Deprecated
     public static IMessageSender createTransferMessageSenderFromEntityPath(MessagingFactory messagingFactory, String entityPath, String viaEntityPath)  throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(createTransferMessageSenderFromEntityPathAsync(messagingFactory, entityPath, viaEntityPath));
     }
-
+    
+    public static IMessageSender createTransactedMessagesenderFromEntityPath(MessagingFactory messagingFactory, String entityPath, TransactionContext transactionContext) throws InterruptedException, ServiceBusException {
+        return Utils.completeFuture(createTransactedMessageSenderFromEntityPathAsync(messagingFactory, entityPath, transactionContext));
+    }
+    
     /**
      * Create message sender asynchronously from connection string with <a href="https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-sas">Shared Access Signatures</a>
      *
@@ -202,9 +207,16 @@ public final class ClientFactory {
      * @param viaEntityPath The initial destination of the message.
      * @return a CompletableFuture representing the pending creating of IMessageSender instance.
      */
+    @Deprecated
     public static CompletableFuture<IMessageSender> createTransferMessageSenderFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, String viaEntityPath) {
         Utils.assertNonNull("messagingFactory", messagingFactory);
         MessageSender sender = new MessageSender(messagingFactory, viaEntityPath, entityPath, null);
+        return sender.initializeAsync().thenApply((v) -> sender);
+    }
+    
+    public static CompletableFuture<IMessageSender> createTransactedMessageSenderFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, TransactionContext transactionContext) {
+        Utils.assertNonNull("messagingFactory", messagingFactory);
+        MessageSender sender = new MessageSender(messagingFactory, entityPath, null, transactionContext);
         return sender.initializeAsync().thenApply((v) -> sender);
     }
 
@@ -342,9 +354,13 @@ public final class ClientFactory {
     public static IMessageReceiver createMessageReceiverFromEntityPath(MessagingFactory messagingFactory, String entityPath, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(createMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, receiveMode));
     }
+    
+    public static IMessageReceiver createTransactedMessageReceiverFromEntityPath(MessagingFactory messagingFactory, String entityPath, TransactionContext transactionContext, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
+        return Utils.completeFuture(createMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, null, transactionContext, receiveMode));
+    }
 
     static IMessageReceiver createMessageReceiverFromEntityPath(MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
-        return Utils.completeFuture(createMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, entityType, receiveMode));
+        return Utils.completeFuture(createMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, entityType, null, receiveMode));
     }
 
     /**
@@ -450,6 +466,14 @@ public final class ClientFactory {
     public static CompletableFuture<IMessageReceiver> createMessageReceiverFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath) {
         return createMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, DEFAULTRECEIVEMODE);
     }
+    
+    public static CompletableFuture<IMessageReceiver> createTransactedMessageReceiverFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, TransactionContext transactionContext) {
+        return createMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, null, transactionContext, DEFAULTRECEIVEMODE);
+    }
+    
+    public static CompletableFuture<IMessageReceiver> createTransactedMessageReceiverFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, TransactionContext transactionContext, ReceiveMode receiveMode) {
+        return createMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, null, transactionContext, receiveMode);
+    }
 
     /**
      * Asynchronously creates a new message receiver to the entity on the messagingFactory.
@@ -459,12 +483,12 @@ public final class ClientFactory {
      * @return a CompletableFuture representing the pending creation of message receiver
      */
     public static CompletableFuture<IMessageReceiver> createMessageReceiverFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, ReceiveMode receiveMode) {
-        return createMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, null, receiveMode);
+        return createMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, null, null, receiveMode);
     }
 
-    static CompletableFuture<IMessageReceiver> createMessageReceiverFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType, ReceiveMode receiveMode) {
+    static CompletableFuture<IMessageReceiver> createMessageReceiverFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType, TransactionContext transactionContext, ReceiveMode receiveMode) {
         Utils.assertNonNull("messagingFactory", messagingFactory);
-        MessageReceiver receiver = new MessageReceiver(messagingFactory, entityPath, entityType, receiveMode);
+        MessageReceiver receiver = new MessageReceiver(messagingFactory, entityPath, entityType, transactionContext, receiveMode);
         return receiver.initializeAsync().thenApply((v) -> receiver);
     }
 

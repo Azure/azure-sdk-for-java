@@ -5,13 +5,16 @@ package com.microsoft.azure.servicebus.primitives;
 
 import java.io.IOException;
 import java.net.URI;
+import java.nio.ByteBuffer;
 import java.nio.channels.UnresolvedAddressException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.LinkedList;
 import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -67,7 +70,6 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection {
     private Reactor reactor;
     private ReactorDispatcher reactorScheduler;
     private Connection connection;
-    private Controller controller;
 
     private CompletableFuture<MessagingFactory> factoryOpenFuture;
     private CompletableFuture<Void> cbsLinkCreationFuture;
@@ -77,6 +79,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection {
     private URI namespaceEndpointUri;
 
     private final ClientSettings clientSettings;
+    private final Map<ByteBuffer, Controller> controllers;
 
     private MessagingFactory(URI namespaceEndpointUri, ClientSettings clientSettings) {
         super("MessagingFactory".concat(StringUtil.getShortRandomString()));
@@ -90,6 +93,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection {
         this.factoryOpenFuture = new CompletableFuture<MessagingFactory>();
         this.cbsLinkCreationFuture = new CompletableFuture<Void>();
         this.managementLinksCache = new RequestResponseLinkCache(this);
+        this.controllers = new ConcurrentHashMap<ByteBuffer, Controller>();
         this.reactorHandler = new ReactorHandler() {
             @Override
             public void onReactorInit(Event e) {
@@ -125,9 +129,13 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection {
      * @return A <code>CompletableFuture</code> which returns a new transaction
      */
     public CompletableFuture<TransactionContext> startTransactionAsync() {
-        return this.getController()
+        return this.getOrCreateController(null)
                 .thenCompose(controller -> controller.declareAsync()
-                        .thenApply(binary -> new TransactionContext(binary.asByteBuffer(), this)));
+                        .thenApply(binary -> {
+                            ByteBuffer txnId = binary.asByteBuffer();
+                            this.controllers.put(txnId, controller);                            
+                            return new TransactionContext(txnId, this);
+                        }));
     }
 
     /**
@@ -156,27 +164,32 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection {
             return exceptionCompletion;
         }
 
-        return this.getController()
+        return this.getOrCreateController(transaction.getTransactionId())
                 .thenCompose(controller -> controller.dischargeAsync(new Binary(transaction.getTransactionId().array()), commit)
-                .thenRun(() -> transaction.notifyTransactionCompletion(commit)));
+                    .thenApply($null -> {
+                        transaction.notifyTransactionCompletion(commit);
+                        this.controllers.remove(transaction.getTransactionId());
+                        return controller;
+                    }))
+                    .thenCompose(controller -> controller.closeAsync());
     }
 
-    private CompletableFuture<Controller> getController() {
-        if (this.controller != null) {
-            return CompletableFuture.completedFuture(this.controller);
+    CompletableFuture<Controller> getOrCreateController(ByteBuffer txnId) {
+        if (txnId == null) {
+            return createController();
         }
-
-        return createController();
+        
+        Controller controller = this.controllers.get(txnId);
+        if (controller != null) {
+            return CompletableFuture.completedFuture(controller);
+        } else {
+            throw new RuntimeException("Cannot find the transaction controller associated with the txnId " + new String(txnId.array()));
+        }
     }
 
     private synchronized CompletableFuture<Controller> createController() {
-        if (this.controller != null) {
-            return CompletableFuture.completedFuture(this.controller);
-        }
-
         Controller controller = new Controller(this.namespaceEndpointUri, this, this.clientSettings);
         return controller.initializeAsync().thenApply(v -> {
-            this.controller = controller;
             return controller;
         });
     }

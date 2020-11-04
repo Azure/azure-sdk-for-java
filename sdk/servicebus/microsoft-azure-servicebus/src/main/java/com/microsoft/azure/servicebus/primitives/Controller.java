@@ -5,6 +5,8 @@ package com.microsoft.azure.servicebus.primitives;
 
 import com.microsoft.azure.servicebus.ClientSettings;
 import com.microsoft.azure.servicebus.TransactionContext;
+import com.microsoft.azure.servicebus.amqp.SessionHandler;
+
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnsignedInteger;
@@ -17,10 +19,14 @@ import org.apache.qpid.proton.amqp.transaction.Declared;
 import org.apache.qpid.proton.amqp.transaction.Discharge;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.amqp.transport.Target;
+import org.apache.qpid.proton.engine.BaseHandler;
+import org.apache.qpid.proton.engine.Connection;
+import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,22 +40,43 @@ class Controller {
     private AtomicBoolean isInitialized = new AtomicBoolean(false);
     private URI namespaceEndpointURI;
     private ClientSettings clientSettings;
+    private Session session;
 
     Controller(URI namespaceEndpointURI, MessagingFactory factory, ClientSettings clientSettings) {
         this.namespaceEndpointURI = namespaceEndpointURI;
         this.messagingFactory = factory;
         this.clientSettings = clientSettings;
     }
-
+    
+    Session getSession() {
+        return this.session;
+    }
+    
     synchronized CompletableFuture<Void> initializeAsync() {
         if (this.isInitialized.get()) {
             return CompletableFuture.completedFuture(null);
         } else {
+            TRACE_LOGGER.info("Creating new Session to coordinator");
+            Connection connection = this.messagingFactory.getActiveConnectionOrNothing();
+            if (connection == null) {
+                CompletableFuture<Void> cf = new CompletableFuture<Void>();
+                cf.completeExceptionally(new IOException("The connection is closed."));
+                return cf;
+            }
+            
+            this.session = connection.session();
+            this.session.setOutgoingWindow(Integer.MAX_VALUE);
+            this.session.open();
+            BaseHandler.setHandler(this.session, new SessionHandler("Controller"));
+            TRACE_LOGGER.info("Created new Session to coordinator");
+            
             TRACE_LOGGER.info("Creating MessageSender to coordinator");
             CompletableFuture<CoreMessageSender> senderFuture = CoreMessageSender.create(
                     this.messagingFactory,
                     StringUtil.getShortRandomString(),
                     null,
+                    null,
+                    this.session,
                     Controller.getControllerLinkSettings(this.messagingFactory));
             CompletableFuture<Void> postSenderCreationFuture = new CompletableFuture<Void>();
             senderFuture.handleAsync((s, coreSenderCreationEx) -> {
@@ -115,7 +142,7 @@ class Controller {
     }
 
     protected CompletableFuture<Void> closeAsync() {
-        return null;
+        return CompletableFuture.completedFuture(null);
     }
 
     private static SenderLinkSettings getControllerLinkSettings(MessagingFactory underlyingFactory) {
