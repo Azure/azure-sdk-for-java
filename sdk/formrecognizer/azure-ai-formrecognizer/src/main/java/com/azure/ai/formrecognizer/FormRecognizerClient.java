@@ -481,18 +481,18 @@ public final class FormRecognizerClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string}
      *
-     * @param receiptUrl The URL of the receipt to analyze.
+     * @param invoiceUrl The URL of the receipt to analyze.
      *
      * @return A {@link SyncPoller} to poll the progress of the recognize receipt operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code receiptUrl} is null.
+     * @throws NullPointerException If {@code invoiceUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
-        beginRecognizeInvoicesFromUrl(String receiptUrl) {
-        return beginRecognizeInvoicesFromUrl(receiptUrl, null, Context.NONE);
+        beginRecognizeInvoicesFromUrl(String invoiceUrl) {
+        return beginRecognizeInvoicesFromUrl(invoiceUrl, null, Context.NONE);
     }
 
     /**
@@ -513,7 +513,7 @@ public final class FormRecognizerClient {
      * has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code receiptUrl} is null.
+     * @throws NullPointerException If {@code invoiceUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
@@ -527,19 +527,19 @@ public final class FormRecognizerClient {
      * and a prebuilt trained invoice model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
-     * See <a href="https://aka.ms/formrecognizer/invoicefields">here</a> for fields found on a receipt.
+     * See <a href="https://aka.ms/formrecognizer/invoicefields">here</a> for fields found on a invoice.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeInvoices#InputStream-long}
      *
-     * @param invoice The data of the receipt to recognize receipt information from.
+     * @param invoice The data of the invoice to recognize invoice related information from.
      * @param length The exact length of the data.
      *
-     * @return A {@link SyncPoller} that polls the recognize receipt operation until it has completed,
+     * @return A {@link SyncPoller} that polls the recognize invoice operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code receipt} is null.
+     * @throws NullPointerException If {@code invoice} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
@@ -557,17 +557,17 @@ public final class FormRecognizerClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeInvoices#InputStream-long-RecognizeInvoicesOptions-Context}
      *
-     * @param invoice The data of the receipt to recognize invoice information from.
+     * @param invoice The data of the invoice to recognize invoice related information from.
      * @param length The exact length of the data.
      * @param recognizeInvoicesOptions The additional configurable {@link RecognizeInvoicesOptions options}
      * that may be passed when analyzing a invoice.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
-     * @return A {@link SyncPoller} that polls the recognize receipt operation until it has completed, has failed,
+     * @return A {@link SyncPoller} that polls the recognize invoice operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code receipt} is null.
+     * @throws NullPointerException If {@code invoice} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>

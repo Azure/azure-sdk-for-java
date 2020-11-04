@@ -845,7 +845,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         File invoice = new File("local/file_path/invoice.jpg");
         ByteArrayInputStream inputStream = new ByteArrayInputStream(Files.readAllBytes(invoice.toPath()));
         // if training polling operation completed, retrieve the final result.
-        formRecognizerClient.beginRecognizeBusinessCards(inputStream, invoice.length())
+        formRecognizerClient.beginRecognizeInvoices(inputStream, invoice.length())
             .getFinalResult()
             .stream()
             .map(RecognizedForm::getFields)

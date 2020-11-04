@@ -899,7 +899,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         Flux<ByteBuffer> buffer =
             toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(invoice.toPath())));
         // if training polling operation completed, retrieve the final result.
-        formRecognizerAsyncClient.beginRecognizeBusinessCards(buffer, invoice.length())
+        formRecognizerAsyncClient.beginRecognizeInvoices(buffer, invoice.length())
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(recognizedInvoices -> {
                 for (int i = 0; i < recognizedInvoices.size(); i++) {

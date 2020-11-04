@@ -857,13 +857,13 @@ public final class FormRecognizerAsyncClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeInvoicesFromUrl#string}
      *
-     * @param invoiceUrl The URL of the receipt to analyze.
+     * @param invoiceUrl The URL of the invoice to analyze.
      *
-     * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
+     * @return A {@link PollerFlux} that polls the recognize invoice operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code receiptUrl} is null.
+     * @throws NullPointerException If {@code invoiceUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
@@ -880,15 +880,15 @@ public final class FormRecognizerAsyncClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeInvoicesFromUrl#string-RecognizeInvoicesOptions}
      *
-     * @param invoiceUrl The source URL to the input receipt.
+     * @param invoiceUrl The source URL to the input invoice.
      * @param recognizeInvoicesOptions The additional configurable {@link RecognizeInvoicesOptions options}
      * that may be passed when analyzing a invoice.
      *
-     * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
+     * @return A {@link PollerFlux} that polls the recognize invoice operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code receiptUrl} is null.
+     * @throws NullPointerException If {@code invoiceUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
@@ -936,7 +936,7 @@ public final class FormRecognizerAsyncClient {
      * error message indicating absence of cancellation support.</p>
      * See <a href="https://aka.ms/formrecognizer/invoicefields">here</a> for fields found on a invoice.
      *
-     * Note that the {@code receipt} passed must be replayable if retries are enabled (the default). In other words, the
+     * Note that the {@code invoice} passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code sample</strong></p>
@@ -945,11 +945,11 @@ public final class FormRecognizerAsyncClient {
      * @param invoice The data of the document to recognize invoice information from.
      * @param length The exact length of the data.
      *
-     * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
+     * @return A {@link PollerFlux} that polls the recognize invoice operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code receipt} is null.
+     * @throws NullPointerException If {@code invoice} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeInvoices(
@@ -964,7 +964,7 @@ public final class FormRecognizerAsyncClient {
      * error message indicating absence of cancellation support.</p>
      * See <a href="https://aka.ms/formrecognizer/invoicefields">here</a> for fields found on a invoice.
      *
-     * Note that the {@code receipt} passed must be replayable if retries are enabled (the default). In other words, the
+     * Note that the {@code invoice} passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code sample</strong></p>
@@ -975,11 +975,11 @@ public final class FormRecognizerAsyncClient {
      * @param recognizeInvoicesOptions The additional configurable {@link RecognizeInvoicesOptions options}
      * that may be passed when analyzing a invoice.
      *
-     * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
+     * @return A {@link PollerFlux} that polls the recognize invoice operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code receipt} is null.
+     * @throws NullPointerException If {@code invoice} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
@@ -989,11 +989,11 @@ public final class FormRecognizerAsyncClient {
     }
 
     PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
-        beginRecognizeInvoices(Flux<ByteBuffer> receipt, long length,
+        beginRecognizeInvoices(Flux<ByteBuffer> invoice, long length,
         RecognizeInvoicesOptions recognizeInvoicesOptions,
         Context context) {
         try {
-            Objects.requireNonNull(receipt, "'invoice' is required and cannot be null.");
+            Objects.requireNonNull(invoice, "'invoice' is required and cannot be null.");
             recognizeInvoicesOptions = getRecognizeInvoicesOptions(recognizeInvoicesOptions);
             final boolean isFieldElementsIncluded = recognizeInvoicesOptions.isFieldElementsIncluded();
             final String localeInfo = recognizeInvoicesOptions.getLocale();
@@ -1002,14 +1002,14 @@ public final class FormRecognizerAsyncClient {
                 streamActivationOperation(
                     (contentType -> service.analyzeInvoiceAsyncWithResponseAsync(
                         contentType,
-                        receipt,
+                        invoice,
                         length,
                         isFieldElementsIncluded,
                         Locale.fromString(localeInfo),
                         context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
-                    receipt, recognizeInvoicesOptions.getContentType()),
+                    invoice, recognizeInvoicesOptions.getContentType()),
                 pollingOperation(resultId -> service.getAnalyzeInvoiceResultWithResponseAsync(resultId, context)),
                 (activationResponse, pollingContext) -> monoError(logger,
                     new RuntimeException("Cancellation is not supported")),

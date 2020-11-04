@@ -86,7 +86,7 @@ public final class RecognizeInvoicesOptions {
 
     /**
      * Get the locale information for the invoice.
-     * Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US.
+     * Supported locales include: en-US.
      *
      * @return the localeInfo value.
      */
@@ -96,7 +96,7 @@ public final class RecognizeInvoicesOptions {
 
     /**
      * Set the locale information for the invoice.
-     * Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US.
+     * Supported locales include: en-US.
      *
      * @param locale the localeInfo value.
      * @return the updated {@code RecognizeInvoicesOptions} value.
