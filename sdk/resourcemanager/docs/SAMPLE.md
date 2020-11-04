@@ -9,7 +9,7 @@ The `AzureResourceManager` class is the simplest entry point for creating and in
 ```java
 AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
-    .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+    .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
     .build();
 AzureResourceManager azure = AzureResourceManager
     .authenticate(credential, profile)
