@@ -54,8 +54,9 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
 
         int count = 0;
         for (ServiceBusReceivedMessage message : messages) {
-            message.getAmqpAnnotatedMessage();
-            ++count;
+            if (message.getBody() != null) {
+                ++count;
+            }
         }
 
         if (count <= 0) {
