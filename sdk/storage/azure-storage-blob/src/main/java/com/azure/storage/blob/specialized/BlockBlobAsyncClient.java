@@ -316,7 +316,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
         }
 
-        return this.azureBlobStorage.blockBlobs().putBlobFromUrlWithRestResponseAsync(0,
+        return this.azureBlobStorage.blockBlobs().putBlobFromUrlWithRestResponseAsync(
+            null, null, 0,
             url, null, options.getContentMd5(), options.getMetadata(),
             destinationRequestConditions.getLeaseId(), options.getTier(),
             destinationRequestConditions.getIfModifiedSince(), destinationRequestConditions.getIfUnmodifiedSince(),

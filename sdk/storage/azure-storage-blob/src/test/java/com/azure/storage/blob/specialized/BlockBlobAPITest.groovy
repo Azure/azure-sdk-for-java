@@ -33,6 +33,8 @@ import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.options.BlobUploadFromFileOptions
+import com.azure.storage.blob.sas.BlobContainerSasPermission
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
 import reactor.core.publisher.Flux
@@ -47,6 +49,7 @@ import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.security.MessageDigest
 import java.time.Duration
+import java.time.OffsetDateTime
 
 class BlockBlobAPITest extends APISpec {
     BlockBlobClient blockBlobClient
@@ -1951,5 +1954,49 @@ class BlockBlobAPITest extends APISpec {
         then:
         notThrown(BlobStorageException)
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
+    }
+
+    def "Upload from Url min"() {
+        setup:
+        def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
+        sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
+        def sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)))
+        if (blobClient.exists()) {
+            blobClient.delete()
+        }
+
+        when:
+        def blockBlobItem = blobClient.uploadFromUrl(sourceBlob.getBlobUrl() + "?" + sas)
+        def os = new ByteArrayOutputStream()
+        blobClient.download(os)
+
+        then:
+        notThrown(BlobStorageException)
+        blockBlobItem != null
+        blockBlobItem.ETag != null
+        blockBlobItem.lastModified != null
+        os.toByteArray() == defaultData.array()
+    }
+
+    def "Upload from Url overwrite"() {
+        setup:
+        def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
+        sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
+        def sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)))
+        blobClient.upload(new ByteArrayInputStream(), 0, true)
+
+        when:
+        def blockBlobItem = blobClient.uploadFromUrl(sourceBlob.getBlobUrl() + "?" + sas, true)
+        def os = new ByteArrayOutputStream()
+        blobClient.download(os)
+
+        then:
+        notThrown(BlobStorageException)
+        blockBlobItem != null
+        blockBlobItem.ETag != null
+        blockBlobItem.lastModified != null
+        os.toByteArray() == defaultData.array()
     }
 }
