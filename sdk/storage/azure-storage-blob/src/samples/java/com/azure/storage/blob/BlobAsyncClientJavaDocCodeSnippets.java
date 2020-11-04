@@ -6,6 +6,7 @@ package com.azure.storage.blob;
 import com.azure.core.http.RequestConditions;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.options.BlobDeleteOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -282,6 +283,18 @@ public class BlobAsyncClientJavaDocCodeSnippets {
         client.deleteWithResponse(DeleteSnapshotsOptionType.INCLUDE, null)
             .subscribe(response -> System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.BlobAsyncClient.deleteWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions
+    }
+
+    /**
+     * Code snippets for {@link BlobAsyncClient#deleteWithResponse(BlobDeleteOptions)}
+     */
+    public void deleteWithResponseCodeSnippets2() {
+
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.deleteWithResponse#BlobDeleteOptions
+        BlobDeleteOptions options = new BlobDeleteOptions().setDeleteSnapshots(DeleteSnapshotsOptionType.INCLUDE);
+        client.deleteWithResponse(options)
+            .subscribe(response -> System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
+        // END: com.azure.storage.blob.BlobAsyncClient.deleteWithResponse#BlobDeleteOptions
     }
 
     /**

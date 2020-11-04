@@ -832,6 +832,21 @@ class APISpec extends Specification {
         sleepIfRecord(30000)
     }
 
+    def enablePermanentDelete() {
+        primaryBlobServiceClient.setProperties(new BlobServiceProperties()
+            .setDeleteRetentionPolicy(new BlobRetentionPolicy().setEnabled(true).setDays(2)
+                .setAllowPermanentDelete(true)))
+
+        sleepIfRecord(30000)
+    }
+
+    def disablePermanentDelete() {
+        primaryBlobServiceClient.setProperties(new BlobServiceProperties()
+            .setDeleteRetentionPolicy(new BlobRetentionPolicy().setEnabled(false)))
+
+        sleepIfRecord(30000)
+    }
+
     // Only sleep if test is running in live mode
     def sleepIfRecord(long milliseconds) {
         if (testMode != TestMode.PLAYBACK) {

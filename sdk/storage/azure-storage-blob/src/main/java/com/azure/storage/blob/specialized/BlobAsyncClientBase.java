@@ -44,6 +44,7 @@ import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
+import com.azure.storage.blob.options.BlobDeleteOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
@@ -1153,7 +1154,7 @@ public class BlobAsyncClientBase {
      */
     public Mono<Void> delete() {
         try {
-            return deleteWithResponse(null, null).flatMap(FluxUtil::toMono);
+            return deleteWithResponse((DeleteSnapshotsOptionType) null, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1177,22 +1178,41 @@ public class BlobAsyncClientBase {
      */
     public Mono<Response<Void>> deleteWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
         BlobRequestConditions requestConditions) {
+        return this.deleteWithResponse(new BlobDeleteOptions().setDeleteSnapshots(deleteBlobSnapshotOptions)
+            .setRequestConditions(requestConditions));
+    }
+
+    /**
+     * Deletes the specified blob or snapshot. Note that deleting a blob also deletes all its snapshots.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteWithResponse#BlobDeleteOptions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-blob">Azure Docs</a></p>
+     *
+     * @param options {@link BlobDeleteOptions}
+     * @return A reactive response signalling completion.
+     */
+    public Mono<Response<Void>> deleteWithResponse(BlobDeleteOptions options) {
         try {
-            return withContext(context -> deleteWithResponse(deleteBlobSnapshotOptions,
-                requestConditions, context));
+            return withContext(context -> deleteWithResponse(options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Void>> deleteWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
-        BlobRequestConditions requestConditions, Context context) {
-        requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+    Mono<Response<Void>> deleteWithResponse(BlobDeleteOptions options, Context context) {
+        options = (options == null) ? new BlobDeleteOptions() : options;
+        BlobRequestConditions requestConditions = (options.getRequestConditions() == null)
+            ? new BlobRequestConditions() : options.getRequestConditions();
 
         return this.azureBlobStorage.blobs().deleteWithRestResponseAsync(null, null, snapshot, versionId,
-            null, requestConditions.getLeaseId(), deleteBlobSnapshotOptions, requestConditions.getIfModifiedSince(),
+            null, requestConditions.getLeaseId(), options.getDeleteSnapshots(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, context)
+            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, options.getDeleteType(),
+            context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 

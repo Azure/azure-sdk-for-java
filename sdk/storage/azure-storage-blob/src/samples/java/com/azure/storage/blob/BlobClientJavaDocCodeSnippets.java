@@ -10,6 +10,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.options.BlobDeleteOptions;
 import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.DownloadRetryOptions;
@@ -257,6 +258,19 @@ public class BlobClientJavaDocCodeSnippets {
             client.deleteWithResponse(DeleteSnapshotsOptionType.INCLUDE, null, timeout,
                 new Context(key1, value1)).getStatusCode());
         // END: com.azure.storage.blob.BlobClient.deleteWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link BlobClient#deleteWithResponse(BlobDeleteOptions, Duration, Context)}
+     */
+    public void deleteWithResponseCodeSnippets2() {
+
+        // BEGIN: com.azure.storage.blob.BlobClient.deleteWithResponse#BlobDeleteOptions-Duration-Context
+        BlobDeleteOptions options = new BlobDeleteOptions().setDeleteSnapshots(DeleteSnapshotsOptionType.INCLUDE);
+        System.out.printf("Delete completed with status %d%n",
+            client.deleteWithResponse(options, timeout,
+                new Context(key1, value1)).getStatusCode());
+        // END: com.azure.storage.blob.BlobClient.deleteWithResponse#BlobDeleteOptions-Duration-Context
     }
 
     /**

@@ -15,7 +15,7 @@ autorest --use=@microsoft.azure/autorest.java@3.0.4 --use=jianghaolu/autorest.mo
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/seanmcc-msft/azure-rest-api-specs/feature/storage/blobPermanentDelete/specification/storage/data-plane/Microsoft.BlobStorage/preview/2020-04-08/blob.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.BlobStorage/preview/2020-02-10/blob.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.blob
@@ -25,7 +25,7 @@ sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
-custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobHttpHeaders,BlobContainerItem,BlobContainerItemProperties,BlobContainerEncryptionScope,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey,BlobQueryHeaders
+custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobHttpHeaders,BlobContainerItem,BlobContainerItemProperties,BlobContainerEncryptionScope,BlobDeleteType,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey,BlobQueryHeaders
 custom-types-subpackage: models
 ```
 

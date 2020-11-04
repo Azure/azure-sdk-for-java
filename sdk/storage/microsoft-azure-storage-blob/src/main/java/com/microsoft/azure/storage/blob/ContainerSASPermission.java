@@ -4,6 +4,7 @@
 package com.microsoft.azure.storage.blob;
 
 
+import java.awt.*;
 import java.util.Locale;
 
 /**
@@ -25,6 +26,8 @@ public final class ContainerSASPermission {
     private boolean delete;
 
     private boolean list;
+
+    private boolean permanentlyDeleteBlobVersionOrSnapshot;
 
     /**
      * Initializes an {@code ContainerSASPermssion} object with all fields set to false.
@@ -64,6 +67,9 @@ public final class ContainerSASPermission {
                     break;
                 case 'l':
                     permissions.list = true;
+                    break;
+                case 'y':
+                    permissions.permanentlyDeleteBlobVersionOrSnapshot = true;
                     break;
                 default:
                     throw new IllegalArgumentException(
@@ -164,6 +170,25 @@ public final class ContainerSASPermission {
     }
 
     /**
+     * @return the permanently delete version or snapshot permission status.
+     */
+    public boolean hasPermanentlyDeleteVersionOrSnapshotPermission() {
+        return permanentlyDeleteBlobVersionOrSnapshot;
+    }
+
+    /**
+     * Sets the permanently delete version or snapshot permission status.
+     *
+     * @param hasPermanentlyDeleteVersionOrSnapshot Permission status to set
+     * @return the updated BlobSasPermission object.
+     */
+    public ContainerSASPermission setPermanentlyDeleteVersionOrSnapshot(boolean hasPermanentlyDeleteVersionOrSnapshot) {
+        this.permanentlyDeleteBlobVersionOrSnapshot = hasPermanentlyDeleteVersionOrSnapshot;
+        return this;
+    }
+
+
+    /**
      * Converts the given permissions to a {@code String}. Using this method will guarantee the permissions are in an
      * order accepted by the service.
      *
@@ -197,6 +222,11 @@ public final class ContainerSASPermission {
 
         if (this.list) {
             builder.append('l');
+        }
+
+
+        if (this.permanentlyDeleteBlobVersionOrSnapshot) {
+            builder.append('y');
         }
 
         return builder.toString();

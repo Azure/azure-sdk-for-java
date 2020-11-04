@@ -7,6 +7,7 @@ import com.azure.core.http.RequestConditions
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.identity.DefaultAzureCredentialBuilder
+import com.azure.storage.blob.models.BlobDeleteType
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.ArchiveStatus
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions
@@ -31,6 +32,7 @@ import com.azure.storage.blob.models.RehydratePriority
 import com.azure.storage.blob.models.SyncCopyStatusType
 import com.azure.storage.blob.options.BlobBeginCopyOptions
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions
+import com.azure.storage.blob.options.BlobDeleteOptions
 import com.azure.storage.blob.options.BlobDownloadToFileOptions
 import com.azure.storage.blob.options.BlobGetTagsOptions
 import com.azure.storage.blob.options.BlobParallelUploadOptions
@@ -2233,6 +2235,26 @@ class BlobAPITest extends APISpec {
         option                            | blobsRemaining
         DeleteSnapshotsOptionType.INCLUDE | 1
         DeleteSnapshotsOptionType.ONLY    | 2
+    }
+
+    def "Delete permanent"() {
+        /*
+        The request is the same for permanent deletion of version and snapshot, so only testing snapshots is sufficient.
+         */
+        setup:
+        enablePermanentDelete()
+        def snapshotClient = bc.createSnapshot()
+
+        snapshotClient.delete()
+
+        when:
+        snapshotClient.deleteWithResponse(new BlobDeleteOptions().setDeleteType(BlobDeleteType.PERMANENT), null, null)
+
+        then:
+        !snapshotClient.exists()
+
+        cleanup:
+        disablePermanentDelete()
     }
 
     @Unroll

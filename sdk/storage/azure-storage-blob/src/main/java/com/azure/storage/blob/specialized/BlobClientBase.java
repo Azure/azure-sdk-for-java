@@ -23,6 +23,7 @@ import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
+import com.azure.storage.blob.options.BlobDeleteOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
@@ -746,9 +747,27 @@ public class BlobClientBase {
      */
     public Response<Void> deleteWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
         BlobRequestConditions requestConditions, Duration timeout, Context context) {
-        Mono<Response<Void>> response = client
-            .deleteWithResponse(deleteBlobSnapshotOptions, requestConditions, context);
+        return this.deleteWithResponse(new BlobDeleteOptions().setDeleteSnapshots(deleteBlobSnapshotOptions)
+            .setRequestConditions(requestConditions), timeout, context);
+    }
 
+    /**
+     * Deletes the specified blob or snapshot. Note that deleting a blob also deletes all its snapshots.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.deleteWithResponse#BlobDeleteOptions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-blob">Azure Docs</a></p>
+     *
+     * @param options {@link BlobDeleteOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers.
+     */
+    public Response<Void> deleteWithResponse(BlobDeleteOptions options, Duration timeout, Context context) {
+        Mono<Response<Void>> response = client.deleteWithResponse(options, context);
         return blockWithOptionalTimeout(response, timeout);
     }
 

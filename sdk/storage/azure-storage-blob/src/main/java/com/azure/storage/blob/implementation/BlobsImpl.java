@@ -25,7 +25,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Base64Util;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
-import com.azure.storage.blob.implementation.models.BlobDeleteType;
+import com.azure.storage.blob.models.BlobDeleteType;
 import com.azure.storage.blob.implementation.models.BlobExpiryOptions;
 import com.azure.storage.blob.implementation.models.BlobsAbortCopyFromURLResponse;
 import com.azure.storage.blob.implementation.models.BlobsAcquireLeaseResponse;
