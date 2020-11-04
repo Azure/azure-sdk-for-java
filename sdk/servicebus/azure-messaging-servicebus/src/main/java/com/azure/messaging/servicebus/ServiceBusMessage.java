@@ -91,6 +91,7 @@ public class ServiceBusMessage {
      * @see BinaryData
      */
     public ServiceBusMessage(BinaryData body) {
+        Objects.requireNonNull(body, "'body' cannot be null.");
         this.context = Context.NONE;
         this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(
             new AmqpDataBody(Collections.singletonList(body.toBytes())));

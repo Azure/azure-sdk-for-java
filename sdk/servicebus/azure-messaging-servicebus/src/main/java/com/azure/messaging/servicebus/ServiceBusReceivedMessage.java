@@ -28,6 +28,7 @@ import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -52,11 +53,12 @@ public final class ServiceBusReceivedMessage {
     }
 
     ServiceBusReceivedMessage(BinaryData body) {
+        Objects.requireNonNull(body, "'body' cannot be null.");
         amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(body.toBytes())));
     }
 
     ServiceBusReceivedMessage(byte[] body) {
-        this(BinaryData.fromBytes(body));
+        this(BinaryData.fromBytes(Objects.requireNonNull(body, "'body' cannot be null.")));
     }
 
     /**

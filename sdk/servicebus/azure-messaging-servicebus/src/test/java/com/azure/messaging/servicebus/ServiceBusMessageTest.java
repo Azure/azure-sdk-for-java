@@ -179,6 +179,7 @@ public class ServiceBusMessageTest {
     void bodyNotNull() {
         assertThrows(NullPointerException.class, () -> new ServiceBusMessage((String) null));
         assertThrows(NullPointerException.class, () -> new ServiceBusMessage((BinaryData) null));
+        assertThrows(NullPointerException.class, () -> new ServiceBusMessage((byte[]) null));
     }
 
     @Test
