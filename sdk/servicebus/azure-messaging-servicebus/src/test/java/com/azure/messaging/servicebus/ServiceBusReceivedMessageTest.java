@@ -39,7 +39,8 @@ public class ServiceBusReceivedMessageTest {
 
     @Test
     public void byteArrayNotNull() {
-        assertThrows(NullPointerException.class, () -> new ServiceBusReceivedMessage(null));
+        final byte[] data = null;
+        assertThrows(NullPointerException.class, () -> new ServiceBusReceivedMessage(data));
     }
 
     @Test

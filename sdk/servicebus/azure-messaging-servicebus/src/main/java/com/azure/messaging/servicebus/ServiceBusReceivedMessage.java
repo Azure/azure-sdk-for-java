@@ -28,7 +28,6 @@ import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -57,7 +56,7 @@ public final class ServiceBusReceivedMessage {
     }
 
     public ServiceBusReceivedMessage(byte[] body) {
-        this(BinaryData.fromBytes(body);
+        this(BinaryData.fromBytes(body));
     }
 
     /**
