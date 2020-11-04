@@ -227,7 +227,7 @@ public class IdentityClientTests {
         String tokenJson = "{ \"access_token\" : \"token1\", \"expires_on\" : \"" + expiresOn.format(dtf) + "\" }";
 
         // mock
-        mockForMSICodeFlow(tokenJson);
+        mockForServiceFabricCodeFlow(tokenJson);
 
         // test
         IdentityClient client = new IdentityClientBuilder().build();
