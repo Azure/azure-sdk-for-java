@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The TextAnalyticsError model. */
+/**
+ * The TextAnalyticsError model.
+ */
 @Fluent
 public final class TextAnalyticsError {
     /*
@@ -43,7 +45,7 @@ public final class TextAnalyticsError {
 
     /**
      * Get the code property: Error code.
-     *
+     * 
      * @return the code value.
      */
     public ErrorCodeValue getCode() {
@@ -52,7 +54,7 @@ public final class TextAnalyticsError {
 
     /**
      * Set the code property: Error code.
-     *
+     * 
      * @param code the code value to set.
      * @return the TextAnalyticsError object itself.
      */
@@ -63,7 +65,7 @@ public final class TextAnalyticsError {
 
     /**
      * Get the message property: Error message.
-     *
+     * 
      * @return the message value.
      */
     public String getMessage() {
@@ -72,7 +74,7 @@ public final class TextAnalyticsError {
 
     /**
      * Set the message property: Error message.
-     *
+     * 
      * @param message the message value to set.
      * @return the TextAnalyticsError object itself.
      */
@@ -83,7 +85,7 @@ public final class TextAnalyticsError {
 
     /**
      * Get the target property: Error target.
-     *
+     * 
      * @return the target value.
      */
     public String getTarget() {
@@ -92,7 +94,7 @@ public final class TextAnalyticsError {
 
     /**
      * Set the target property: Error target.
-     *
+     * 
      * @param target the target value to set.
      * @return the TextAnalyticsError object itself.
      */
@@ -102,8 +104,9 @@ public final class TextAnalyticsError {
     }
 
     /**
-     * Get the innererror property: Inner error contains more specific information.
-     *
+     * Get the innererror property: Inner error contains more specific
+     * information.
+     * 
      * @return the innererror value.
      */
     public InnerError getInnererror() {
@@ -111,8 +114,9 @@ public final class TextAnalyticsError {
     }
 
     /**
-     * Set the innererror property: Inner error contains more specific information.
-     *
+     * Set the innererror property: Inner error contains more specific
+     * information.
+     * 
      * @param innererror the innererror value to set.
      * @return the TextAnalyticsError object itself.
      */
@@ -122,8 +126,9 @@ public final class TextAnalyticsError {
     }
 
     /**
-     * Get the details property: Details about specific errors that led to this reported error.
-     *
+     * Get the details property: Details about specific errors that led to this
+     * reported error.
+     * 
      * @return the details value.
      */
     public List<TextAnalyticsError> getDetails() {
@@ -131,8 +136,9 @@ public final class TextAnalyticsError {
     }
 
     /**
-     * Set the details property: Details about specific errors that led to this reported error.
-     *
+     * Set the details property: Details about specific errors that led to this
+     * reported error.
+     * 
      * @param details the details value to set.
      * @return the TextAnalyticsError object itself.
      */

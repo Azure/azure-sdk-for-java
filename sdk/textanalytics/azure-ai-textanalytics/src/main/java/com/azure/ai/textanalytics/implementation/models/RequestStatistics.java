@@ -7,7 +7,9 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RequestStatistics model. */
+/**
+ * The RequestStatistics model.
+ */
 @Fluent
 public final class RequestStatistics {
     /*
@@ -37,8 +39,9 @@ public final class RequestStatistics {
     private long transactionsCount;
 
     /**
-     * Get the documentsCount property: Number of documents submitted in the request.
-     *
+     * Get the documentsCount property: Number of documents submitted in the
+     * request.
+     * 
      * @return the documentsCount value.
      */
     public int getDocumentsCount() {
@@ -46,8 +49,9 @@ public final class RequestStatistics {
     }
 
     /**
-     * Set the documentsCount property: Number of documents submitted in the request.
-     *
+     * Set the documentsCount property: Number of documents submitted in the
+     * request.
+     * 
      * @param documentsCount the documentsCount value to set.
      * @return the RequestStatistics object itself.
      */
@@ -57,9 +61,9 @@ public final class RequestStatistics {
     }
 
     /**
-     * Get the validDocumentsCount property: Number of valid documents. This excludes empty, over-size limit or
-     * non-supported languages documents.
-     *
+     * Get the validDocumentsCount property: Number of valid documents. This
+     * excludes empty, over-size limit or non-supported languages documents.
+     * 
      * @return the validDocumentsCount value.
      */
     public int getValidDocumentsCount() {
@@ -67,9 +71,9 @@ public final class RequestStatistics {
     }
 
     /**
-     * Set the validDocumentsCount property: Number of valid documents. This excludes empty, over-size limit or
-     * non-supported languages documents.
-     *
+     * Set the validDocumentsCount property: Number of valid documents. This
+     * excludes empty, over-size limit or non-supported languages documents.
+     * 
      * @param validDocumentsCount the validDocumentsCount value to set.
      * @return the RequestStatistics object itself.
      */
@@ -79,9 +83,10 @@ public final class RequestStatistics {
     }
 
     /**
-     * Get the erroneousDocumentsCount property: Number of invalid documents. This includes empty, over-size limit or
-     * non-supported languages documents.
-     *
+     * Get the erroneousDocumentsCount property: Number of invalid documents.
+     * This includes empty, over-size limit or non-supported languages
+     * documents.
+     * 
      * @return the erroneousDocumentsCount value.
      */
     public int getErroneousDocumentsCount() {
@@ -89,9 +94,10 @@ public final class RequestStatistics {
     }
 
     /**
-     * Set the erroneousDocumentsCount property: Number of invalid documents. This includes empty, over-size limit or
-     * non-supported languages documents.
-     *
+     * Set the erroneousDocumentsCount property: Number of invalid documents.
+     * This includes empty, over-size limit or non-supported languages
+     * documents.
+     * 
      * @param erroneousDocumentsCount the erroneousDocumentsCount value to set.
      * @return the RequestStatistics object itself.
      */
@@ -101,8 +107,9 @@ public final class RequestStatistics {
     }
 
     /**
-     * Get the transactionsCount property: Number of transactions for the request.
-     *
+     * Get the transactionsCount property: Number of transactions for the
+     * request.
+     * 
      * @return the transactionsCount value.
      */
     public long getTransactionsCount() {
@@ -110,8 +117,9 @@ public final class RequestStatistics {
     }
 
     /**
-     * Set the transactionsCount property: Number of transactions for the request.
-     *
+     * Set the transactionsCount property: Number of transactions for the
+     * request.
+     * 
      * @param transactionsCount the transactionsCount value to set.
      * @return the RequestStatistics object itself.
      */

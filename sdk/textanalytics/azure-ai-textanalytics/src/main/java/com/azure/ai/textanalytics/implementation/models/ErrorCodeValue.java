@@ -4,37 +4,67 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
-import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import java.util.Collection;
+import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ErrorCodeValue. */
-public final class ErrorCodeValue extends ExpandableStringEnum<ErrorCodeValue> {
-    /** Static value InvalidRequest for ErrorCodeValue. */
-    public static final ErrorCodeValue INVALID_REQUEST = fromString("InvalidRequest");
-
-    /** Static value InvalidArgument for ErrorCodeValue. */
-    public static final ErrorCodeValue INVALID_ARGUMENT = fromString("InvalidArgument");
-
-    /** Static value InternalServerError for ErrorCodeValue. */
-    public static final ErrorCodeValue INTERNAL_SERVER_ERROR = fromString("InternalServerError");
-
-    /** Static value ServiceUnavailable for ErrorCodeValue. */
-    public static final ErrorCodeValue SERVICE_UNAVAILABLE = fromString("ServiceUnavailable");
+/**
+ * Defines values for ErrorCodeValue.
+ */
+public enum ErrorCodeValue {
+    /**
+     * Enum value InvalidRequest.
+     */
+    INVALID_REQUEST("InvalidRequest"),
 
     /**
-     * Creates or finds a ErrorCodeValue from its string representation.
-     *
-     * @param name a name to look for.
-     * @return the corresponding ErrorCodeValue.
+     * Enum value InvalidArgument.
      */
-    @JsonCreator
-    public static ErrorCodeValue fromString(String name) {
-        return fromString(name, ErrorCodeValue.class);
+    INVALID_ARGUMENT("InvalidArgument"),
+
+    /**
+     * Enum value InternalServerError.
+     */
+    INTERNAL_SERVER_ERROR("InternalServerError"),
+
+    /**
+     * Enum value ServiceUnavailable.
+     */
+    SERVICE_UNAVAILABLE("ServiceUnavailable"),
+
+    /**
+     * Enum value NotFound.
+     */
+    NOT_FOUND("NotFound");
+
+    /**
+     * The actual serialized value for a ErrorCodeValue instance.
+     */
+    private final String value;
+
+    ErrorCodeValue(String value) {
+        this.value = value;
     }
 
-    /** @return known ErrorCodeValue values. */
-    public static Collection<ErrorCodeValue> values() {
-        return values(ErrorCodeValue.class);
+    /**
+     * Parses a serialized value to a ErrorCodeValue instance.
+     * 
+     * @param value the serialized value to parse.
+     * @return the parsed ErrorCodeValue object, or null if unable to parse.
+     */
+    @JsonCreator
+    public static ErrorCodeValue fromString(String value) {
+        ErrorCodeValue[] items = ErrorCodeValue.values();
+        for (ErrorCodeValue item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

@@ -187,10 +187,10 @@ class RecognizeEntityAsyncClient {
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         return service.entitiesRecognitionGeneralWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE),
             options == null ? null : options.getModelVersion(),
             options == null ? null : options.isIncludeStatistics(),
-            StringIndexType.UTF16CODE_UNIT,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+            StringIndexType.UTF16CODE_UNIT)
             .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
             .doOnSuccess(response -> logger.info("Recognized entities for a batch of documents- {}",
                 response.getValue()))
