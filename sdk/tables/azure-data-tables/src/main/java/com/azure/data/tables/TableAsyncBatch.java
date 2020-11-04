@@ -285,6 +285,7 @@ public final class TableAsyncBatch {
             return batchImpl.submitBatchWithRestResponseAsync(body, null, context)
                 .map(response -> {
                     TableServiceError error = null;
+                    String errorMessage = null;
                     BatchChangeSet changes = null;
                     BatchOperation failedOperation = null;
 
@@ -301,31 +302,42 @@ public final class TableAsyncBatch {
                         }
 
                         // If one sub-response was an error, we need to throw even though the service responded with 202
-                        if (subResponse.getStatusCode() >= 400 && error == null
-                            && subResponse.getValue() instanceof TableServiceError) {
-                            error = (TableServiceError) subResponse.getValue();
+                        if (subResponse.getStatusCode() >= 400 && error == null && errorMessage == null) {
+                            if (subResponse.getValue() instanceof TableServiceError) {
+                                error = (TableServiceError) subResponse.getValue();
 
-                            // Make a best effort to locate the failed operation and include it in the message
-                            if (changes != null && error.getOdataError() != null
-                                && error.getOdataError().getMessage() != null
-                                && error.getOdataError().getMessage().getValue() != null) {
+                                // Make a best effort to locate the failed operation and include it in the message
+                                if (changes != null && error.getOdataError() != null
+                                    && error.getOdataError().getMessage() != null
+                                    && error.getOdataError().getMessage().getValue() != null) {
 
-                                String message = error.getOdataError().getMessage().getValue();
-                                try {
-                                    int failedIndex = Integer.parseInt(message.substring(0, message.indexOf(":")));
-                                    failedOperation = changes.getContents().get(failedIndex).getOperation();
-                                } catch (NumberFormatException e) {
-                                    logger.logThrowableAsWarning(new IllegalArgumentException(
-                                        "Unable to parse failed operation from batch error message.", e));
+                                    String message = error.getOdataError().getMessage().getValue();
+                                    try {
+                                        int failedIndex = Integer.parseInt(message.substring(0, message.indexOf(":")));
+                                        failedOperation = changes.getContents().get(failedIndex).getOperation();
+                                    } catch (NumberFormatException e) {
+                                        // Unable to parse failed operation from batch error message - this just means
+                                        // the service did not indicate which request was the one that failed. Since
+                                        // this is optional, just swallow the exception.
+                                    }
                                 }
+                            } else if (subResponse.getValue() instanceof String) {
+                                errorMessage = "The service returned the following data for the failed operation: "
+                                    + subResponse.getValue();
+                            } else {
+                                errorMessage =
+                                    "The service returned the following status code for the failed operation: "
+                                        + subResponse.getStatusCode();
                             }
                         }
                     }
 
-                    if (error != null) {
+                    if (error != null || errorMessage != null) {
                         String message = "An operation within the batch failed, the transaction has been rolled back.";
                         if (failedOperation != null) {
                             message += " The failed operation was: " + failedOperation.toString();
+                        } else if (errorMessage != null) {
+                            message += " " + errorMessage;
                         }
                         throw logger.logExceptionAsError(new TableServiceErrorException(message, null, error));
                     } else {
