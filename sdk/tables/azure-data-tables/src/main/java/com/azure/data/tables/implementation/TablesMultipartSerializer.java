@@ -64,15 +64,10 @@ public class TablesMultipartSerializer extends TablesJacksonSerializer {
     private void writeRequest(Object object, OutputStream os) throws IOException {
         HttpRequest request = ((BatchSubRequest) object).getHttpRequest();
         String method = request.getHttpMethod() == HttpMethod.PATCH ? "MERGE" :request.getHttpMethod().toString();
-        String urlPath = request.getUrl().getPath();
-        String urlQuery = request.getUrl().getQuery();
-        if (!CoreUtils.isNullOrEmpty(urlQuery)) {
-            urlPath = urlPath + "?" + urlQuery;
-        }
 
         write("Content-Type: application/http\r\n", os);
         write("Content-Transfer-Encoding: binary\r\n\r\n", os);
-        write(method + " " + urlPath + " HTTP/1.1\r\n", os);
+        write(method + " " + request.getUrl().toString() + " HTTP/1.1\r\n", os);
 
         for (HttpHeader header : request.getHeaders()) {
             if (!"x-ms-version".equalsIgnoreCase(header.getName())) {
