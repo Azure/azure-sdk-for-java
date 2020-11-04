@@ -14,14 +14,15 @@ import com.azure.core.http.rest.ResponseBase;
 public final class CancelHealthJobResponse extends ResponseBase<CancelHealthJobHeaders, Void> {
     /**
      * Creates an instance of CancelHealthJobResponse.
-     * 
+     *
      * @param request the request which resulted in this CancelHealthJobResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public CancelHealthJobResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, CancelHealthJobHeaders headers) {
+    public CancelHealthJobResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value,
+        CancelHealthJobHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

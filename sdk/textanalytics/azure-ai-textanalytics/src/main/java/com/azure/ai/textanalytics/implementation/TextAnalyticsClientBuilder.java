@@ -23,8 +23,9 @@ public final class TextAnalyticsClientBuilder {
     private String endpoint;
 
     /**
-     * Sets Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com).
-     * 
+     * Sets Supported Cognitive Services endpoints (protocol and hostname, for example:
+     * https://westus.api.cognitive.microsoft.com).
+     *
      * @param endpoint the endpoint value.
      * @return the TextAnalyticsClientBuilder.
      */
@@ -40,7 +41,7 @@ public final class TextAnalyticsClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     * 
+     *
      * @param pipeline the pipeline value.
      * @return the TextAnalyticsClientBuilder.
      */
@@ -51,12 +52,13 @@ public final class TextAnalyticsClientBuilder {
 
     /**
      * Builds an instance of TextAnalyticsClientImpl with the provided parameters.
-     * 
+     *
      * @return an instance of TextAnalyticsClientImpl.
      */
     public TextAnalyticsClientImpl buildClient() {
         if (pipeline == null) {
-            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
+            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(),
+                new CookiePolicy()).build();
         }
         TextAnalyticsClientImpl client = new TextAnalyticsClientImpl(pipeline);
         client.setEndpoint(this.endpoint);

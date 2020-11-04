@@ -63,7 +63,7 @@ public final class TasksStateTasks {
 
     /**
      * Get the details property: The details property.
-     * 
+     *
      * @return the details value.
      */
     public List<TaskState> getDetails() {
@@ -72,7 +72,7 @@ public final class TasksStateTasks {
 
     /**
      * Set the details property: The details property.
-     * 
+     *
      * @param details the details value to set.
      * @return the TasksStateTasks object itself.
      */
@@ -83,7 +83,7 @@ public final class TasksStateTasks {
 
     /**
      * Get the completed property: The completed property.
-     * 
+     *
      * @return the completed value.
      */
     public int getCompleted() {
@@ -92,7 +92,7 @@ public final class TasksStateTasks {
 
     /**
      * Set the completed property: The completed property.
-     * 
+     *
      * @param completed the completed value to set.
      * @return the TasksStateTasks object itself.
      */
@@ -103,7 +103,7 @@ public final class TasksStateTasks {
 
     /**
      * Get the failed property: The failed property.
-     * 
+     *
      * @return the failed value.
      */
     public int getFailed() {
@@ -112,7 +112,7 @@ public final class TasksStateTasks {
 
     /**
      * Set the failed property: The failed property.
-     * 
+     *
      * @param failed the failed value to set.
      * @return the TasksStateTasks object itself.
      */
@@ -123,7 +123,7 @@ public final class TasksStateTasks {
 
     /**
      * Get the inProgress property: The inProgress property.
-     * 
+     *
      * @return the inProgress value.
      */
     public int getInProgress() {
@@ -132,7 +132,7 @@ public final class TasksStateTasks {
 
     /**
      * Set the inProgress property: The inProgress property.
-     * 
+     *
      * @param inProgress the inProgress value to set.
      * @return the TasksStateTasks object itself.
      */
@@ -143,7 +143,7 @@ public final class TasksStateTasks {
 
     /**
      * Get the total property: The total property.
-     * 
+     *
      * @return the total value.
      */
     public int getTotal() {
@@ -152,7 +152,7 @@ public final class TasksStateTasks {
 
     /**
      * Set the total property: The total property.
-     * 
+     *
      * @param total the total value to set.
      * @return the TasksStateTasks object itself.
      */
@@ -164,7 +164,7 @@ public final class TasksStateTasks {
     /**
      * Get the entityRecognitionTasks property: The entityRecognitionTasks
      * property.
-     * 
+     *
      * @return the entityRecognitionTasks value.
      */
     public List<TasksStateTasksEntityRecognitionTasksItem> getEntityRecognitionTasks() {
@@ -174,11 +174,12 @@ public final class TasksStateTasks {
     /**
      * Set the entityRecognitionTasks property: The entityRecognitionTasks
      * property.
-     * 
+     *
      * @param entityRecognitionTasks the entityRecognitionTasks value to set.
      * @return the TasksStateTasks object itself.
      */
-    public TasksStateTasks setEntityRecognitionTasks(List<TasksStateTasksEntityRecognitionTasksItem> entityRecognitionTasks) {
+    public TasksStateTasks setEntityRecognitionTasks(
+        List<TasksStateTasksEntityRecognitionTasksItem> entityRecognitionTasks) {
         this.entityRecognitionTasks = entityRecognitionTasks;
         return this;
     }
@@ -186,7 +187,7 @@ public final class TasksStateTasks {
     /**
      * Get the entityRecognitionPiiTasks property: The
      * entityRecognitionPiiTasks property.
-     * 
+     *
      * @return the entityRecognitionPiiTasks value.
      */
     public List<TasksStateTasksEntityRecognitionPiiTasksItem> getEntityRecognitionPiiTasks() {
@@ -196,12 +197,13 @@ public final class TasksStateTasks {
     /**
      * Set the entityRecognitionPiiTasks property: The
      * entityRecognitionPiiTasks property.
-     * 
+     *
      * @param entityRecognitionPiiTasks the entityRecognitionPiiTasks value to
      * set.
      * @return the TasksStateTasks object itself.
      */
-    public TasksStateTasks setEntityRecognitionPiiTasks(List<TasksStateTasksEntityRecognitionPiiTasksItem> entityRecognitionPiiTasks) {
+    public TasksStateTasks setEntityRecognitionPiiTasks(
+        List<TasksStateTasksEntityRecognitionPiiTasksItem> entityRecognitionPiiTasks) {
         this.entityRecognitionPiiTasks = entityRecognitionPiiTasks;
         return this;
     }
@@ -209,7 +211,7 @@ public final class TasksStateTasks {
     /**
      * Get the keyPhraseExtractionTasks property: The keyPhraseExtractionTasks
      * property.
-     * 
+     *
      * @return the keyPhraseExtractionTasks value.
      */
     public List<TasksStateTasksKeyPhraseExtractionTasksItem> getKeyPhraseExtractionTasks() {
@@ -219,12 +221,13 @@ public final class TasksStateTasks {
     /**
      * Set the keyPhraseExtractionTasks property: The keyPhraseExtractionTasks
      * property.
-     * 
+     *
      * @param keyPhraseExtractionTasks the keyPhraseExtractionTasks value to
      * set.
      * @return the TasksStateTasks object itself.
      */
-    public TasksStateTasks setKeyPhraseExtractionTasks(List<TasksStateTasksKeyPhraseExtractionTasksItem> keyPhraseExtractionTasks) {
+    public TasksStateTasks setKeyPhraseExtractionTasks(
+        List<TasksStateTasksKeyPhraseExtractionTasksItem> keyPhraseExtractionTasks) {
         this.keyPhraseExtractionTasks = keyPhraseExtractionTasks;
         return this;
     }
