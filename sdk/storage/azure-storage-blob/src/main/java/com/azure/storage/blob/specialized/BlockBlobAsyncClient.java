@@ -246,7 +246,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     Mono<Response<BlockBlobItem>> uploadWithResponse(BlockBlobSimpleUploadOptions options, Context context) {
         StorageImplUtils.assertNotNull("options", options);
         Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
-            options.getDataStream(), options.getLength(), BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)
+            options.getDataStream(), options.getLength(), BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true)
             .subscribeOn(Schedulers.elastic())
             : options.getDataFlux();
         BlobRequestConditions requestConditions = options.getRequestConditions() == null ? new BlobRequestConditions()
