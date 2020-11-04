@@ -64,6 +64,17 @@ public class ServiceBusMessage {
      *
      * @throws NullPointerException if {@code body} is null.
      */
+    public ServiceBusMessage(byte[] body) {
+        this(BinaryData.fromBytes(Objects.requireNonNull(body, "'body' cannot be null.")));
+    }
+
+    /**
+     * Creates a {@link ServiceBusMessage} with a {@link java.nio.charset.StandardCharsets#UTF_8 UTF_8} encoded body.
+     *
+     * @param body The content of the Service bus message.
+     *
+     * @throws NullPointerException if {@code body} is null.
+     */
     public ServiceBusMessage(String body) {
         this(BinaryData.fromString(Objects.requireNonNull(body, "'body' cannot be null.")));
     }
