@@ -81,9 +81,11 @@ public class TablesMultipartSerializer extends TablesJacksonSerializer {
 
         write("\r\n", os);
 
-        byte[] bodyBytes = FluxUtil.collectBytesInByteBufferStream(request.getBody()).block();
-        if (bodyBytes != null) {
-            os.write(bodyBytes);
+        if (request.getBody() != null) {
+            byte[] bodyBytes = FluxUtil.collectBytesInByteBufferStream(request.getBody()).block();
+            if (bodyBytes != null) {
+                os.write(bodyBytes);
+            }
         }
     }
 
