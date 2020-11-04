@@ -2,25 +2,32 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca.rest;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 
 /**
  * An OAuth2 token.
  */
 public class OAuthToken implements Serializable {
+    
+    /**
+     * Stores the serial version UID.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Stores the access token.
      */
-    private String access_token;
+    @JsonProperty("access_token")
+    private String accessToken;
 
     /**
      * Get the access token.
      *
      * @return the access token.
      */
-    public String getAccess_token() {
-        return access_token;
+    public String getAccessToken() {
+        return accessToken;
     }
 
     /**
@@ -28,7 +35,7 @@ public class OAuthToken implements Serializable {
      *
      * @param accessToken the access token.
      */
-    public void setAccess_token(String accessToken) {
-        this.access_token = accessToken;
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 }

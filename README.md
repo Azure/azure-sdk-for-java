@@ -38,14 +38,15 @@ You can find the **[most up to date list of all of the new packages on our page]
 Last stable versions of packages that have been provided for usage with Azure and are production-ready. These libraries provide similar functionalities to the new libraries, as they allow you to use and consume existing resources and interact with them, for example: upload a blob. Previous library directories start with `microsoft-azure-`, e.g. `microsoft-azure-keyvault`. They might not implement the [guidelines](https://azure.github.io/azure-sdk/java_introduction.html) or have the same feature set as the new releases. They do however offer wider coverage of services.
 
 ### Management: New Releases
-A new set of management libraries that follow the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java/guidelines/) are now in Public Preview. These new libraries provide a higher-level, object-oriented API for _managing_ Azure resources, that is optimized for ease of use, succinctness and consistency.
-You can find the list of new packages [on this page](https://azure.github.io/azure-sdk/releases/latest/java.html). Documentation and code samples for these new libraries can be found [here](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager)
+A new set of management libraries that follow the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java/guidelines/) are now Generally Available (GA) and ready for production uses. These new libraries provide a higher-level, object-oriented API for _managing_ Azure resources, that is optimized for ease of use, succinctness and consistency. You can find the list of new packages **[on this page](https://azure.github.io/azure-sdk/releases/latest/java.html)**.
 
-> NOTE: If you need to ensure your code is ready for production use one of the stable, non-preview libraries.
+**For general documentation on how to use the new libraries for Azure Resource Management, please [visit here](https://aka.ms/azsdk/java/mgmt)**. We have also prepared **[plenty of code samples](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/SAMPLE.md)** as well as **[migraton guide](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/MIGRATION_GUIDE.md)** in case you are upgrading from previous versions.
+
+New Management libraries can be identified by namespaces that start with `azure-resourcemanager`, e.g. `azure-resourcemanager-compute`
 
 ### Management: Previous Versions
 For a complete list of management libraries which enable you to provision and manage Azure resources, please check [here](https://azure.github.io/azure-sdk/releases/latest/all/java.html). They might not have the same feature set as the new releases but they do offer wider coverage of services.
-Management libraries can be identified by namespaces that start with `azure-mgmt-`, e.g. `azure-mgmt-compute`
+Previous versions of management libraries can be identified by namespaces that start with `azure-mgmt-`, e.g. `azure-mgmt-compute`
 
 
 ## Need help?

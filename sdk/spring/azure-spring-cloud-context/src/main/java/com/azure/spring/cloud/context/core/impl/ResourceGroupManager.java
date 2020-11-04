@@ -7,6 +7,9 @@ import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 
+/**
+ * Resource manager for resource group.
+ */
 public class ResourceGroupManager extends AzureManager<ResourceGroup, String> {
 
     public ResourceGroupManager(Azure azure, AzureProperties azureProperties) {

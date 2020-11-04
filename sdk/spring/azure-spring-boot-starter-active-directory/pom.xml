@@ -15,7 +15,7 @@
   <artifactId>azure-spring-boot-starter-active-directory</artifactId>
   <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-active-directory;current} -->
 
-  <name>Azure AD Spring Security Integration Spring Boot Starter</name>
+  <name>Azure Spring Boot Starter for Azure AD Spring Security Integration</name>
   <description>Spring Boot Starter for Azure AD and Spring Security Integration</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 

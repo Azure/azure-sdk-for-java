@@ -3,6 +3,8 @@
 
 package com.azure.ai.formrecognizer.training.models;
 
+import com.azure.ai.formrecognizer.implementation.CustomFormSubmodelHelper;
+
 import java.util.Collections;
 import java.util.Map;
 
@@ -29,6 +31,15 @@ public final class CustomFormSubmodel {
     private final String formType;
 
     private String modelId;
+
+    static {
+        CustomFormSubmodelHelper.setAccessor(new CustomFormSubmodelHelper.CustomFormSubmodelAccessor() {
+            @Override
+            public void setModelId(CustomFormSubmodel formSubmodel, String modelId) {
+                formSubmodel.setModelId(modelId);
+            }
+        });
+    }
 
     /**
      * Constructs a CustomFormSubmodel object.
@@ -80,5 +91,15 @@ public final class CustomFormSubmodel {
      */
     public String getModelId() {
         return modelId;
+    }
+
+    /**
+     * The private setter to set the modelId property
+     * via {@link CustomFormSubmodelHelper.CustomFormSubmodelAccessor}.
+     *
+     * @param modelId The the unique identifier of the submodel.
+     */
+    private void setModelId(String modelId) {
+        this.modelId = modelId;
     }
 }

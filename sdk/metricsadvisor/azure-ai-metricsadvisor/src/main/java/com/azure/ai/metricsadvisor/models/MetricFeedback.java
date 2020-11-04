@@ -3,6 +3,8 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.implementation.util.MetricFeedbackHelper;
+
 import java.time.OffsetDateTime;
 
 /**
@@ -15,6 +17,35 @@ public abstract class MetricFeedback {
     private String userPrincipal;
     private FeedbackType feedbackType;
     private DimensionKey dimensionFilter;
+
+    static {
+        MetricFeedbackHelper.setAccessor(new MetricFeedbackHelper.MetricFeedbackAccessor() {
+            @Override
+            public void setId(MetricFeedback feedback, String id) {
+                feedback.setId(id);
+            }
+
+            @Override
+            public void setMetricId(MetricFeedback feedback, String metricId) {
+                feedback.setMetricId(metricId);
+            }
+
+            @Override
+            public void setCreatedTime(MetricFeedback feedback, OffsetDateTime createdTime) {
+                feedback.setCreatedTime(createdTime);
+            }
+
+            @Override
+            public void setUserPrincipal(MetricFeedback feedback, String userPrincipal) {
+                feedback.setUserPrincipal(userPrincipal);
+            }
+
+            @Override
+            public void setFeedbackType(MetricFeedback feedback, FeedbackType feedbackType) {
+                feedback.setFeedbackType(feedbackType);
+            }
+        });
+    }
 
     /**
      * Get the feedback unique id.
@@ -80,5 +111,25 @@ public abstract class MetricFeedback {
     public MetricFeedback setDimensionFilter(final DimensionKey dimensionFilter) {
         this.dimensionFilter = dimensionFilter;
         return this;
+    }
+
+    void setId(String id) {
+        this.id = id;
+    }
+
+    void setMetricId(String metricId) {
+        this.metricId = metricId;
+    }
+
+    void setCreatedTime(OffsetDateTime createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    void setUserPrincipal(String userPrincipal) {
+        this.userPrincipal = userPrincipal;
+    }
+
+    void setFeedbackType(FeedbackType feedbackType) {
+        this.feedbackType = feedbackType;
     }
 }

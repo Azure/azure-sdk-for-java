@@ -4,17 +4,15 @@
 package com.azure.spring.cloud.autoconfigure.storage;
 
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.storage.blob.BlobServiceClientBuilder;
-import com.azure.storage.file.share.ShareServiceClientBuilder;
-import com.microsoft.azure.management.storage.StorageAccount;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
 import com.azure.spring.cloud.context.core.api.EnvironmentProvider;
 import com.azure.spring.cloud.context.core.api.ResourceManagerProvider;
 import com.azure.spring.cloud.context.core.storage.StorageConnectionStringProvider;
 import com.azure.spring.cloud.storage.AzureStorageProtocolResolver;
 import com.azure.spring.cloud.telemetry.TelemetryCollector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.file.share.ShareServiceClientBuilder;
+import com.microsoft.azure.management.storage.StorageAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -37,11 +35,10 @@ import static com.azure.spring.cloud.context.core.util.Constants.SPRING_CLOUD_ST
  */
 @Configuration
 @AutoConfigureAfter(AzureContextAutoConfiguration.class)
-@ConditionalOnClass({BlobServiceClientBuilder.class, ShareServiceClientBuilder.class})
+@ConditionalOnClass({ BlobServiceClientBuilder.class, ShareServiceClientBuilder.class })
 @ConditionalOnProperty(name = "spring.cloud.azure.storage.account")
 @EnableConfigurationProperties(AzureStorageProperties.class)
 public class AzureStorageAutoConfiguration {
-    private static final Logger LOG = LoggerFactory.getLogger(AzureStorageAutoConfiguration.class);
     private static final String STORAGE = "Storage";
     private static final String ACCOUNT_NAME = "AccountName";
 
@@ -74,7 +71,8 @@ public class AzureStorageAutoConfiguration {
 
 
         return new BlobServiceClientBuilder().connectionString(connectionString)
-            .httpLogOptions(new HttpLogOptions().setApplicationId(SPRING_CLOUD_STORAGE_BLOB_APPLICATION_ID));
+                                             .httpLogOptions(new HttpLogOptions()
+                                                 .setApplicationId(SPRING_CLOUD_STORAGE_BLOB_APPLICATION_ID));
     }
 
     @Bean
@@ -100,7 +98,8 @@ public class AzureStorageAutoConfiguration {
 
 
         return new ShareServiceClientBuilder().connectionString(connectionString)
-            .httpLogOptions(new HttpLogOptions().setApplicationId(SPRING_CLOUD_STORAGE_FILE_SHARE_APPLICATION_ID));
+                                              .httpLogOptions(new HttpLogOptions()
+                                                  .setApplicationId(SPRING_CLOUD_STORAGE_FILE_SHARE_APPLICATION_ID));
     }
 
     @Configuration

@@ -12,7 +12,7 @@
   <artifactId>azure-spring-cloud-sample-servicebus-topic-binder</artifactId>
   <groupId>com.azure.spring</groupId>
   <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-sample-servicebus-topic-binder;current} -->
-  <name>Azure Spring Cloud Service Bus Topic Binder Sample</name>
+  <name>Azure Spring Cloud Sample Service Bus Topic Binder</name>
 
   <dependencyManagement>
     <dependencies>
@@ -33,8 +33,8 @@
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-cloud-servicebus-topic-stream-binder</artifactId>
-      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-servicebus-topic-stream-binder;current} -->
+      <artifactId>azure-spring-cloud-stream-binder-servicebus-topic</artifactId>
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-servicebus-topic;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

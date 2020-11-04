@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.microsoft.azure.management.servicebus.ServiceBusNamespace;
 import com.azure.spring.cloud.context.core.api.ResourceManagerProvider;
-import com.azure.spring.cloud.context.core.impl.ServiceBusNamesapceManager;
+import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,7 +18,7 @@ public class ServiceBusTestConfiguration {
     @Bean
     ResourceManagerProvider resourceManagerProvider() {
         ResourceManagerProvider resourceManagerProvider = mock(ResourceManagerProvider.class);
-        ServiceBusNamesapceManager namespaceManager = mock(ServiceBusNamesapceManager.class);
+        ServiceBusNamespaceManager namespaceManager = mock(ServiceBusNamespaceManager.class);
         when(namespaceManager.getOrCreate(anyString())).thenReturn(mock(ServiceBusNamespace.class));
         when(resourceManagerProvider.getServiceBusNamespaceManager()).thenReturn(namespaceManager);
         return resourceManagerProvider;

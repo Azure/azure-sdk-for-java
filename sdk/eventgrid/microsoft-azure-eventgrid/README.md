@@ -49,7 +49,7 @@ If you would like to become an active contributor to this project please follow 
 
 - [Javadoc](https://azure.github.io/azure-sdk-for-java/)
 - [Azure Java SDKs](https://docs.microsoft.com/java/azure/)
-- If you don't have a Microsoft Azure subscription you can get a FREE trial account [here](http://go.microsoft.com/fwlink/?LinkId=330212)
+- If you don't have a Microsoft Azure subscription you can get a FREE trial account [here](https://go.microsoft.com/fwlink/?LinkId=330212)
 
 ---
 

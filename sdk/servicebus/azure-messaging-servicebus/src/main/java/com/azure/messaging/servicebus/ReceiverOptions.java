@@ -13,31 +13,24 @@ import java.time.Duration;
 class ReceiverOptions {
     private final ReceiveMode receiveMode;
     private final int prefetchCount;
+    private final boolean enableAutoComplete;
     private final String sessionId;
-    private final boolean isRollingSessionReceiver;
     private final Integer maxConcurrentSessions;
-    private final boolean isSessionReceiver;
     private final Duration maxLockRenewDuration;
 
-    ReceiverOptions(ReceiveMode receiveMode, int prefetchCount, Duration maxLockRenewDuration) {
-        this.receiveMode = receiveMode;
-        this.prefetchCount = prefetchCount;
-        this.maxLockRenewDuration = maxLockRenewDuration;
-        this.sessionId = null;
-        this.isRollingSessionReceiver = false;
-        this.maxConcurrentSessions = null;
-        this.isSessionReceiver = false;
+    ReceiverOptions(ReceiveMode receiveMode, int prefetchCount, Duration maxLockRenewDuration,
+        boolean enableAutoComplete) {
+        this(receiveMode, prefetchCount, maxLockRenewDuration, enableAutoComplete, null, null);
     }
 
-    ReceiverOptions(ReceiveMode receiveMode, int prefetchCount, String sessionId, boolean isRollingSessionReceiver,
-        Integer maxConcurrentSessions, Duration maxLockRenewDuration) {
+    ReceiverOptions(ReceiveMode receiveMode, int prefetchCount, Duration maxLockRenewDuration,
+        boolean enableAutoComplete, String sessionId, Integer maxConcurrentSessions) {
         this.receiveMode = receiveMode;
         this.prefetchCount = prefetchCount;
+        this.enableAutoComplete = enableAutoComplete;
         this.sessionId = sessionId;
-        this.isRollingSessionReceiver = isRollingSessionReceiver;
         this.maxConcurrentSessions = maxConcurrentSessions;
         this.maxLockRenewDuration = maxLockRenewDuration;
-        this.isSessionReceiver = true;
     }
 
     /**
@@ -90,7 +83,7 @@ class ReceiverOptions {
      * @return true if it is a session-aware receiver; false otherwise.
      */
     boolean isSessionReceiver() {
-        return isSessionReceiver;
+        return sessionId != null || maxConcurrentSessions != null;
     }
 
     /**
@@ -100,7 +93,7 @@ class ReceiverOptions {
      *     false} otherwise.
      */
     public boolean isRollingSessionReceiver() {
-        return isRollingSessionReceiver;
+        return maxConcurrentSessions != null && maxConcurrentSessions > 0 && sessionId == null;
     }
 
     /**
@@ -110,5 +103,9 @@ class ReceiverOptions {
      */
     public Integer getMaxConcurrentSessions() {
         return maxConcurrentSessions;
+    }
+
+    public boolean isEnableAutoComplete() {
+        return enableAutoComplete;
     }
 }

@@ -15,7 +15,7 @@
   <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
   <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-active-directory-b2c;current} -->
 
-  <name>Azure AD B2C Spring Security Integration Spring Boot Starter</name>
+  <name>Azure Spring Boot Starter for Azure AD B2C Spring Security Integration</name>
   <description>Spring Boot Starter for Azure AD B2C and Spring Security Integration</description>
 
   <dependencies>

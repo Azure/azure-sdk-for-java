@@ -3,21 +3,21 @@
 
 package com.azure.spring.integration.servicebus.queue;
 
+import com.azure.spring.integration.core.AzureCheckpointer;
+import com.azure.spring.integration.core.AzureHeaders;
+import com.azure.spring.integration.core.api.CheckpointMode;
+import com.azure.spring.integration.core.api.Checkpointer;
 import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
 import com.azure.spring.integration.servicebus.ServiceBusMessageHandler;
 import com.azure.spring.integration.servicebus.ServiceBusRuntimeException;
 import com.azure.spring.integration.servicebus.ServiceBusTemplate;
+import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
 import com.google.common.collect.Sets;
 import com.microsoft.azure.servicebus.IMessage;
 import com.microsoft.azure.servicebus.IMessageSession;
 import com.microsoft.azure.servicebus.IQueueClient;
 import com.microsoft.azure.servicebus.ISessionHandler;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
-import com.azure.spring.integration.core.AzureCheckpointer;
-import com.azure.spring.integration.core.AzureHeaders;
-import com.azure.spring.integration.core.api.CheckpointMode;
-import com.azure.spring.integration.core.api.Checkpointer;
-import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
 import java.util.function.Consumer;
 
 /**
@@ -71,7 +72,6 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
 
     @Override
     public boolean unsubscribe(String destination) {
-
         // TODO: unregister message handler but service bus sdk unsupported
 
         return subscribedQueues.remove(destination);
@@ -132,7 +132,16 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
         }
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    /**
+     * Register a message handler to receive message from the queue. A session handler will be registered if session is
+     * enabled.
+     *
+     * @param name The queue name.
+     * @param consumer The consumer method.
+     * @param payloadType The type of the message payload.
+     * @throws ServiceBusRuntimeException If fail to register the queue message handler.
+     */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     protected void internalSubscribe(String name, Consumer<Message<?>> consumer, Class<?> payloadType) {
 
         IQueueClient queueClient = this.senderFactory.getOrCreateClient(name);
@@ -142,15 +151,15 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
         try {
             queueClient.setPrefetchCount(this.clientConfig.getPrefetchCount());
 
+            final QueueMessageHandler messageHandler = new QueueMessageHandler(consumer, payloadType, queueClient);
+            final ExecutorService executors = buildHandlerExecutors(threadPrefix);
+
             // Register SessionHandler if sessions are enabled.
             // Handlers are mutually exclusive.
             if (this.clientConfig.isSessionsEnabled()) {
-                queueClient.registerSessionHandler(
-                    new QueueMessageHandler(consumer, payloadType, queueClient), buildSessionHandlerOptions(),
-                    buildHandlerExecutors(threadPrefix));
+                queueClient.registerSessionHandler(messageHandler, buildSessionHandlerOptions(), executors);
             } else {
-                queueClient.registerMessageHandler(new QueueMessageHandler(consumer, payloadType, queueClient),
-                    buildHandlerOptions(), buildHandlerExecutors(threadPrefix));
+                queueClient.registerMessageHandler(messageHandler, buildHandlerOptions(), executors);
             }
         } catch (ServiceBusException | InterruptedException e) {
             LOG.error("Failed to register queue message handler", e);

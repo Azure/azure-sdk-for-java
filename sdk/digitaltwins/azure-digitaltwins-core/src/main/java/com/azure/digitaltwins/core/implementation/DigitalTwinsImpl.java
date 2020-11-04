@@ -24,6 +24,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.models.JsonPatchDocument;
 import com.azure.core.util.Context;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsAddOptions;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsAddRelationshipOptions;
@@ -51,7 +52,6 @@ import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
 import com.azure.digitaltwins.core.implementation.models.IncomingRelationship;
 import com.azure.digitaltwins.core.implementation.models.IncomingRelationshipCollection;
 import com.azure.digitaltwins.core.implementation.models.RelationshipCollection;
-import java.util.List;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DigitalTwins. */
@@ -126,7 +126,7 @@ public final class DigitalTwinsImpl {
                 @PathParam("id") String id,
                 @HeaderParam("If-Match") String ifMatch,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json-patch+json") List<Object> patchDocument,
+                @BodyParam("application/json-patch+json") JsonPatchDocument patchDocument,
                 Context context);
 
         @Get("/digitaltwins/{id}/relationships/{relationshipId}")
@@ -179,7 +179,7 @@ public final class DigitalTwinsImpl {
                 @PathParam("relationshipId") String relationshipId,
                 @HeaderParam("If-Match") String ifMatch,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json-patch+json") List<Object> patchDocument,
+                @BodyParam("application/json-patch+json") JsonPatchDocument patchDocument,
                 Context context);
 
         @Get("/digitaltwins/{id}/relationships")
@@ -257,7 +257,7 @@ public final class DigitalTwinsImpl {
                 @PathParam("componentPath") String componentPath,
                 @HeaderParam("If-Match") String ifMatch,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json-patch+json") List<Object> patchDocument,
+                @BodyParam("application/json-patch+json") JsonPatchDocument patchDocument,
                 Context context);
 
         @Get("{nextLink}")
@@ -352,7 +352,6 @@ public final class DigitalTwinsImpl {
         if (digitalTwinsAddOptions != null) {
             digitalTwinsAddOptions.validate();
         }
-        final String ifNoneMatch = "*";
         String traceparentInternal = null;
         if (digitalTwinsAddOptions != null) {
             traceparentInternal = digitalTwinsAddOptions.getTraceparent();
@@ -363,6 +362,11 @@ public final class DigitalTwinsImpl {
             tracestateInternal = digitalTwinsAddOptions.getTracestate();
         }
         String tracestate = tracestateInternal;
+        String ifNoneMatchInternal = null;
+        if (digitalTwinsAddOptions != null) {
+            ifNoneMatchInternal = digitalTwinsAddOptions.getIfNoneMatch();
+        }
+        String ifNoneMatch = ifNoneMatchInternal;
         return service.add(
                 this.client.getHost(),
                 traceparent,
@@ -438,7 +442,7 @@ public final class DigitalTwinsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsUpdateResponse> updateWithResponseAsync(
             String id,
-            List<Object> patchDocument,
+            JsonPatchDocument patchDocument,
             DigitalTwinsUpdateOptions digitalTwinsUpdateOptions,
             Context context) {
         if (this.client.getHost() == null) {
@@ -574,7 +578,6 @@ public final class DigitalTwinsImpl {
         if (digitalTwinsAddRelationshipOptions != null) {
             digitalTwinsAddRelationshipOptions.validate();
         }
-        final String ifNoneMatch = "*";
         String traceparentInternal = null;
         if (digitalTwinsAddRelationshipOptions != null) {
             traceparentInternal = digitalTwinsAddRelationshipOptions.getTraceparent();
@@ -585,6 +588,11 @@ public final class DigitalTwinsImpl {
             tracestateInternal = digitalTwinsAddRelationshipOptions.getTracestate();
         }
         String tracestate = tracestateInternal;
+        String ifNoneMatchInternal = null;
+        if (digitalTwinsAddRelationshipOptions != null) {
+            ifNoneMatchInternal = digitalTwinsAddRelationshipOptions.getIfNoneMatch();
+        }
+        String ifNoneMatch = ifNoneMatchInternal;
         return service.addRelationship(
                 this.client.getHost(),
                 traceparent,
@@ -680,7 +688,7 @@ public final class DigitalTwinsImpl {
     public Mono<DigitalTwinsUpdateRelationshipResponse> updateRelationshipWithResponseAsync(
             String id,
             String relationshipId,
-            List<Object> patchDocument,
+            JsonPatchDocument patchDocument,
             DigitalTwinsUpdateRelationshipOptions digitalTwinsUpdateRelationshipOptions,
             Context context) {
         if (this.client.getHost() == null) {
@@ -1042,7 +1050,7 @@ public final class DigitalTwinsImpl {
     public Mono<DigitalTwinsUpdateComponentResponse> updateComponentWithResponseAsync(
             String id,
             String componentPath,
-            List<Object> patchDocument,
+            JsonPatchDocument patchDocument,
             DigitalTwinsUpdateComponentOptions digitalTwinsUpdateComponentOptions,
             Context context) {
         if (this.client.getHost() == null) {

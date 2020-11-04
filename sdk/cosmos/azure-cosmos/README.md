@@ -14,7 +14,7 @@ This project provides SDK library in Java for interacting with [SQL API][sql_api
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos</artifactId>
-  <version>4.7.1</version>
+  <version>4.8.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -219,12 +219,12 @@ Also add a log4j config.
 ```properties
 # this is a sample log4j configuration
 
-# Set root logger level to DEBUG and its only appender to A1.
+# Set root logger level to INFO and its only appender to A1.
 log4j.rootLogger=INFO, A1
 
-log4j.category.com.azure.cosmos=DEBUG
-#log4j.category.io.netty=INFO
-#log4j.category.io.reactivex=INFO
+log4j.category.com.azure.cosmos=INFO
+#log4j.category.io.netty=OFF
+#log4j.category.io.projectreactor=OFF
 # A1 is set to be a ConsoleAppender.
 log4j.appender.A1=org.apache.log4j.ConsoleAppender
 

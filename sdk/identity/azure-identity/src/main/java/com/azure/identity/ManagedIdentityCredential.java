@@ -23,7 +23,6 @@ public final class ManagedIdentityCredential implements TokenCredential {
     private final ManagedIdentityServiceCredential managedIdentityServiceCredential;
     private final ClientLogger logger = new ClientLogger(ManagedIdentityCredential.class);
 
-    static final String PROPERTY_IMDS_ENDPOINT = "IMDS_ENDPOINT";
     static final String PROPERTY_IDENTITY_SERVER_THUMBPRINT = "IDENTITY_SERVER_THUMBPRINT";
 
 
@@ -40,15 +39,16 @@ public final class ManagedIdentityCredential implements TokenCredential {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
         if (configuration.contains(Configuration.PROPERTY_IDENTITY_ENDPOINT)) {
             if (configuration.contains(Configuration.PROPERTY_IDENTITY_HEADER)) {
-                managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, identityClient);
-            }  else if (configuration.contains(PROPERTY_IDENTITY_SERVER_THUMBPRINT)) {
-                managedIdentityServiceCredential = new ServiceFabricMsiCredential(clientId, identityClient);
-            }  else {
+                if (configuration.contains(PROPERTY_IDENTITY_SERVER_THUMBPRINT)) {
+                    managedIdentityServiceCredential = new ServiceFabricMsiCredential(clientId, identityClient);
+                } else {
+                    managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, identityClient);
+                }
+            } else {
                 managedIdentityServiceCredential = null;
             }
         } else if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)) {
             managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, identityClient);
-
         } else {
             managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, identityClient);
         }

@@ -8,7 +8,7 @@ import java.security.PrivilegedAction;
 import java.security.Provider;
 
 /**
- * The Azure KeyVault TrustManagerFactory provider.
+ * The Azure Key Vault TrustManagerFactory provider.
  */
 public class KeyVaultTrustManagerFactoryProvider extends Provider {
 
@@ -20,7 +20,7 @@ public class KeyVaultTrustManagerFactoryProvider extends Provider {
     /**
      * Stores the information.
      */
-    private static final String INFO = "Azure KeyVault TrustManagerFactory Provider";
+    private static final String INFO = "Azure Key Vault TrustManagerFactory Provider";
 
     /**
      * Stores the name.
