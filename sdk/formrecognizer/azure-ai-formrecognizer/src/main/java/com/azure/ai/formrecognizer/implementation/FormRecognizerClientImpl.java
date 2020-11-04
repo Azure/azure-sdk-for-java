@@ -371,7 +371,9 @@ public final class FormRecognizerClientImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Models>> listCustomModelsNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                Context context);
     }
 
     /**
@@ -3333,7 +3335,7 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ModelInfo>> listCustomModelsNextSinglePageAsync(String nextLink) {
-        return FluxUtil.withContext(context -> service.listCustomModelsNext(nextLink, context))
+        return FluxUtil.withContext(context -> service.listCustomModelsNext(nextLink, this.getEndpoint(), context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -3357,7 +3359,7 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ModelInfo>> listCustomModelsNextSinglePageAsync(String nextLink, Context context) {
-        return service.listCustomModelsNext(nextLink, context)
+        return service.listCustomModelsNext(nextLink, this.getEndpoint(), context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
