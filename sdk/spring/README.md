@@ -122,7 +122,7 @@ You can participate community driven [![Gitter][gitter-spring-on-azure-img]][git
 
 ### Pull Requests
 
-Pull requests are welcome. To open your own pull request, click [here][azure-spring-boot-compare]. When creating a pull request, make sure you are pointing to the fork and branch that your changes were made in.
+Pull requests are welcome. To open your own pull request, click [here][azure-sdk-for-java-compare]. When creating a pull request, make sure you are pointing to the fork and branch that your changes were made in.
 
 ### Code of Conduct
 
@@ -150,7 +150,7 @@ This project collects usage data and sends it to Microsoft to help improve our p
 [azure-sdk-for-java-issues]: https://github.com/Azure/azure-sdk-for-java/issues
 [gitter-spring-on-azure-img]: https://badges.gitter.im/Microsoft/spring-on-azure.svg
 [gitter-spring-on-azure]: https://gitter.im/Microsoft/spring-on-azure
-[azure-spring-boot-compare]: https://github.com/Microsoft/azure-spring-boot/compare
+[azure-sdk-for-java-compare]: https://github.com/Azure/azure-sdk-for-java/compare
 
 [codeofconduct]: https://opensource.microsoft.com/codeofconduct/faq/
 [codeofconduct-faq]: https://opensource.microsoft.com/codeofconduct/faq/

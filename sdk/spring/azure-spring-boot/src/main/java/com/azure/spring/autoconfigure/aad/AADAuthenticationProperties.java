@@ -30,6 +30,7 @@ public class AADAuthenticationProperties {
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationProperties.class);
     private static final String DEFAULT_SERVICE_ENVIRONMENT = "global";
     private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
+    private static final String DEFAULT_GROUP_RELATIONSHIP = "direct";
 
     /**
      * Default UserGroup configuration.
@@ -112,6 +113,14 @@ public class AADAuthenticationProperties {
     public List<String> getActiveDirectoryGroups() {
         return userGroup.getAllowedGroups();
     }
+
+    /**
+     * The way to obtain group relationship.<br/>
+     * direct: the default value, get groups that the user is a direct member of;<br/>
+     * transitive: Get groups that the user is a member of, and will also return all groups the user is a nested member of;
+     */
+    private String groupRelationship = DEFAULT_GROUP_RELATIONSHIP;
+
     /**
      * Properties dedicated to changing the behavior of how the groups are mapped from the Azure AD response. Depending
      * on the graph API used the object will not be the same.
@@ -230,6 +239,11 @@ public class AADAuthenticationProperties {
             throw new IllegalArgumentException("One of the User Group Properties must be populated. "
                 + "Please populate azure.activedirectory.user-group.allowed-groups");
         }
+        if (!DEFAULT_GROUP_RELATIONSHIP.equalsIgnoreCase(groupRelationship)
+            && !"transitive".equalsIgnoreCase(groupRelationship)) {
+            throw new IllegalArgumentException("Configuration 'azure.activedirectory.group-relationship' "
+                + "should be 'direct' or 'transitive'.");
+        }
     }
 
     public UserGroupProperties getUserGroup() {
@@ -347,6 +361,18 @@ public class AADAuthenticationProperties {
 
     public void setSessionStateless(Boolean sessionStateless) {
         this.sessionStateless = sessionStateless;
+    }
+
+    public String getGroupRelationship() {
+        return groupRelationship;
+    }
+
+    public void setGroupRelationship(String groupRelationship) {
+        this.groupRelationship = groupRelationship;
+    }
+
+    public static String getDefaultGroupRelationship() {
+        return DEFAULT_GROUP_RELATIONSHIP;
     }
 
     public boolean isAllowedGroup(String group) {
