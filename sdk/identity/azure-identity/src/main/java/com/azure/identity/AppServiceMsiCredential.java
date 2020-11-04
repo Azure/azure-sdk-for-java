@@ -44,15 +44,6 @@ class AppServiceMsiCredential extends ManagedIdentityServiceCredential {
     }
 
     /**
-     * Gets the client ID of the user assigned or system assigned identity.
-     *
-     * @return The client ID of user assigned or system assigned identity.
-     */
-    public String getClientId() {
-        return this.clientId;
-    }
-
-    /**
      * Gets an access token for a token request.
      *
      * @param request The details of the token request.
