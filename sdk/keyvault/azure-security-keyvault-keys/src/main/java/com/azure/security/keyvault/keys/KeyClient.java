@@ -331,13 +331,12 @@ public final class KeyClient {
      * {@codesnippet com.azure.security.keyvault.keys.keyclient.exportKey#name-options}
      *
      * @param name The name of the key to be exported.
-     * @param exportKeyOptions The key export configuration object.
+     * @param environment The target environment assertion.
      * @return The {@link KeyVaultKey exported key}.
-     * @throws NullPointerException If the specified {@code name}, {@code version} or {@code exportKeyOptions} are
-     * {@code null}.
+     * @throws NullPointerException If the specified {@code name} or {@code environment} are {@code null}.
      */
-    public KeyVaultKey exportKey(String name, ExportKeyOptions exportKeyOptions) {
-        return client.exportKey(name, exportKeyOptions).block();
+    public KeyVaultKey exportKey(String name, String environment) {
+        return client.exportKey(name, environment).block();
     }
 
     /**
@@ -352,13 +351,13 @@ public final class KeyClient {
      *
      * @param name The name of the key to be exported.
      * @param version The key version.
-     * @param exportKeyOptions The key export configuration object.
+     * @param environment The target environment assertion.
      * @return The {@link KeyVaultKey exported key}.
-     * @throws NullPointerException If the specified {@code name}, {@code version} or {@code exportKeyOptions} are
+     * @throws NullPointerException If the specified {@code name}, {@code version} or {@code environment} are
      * {@code null}.
      */
-    public KeyVaultKey exportKey(String name, String version, ExportKeyOptions exportKeyOptions) {
-        return client.exportKey(name, version, exportKeyOptions).block();
+    public KeyVaultKey exportKey(String name, String version, String environment) {
+        return client.exportKey(name, version, environment).block();
     }
 
     /**
@@ -373,14 +372,14 @@ public final class KeyClient {
      *
      * @param name The name of the key to be exported.
      * @param version The key version.
-     * @param exportKeyOptions The key export configuration object.
+     * @param environment The target environment assertion.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultKey exported key}.
-     * @throws NullPointerException If the specified {@code name}, {@code version} or {@code exportKeyOptions} are
+     * @throws NullPointerException If the specified {@code name}, {@code version} or {@code environment} are
      * {@code null}.
      */
-    public Response<KeyVaultKey> exportKeyWithResponse(String name, String version, ExportKeyOptions exportKeyOptions,
+    public Response<KeyVaultKey> exportKeyWithResponse(String name, String version, String environment,
                                                        Context context) {
-        return client.exportKeyWithResponse(name, version, exportKeyOptions, context).block();
+        return client.exportKeyWithResponse(name, version, environment, context).block();
     }
 
     /**

@@ -26,7 +26,6 @@ import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
-import com.azure.security.keyvault.keys.models.ExportKeyOptions;
 import com.azure.security.keyvault.keys.models.ImportKeyOptions;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyCurveName;
@@ -514,18 +513,17 @@ public final class KeyAsyncClient {
      * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
      * details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.keys.keyasyncclient.exportKey#name-options}
+     * {@codesnippet com.azure.security.keyvault.keys.keyasyncclient.exportKey#name-environment}
      *
      * @param name The name of the key to be exported.
-     * @param exportKeyOptions The key export configuration object.
+     * @param environment The target environment assertion.
      * @return A {@link Mono} containing the {@link KeyVaultKey exported key}.
-     * @throws NullPointerException If the specified {@code name}, {@code version} or {@code exportKeyOptions} are
-     * {@code null}.
+     * @throws NullPointerException If the specified {@code name} or {@code environment} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyVaultKey> exportKey(String name, ExportKeyOptions exportKeyOptions) {
+    public Mono<KeyVaultKey> exportKey(String name, String environment) {
         try {
-            return exportKeyWithResponse(name, "", exportKeyOptions).flatMap(FluxUtil::toMono);
+            return exportKeyWithResponse(name, "", environment).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -539,19 +537,19 @@ public final class KeyAsyncClient {
      * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
      * details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.keys.keyasyncclient.exportKey#name-version-options}
+     * {@codesnippet com.azure.security.keyvault.keys.keyasyncclient.exportKey#name-version-environment}
      *
      * @param name The name of the key to be exported.
      * @param version The key version.
-     * @param exportKeyOptions The key export configuration object.
+     * @param environment The target environment assertion.
      * @return A {@link Mono} containing the {@link KeyVaultKey exported key}.
-     * @throws NullPointerException If the specified {@code name}, {@code version} or {@code exportKeyOptions} are
+     * @throws NullPointerException If the specified {@code name}, {@code version} or {@code environment} are
      * {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyVaultKey> exportKey(String name, String version, ExportKeyOptions exportKeyOptions) {
+    public Mono<KeyVaultKey> exportKey(String name, String version, String environment) {
         try {
-            return exportKeyWithResponse(name, version, exportKeyOptions).flatMap(FluxUtil::toMono);
+            return exportKeyWithResponse(name, version, environment).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -565,35 +563,33 @@ public final class KeyAsyncClient {
      * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
      * details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.keys.keyasyncclient.exportKeyWithResponse#name-version-options-response}
+     * {@codesnippet com.azure.security.keyvault.keys.keyasyncclient.exportKeyWithResponse#name-version-environment-response}
      *
      * @param name The name of the key to be exported.
      * @param version The key version.
-     * @param exportKeyOptions The key export configuration object.
+     * @param environment The target environment assertion.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
      * {@link KeyVaultKey exported key}.
-     * @throws NullPointerException If the specified {@code name}, {@code version} or {@code exportKeyOptions} are
+     * @throws NullPointerException If the specified {@code name}, {@code version} or {@code environment} are
      * {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyVaultKey>> exportKeyWithResponse(String name, String version,
-                                                             ExportKeyOptions exportKeyOptions) {
+    public Mono<Response<KeyVaultKey>> exportKeyWithResponse(String name, String version, String environment) {
         try {
-            return withContext(context -> exportKeyWithResponse(name, version, exportKeyOptions, context));
+            return withContext(context -> exportKeyWithResponse(name, version, environment, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<KeyVaultKey>> exportKeyWithResponse(String name, String version, ExportKeyOptions exportKeyOptions,
+    Mono<Response<KeyVaultKey>> exportKeyWithResponse(String name, String version, String environment,
                                                       Context context) {
         Objects.requireNonNull(name, "The key name cannot be null.");
         Objects.requireNonNull(version, "The key version cannot be null.");
-        Objects.requireNonNull(exportKeyOptions, "The exportKeyOptions parameter cannot be null.");
-        context = context == null ? Context.NONE : context;
+        Objects.requireNonNull(environment, "The environment parameter cannot be null.");
 
-        KeyExportRequestParameters parameters = new KeyExportRequestParameters()
-            .setEnvironment(exportKeyOptions.getEnvironment());
+        context = context == null ? Context.NONE : context;
+        KeyExportRequestParameters parameters = new KeyExportRequestParameters().setEnvironment(environment);
 
         return service.exportKey(vaultUrl, name, version, apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
