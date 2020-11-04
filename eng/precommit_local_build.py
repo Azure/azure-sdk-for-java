@@ -10,6 +10,18 @@
 # 1. Comma separated list of relative POM paths.
 # 2. Comma separated list of groupId:artifactId identifiers.
 #
+# Example: Run precommit for artifact com.azure:azure-core
+#
+# python eng/precommit_local_build.py --a "com.azure:azure-core"
+#
+# Example: Run precommit for aggregate JAR sdk/storage/pom.xml
+#
+# python eng/precommit_local_build.py --p "sdk/storage/pom.xml"
+#
+# Example: Run precommit for artifact com.azure and aggregate JAR sdk/storage/pom.xml and skip testing
+#
+# python eng/precommit_local_build.py --a "com.azure:azure-core" --p "sdk/storage/pom.xml" --st
+#
 # The script must be run at the root of azure-sdk-for-java.
 
 import argparse
