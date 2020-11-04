@@ -57,10 +57,6 @@ public final class ServiceBusReceivedMessage {
         amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(body.toBytes())));
     }
 
-    ServiceBusReceivedMessage(byte[] body) {
-        this(BinaryData.fromBytes(Objects.requireNonNull(body, "'body' cannot be null.")));
-    }
-
     /**
      * Gets the actual payload/data wrapped by the {@link ServiceBusReceivedMessage}.
      *
@@ -88,6 +84,15 @@ public final class ServiceBusReceivedMessage {
                 throw logger.logExceptionAsError(new IllegalStateException("Body type not valid "
                     + bodyType.toString()));
         }
+    }
+
+    /**
+     * Gets the actual payload/data wrapped by the {@link ServiceBusReceivedMessage}.
+     *
+     * @return A byte array representing the data.
+     */
+    public byte[] getBodyAsBytes() {
+        return getBody().toBytes();
     }
 
     /**
