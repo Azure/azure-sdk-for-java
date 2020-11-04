@@ -12,16 +12,23 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
+import com.azure.identity.ClientSecretCredential;
+import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
+import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
 import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
 import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.administration.models.EmptyRuleAction;
+import com.azure.messaging.servicebus.administration.models.FalseRuleFilter;
+import com.azure.messaging.servicebus.administration.models.NamespaceProperties;
 import com.azure.messaging.servicebus.administration.models.NamespaceType;
 import com.azure.messaging.servicebus.administration.models.QueueRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.RuleProperties;
 import com.azure.messaging.servicebus.administration.models.SharedAccessAuthorizationRule;
+import com.azure.messaging.servicebus.administration.models.SqlRuleAction;
+import com.azure.messaging.servicebus.administration.models.SqlRuleFilter;
 import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
 import com.azure.messaging.servicebus.administration.models.TopicRuntimeProperties;
@@ -50,6 +57,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * Tests {@link ServiceBusAdministrationAsyncClient}.
@@ -72,6 +80,34 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         return Stream.of(
             Arguments.of(new NettyAsyncHttpClientBuilder().build())
         );
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    /**
+     * Test to connect to the service bus with an azure identity TokenCredential.
+     * com.azure.identity.ClientSecretCredential is used in this test.
+     * ServiceBusSharedKeyCredential doesn't need a specific test method because other tests below
+     * use connection string, which is converted to a ServiceBusSharedKeyCredential internally.
+     */
+    void azureIdentityCredentials(HttpClient httpClient) {
+        assumeTrue(interceptorManager.isLiveMode(), "Azure Identity test is for live test only");
+        final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
+
+        assumeTrue(fullyQualifiedDomainName != null && !fullyQualifiedDomainName.isEmpty(),
+            "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set when using credentials.");
+
+        final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
+            .clientId(System.getenv("AZURE_CLIENT_ID"))
+            .clientSecret(System.getenv("AZURE_CLIENT_SECRET"))
+            .tenantId(System.getenv("AZURE_TENANT_ID"))
+            .build();
+        ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder()
+            .httpClient(httpClient)
+            .credential(fullyQualifiedDomainName, clientSecretCredential)
+            .buildClient();
+        NamespaceProperties np = client.getNamespaceProperties();
+        assertNotNull(np.getName());
     }
 
     @ParameterizedTest
@@ -173,6 +209,107 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
                 assertNotNull(runtimeProperties.getCreatedAt());
 
                 assertAuthorizationRules(expected.getAuthorizationRules(), actual.getAuthorizationRules());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void createRule(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
+
+        final String ruleName = testResourceNamer.randomName("rule", 10);
+        final String topicName = interceptorManager.isPlaybackMode()
+            ? "topic-13"
+            : getEntityName(getTopicBaseName(), 13);
+        final String subscriptionName = interceptorManager.isPlaybackMode()
+            ? "subscription"
+            : getSubscriptionBaseName();
+        final SqlRuleAction action = new SqlRuleAction("SET Label = 'test'");
+        final CreateRuleOptions options = new CreateRuleOptions()
+            .setAction(action)
+            .setFilter(new FalseRuleFilter());
+
+        // Act & Assert
+        StepVerifier.create(client.createRule(topicName, subscriptionName, ruleName, options))
+            .assertNext(contents -> {
+
+                assertNotNull(contents);
+                assertEquals(ruleName, contents.getName());
+
+                assertNotNull(contents.getAction());
+                assertTrue(contents.getAction() instanceof SqlRuleAction);
+                assertEquals(action.getSqlExpression(), ((SqlRuleAction) contents.getAction()).getSqlExpression());
+
+                assertNotNull(contents.getFilter());
+                assertTrue(contents.getFilter() instanceof FalseRuleFilter);
+
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void createRuleDefaults(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
+
+        final String ruleName = testResourceNamer.randomName("rule", 10);
+        final String topicName = interceptorManager.isPlaybackMode()
+            ? "topic-13"
+            : getEntityName(getTopicBaseName(), 13);
+        final String subscriptionName = interceptorManager.isPlaybackMode()
+            ? "subscription"
+            : getSubscriptionBaseName();
+
+        // Act & Assert
+        StepVerifier.create(client.createRule(topicName, subscriptionName, ruleName))
+            .assertNext(contents -> {
+                assertEquals(ruleName, contents.getName());
+                assertTrue(contents.getFilter() instanceof TrueRuleFilter);
+                assertTrue(contents.getAction() instanceof EmptyRuleAction);
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void createRuleResponse(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
+
+        final String ruleName = testResourceNamer.randomName("rule", 10);
+        final String topicName = interceptorManager.isPlaybackMode()
+            ? "topic-13"
+            : getEntityName(getTopicBaseName(), 13);
+        final String subscriptionName = interceptorManager.isPlaybackMode()
+            ? "subscription"
+            : getSubscriptionBaseName();
+        final SqlRuleFilter filter = new SqlRuleFilter("sys.To=[parameters('bar')] OR sys.MessageId IS NULL");
+        filter.getParameters().put("bar", "foo");
+        final CreateRuleOptions options = new CreateRuleOptions()
+            .setAction(new EmptyRuleAction())
+            .setFilter(filter);
+
+        // Act & Assert
+        StepVerifier.create(client.createRuleWithResponse(topicName, subscriptionName, ruleName, options))
+            .assertNext(response -> {
+                assertEquals(201, response.getStatusCode());
+
+                final RuleProperties contents = response.getValue();
+
+                assertNotNull(contents);
+                assertEquals(ruleName, contents.getName());
+
+                assertNotNull(contents.getFilter());
+                assertTrue(contents.getFilter() instanceof SqlRuleFilter);
+
+                final SqlRuleFilter actualFilter = (SqlRuleFilter) contents.getFilter();
+                assertEquals(filter.getSqlExpression(), actualFilter.getSqlExpression());
+
+                assertNotNull(contents.getAction());
+                assertTrue(contents.getAction() instanceof EmptyRuleAction);
             })
             .verifyComplete();
     }
@@ -748,6 +885,44 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
             .expectNextCount(2)
             .thenCancel()
             .verify();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void updateRuleResponse(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
+
+        final String ruleName = testResourceNamer.randomName("rule", 15);
+        final String topicName = interceptorManager.isPlaybackMode()
+            ? "topic-12"
+            : getEntityName(getTopicBaseName(), 12);
+        final String subscriptionName = interceptorManager.isPlaybackMode()
+            ? "subscription"
+            : getSubscriptionBaseName();
+        final SqlRuleAction expectedAction = new SqlRuleAction("SET MessageId = 'matching-id'");
+        final SqlRuleFilter expectedFilter = new SqlRuleFilter("sys.To = 'telemetry-event'");
+
+        final RuleProperties existingRule = client.createRule(topicName, subscriptionName, ruleName).block(TIMEOUT);
+        assertNotNull(existingRule);
+
+        existingRule.setAction(expectedAction).setFilter(expectedFilter);
+
+        // Act & Assert
+        StepVerifier.create(client.updateRule(topicName, subscriptionName, existingRule))
+            .assertNext(contents -> {
+                assertNotNull(contents);
+                assertEquals(ruleName, contents.getName());
+
+                assertTrue(contents.getFilter() instanceof SqlRuleFilter);
+                assertEquals(expectedFilter.getSqlExpression(),
+                    ((SqlRuleFilter) contents.getFilter()).getSqlExpression());
+
+                assertTrue(contents.getAction() instanceof SqlRuleAction);
+                assertEquals(expectedAction.getSqlExpression(),
+                    ((SqlRuleAction) contents.getAction()).getSqlExpression());
+            })
+            .verifyComplete();
     }
 
     private ServiceBusAdministrationAsyncClient createClient(HttpClient httpClient) {

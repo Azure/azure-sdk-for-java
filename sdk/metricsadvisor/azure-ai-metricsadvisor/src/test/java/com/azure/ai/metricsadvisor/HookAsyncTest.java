@@ -82,6 +82,7 @@ public final class HookAsyncTest extends HookTestBase {
             .verifyComplete();
     }
 
+    // Track this with https://github.com/Azure/azure-sdk-for-java/issues/16932
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Override

@@ -11,6 +11,8 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import reactor.core.publisher.Mono;
 
+import java.net.URL;
+
 /**
  * Token credential policy for authenticating with service bus.
  */
@@ -36,8 +38,14 @@ public class ServiceBusTokenCredentialHttpPolicy implements HttpPipelinePolicy {
      */
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        final String url = context.getHttpRequest().getUrl().toString();
-        return tokenCredential.getToken(new TokenRequestContext().addScopes(url)).flatMap(token -> {
+        final String scope;
+        if (this.tokenCredential instanceof ServiceBusSharedKeyCredential) {
+            final URL url = context.getHttpRequest().getUrl();
+            scope = String.format("%s://%s", url.getProtocol(), url.getHost());
+        } else {
+            scope = ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE;
+        }
+        return tokenCredential.getToken(new TokenRequestContext().addScopes(scope)).flatMap(token -> {
             context.getHttpRequest().getHeaders().put("Authorization", token.getToken());
             return next.process();
         });

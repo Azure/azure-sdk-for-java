@@ -53,66 +53,6 @@ class ServiceBusClientBuilderTest {
     private static final Proxy PROXY_ADDRESS = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, Integer.parseInt(PROXY_PORT)));
 
     @Test
-    void viaQueueNameWithTopicNotAllowed() {
-        // Arrange
-        ServiceBusSenderClientBuilder builder = new ServiceBusClientBuilder()
-            .connectionString(NAMESPACE_CONNECTION_STRING)
-            .sender()
-            .topicName(TOPIC_NAME)
-            .viaQueueName(VIA_QUEUE_NAME);
-
-        // Act & Assert
-        assertThrows(IllegalStateException.class, () -> builder.buildAsyncClient());
-    }
-
-    @Test
-    void viaTopicNameWithQueueNotAllowed() {
-        // Arrange
-        ServiceBusSenderClientBuilder builder = new ServiceBusClientBuilder()
-            .connectionString(NAMESPACE_CONNECTION_STRING)
-            .sender()
-            .queueName(QUEUE_NAME)
-            .viaTopicName(VIA_TOPIC_NAME);
-
-        // Act & Assert
-        assertThrows(IllegalStateException.class, () -> builder.buildAsyncClient());
-    }
-
-    @Test
-    void queueClientWithViaQueueName() {
-        // Arrange
-        final ServiceBusSenderClientBuilder builder = new ServiceBusClientBuilder()
-            .connectionString(NAMESPACE_CONNECTION_STRING)
-            .sender()
-            .queueName(QUEUE_NAME)
-            .viaQueueName(VIA_QUEUE_NAME);
-
-        // Act
-        final ServiceBusSenderAsyncClient client = builder.buildAsyncClient();
-
-        // Assert
-        assertNotNull(client);
-        assertEquals(client.getEntityPath(), QUEUE_NAME);
-    }
-
-    @Test
-    void topicClientWithViaTopicName() {
-        // Arrange
-        final ServiceBusSenderClientBuilder builder = new ServiceBusClientBuilder()
-            .connectionString(NAMESPACE_CONNECTION_STRING)
-            .sender()
-            .topicName(TOPIC_NAME)
-            .viaTopicName(VIA_TOPIC_NAME);
-
-        // Act
-        final ServiceBusSenderAsyncClient client = builder.buildAsyncClient();
-
-        // Assert
-        assertNotNull(client);
-        assertEquals(client.getEntityPath(), TOPIC_NAME);
-    }
-
-    @Test
     void deadLetterqueueClient() {
         // Arrange
         final ServiceBusReceiverClientBuilder builder = new ServiceBusClientBuilder()

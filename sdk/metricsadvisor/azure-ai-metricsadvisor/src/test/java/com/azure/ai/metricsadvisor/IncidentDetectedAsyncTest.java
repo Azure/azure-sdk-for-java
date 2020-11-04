@@ -18,8 +18,10 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class IncidentDetectedAsyncTest extends IncidentDetectedTestBase {
+
     @BeforeAll
     static void beforeAll() {
         TestBase.setupClass();
@@ -43,10 +45,12 @@ public class IncidentDetectedAsyncTest extends IncidentDetectedTestBase {
             ListIncidentsDetectedInput.INSTANCE.options);
 
         Assertions.assertNotNull(incidentsFlux);
+        final int[] i = {0};
 
-        StepVerifier.create(incidentsFlux)
-            .assertNext(incident -> assertListIncidentsDetectedOutput(incident))
-            .expectNextCount(ListIncidentsDetectedOutput.INSTANCE.expectedIncidents - 1)
-            .verifyComplete();
+        incidentsFlux.toIterable().forEach(incident -> {
+            i[0]++;
+            assertListIncidentsDetectedOutput(incident);
+        });
+        assertEquals(ListIncidentsDetectedOutput.INSTANCE.expectedIncidents, i[0]);
     }
 }

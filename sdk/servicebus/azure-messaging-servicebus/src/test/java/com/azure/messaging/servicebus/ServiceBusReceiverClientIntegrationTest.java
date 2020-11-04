@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -54,6 +55,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      * Receiver used to clean up resources in {@link #afterTest()}.
      */
     private ServiceBusReceiverClient receiveAndDeleteReceiver;
+    private Mono<ServiceBusReceiverClient> receiveAndDeleteReceiverMono;
 
     protected ServiceBusReceiverClientIntegrationTest() {
         super(new ClientLogger(ServiceBusReceiverClientIntegrationTest.class));
@@ -69,17 +71,23 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         final int pending = messagesPending.get();
         if (pending < 1 && messagesDeferred.get().size() < 1) {
             dispose(receiver, sender, receiveAndDeleteReceiver);
+            if (receiveAndDeleteReceiverMono != null) {
+                dispose(receiveAndDeleteReceiverMono.block());
+            }
             return;
         }
 
         // In the case that this test failed... we're going to drain the queue or subscription.
         if (pending > 0) {
+            dispose(receiver, sender);
+            if (receiveAndDeleteReceiverMono != null) {
+                receiveAndDeleteReceiver = receiveAndDeleteReceiverMono.block();
+            }
             try {
-                IterableStream<ServiceBusReceivedMessageContext> removedMessage = receiveAndDeleteReceiver.receiveMessages(
+                IterableStream<ServiceBusReceivedMessage> removedMessage = receiveAndDeleteReceiver.receiveMessages(
                     pending, Duration.ofSeconds(15));
 
-                removedMessage.stream().forEach(context -> {
-                    ServiceBusReceivedMessage message = context.getMessage();
+                removedMessage.stream().forEach(message -> {
                     logger.info("Removed Message Seq: {} ", message.getSequenceNumber());
                 });
             } catch (Exception e) {
@@ -99,7 +107,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
             }
         }
 
-        dispose(receiver, sender, receiveAndDeleteReceiver);
+        dispose(receiveAndDeleteReceiver);
     }
 
     /**
@@ -121,7 +129,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         }
 
         // Act & Assert
-        IterableStream<ServiceBusReceivedMessageContext> messages = receiver.receiveMessages(maxMessages, shortTimeOut);
+        IterableStream<ServiceBusReceivedMessage> messages = receiver.receiveMessages(maxMessages, shortTimeOut);
         long received = messages.stream().count();
         assertEquals(0, received);
 
@@ -132,9 +140,9 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         for (int i = 0; i < totalReceive; ++i) {
             messages = receiver.receiveMessages(maxMessages, shortTimeOut);
             receivedMessageCount = 0;
-            for (ServiceBusReceivedMessageContext receivedMessage : messages) {
+            for (ServiceBusReceivedMessage receivedMessage : messages) {
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-                receiver.complete(receivedMessage.getMessage());
+                receiver.complete(receivedMessage);
                 messagesPending.decrementAndGet();
                 ++receivedMessageCount;
             }
@@ -166,16 +174,16 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         sendMessages(messageList);
 
         // Act & Assert
-        IterableStream<ServiceBusReceivedMessageContext> messages;
+        IterableStream<ServiceBusReceivedMessage> messages;
 
         int receivedMessageCount;
         int totalReceivedCount = 0;
         for (int i = 0; i < totalReceiver; ++i) {
             messages = receiver.receiveMessages(maxMessagesEachReceive, shortTimeOut);
             receivedMessageCount = 0;
-            for (ServiceBusReceivedMessageContext receivedMessage : messages) {
+            for (ServiceBusReceivedMessage receivedMessage : messages) {
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-                receiver.complete(receivedMessage.getMessage());
+                receiver.complete(receivedMessage);
                 messagesPending.decrementAndGet();
                 ++receivedMessageCount;
             }
@@ -211,15 +219,15 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         List<Thread> receiverThreads = new ArrayList<>();
         for (int i = 0; i < totalReceiver; ++i) {
             Thread thread = new Thread(() -> {
-                IterableStream<ServiceBusReceivedMessageContext> messages1 = receiver.
+                IterableStream<ServiceBusReceivedMessage> messages1 = receiver.
                     receiveMessages(maxMessagesEachReceive, shortTimeOut);
                 int receivedMessageCount = 0;
                 long lastSequenceReceiver = 0;
-                for (ServiceBusReceivedMessageContext receivedMessage : messages1) {
+                for (ServiceBusReceivedMessage receivedMessage : messages1) {
                     assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-                    receiver.complete(receivedMessage.getMessage());
-                    assertTrue(receivedMessage.getMessage().getSequenceNumber() > lastSequenceReceiver);
-                    lastSequenceReceiver = receivedMessage.getMessage().getSequenceNumber();
+                    receiver.complete(receivedMessage);
+                    assertTrue(receivedMessage.getSequenceNumber() > lastSequenceReceiver);
+                    lastSequenceReceiver = receivedMessage.getSequenceNumber();
                     messagesPending.decrementAndGet();
                     ++receivedMessageCount;
                 }
@@ -261,13 +269,12 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         sendMessage(message);
 
         // Act
-        IterableStream<ServiceBusReceivedMessageContext> messages = receiver.receiveMessages(maxMessages, TIMEOUT);
+        IterableStream<ServiceBusReceivedMessage> messages = receiver.receiveMessages(maxMessages, TIMEOUT);
 
         // Assert
         int receivedMessageCount = 0;
         final long startTime = System.currentTimeMillis();
-        for (ServiceBusReceivedMessageContext context : messages) {
-            ServiceBusReceivedMessage receivedMessage = context.getMessage();
+        for (ServiceBusReceivedMessage receivedMessage : messages) {
             assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
             receiver.complete(receivedMessage);
             messagesPending.decrementAndGet();
@@ -290,7 +297,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         long noMessages = 0;
 
         // Act
-        final IterableStream<ServiceBusReceivedMessageContext> messages = receiver.receiveMessages(howManyMessage,
+        final IterableStream<ServiceBusReceivedMessage> messages = receiver.receiveMessages(howManyMessage,
             Duration.ofSeconds(15));
 
         // Assert
@@ -318,8 +325,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         sendMessage(message);
 
         // Act & Assert
-        final Stream<ServiceBusReceivedMessage> messages = receiver.receiveMessages(maxMessages, TIMEOUT)
-            .stream().map(ServiceBusReceivedMessageContext::getMessage);
+        final Stream<ServiceBusReceivedMessage> messages = receiver.receiveMessages(maxMessages, TIMEOUT).stream();
 
         final ServiceBusTransactionContext transaction = receiver.createTransaction();
 
@@ -371,8 +377,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         // Act
         final Stream<ServiceBusReceivedMessage> messages = receiver.receiveMessages(maxMessages, TIMEOUT)
-            .stream()
-            .map(ServiceBusReceivedMessageContext::getMessage);
+            .stream();
 
         // Assert
         final AtomicInteger receivedMessageCount = new AtomicInteger();
@@ -439,12 +444,12 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         sendMessage(message);
 
-        final IterableStream<ServiceBusReceivedMessageContext> context = receiver.receiveMessages(maxMessages, TIMEOUT);
-        assertNotNull(context);
+        final IterableStream<ServiceBusReceivedMessage> messages = receiver.receiveMessages(maxMessages, TIMEOUT);
+        assertNotNull(messages);
 
-        final List<ServiceBusReceivedMessageContext> asList = context.stream().collect(Collectors.toList());
+        final List<ServiceBusReceivedMessage> asList = messages.stream().collect(Collectors.toList());
         assertEquals(maxMessages, asList.size());
-        final ServiceBusReceivedMessage receivedMessage = asList.get(0).getMessage();
+        final ServiceBusReceivedMessage receivedMessage = asList.get(0);
         assertNotNull(receivedMessage);
 
         // Act
@@ -545,12 +550,12 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         sendMessage(message);
 
-        final IterableStream<ServiceBusReceivedMessageContext> context = receiver.receiveMessages(maxMessages, TIMEOUT);
+        final IterableStream<ServiceBusReceivedMessage> context = receiver.receiveMessages(maxMessages, TIMEOUT);
         assertNotNull(context);
 
-        final List<ServiceBusReceivedMessageContext> asList = context.stream().collect(Collectors.toList());
+        final List<ServiceBusReceivedMessage> asList = context.stream().collect(Collectors.toList());
         assertEquals(maxMessages, asList.size());
-        final ServiceBusReceivedMessage receivedMessage = asList.get(0).getMessage();
+        final ServiceBusReceivedMessage receivedMessage = asList.get(0);
         assertNotNull(receivedMessage);
 
         // Assert & Act
@@ -571,12 +576,12 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         sendMessage(message);
 
-        final IterableStream<ServiceBusReceivedMessageContext> context = receiver.receiveMessages(maxMessages, TIMEOUT);
+        final IterableStream<ServiceBusReceivedMessage> context = receiver.receiveMessages(maxMessages, TIMEOUT);
         assertNotNull(context);
 
-        final List<ServiceBusReceivedMessageContext> asList = context.stream().collect(Collectors.toList());
+        final List<ServiceBusReceivedMessage> asList = context.stream().collect(Collectors.toList());
         assertEquals(maxMessages, asList.size());
-        final ServiceBusReceivedMessage receivedMessage = asList.get(0).getMessage();
+        final ServiceBusReceivedMessage receivedMessage = asList.get(0);
         assertNotNull(receivedMessage);
 
         // Assert & Act
@@ -601,12 +606,12 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         // Blocking here because it is not part of the scenario we want to test.
         sendMessage(message);
 
-        final IterableStream<ServiceBusReceivedMessageContext> context = receiver.receiveMessages(maxMessages, TIMEOUT);
+        final IterableStream<ServiceBusReceivedMessage> context = receiver.receiveMessages(maxMessages, TIMEOUT);
         assertNotNull(context);
 
-        final List<ServiceBusReceivedMessageContext> asList = context.stream().collect(Collectors.toList());
+        final List<ServiceBusReceivedMessage> asList = context.stream().collect(Collectors.toList());
         assertEquals(maxMessages, asList.size());
-        final ServiceBusReceivedMessage receivedMessage = asList.get(0).getMessage();
+        final ServiceBusReceivedMessage receivedMessage = asList.get(0);
         assertNotNull(receivedMessage);
         assertNotNull(receivedMessage.getLockedUntil());
 
@@ -638,12 +643,12 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         sendMessage(message);
 
-        final IterableStream<ServiceBusReceivedMessageContext> context = receiver.receiveMessages(maxMessages, TIMEOUT);
+        final IterableStream<ServiceBusReceivedMessage> context = receiver.receiveMessages(maxMessages, TIMEOUT);
         assertNotNull(context);
 
-        final List<ServiceBusReceivedMessageContext> asList = context.stream().collect(Collectors.toList());
+        final List<ServiceBusReceivedMessage> asList = context.stream().collect(Collectors.toList());
         assertEquals(maxMessages, asList.size());
-        final ServiceBusReceivedMessage receivedMessage = asList.get(0).getMessage();
+        final ServiceBusReceivedMessage receivedMessage = asList.get(0);
         assertNotNull(receivedMessage);
 
         // Assert & Act
@@ -669,12 +674,12 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         sendMessage(message);
 
-        final IterableStream<ServiceBusReceivedMessageContext> context = receiver.receiveMessages(maxMessages, TIMEOUT);
+        final IterableStream<ServiceBusReceivedMessage> context = receiver.receiveMessages(maxMessages, TIMEOUT);
         assertNotNull(context);
 
-        final List<ServiceBusReceivedMessageContext> asList = context.stream().collect(Collectors.toList());
+        final List<ServiceBusReceivedMessage> asList = context.stream().collect(Collectors.toList());
         assertEquals(maxMessages, asList.size());
-        final ServiceBusReceivedMessage receivedMessage = asList.get(0).getMessage();
+        final ServiceBusReceivedMessage receivedMessage = asList.get(0);
         assertNotNull(receivedMessage);
 
         receiver.defer(receivedMessage);
@@ -719,12 +724,12 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         sendMessage(message);
 
-        final IterableStream<ServiceBusReceivedMessageContext> context = receiver.receiveMessages(maxMessages, TIMEOUT);
+        final IterableStream<ServiceBusReceivedMessage> context = receiver.receiveMessages(maxMessages, TIMEOUT);
         assertNotNull(context);
 
-        final List<ServiceBusReceivedMessageContext> asList = context.stream().collect(Collectors.toList());
+        final List<ServiceBusReceivedMessage> asList = context.stream().collect(Collectors.toList());
         assertEquals(maxMessages, asList.size());
-        final ServiceBusReceivedMessage receivedMessage = asList.get(0).getMessage();
+        final ServiceBusReceivedMessage receivedMessage = asList.get(0);
         assertNotNull(receivedMessage);
 
         // Act & Assert
@@ -732,11 +737,8 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         // cleanup
         final ServiceBusReceivedMessage deferred;
-        if (isSessionEnabled) {
-            deferred = receiver.receiveDeferredMessage(receivedMessage.getSequenceNumber(), sessionId);
-        } else {
-            deferred = receiver.receiveDeferredMessage(receivedMessage.getSequenceNumber());
-        }
+        deferred = receiver.receiveDeferredMessage(receivedMessage.getSequenceNumber());
+
         receiver.complete(deferred);
         messagesPending.addAndGet(-maxMessages);
     }
@@ -767,12 +769,11 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         sendMessage(messageToSend);
 
         // Assert & Act
-        final IterableStream<ServiceBusReceivedMessageContext> messages =
+        final IterableStream<ServiceBusReceivedMessage> messages =
             receiveAndDeleteReceiver.receiveMessages(maxMessages, TIMEOUT);
         assertNotNull(messages);
 
         final List<ServiceBusReceivedMessage> asList = messages.stream()
-            .map(ServiceBusReceivedMessageContext::getMessage)
             .collect(Collectors.toList());
 
         assertEquals(maxMessages, asList.size());
@@ -817,13 +818,11 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
             this.receiver = getSessionReceiverBuilder(false, entityType, entityIndex, sharedConnection)
-                .sessionId(sessionId)
-                .buildClient();
-            this.receiveAndDeleteReceiver = getSessionReceiverBuilder(false, entityType, entityIndex,
+                .buildClient().acceptSession(sessionId);
+            this.receiveAndDeleteReceiverMono = Mono.fromCallable(() -> getSessionReceiverBuilder(false, entityType, entityIndex,
                 sharedConnection)
-                .sessionId(sessionId)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
-                .buildClient();
+                .buildClient().acceptSession(sessionId));
         } else {
             this.receiver = getReceiverBuilder(false, entityType, entityIndex, sharedConnection)
                 .buildClient();
@@ -847,10 +846,10 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     }
 
     private int completeMessages(ServiceBusReceiverClient client, int totalMessages) {
-        final IterableStream<ServiceBusReceivedMessageContext> contextStream = client.receiveMessages(totalMessages, TIMEOUT);
-        final List<ServiceBusReceivedMessageContext> asList = contextStream.stream().collect(Collectors.toList());
-        for (ServiceBusReceivedMessageContext context : asList) {
-            receiver.complete(context.getMessage());
+        final IterableStream<ServiceBusReceivedMessage> contextStream = client.receiveMessages(totalMessages, TIMEOUT);
+        final List<ServiceBusReceivedMessage> asList = contextStream.stream().collect(Collectors.toList());
+        for (ServiceBusReceivedMessage message : asList) {
+            receiver.complete(message);
         }
         return asList.size();
     }

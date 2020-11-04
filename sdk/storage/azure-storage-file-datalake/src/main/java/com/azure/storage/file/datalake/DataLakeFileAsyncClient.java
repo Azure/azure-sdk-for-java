@@ -318,7 +318,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
             Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
                 options.getDataStream(), options.getLength(),
                 // We can only buffer up to max int due to restrictions in ByteBuffer.
-                (int) Math.min(Integer.MAX_VALUE, validatedParallelTransferOptions.getBlockSizeLong()))
+                (int) Math.min(Integer.MAX_VALUE, validatedParallelTransferOptions.getBlockSizeLong()), false)
                 : options.getDataFlux();
 
             return createWithResponse(options.getPermissions(), options.getUmask(), options.getHeaders(),
@@ -865,7 +865,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         .setRange(Transforms.toBlobRange(range)).setParallelTransferOptions(parallelTransferOptions)
         .setDownloadRetryOptions(Transforms.toBlobDownloadRetryOptions(options))
         .setRequestConditions(Transforms.toBlobRequestConditions(requestConditions))
-        .setRangeGetContentMd5(rangeGetContentMd5).setOpenOptions(openOptions))
+        .setRetrieveContentRangeMd5(rangeGetContentMd5).setOpenOptions(openOptions))
             .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
             .map(response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue())));
     }

@@ -737,7 +737,7 @@ public class BlobAsyncClientBase {
      * <p>
      * The source must be a block blob no larger than 256MB. The source must also be either public or have a sas token
      * attached. The URL must be URL encoded.
-     * 
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromUrlWithResponse#BlobCopyFromUrlOptions}
@@ -984,7 +984,7 @@ public class BlobAsyncClientBase {
                 downloadToFileWithResponse(new BlobDownloadToFileOptions(filePath).setRange(range)
                         .setParallelTransferOptions(finalParallelTransferOptions)
                         .setDownloadRetryOptions(options).setRequestConditions(requestConditions)
-                        .setRangeGetContentMd5(rangeGetContentMd5).setOpenOptions(openOptions), context));
+                        .setRetrieveContentRangeMd5(rangeGetContentMd5).setOpenOptions(openOptions), context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1038,7 +1038,7 @@ public class BlobAsyncClientBase {
         AsynchronousFileChannel channel = downloadToFileResourceSupplier(options.getFilePath(), openOptions);
         return Mono.just(channel)
             .flatMap(c -> this.downloadToFileImpl(c, finalRange, finalParallelTransferOptions,
-                options.getDownloadRetryOptions(), finalConditions, options.isRangeGetContentMd5(), context))
+                options.getDownloadRetryOptions(), finalConditions, options.isRetrieveContentRangeMd5(), context))
             .doFinally(signalType -> this.downloadToFileCleanup(channel, options.getFilePath(), signalType));
     }
 

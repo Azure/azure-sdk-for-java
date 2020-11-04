@@ -84,7 +84,7 @@ public class SqlRuleFilter extends RuleFilter {
      *
      * @return Gets the value of a filter expression.
      */
-    public Map<String, Object> getProperties() {
+    public Map<String, Object> getParameters() {
         return properties;
     }
 

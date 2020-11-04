@@ -239,7 +239,7 @@ public class MetricsAdvisorAsyncClient {
         Objects.requireNonNull(options.getStartTime(), "'options.startTime' cannot be null.");
         Objects.requireNonNull(options.getEndTime(), "'options.endTime' cannot be null.");
         if (CoreUtils.isNullOrEmpty(seriesKeys)) {
-            Objects.requireNonNull(seriesKeys, "'metricId' cannot be null or empty.");
+            Objects.requireNonNull(seriesKeys, "'seriesKeys' cannot be null or empty.");
         }
 
         List<Map<String, String>> dimensionList =

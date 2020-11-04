@@ -158,6 +158,10 @@
     "source": "specification/eventhub/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "frontdoor/resource-manager": {
+    "source": "specification/frontdoor/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "hanaonazure/resource-manager": {
     "source": "specification/hanaonazure/resource-manager/readme.md",
     "args": "--multiapi --fluent"
