@@ -1961,7 +1961,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void invoiceValidLocale(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
-
         localFilePathRunner((filePath, dataLength) -> {
             client.beginRecognizeInvoices(
                 getContentDetectionFileData(filePath),
@@ -1969,7 +1968,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 new RecognizeInvoicesOptions().setPollInterval(durationTestMode).setLocale("en-US"),
                 Context.NONE);
             validateNetworkCallRecord("locale", "en-US");
-
         }, INVOICE_PDF);
     }
 }

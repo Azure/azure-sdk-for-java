@@ -1,0 +1,24 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.2//prebuilt/invoice/analyze?includeTextDetails=false&locale=en-US",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "981505ab-fc6d-4fd2-bf75-b16605a5efcc",
+      "Content-Type" : "application/pdf"
+    },
+    "Response" : {
+      "x-envoy-upstream-service-time" : "477",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "8fb5133c-2f31-4840-943e-5c6884798054",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "Operation-Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1-preview.2/prebuilt/invoice/analyzeResults/8fb5133c-2f31-4840-943e-5c6884798054",
+      "Date" : "Wed, 04 Nov 2020 08:50:10 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
