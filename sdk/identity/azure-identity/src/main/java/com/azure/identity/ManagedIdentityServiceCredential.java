@@ -13,9 +13,9 @@ import reactor.core.publisher.Mono;
  * The Managed Service Identity credential.
  */
 abstract class ManagedIdentityServiceCredential {
+    private final String clientId;
+    private final String environment;
     final IdentityClient identityClient;
-    final String clientId;
-    final String environment;
 
     /**
      * Creates an instance of ManagedIdentityServiceCredential.
