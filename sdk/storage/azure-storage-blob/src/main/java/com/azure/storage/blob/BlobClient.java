@@ -15,7 +15,6 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.ParallelTransferOptions;
-import com.azure.storage.blob.options.BlobUploadFromUrlOptions;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.blob.specialized.BlockBlobClient;
@@ -31,8 +30,6 @@ import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
-
-import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 
 /**
  * This class provides a client that contains generic blob operations for Azure Storage Blobs. Operations allowed by
@@ -329,18 +326,5 @@ public class BlobClient extends BlobClientBase {
         } catch (UncheckedIOException e) {
             throw logger.logExceptionAsError(e);
         }
-    }
-
-    public BlockBlobItem uploadFromUrl(String sourceUrl) {
-        return this.getBlockBlobClient().uploadFromUrl(sourceUrl);
-    }
-
-    public BlockBlobItem uploadFromUrl(String sourceUrl, boolean overwrite) {
-        return this.getBlockBlobClient().uploadFromUrl(sourceUrl, overwrite);
-    }
-
-    public Response<BlockBlobItem> uploadFromUrlWithResponse(BlobUploadFromUrlOptions options, Duration timeout,
-                                                             Context context) {
-        return this.getBlockBlobClient().uploadFromUrlWithResponse(options, timeout, context);
     }
 }

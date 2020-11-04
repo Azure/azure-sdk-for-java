@@ -1964,14 +1964,14 @@ class BlockBlobAPITest extends APISpec {
         sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
         def sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)))
-        if (blobClient.exists()) {
-            blobClient.delete()
+        if (blockBlobClient.exists()) {
+            blockBlobClient.delete()
         }
 
         when:
-        def blockBlobItem = blobClient.uploadFromUrl(sourceBlob.getBlobUrl() + "?" + sas)
+        def blockBlobItem = blockBlobClient.uploadFromUrl(sourceBlob.getBlobUrl() + "?" + sas)
         def os = new ByteArrayOutputStream()
-        blobClient.download(os)
+        blockBlobClient.download(os)
 
         then:
         notThrown(BlobStorageException)
@@ -1987,12 +1987,12 @@ class BlockBlobAPITest extends APISpec {
         sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
         def sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)))
-        blobClient.upload(new ByteArrayInputStream(), 0, true)
+        blockBlobClient.upload(new ByteArrayInputStream(), 0, true)
 
         when:
-        def blockBlobItem = blobClient.uploadFromUrl(sourceBlob.getBlobUrl() + "?" + sas, true)
+        def blockBlobItem = blockBlobClient.uploadFromUrl(sourceBlob.getBlobUrl() + "?" + sas, true)
         def os = new ByteArrayOutputStream()
-        blobClient.download(os)
+        blockBlobClient.download(os)
 
         then:
         notThrown(BlobStorageException)
@@ -2008,17 +2008,17 @@ class BlockBlobAPITest extends APISpec {
         sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
         def sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)))
-        blobClient.upload(new ByteArrayInputStream(), 0, true)
+        blockBlobClient.upload(new ByteArrayInputStream(), 0, true)
 
         when:
-        blobClient.uploadFromUrl(sourceBlob.getBlobUrl() + "?" + sas, false)
+        blockBlobClient.uploadFromUrl(sourceBlob.getBlobUrl() + "?" + sas, false)
 
         then:
         def e = thrown(BlobStorageException)
         e.getErrorCode() == BlobErrorCode.BLOB_ALREADY_EXISTS
 
         when:
-        blobClient.uploadFromUrl(sourceBlob.getBlobUrl() + "?" + sas)
+        blockBlobClient.uploadFromUrl(sourceBlob.getBlobUrl() + "?" + sas)
 
         then:
         e = thrown(BlobStorageException)
@@ -2033,8 +2033,8 @@ class BlockBlobAPITest extends APISpec {
         def sourceProperties = sourceBlob.getProperties()
         def sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)))
-        blobClient.upload(new ByteArrayInputStream(), 0, true)
-        def destinationPropertiesBefore = blobClient.getProperties()
+        blockBlobClient.upload(new ByteArrayInputStream(), 0, true)
+        def destinationPropertiesBefore = blockBlobClient.getProperties()
 
         when:
         def options = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas)
@@ -2045,10 +2045,10 @@ class BlockBlobAPITest extends APISpec {
             .setSourceRequestConditions(new BlobRequestConditions().setIfMatch(sourceProperties.getETag()))
             .setHeaders(new BlobHttpHeaders().setContentType("text"))
             .setTier(AccessTier.COOL)
-        def response = blobClient.uploadFromUrlWithResponse(options, null, null)
+        def response = blockBlobClient.uploadFromUrlWithResponse(options, null, null)
         def destinationProperties = blobClient.getProperties()
         def os = new ByteArrayOutputStream()
-        blobClient.download(os)
+        blockBlobClient.download(os)
 
         then:
         notThrown(BlobStorageException)
