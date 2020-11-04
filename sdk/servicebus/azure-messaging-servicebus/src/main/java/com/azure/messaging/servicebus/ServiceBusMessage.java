@@ -58,7 +58,7 @@ public class ServiceBusMessage {
     private Context context;
 
     /**
-     * Creates a {@link ServiceBusMessage} with a {@link java.nio.charset.StandardCharsets#UTF_8 UTF_8} encoded body.
+     * Creates a {@link ServiceBusMessage} with given byte array body.
      *
      * @param body The content of the Service bus message.
      *
