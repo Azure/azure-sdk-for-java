@@ -15,6 +15,7 @@ Supported locales include support EN-US, EN-AU, EN-CA, EN-GB, EN-IN.
 This functionality is only available in trained with labels scenarios.
 - When passing `includeFieldElements` as true in `RecognizeCustomFormsOptions`, the property `fieldElements` on `FieldData`
 and `FormTableCell` will also be populated with any selection marks found on the page.
+- Added support for pre-built invoices recognition.
 
 ### Breaking changes
 - Defaults to the latest supported API version, which currently is `2.1-preview.1`.

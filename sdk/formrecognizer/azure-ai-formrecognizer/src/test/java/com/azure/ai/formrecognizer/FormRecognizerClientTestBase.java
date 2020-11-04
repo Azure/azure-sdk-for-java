@@ -60,6 +60,8 @@ import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.BUSINESS_CARD;
+import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.INVOICE;
+import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.RECEIPT;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_API_KEY;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL;
@@ -93,6 +95,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static final String BUSINESS_CARD_JPG = "businessCard.jpg";
     static final String BUSINESS_CARD_PNG = "businessCard.png";
     static final String MULTIPAGE_BUSINESS_CARD_PDF = "business-card-multipage.pdf";
+    static final String INVOICE_PDF = "Invoice_1.pdf";
 
     // Error code
     static final String BAD_ARGUMENT_CODE = "BadArgument";
@@ -120,11 +123,20 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static final List<String> RECEIPT_FIELDS = Arrays.asList("MerchantName", "MerchantPhoneNumber", "MerchantAddress",
         "Total", "Subtotal", "Tax", "TransactionDate", "TransactionDate", "TransactionTime", "Items");
 
+    // Invoice fields
+    static final List<String> INVOICE_FIELDS = Arrays.asList("CustomerAddressRecipient", "InvoiceId", "VendorName",
+        "VendorAddress", "CustomerAddress", "CustomerName", "InvoiceTotal", "DueDate", "InvoiceDate");
+
     enum PrebuiltType {
-        RECEIPT, BUSINESS_CARD
+        RECEIPT, BUSINESS_CARD, INVOICE
     }
 
     Duration durationTestMode;
+
+    // remove once merged with master
+    public static final String INVOICE_TEST_URL = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/"
+        + "feature/formrecognizer_v2.1-preview2/sdk/formrecognizer/azure-ai-formrecognizer/src/test/resources/"
+        + "sample_files/Test/Invoice_1.pdf";
 
     /**
      * Use duration of nearly zero value for PLAYBACK test mode, otherwise, use default duration value for LIVE mode.
@@ -672,10 +684,12 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
             validateLabeledData(actualForm, includeFieldElements, rawReadResults, rawDocumentResult);
             if (BUSINESS_CARD.equals(prebuiltType)) {
+                assertEquals("prebuilt:businesscard", actualForm.getFormType());
                 BUSINESS_CARD_FIELDS.forEach(businessCardField ->
                     validateFieldValueTransforms(rawDocumentResult.getFields().get(businessCardField),
                         actualForm.getFields().get(businessCardField), rawReadResults, includeFieldElements));
-            } else {
+            } else if (RECEIPT.equals(prebuiltType)) {
+                assertEquals("prebuilt:receipt", actualForm.getFormType());
                 RECEIPT_FIELDS.forEach(receiptField -> {
                     final Map<String, FormField> actualRecognizedReceiptFields = actualForm.getFields();
                     Map<String, FieldValue> expectedReceiptFields = rawDocumentResult.getFields();
@@ -686,6 +700,19 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                     validateFieldValueTransforms(rawDocumentResult.getFields().get(receiptField),
                         actualRecognizedReceiptFields.get(receiptField), rawReadResults, includeFieldElements);
                 });
+            } else if (INVOICE.equals(prebuiltType)) {
+                assertEquals("prebuilt:invoice", actualForm.getFormType());
+                INVOICE_FIELDS.forEach(invoiceField -> {
+                    final Map<String, FormField> actualRecognizedInvoiceFields = actualForm.getFields();
+                    Map<String, FieldValue> expectedInvoiceFields = rawDocumentResult.getFields();
+
+                    validateFieldValueTransforms(expectedInvoiceFields.get(invoiceField),
+                        actualRecognizedInvoiceFields.get(invoiceField),
+                        rawReadResults,
+                        includeFieldElements);
+                });
+            } else {
+                throw new RuntimeException("prebuilt type not supported");
             }
         }
     }
@@ -819,6 +846,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             });
         });
     }
+
     static void validateMultipageBusinessData(List<RecognizedForm> recognizedBusinessCards) {
         assertEquals(2, recognizedBusinessCards.size());
         RecognizedForm businessCard1 = recognizedBusinessCards.get(0);
@@ -892,6 +920,9 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         // total value 1000 returned by service but should be 4300, service bug
         assertEquals(3000.0f, receiptPage3Fields.get("Subtotal").getValue().asFloat());
         assertEquals(ITEMIZED_RECEIPT_VALUE, receiptPage3Fields.get("ReceiptType").getValue().asString());
+    }
+
+    static void validateMultipageInvoiceData(List<RecognizedForm> recognizedInvoices) {
     }
 
     protected String getEndpoint() {
