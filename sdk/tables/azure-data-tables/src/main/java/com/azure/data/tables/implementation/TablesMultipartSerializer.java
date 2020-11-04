@@ -3,6 +3,7 @@
 package com.azure.data.tables.implementation;
 
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
@@ -62,7 +63,7 @@ public class TablesMultipartSerializer extends TablesJacksonSerializer {
 
     private void writeRequest(Object object, OutputStream os) throws IOException {
         HttpRequest request = ((BatchSubRequest) object).getHttpRequest();
-        String method = request.getHttpMethod().toString();
+        String method = request.getHttpMethod() == HttpMethod.PATCH ? "MERGE" :request.getHttpMethod().toString();
         String urlPath = request.getUrl().getPath();
         String urlQuery = request.getUrl().getQuery();
         if (!CoreUtils.isNullOrEmpty(urlQuery)) {
