@@ -140,7 +140,7 @@ public class AzureADGraphClient {
      * Get the rest url to get the groups that the user is a member of.
      * @return rest url
      */
-    private String getAadMembershipRestUri(){
+    private String getAadMembershipRestUri() {
         if (AADAuthenticationProperties.getDefaultGroupRelationship()
                                        .equalsIgnoreCase(aadAuthenticationProperties.getGroupRelationship())) {
             return serviceEndpoints.getAadMembershipRestUri();

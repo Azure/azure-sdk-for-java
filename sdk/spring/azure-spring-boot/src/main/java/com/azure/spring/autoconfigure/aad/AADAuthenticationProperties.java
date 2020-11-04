@@ -117,7 +117,8 @@ public class AADAuthenticationProperties {
     /**
      * The way to obtain group relationship.<br/>
      * direct: the default value, get groups that the user is a direct member of;<br/>
-     * transitive: Get groups that the user is a member of, and will also return all groups the user is a nested member of;
+     * transitive: Get groups that the user is a member of, and will also return all
+     *  groups the user is a nested member of;
      */
     private String groupRelationship = DEFAULT_GROUP_RELATIONSHIP;
 
