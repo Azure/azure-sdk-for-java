@@ -23,7 +23,7 @@ import java.time.Duration;
  * Base class for performance test.
  * @param <TOptions> for performance configuration.
  */
-public abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
+abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
     private final ClientLogger logger = new ClientLogger(ServiceTest.class);
     protected static final String CONTENTS = "Track 2 AMQP message - Perf Test";
     protected static final int TOTAL_MESSAGE_MULTIPLIER = 300;
@@ -44,7 +44,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
      * @param receiveMode to receive messages.
      * @throws IllegalArgumentException if environment variable not being available.
      */
-    public ServiceTest(TOptions options, ReceiveMode receiveMode) {
+    ServiceTest(TOptions options, ReceiveMode receiveMode) {
         super(options);
         String connectionString = System.getenv(AZURE_SERVICE_BUS_CONNECTION_STRING);
         if (CoreUtils.isNullOrEmpty(connectionString)) {
