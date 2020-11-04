@@ -17,10 +17,7 @@ import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ParallelTransferOptions;
-import com.azure.storage.blob.options.BlobParallelUploadOptions;
-import com.azure.storage.blob.options.BlobUploadFromFileOptions;
-import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
-import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
+import com.azure.storage.blob.options.*;
 import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
@@ -55,6 +52,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.withContext;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -449,6 +447,18 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    public Mono<BlockBlobItem> uploadFromUrl(String sourceUrl) {
+        return this.getBlockBlobAsyncClient().uploadFromUrl(sourceUrl);
+    }
+
+    public Mono<BlockBlobItem> uploadFromUrl(String sourceUrl, boolean overwrite) {
+        return this.getBlockBlobAsyncClient().uploadFromUrl(sourceUrl, overwrite);
+    }
+
+    public Mono<Response<BlockBlobItem>> uploadFromUrlWithResponse(BlobUploadFromUrlOptions options) {
+        return this.getBlockBlobAsyncClient().uploadFromUrlWithResponse(options);
     }
 
     private Mono<Response<BlockBlobItem>> uploadFullBlob(BlockBlobAsyncClient blockBlobAsyncClient,
