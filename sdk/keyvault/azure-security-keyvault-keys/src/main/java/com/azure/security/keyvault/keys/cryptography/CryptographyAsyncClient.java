@@ -40,6 +40,7 @@ import static com.azure.security.keyvault.keys.models.KeyType.EC_HSM;
 import static com.azure.security.keyvault.keys.models.KeyType.RSA;
 import static com.azure.security.keyvault.keys.models.KeyType.RSA_HSM;
 import static com.azure.security.keyvault.keys.models.KeyType.OCT;
+import static com.azure.security.keyvault.keys.models.KeyType.OCT_HSM;
 
 /**
  * The CryptographyAsyncClient provides asynchronous methods to perform cryptographic operations using asymmetric and
@@ -120,7 +121,7 @@ public class CryptographyAsyncClient {
             localKeyCryptographyClient = new RsaKeyCryptographyClient(key, cryptographyServiceClient);
         } else if (key.getKeyType().equals(EC) || key.getKeyType().equals(EC_HSM)) {
             localKeyCryptographyClient = new EcKeyCryptographyClient(key, cryptographyServiceClient);
-        } else if (key.getKeyType().equals(OCT)) {
+        } else if (key.getKeyType().equals(OCT) || key.getKeyType().equals(OCT_HSM)) {
             localKeyCryptographyClient = new SymmetricKeyCryptographyClient(key, cryptographyServiceClient);
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
