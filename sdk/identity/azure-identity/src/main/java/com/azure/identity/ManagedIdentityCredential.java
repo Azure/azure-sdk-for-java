@@ -71,8 +71,8 @@ public final class ManagedIdentityCredential implements TokenCredential {
         return this.serviceFabricMsiCredential != null
             ? this.serviceFabricMsiCredential.getClientId()
             : this.appServiceMSICredential != null
-                ? this.appServiceMSICredential.getClientId() :
-                   this.virtualMachineMSICredential.getClientId();
+                ? this.appServiceMSICredential.getClientId()
+                  : this.virtualMachineMSICredential.getClientId();
     }
 
     @Override
