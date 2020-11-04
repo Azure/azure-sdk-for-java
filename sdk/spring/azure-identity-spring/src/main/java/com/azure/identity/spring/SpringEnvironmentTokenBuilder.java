@@ -1,14 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.microsoft.azure.identity.spring;
+package com.azure.identity.spring;
 
 import java.util.HashMap;
-import java.util.Optional;
 
 import org.springframework.core.env.Environment;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.identity.ChainedTokenCredential;
 import com.azure.identity.ChainedTokenCredentialBuilder;
 import com.azure.identity.ClientCertificateCredentialBuilder;
 import com.azure.identity.ClientSecretCredentialBuilder;
@@ -84,6 +82,8 @@ public class SpringEnvironmentTokenBuilder {
      * Populate from Environment.
      *
      * @param environment the environment.
+     *
+     * @return this builder.
      */
     public SpringEnvironmentTokenBuilder fromEnvironment(Environment environment) {
         populateNamedCredential(environment, "");
@@ -101,9 +101,9 @@ public class SpringEnvironmentTokenBuilder {
      * Sets a credential to override a named credential. If this credential fails to produce a token,
      * the original token credential will be used.
      * 
-     * @param name
-     * @param credential
-     * @return
+     * @param name the name for the credential.
+     * @param credential the token credential.
+     * @return this builder.
      */
     public SpringEnvironmentTokenBuilder overrideNamedCredential(String name, TokenCredential credential) {
         TokenCredential currentCredential = credentials.get(name);
@@ -165,8 +165,8 @@ public class SpringEnvironmentTokenBuilder {
     /**
      * Sets the builder to return a credential named <code>name</code>
      * 
-     * @param name
-     * @return
+     * @param name the name of the credential.
+     * @return this builder.
      */
     public SpringEnvironmentTokenBuilder namedCredential(String name) {
         this.name = name;
@@ -175,14 +175,16 @@ public class SpringEnvironmentTokenBuilder {
 
     /**
      * Sets the builder to return the default credential.
+     * @return the credential builder with default name.
      */
     public SpringEnvironmentTokenBuilder defaultCredential() {
         return namedCredential("");
     }
 
     /**
-     * Builds an Azure TokenCredendial.
-     * 
+     * Builds an Azure TokenCredential.
+     *
+     * @return the built token credential.
      * @throws IllegalArgumentException if attempting to retrieve a named credential
      *                                  not defined in the environment.
      */

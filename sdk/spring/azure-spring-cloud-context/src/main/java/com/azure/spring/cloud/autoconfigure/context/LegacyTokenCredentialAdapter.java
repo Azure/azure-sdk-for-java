@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.context;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.identity.implementation.ScopeUtil;
+import com.azure.identity.implementation.util.ScopeUtil;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import reactor.core.publisher.Mono;
 
