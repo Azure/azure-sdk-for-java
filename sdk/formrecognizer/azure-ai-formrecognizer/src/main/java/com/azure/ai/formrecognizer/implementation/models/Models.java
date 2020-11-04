@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The Models model. */
+/** Response to the list custom models operation. */
 @Fluent
 public final class Models {
     /*

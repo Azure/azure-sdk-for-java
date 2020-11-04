@@ -7,6 +7,7 @@ import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.Utility;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
+import com.azure.ai.formrecognizer.implementation.models.Locale;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.implementation.models.SourcePath;
 import com.azure.ai.formrecognizer.models.FormContentType;
@@ -309,7 +310,8 @@ public final class FormRecognizerAsyncClient {
             return new PollerFlux<>(
                 recognizeContentOptions.getPollInterval(),
                 urlActivationOperation(
-                    () -> service.analyzeLayoutAsyncWithResponseAsync(new SourcePath().setSource(formUrl), context)
+                    () -> service.analyzeLayoutAsyncWithResponseAsync(null, null,
+                        new SourcePath().setSource(formUrl), context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
                     logger),
@@ -387,7 +389,8 @@ public final class FormRecognizerAsyncClient {
             return new PollerFlux<>(
                 recognizeContentOptions.getPollInterval(),
                 streamActivationOperation(
-                    contentType -> service.analyzeLayoutAsyncWithResponseAsync(contentType, form, length, context)
+                    contentType -> service.analyzeLayoutAsyncWithResponseAsync(contentType, form, length,
+                        null, null, context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
                     form, recognizeContentOptions.getContentType()),
@@ -465,7 +468,7 @@ public final class FormRecognizerAsyncClient {
                 recognizeReceiptsOptions.getPollInterval(),
                 urlActivationOperation(
                     () -> service.analyzeReceiptAsyncWithResponseAsync(isFieldElementsIncluded,
-                        localeInfo,
+                        Locale.fromString(localeInfo),
                         new SourcePath().setSource(receiptUrl),
                         context)
                         .map(response -> new FormRecognizerOperationResult(
@@ -561,7 +564,7 @@ public final class FormRecognizerAsyncClient {
                         receipt,
                         length,
                         isFieldElementsIncluded,
-                        localeInfo,
+                        Locale.fromString(localeInfo),
                         context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
@@ -642,7 +645,7 @@ public final class FormRecognizerAsyncClient {
                 recognizeBusinessCardsOptions.getPollInterval(),
                 urlActivationOperation(
                     () -> service.analyzeBusinessCardAsyncWithResponseAsync(isFieldElementsIncluded,
-                        localeInfo,
+                        Locale.fromString(localeInfo),
                         new SourcePath().setSource(businessCardUrl),
                         context)
                         .map(response -> new FormRecognizerOperationResult(
@@ -736,7 +739,7 @@ public final class FormRecognizerAsyncClient {
                         businessCard,
                         length,
                         isFieldElementsIncluded,
-                        localeInfo,
+                        Locale.fromString(localeInfo),
                         context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
