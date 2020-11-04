@@ -36,18 +36,10 @@ class AppServiceMsiCredential extends ManagedIdentityServiceCredential {
         this.msiEndpoint = configuration.get(Configuration.PROPERTY_MSI_ENDPOINT);
         this.msiSecret = configuration.get(Configuration.PROPERTY_MSI_SECRET);
         if (identityEndpoint != null) {
-            validateEndpointProtocol(this.identityEndpoint, "Identity");
+            validateEndpointProtocol(this.identityEndpoint, "Identity", logger);
         }
         if (msiEndpoint != null) {
-            validateEndpointProtocol(this.msiEndpoint, "MSI");
-        }
-    }
-
-    private void validateEndpointProtocol(String endpoint, String endpointName) {
-        if (!(endpoint.startsWith("https") || endpoint.startsWith("http"))) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException(
-                    String.format("%s endpoint should start with 'https' or 'http' scheme.", endpointName)));
+            validateEndpointProtocol(this.msiEndpoint, "MSI", logger);
         }
     }
 

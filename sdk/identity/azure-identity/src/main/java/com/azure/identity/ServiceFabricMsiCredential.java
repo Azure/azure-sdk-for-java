@@ -39,15 +39,7 @@ class ServiceFabricMsiCredential extends ManagedIdentityServiceCredential {
         this.identityClient = identityClient;
         this.clientId = clientId;
         if (identityEndpoint != null) {
-            validateEndpointProtocol(this.identityEndpoint, "Identity");
-        }
-    }
-
-    private void validateEndpointProtocol(String endpoint, String endpointName) {
-        if (!(endpoint.startsWith("https") || endpoint.startsWith("http"))) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException(
-                    String.format("%s endpoint should start with 'https' or 'http' scheme.", endpointName)));
+            validateEndpointProtocol(this.identityEndpoint, "Identity", logger);
         }
     }
 

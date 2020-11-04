@@ -33,9 +33,9 @@ public final class ManagedIdentityCredential implements TokenCredential {
      */
     ManagedIdentityCredential(String clientId, IdentityClientOptions identityClientOptions) {
         IdentityClient identityClient = new IdentityClientBuilder()
-                                            .clientId(clientId)
-                                            .identityClientOptions(identityClientOptions)
-                                            .build();
+            .clientId(clientId)
+            .identityClientOptions(identityClientOptions)
+            .build();
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
         if (configuration.contains(Configuration.PROPERTY_IDENTITY_ENDPOINT)) {
             if (configuration.contains(Configuration.PROPERTY_IDENTITY_HEADER)) {

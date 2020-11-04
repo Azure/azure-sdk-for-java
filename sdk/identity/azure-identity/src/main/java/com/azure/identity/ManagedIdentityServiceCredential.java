@@ -5,6 +5,7 @@ package com.azure.identity;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
 import reactor.core.publisher.Mono;
 
@@ -20,6 +21,7 @@ abstract class ManagedIdentityServiceCredential {
      * Creates an instance of ManagedIdentityServiceCredential.
      * @param clientId the client id of user assigned or system assigned identity
      * @param identityClient the identity client to acquire a token with.
+     * @param environment The service environment of the credential.
      */
     ManagedIdentityServiceCredential(String clientId, IdentityClient identityClient, String environment) {
         this.identityClient = identityClient;
@@ -47,5 +49,13 @@ abstract class ManagedIdentityServiceCredential {
      */
     public String getEnvironment() {
         return environment;
+    }
+
+    void validateEndpointProtocol(String endpoint, String endpointName, ClientLogger logger) {
+        if (!(endpoint.startsWith("https") || endpoint.startsWith("http"))) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException(
+                    String.format("%s endpoint should start with 'https' or 'http' scheme.", endpointName)));
+        }
     }
 }
