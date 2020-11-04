@@ -246,7 +246,7 @@ public final class PageBlobClient extends BlobClientBase {
         PageBlobRequestConditions pageBlobRequestConditions, Duration timeout, Context context) {
         Objects.requireNonNull(body, "'body' cannot be null.");
         final long length = pageRange.getEnd() - pageRange.getStart() + 1;
-        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(body, length, PAGE_BYTES);
+        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(body, length, PAGE_BYTES, true);
 
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesWithResponse(pageRange,
             fbb.subscribeOn(Schedulers.elastic()), contentMd5, pageBlobRequestConditions, context);

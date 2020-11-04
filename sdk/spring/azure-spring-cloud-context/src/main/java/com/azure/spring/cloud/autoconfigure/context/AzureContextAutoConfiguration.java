@@ -65,9 +65,9 @@ public class AzureContextAutoConfiguration {
                 .build();
 
         String subscriptionId = Optional.ofNullable(azureProperties.getSubscriptionId())
-                .orElseGet(credentials::defaultSubscriptionId);
-
-        return authenticateToAzure(restClient, subscriptionId, credentials);
+                                        .orElseGet(credentials::defaultSubscriptionId);
+        return Azure.authenticate(restClient, credentials.domain())
+                    .withSubscription(subscriptionId);
     }
 
     @VisibleForTesting

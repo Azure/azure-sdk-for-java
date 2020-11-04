@@ -64,7 +64,7 @@ public class AzureServiceBusTopicAutoConfiguration {
             clientFactory.setServiceBusNamespaceManager(serviceBusNamespaceManager);
             clientFactory.setServiceBusTopicManager(serviceBusTopicManager);
             clientFactory.setServiceBusTopicSubscriptionManager(serviceBusTopicSubscriptionManager);
-        } else {
+        } else if (connectionString != null) {
             TelemetryCollector.getInstance().addProperty(SERVICE_BUS_TOPIC, NAMESPACE,
                 ServiceBusUtils.getNamespace(connectionString));
         }

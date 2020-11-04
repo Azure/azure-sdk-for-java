@@ -76,7 +76,7 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void listMetricSeriesData(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
-        client.listMetricSeriesData(METRIC_ID, Collections.singletonList(new DimensionKey(SERIES_KEY_FILTER)),
+        client.listMetricSeriesData(METRIC_ID,  Collections.singletonList(new DimensionKey(SERIES_KEY_FILTER)),
             new ListMetricSeriesDataOptions(TIME_SERIES_START_TIME,
                 TIME_SERIES_END_TIME))
             .forEach(metricSeriesData -> {
@@ -113,13 +113,14 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
         List<MetricSeriesDefinition> actualMetricSeriesDefinitions = client.listMetricSeriesDefinitions(METRIC_ID,
             new ListMetricSeriesDefinitionOptions(TIME_SERIES_START_TIME)
                 .setDimensionCombinationToFilter(new HashMap<String, List<String>>() {{
-                        put("Dim2", Collections.singletonList("Angelfish"));
-                    }})).stream().collect(Collectors.toList());
+                        put("city", Collections.singletonList("Miami"));
+                    }}))
+            .stream().collect(Collectors.toList());
 
         actualMetricSeriesDefinitions.forEach(metricSeriesDefinition -> {
-            final String dimensionFilterValue = metricSeriesDefinition.getSeriesKey().asMap().get("Dim2");
+            final String dimensionFilterValue = metricSeriesDefinition.getSeriesKey().asMap().get("city");
             assertNotNull(dimensionFilterValue);
-            assertEquals("Angelfish", dimensionFilterValue);
+            assertEquals("Miami", dimensionFilterValue);
         });
     }
 

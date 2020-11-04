@@ -15,12 +15,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
@@ -29,8 +27,6 @@ import java.util.stream.Collectors;
 import static com.azure.messaging.servicebus.TestUtils.getServiceBusMessage;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Integration tests for {@link ServiceBusSessionManager}.
@@ -85,11 +81,16 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
         // Act & Assert
         try {
             StepVerifier.create(receiver.receiveMessages())
-                .assertNext(context -> assertMessageEquals(sessionId, messageId, contents, context))
-                .assertNext(context -> assertMessageEquals(sessionId, messageId, contents, context))
-                .assertNext(context -> assertMessageEquals(sessionId, messageId, contents, context))
-                .assertNext(context -> assertMessageEquals(sessionId, messageId, contents, context))
-                .assertNext(context -> assertMessageEquals(sessionId, messageId, contents, context))
+                .assertNext(serviceBusReceivedMessage ->
+                    assertMessageEquals(sessionId, messageId, contents, serviceBusReceivedMessage))
+                .assertNext(serviceBusReceivedMessage ->
+                    assertMessageEquals(sessionId, messageId, contents, serviceBusReceivedMessage))
+                .assertNext(serviceBusReceivedMessage ->
+                    assertMessageEquals(sessionId, messageId, contents, serviceBusReceivedMessage))
+                .assertNext(serviceBusReceivedMessage ->
+                    assertMessageEquals(sessionId, messageId, contents, serviceBusReceivedMessage))
+                .assertNext(serviceBusReceivedMessage ->
+                    assertMessageEquals(sessionId, messageId, contents, serviceBusReceivedMessage))
                 .thenCancel()
                 .verify(Duration.ofMinutes(2));
         } finally {
@@ -98,22 +99,6 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
                 .collect(Collectors.toList()))
                 .block(TIMEOUT);
         }
-    }
-
-    private void assertFromSession(List<String> sessionIds, Set<String> currentSessions, int maxSize,
-        String messageId, String contents, ServiceBusReceivedMessageContext context) {
-        logger.info("Verifying message: {}", context.getSessionId());
-
-        assertNotNull(context.getSessionId());
-        assertTrue(sessionIds.contains(context.getSessionId()));
-
-        if (currentSessions.add(context.getSessionId())) {
-            logger.info("Adding sessionId: {}", context.getSessionId());
-        }
-
-        assertTrue(currentSessions.size() <= maxSize, String.format(
-            "Current size (%s) is larger than max (%s).", currentSessions.size(), maxSize));
-        assertMessageEquals(null, messageId, contents, context);
     }
 
     /**
@@ -130,18 +115,15 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
     }
 
     private static void assertMessageEquals(String sessionId, String messageId, String contents,
-        ServiceBusReceivedMessageContext actual) {
-        ServiceBusReceivedMessage message = actual.getMessage();
+        ServiceBusReceivedMessage message) {
 
-        assertNotNull(message, "'message' should not be null. Error? " + actual.getThrowable());
+        assertNotNull(message, "'message' should not be null.");
 
         if (!CoreUtils.isNullOrEmpty(sessionId)) {
             assertEquals(sessionId, message.getSessionId());
         }
 
         assertEquals(messageId, message.getMessageId());
-        assertEquals(contents, new String(message.getBody(), StandardCharsets.UTF_8));
-
-        assertNull(actual.getThrowable());
+        assertEquals(contents, message.getBody().toString());
     }
 }
