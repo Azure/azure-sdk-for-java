@@ -68,7 +68,7 @@ Sample code for Azure Germany, with `EnvironmentCredential`:
 ```java
 AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE_GERMANY);
 EnvironmentCredential credential = new EnvironmentCredentialBuilder()
-    .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+    .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
     .build();
 ```
 
