@@ -8,28 +8,6 @@ import com.azure.spring.cloud.autoconfigure.context.AzureEnvironmentAutoConfigur
 import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubProperties;
 import com.azure.spring.cloud.autoconfigure.eventhub.EventHubUtils;
-import com.azure.spring.cloud.context.core.api.ResourceManagerProvider;
-import com.azure.spring.cloud.telemetry.TelemetryCollector;
-import com.azure.spring.eventhub.stream.binder.EventHubMessageChannelBinder;
-import com.azure.spring.eventhub.stream.binder.properties.EventHubExtendedBindingProperties;
-import com.azure.spring.eventhub.stream.binder.provisioning.EventHubChannelProvisioner;
-import com.azure.spring.eventhub.stream.binder.provisioning.EventHubChannelResourceManagerProvisioner;
-import com.azure.spring.integration.eventhub.api.EventHubOperation;
-import javax.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.stream.binder.Binder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.util.StringUtils;
-
-import com.azure.spring.cloud.autoconfigure.context.AzureEnvironmentAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubProperties;
-import com.azure.spring.cloud.autoconfigure.eventhub.EventHubUtils;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.EventHubConsumerGroupManager;
 import com.azure.spring.cloud.context.core.impl.EventHubManager;
@@ -41,6 +19,17 @@ import com.azure.spring.eventhub.stream.binder.provisioning.EventHubChannelProvi
 import com.azure.spring.eventhub.stream.binder.provisioning.EventHubChannelResourceManagerProvisioner;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
 import com.microsoft.azure.management.Azure;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.stream.binder.Binder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.util.StringUtils;
+
+import javax.annotation.PostConstruct;
 
 /**
  * @author Warren Zhu
