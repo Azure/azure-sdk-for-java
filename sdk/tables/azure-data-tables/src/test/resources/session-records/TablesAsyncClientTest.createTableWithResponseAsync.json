@@ -5,7 +5,7 @@
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.3 (11.0.9; Mac OS X; 10.15.7)",
-      "x-ms-client-request-id" : "c913ac25-46df-440a-930b-0d3137a77d90",
+      "x-ms-client-request-id" : "29d5a27a-eb93-47c6-83b7-941a43d672e7",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -14,14 +14,14 @@
       "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "Date" : "Wed, 04 Nov 2020 23:45:51 GMT",
+      "Date" : "Wed, 04 Nov 2020 23:44:36 GMT",
       "Cache-Control" : "no-cache",
-      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('test49990d310c')",
+      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('tablename45050d46')",
       "Content-Length" : "0",
-      "x-ms-request-id" : "dfccdd09-3002-00d2-3a04-b349b2000000",
+      "x-ms-request-id" : "a4e36921-8002-00e8-1a04-b353ca000000",
       "Preference-Applied" : "return-no-content",
-      "x-ms-client-request-id" : "c913ac25-46df-440a-930b-0d3137a77d90",
-      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('test49990d310c')"
+      "x-ms-client-request-id" : "29d5a27a-eb93-47c6-83b7-941a43d672e7",
+      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('tablename45050d46')"
     },
     "Exception" : null
   }, {
@@ -30,25 +30,25 @@
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.3 (11.0.9; Mac OS X; 10.15.7)",
-      "x-ms-client-request-id" : "2af894de-fa45-4e57-ab29-10a3661bf791",
+      "x-ms-client-request-id" : "95aac7f6-c6ff-45d1-94ed-64d54f203e53",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "Transfer-Encoding" : "chunked",
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
       "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
-      "StatusCode" : "409",
-      "Date" : "Wed, 04 Nov 2020 23:45:51 GMT",
+      "StatusCode" : "204",
+      "Date" : "Wed, 04 Nov 2020 23:44:36 GMT",
       "Cache-Control" : "no-cache",
-      "x-ms-request-id" : "dfccdd1c-3002-00d2-4a04-b349b2000000",
-      "Body" : "{\"odata.error\":{\"code\":\"TableAlreadyExists\",\"message\":{\"lang\":\"en-US\",\"value\":\"The table specified already exists.\\nRequestId:dfccdd1c-3002-00d2-4a04-b349b2000000\\nTime:2020-11-04T23:45:51.5683719Z\"}}}",
+      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('tablename322107e7')",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "a4e36937-8002-00e8-2d04-b353ca000000",
       "Preference-Applied" : "return-no-content",
-      "x-ms-client-request-id" : "2af894de-fa45-4e57-ab29-10a3661bf791",
-      "Content-Type" : "application/json;odata=minimalmetadata;streaming=true;charset=utf-8"
+      "x-ms-client-request-id" : "95aac7f6-c6ff-45d1-94ed-64d54f203e53",
+      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('tablename322107e7')"
     },
     "Exception" : null
   } ],
-  "variables" : [ "test49990d310c" ]
+  "variables" : [ "tablename45050d46", "tablename322107e7" ]
 }
