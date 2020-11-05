@@ -164,10 +164,12 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics{
                 return Mono.just(ShouldRetryResult.noRetry());
             } else if (exception instanceof GoneException &&
                 !request.isReadOnly() &&
-                BridgeInternal.hasSendingRequestStarted((CosmosException)exception)) {
+                BridgeInternal.hasSendingRequestStarted((CosmosException)exception) &&
+                !((GoneException)exception).isBasedOn410ResponseFromService()) {
 
                 logger.warn(
-                    "Operation will NOT be retried. Write operations can not be retried safely when sending the request " +
+                    "Operation will NOT be retried. Write operations which failed due to transient transport errors " +
+                        "can not be retried safely when sending the request " +
                         "to the service because they aren't idempotent. Current attempt {}, Exception: ",
                     this.attemptCount,
                     exception);

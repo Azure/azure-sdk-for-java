@@ -152,6 +152,58 @@ public class GoneAndRetryWithRetryPolicyTest {
     }
 
     /**
+     * GoneException for write which is already sent to the wire but based on receiving
+     * an actual response from the Service with 410 Status Code and SubStatusCode 0
+     * should result in retry
+     * shouldRetryResult. ShouldRetryResult
+     */
+    @Test(groups = { "unit" }, timeOut = TIMEOUT)
+    public void shouldRetryFlushedWriteWithGoneExceptionFromService() {
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            mockDiagnosticsClientContext(),
+            OperationType.Create,
+            ResourceType.Document);
+        GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy =
+            new GoneAndRetryWithRetryPolicy(request, 30);
+
+        Supplier<GoneException> goneExceptionForFlushedRequestSupplier = () -> {
+            GoneException goneExceptionForFlushedRequest = new GoneException();
+            BridgeInternal.setSendingRequestStarted(goneExceptionForFlushedRequest, true);
+            goneExceptionForFlushedRequest.setIsBasedOn410ResponseFromService();
+            return goneExceptionForFlushedRequest;
+        };
+
+        Mono<IRetryPolicy.ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
+            .shouldRetry(goneExceptionForFlushedRequestSupplier.get());
+        IRetryPolicy.ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
+        assertThat(shouldRetryResult.shouldRetry).isTrue();
+        assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
+        assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(1);
+        assertThat(shouldRetryResult.backOffTime.getSeconds()).isEqualTo(0);
+
+        singleShouldRetry = goneAndRetryWithRetryPolicy.shouldRetry(goneExceptionForFlushedRequestSupplier.get());
+        shouldRetryResult = singleShouldRetry.block();
+        assertThat(shouldRetryResult.shouldRetry).isTrue();
+        assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
+        assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(2);
+        assertThat(shouldRetryResult.backOffTime.getSeconds()).isEqualTo(1);
+
+        singleShouldRetry = goneAndRetryWithRetryPolicy.shouldRetry(goneExceptionForFlushedRequestSupplier.get());
+        shouldRetryResult = singleShouldRetry.block();
+        assertThat(shouldRetryResult.shouldRetry).isTrue();
+        assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
+        assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(3);
+        assertThat(shouldRetryResult.backOffTime.getSeconds()).isEqualTo(2);
+
+        singleShouldRetry = goneAndRetryWithRetryPolicy.shouldRetry(goneExceptionForFlushedRequestSupplier.get());
+        shouldRetryResult = singleShouldRetry.block();
+        assertThat(shouldRetryResult.shouldRetry).isTrue();
+        assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
+        assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(4);
+        assertThat(shouldRetryResult.backOffTime.getSeconds()).isEqualTo(4);
+    }
+
+    /**
      * RequestTimeoutExceptions should not be retried for read or write - no address cache refresh expected
      * shouldRetryResult. ShouldRetryResult
      */

@@ -4,4 +4,4 @@
 /**
  * The Azure Key Vault JCA Provider models package.
  */
-package com.azure.security.keyvault.jca.rest;
+package com.azure.security.keyvault.jca.model;
