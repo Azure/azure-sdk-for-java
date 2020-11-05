@@ -231,13 +231,13 @@ class FluxAutoCompleteTest {
     @Test
     void doesNotCompleteOnSettledMessage() {
         // Arrange
-        final TestPublisher<ServiceBusReceivedMessageContext> testPublisher = TestPublisher.createCold();
+        final TestPublisher<ServiceBusMessageContext> testPublisher = TestPublisher.createCold();
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
         when(message.isSettled()).thenReturn(true);
 
-        final ServiceBusReceivedMessageContext context = new ServiceBusReceivedMessageContext(message);
+        final ServiceBusMessageContext context = new ServiceBusMessageContext(message);
         final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
-        final ServiceBusReceivedMessageContext context2 = new ServiceBusReceivedMessageContext(message2);
+        final ServiceBusMessageContext context2 = new ServiceBusMessageContext(message2);
 
         final FluxAutoComplete autoComplete = new FluxAutoComplete(testPublisher.flux(), completionLock, onComplete, onAbandon);
 
@@ -262,14 +262,14 @@ class FluxAutoCompleteTest {
     @Test
     void onErrorCancelsUpstream() {
         // Arrange
-        final TestPublisher<ServiceBusReceivedMessageContext> testPublisher = TestPublisher.createCold();
+        final TestPublisher<ServiceBusMessageContext> testPublisher = TestPublisher.createCold();
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
         when(message.isSettled()).thenReturn(false);
-        final ServiceBusReceivedMessageContext context = new ServiceBusReceivedMessageContext(message);
+        final ServiceBusMessageContext context = new ServiceBusMessageContext(message);
 
         final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
         when(message2.isSettled()).thenReturn(false);
-        final ServiceBusReceivedMessageContext context2 = new ServiceBusReceivedMessageContext(message2);
+        final ServiceBusMessageContext context2 = new ServiceBusMessageContext(message2);
 
         final FluxAutoComplete autoComplete = new FluxAutoComplete(testPublisher.flux(), completionLock, onComplete, onAbandon);
         final CloneNotSupportedException testError = new CloneNotSupportedException("TEST error");
