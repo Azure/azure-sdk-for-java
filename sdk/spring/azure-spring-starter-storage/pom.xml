@@ -24,7 +24,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
-      <version>2.3.4.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+      <version>2.3.5.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
     </dependency>
   </dependencies>
   <build>
@@ -37,7 +37,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-starter:[2.3.4.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter:[2.3.5.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
