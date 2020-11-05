@@ -12,7 +12,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import java.util.Map;
 
 /**
- * Extended options that may be passed when uploading a Block Blob in a single request.
+ * Extended options that may be passed when uploading a Block Blob from URL.
  */
 public class BlobUploadFromUrlOptions {
     private final String sourceUrl;
@@ -137,7 +137,8 @@ public class BlobUploadFromUrlOptions {
      * @param destinationRequestConditions {@link BlobRequestConditions}
      * @return The updated options.
      */
-    public BlobUploadFromUrlOptions setDestinationRequestConditions(BlobRequestConditions destinationRequestConditions) {
+    public BlobUploadFromUrlOptions setDestinationRequestConditions(BlobRequestConditions
+                                                                        destinationRequestConditions) {
         this.destinationRequestConditions = destinationRequestConditions;
         return this;
     }
