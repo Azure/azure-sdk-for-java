@@ -49,7 +49,7 @@ public class BlobUploadFromUrlOptions {
 
     /**
      * @param headers {@link BlobHttpHeaders}
-     * @return The updated {@code AppendBlobCreateOptions}
+     * @return The updated options
      */
     public BlobUploadFromUrlOptions setHeaders(BlobHttpHeaders headers) {
         this.headers = headers;

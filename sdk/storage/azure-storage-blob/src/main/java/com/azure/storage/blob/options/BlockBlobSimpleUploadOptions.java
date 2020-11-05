@@ -87,7 +87,7 @@ public class BlockBlobSimpleUploadOptions {
 
     /**
      * @param headers {@link BlobHttpHeaders}
-     * @return The updated {@code AppendBlobCreateOptions}
+     * @return The updated options
      */
     public BlockBlobSimpleUploadOptions setHeaders(BlobHttpHeaders headers) {
         this.headers = headers;
