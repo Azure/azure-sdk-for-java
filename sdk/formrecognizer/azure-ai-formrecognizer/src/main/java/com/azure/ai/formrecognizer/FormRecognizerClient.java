@@ -29,8 +29,8 @@ import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffe
 
 /**
  * This class provides a synchronous client that contains all the operations that apply to Azure Form Recognizer.
- * Operations allowed by the client are recognizing receipt data from documents, recognizing layout information and
- * analyzing custom forms for predefined data.
+ * Operations allowed by the client are recognizing receipt, business card and invoice data from documents,
+ * recognizing layout information and analyzing custom forms for predefined data.
  *
  * <p><strong>Instantiating a synchronous Form Recognizer Client</strong></p>
  * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.instantiation}
@@ -472,18 +472,18 @@ public final class FormRecognizerClient {
     }
 
     /**
-     * Recognizes receipt data from document using optical character recognition (OCR) and a prebuilt receipt trained
+     * Recognizes invoice data from document using optical character recognition (OCR) and a prebuilt invoice trained
      * model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
-     * See <a href="https://aka.ms/formrecognizer/receiptfields">here</a> for fields found on a receipt.
+     * See <a href="https://aka.ms/formrecognizer/invoicefields">here</a> for fields found on an invoice.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeInvoicesFromUrl#string}
      *
-     * @param invoiceUrl The URL of the receipt to analyze.
+     * @param invoiceUrl The URL of the invoice document to analyze.
      *
-     * @return A {@link SyncPoller} to poll the progress of the recognize receipt operation until it has completed,
+     * @return A {@link SyncPoller} to poll the progress of the recognize invoice operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
@@ -504,12 +504,12 @@ public final class FormRecognizerClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeInvoicesFromUrl#string-RecognizeInvoicesOptions-Context}
      *
-     * @param invoiceUrl The source URL to the input receipt.
+     * @param invoiceUrl The source URL to the input invoice document.
      * @param recognizeInvoicesOptions The additional configurable {@link RecognizeInvoicesOptions options}
      * that may be passed when analyzing an invoice.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
-     * @return A {@link SyncPoller} to poll the progress of the recognize receipt operation until it has completed,
+     * @return A {@link SyncPoller} to poll the progress of the recognize invoice operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
