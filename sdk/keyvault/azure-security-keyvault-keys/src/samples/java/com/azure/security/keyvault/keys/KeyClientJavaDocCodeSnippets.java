@@ -140,7 +140,7 @@ public final class KeyClientJavaDocCodeSnippets {
             new Context(key1, value1)).getValue();
         System.out.printf("Key was exported with name: %s and id: %s. \n", exportedKeyFromResponse.getName(),
             exportedKeyFromResponse.getId());
-        // com.azure.security.keyvault.keys.keyclient.exportKeyWithResponse#name-version-environment-response
+        // END: com.azure.security.keyvault.keys.keyclient.exportKeyWithResponse#name-version-environment-response
     }
 
     /**
