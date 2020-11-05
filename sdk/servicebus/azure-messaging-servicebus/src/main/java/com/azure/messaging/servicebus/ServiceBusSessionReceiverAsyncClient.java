@@ -114,23 +114,13 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
             receiverOptions.getPrefetchCount(), receiverOptions.getMaxLockRenewDuration(),
             receiverOptions.isEnableAutoComplete(), sessionId, null);
 
-        final ServiceBusSessionManager sessionSpecificManager = new ServiceBusSessionManager(entityPath, entityType,
-            connectionProcessor, tracerProvider, messageSerializer, newReceiverOptions);
-
-        if (CoreUtils.isNullOrEmpty(sessionId)) {
-            return sessionSpecificManager.getActiveLink().map(receiveLink -> new ServiceBusReceiverAsyncClient(
-                fullyQualifiedNamespace, entityPath, entityType, newReceiverOptions, connectionProcessor,
-                ServiceBusConstants.OPERATION_TIMEOUT, tracerProvider, messageSerializer, () -> {
-            }, sessionSpecificManager));
-        } else {
-            ServiceBusReceiverAsyncClient sessionSpecificAsyncClient = new ServiceBusReceiverAsyncClient(fullyQualifiedNamespace,
-                entityPath, entityType, newReceiverOptions, connectionProcessor,
+        ServiceBusReceiverAsyncClient sessionSpecificAsyncClient = new ServiceBusReceiverAsyncClient(
+            fullyQualifiedNamespace, entityPath, entityType, newReceiverOptions, connectionProcessor,
                 ServiceBusConstants.OPERATION_TIMEOUT, tracerProvider, messageSerializer, () -> { });
-            return sessionSpecificAsyncClient.getOrCreateConsumerAsync().map(consumer ->
+        return sessionSpecificAsyncClient.getOrCreateConsumerAsync().map(consumer ->
                 new ServiceBusReceiverAsyncClient(fullyQualifiedNamespace, entityPath, entityType, newReceiverOptions,
                     connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT, tracerProvider, messageSerializer,
                     () -> { }, consumer));
-        }
 
     }
 
