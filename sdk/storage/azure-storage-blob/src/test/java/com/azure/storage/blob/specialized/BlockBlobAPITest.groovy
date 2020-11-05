@@ -2066,17 +2066,18 @@ class BlockBlobAPITest extends APISpec {
         destinationProperties.getAccessTier() == AccessTier.COOL
     }
 
+    @Unroll
     def "Upload from Url source request conditions"() {
         setup:
         def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
         sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
         def sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)))
-        blobClient.upload(new ByteArrayInputStream(), 0, true)
+        blockBlobClient.upload(new ByteArrayInputStream(), 0, true)
 
         when:
         def options = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas).setSourceRequestConditions(requestConditions)
-        blobClient.uploadFromUrlWithResponse(options, null, null)
+        blockBlobClient.uploadFromUrlWithResponse(options, null, null)
 
         then:
         def e = thrown(BlobStorageException)
@@ -2089,18 +2090,19 @@ class BlockBlobAPITest extends APISpec {
         new BlobRequestConditions().setIfUnmodifiedSince(OffsetDateTime.now().minusDays(1)) | BlobErrorCode.CANNOT_VERIFY_COPY_SOURCE
     }
 
+    @Unroll
     def "Upload from Url destination request conditions"() {
         setup:
         def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
         sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
         def sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)))
-        blobClient.upload(new ByteArrayInputStream(), 0, true)
+        blockBlobClient.upload(new ByteArrayInputStream(), 0, true)
         createLeaseClient(blobClient).acquireLease(60)
 
         when:
         def options = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas).setDestinationRequestConditions(requestConditions)
-        blobClient.uploadFromUrlWithResponse(options, null, null)
+        blockBlobClient.uploadFromUrlWithResponse(options, null, null)
 
         then:
         def e = thrown(BlobStorageException)
