@@ -175,13 +175,11 @@ public class AsyncCtlWorkload {
             options.setPartitionKey(new PartitionKey(partitionKeyValue));
 
             Mono sparsitySleepMono = sparsityMono();
-            obs = sparsitySleepMono.flux().flatMap(
-                null,
-                null,
+            obs = sparsitySleepMono.flux().doOnComplete(
                 () -> container.readItem(
-                        docsToRead.get(container.getId()).get(index).getId(),
-                        new PartitionKey(partitionKeyValue),
-                        PojoizedJson.class)
+                    docsToRead.get(container.getId()).get(index).getId(),
+                    new PartitionKey(partitionKeyValue),
+                    PojoizedJson.class)
             );
         }
 
