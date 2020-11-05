@@ -58,4 +58,18 @@ public class ShareEnabledProtocol {
         }
         return null;
     }
+
+    public static ShareEnabledProtocol parse(String str) {
+        if (str == null) {
+            return null;
+        }
+
+        if (str.equals(Constants.HeaderConstants.SMB_PROTOCOL)) {
+            return new ShareEnabledProtocol().setSmb(true);
+        } else if (str.equals(Constants.HeaderConstants.NFS_PROTOCOL)) {
+            return new ShareEnabledProtocol().setNfs(true);
+        }
+
+        throw new IllegalArgumentException("String is not an understood protocol: " + str);
+    }
 }

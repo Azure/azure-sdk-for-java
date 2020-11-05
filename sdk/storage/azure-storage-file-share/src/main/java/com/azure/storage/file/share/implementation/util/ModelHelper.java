@@ -4,6 +4,11 @@
 package com.azure.storage.file.share.implementation.util;
 
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
+import com.azure.storage.file.share.implementation.models.ShareItemInternal;
+import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
+import com.azure.storage.file.share.models.ShareEnabledProtocol;
+import com.azure.storage.file.share.models.ShareItem;
+import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
 
 public class ModelHelper {
@@ -26,5 +31,52 @@ public class ModelHelper {
             default:
                 throw new IllegalArgumentException("Invalid " + option.getClass());
         }
+    }
+
+    /**
+     * Transforms {@link ShareItemInternal} into a public {@link ShareItem}.
+     *
+     * @param shareItemInternal {@link ShareItemInternal}
+     * @return {@link ShareItem}
+     */
+    public static ShareItem populateShareItem(ShareItemInternal shareItemInternal) {
+        ShareItem item = new ShareItem();
+        item.setName(shareItemInternal.getName());
+        item.setSnapshot(shareItemInternal.getSnapshot());
+        item.setDeleted(shareItemInternal.isDeleted());
+        item.setVersion(shareItemInternal.getVersion());
+        item.setProperties(populateShareProperties(shareItemInternal.getProperties()));
+        item.setMetadata(shareItemInternal.getMetadata());
+        return item;
+    }
+
+    /**
+     * Transforms {@link SharePropertiesInternal} into a public {@link ShareProperties}.
+     *
+     * @param sharePropertiesInternal {@link SharePropertiesInternal}
+     * @return {@link ShareProperties}
+     */
+    public static ShareProperties populateShareProperties(SharePropertiesInternal sharePropertiesInternal) {
+        ShareProperties properties = new ShareProperties();
+        properties.setLastModified(sharePropertiesInternal.getLastModified());
+        properties.setETag(sharePropertiesInternal.getETag());
+        properties.setQuota(sharePropertiesInternal.getQuota());
+        properties.setProvisionedIops(sharePropertiesInternal.getProvisionedIops());
+        properties.setProvisionedIngressMBps(sharePropertiesInternal.getProvisionedIngressMBps());
+        properties.setProvisionedEgressMBps(sharePropertiesInternal.getProvisionedEgressMBps());
+        properties.setNextAllowedQuotaDowngradeTime(sharePropertiesInternal.getNextAllowedQuotaDowngradeTime());
+        properties.setDeletedTime(sharePropertiesInternal.getDeletedTime());
+        properties.setRemainingRetentionDays(sharePropertiesInternal.getRemainingRetentionDays());
+        properties.setAccessTier(sharePropertiesInternal.getAccessTier());
+        properties.setAccessTierChangeTime(sharePropertiesInternal.getAccessTierChangeTime());
+        properties.setAccessTierTransitionState(sharePropertiesInternal.getAccessTierTransitionState());
+        properties.setLeaseStatus(sharePropertiesInternal.getLeaseStatus());
+        properties.setLeaseState(sharePropertiesInternal.getLeaseState());
+        properties.setLeaseDuration(sharePropertiesInternal.getLeaseDuration());
+        properties.setEnabledProtocols(ShareEnabledProtocol.parse(sharePropertiesInternal.getEnabledProtocols()));
+        properties.setRootSquash(sharePropertiesInternal.getRootSquash());
+        properties.setMetadata(sharePropertiesInternal.getMetadata());
+
+        return properties;
     }
 }
