@@ -13,6 +13,7 @@ import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.blob.specialized.PageBlobClient
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
+import spock.lang.Requires
 
 import java.time.OffsetDateTime
 
@@ -96,6 +97,7 @@ class CPKNTest extends APISpec {
         blob.getProperties().getEncryptionScope() == scope2
     }
 
+    @Requires( {playbackMode()}) /* TODO: (gapra) Reenable when list blobs by hier works again. Seems to be a service issue. */
     def "Container list blobs hierarchical"() {
         setup:
         BlobContainerClient cpkncesContainer = builder

@@ -1039,6 +1039,7 @@ class ContainerAPITest extends APISpec {
         notThrown(Exception)
     }
 
+    @Requires( {playbackMode()}) /* TODO: (gapra) Reenable when list blobs by hier works again. Seems to be a service issue. */
     def "List blobs hier with timeout still backed by PagedFlux"() {
         setup:
         def NUM_BLOBS = 5
@@ -1102,6 +1103,7 @@ class ContainerAPITest extends APISpec {
             .getStatus() == ObjectReplicationStatus.COMPLETE
     }
 
+    @Requires( {playbackMode()}) /* TODO: (gapra) Reenable when list blobs by hier works again. Seems to be a service issue. */
     def "List blobs hierarchy"() {
         setup:
         def name = generateBlobName()
@@ -1290,6 +1292,7 @@ class ContainerAPITest extends APISpec {
         false     | 0          | IllegalArgumentException
     }
 
+    @Requires( {playbackMode()}) /* TODO: (gapra) Reenable when list blobs by hier works again. Seems to be a service issue. */
     def "List blobs hier delim"() {
         setup:
         def blobNames = ["a", "b/a", "c", "d/a", "e", "f", "g/a"]
@@ -1319,6 +1322,7 @@ class ContainerAPITest extends APISpec {
         expectedPrefixes == foundPrefixes
     }
 
+    @Requires( {playbackMode()}) /* TODO: (gapra) Reenable when list blobs by hier works again. Seems to be a service issue. */
     def "List blobs hier marker"() {
         setup:
         def NUM_BLOBS = 10
@@ -1390,6 +1394,7 @@ class ContainerAPITest extends APISpec {
     }
 
     @Unroll
+    @Requires( {playbackMode()}) /* TODO: (gapra) Reenable when list blobs by hier works again. Seems to be a service issue. */
     def "List blobs hier rehydrate priority"() {
         setup:
         def name = generateBlobName()
