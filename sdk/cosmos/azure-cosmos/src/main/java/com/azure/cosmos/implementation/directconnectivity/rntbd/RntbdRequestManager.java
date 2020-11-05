@@ -791,7 +791,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                             cause = new PartitionKeyRangeGoneException(error, lsn, partitionKeyRangeId, responseHeaders);
                             break;
                         default:
-                            cause = new GoneException(error, lsn, partitionKeyRangeId, responseHeaders);
+                            GoneException goneExceptionFromService =
+                                new GoneException(error, lsn, partitionKeyRangeId, responseHeaders);
+                            goneExceptionFromService.setIsBasedOn410ResponseFromService();
+                            cause = goneExceptionFromService;
                             break;
                     }
                     break;
