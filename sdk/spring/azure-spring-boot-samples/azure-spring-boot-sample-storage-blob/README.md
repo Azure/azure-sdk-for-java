@@ -9,7 +9,7 @@ This sample project demonstrates how to use Azure Blob storage with Spring Boot.
 
 * A [Java Development Kit (JDK)][jdk_link], version 1.8.
 
-* [Apache Maven](http://maven.apache.org/), version 3.0 or later.
+* [Apache Maven](https://maven.apache.org/), version 3.0 or later.
 
 ## Getting started
 
@@ -25,6 +25,8 @@ This sample project demonstrates how to use Azure Blob storage with Spring Boot.
 2. Fill in the `account-name`, `account-key`, and the `container-name` you want to use. 
 
 ### Run with Maven
+First, we need to ensure that this [instruction] is completed before run.
+
 ```
 # Under sdk/spring project root directory
 mvn clean install -DskipTests
@@ -47,7 +49,7 @@ Storage Type | Reference Link
 
 <!-- LINKS -->
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-
+[instruction]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source
 
 
 

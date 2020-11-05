@@ -68,7 +68,7 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
     public void listMetricDimensionValues(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
         StepVerifier.create(client.listMetricDimensionValues(METRIC_ID, DIMENSION_NAME))
-            .assertNext(dimensionValue -> assertEquals(dimensionValue, "Algerian Fir"))
+            .assertNext(dimensionValue -> assertEquals(dimensionValue, "Automotive & Powersports"))
             .expectNextCount(EXPECTED_DIMENSION_VALUES_COUNT - 1)
             .verifyComplete();
     }
@@ -119,15 +119,15 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
         StepVerifier.create(client.listMetricSeriesDefinitions(METRIC_ID,
             new ListMetricSeriesDefinitionOptions(TIME_SERIES_START_TIME)
                 .setDimensionCombinationToFilter(new HashMap<String, List<String>>() {{
-                        put("Dim2", Collections.singletonList("Angelfish"));
+                        put("city", Collections.singletonList("Miami"));
                     }})))
             .thenConsumeWhile(actualMetricSeriesDefinitions::add)
             .verifyComplete();
 
         actualMetricSeriesDefinitions.forEach(metricSeriesDefinition -> {
-            final String dimensionFilterValue = metricSeriesDefinition.getSeriesKey().asMap().get("Dim2");
+            final String dimensionFilterValue = metricSeriesDefinition.getSeriesKey().asMap().get("city");
             assertNotNull(dimensionFilterValue);
-            assertEquals("Angelfish", dimensionFilterValue);
+            assertEquals("Miami", dimensionFilterValue);
         });
     }
 

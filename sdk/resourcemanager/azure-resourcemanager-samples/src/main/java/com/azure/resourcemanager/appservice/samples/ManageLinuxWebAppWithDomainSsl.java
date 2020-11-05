@@ -58,7 +58,7 @@ public final class ManageLinuxWebAppWithDomainSsl {
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rgName)
                     .withNewLinuxPlan(PricingTier.STANDARD_S1)
-                    .withBuiltInImage(RuntimeStack.NODEJS_6_9)
+                    .withBuiltInImage(RuntimeStack.NODEJS_10_LTS)
                     .create();
 
             System.out.println("Created web app " + app1.name());
@@ -72,7 +72,7 @@ public final class ManageLinuxWebAppWithDomainSsl {
             WebApp app2 = azureResourceManager.webApps().define(app2Name)
                     .withExistingLinuxPlan(plan)
                     .withExistingResourceGroup(rgName)
-                    .withBuiltInImage(RuntimeStack.NODEJS_6_9)
+                    .withBuiltInImage(RuntimeStack.NODEJS_10_LTS)
                     .create();
 
             System.out.println("Created web app " + app2.name());
@@ -127,7 +127,7 @@ public final class ManageLinuxWebAppWithDomainSsl {
 
             System.out.println("Creating a self-signed certificate " + pfxPath + "...");
 
-            Utils.createCertificate(cerPath, pfxPath, domainName, certPassword, "*." + domainName);
+            Utils.createCertificate(cerPath, pfxPath, domainName, certPassword, "*." + domainName, null);
 
             System.out.println("Created self-signed certificate " + pfxPath);
 

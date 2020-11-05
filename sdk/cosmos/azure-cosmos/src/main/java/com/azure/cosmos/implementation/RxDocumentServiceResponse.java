@@ -182,7 +182,7 @@ public class RxDocumentServiceResponse {
         return null;
     }
 
-    CosmosDiagnostics getCosmosDiagnostics() {
+    public CosmosDiagnostics getCosmosDiagnostics() {
         if (this.storeResponse == null) {
             return null;
         }

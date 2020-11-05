@@ -140,6 +140,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
      *
      * @return A Flux of identifiers for the partitions of an Event Hub.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<String> getPartitionIds() {
         return getEventHubProperties().flatMapMany(properties -> Flux.fromIterable(properties.getPartitionIds()));
     }
@@ -177,6 +178,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
      * @throws NullPointerException if {@code partitionId}, or {@code startingPosition} is null.
      * @throws IllegalArgumentException if {@code partitionId} is an empty string.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<PartitionEvent> receiveFromPartition(String partitionId, EventPosition startingPosition) {
         return receiveFromPartition(partitionId, startingPosition, defaultReceiveOptions);
     }
@@ -205,6 +207,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
      *     null.
      * @throws IllegalArgumentException if {@code partitionId} is an empty string.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<PartitionEvent> receiveFromPartition(String partitionId, EventPosition startingPosition,
         ReceiveOptions receiveOptions) {
         if (Objects.isNull(partitionId)) {
@@ -235,6 +238,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
      *
      * @return A stream of events for every partition in the Event Hub starting from the beginning of each partition.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<PartitionEvent> receive() {
         return receive(true, defaultReceiveOptions);
     }
@@ -256,6 +260,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
      *
      * @return A stream of events for every partition in the Event Hub.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<PartitionEvent> receive(boolean startReadingAtEarliestEvent) {
         return receive(startReadingAtEarliestEvent, defaultReceiveOptions);
     }
@@ -289,6 +294,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
      *
      * @throws NullPointerException if {@code receiveOptions} is null.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<PartitionEvent> receive(boolean startReadingAtEarliestEvent, ReceiveOptions receiveOptions) {
         if (Objects.isNull(receiveOptions)) {
             return fluxError(logger, new NullPointerException("'receiveOptions' cannot be null."));
@@ -366,5 +372,9 @@ public class EventHubConsumerAsyncClient implements Closeable {
         return new EventHubPartitionAsyncConsumer(linkMessageProcessor, messageSerializer, getFullyQualifiedNamespace(),
             getEventHubName(), consumerGroup, partitionId, initialPosition,
             receiveOptions.getTrackLastEnqueuedEventProperties(), scheduler);
+    }
+
+    boolean isConnectionClosed() {
+        return this.connectionProcessor.isChannelClosed();
     }
 }

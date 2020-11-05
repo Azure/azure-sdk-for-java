@@ -13,6 +13,10 @@ import org.junit.jupiter.api.Assertions;
 
 import java.time.OffsetDateTime;
 
+import static com.azure.ai.metricsadvisor.AnomalyAlertTestBase.DETECTION_CONFIGURATION_ID;
+import static com.azure.ai.metricsadvisor.MetricsSeriesTestBase.TIME_SERIES_END_TIME;
+import static com.azure.ai.metricsadvisor.MetricsSeriesTestBase.TIME_SERIES_START_TIME;
+
 public abstract class AnomalyForDetectionConfigTestBase extends MetricsAdvisorClientTestBase {
     public abstract void listAnomaliesForDetectionConfig(HttpClient httpClient,
                                                          MetricsAdvisorServiceVersion serviceVersion);
@@ -20,9 +24,9 @@ public abstract class AnomalyForDetectionConfigTestBase extends MetricsAdvisorCl
     // Pre-configured test resource.
     protected static class ListAnomaliesForDetectionConfigInput {
         static final ListAnomaliesForDetectionConfigInput INSTANCE = new ListAnomaliesForDetectionConfigInput();
-        final String detectionConfigurationId = "c0f2539f-b804-4ab9-a70f-0da0c89c76d8";
-        final OffsetDateTime startTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
-        final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T12:00:00Z");
+        final String detectionConfigurationId = DETECTION_CONFIGURATION_ID;
+        final OffsetDateTime startTime = TIME_SERIES_START_TIME;
+        final OffsetDateTime endTime = TIME_SERIES_END_TIME;
         final ListAnomaliesDetectedFilter filter = new ListAnomaliesDetectedFilter()
             .setSeverity(Severity.LOW, Severity.MEDIUM);
         final ListAnomaliesDetectedOptions options = new ListAnomaliesDetectedOptions(startTime, endTime)

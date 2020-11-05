@@ -10,9 +10,9 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.microsoft.azure</groupId>
-  <artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
-  <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-appconfiguration-config;current} -->
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-cloud-appconfiguration-config</artifactId>
+  <version>1.2.8-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-appconfiguration-config;current} -->
   <name>Spring Cloud Azure App Configuration Config</name>
   <description>Integration of Spring Cloud Config and Azure App Configuration Service</description>
 
@@ -20,23 +20,23 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-autoconfigure-processor</artifactId>
-      <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-autoconfigure-processor;external_dependency} -->
+      <version>2.3.4.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-autoconfigure-processor;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-autoconfigure</artifactId>
-      <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
+      <version>2.3.4.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-configuration-processor</artifactId>
-      <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+      <version>2.3.4.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-context</artifactId>
-      <version>2.2.4.RELEASE</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-context;external_dependency} -->
+      <version>2.2.5.RELEASE</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-context;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
@@ -51,13 +51,13 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>5.2.8.RELEASE</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
+      <version>5.2.9.RELEASE</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
     </dependency>
     <!--Azure Java SDK-->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.9.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.10.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -72,12 +72,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
-      <version>4.2.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+      <version>4.2.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.6.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.6.3</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>org.hibernate.validator</groupId>
@@ -97,12 +97,12 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-actuator-autoconfigure</artifactId>
-      <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
+      <version>2.3.4.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13</version> <!-- {x-version-update;junit:junit;external_dependency} -->
+      <version>4.13.1</version> <!-- {x-version-update;junit:junit;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -114,7 +114,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>2.3.4.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -161,12 +161,12 @@
                 <include>org.apache.commons:commons-lang3:[3.10]</include> <!-- {x-include-update;org.apache.commons:commons-lang3;external_dependency} -->
                 <include>org.apache.httpcomponents:httpclient:[4.5.12]</include> <!-- {x-include-update;org.apache.httpcomponents:httpclient;external_dependency} -->
                 <include>org.hibernate.validator:hibernate-validator:[6.1.5.Final]</include> <!-- {x-include-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-autoconfigure-processor:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure-processor;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-autoconfigure:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-configuration-processor:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
-                <include>org.springframework.cloud:spring-cloud-context:[2.2.4.RELEASE]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-context;external_dependency} -->
-                <include>org.springframework:spring-web:[5.2.8.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-autoconfigure-processor:[2.3.4.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure-processor;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-autoconfigure:[2.3.4.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[2.3.4.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-configuration-processor:[2.3.4.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+                <include>org.springframework.cloud:spring-cloud-context:[2.2.5.RELEASE]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-context;external_dependency} -->
+                <include>org.springframework:spring-web:[5.2.9.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

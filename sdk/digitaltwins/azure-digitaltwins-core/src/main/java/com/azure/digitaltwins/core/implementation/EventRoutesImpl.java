@@ -26,10 +26,10 @@ import com.azure.core.util.Context;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
 import com.azure.digitaltwins.core.implementation.models.EventRoute;
 import com.azure.digitaltwins.core.implementation.models.EventRouteCollection;
-import com.azure.digitaltwins.core.models.EventRoutesAddOptions;
-import com.azure.digitaltwins.core.models.EventRoutesDeleteOptions;
-import com.azure.digitaltwins.core.models.EventRoutesGetByIdOptions;
-import com.azure.digitaltwins.core.models.EventRoutesListOptions;
+import com.azure.digitaltwins.core.implementation.models.EventRoutesAddOptions;
+import com.azure.digitaltwins.core.implementation.models.EventRoutesDeleteOptions;
+import com.azure.digitaltwins.core.implementation.models.EventRoutesGetByIdOptions;
+import com.azure.digitaltwins.core.implementation.models.EventRoutesListOptions;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in EventRoutes. */

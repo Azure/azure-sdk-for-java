@@ -43,9 +43,12 @@ public final class CommunicationClientCredential {
 
     // Previously DateTimeFormatter.RFC_1123_DATE_TIME was being used. There
     // was an issue with the day of month part. RFC_1123_DATE_TIME does not
-    // append a leading '0' on days that are less than 10. 
+    // append a leading '0' on days that are less than 10. It is important
+    // that the locale remain US. In other locals the values that are generated
+    // for the day and month strings may be different. (e.g. Canada day strings 
+    // have a '.' at the end)
     static final DateTimeFormatter HMAC_DATETIMEFORMATTER_PATTERN = 
-        DateTimeFormatter.ofPattern("E, dd MMM YYYY HH:mm:ss 'GMT'");
+        DateTimeFormatter.ofPattern("E, dd MMM YYYY HH:mm:ss 'GMT'", Locale.US);
 
     private final ClientLogger logger = new ClientLogger(CommunicationClientCredential.class);
     private final Mac sha256HMAC;

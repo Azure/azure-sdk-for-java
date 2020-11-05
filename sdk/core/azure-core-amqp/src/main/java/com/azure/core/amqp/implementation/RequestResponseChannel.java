@@ -56,7 +56,7 @@ public class RequestResponseChannel implements Disposable {
         ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED);
     private final FluxSink<AmqpEndpointState> endpointStatesSink =
         endpointStates.sink(FluxSink.OverflowStrategy.BUFFER);
-    private final ClientLogger logger;
+    private final ClientLogger logger = new ClientLogger(RequestResponseChannel.class);
 
     private final Sender sendLink;
     private final Receiver receiveLink;
@@ -71,6 +71,7 @@ public class RequestResponseChannel implements Disposable {
     private final Disposable.Composite subscriptions;
     private final AmqpRetryPolicy retryPolicy;
     private final SenderSettleMode senderSettleMode;
+    private final String linkName;
 
     /**
      * Creates a new instance of {@link RequestResponseChannel} to send and receive responses from the {@code
@@ -91,7 +92,7 @@ public class RequestResponseChannel implements Disposable {
         String entityPath, Session session, AmqpRetryOptions retryOptions, ReactorHandlerProvider handlerProvider,
         ReactorProvider provider, MessageSerializer messageSerializer,
         SenderSettleMode senderSettleMode, ReceiverSettleMode receiverSettleMode) {
-        this.logger = new ClientLogger(String.format("%s<%s>", RequestResponseChannel.class, linkName));
+        this.linkName = linkName;
         this.provider = provider;
         this.operationTimeout = retryOptions.getTryTimeout();
         this.retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
@@ -131,7 +132,7 @@ public class RequestResponseChannel implements Disposable {
             receiveLinkHandler.getDeliveredMessages()
                 .map(this::decodeDelivery)
                 .subscribe(message -> {
-                    logger.verbose("Settling message: {}", message.getCorrelationId());
+                    logger.verbose("{} - Settling message: {}", this.linkName, message.getCorrelationId());
                     settleMessage(message);
                 }),
 
@@ -229,7 +230,7 @@ public class RequestResponseChannel implements Disposable {
             .then(
                 Mono.create(sink -> {
                     try {
-                        logger.verbose("Scheduling on dispatcher. Message Id {}", messageId);
+                        logger.verbose("{} - Scheduling on dispatcher. Message Id {}", linkName, messageId);
                         unconfirmedSends.putIfAbsent(messageId, sink);
 
                         // If we try to do proton-j API calls such as sending on AMQP links, it may encounter a race
@@ -239,7 +240,7 @@ public class RequestResponseChannel implements Disposable {
                                 .replace("-", "").getBytes(UTF_8));
 
                             if (deliveryState != null) {
-                                logger.verbose("Setting delivery state as [{}].", deliveryState);
+                                logger.verbose("{} - Setting delivery state as [{}].", linkName, deliveryState);
                                 delivery.setMessageFormat(DeliveryImpl.DEFAULT_MESSAGE_FORMAT);
                                 delivery.disposition(deliveryState);
                             }
@@ -291,7 +292,7 @@ public class RequestResponseChannel implements Disposable {
 
         if (sink == null) {
             int size = unconfirmedSends.size();
-            logger.warning("Received delivery without pending messageId[{}]. Size[{}]", id, size);
+            logger.warning("{} - Received delivery without pending messageId[{}]. Size[{}]", linkName, id, size);
             return;
         }
 
@@ -304,7 +305,8 @@ public class RequestResponseChannel implements Disposable {
         }
 
         endpointStatesSink.error(error);
-        logger.error("Exception in RequestResponse links. Disposing and clearing unconfirmed sends.", error);
+        logger.error("{} - Exception in RequestResponse links. Disposing and clearing unconfirmed sends.", linkName,
+            error);
         dispose();
 
         unconfirmedSends.forEach((key, value) -> value.error(error));

@@ -3,14 +3,13 @@
 
 package com.azure.ai.formrecognizer.training.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.ai.formrecognizer.implementation.CustomFormModelInfoHelper;
 
 import java.time.OffsetDateTime;
 
 /**
  * The CustomFormModelInfo model.
  */
-@Immutable
 public final class CustomFormModelInfo {
 
     /*
@@ -33,6 +32,24 @@ public final class CustomFormModelInfo {
      */
     private final OffsetDateTime trainingCompletedOn;
 
+    private String modelName;
+
+    private CustomFormModelProperties customFormModelProperties;
+
+    static {
+        CustomFormModelInfoHelper.setAccessor(new CustomFormModelInfoHelper.CustomFormModelInfoAccessor() {
+            @Override
+            public void setModelName(CustomFormModelInfo formModelInfo, String modelName) {
+                formModelInfo.setModelName(modelName);
+            }
+
+            @Override
+            public void setCustomFormModelProperties(CustomFormModelInfo formModelInfo,
+                                                     CustomFormModelProperties customFormModelProperties) {
+                formModelInfo.setCustomFormModelProperties(customFormModelProperties);
+            }
+        });
+    }
     /**
      * Constructs a {@link CustomFormModelInfo} object.
      *
@@ -85,4 +102,41 @@ public final class CustomFormModelInfo {
         return this.trainingCompletedOn;
     }
 
+    /**
+     * Get model metadata properties.
+     *
+     * @return the custom model metadata properties.
+     */
+    public CustomFormModelProperties getCustomModelProperties() {
+        return customFormModelProperties;
+    }
+
+    /**
+     * Get the user defined model display name.
+     *
+     * @return the modelName value.
+     */
+    public String getModelName() {
+        return modelName;
+    }
+
+    /**
+     * The private setter to set the modelName property
+     * via {@link CustomFormModelInfoHelper.CustomFormModelInfoAccessor}.
+     *
+     * @param modelName The user defined model display name.
+     */
+    private void setModelName(String modelName) {
+        this.modelName = modelName;
+    }
+
+    /**
+     * The private setter to set the customFormModelProperties property
+     * via {@link CustomFormModelInfoHelper.CustomFormModelInfoAccessor}.
+     *
+     * @param customFormModelProperties The model metadata properties.
+     */
+    private void setCustomFormModelProperties(CustomFormModelProperties customFormModelProperties) {
+        this.customFormModelProperties = customFormModelProperties;
+    }
 }

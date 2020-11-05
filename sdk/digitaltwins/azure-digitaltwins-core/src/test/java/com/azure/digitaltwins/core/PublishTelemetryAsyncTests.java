@@ -62,29 +62,26 @@ public class PublishTelemetryAsyncTests extends PublishTelemetryTestBase {
                     .as("Publish telemetry succeeds")
                     .isEqualTo(HttpURLConnection.HTTP_NO_CONTENT))
                 .verifyComplete();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             fail("Failure in executing a step in the test case", ex);
-        }
-        finally {
+        } finally {
             try {
-                if (roomWithWifiTwinId != null){
+                if (roomWithWifiTwinId != null) {
                     client.deleteDigitalTwin(roomWithWifiTwinId).block();
                 }
-                if (roomWithWifiModelId != null){
+                if (roomWithWifiModelId != null) {
                     client.deleteModel(roomWithWifiModelId).block();
                 }
-                if(wifiModelId != null){
+                if (wifiModelId != null) {
                     client.deleteModel(wifiModelId).block();
                 }
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 fail("Test cleanup failed", ex);
             }
         }
     }
 
-    private void createModelsAndTwins(DigitalTwinsAsyncClient asyncClient, String wifiModelId, String roomWithWifiModelId, String roomWithWifiTwinId){
+    private void createModelsAndTwins(DigitalTwinsAsyncClient asyncClient, String wifiModelId, String roomWithWifiModelId, String roomWithWifiTwinId) {
         String wifiModelPayload = TestAssetsHelper.getWifiModelPayload(wifiModelId);
         String roomWithWifiModelPayload = TestAssetsHelper.getRoomWithWifiModelPayload(roomWithWifiModelId, wifiModelId, TestAssetDefaults.WIFI_COMPONENT_NAME);
 
@@ -96,7 +93,7 @@ public class PublishTelemetryAsyncTests extends PublishTelemetryTestBase {
         String roomWithWifiTwinPayload = TestAssetsHelper.getRoomWithWifiTwinPayload(roomWithWifiModelId, TestAssetDefaults.WIFI_COMPONENT_NAME);
 
         StepVerifier
-            .create(asyncClient.createDigitalTwin(roomWithWifiTwinId, roomWithWifiTwinPayload, String.class))
+            .create(asyncClient.createOrReplaceDigitalTwin(roomWithWifiTwinId, roomWithWifiTwinPayload, String.class))
             .assertNext(createResponse -> logger.info("Created {} digitalTwin successfully", createResponse))
             .verifyComplete();
     }

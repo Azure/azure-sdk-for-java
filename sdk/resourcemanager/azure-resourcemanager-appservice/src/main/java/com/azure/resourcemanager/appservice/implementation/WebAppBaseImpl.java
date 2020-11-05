@@ -102,6 +102,14 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
 
     private final ClientLogger logger = new ClientLogger(getClass());
 
+    protected static final String SETTING_DOCKER_IMAGE = "DOCKER_CUSTOM_IMAGE_NAME";
+    protected static final String SETTING_REGISTRY_SERVER = "DOCKER_REGISTRY_SERVER_URL";
+    protected static final String SETTING_REGISTRY_USERNAME = "DOCKER_REGISTRY_SERVER_USERNAME";
+    protected static final String SETTING_REGISTRY_PASSWORD = "DOCKER_REGISTRY_SERVER_PASSWORD";
+
+    protected static final String SETTING_FUNCTIONS_WORKER_RUNTIME = "FUNCTIONS_WORKER_RUNTIME";
+    protected static final String SETTING_FUNCTIONS_EXTENSION_VERSION = "FUNCTIONS_EXTENSION_VERSION";
+
     private static final Map<AzureEnvironment, String> DNS_MAP =
         new HashMap<AzureEnvironment, String>() {
             {
@@ -454,6 +462,14 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
             return null;
         }
         return siteConfig.linuxFxVersion();
+    }
+
+    @Override
+    public String windowsFxVersion() {
+        if (siteConfig == null) {
+            return null;
+        }
+        return siteConfig.windowsFxVersion();
     }
 
     @Override
@@ -1700,6 +1716,14 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         public void close() throws IOException {
             callback.run();
             super.close();
+        }
+    }
+
+    protected void setAppFrameworkVersion(String fxVersion) {
+        if (operatingSystem() == OperatingSystem.LINUX) {
+            siteConfig.withLinuxFxVersion(fxVersion);
+        } else {
+            siteConfig.withWindowsFxVersion(fxVersion);
         }
     }
 }

@@ -20,7 +20,6 @@ import com.azure.resourcemanager.sql.fluent.models.ServerInner;
 import com.azure.resourcemanager.sql.fluent.models.ServerUsageInner;
 import com.azure.resourcemanager.sql.fluent.models.ServiceObjectiveInner;
 import com.azure.resourcemanager.sql.models.AdministratorName;
-import com.azure.resourcemanager.sql.models.ElasticPoolEdition;
 import com.azure.resourcemanager.sql.models.IdentityType;
 import com.azure.resourcemanager.sql.models.RecommendedElasticPool;
 import com.azure.resourcemanager.sql.models.ResourceIdentity;
@@ -449,30 +448,6 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     }
 
     @Override
-    public SqlServerImpl withNewFirewallRule(String ipAddress) {
-        return this.withNewFirewallRule(ipAddress, ipAddress);
-    }
-
-    @Override
-    public SqlServerImpl withNewFirewallRule(String startIPAddress, String endIPAddress) {
-        return this
-            .withNewFirewallRule(
-                startIPAddress,
-                endIPAddress,
-                this.manager().resourceManager().internalContext().randomResourceName("firewall_", 15));
-    }
-
-    @Override
-    public SqlServerImpl withNewFirewallRule(String startIPAddress, String endIPAddress, String firewallRuleName) {
-        return this
-            .sqlFirewallRules
-            .defineInlineFirewallRule(firewallRuleName)
-            .withStartIpAddress(startIPAddress)
-            .withEndIpAddress(endIPAddress)
-            .attach();
-    }
-
-    @Override
     public SqlServerImpl withoutFirewallRule(String firewallRuleName) {
         sqlFirewallRules.removeInlineFirewallRule(firewallRuleName);
         return this;
@@ -548,34 +523,14 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     }
 
     @Override
-    public SqlServerImpl withNewElasticPool(String elasticPoolName, ElasticPoolEdition elasticPoolEdition) {
-        return this.sqlElasticPools.defineInlineElasticPool(elasticPoolName).withEdition(elasticPoolEdition).attach();
-    }
-
-    @Override
     public SqlServerImpl withoutElasticPool(String elasticPoolName) {
         sqlElasticPools.removeInlineElasticPool(elasticPoolName);
         return this;
     }
 
     @Override
-    public SqlServerImpl withNewElasticPool(
-        String elasticPoolName, ElasticPoolEdition elasticPoolEdition, String... databaseNames) {
-        this.withNewElasticPool(elasticPoolName, elasticPoolEdition);
-        for (String dbName : databaseNames) {
-            this.defineDatabase(dbName).withExistingElasticPool(elasticPoolName);
-        }
-        return this;
-    }
-
-    @Override
     public SqlDatabaseImpl defineDatabase(String name) {
         return this.sqlDatabases.defineInlineDatabase(name);
-    }
-
-    @Override
-    public SqlServerImpl withNewDatabase(String databaseName) {
-        return this.sqlDatabases.defineInlineDatabase(databaseName).attach();
     }
 
     @Override

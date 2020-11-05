@@ -103,18 +103,18 @@ Both sync and async clients have maximal overloads for getting the Http response
 For example you can get a model by calling:
 
 ```java
-ModelData model = syncClient.getModel(modelId);
+DigitalTwinsModelData model = syncClient.getModel(modelId);
 ```
 
 This will only return the Model payload. The API's response will not contain any REST information.
 To get information about the REST call you can call the maximal overload and have access to both the response body (ModelData) and the HTTP REST information.
 
 ```java
-Response<ModelData> modelResponse = syncClient.getModelWithResponse(modelId, context);
+Response<DigitalTwinsModelData> modelResponse = syncClient.getModelWithResponse(modelId, context);
 
 System.out.println(modelResponse.getStatuscode());
 
-ModelData modelObject = modelResponse.getValue();
+DigitalTwinsModelData modelObject = modelResponse.getValue();
 ```
 
 ## Create, list, decommission, and delete models
@@ -128,16 +128,16 @@ Example of using sync client to create models.
 
 ```java
 List<String> modelsList = new ArrayList<>(Arrays.asList(newComponentModelPayload, newModelPayload));
-List<ModelData> modelList =  syncClient.createModels(modelsList);
+List<DigitalTwinsModelData> modelList =  syncClient.createModels(modelsList);
 
-for (ModelData model : modelList) {
+for (DigitalTwinsModelData model : modelList) {
     ConsoleLogger.print("Created model: " + model.getId());
 }
 ```
 
 ### List models
 
-Using the sync client, `listModels`, all created models are returned as [`PagedIterable<ModelData>`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/rest/PagedIterable.java) while the async API will return a [`PagedFlux<ModelData>`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/rest/PagedFlux.java).
+Using the sync client, `listModels`, all created models are returned as [`PagedIterable<DigitalTwinsModelData>`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/rest/PagedIterable.java) while the async API will return a [`PagedFlux<ModelData>`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/rest/PagedFlux.java).
 
 Example of using the async client to list all models:
 
@@ -163,7 +163,7 @@ asynClient.listModels()
 Use `getModel` with model's unique identifier to get a specific model.
 
 ```java
-asyncClient.createDigitalTwin(twinId, twinContent)
+asyncClient.createOrReplaceDigitalTwin(twinId, twinContent)
     .subscribe(
         twin -> System.out.println("Created digital twin: " + twinId + "\n\t Body: " + twin),
         throwable -> System.out.println("Could not create digital twin " + twinId + " due to " + throwable)
@@ -203,16 +203,16 @@ BasicDigitalTwin basicTwin = new BasicDigitalTwin()
         new DigitalTwinMetadata()
             .setModelId(modelId)
     )
-    .addCustomProperty("Prop1", "Value1")
-    .addCustomProperty("Prop2", 987)
-    .addCustomProperty(
+    .addToContents("Prop1", "Value1")
+    .addToContents("Prop2", 987)
+    .addToContents(
         "Component1",
-        new ModelProperties()
-            .setCustomProperties("ComponentProp1", "Component value 1")
-            .setCustomProperties("ComponentProp2", 123)
+        new BasicDigitalTwinComponent()
+            .addroperty("ComponentProp1", "Component value 1")
+            .addroperty("ComponentProp2", 123)
     );
 
-BasicDigitalTwin basicTwinResponse = syncClient.createDigitalTwin(basicDtId, basicTwin, BasicDigitalTwin.class);
+BasicDigitalTwin basicTwinResponse = syncClient.createOrReplaceDigitalTwin(basicDtId, basicTwin, BasicDigitalTwin.class);
 ```
 
 Alternatively, you can create your own custom data types to serialize and deserialize your digital twins.
@@ -222,7 +222,7 @@ You can also retrieve the application/json string payload from disk and pass it 
 
 ```java
 String payload = <Load the file content into memory>;
-String digitalTwinCreateResponse = syncClient.createDigitalTwin(twinId, payload, String.class);
+String digitalTwinCreateResponse = syncClient.createOrReplaceDigitalTwin(twinId, payload, String.class);
 ```
 
 ### Get and deserialize a digital twin
@@ -253,13 +253,12 @@ Query the Azure Digital Twins instance for digital twins using the [Azure Digita
 PagedIterable<String> pageableResponse = syncClient.query("SELECT * FROM digitaltwins", String.class);
 
 // Iterate over the twin instances in the pageable response.
-foreach (String response in pageableResponse)
-{
+foreach (String response in pageableResponse) {
     System.out.println(response);
 }
 
 // Or you can use the generic API to get a specific type back.
-PagedIterable<BasicDigitalTwin> deserializedResponse = syncClient.query("SELECT * FROM digitaltwins", BasicDigitalTwin.class)
+PagedIterable<BasicDigitalTwin> deserializedResponse = syncClient.query("SELECT * FROM digitaltwins", BasicDigitalTwin.class);
 
 for(BasicDigitalTwin digitalTwin : deserializedResponse){
     System.out.println("Retrieved digital twin with Id: " + digitalTwin.getId());
@@ -283,11 +282,11 @@ To update a component or in other words to replace, remove and/or add a componen
 ```C# Snippet:DigitalTwinsSampleUpdateComponent
 // Update Component1 by replacing the property ComponentProp1 value,
 // using the UpdateOperationUtility to build the payload.
-UpdateOperationUtility updateOperationUtility = new UpdateOperationUtility();
+UpdateOperationUtility jsonPatchDocument = new UpdateOperationUtility();
 
-updateOperationUtility.appendReplaceOperation("/ComponentProp1", "Some new Value");
+jsonPatchDocument.appendReplaceOperation("/ComponentProp1", "Some new Value");
 
-client.updateComponent(basicDigitalTwinId, "Component1", updateOperationUtility.getUpdateOperations());
+client.updateComponent(basicDigitalTwinId, "Component1", jsonPatchDocument.getUpdateOperations());
 ```
 
 ### Get digital twin components
@@ -312,10 +311,10 @@ BasicRelationship buildingFloorRelationshipPayload = new BasicRelationship()
     .setSourceId(buildingTwinId)
     .setTargetId(floorTwinId)
     .setName("contains")
-    .addCustomProperty("Prop1", "Prop1 value")
-    .addCustomProperty("Prop2", 6);
+    .addProperty("Prop1", "Prop1 value")
+    .addProperty("Prop2", 6);
 
-client.createRelationship(buildingTwinId, buildingFloorRelationshipId, buildingFloorRelationshipPayload, BasicRelationship.class);
+client.createOrReplaceRelationship(buildingTwinId, buildingFloorRelationshipId, buildingFloorRelationshipPayload, BasicRelationship.class);
 ```
 
 ### Get and deserialize a digital twin relationship
@@ -332,8 +331,8 @@ Response<BasicRelationship> getRelationshipResponse = client.getRelationshipWith
 if (getRelationshipResponse.getStatusCode() == HttpURLConnection.HTTP_OK) {
     BasicRelationship retrievedRelationship = getRelationshipResponse.getValue();
     ConsoleLogger.printSuccess("Retrieved relationship: " + retrievedRelationship.getId() + " from twin: " + retrievedRelationship.getSourceId() + "\n\t" +
-        "Prop1: " + retrievedRelationship.getCustomProperties().get("Prop1") + "\n\t" +
-        "Prop2: " + retrievedRelationship.getCustomProperties().get("Prop2"));
+        "Prop1: " + retrievedRelationship.getProperties().get("Prop1") + "\n\t" +
+        "Prop2: " + retrievedRelationship.getProperties().get("Prop2"));
 }
 ```
 
@@ -385,11 +384,11 @@ To create an event route, provide an Id of an event route such as "sampleEventRo
 
 ```java
 String filter = "$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'";
-EventRoute eventRoute = new EventRoute();
+DigitalTwinsEventRoute eventRoute = new EventRoute();
 eventRoute.setEndpointName(eventRouteEndpointName);
 eventRoute.setFilter(filter);
 
-client.createEventRoute(eventRouteId, eventRoute);
+client.createOrReplaceEventRoute(eventRouteId, eventRoute);
 ```
 
 For more information on the event route filter language, see the "how to manage routes" [filter events documentation](https://docs.microsoft.com/azure/digital-twins/how-to-manage-routes-apis-cli#filter-events).
@@ -399,9 +398,9 @@ For more information on the event route filter language, see the "how to manage 
 List a specific event route given event route Id or all event routes setting options with `GetEventRouteAsync` and `GetEventRoutesAsync`.
 
 ```java
-PagedIterable<EventRoute> eventRoutes = client.listEventRoutes();
+PagedIterable<DigitalTwinsEventRoute> eventRoutes = client.listEventRoutes();
 
-for (EventRoute eventRoute : eventRoutes) {
+for (DigitalTwinsEventRoute eventRoute : eventRoutes) {
     existingEventRouteId = eventRoute.getId();
     System.out.println(String.format("\tEventRouteId: %s", eventRoute.getId()));
     System.out.println(String.format("\tEventRouteEndpointName: %s", eventRoute.getEndpointName()));
