@@ -23,7 +23,7 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.DeviceCodeInfo;
 import com.azure.identity.implementation.util.CertificateUtil;
-import com.azure.identity.implementation.util.IdentitySSLUtil;
+import com.azure.identity.implementation.util.IdentitySslUtil;
 import com.azure.identity.implementation.util.ScopeUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
@@ -785,7 +785,7 @@ public class IdentityClient {
                 URL url = new URL(String.format("%s?%s", endpoint, payload));
                 connection = (HttpsURLConnection) url.openConnection();
 
-                IdentitySSLUtil.addTrustedCertificateThumbprint(getClass().getSimpleName(), connection,
+                IdentitySslUtil.addTrustedCertificateThumbprint(connection,
                     thumbprint);
                 connection.setRequestMethod("GET");
                 if (headerValue != null) {

@@ -12,7 +12,7 @@ import com.azure.identity.implementation.IdentityClient;
 import reactor.core.publisher.Mono;
 
 /**
- * The Managed Service Identity credential for Azure App Service.
+ * The Managed Service Identity credential for Azure Service Fabric.
  */
 @Immutable
 class ServiceFabricMsiCredential extends ManagedIdentityServiceCredential {
@@ -20,7 +20,6 @@ class ServiceFabricMsiCredential extends ManagedIdentityServiceCredential {
     private final String identityHeader;
     private final String identityServerThumbprint;
     private final IdentityClient identityClient;
-    private final String clientId;
     private final ClientLogger logger = new ClientLogger(ServiceFabricMsiCredential.class);
 
     /**
@@ -37,7 +36,6 @@ class ServiceFabricMsiCredential extends ManagedIdentityServiceCredential {
         this.identityServerThumbprint = configuration
                                             .get(ManagedIdentityCredential.PROPERTY_IDENTITY_SERVER_THUMBPRINT);
         this.identityClient = identityClient;
-        this.clientId = clientId;
         if (identityEndpoint != null) {
             validateEndpointProtocol(this.identityEndpoint, "Identity", logger);
         }
