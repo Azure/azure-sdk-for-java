@@ -756,7 +756,7 @@ public class IdentityClient {
     public Mono<AccessToken> authenticateToArcManagedIdentityEndpoint(String identityEndpoint,
                                                                       TokenRequestContext request) {
         return Mono.fromCallable(() -> {
-            HttpURLConnection connection;
+            HttpURLConnection connection = null;
             StringBuilder payload = new StringBuilder();
             payload.append("resource=");
             payload.append(URLEncoder.encode(ScopeUtil.scopesToResource(request.getScopes()), "UTF-8"));
@@ -764,13 +764,16 @@ public class IdentityClient {
             payload.append(URLEncoder.encode("2019-11-01", "UTF-8"));
 
             URL url = new URL(String.format("%s?%s", identityEndpoint, payload));
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.setRequestProperty("Metadata", "true");
-            connection.connect();
 
+
+            String secretKey = null;
             try {
-                Scanner s = new Scanner(connection.getInputStream(), "UTF-8").useDelimiter("\\A");
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Metadata", "true");
+                connection.connect();
+
+                new Scanner(connection.getInputStream(), "UTF-8").useDelimiter("\\A");
             } catch (IOException e) {
                 int status = connection.getResponseCode();
                 if (status != 401) {
@@ -778,28 +781,40 @@ public class IdentityClient {
                          + " Unauthorized response from Azure Arc Managed Identity Endpoint, received: %d", status),
                         null, e));
                 }
-            }
 
-            try {
                 String realm = connection.getHeaderField("WWW-Authenticate");
 
                 if (realm == null) {
                     throw logger.logExceptionAsError(new ClientAuthenticationException("Did not receive a value"
-                       + " for WWW-Authenticate header in the response from Azure Arc Managed Identity Endpoint",
+                           + " for WWW-Authenticate header in the response from Azure Arc Managed Identity Endpoint",
                         null));
                 }
 
                 int separatorIndex = realm.indexOf("=");
                 if (separatorIndex == -1) {
                     throw logger.logExceptionAsError(new ClientAuthenticationException("Did not receive a correct value"
-                       + " for WWW-Authenticate header in the response from Azure Arc Managed Identity Endpoint",
+                           + " for WWW-Authenticate header in the response from Azure Arc Managed Identity Endpoint",
                         null));
                 }
 
                 String secretKeyPath = realm.substring(separatorIndex + 1);
-                String secretKey = new String(Files.readAllBytes(Paths.get(secretKeyPath)), StandardCharsets.UTF_8);
+                secretKey = new String(Files.readAllBytes(Paths.get(secretKeyPath)), StandardCharsets.UTF_8);
 
-                connection.disconnect();
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+            }
+
+
+            if (secretKey == null) {
+                throw logger.logExceptionAsError(new ClientAuthenticationException("Did not receive a secret value"
+                     + " in the response from Azure Arc Managed Identity Endpoint",
+                    null));
+            }
+
+
+            try {
 
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
@@ -807,8 +822,8 @@ public class IdentityClient {
                 connection.setRequestProperty("Metadata", "true");
                 connection.connect();
 
-                Scanner s = new Scanner(connection.getInputStream(), "UTF-8").useDelimiter("\\A");
-                String result = s.hasNext() ? s.next() : "";
+                Scanner scanner = new Scanner(connection.getInputStream(), "UTF-8").useDelimiter("\\A");
+                String result = scanner.hasNext() ? scanner.next() : "";
 
                 return SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
             } finally {

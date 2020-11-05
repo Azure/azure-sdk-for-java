@@ -22,6 +22,7 @@ import reactor.core.publisher.Mono;
 public final class ManagedIdentityCredential implements TokenCredential {
     private final ManagedIdentityServiceCredential managedIdentityServiceCredential;
     private final ClientLogger logger = new ClientLogger(ManagedIdentityCredential.class);
+    private final String clientId;
 
     static final String PROPERTY_IMDS_ENDPOINT = "IMDS_ENDPOINT";
 
@@ -31,6 +32,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
      * @param identityClientOptions the options for configuring the identity client.
      */
     ManagedIdentityCredential(String clientId, IdentityClientOptions identityClientOptions) {
+        this.clientId = clientId;
         IdentityClient identityClient = new IdentityClientBuilder()
             .clientId(clientId)
             .identityClientOptions(identityClientOptions)
@@ -58,7 +60,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
      * @return the client ID of user assigned or system assigned identity.
      */
     public String getClientId() {
-        return managedIdentityServiceCredential.getClientId();
+        return this.clientId;
     }
 
     @Override
