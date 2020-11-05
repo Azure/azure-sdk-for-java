@@ -94,13 +94,13 @@ class QueueDescriptionSerializer {
                 doc.createElementNS(ManagementClientConstants.SB_NS, "EnableBatchedOperations")
                         .appendChild(doc.createTextNode(Boolean.toString(queueDescription.enableBatchedOperations))).getParentNode());
 
-        if (queueDescription.authorizationRules != null) {
-            qdElement.appendChild(AuthorizationRuleSerializer.serializeRules(queueDescription.authorizationRules, doc));
-        }
-
         qdElement.appendChild(
                 doc.createElementNS(ManagementClientConstants.SB_NS, "IsAnonymousAccessible")
                         .appendChild(doc.createTextNode(Boolean.toString(queueDescription.isAnonymousAccessible))).getParentNode());
+        
+        if (queueDescription.authorizationRules != null) {
+            qdElement.appendChild(AuthorizationRuleSerializer.serializeRules(queueDescription.authorizationRules, doc));
+        }
         
         qdElement.appendChild(
                 doc.createElementNS(ManagementClientConstants.SB_NS, "Status")
@@ -256,11 +256,11 @@ class QueueDescriptionSerializer {
                                     case "EnableBatchedOperations":
                                         qd.enableBatchedOperations = Boolean.parseBoolean(element.getFirstChild().getNodeValue());
                                         break;
-                                    case "AuthorizationRules":
-                                        qd.authorizationRules = AuthorizationRuleSerializer.parseAuthRules(element);
-                                        break;
                                     case "IsAnonymousAccessible":
                                         qd.isAnonymousAccessible = Boolean.parseBoolean(element.getFirstChild().getNodeValue());
+                                        break;
+                                    case "AuthorizationRules":
+                                        qd.authorizationRules = AuthorizationRuleSerializer.parseAuthRules(element);
                                         break;
                                     case "Status":
                                         qd.status = EntityStatus.valueOf(element.getFirstChild().getNodeValue());
@@ -301,6 +301,8 @@ class QueueDescriptionSerializer {
                                     case "SizeInBytes":
                                     case "UpdatedAt":
                                     case "CountDetails":
+                                    case "EntityAvailabilityStatus":
+                                    case "SkippedUpdate":
                                         // Ignore known properties
                                         // Do nothing
                                         break;                                    

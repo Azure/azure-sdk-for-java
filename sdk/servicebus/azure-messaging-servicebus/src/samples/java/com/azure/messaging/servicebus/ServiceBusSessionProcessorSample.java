@@ -19,7 +19,7 @@ public class ServiceBusSessionProcessorSample {
      */
     public static void main(String[] args) throws InterruptedException {
         // Consumer that processes a single message received from Service Bus
-        Consumer<ServiceBusProcessorMessageContext> messageProcessor = context -> {
+        Consumer<ServiceBusReceivedMessageContext> messageProcessor = context -> {
             ServiceBusReceivedMessage message = context.getMessage();
             System.out.println("Received message " + message.getBody().toString()
                 + " session: " + message.getSessionId());
@@ -28,9 +28,9 @@ public class ServiceBusSessionProcessorSample {
         // Consumer that handles any errors that occur when receiving messages
         Consumer<Throwable> errorHandler = throwable -> {
             System.out.println("Error when receiving messages " + throwable.getMessage());
-            if (throwable instanceof ServiceBusAmqpException) {
-                ServiceBusAmqpException serviceBusAmqpException = (ServiceBusAmqpException) throwable;
-                System.out.println("Error source " + serviceBusAmqpException.getErrorSource());
+            if (throwable instanceof ServiceBusReceiverException) {
+                ServiceBusReceiverException serviceBusReceiverException = (ServiceBusReceiverException) throwable;
+                System.out.println("Error source " + serviceBusReceiverException.getErrorSource());
             }
         };
 
