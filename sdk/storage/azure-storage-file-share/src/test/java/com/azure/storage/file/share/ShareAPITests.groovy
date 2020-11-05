@@ -9,7 +9,7 @@ import com.azure.storage.common.implementation.Constants
 import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.ShareAccessPolicy
 import com.azure.storage.file.share.models.ShareAccessTier
-import com.azure.storage.file.share.models.ShareEnabledProtocol
+import com.azure.storage.file.share.models.ShareEnabledProtocols
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareRequestConditions
@@ -319,13 +319,7 @@ class ShareAPITests extends APISpec {
     @Unroll
     def "Get properties premium"() {
         given:
-        ShareEnabledProtocol enabledProtocol = new ShareEnabledProtocol()
-        if (Constants.HeaderConstants.SMB_PROTOCOL == protocol) {
-            enabledProtocol.setSmb(true)
-        }
-        if (Constants.HeaderConstants.NFS_PROTOCOL == protocol) {
-            enabledProtocol.setNfs(true)
-        }
+        ShareEnabledProtocols enabledProtocol = ShareEnabledProtocols.parse(protocol)
 
         def premiumShareClient = premiumFileServiceClient.createShareWithResponse(generateShareName(),
             new ShareCreateOptions().setMetadata(testMetadata).setEnabledProtocol(enabledProtocol)
@@ -344,7 +338,7 @@ class ShareAPITests extends APISpec {
         shareProperties.getProvisionedEgressMBps()
         shareProperties.getProvisionedIngressMBps()
         shareProperties.getProvisionedIops()
-        shareProperties.getEnabledProtocols() == protocol
+        shareProperties.getEnabledProtocols() == enabledProtocol
         shareProperties.getRootSquash() == rootSquash
 
         where:
@@ -359,7 +353,7 @@ class ShareAPITests extends APISpec {
     def "Set premium properties"() {
         setup:
         def premiumShareClient = premiumFileServiceClient.createShareWithResponse(generateShareName(),
-            new ShareCreateOptions().setEnabledProtocol(new ShareEnabledProtocol().setNfs(true)), null, null).getValue()
+            new ShareCreateOptions().setEnabledProtocol(new ShareEnabledProtocols().setNfs(true)), null, null).getValue()
 
         when:
         premiumShareClient.setProperties(new ShareSetPropertiesOptions().setRootSquash(rootSquash))

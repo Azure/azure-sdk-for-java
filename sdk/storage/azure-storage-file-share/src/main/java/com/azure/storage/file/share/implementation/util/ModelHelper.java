@@ -6,7 +6,7 @@ package com.azure.storage.file.share.implementation.util;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
-import com.azure.storage.file.share.models.ShareEnabledProtocol;
+import com.azure.storage.file.share.models.ShareEnabledProtocols;
 import com.azure.storage.file.share.models.ShareItem;
 import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
@@ -73,7 +73,7 @@ public class ModelHelper {
         properties.setLeaseStatus(sharePropertiesInternal.getLeaseStatus());
         properties.setLeaseState(sharePropertiesInternal.getLeaseState());
         properties.setLeaseDuration(sharePropertiesInternal.getLeaseDuration());
-        properties.setEnabledProtocols(ShareEnabledProtocol.parse(sharePropertiesInternal.getEnabledProtocols()));
+        properties.setEnabledProtocols(ShareEnabledProtocols.parse(sharePropertiesInternal.getEnabledProtocols()));
         properties.setRootSquash(sharePropertiesInternal.getRootSquash());
         properties.setMetadata(sharePropertiesInternal.getMetadata());
 

@@ -27,7 +27,7 @@ import com.azure.storage.file.share.implementation.models.SharesGetPropertiesRes
 import com.azure.storage.file.share.implementation.models.SharesGetStatisticsResponse;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
-import com.azure.storage.file.share.models.ShareEnabledProtocol;
+import com.azure.storage.file.share.models.ShareEnabledProtocols;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareInfo;
@@ -1491,7 +1491,7 @@ public class ShareAsyncClient {
             .setAccessTier(headers.getAccessTier())
             .setAccessTierChangeTime(headers.getAccessTierChangeTime())
             .setAccessTierTransitionState(headers.getAccessTierTransitionState())
-            .setEnabledProtocols(ShareEnabledProtocol.parse(headers.getEnabledProtocols()))
+            .setEnabledProtocols(ShareEnabledProtocols.parse(headers.getEnabledProtocols()))
             .setRootSquash(headers.getRootSquash());
 
         return new SimpleResponse<>(response, shareProperties);

@@ -7,7 +7,7 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.file.share.models.NtfsFileAttributes
-import com.azure.storage.file.share.models.ShareEnabledProtocol
+import com.azure.storage.file.share.models.ShareEnabledProtocols
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareRequestConditions
@@ -196,13 +196,7 @@ class ShareAsyncAPITests extends APISpec {
     @Unroll
     def "Get properties premium"() {
         given:
-        ShareEnabledProtocol enabledProtocol = new ShareEnabledProtocol()
-        if (Constants.HeaderConstants.SMB_PROTOCOL == protocol) {
-            enabledProtocol.setSmb(true)
-        }
-        if (Constants.HeaderConstants.NFS_PROTOCOL == protocol) {
-            enabledProtocol.setNfs(true)
-        }
+        ShareEnabledProtocols enabledProtocol = ShareEnabledProtocols.parse(protocol)
 
         def premiumShare = premiumFileServiceAsyncClient.createShareWithResponse(generateShareName(),
             new ShareCreateOptions().setMetadata(testMetadata).setEnabledProtocol(enabledProtocol)
@@ -218,7 +212,7 @@ class ShareAsyncAPITests extends APISpec {
             assert it.getValue().getProvisionedIngressMBps()
             assert it.getValue().getProvisionedEgressMBps()
             assert it.getValue().getNextAllowedQuotaDowngradeTime()
-            assert it.getValue().getEnabledProtocols() == protocol
+            assert it.getValue().getEnabledProtocols() == enabledProtocol
             assert it.getValue().getRootSquash() == rootSquash
         }.verifyComplete()
 
@@ -234,7 +228,7 @@ class ShareAsyncAPITests extends APISpec {
     def "Set premium properties"() {
         setup:
         def premiumShareClient = premiumFileServiceAsyncClient.createShareWithResponse(generateShareName(),
-            new ShareCreateOptions().setEnabledProtocol(new ShareEnabledProtocol().setNfs(true)), null)
+            new ShareCreateOptions().setEnabledProtocol(new ShareEnabledProtocols().setNfs(true)), null)
             .block().getValue()
 
         when:

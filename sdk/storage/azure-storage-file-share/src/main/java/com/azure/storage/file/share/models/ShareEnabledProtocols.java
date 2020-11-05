@@ -8,7 +8,7 @@ import com.azure.storage.common.implementation.Constants;
 /**
  * Represents protocols that can be set on a share.
  */
-public class ShareEnabledProtocol {
+public class ShareEnabledProtocols {
 
     private boolean smb;
 
@@ -32,7 +32,7 @@ public class ShareEnabledProtocol {
      * @param smb Enable SMB
      * @return The updated object
      */
-    public ShareEnabledProtocol setSmb(boolean smb) {
+    public ShareEnabledProtocols setSmb(boolean smb) {
         this.smb = smb;
         return this;
     }
@@ -41,7 +41,7 @@ public class ShareEnabledProtocol {
      * @param nfs Enable NFS
      * @return The updated object
      */
-    public ShareEnabledProtocol setNfs(boolean nfs) {
+    public ShareEnabledProtocols setNfs(boolean nfs) {
         this.nfs = nfs;
         return this;
     }
@@ -59,15 +59,15 @@ public class ShareEnabledProtocol {
         return null;
     }
 
-    public static ShareEnabledProtocol parse(String str) {
+    public static ShareEnabledProtocols parse(String str) {
         if (str == null) {
             return null;
         }
 
         if (str.equals(Constants.HeaderConstants.SMB_PROTOCOL)) {
-            return new ShareEnabledProtocol().setSmb(true);
+            return new ShareEnabledProtocols().setSmb(true);
         } else if (str.equals(Constants.HeaderConstants.NFS_PROTOCOL)) {
-            return new ShareEnabledProtocol().setNfs(true);
+            return new ShareEnabledProtocols().setNfs(true);
         }
 
         throw new IllegalArgumentException("String is not an understood protocol: " + str);
