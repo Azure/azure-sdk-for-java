@@ -628,7 +628,7 @@ public class MetricsAdvisorClient {
      * Create a new metric feedback.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.createMetricFeedback#String-MetricFeedback}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.addFeeddback#String-MetricFeedback}
      *
      * @param metricId the unique id for which the feedback needs to be submitted.
      * @param metricFeedback the actual metric feedback.
@@ -637,7 +637,7 @@ public class MetricsAdvisorClient {
      * @throws NullPointerException If {@code metricId}, {@code metricFeedback.dimensionFilter} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MetricFeedback createMetricFeedback(String metricId, MetricFeedback metricFeedback) {
+    public MetricFeedback addFeedback(String metricId, MetricFeedback metricFeedback) {
         return createMetricFeedbackWithResponse(metricId, metricFeedback, Context.NONE).getValue();
     }
 
@@ -645,7 +645,7 @@ public class MetricsAdvisorClient {
      * Create a new metric feedback.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.createMetricFeedbackWithResponse#String-MetricFeedback-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.addFeedbackWithResponse#String-MetricFeedback-Context}
      *
      * @param metricId the unique id for which the feedback needs to be submitted.
      * @param metricFeedback the actual metric feedback.
@@ -657,14 +657,14 @@ public class MetricsAdvisorClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetricFeedback> createMetricFeedbackWithResponse(String metricId, MetricFeedback metricFeedback,
         Context context) {
-        return client.createMetricFeedbackWithResponse(metricId, metricFeedback, context).block();
+        return client.addFeedbackWithResponse(metricId, metricFeedback, context).block();
     }
 
     /**
      * Get a metric feedback by its id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.getMetricFeedback#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.getFeedback#String}
      *
      * @param feedbackId The metric feedback unique id.
      *
@@ -673,15 +673,15 @@ public class MetricsAdvisorClient {
      * @throws NullPointerException thrown if the {@code feedbackId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MetricFeedback getMetricFeedback(String feedbackId) {
-        return getMetricFeedbackWithResponse(feedbackId, Context.NONE).getValue();
+    public MetricFeedback getFeedback(String feedbackId) {
+        return getFeedbackWithResponse(feedbackId, Context.NONE).getValue();
     }
 
     /**
      * Get a metric feedback by its id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.getMetricFeedbackWithResponse#String-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.getFeedbackWithResponse#String-Context}
      *
      * @param feedbackId The metric feedback unique id.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
@@ -691,15 +691,15 @@ public class MetricsAdvisorClient {
      * @throws NullPointerException thrown if the {@code feedbackId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MetricFeedback> getMetricFeedbackWithResponse(String feedbackId, Context context) {
-        return client.getMetricFeedbackWithResponse(feedbackId, context).block();
+    public Response<MetricFeedback> getFeedbackWithResponse(String feedbackId, Context context) {
+        return client.getFeedbackWithResponse(feedbackId, context).block();
     }
 
     /**
      * List information of all metric feedbacks on the metrics advisor account.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricFeedbacks#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listFeedback#String}
      *
      * @param metricId the unique metric Id.
      *
@@ -710,16 +710,16 @@ public class MetricsAdvisorClient {
      * @throws NullPointerException thrown if the {@code metricId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MetricFeedback> listMetricFeedbacks(
+    public PagedIterable<MetricFeedback> listFeedback(
         String metricId) {
-        return listMetricFeedbacks(metricId, null, Context.NONE);
+        return listFeedback(metricId, null, Context.NONE);
     }
 
     /**
      * List information of all metric feedbacks on the metrics advisor account.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricFeedbacks#String-ListMetricFeedbackOptions-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listFeedback#String-ListMetricFeedbackOptions-Context}
      *
      * @param metricId the unique metric Id.
      * @param options The configurable {@link ListMetricFeedbackOptions options} to pass for filtering the output
@@ -733,10 +733,10 @@ public class MetricsAdvisorClient {
      * @throws NullPointerException thrown if the {@code metricId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MetricFeedback> listMetricFeedbacks(
+    public PagedIterable<MetricFeedback> listFeedback(
         String metricId,
         ListMetricFeedbackOptions options, Context context) {
-        return new PagedIterable<>(client.listMetricFeedbacks(metricId, options,
+        return new PagedIterable<>(client.listFeedback(metricId, options,
             context == null ? Context.NONE : context));
     }
 

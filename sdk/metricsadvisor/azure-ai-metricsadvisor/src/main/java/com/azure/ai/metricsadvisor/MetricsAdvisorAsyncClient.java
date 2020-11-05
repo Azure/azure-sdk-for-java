@@ -1273,7 +1273,7 @@ public class MetricsAdvisorAsyncClient {
      * Create a new metric feedback.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.createMetricFeedback#String-MetricFeedback}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.addFeeddback#String-MetricFeedback}
      *
      * @param metricId the unique id for which the feedback needs to be submitted.
      * @param metricFeedback the actual metric feedback.
@@ -1282,15 +1282,15 @@ public class MetricsAdvisorAsyncClient {
      * @throws NullPointerException If {@code metricId}, {@code metricFeedback.dimensionFilter} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MetricFeedback> createMetricFeedback(String metricId, MetricFeedback metricFeedback) {
-        return createMetricFeedbackWithResponse(metricId, metricFeedback).flatMap(FluxUtil::toMono);
+    public Mono<MetricFeedback> addFeeddback(String metricId, MetricFeedback metricFeedback) {
+        return addFeedbackWithResponse(metricId, metricFeedback).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Create a new metric feedback.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.createMetricFeedbackWithResponse#String-MetricFeedback}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.addFeedbackWithResponse#String-MetricFeedback}
      *
      * @param metricId the unique id for which the feedback needs to be submitted.
      * @param metricFeedback the actual metric feedback.
@@ -1300,16 +1300,16 @@ public class MetricsAdvisorAsyncClient {
      * {@code metricFeedback.dimensionFilter} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MetricFeedback>> createMetricFeedbackWithResponse(String metricId,
+    public Mono<Response<MetricFeedback>> addFeedbackWithResponse(String metricId,
         MetricFeedback metricFeedback) {
         try {
-            return withContext(context -> createMetricFeedbackWithResponse(metricId, metricFeedback, context));
+            return withContext(context -> addFeedbackWithResponse(metricId, metricFeedback, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<MetricFeedback>> createMetricFeedbackWithResponse(String metricId, MetricFeedback metricFeedback,
+    Mono<Response<MetricFeedback>> addFeedbackWithResponse(String metricId, MetricFeedback metricFeedback,
         Context context) {
         Objects.requireNonNull(metricId, "'metricId' is required.");
         Objects.requireNonNull(metricFeedback, "'metricFeedback' is required.");
@@ -1388,7 +1388,7 @@ public class MetricsAdvisorAsyncClient {
         }
         return service.createMetricFeedbackWithResponseAsync(innerMetricFeedback, context)
             .flatMap(createdMetricFeedbackResponse ->
-                getMetricFeedbackWithResponse(parseOperationId(createdMetricFeedbackResponse
+                getFeedbackWithResponse(parseOperationId(createdMetricFeedbackResponse
                     .getDeserializedHeaders().getLocation())));
     }
 
@@ -1396,7 +1396,7 @@ public class MetricsAdvisorAsyncClient {
      * Get a metric feedback by its id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.getMetricFeedback#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.getFeedback#String}
      *
      * @param feedbackId The metric feedback unique id.
      *
@@ -1405,15 +1405,15 @@ public class MetricsAdvisorAsyncClient {
      * @throws NullPointerException thrown if the {@code feedbackId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MetricFeedback> getMetricFeedback(String feedbackId) {
-        return getMetricFeedbackWithResponse(feedbackId).flatMap(FluxUtil::toMono);
+    public Mono<MetricFeedback> getFeedback(String feedbackId) {
+        return getFeedbackWithResponse(feedbackId).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Get a metric feedback by its id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.getMetricFeedbackWithResponse#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.getFeedbackWithResponse#String}
      *
      * @param feedbackId The metric feedback unique id.
      *
@@ -1422,15 +1422,15 @@ public class MetricsAdvisorAsyncClient {
      * @throws NullPointerException thrown if the {@code feedbackId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MetricFeedback>> getMetricFeedbackWithResponse(String feedbackId) {
+    public Mono<Response<MetricFeedback>> getFeedbackWithResponse(String feedbackId) {
         try {
-            return withContext(context -> getMetricFeedbackWithResponse(feedbackId, context));
+            return withContext(context -> getFeedbackWithResponse(feedbackId, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<MetricFeedback>> getMetricFeedbackWithResponse(String feedbackId, Context context) {
+    Mono<Response<MetricFeedback>> getFeedbackWithResponse(String feedbackId, Context context) {
         Objects.requireNonNull(feedbackId, "'feedbackId' is required.");
         return service.getMetricFeedbackWithResponseAsync(UUID.fromString(feedbackId), context)
             .map(metricFeedbackResponse -> new SimpleResponse<>(metricFeedbackResponse,
@@ -1441,7 +1441,7 @@ public class MetricsAdvisorAsyncClient {
      * List information of metrics feedback on the account for a metric Id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricFeedbacks#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listFeedback#String}
      *
      * @param metricId the unique metric Id.
      *
@@ -1452,15 +1452,15 @@ public class MetricsAdvisorAsyncClient {
      * @throws NullPointerException thrown if the {@code metricId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MetricFeedback> listMetricFeedbacks(String metricId) {
-        return listMetricFeedbacks(metricId, null);
+    public PagedFlux<MetricFeedback> listFeedback(String metricId) {
+        return listFeedback(metricId, null);
     }
 
     /**
      * List information of all metric feedbacks on the metrics advisor account for a metric Id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricFeedbacks#String-ListMetricFeedbackOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listFeedback#String-ListMetricFeedbackOptions}
      *
      * @param metricId the unique metric Id.
      * @param options The configurable {@link ListMetricFeedbackOptions options} to pass for filtering the output
@@ -1473,7 +1473,7 @@ public class MetricsAdvisorAsyncClient {
      * @throws NullPointerException thrown if the {@code metricId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MetricFeedback> listMetricFeedbacks(
+    public PagedFlux<MetricFeedback> listFeedback(
         String metricId,
         ListMetricFeedbackOptions options) {
         options = options != null ? options : new ListMetricFeedbackOptions();
@@ -1492,7 +1492,7 @@ public class MetricsAdvisorAsyncClient {
         }
     }
 
-    PagedFlux<MetricFeedback> listMetricFeedbacks(String metricId, ListMetricFeedbackOptions options, Context context) {
+    PagedFlux<MetricFeedback> listFeedback(String metricId, ListMetricFeedbackOptions options, Context context) {
         options = options != null ? options : new ListMetricFeedbackOptions();
         final MetricFeedbackFilter metricFeedbackFilter = MetricFeedbackTransforms.toInnerFilter(metricId, options);
         final ListMetricFeedbackOptions finalOptions = options;
