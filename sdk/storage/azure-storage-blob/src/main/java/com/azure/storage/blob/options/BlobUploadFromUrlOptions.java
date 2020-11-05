@@ -8,74 +8,36 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import reactor.core.publisher.Flux;
 
-import java.io.InputStream;
-import java.nio.ByteBuffer;
 import java.util.Map;
 
 /**
- * Extended options that may be passed when uploading a Block Blob in a single request.
+ * Extended options that may be passed when uploading a Block Blob from URL.
  */
-public class BlockBlobSimpleUploadOptions {
-    private final Flux<ByteBuffer> dataFlux;
-    private final InputStream dataStream;
-    private final long length;
+public class BlobUploadFromUrlOptions {
+    private final String sourceUrl;
     private BlobHttpHeaders headers;
     private Map<String, String> metadata;
     private Map<String, String> tags;
     private AccessTier tier;
     private byte[] contentMd5;
-    private BlobRequestConditions requestConditions;
+    private BlobRequestConditions destinationRequestConditions;
+    private BlobRequestConditions sourceRequestConditions;
+    private Boolean copySourceBlobProperties;
 
     /**
-     * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
-     * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
-     * @param length The exact length of the data. It is important that this value match precisely the length of the
-     * data emitted by the data source.
+     * @param sourceUrl The source URL to upload from.
      */
-    public BlockBlobSimpleUploadOptions(Flux<ByteBuffer> data, long length) {
-        StorageImplUtils.assertNotNull("dataFlux", data);
-        StorageImplUtils.assertInBounds("length", length, 0, Long.MAX_VALUE);
-        this.dataFlux = data;
-        this.length = length;
-        this.dataStream = null;
+    public BlobUploadFromUrlOptions(String sourceUrl) {
+        StorageImplUtils.assertNotNull("copySource", sourceUrl);
+        this.sourceUrl = sourceUrl;
     }
 
     /**
-     * @param data The data to write to the blob.
-     * @param length The exact length of the data. It is important that this value match precisely the length of the
-     * data emitted by the data source.
+     * @return The source URL to upload from.
      */
-    public BlockBlobSimpleUploadOptions(InputStream data, long length) {
-        StorageImplUtils.assertNotNull("dataStream", data);
-        StorageImplUtils.assertInBounds("length", length, 0, Long.MAX_VALUE);
-        this.dataStream = data;
-        this.length = length;
-        this.dataFlux = null;
-    }
-
-    /**
-     * @return The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
-     * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
-     */
-    public Flux<ByteBuffer> getDataFlux() {
-        return this.dataFlux;
-    }
-
-    /**
-     * @return The data to write to the blob.
-     */
-    public InputStream getDataStream() {
-        return this.dataStream;
-    }
-
-    /**
-     * @return The exact length of the data. It is important that this value match precisely the length of the
-     * data emitted by the data source.
-     */
-    public long getLength() {
-        return this.length;
+    public String getSourceUrl() {
+        return this.sourceUrl;
     }
 
     /**
@@ -89,7 +51,7 @@ public class BlockBlobSimpleUploadOptions {
      * @param headers {@link BlobHttpHeaders}
      * @return The updated options
      */
-    public BlockBlobSimpleUploadOptions setHeaders(BlobHttpHeaders headers) {
+    public BlobUploadFromUrlOptions setHeaders(BlobHttpHeaders headers) {
         this.headers = headers;
         return this;
     }
@@ -105,7 +67,7 @@ public class BlockBlobSimpleUploadOptions {
      * @param metadata The metadata to associate with the blob.
      * @return The updated options
      */
-    public BlockBlobSimpleUploadOptions setMetadata(Map<String, String> metadata) {
+    public BlobUploadFromUrlOptions setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -121,7 +83,7 @@ public class BlockBlobSimpleUploadOptions {
      * @param tags The tags to associate with the blob.
      * @return The updated options.
      */
-    public BlockBlobSimpleUploadOptions setTags(Map<String, String> tags) {
+    public BlobUploadFromUrlOptions setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -137,7 +99,7 @@ public class BlockBlobSimpleUploadOptions {
      * @param tier {@link AccessTier}
      * @return The updated options.
      */
-    public BlockBlobSimpleUploadOptions setTier(AccessTier tier) {
+    public BlobUploadFromUrlOptions setTier(AccessTier tier) {
         this.tier = tier;
         return this;
     }
@@ -159,7 +121,7 @@ public class BlockBlobSimpleUploadOptions {
      * operation will fail.
      * @return The updated options
      */
-    public BlockBlobSimpleUploadOptions setContentMd5(byte[] contentMd5) {
+    public BlobUploadFromUrlOptions setContentMd5(byte[] contentMd5) {
         this.contentMd5 = CoreUtils.clone(contentMd5);
         return this;
     }
@@ -167,16 +129,51 @@ public class BlockBlobSimpleUploadOptions {
     /**
      * @return {@link BlobRequestConditions}
      */
-    public BlobRequestConditions getRequestConditions() {
-        return requestConditions;
+    public BlobRequestConditions getDestinationRequestConditions() {
+        return destinationRequestConditions;
     }
 
     /**
-     * @param requestConditions {@link BlobRequestConditions}
+     * @param destinationRequestConditions {@link BlobRequestConditions}
      * @return The updated options.
      */
-    public BlockBlobSimpleUploadOptions setRequestConditions(BlobRequestConditions requestConditions) {
-        this.requestConditions = requestConditions;
+    public BlobUploadFromUrlOptions setDestinationRequestConditions(BlobRequestConditions
+                                                                        destinationRequestConditions) {
+        this.destinationRequestConditions = destinationRequestConditions;
+        return this;
+    }
+
+    /**
+     * @return {@link BlobRequestConditions}
+     */
+    public BlobRequestConditions getSourceRequestConditions() {
+        return sourceRequestConditions;
+    }
+
+    /**
+     * @param sourceRequestConditions {@link BlobRequestConditions}
+     * @return The updated options.
+     */
+    public BlobUploadFromUrlOptions setSourceRequestConditions(BlobRequestConditions sourceRequestConditions) {
+        this.sourceRequestConditions = sourceRequestConditions;
+        return this;
+    }
+
+    /**
+     * Optional, default is true.  Indicates if properties from the source blob should be copied.
+     * @return Whether properties from the source blob should be copied.
+     */
+    public Boolean isCopySourceBlobProperties() {
+        return copySourceBlobProperties;
+    }
+
+    /**
+     * Optional, default is true.  Indicates if properties from the source blob should be copied.
+     * @param copySourceBlobProperties Whether properties from the source blob should be copied.
+     * @return The updated options.
+     */
+    public BlobUploadFromUrlOptions setCopySourceBlobProperties(Boolean copySourceBlobProperties) {
+        this.copySourceBlobProperties = copySourceBlobProperties;
         return this;
     }
 }

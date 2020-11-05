@@ -261,6 +261,20 @@ directive:
     }
 ```
 
+### /{containerName}/{blob}?BlockBlob&fromUrl
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}?BlockBlob&fromUrl"]
+  transform: >
+    let param = $.put.parameters[0];
+    if (!param["$ref"].endsWith("ContainerName")) {
+      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
+      $.put.parameters.splice(0, 0, { "$ref":  path + "ContainerName" });
+      $.put.parameters.splice(1, 0, { "$ref":  path + "Blob" });
+    }
+```
+
 ### /{containerName}/{blob}?comp=undelete
 ``` yaml
 directive:

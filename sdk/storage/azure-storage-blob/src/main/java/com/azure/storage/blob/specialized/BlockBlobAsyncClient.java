@@ -13,6 +13,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.models.BlockBlobCommitBlockListHeaders;
+import com.azure.storage.blob.implementation.models.BlockBlobPutBlobFromUrlHeaders;
 import com.azure.storage.blob.implementation.models.BlockBlobUploadHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.models.AccessTier;
@@ -24,6 +25,7 @@ import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.BlockLookupList;
 import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.options.BlobUploadFromUrlOptions;
 import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
@@ -262,6 +264,123 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 BlockBlobUploadHeaders hd = rb.getDeserializedHeaders();
+                BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
+                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getEncryptionScope(),
+                    hd.getVersionId());
+                return new SimpleResponse<>(rb, item);
+            });
+    }
+
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob.
+     * <p>
+     * Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not supported
+     * with PutBlobFromUrl; the content of the existing blob is overwritten with the new content.
+     * For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob-from-url">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadFromUrl#String}
+     *
+     * @param sourceUrl The source URL to upload from.
+     * @return A reactive response containing the information of the uploaded block blob.
+     */
+    public Mono<BlockBlobItem> uploadFromUrl(String sourceUrl) {
+        try {
+            return uploadFromUrl(sourceUrl, false);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob.
+     * <p>
+     * Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not supported
+     * with PutBlobFromUrl; the content of the existing blob is overwritten with the new content.
+     * For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob-from-url">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadFromUrl#String-boolean}
+     *
+     * @param sourceUrl The source URL to upload from.
+     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     * @return A reactive response containing the information of the uploaded block blob.
+     */
+    public Mono<BlockBlobItem> uploadFromUrl(String sourceUrl, boolean overwrite) {
+        try {
+            BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
+            if (!overwrite) {
+                blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+            }
+            return uploadFromUrlWithResponse(new BlobUploadFromUrlOptions(sourceUrl)
+                .setDestinationRequestConditions(blobRequestConditions))
+                .flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob.
+     * <p>
+     * Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not supported
+     * with PutBlobFromUrl; the content of the existing blob is overwritten with the new content.
+     * For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob-from-url">Azure Docs</a>.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadFromUrlWithResponse#BlobUploadFromUrlOptions}
+     *
+     * @param options {@link BlobUploadFromUrlOptions}
+     * @return A reactive response containing the information of the uploaded block blob.
+     */
+    public Mono<Response<BlockBlobItem>> uploadFromUrlWithResponse(BlobUploadFromUrlOptions options) {
+        try {
+            return withContext(context -> uploadFromUrlWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<BlockBlobItem>> uploadFromUrlWithResponse(BlobUploadFromUrlOptions options, Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+        BlobRequestConditions destinationRequestConditions =
+            options.getDestinationRequestConditions() == null ? new BlobRequestConditions()
+            : options.getDestinationRequestConditions();
+        BlobRequestConditions sourceRequestConditions =
+            options.getSourceRequestConditions() == null ? new BlobRequestConditions()
+            : options.getSourceRequestConditions();
+        context = context == null ? Context.NONE : context;
+
+        URL url;
+        try {
+            url = new URL(options.getSourceUrl());
+        } catch (MalformedURLException ex) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
+        }
+
+        return this.azureBlobStorage.blockBlobs().putBlobFromUrlWithRestResponseAsync(
+            null, null, 0,
+            url, null, options.getContentMd5(), options.getMetadata(),
+            destinationRequestConditions.getLeaseId(), options.getTier(),
+            destinationRequestConditions.getIfModifiedSince(), destinationRequestConditions.getIfUnmodifiedSince(),
+            destinationRequestConditions.getIfMatch(), destinationRequestConditions.getIfNoneMatch(),
+            destinationRequestConditions.getTagsConditions(),
+            sourceRequestConditions.getIfModifiedSince(), sourceRequestConditions.getIfUnmodifiedSince(),
+            sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(),
+            sourceRequestConditions.getTagsConditions(),
+            null, tagsToString(options.getTags()),
+            options.isCopySourceBlobProperties(), options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .map(rb -> {
+                BlockBlobPutBlobFromUrlHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
                     hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getEncryptionScope(),
                     hd.getVersionId());
