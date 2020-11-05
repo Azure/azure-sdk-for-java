@@ -45,6 +45,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.net.InetSocketAddress;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -172,10 +173,16 @@ public class AsyncCtlWorkload {
             RequestOptions options = new RequestOptions();
             String partitionKeyValue = docsToRead.get(container.getId()).get(index).getId();
             options.setPartitionKey(new PartitionKey(partitionKeyValue));
-            obs = container.readItem(docsToRead.get(container.getId()).get(index).getId(),
-                new PartitionKey(partitionKeyValue),
-                PojoizedJson.class)
-                .flux();
+
+            Mono sparsitySleepMono = sparsityMono();
+            obs = sparsitySleepMono.flux().flatMap(
+                null,
+                null,
+                () -> container.readItem(
+                        docsToRead.get(container.getId()).get(index).getId(),
+                        new PartitionKey(partitionKeyValue),
+                        PojoizedJson.class)
+            );
         }
 
         concurrencyControlSemaphore.acquire();
@@ -369,5 +376,14 @@ public class AsyncCtlWorkload {
                 .convertRatesTo(TimeUnit.SECONDS)
                 .build();
         }
+    }
+
+    protected Mono sparsityMono() {
+        Duration duration = configuration.getSparsityWaitTime();
+        if (duration != null && !duration.isZero()) {
+            return Mono.delay(duration);
+        }
+
+        return Mono.empty();
     }
 }
