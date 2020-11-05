@@ -1740,6 +1740,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled
     public void invoiceValidLocale(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
@@ -1748,6 +1749,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 new RecognizeInvoicesOptions().setPollInterval(durationTestMode).setLocale("en-US"))
                 .getSyncPoller();
             syncPoller.getFinalResult();
+            // need to update this method for removing flakiness
             validateNetworkCallRecord("locale", "en-US");
         }, INVOICE_PDF);
     }

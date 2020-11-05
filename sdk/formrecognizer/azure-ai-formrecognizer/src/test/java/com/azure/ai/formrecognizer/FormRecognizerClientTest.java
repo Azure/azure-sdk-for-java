@@ -1938,6 +1938,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled
     public void invoiceValidLocale(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         localFilePathRunner((filePath, dataLength) -> {
@@ -1946,6 +1947,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 dataLength,
                 new RecognizeInvoicesOptions().setPollInterval(durationTestMode).setLocale("en-US"),
                 Context.NONE);
+            // need to update this method for removing flakiness
             validateNetworkCallRecord("locale", "en-US");
         }, INVOICE_PDF);
     }
