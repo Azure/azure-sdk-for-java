@@ -984,6 +984,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         if (receiverOptions.getReceiveMode() != ReceiveMode.PEEK_LOCK) {
             return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
                 "'%s' is not supported on a receiver opened in ReceiveMode.RECEIVE_AND_DELETE.", dispositionStatus))));
+        } else if (message.isSettled()) {
+            return Mono.error(logger.logExceptionAsError(
+                new IllegalArgumentException("The message has either been deleted or already settled.")));
         }
 
         final String sessionIdToUse;
@@ -1005,7 +1008,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 logger.info("{}: Management node Update completed. Disposition: {}. Lock: {}.",
                     entityPath, dispositionStatus, lockToken);
 
-                message.setIsSettled(true);
+                message.setIsSettled();
                 managementNodeLocks.remove(lockToken);
                 renewalContainer.remove(lockToken);
             }));
@@ -1016,7 +1019,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 propertiesToModify, deadLetterReason, deadLetterErrorDescription, transactionContext)
                 .flatMap(isSuccess -> {
                     if (isSuccess) {
-                        message.setIsSettled(true);
+                        message.setIsSettled();
                         renewalContainer.remove(lockToken);
                         return Mono.empty();
                     }
@@ -1035,7 +1038,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                         logger.verbose("{}: Update completed. Disposition: {}. Lock: {}.",
                             entityPath, dispositionStatus, lockToken);
 
-                        message.setIsSettled(true);
+                        message.setIsSettled();
                         renewalContainer.remove(lockToken);
                     }));
             }

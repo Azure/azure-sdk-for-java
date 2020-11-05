@@ -525,10 +525,9 @@ public final class ServiceBusReceivedMessage {
     /**
      * Sets whether the message has been settled.
      *
-     * @param isSettled True if the message has been settled and false otherwise.
      */
-    void setIsSettled(boolean isSettled) {
-        this.isSettled = isSettled;
+    void setIsSettled() {
+        this.isSettled = true;
     }
 
     /**
