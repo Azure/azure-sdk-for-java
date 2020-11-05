@@ -327,7 +327,7 @@ public final class KeyClient {
      * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
      * details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.keys.keyclient.exportKey#name-options}
+     * {@codesnippet com.azure.security.keyvault.keys.keyclient.exportKey#name-environment}
      *
      * @param name The name of the key to be exported.
      * @param environment The target environment assertion.
@@ -346,7 +346,7 @@ public final class KeyClient {
      * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
      * details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.keys.keyclient.exportKey#name-version-options}
+     * {@codesnippet com.azure.security.keyvault.keys.keyclient.exportKey#name-version-environment}
      *
      * @param name The name of the key to be exported.
      * @param version The key version.
@@ -367,7 +367,7 @@ public final class KeyClient {
      * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
      * details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.keys.keyclient.exportKeyWithResponse#name-version-options-response}
+     * {@codesnippet com.azure.security.keyvault.keys.keyclient.exportKeyWithResponse#name-version-environment-response}
      *
      * @param name The name of the key to be exported.
      * @param version The key version.

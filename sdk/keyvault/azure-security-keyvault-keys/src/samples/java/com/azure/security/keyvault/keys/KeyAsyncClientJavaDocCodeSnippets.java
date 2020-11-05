@@ -11,15 +11,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
-import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
-import com.azure.security.keyvault.keys.models.CreateKeyOptions;
-import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
-import com.azure.security.keyvault.keys.models.KeyCurveName;
-import com.azure.security.keyvault.keys.models.KeyOperation;
-import com.azure.security.keyvault.keys.models.KeyType;
-import com.azure.security.keyvault.keys.models.KeyProperties;
-import com.azure.security.keyvault.keys.models.ImportKeyOptions;
-import com.azure.security.keyvault.keys.models.JsonWebKey;
+import com.azure.security.keyvault.keys.models.*;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.util.context.Context;
 
@@ -183,6 +175,36 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
             System.out.printf("Key is imported with name %s and id %s \n", keyResponse.getValue().getName(),
                 keyResponse.getValue().getId()));
         // END: com.azure.security.keyvault.keys.keyasyncclient.importKeyWithResponse#options-response
+    }
+
+    /**
+     * Generates code samples for using {@link KeyAsyncClient#exportKey(String, String)},
+     * {@link KeyAsyncClient#exportKey(String, String, String)} and
+     * {@link KeyAsyncClient#exportKeyWithResponse(String, String, String)}
+     */
+    public void exportKeySnippets() {
+        KeyAsyncClient keyAsyncClient = createAsyncClient();
+
+        // BEGIN: com.azure.security.keyvault.keys.keyasyncclient.exportKey#name-environment
+        keyAsyncClient.exportKey("keyName", "environment").subscribe(exportedKey ->
+            System.out.printf("Key was exported with name: %s and id: %s. \n", exportedKey.getName(),
+                exportedKey.getId()));
+        // END: com.azure.security.keyvault.keys.keyasyncclient.exportKey#name-environment
+
+        // BEGIN: com.azure.security.keyvault.keys.keyasyncclient.exportKey#name-version-environment
+        keyAsyncClient.exportKey("keyName", "version", "environment").subscribe(exportedKey ->
+            System.out.printf("Key was exported with name: %s and id: %s. \n", exportedKey.getName(),
+                exportedKey.getId()));
+        // END: com.azure.security.keyvault.keys.keyasyncclient.exportKey#name-version-environment
+
+        // BEGIN: com.azure.security.keyvault.keys.keyasyncclient.exportKeyWithResponse#name-version-environment-response
+        keyAsyncClient.exportKeyWithResponse("keyName", "version", "environment")
+            .subscribe(exportKeyResponse -> {
+                KeyVaultKey exportedKey = exportKeyResponse.getValue();
+                System.out.printf("Key was exported with name: %s and id: %s. \n", exportedKey.getName(),
+                    exportedKey.getId());
+            });
+        // END: com.azure.security.keyvault.keys.keyasyncclient.exportKeyWithResponse#name-version-environment-response
     }
 
     /**

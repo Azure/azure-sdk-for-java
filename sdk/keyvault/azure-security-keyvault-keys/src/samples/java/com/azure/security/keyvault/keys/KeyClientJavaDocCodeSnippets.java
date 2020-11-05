@@ -117,6 +117,33 @@ public final class KeyClientJavaDocCodeSnippets {
     }
 
     /**
+     * Generates code samples for using {@link KeyClient#exportKey(String, String)},
+     * {@link KeyClient#exportKey(String, String, String)} and
+     * {@link KeyClient#exportKeyWithResponse(String, String, String, Context)}
+     */
+    public void exportKeySnippets() {
+        KeyClient keyClient = createClient();
+
+        // BEGIN: com.azure.security.keyvault.keys.keyclient.exportKey#name-environment
+        KeyVaultKey exportedKey = keyClient.exportKey("keyName", "environment");
+        System.out.printf("Key was exported with name: %s and id: %s. \n", exportedKey.getName(), exportedKey.getId());
+        // END: com.azure.security.keyvault.keys.keyclient.exportKey#name-environment
+
+        // BEGIN: com.azure.security.keyvault.keys.keyclient.exportKey#name-version-environment
+        KeyVaultKey exportKey = keyClient.exportKey("keyName", "version", "environment");
+        System.out.printf("Key was exported with name: %s and id: %s. \n", exportKey.getName(),
+            exportKey.getId());
+        // END: com.azure.security.keyvault.keys.keyclient.exportKey#name-version-environment
+
+        // BEGIN: com.azure.security.keyvault.keys.keyclient.exportKeyWithResponse#name-version-environment-response
+        KeyVaultKey exportedKeyFromResponse = keyClient.exportKeyWithResponse("keyName", "version", "environment",
+            new Context(key1, value1)).getValue();
+        System.out.printf("Key was exported with name: %s and id: %s. \n", exportedKeyFromResponse.getName(),
+            exportedKeyFromResponse.getId());
+        // com.azure.security.keyvault.keys.keyclient.exportKeyWithResponse#name-version-environment-response
+    }
+
+    /**
      * Generates a code sample for using {@link KeyClient#beginDeleteKey(String)} and
      * {@link KeyClient#beginDeleteKey(String, Duration)}.
      */
