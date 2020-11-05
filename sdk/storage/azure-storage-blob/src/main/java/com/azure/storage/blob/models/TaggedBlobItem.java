@@ -63,6 +63,11 @@ public final class TaggedBlobItem {
         return this.containerName;
     }
 
+    /**
+     * Get the tags property: The tags property.
+     *
+     * @return the tags value.
+     */
     public Map<String, String> getTags() {
         return this.tags;
     }
