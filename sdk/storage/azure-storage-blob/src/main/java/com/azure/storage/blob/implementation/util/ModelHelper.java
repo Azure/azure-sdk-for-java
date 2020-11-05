@@ -10,6 +10,7 @@ import com.azure.storage.blob.implementation.models.BlobDownloadHeaders;
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
 import com.azure.storage.blob.implementation.models.BlobItemPropertiesInternal;
 import com.azure.storage.blob.implementation.models.BlobTag;
+import com.azure.storage.blob.implementation.models.FilterBlobItem;
 import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobItemProperties;
@@ -19,6 +20,7 @@ import com.azure.storage.blob.models.ObjectReplicationPolicy;
 import com.azure.storage.blob.models.ObjectReplicationRule;
 import com.azure.storage.blob.models.ObjectReplicationStatus;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.common.implementation.Constants;
 
 import java.net.MalformedURLException;
@@ -257,6 +259,17 @@ public class ModelHelper {
             transformObjectReplicationMetadata(blobItemInternal.getObjectReplicationMetadata()));
 
         return blobItem;
+    }
+
+    public static TaggedBlobItem populateTaggedBlobItem(FilterBlobItem filterBlobItem) {
+        Map<String, String> tags = new HashMap<>();
+        if (filterBlobItem.getTags() != null && filterBlobItem.getTags().getBlobTagSet() != null) {
+            for (BlobTag tag : filterBlobItem.getTags().getBlobTagSet()) {
+                tags.put(tag.getKey(), tag.getValue());
+            }
+        }
+
+        return new TaggedBlobItem(filterBlobItem.getContainerName(), filterBlobItem.getName(), tags);
     }
 
     /**

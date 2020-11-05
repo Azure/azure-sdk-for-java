@@ -278,6 +278,11 @@ class ServiceAPITest extends APISpec {
 
         then:
         results.size() == 1
+        if (primaryBlobServiceClient.getServiceVersion() >= BlobServiceVersion.V2020_04_08) {
+            def tags = results.first().getTags()
+            assert tags.size() == 1
+            assert tags.get("bar") == "foo"
+        }
 
         cleanup:
         containerClient.delete()
