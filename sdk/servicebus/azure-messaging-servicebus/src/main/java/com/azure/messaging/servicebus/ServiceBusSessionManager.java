@@ -150,6 +150,7 @@ class ServiceBusSessionManager implements AutoCloseable {
      * @return A Flux of messages merged from different sessions.
      */
     Flux<ServiceBusMessageContext> receive() {
+        System.out.println("!!!! Using SessionManager to receive the message");
         if (!isStarted.getAndSet(true)) {
             this.sessionReceiveSink.onRequest(this::onSessionRequest);
 
@@ -210,6 +211,7 @@ class ServiceBusSessionManager implements AutoCloseable {
                 final DeliveryState deliveryState = MessageUtils.getDeliveryState(dispositionStatus, deadLetterReason,
                     deadLetterDescription, propertiesToModify, transactionContext);
 
+                System.out.println(getClass().getName() + " !!!! Going to call receiver.updateDisposition for token " + lockToken + " , Session ID : " + receiver.getSessionId());
                 return receiver.updateDisposition(lockToken, deliveryState).thenReturn(true);
             }));
     }

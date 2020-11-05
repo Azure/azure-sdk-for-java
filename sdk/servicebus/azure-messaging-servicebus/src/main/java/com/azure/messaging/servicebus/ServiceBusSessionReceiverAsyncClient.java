@@ -112,7 +112,7 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
         }
         final ReceiverOptions newReceiverOptions = new ReceiverOptions(receiverOptions.getReceiveMode(),
             receiverOptions.getPrefetchCount(), receiverOptions.getMaxLockRenewDuration(),
-            receiverOptions.isAutoLockRenewEnabled(), sessionId, null);
+            /*receiverOptions.isAutoLockRenewEnabled()*/ receiverOptions.isEnableAutoComplete(), sessionId, null);
         final ServiceBusSessionManager sessionSpecificManager = new ServiceBusSessionManager(entityPath, entityType,
             connectionProcessor, tracerProvider, messageSerializer, newReceiverOptions);
 

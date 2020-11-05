@@ -184,6 +184,8 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     @Override
     protected Message decodeDelivery(Delivery delivery) {
         final byte[] deliveryTag = delivery.getTag();
+        System.out.println(this + " " + getClass().getName() + " " + " decodeDelivery deliveryTag : " +deliveryTag );
+
         final UUID lockToken;
         if (deliveryTag != null && deliveryTag.length == LOCK_TOKEN_SIZE) {
             lockToken = MessageUtils.convertDotNetBytesToUUID(deliveryTag);
@@ -192,9 +194,12 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
         }
 
         final String lockTokenString = lockToken.toString();
+        System.out.println(this + " " + getClass().getName() + " " + " decodeDelivery lockToken : " +lockTokenString );
 
         // There is no lock token associated with this delivery, or the lock token is not in the unsettledDeliveries.
         if (lockToken == MessageUtils.ZERO_LOCK_TOKEN || !unsettledDeliveries.containsKey(lockTokenString)) {
+            System.out.println(this + " " + getClass().getName() + " " + " decodeDelivery lockToken : " +lockTokenString  + " no lock token associated with this delivery");
+
             final int messageSize = delivery.pending();
             final byte[] buffer = new byte[messageSize];
             final int read = receiver.recv(buffer, 0, messageSize);
@@ -207,11 +212,14 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                 delivery.disposition(Accepted.getInstance());
                 delivery.settle();
             } else {
+                System.out.println(this + " " + getClass().getName() + " " + " decodeDelivery lockToken : " +lockTokenString  + " adding to unsetteled delivery");
                 unsettledDeliveries.putIfAbsent(lockToken.toString(), delivery);
                 receiver.advance();
             }
             return new MessageWithLockToken(message, lockToken);
         } else {
+            System.out.println(this + " " + getClass().getName() + " " + " decodeDelivery lockToken : " +lockTokenString  + " updateOutcome delivery ");
+
             updateOutcome(lockTokenString, delivery);
 
             // Return empty update disposition messages. The deliveries themselves are ACKs. There is no actual message
@@ -230,6 +238,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                 "Delivery not on receive link.")));
         }
 
+        System.out.println(getClass().getName() + " !!!! updateDispositionInternal lockToken " + lockToken + " will send to server.");
         final UpdateDispositionWorkItem workItem = new UpdateDispositionWorkItem(lockToken, deliveryState, timeout);
         final Mono<Void> result = Mono.create(sink -> {
             workItem.start(sink);
@@ -255,6 +264,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
      */
     private void updateOutcome(String lockToken, Delivery delivery) {
         final DeliveryState remoteState = delivery.getRemoteState();
+        System.out.println(this + " " + getClass().getName() + " " + " updateOutcome lockToken : " +lockToken  + " remoteState " +remoteState);
 
         logger.verbose("entityPath[{}], linkName[{}], deliveryTag[{}], state[{}] Received update disposition delivery.",
             getEntityPath(), getLinkName(), lockToken, remoteState);
