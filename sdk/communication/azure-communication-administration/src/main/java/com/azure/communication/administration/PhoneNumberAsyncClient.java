@@ -125,9 +125,15 @@ public final class PhoneNumberAsyncClient {
     Mono<Response<AreaCodes>> getAllAreaCodesWithResponse(
         String locationType, String countryCode, String phonePlanId, List<LocationOptionsQuery> locationOptions,
         Context context) {
-        Objects.requireNonNull(locationType, "'locationType' cannot be null.");
-        Objects.requireNonNull(countryCode, "'countryCode' cannot be null.");
-        Objects.requireNonNull(phonePlanId, "'phonePlanId' cannot be null.");
+        if (locationOptions == null) {
+            Mono.error(new NullPointerException("'locationType' cannot be null."));
+        }
+        if (countryCode == null) {
+            Mono.error(new NullPointerException("'countryCode' cannot be null."));
+        }
+        if (phonePlanId == null) {
+            Mono.error(new NullPointerException("'phonePlanId' cannot be null."));
+        }
 
         LocationOptionsQueries locationOptionsQueries = new LocationOptionsQueries();
         locationOptionsQueries.setLocationOptions(locationOptions);
@@ -172,9 +178,8 @@ public final class PhoneNumberAsyncClient {
 
     Mono<Response<UpdatePhoneNumberCapabilitiesResponse>> getCapabilitiesUpdateWithResponse(
         String capabilitiesId, Context context) {
-        Objects.requireNonNull(capabilitiesId, "'capabilitiesId' cannot be null.");
-
         try {
+            Objects.requireNonNull(capabilitiesId, "'capabilitiesId' cannot be null.");
             if (context == null) {
                 return phoneNumberAdministrations.getCapabilitiesUpdateWithResponseAsync(capabilitiesId);
             } else {
@@ -767,11 +772,11 @@ public final class PhoneNumberAsyncClient {
 
     /**
      * Initiates a search and returns a {@link PhoneNumberSearch} usable by other functions
-     * This function returns a Long Running Operation poller that allows you to 
+     * This function returns a Long Running Operation poller that allows you to
      * wait indefinitely until the operation is complete.
-     * 
+     *
      * @param options A {@link CreateSearchOptions} with the search options
-     * @param pollInterval The time our long running operation will keep on polling 
+     * @param pollInterval The time our long running operation will keep on polling
      * until it gets a result from the server
      * @return A {@link PollerFlux} object with the search result
      */
@@ -787,7 +792,7 @@ public final class PhoneNumberAsyncClient {
             createSearchFetchResultOperation());
     }
 
-    private Function<PollingContext<PhoneNumberSearch>, Mono<PhoneNumberSearch>> 
+    private Function<PollingContext<PhoneNumberSearch>, Mono<PhoneNumberSearch>>
         createSearchActivationOperation(CreateSearchOptions options) {
         return (pollingContext) -> {
             Mono<PhoneNumberSearch> response = createSearch(options).flatMap(createSearchResponse -> {
@@ -799,14 +804,14 @@ public final class PhoneNumberAsyncClient {
         };
     }
 
-    private Function<PollingContext<PhoneNumberSearch>, Mono<PollResponse<PhoneNumberSearch>>> 
+    private Function<PollingContext<PhoneNumberSearch>, Mono<PollResponse<PhoneNumberSearch>>>
         createSearchPollOperation() {
         return pollingContext ->
             getSearchById(pollingContext.getLatestResponse().getValue().getSearchId())
                 .flatMap(getSearchResponse -> {
                     SearchStatus status = getSearchResponse.getStatus();
-                    if (status.equals(SearchStatus.EXPIRED) 
-                        || status.equals(SearchStatus.CANCELLED) 
+                    if (status.equals(SearchStatus.EXPIRED)
+                        || status.equals(SearchStatus.CANCELLED)
                         || status.equals(SearchStatus.RESERVED)) {
                         return Mono.just(new PollResponse<>(
                         LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, getSearchResponse));
@@ -820,7 +825,7 @@ public final class PhoneNumberAsyncClient {
     }
 
     private BiFunction<PollingContext<PhoneNumberSearch>,
-        PollResponse<PhoneNumberSearch>, Mono<PhoneNumberSearch>> 
+        PollResponse<PhoneNumberSearch>, Mono<PhoneNumberSearch>>
         cancelSearchOperation() {
         return (pollingContext, firstResponse) -> {
             cancelSearch(pollingContext.getLatestResponse().getValue().getSearchId());
