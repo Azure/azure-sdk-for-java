@@ -13,12 +13,12 @@ import java.security.Provider;
  * Abstract base class for all symmetric encryption implementation.
  */
 abstract class SymmetricEncryptionAlgorithm extends LocalEncryptionAlgorithm {
-    /**
+    /*
      * The block size for AES algorithms.
      */
     static final int BLOCK_SIZE = 128;
 
-    /**
+    /*
      * Constructor.
      *
      * @param name The name of the algorithm.
@@ -27,7 +27,7 @@ abstract class SymmetricEncryptionAlgorithm extends LocalEncryptionAlgorithm {
         super(name);
     }
 
-    /**
+    /*
      * Creates a {@link ICryptoTransform} implementation for encryption using the supplied initialization vector and the
      * specific provider for the Java Security API.
      *
@@ -41,7 +41,7 @@ abstract class SymmetricEncryptionAlgorithm extends LocalEncryptionAlgorithm {
         throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
         InvalidAlgorithmParameterException;
 
-    /**
+    /*
      * Creates a {@link ICryptoTransform} implementation for encryption
      * using the supplied initialization vector and the specific provider for the Java Security API.
      *
@@ -56,7 +56,7 @@ abstract class SymmetricEncryptionAlgorithm extends LocalEncryptionAlgorithm {
         throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
         InvalidAlgorithmParameterException;
 
-    /**
+    /*
      * Creates a {@link ICryptoTransform} implementation for decryption using the supplied initialization vector and the
      * specific provider for the Java Security API.
      *
@@ -73,7 +73,7 @@ abstract class SymmetricEncryptionAlgorithm extends LocalEncryptionAlgorithm {
         throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
         InvalidAlgorithmParameterException;
 
-    /**
+    /*
      * Creates a {@link ICryptoTransform} implementation for decryption using the supplied initialization vector and the
      * specific provider for the Java Security API.
      *
