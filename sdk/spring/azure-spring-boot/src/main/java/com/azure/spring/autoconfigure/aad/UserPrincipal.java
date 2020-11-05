@@ -100,5 +100,13 @@ public class UserPrincipal implements Serializable {
     public Object getClaim(String name) {
         return jwtClaimsSet == null ? null : jwtClaimsSet.getClaim(name);
     }
+
+    public String getName() {
+        return jwtClaimsSet == null ? null : (String) jwtClaimsSet.getClaim("name");
+    }
+
+    public String getUserPrincipalName() {
+        return jwtClaimsSet == null ? null : (String) jwtClaimsSet.getClaim("preferred_username");
+    }
 }
 

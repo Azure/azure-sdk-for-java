@@ -87,10 +87,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final int pendingDeferred = messagesDeferredPending.size();
         if (pending < 1 && pendingDeferred < 1) {
             dispose(receiver, sender, receiveAndDeleteReceiver);
-            if (receiveAndDeleteReceiverMono != null) {
-                // Since this is Mono and no connection created, we do not need to do anything
-                //dispose(receiveAndDeleteReceiverMono.block());
-            }
             return;
         }
 
@@ -427,10 +423,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final int fromSequenceNumber = 1;
 
         // Assert & Act
-        System.out.println("!!!! Test start peekMessageAt");
         StepVerifier.create(receiver.peekMessageAt(fromSequenceNumber))
             .verifyComplete();
-        System.out.println("!!!! Test Completed");
     }
 
     /**
@@ -453,14 +447,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         sender.scheduleMessage(message, scheduledEnqueueTime).block(TIMEOUT);
 
         // Assert & Act
-
        StepVerifier.create(Mono.delay(Duration.ofSeconds(4)).then(receiveAndDeleteReceiver.receiveMessages().next()))
             .assertNext(receivedMessage -> {
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                 messagesPending.decrementAndGet();
             })
             .verifyComplete();
-
     }
 
     /**
@@ -589,7 +581,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 .assertNext(message -> checkCorrectMessage.accept(message, 7))
                 .verifyComplete();
         } finally {
-            // We only cleanup for non-session enabled entity.
             if (!isSessionEnabled) {
                 receiveAndDeleteReceiver.receiveMessages()
                     .take(messages.size())
@@ -597,7 +588,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             }
             messagesPending.addAndGet(-messages.size());
         }
-
     }
 
     /**
@@ -651,6 +641,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     void deadLetterMessage(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSenderAndReceiver(entityType, 0, isSessionEnabled);
+
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
 
@@ -753,7 +744,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             message.setSessionId(sessionId);
             this.receiver = receiverMono.block(TIMEOUT);
         }
-
         // Send the message to verify.
         sendMessage(message).block(TIMEOUT);
 
@@ -948,57 +938,41 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .verify();
     }
 
-        ///@Test
-    void setAndGetSessionState() throws InterruptedException {
+    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
+    @ParameterizedTest
+    void setAndGetSessionState(MessagingEntityType entityType) {
         // Arrange
-        MessagingEntityType entityType = MessagingEntityType.QUEUE;
         setSenderAndReceiver(entityType, 0, true);
-
+        receiver = receiverMono.block(TIMEOUT);
         final byte[] sessionState = "Finished".getBytes(UTF_8);
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage messageToSend = getMessage(messageId, true);
 
         sendMessage(messageToSend).block(Duration.ofSeconds(10));
-        System.out.println("!!!! Test Will receive Message");
+
         // Act
         AtomicReference<ServiceBusReceivedMessage> receivedMessage = new AtomicReference<>();
         //AtomicReference<String> session = new AtomicReference<>();
-        /*StepVerifier.create(receiver.receiveMessages()
+        StepVerifier.create(receiver.receiveMessages()
             .take(1)
             .flatMap(message -> {
                 logger.info("SessionId: {}. LockToken: {}. LockedUntil: {}. Message received.",
                     message.getSessionId(), message.getLockToken(), message.getLockedUntil());
                 receivedMessage.set(message);
-                System.out.println("!!!! Message received and setting session state session ID");
                 return receiver.setSessionState(sessionState);
             }))
             .expectComplete()
-            .verify()
-           .verifyComplete();*/
-       /* System.out.println("!!!! Getting  session state ");
+            .verify();
+
         StepVerifier.create(receiver.getSessionState())
             .assertNext(state -> {
-                System.out.println("!!!!Got   session state ");
                 logger.info("State received: {}", new String(state, UTF_8));
                 assertArrayEquals(sessionState, state);
             })
-            .verifyComplete();*/
-        ServiceBusReceivedMessage message = receiver.receiveMessages().take(1).blockFirst();
-        System.out.println("!!!! Got the message SQ Num : " + message.getSequenceNumber());
-        Assertions.assertEquals(sessionId, message.getSessionId());
+            .verifyComplete();
+
+        receiver.complete(receivedMessage.get()).block(Duration.ofSeconds(15));
         messagesPending.decrementAndGet();
-        System.out.println("!!!! Now completing the message");
-        receiver.complete(message)
-            .doOnNext(aVoid -> {
-                System.out.println("!!!! Test doOnNext .. completed the message.");
-            })
-            .doOnSuccess(aVoid -> {
-                System.out.println("!!!! doOnSuccess Test successfully completed the message.");
-            })
-            .block(Duration.ofSeconds(15));
-        System.out.println("!!!! Completed message Test Ends !!!! ");
-        messagesPending.decrementAndGet();
-        TimeUnit.SECONDS.sleep(30);
     }
 
     /**

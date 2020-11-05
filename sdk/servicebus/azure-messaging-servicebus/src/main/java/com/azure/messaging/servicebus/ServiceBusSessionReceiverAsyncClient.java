@@ -78,7 +78,7 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
             .map(sessionId -> {
                 final ReceiverOptions newReceiverOptions = new ReceiverOptions(receiverOptions.getReceiveMode(),
                     receiverOptions.getPrefetchCount(), receiverOptions.getMaxLockRenewDuration(),
-                    receiverOptions.isAutoLockRenewEnabled(), sessionId, null);
+                    receiverOptions.isEnableAutoComplete(), sessionId, null);
                 final ServiceBusSessionManager sessionSpecificManager = new ServiceBusSessionManager(entityPath,
                     entityType, connectionProcessor, tracerProvider, messageSerializer, newReceiverOptions,
                     receiveLink);
@@ -112,14 +112,26 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
         }
         final ReceiverOptions newReceiverOptions = new ReceiverOptions(receiverOptions.getReceiveMode(),
             receiverOptions.getPrefetchCount(), receiverOptions.getMaxLockRenewDuration(),
-            /*receiverOptions.isAutoLockRenewEnabled()*/ receiverOptions.isEnableAutoComplete(), sessionId, null);
+            receiverOptions.isEnableAutoComplete(), sessionId, null);
+
         final ServiceBusSessionManager sessionSpecificManager = new ServiceBusSessionManager(entityPath, entityType,
             connectionProcessor, tracerProvider, messageSerializer, newReceiverOptions);
 
-        return sessionSpecificManager.getActiveLink().map(receiveLink -> new ServiceBusReceiverAsyncClient(
-            fullyQualifiedNamespace, entityPath, entityType, newReceiverOptions, connectionProcessor,
-            ServiceBusConstants.OPERATION_TIMEOUT, tracerProvider, messageSerializer, () -> { },
-            sessionSpecificManager));
+        if (CoreUtils.isNullOrEmpty(sessionId)) {
+            return sessionSpecificManager.getActiveLink().map(receiveLink -> new ServiceBusReceiverAsyncClient(
+                fullyQualifiedNamespace, entityPath, entityType, newReceiverOptions, connectionProcessor,
+                ServiceBusConstants.OPERATION_TIMEOUT, tracerProvider, messageSerializer, () -> {
+            }, sessionSpecificManager));
+        } else {
+            ServiceBusReceiverAsyncClient sessionSpecificAsyncClient = new ServiceBusReceiverAsyncClient(fullyQualifiedNamespace,
+                entityPath, entityType, newReceiverOptions, connectionProcessor,
+                ServiceBusConstants.OPERATION_TIMEOUT, tracerProvider, messageSerializer, () -> { });
+            return sessionSpecificAsyncClient.getOrCreateConsumerAsync().map(consumer ->
+                new ServiceBusReceiverAsyncClient(fullyQualifiedNamespace, entityPath, entityType, newReceiverOptions,
+                    connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT, tracerProvider, messageSerializer,
+                    () -> { }, consumer));
+        }
+
     }
 
     @Override

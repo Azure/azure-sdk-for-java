@@ -166,6 +166,15 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         });
     }
 
+    ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
+         ReceiverOptions receiverOptions, ServiceBusConnectionProcessor connectionProcessor, Duration cleanupInterval,
+         TracerProvider tracerProvider, MessageSerializer messageSerializer, Runnable onClientClose,
+         ServiceBusAsyncConsumer asyncConsumer) {
+        this(fullyQualifiedNamespace, entityPath, entityType, receiverOptions, connectionProcessor, cleanupInterval,
+            tracerProvider, messageSerializer, onClientClose);
+        consumer.set(asyncConsumer);
+    }
+
     /**
      * Gets the fully qualified Service Bus namespace that the connection is associated with. This is likely similar to
      * {@code {yournamespace}.servicebus.windows.net}.
@@ -596,9 +605,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return An <b>infinite</b> stream of messages from the Service Bus entity.
      */
     Flux<ServiceBusMessageContext> receiveMessagesWithContext() {
-        System.out.println(this + " " + getClass().getName() + " receiveMessagesWithContext  receiverOptions.isEnableAutoComplete() "
-            + receiverOptions.isEnableAutoComplete() + ", sessionManager= " + sessionManager);
-
         final Flux<ServiceBusMessageContext> messageFlux = sessionManager != null
             ? sessionManager.receive()
             : getOrCreateConsumer().receive().map(ServiceBusMessageContext::new);
@@ -1010,11 +1016,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         Mono<Void> updateDispositionOperation;
         if (sessionManager != null) {
-            System.out.println( this + " " + getClass().getName() + " !!!! lockToken= "+lockToken + " will use  sessionManager to settle");
             updateDispositionOperation =  sessionManager.updateDisposition(lockToken, sessionId, dispositionStatus,
                 propertiesToModify, deadLetterReason, deadLetterErrorDescription, transactionContext)
                 .flatMap(isSuccess -> {
-                    System.out.println(getClass().getName() + " !!!! lockToken= "+lockToken + " after settling using sessionManager isSuccess = "+ isSuccess);
                     if (isSuccess) {
                         renewalContainer.remove(lockToken);
                         return Mono.empty();
@@ -1026,10 +1030,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         } else {
             final ServiceBusAsyncConsumer existingConsumer = consumer.get();
             if (isManagementToken(lockToken) || existingConsumer == null) {
-                System.out.println("!!!! lockToken= "+lockToken + "will use  management link to settle");
                 updateDispositionOperation = performOnManagement;
             } else {
-                System.out.println("!!!! lockToken= "+lockToken + "will use  NON-management link to settle");
                 updateDispositionOperation = existingConsumer.updateDisposition(lockToken, dispositionStatus,
                     deadLetterReason, deadLetterErrorDescription, propertiesToModify, transactionContext)
                     .then(Mono.fromRunnable(() -> {
@@ -1055,6 +1057,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 }
 
             });
+    }
+
+    Mono<ServiceBusAsyncConsumer> getOrCreateConsumerAsync() {
+        return Mono.defer(() -> Mono.just(getOrCreateConsumer()));
     }
 
     private ServiceBusAsyncConsumer getOrCreateConsumer() {
