@@ -18,6 +18,7 @@
 - Passing a `TokenCredential` to a client builder mistakenly assumed it was always a shared key credential.
 - Client methods that accept a `timeout` and/or `context` parameter will use default values if either parameter is set
   to `null`. [#16386](https://github.com/Azure/azure-sdk-for-java/issues/16386)
+- Methods that perform upsert entity operations were mistakenly performing update operations instead.
 
 ## 12.0.0-beta.2 (2020-10-06)
 
