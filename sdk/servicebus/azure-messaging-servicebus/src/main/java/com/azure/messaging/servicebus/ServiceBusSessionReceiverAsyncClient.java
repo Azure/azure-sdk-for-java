@@ -117,10 +117,7 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
         ServiceBusReceiverAsyncClient sessionSpecificAsyncClient = new ServiceBusReceiverAsyncClient(
             fullyQualifiedNamespace, entityPath, entityType, newReceiverOptions, connectionProcessor,
                 ServiceBusConstants.OPERATION_TIMEOUT, tracerProvider, messageSerializer, () -> { });
-        return sessionSpecificAsyncClient.getOrCreateConsumerAsync().map(consumer ->
-                new ServiceBusReceiverAsyncClient(fullyQualifiedNamespace, entityPath, entityType, newReceiverOptions,
-                    connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT, tracerProvider, messageSerializer,
-                    () -> { }, consumer));
+        return sessionSpecificAsyncClient.createConsumerWithReceiveLink();
 
     }
 

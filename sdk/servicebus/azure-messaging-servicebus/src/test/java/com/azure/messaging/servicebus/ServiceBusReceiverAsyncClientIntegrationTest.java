@@ -447,7 +447,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         sender.scheduleMessage(message, scheduledEnqueueTime).block(TIMEOUT);
 
         // Assert & Act
-       StepVerifier.create(Mono.delay(Duration.ofSeconds(4)).then(receiveAndDeleteReceiver.receiveMessages().next()))
+        StepVerifier.create(Mono.delay(Duration.ofSeconds(4)).then(receiveAndDeleteReceiver.receiveMessages().next()))
             .assertNext(receivedMessage -> {
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                 messagesPending.decrementAndGet();
@@ -550,7 +550,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             assertEquals(index, position);
         };
         final String messageId = UUID.randomUUID().toString();
-        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(10, messageId, CONTENTS_BYTES);
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(10, messageId,
+            CONTENTS_BYTES);
         if (isSessionEnabled) {
             messages.forEach(m -> m.setSessionId(sessionId));
         }

@@ -166,15 +166,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         });
     }
 
-    ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
-         ReceiverOptions receiverOptions, ServiceBusConnectionProcessor connectionProcessor, Duration cleanupInterval,
-         TracerProvider tracerProvider, MessageSerializer messageSerializer, Runnable onClientClose,
-         ServiceBusAsyncConsumer asyncConsumer) {
-        this(fullyQualifiedNamespace, entityPath, entityType, receiverOptions, connectionProcessor, cleanupInterval,
-            tracerProvider, messageSerializer, onClientClose);
-        consumer.set(asyncConsumer);
-    }
-
     /**
      * Gets the fully qualified Service Bus namespace that the connection is associated with. This is likely similar to
      * {@code {yournamespace}.servicebus.windows.net}.
@@ -1059,8 +1050,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             });
     }
 
-    Mono<ServiceBusAsyncConsumer> getOrCreateConsumerAsync() {
-        return Mono.defer(() -> Mono.just(getOrCreateConsumer()));
+    Mono<ServiceBusReceiverAsyncClient> createConsumerWithReceiveLink() {
+        return Mono.defer(() -> {
+            getOrCreateConsumer();
+            return Mono.just(this);
+        });
     }
 
     private ServiceBusAsyncConsumer getOrCreateConsumer() {
