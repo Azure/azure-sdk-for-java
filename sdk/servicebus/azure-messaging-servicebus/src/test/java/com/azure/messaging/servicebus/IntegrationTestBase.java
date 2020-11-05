@@ -81,7 +81,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
     @BeforeAll
     static void beforeAll() {
-        StepVerifier.setDefaultTimeout(TIMEOUT);
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
     }
 
     @AfterAll

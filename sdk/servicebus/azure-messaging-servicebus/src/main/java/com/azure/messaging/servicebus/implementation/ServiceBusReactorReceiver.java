@@ -184,7 +184,6 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     @Override
     protected Message decodeDelivery(Delivery delivery) {
         final byte[] deliveryTag = delivery.getTag();
-
         final UUID lockToken;
         if (deliveryTag != null && deliveryTag.length == LOCK_TOKEN_SIZE) {
             lockToken = MessageUtils.convertDotNetBytesToUUID(deliveryTag);
@@ -196,7 +195,6 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
 
         // There is no lock token associated with this delivery, or the lock token is not in the unsettledDeliveries.
         if (lockToken == MessageUtils.ZERO_LOCK_TOKEN || !unsettledDeliveries.containsKey(lockTokenString)) {
-
             final int messageSize = delivery.pending();
             final byte[] buffer = new byte[messageSize];
             final int read = receiver.recv(buffer, 0, messageSize);
@@ -214,7 +212,6 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
             }
             return new MessageWithLockToken(message, lockToken);
         } else {
-
             updateOutcome(lockTokenString, delivery);
 
             // Return empty update disposition messages. The deliveries themselves are ACKs. There is no actual message
