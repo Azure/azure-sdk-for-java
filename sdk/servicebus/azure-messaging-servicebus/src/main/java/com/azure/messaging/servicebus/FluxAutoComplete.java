@@ -143,6 +143,9 @@ final class FluxAutoComplete extends FluxOperator<ServiceBusReceivedMessageConte
                 function.apply(context).block();
             } catch (Exception e) {
                 logger.warning("Unable to '{}' message.", operation, e);
+
+                // On an error, we'll stop requesting from upstream and pass the error downstream.
+                upstream().cancel();
                 onError(e);
             }
         }
