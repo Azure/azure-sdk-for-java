@@ -47,9 +47,8 @@ public final class TableBatch {
      *
      * @return The updated {@link TableBatch}.
      * @throws IllegalArgumentException if the entity's partition key does not match the partition key provided when
-     *                                  creating this {@link TableBatch} object, if the entity's row key is {@code null}
-     *                                  or empty, or if another operation with the same row key has already been added
-     *                                  to the batch.
+     * creating this {@link TableBatch} object, if the entity's row key is {@code null} or empty, or if another
+     * operation with the same row key has already been added to the batch.
      * @throws IllegalStateException if this method is called after the batch has been submitted.
      */
     public TableBatch createEntity(TableEntity entity) {
@@ -67,9 +66,8 @@ public final class TableBatch {
      *
      * @return The updated {@link TableBatch}.
      * @throws IllegalArgumentException if the entity's partition key does not match the partition key provided when
-     *                                  creating this {@link TableBatch} object, if the entity's row key is {@code null}
-     *                                  or empty, or if another operation with the same row key has already been added
-     *                                  to the batch.
+     * creating this {@link TableBatch} object, if the entity's row key is {@code null} or empty, or if another
+     * operation with the same row key has already been added to the batch.
      * @throws IllegalStateException if this method is called after the batch has been submitted.
      */
     public TableBatch upsertEntity(TableEntity entity) {
@@ -93,9 +91,8 @@ public final class TableBatch {
      *
      * @return The updated {@link TableBatch}.
      * @throws IllegalArgumentException if the entity's partition key does not match the partition key provided when
-     *                                  creating this {@link TableBatch} object, if the entity's row key is {@code null}
-     *                                  or empty, or if another operation with the same row key has already been added
-     *                                  to the batch.
+     * creating this {@link TableBatch} object, if the entity's row key is {@code null} or empty, or if another
+     * operation with the same row key has already been added to the batch.
      * @throws IllegalStateException if this method is called after the batch has been submitted.
      */
     public TableBatch upsertEntity(TableEntity entity, UpdateMode updateMode) {
@@ -110,9 +107,8 @@ public final class TableBatch {
      *
      * @return The updated {@link TableBatch}.
      * @throws IllegalArgumentException if the entity's partition key does not match the partition key provided when
-     *                                  creating this {@link TableBatch} object, if the entity's row key is {@code null}
-     *                                  or empty, or if another operation with the same row key has already been added
-     *                                  to the batch.
+     * creating this {@link TableBatch} object, if the entity's row key is {@code null} or empty, or if another
+     * operation with the same row key has already been added to the batch.
      * @throws IllegalStateException if this method is called after the batch has been submitted.
      */
     public TableBatch updateEntity(TableEntity entity) {
@@ -132,9 +128,8 @@ public final class TableBatch {
      *
      * @return The updated {@link TableBatch}.
      * @throws IllegalArgumentException if the entity's partition key does not match the partition key provided when
-     *                                  creating this {@link TableBatch} object, if the entity's row key is {@code null}
-     *                                  or empty, or if another operation with the same row key has already been added
-     *                                  to the batch.
+     * creating this {@link TableBatch} object, if the entity's row key is {@code null} or empty, or if another
+     * operation with the same row key has already been added to the batch.
      * @throws IllegalStateException if this method is called after the batch has been submitted.
      */
     public TableBatch updateEntity(TableEntity entity, UpdateMode updateMode) {
@@ -152,14 +147,12 @@ public final class TableBatch {
      * @param entity The entity to update.
      * @param updateMode The type of update to perform.
      * @param ifUnchanged When true, the eTag of the provided entity must match the eTag of the entity in the Table
-     *                    service. If the values do not match, the update will not occur and an exception will be
-     *                    thrown.
+     * service. If the values do not match, the update will not occur and an exception will be thrown.
      *
      * @return The updated {@link TableBatch}.
      * @throws IllegalArgumentException if the entity's partition key does not match the partition key provided when
-     *                                  creating this {@link TableBatch} object, if the entity's row key is {@code null}
-     *                                  or empty, or if another operation with the same row key has already been added
-     *                                  to the batch.
+     * creating this {@link TableBatch} object, if the entity's row key is {@code null} or empty, or if another
+     * operation with the same row key has already been added to the batch.
      * @throws IllegalStateException if this method is called after the batch has been submitted.
      */
     public TableBatch updateEntity(TableEntity entity, UpdateMode updateMode, boolean ifUnchanged) {
@@ -174,7 +167,7 @@ public final class TableBatch {
      *
      * @return The updated {@link TableBatch}.
      * @throws IllegalArgumentException if the provided row key is {@code null} or empty, or if another operation with
-     *                                  the same row key has already been added to the batch.
+     * the same row key has already been added to the batch.
      * @throws IllegalStateException if this method is called after the batch has been submitted.
      */
     public TableBatch deleteEntity(String rowKey) {
@@ -187,11 +180,11 @@ public final class TableBatch {
      *
      * @param rowKey The row key of the entity.
      * @param eTag The value to compare with the eTag of the entity in the Tables service. If the values do not match,
-     *             the delete will not occur and an exception will be thrown.
+     * the delete will not occur and an exception will be thrown.
      *
      * @return The updated {@link TableBatch}.
      * @throws IllegalArgumentException if the provided row key is {@code null} or empty, or if another operation with
-     *                                  the same row key has already been added to the batch.
+     * the same row key has already been added to the batch.
      * @throws IllegalStateException if this method is called after the batch has been submitted.
      */
     public TableBatch deleteEntity(String rowKey, String eTag) {
@@ -214,8 +207,7 @@ public final class TableBatch {
      *
      * @return A list of sub-responses for each operation in the batch.
      * @throws TableServiceErrorException if any operation within the batch fails. See the documentation for the client
-     *                                    methods in {@link TableClient} to understand the conditions that may cause a
-     *                                    given operation to fail.
+     * methods in {@link TableClient} to understand the conditions that may cause a given operation to fail.
      * @throws IllegalStateException if no operations have been added to the batch.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -230,8 +222,7 @@ public final class TableBatch {
      * @param timeout Duration to wait for the operation to complete.
      * @return A list of sub-responses for each operation in the batch.
      * @throws TableServiceErrorException if any operation within the batch fails. See the documentation for the client
-     *                                    methods in {@link TableClient} to understand the conditions that may cause a
-     *                                    given operation to fail.
+     * methods in {@link TableClient} to understand the conditions that may cause a given operation to fail.
      * @throws IllegalStateException if no operations have been added to the batch.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -246,10 +237,9 @@ public final class TableBatch {
      * @param timeout Duration to wait for the operation to complete.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return The HTTP response produced for the batch itself. The response's value will contain a list of
-     *         sub-responses for each operation in the batch.
+     * sub-responses for each operation in the batch.
      * @throws TableServiceErrorException if any operation within the batch fails. See the documentation for the client
-     *                                    methods in {@link TableClient} to understand the conditions that may cause a
-     *                                    given operation to fail.
+     * methods in {@link TableClient} to understand the conditions that may cause a given operation to fail.
      * @throws IllegalStateException if no operations have been added to the batch.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

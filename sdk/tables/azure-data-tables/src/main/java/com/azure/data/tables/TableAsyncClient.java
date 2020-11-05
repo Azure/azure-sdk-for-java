@@ -13,6 +13,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
@@ -141,7 +142,7 @@ public final class TableAsyncClient {
      * @throws IllegalArgumentException if the provided partition key is {@code null} or empty.
      */
     public TableAsyncBatch createBatch(String partitionKey) {
-        if (partitionKey == null || partitionKey.isEmpty()) {
+        if (CoreUtils.isNullOrEmpty(partitionKey)) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("The partition key must not be null or empty."));
         }

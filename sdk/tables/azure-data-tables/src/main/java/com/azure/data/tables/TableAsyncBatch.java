@@ -8,12 +8,14 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.tables.implementation.BatchImpl;
 import com.azure.data.tables.implementation.ModelHelper;
 import com.azure.data.tables.implementation.TablesMultipartSerializer;
 import com.azure.data.tables.implementation.models.BatchChangeSet;
 import com.azure.data.tables.implementation.models.BatchOperation;
+import com.azure.data.tables.implementation.models.BatchSubmitBatchResponse;
 import com.azure.data.tables.models.BatchOperationResponse;
 import com.azure.data.tables.implementation.models.BatchRequestBody;
 import com.azure.data.tables.implementation.models.BatchSubRequest;
@@ -49,6 +51,8 @@ import static com.azure.core.util.FluxUtil.withContext;
  */
 @Fluent
 public final class TableAsyncBatch {
+    private static final TablesMultipartSerializer BATCH_SERIALIZER = new TablesMultipartSerializer();
+
     private final ClientLogger logger = new ClientLogger(TableAsyncBatch.class);
     private final String partitionKey;
     private final TableAsyncClient operationClient;
@@ -59,7 +63,7 @@ public final class TableAsyncBatch {
 
     TableAsyncBatch(String partitionKey, TableAsyncClient client) {
         this.partitionKey = partitionKey;
-        this.batchImpl = new BatchImpl(client.getImplementation(), new TablesMultipartSerializer());
+        this.batchImpl = new BatchImpl(client.getImplementation(), BATCH_SERIALIZER);
         this.operationClient = new TableClientBuilder()
             .tableName(client.getTableName())
             .endpoint(client.getImplementation().getUrl())
@@ -75,9 +79,8 @@ public final class TableAsyncBatch {
      *
      * @return The updated {@link TableAsyncBatch}.
      * @throws IllegalArgumentException if the entity's partition key does not match the partition key provided when
-     *                                  creating this {@link TableAsyncBatch} object, if the entity's row key is {@code
-     *                                  null} or empty, or if another operation with the same row key has already been
-     *                                  added to the batch.
+     * creating this {@link TableAsyncBatch} object, if the entity's row key is {@code null} or empty, or if another
+     * operation with the same row key has already been added to the batch.
      * @throws IllegalStateException if this method is called after the batch has been submitted.
      */
     public TableAsyncBatch createEntity(TableEntity entity) {
@@ -96,9 +99,8 @@ public final class TableAsyncBatch {
      *
      * @return The updated {@link TableAsyncBatch}.
      * @throws IllegalArgumentException if the entity's partition key does not match the partition key provided when
-     *                                  creating this {@link TableAsyncBatch} object, if the entity's row key is {@code
-     *                                  null} or empty, or if another operation with the same row key has already been
-     *                                  added to the batch.
+     * creating this {@link TableAsyncBatch} object, if the entity's row key is {@code null} or empty, or if another
+     * operation with the same row key has already been added to the batch.
      * @throws IllegalStateException if this method is called after the batch has been submitted.
      */
     public TableAsyncBatch upsertEntity(TableEntity entity) {
@@ -121,9 +123,8 @@ public final class TableAsyncBatch {
      *
      * @return The updated {@link TableAsyncBatch}.
      * @throws IllegalArgumentException if the entity's partition key does not match the partition key provided when
-     *                                  creating this {@link TableAsyncBatch} object, if the entity's row key is {@code
-     *                                  null} or empty, or if another operation with the same row key has already been
-     *                                  added to the batch.
+     * creating this {@link TableAsyncBatch} object, if the entity's row key is {@code null} or empty, or if another
+     * operation with the same row key has already been added to the batch.
      * @throws IllegalStateException if this method is called after the batch has been submitted.
      */
     public TableAsyncBatch upsertEntity(TableEntity entity, UpdateMode updateMode) {
@@ -139,9 +140,8 @@ public final class TableAsyncBatch {
      *
      * @return The updated {@link TableAsyncBatch}.
      * @throws IllegalArgumentException if the entity's partition key does not match the partition key provided when
-     *                                  creating this {@link TableAsyncBatch} object, if the entity's row key is {@code
-     *                                  null} or empty, or if another operation with the same row key has already been
-     *                                  added to the batch.
+     * creating this {@link TableAsyncBatch} object, if the entity's row key is {@code null} or empty, or if another
+     * operation with the same row key has already been added to the batch.
      * @throws IllegalStateException if this method is called after the batch has been submitted.
      */
     public TableAsyncBatch updateEntity(TableEntity entity) {
@@ -160,9 +160,8 @@ public final class TableAsyncBatch {
      *
      * @return The updated {@link TableAsyncBatch}.
      * @throws IllegalArgumentException if the entity's partition key does not match the partition key provided when
-     *                                  creating this {@link TableAsyncBatch} object, if the entity's row key is {@code
-     *                                  null} or empty, or if another operation with the same row key has already been
-     *                                  added to the batch.
+     * creating this {@link TableAsyncBatch} object, if the entity's row key is {@code null} or empty, or if another
+     * operation with the same row key has already been added to the batch.
      * @throws IllegalStateException if this method is called after the batch has been submitted.
      */
     public TableAsyncBatch updateEntity(TableEntity entity, UpdateMode updateMode) {
@@ -179,14 +178,12 @@ public final class TableAsyncBatch {
      * @param entity The entity to update.
      * @param updateMode The type of update to perform.
      * @param ifUnchanged When true, the eTag of the provided entity must match the eTag of the entity in the Table
-     *                    service. If the values do not match, the update will not occur and an exception will be
-     *                    thrown.
+     * service. If the values do not match, the update will not occur and an exception will be thrown.
      *
      * @return The updated {@link TableAsyncBatch}.
      * @throws IllegalArgumentException if the entity's partition key does not match the partition key provided when
-     *                                  creating this {@link TableAsyncBatch} object, if the entity's row key is {@code
-     *                                  null} or empty, or if another operation with the same row key has already been
-     *                                  added to the batch.
+     * creating this {@link TableAsyncBatch} object, if the entity's row key is {@code null} or empty, or if another
+     * operation with the same row key has already been added to the batch.
      * @throws IllegalStateException if this method is called after the batch has been submitted.
      */
     public TableAsyncBatch updateEntity(TableEntity entity, UpdateMode updateMode, boolean ifUnchanged) {
@@ -202,7 +199,7 @@ public final class TableAsyncBatch {
      *
      * @return The updated {@link TableAsyncBatch}.
      * @throws IllegalArgumentException if the provided row key is {@code null} or empty, or if another operation with
-     *                                  the same row key has already been added to the batch.
+     * the same row key has already been added to the batch.
      * @throws IllegalStateException if this method is called after the batch has been submitted.
      */
     public TableAsyncBatch deleteEntity(String rowKey) {
@@ -214,11 +211,11 @@ public final class TableAsyncBatch {
      *
      * @param rowKey The row key of the entity.
      * @param eTag The value to compare with the eTag of the entity in the Tables service. If the values do not match,
-     *             the delete will not occur and an exception will be thrown.
+     * the delete will not occur and an exception will be thrown.
      *
      * @return The updated {@link TableAsyncBatch}.
      * @throws IllegalArgumentException if the provided row key is {@code null} or empty, or if another operation with
-     *                                  the same row key has already been added to the batch.
+     * the same row key has already been added to the batch.
      * @throws IllegalStateException if this method is called after the batch has been submitted.
      */
     public TableAsyncBatch deleteEntity(String rowKey, String eTag) {
@@ -242,8 +239,7 @@ public final class TableAsyncBatch {
      *
      * @return A reactive result containing a list of sub-responses for each operation in the batch.
      * @throws TableServiceErrorException if any operation within the batch fails. See the documentation for the client
-     *                                    methods in {@link TableAsyncClient} to understand the conditions that may
-     *                                    cause a given operation to fail.
+     * methods in {@link TableAsyncClient} to understand the conditions that may cause a given operation to fail.
      * @throws IllegalStateException if no operations have been added to the batch.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -258,8 +254,7 @@ public final class TableAsyncBatch {
      * @return A reactive result containing the HTTP response produced for the batch itself. The response's value will
      * contain a list of sub-responses for each operation in the batch.
      * @throws TableServiceErrorException if any operation within the batch fails. See the documentation for the client
-     *                                    methods in {@link TableAsyncClient} to understand the conditions that may
-     *                                    cause a given operation to fail.
+     * methods in {@link TableAsyncClient} to understand the conditions that may cause a given operation to fail.
      * @throws IllegalStateException if no operations have been added to the batch.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -269,85 +264,82 @@ public final class TableAsyncBatch {
 
     synchronized Mono<Response<List<BatchOperationResponse>>> submitTransactionWithResponse(Context context) {
         this.frozen = true;
-        context = context == null ? Context.NONE : context;
+        Context finalContext = context == null ? Context.NONE : context;
 
         if (operations.size() == 0) {
             throw logger.logExceptionAsError(new IllegalStateException("A batch must contain at least one operation."));
         }
 
-        final BatchRequestBody body = new BatchRequestBody();
-        Flux.fromIterable(operations)
-            .flatMapSequential(op -> op.prepareRequest(operationClient))
-            .zipWith(Flux.fromIterable(operations))
-            .doOnNext(pair -> body.addChangeOperation(new BatchSubRequest(pair.getT2(), pair.getT1())))
-            .blockLast();
+        return Flux.fromIterable(operations)
+            .flatMapSequential(op -> op.prepareRequest(operationClient).zipWith(Mono.just(op)))
+            .collect(BatchRequestBody::new, (body, pair) ->
+                body.addChangeOperation(new BatchSubRequest(pair.getT2(), pair.getT1())))
+            .flatMap(body ->
+                batchImpl.submitBatchWithRestResponseAsync(body, null, finalContext).zipWith(Mono.just(body)))
+            .flatMap(pair -> parseResponse(pair.getT2(), pair.getT1()));
+    }
 
-        try {
-            return batchImpl.submitBatchWithRestResponseAsync(body, null, context)
-                .map(response -> {
-                    TableServiceError error = null;
-                    String errorMessage = null;
-                    BatchChangeSet changes = null;
-                    BatchOperation failedOperation = null;
+    private Mono<Response<List<BatchOperationResponse>>> parseResponse(BatchRequestBody requestBody,
+                                                                       BatchSubmitBatchResponse response) {
+        TableServiceError error = null;
+        String errorMessage = null;
+        BatchChangeSet changes = null;
+        BatchOperation failedOperation = null;
 
-                    if (body.getContents().get(0) instanceof BatchChangeSet) {
-                        changes = (BatchChangeSet) body.getContents().get(0);
-                    }
+        if (requestBody.getContents().get(0) instanceof BatchChangeSet) {
+            changes = (BatchChangeSet) requestBody.getContents().get(0);
+        }
 
-                    for (int i = 0; i < response.getValue().length; i++) {
-                        BatchOperationResponse subResponse = response.getValue()[i];
+        for (int i = 0; i < response.getValue().length; i++) {
+            BatchOperationResponse subResponse = response.getValue()[i];
 
-                        // Attempt to attach a sub-request to each batch sub-response
-                        if (changes != null && changes.getContents().get(i) != null) {
-                            ModelHelper.updateBatchOperationResponse(subResponse,
-                                changes.getContents().get(i).getHttpRequest());
-                        }
+            // Attempt to attach a sub-request to each batch sub-response
+            if (changes != null && changes.getContents().get(i) != null) {
+                ModelHelper.updateBatchOperationResponse(subResponse,
+                    changes.getContents().get(i).getHttpRequest());
+            }
 
-                        // If one sub-response was an error, we need to throw even though the service responded with 202
-                        if (subResponse.getStatusCode() >= 400 && error == null && errorMessage == null) {
-                            if (subResponse.getValue() instanceof TableServiceError) {
-                                error = (TableServiceError) subResponse.getValue();
+            // If one sub-response was an error, we need to throw even though the service responded with 202
+            if (subResponse.getStatusCode() >= 400 && error == null && errorMessage == null) {
+                if (subResponse.getValue() instanceof TableServiceError) {
+                    error = (TableServiceError) subResponse.getValue();
 
-                                // Make a best effort to locate the failed operation and include it in the message
-                                if (changes != null && error.getOdataError() != null
-                                    && error.getOdataError().getMessage() != null
-                                    && error.getOdataError().getMessage().getValue() != null) {
+                    // Make a best effort to locate the failed operation and include it in the message
+                    if (changes != null && error.getOdataError() != null
+                        && error.getOdataError().getMessage() != null
+                        && error.getOdataError().getMessage().getValue() != null) {
 
-                                    String message = error.getOdataError().getMessage().getValue();
-                                    try {
-                                        int failedIndex = Integer.parseInt(message.substring(0, message.indexOf(":")));
-                                        failedOperation = changes.getContents().get(failedIndex).getOperation();
-                                    } catch (NumberFormatException e) {
-                                        // Unable to parse failed operation from batch error message - this just means
-                                        // the service did not indicate which request was the one that failed. Since
-                                        // this is optional, just swallow the exception.
-                                    }
-                                }
-                            } else if (subResponse.getValue() instanceof String) {
-                                errorMessage = "The service returned the following data for the failed operation: "
-                                    + subResponse.getValue();
-                            } else {
-                                errorMessage =
-                                    "The service returned the following status code for the failed operation: "
-                                        + subResponse.getStatusCode();
-                            }
+                        String message = error.getOdataError().getMessage().getValue();
+                        try {
+                            int failedIndex = Integer.parseInt(message.substring(0, message.indexOf(":")));
+                            failedOperation = changes.getContents().get(failedIndex).getOperation();
+                        } catch (NumberFormatException e) {
+                            // Unable to parse failed operation from batch error message - this just means
+                            // the service did not indicate which request was the one that failed. Since
+                            // this is optional, just swallow the exception.
                         }
                     }
+                } else if (subResponse.getValue() instanceof String) {
+                    errorMessage = "The service returned the following data for the failed operation: "
+                        + subResponse.getValue();
+                } else {
+                    errorMessage =
+                        "The service returned the following status code for the failed operation: "
+                            + subResponse.getStatusCode();
+                }
+            }
+        }
 
-                    if (error != null || errorMessage != null) {
-                        String message = "An operation within the batch failed, the transaction has been rolled back.";
-                        if (failedOperation != null) {
-                            message += " The failed operation was: " + failedOperation.toString();
-                        } else if (errorMessage != null) {
-                            message += " " + errorMessage;
-                        }
-                        throw logger.logExceptionAsError(new TableServiceErrorException(message, null, error));
-                    } else {
-                        return new SimpleResponse<>(response, Arrays.asList(response.getValue()));
-                    }
-                });
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        if (error != null || errorMessage != null) {
+            String message = "An operation within the batch failed, the transaction has been rolled back.";
+            if (failedOperation != null) {
+                message += " The failed operation was: " + failedOperation.toString();
+            } else if (errorMessage != null) {
+                message += " " + errorMessage;
+            }
+            return monoError(logger, new TableServiceErrorException(message, null, error));
+        } else {
+            return Mono.just(new SimpleResponse<>(response, Arrays.asList(response.getValue())));
         }
     }
 
@@ -370,7 +362,7 @@ public final class TableAsyncBatch {
                 new IllegalArgumentException("All operations in a batch must share the same partition key."));
         }
 
-        if (rowKey == null || rowKey.isEmpty()) {
+        if (CoreUtils.isNullOrEmpty(rowKey)) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("The row key must not be null or empty."));
         }

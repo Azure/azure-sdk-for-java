@@ -101,11 +101,12 @@ final class BuilderHelper {
     }
 
     static HttpPipeline buildNullClientPipeline() {
-        List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new AddHeadersPolicy(new HttpHeaders().put("Accept", "application/json;odata=minimalmetadata")));
+        HttpPipelinePolicy[] policies = {
+            new AddHeadersPolicy(new HttpHeaders().put("Accept", "application/json;odata=minimalmetadata"))
+        };
 
         return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .policies(policies)
             .httpClient(new NullHttpClient())
             .build();
     }
