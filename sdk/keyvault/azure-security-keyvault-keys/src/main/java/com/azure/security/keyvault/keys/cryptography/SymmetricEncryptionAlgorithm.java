@@ -14,11 +14,6 @@ import java.security.Provider;
  */
 abstract class SymmetricEncryptionAlgorithm extends LocalEncryptionAlgorithm {
     /*
-     * The block size for AES algorithms.
-     */
-    static final int BLOCK_SIZE = 128;
-
-    /*
      * Constructor.
      *
      * @param name The name of the algorithm.

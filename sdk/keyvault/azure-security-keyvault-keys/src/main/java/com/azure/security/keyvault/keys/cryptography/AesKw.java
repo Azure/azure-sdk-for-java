@@ -17,6 +17,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 
 abstract class AesKw extends LocalKeyWrapAlgorithm {
+    static final int BLOCK_SIZE_IN_BITS = 64;
     static final byte[] DEFAULT_IV =
         new byte[]{(byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6,
             (byte) 0xA6};
@@ -134,7 +135,8 @@ abstract class AesKw extends LocalKeyWrapAlgorithm {
         if (iv != null) {
             // iv length must be 64 bits
             if (iv.length != 8) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("iv length must be 64 bits"));
+                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                    "iv length must be %s bits", BLOCK_SIZE_IN_BITS)));
             }
             // iv cannot be specified with the default provider
             if (provider == null) {
@@ -187,7 +189,8 @@ abstract class AesKw extends LocalKeyWrapAlgorithm {
         if (iv != null) {
             // iv length must be 64 bits
             if (iv.length != 8) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("iv length must be 64 bits"));
+                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                    "iv length must be %s bits", BLOCK_SIZE_IN_BITS)));
             }
             // iv cannot be specified with the default provider
             if (provider == null) {

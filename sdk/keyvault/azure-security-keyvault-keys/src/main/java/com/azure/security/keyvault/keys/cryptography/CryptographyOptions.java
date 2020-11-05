@@ -15,19 +15,38 @@ public class CryptographyOptions {
      * Initialization vector for symmetric algorithms.
      */
     @JsonProperty(value = "iv")
-    private byte[] initializationVector;
+    private final byte[] initializationVector;
 
     /**
      * Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
      */
     @JsonProperty(value = "aad")
-    private byte[] additionalAuthenticatedData;
+    private final byte[] additionalAuthenticatedData;
 
     /**
      * The tag to authenticate when performing decryption with an authenticated algorithm.
      */
     @JsonProperty(value = "tag")
-    private byte[] tag;
+    private final byte[] tag;
+
+    /**
+     * Creates an instance of {@link CryptographyOptions} with the given parameters.
+     *
+     * @param initializationVector Initialization vector for symmetric algorithms.
+     * @param additionalAuthenticatedData Additional data to authenticate but not encrypt/decrypt when using
+     * authenticated crypto algorithms.
+     * @param tag The tag to authenticate when performing decryption with an authenticated algorithm.
+     */
+    public CryptographyOptions(byte[] initializationVector, byte[] additionalAuthenticatedData, byte[] tag) {
+        this.initializationVector = new byte[initializationVector.length];
+        this.additionalAuthenticatedData = new byte[additionalAuthenticatedData.length];
+        this.tag = new byte[tag.length];
+
+        System.arraycopy(initializationVector, 0, this.initializationVector, 0, initializationVector.length);
+        System.arraycopy(additionalAuthenticatedData, 0, this.additionalAuthenticatedData, 0,
+            additionalAuthenticatedData.length);
+        System.arraycopy(tag, 0, this.tag, 0, tag.length);
+    }
 
     /**
      * Get the initialization vector to be used in the cryptographic operation using a symmetric algorithm.
@@ -35,18 +54,7 @@ public class CryptographyOptions {
      * @return The initialization vector.
      */
     public byte[] getInitializationVector() {
-        return initializationVector;
-    }
-
-    /**
-     * Set the initialization vector to be used in the cryptographic operation using a symmetric algorithm.
-     *
-     * @param initializationVector The initialization vector to set.
-     * @return The updated {@link CryptographyOptions} object.
-     */
-    public CryptographyOptions setInitializationVector(byte[] initializationVector) {
-        this.initializationVector = initializationVector;
-        return this;
+        return initializationVector.clone();
     }
 
     /**
@@ -55,18 +63,7 @@ public class CryptographyOptions {
      * @return The additional authenticated data.
      */
     public byte[] getAdditionalAuthenticatedData() {
-        return additionalAuthenticatedData;
-    }
-
-    /**
-     * Set additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
-     *
-     * @param additionalAuthenticatedData The additional authenticated data.
-     * @return The updated {@link CryptographyOptions} object.
-     */
-    public CryptographyOptions setAdditionalAuthenticatedData(byte[] additionalAuthenticatedData) {
-        this.additionalAuthenticatedData = additionalAuthenticatedData;
-        return this;
+        return additionalAuthenticatedData.clone();
     }
 
     /**
@@ -75,17 +72,6 @@ public class CryptographyOptions {
      * @return The tag.
      */
     public byte[] getTag() {
-        return tag;
-    }
-
-    /**
-     * Set the tag to authenticate when performing decryption with an authenticated algorithm.
-     *
-     * @param tag The tag to set.
-     * @return The updated {@link CryptographyOptions} object.
-     */
-    public CryptographyOptions setTag(byte[] tag) {
-        this.tag = tag;
-        return this;
+        return tag.clone();
     }
 }

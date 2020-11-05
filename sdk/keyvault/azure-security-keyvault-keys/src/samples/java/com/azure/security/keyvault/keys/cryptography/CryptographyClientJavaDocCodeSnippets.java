@@ -116,9 +116,7 @@ public final class CryptographyClientJavaDocCodeSnippets {
             (byte) 0x66, (byte) 0x73
         };
 
-        CryptographyOptions cryptographyOptions = new CryptographyOptions()
-            .setInitializationVector(iv)
-            .setAdditionalAuthenticatedData(authData);
+        CryptographyOptions cryptographyOptions = new CryptographyOptions(iv, authData, null);
 
         EncryptResult encryptedResult = cryptographyClient.encrypt(EncryptionAlgorithm.RSA_OAEP, myPlainText,
             cryptographyOptions, new Context(key1, value1));
@@ -173,10 +171,9 @@ public final class CryptographyClientJavaDocCodeSnippets {
             (byte) 0x4b, (byte) 0x65, (byte) 0x72, (byte) 0x63, (byte) 0x6b, (byte) 0x68, (byte) 0x6f, (byte) 0x66,
             (byte) 0x66, (byte) 0x73
         };
+        byte[] tag = "This is my authentication tag".getBytes();
 
-        CryptographyOptions cryptographyOptions = new CryptographyOptions()
-            .setInitializationVector(iv)
-            .setAdditionalAuthenticatedData(authData);
+        CryptographyOptions cryptographyOptions = new CryptographyOptions(iv, authData, tag);
 
         DecryptResult decryptedResult = cryptographyClient.decrypt(EncryptionAlgorithm.RSA_OAEP, myCipherText,
             cryptographyOptions, new Context(key1, value1));
@@ -314,9 +311,7 @@ public final class CryptographyClientJavaDocCodeSnippets {
             (byte) 0x66, (byte) 0x73
         };
 
-        CryptographyOptions cryptographyOptions = new CryptographyOptions()
-            .setInitializationVector(iv)
-            .setAdditionalAuthenticatedData(authData);
+        CryptographyOptions cryptographyOptions = new CryptographyOptions(iv, authData, null);
 
         WrapResult wrapKeyResult = cryptographyClient.wrapKey(KeyWrapAlgorithm.RSA_OAEP, keyToWrap, cryptographyOptions,
             new Context(key1, value1));
@@ -363,9 +358,7 @@ public final class CryptographyClientJavaDocCodeSnippets {
             (byte) 0x66, (byte) 0x73
         };
 
-        CryptographyOptions options = new CryptographyOptions()
-            .setInitializationVector(initializationVector)
-            .setAdditionalAuthenticatedData(authenticationData);
+        CryptographyOptions options = new CryptographyOptions(initializationVector, authenticationData, null);
 
         UnwrapResult unwrappedKey = cryptographyClient.unwrapKey(KeyWrapAlgorithm.RSA_OAEP, keyToUnwrap, options,
             new Context(key2, value2));

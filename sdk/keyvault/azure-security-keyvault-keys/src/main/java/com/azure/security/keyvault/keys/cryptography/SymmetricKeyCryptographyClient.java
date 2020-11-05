@@ -18,9 +18,6 @@ import com.azure.security.keyvault.keys.models.JsonWebKey;
 import reactor.core.publisher.Mono;
 
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-
-import static com.azure.security.keyvault.keys.cryptography.SymmetricEncryptionAlgorithm.BLOCK_SIZE;
 
 class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
     private final ClientLogger logger = new ClientLogger(SymmetricKeyCryptographyClient.class);
@@ -68,17 +65,16 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         ICryptoTransform transform;
 
-        byte[] iv = options.getInitializationVector();
+        byte[] iv = null;
+        byte[] authData = null;
 
-        if (iv == null) {
-            SecureRandom secureRandom = new SecureRandom();
-            iv = new byte[BLOCK_SIZE];
-            secureRandom.nextBytes(iv);
+        if (options != null) {
+            iv = options.getInitializationVector();
+            authData = options.getAdditionalAuthenticatedData();
         }
 
         try {
-            transform = symmetricEncryptionAlgorithm.createEncryptor(this.key, iv,
-                options.getAdditionalAuthenticatedData(), null);
+            transform = symmetricEncryptionAlgorithm.createEncryptor(this.key, iv, authData, null);
         } catch (Exception e) {
             return Mono.error(e);
         }
@@ -114,17 +110,18 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         ICryptoTransform transform;
 
-        byte[] iv = options.getInitializationVector();
+        byte[] iv = null;
+        byte[] authData = null;
+        byte[] tag = null;
 
-        if (iv == null) {
-            SecureRandom secureRandom = new SecureRandom();
-            iv = new byte[BLOCK_SIZE];
-            secureRandom.nextBytes(iv);
+        if (options != null) {
+            iv = options.getInitializationVector();
+            authData = options.getAdditionalAuthenticatedData();
+            tag = options.getTag();
         }
 
         try {
-            transform = symmetricEncryptionAlgorithm.createDecryptor(this.key, iv,
-                options.getAdditionalAuthenticatedData(), options.getTag());
+            transform = symmetricEncryptionAlgorithm.createDecryptor(this.key, iv, authData, tag);
         } catch (Exception e) {
             return Mono.error(e);
         }
@@ -171,13 +168,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         ICryptoTransform transform;
 
-        byte[] iv = options.getInitializationVector();
-
-        if (iv == null) {
-            SecureRandom secureRandom = new SecureRandom();
-            iv = new byte[BLOCK_SIZE];
-            secureRandom.nextBytes(iv);
-        }
+        byte[] iv = options == null ? null : options.getInitializationVector();
 
         try {
             transform = localKeyWrapAlgorithm.createEncryptor(this.key, iv, null);
@@ -211,16 +202,10 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         ICryptoTransform transform;
 
-        byte[] iv = options.getInitializationVector();
-
-        if (iv == null) {
-            SecureRandom secureRandom = new SecureRandom();
-            iv = new byte[BLOCK_SIZE];
-            secureRandom.nextBytes(iv);
-        }
+        byte[] iv = options == null ? null : options.getInitializationVector();
 
         try {
-            transform = localKeyWrapAlgorithm.createDecryptor(key, iv, null);
+            transform = localKeyWrapAlgorithm.createDecryptor(this.key, iv, null);
         } catch (Exception e) {
             return Mono.error(e);
         }

@@ -140,9 +140,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
             (byte) 0x66, (byte) 0x73
         };
 
-        CryptographyOptions cryptographyOptions = new CryptographyOptions()
-            .setInitializationVector(iv)
-            .setAdditionalAuthenticatedData(authData);
+        CryptographyOptions cryptographyOptions = new CryptographyOptions(iv, authData, null);
 
         cryptographyAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainTextBytes, cryptographyOptions)
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
@@ -188,10 +186,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
         };
         byte[] tag = "This is my authentication tag".getBytes();
 
-        CryptographyOptions cryptographyOptions = new CryptographyOptions()
-            .setInitializationVector(iv)
-            .setAdditionalAuthenticatedData(authData)
-            .setTag(tag);
+        CryptographyOptions cryptographyOptions = new CryptographyOptions(iv, authData, tag);
 
         cryptographyAsyncClient.decrypt(EncryptionAlgorithm.RSA_OAEP, cipherTextBytes, cryptographyOptions)
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
@@ -293,9 +288,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
             (byte) 0x66, (byte) 0x73
         };
 
-        CryptographyOptions cryptographyOptions = new CryptographyOptions()
-            .setInitializationVector(iv)
-            .setAdditionalAuthenticatedData(authData);
+        CryptographyOptions cryptographyOptions = new CryptographyOptions(iv, authData, null);
 
         cryptographyAsyncClient.wrapKey(KeyWrapAlgorithm.RSA_OAEP, keyToWrap, cryptographyOptions)
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
@@ -331,9 +324,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
             (byte) 0x66, (byte) 0x73
         };
 
-        CryptographyOptions options = new CryptographyOptions()
-            .setInitializationVector(initializationVector)
-            .setAdditionalAuthenticatedData(authenticationData);
+        CryptographyOptions options = new CryptographyOptions(initializationVector, authenticationData, null);
 
         cryptographyAsyncClient.unwrapKey(KeyWrapAlgorithm.RSA_OAEP, keyToUnwrap, options)
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
