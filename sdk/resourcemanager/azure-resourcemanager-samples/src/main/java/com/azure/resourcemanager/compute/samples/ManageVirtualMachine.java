@@ -89,7 +89,7 @@ public final class ManageVirtualMachine {
                         .withNewDataDisk(10)
                         .withNewDataDisk(dataDiskCreatable)
                         .withExistingDataDisk(dataDisk)
-                        .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                        .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                         .create();
 
             Date t2 = new Date();
@@ -170,7 +170,7 @@ public final class ManageVirtualMachine {
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                         .withRootUsername(userName)
                         .withRootPassword(password)
-                        .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                        .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                         .create();
 
             System.out.println("Created a Linux VM (in the same virtual network): " + linuxVM.id());

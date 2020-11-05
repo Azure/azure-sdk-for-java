@@ -160,7 +160,7 @@
 //                        .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
 //                        .withAdminUsername(administratorLogin)
 //                        .withAdminPassword(administratorPassword)
-//                        .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2));
+//                        .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4")));
 //            }
 //
 //            HashMap<String, String> ipAddresses = new HashMap<>();
