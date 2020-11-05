@@ -263,22 +263,15 @@ public class ModelHelper {
     }
 
     private static Map<String, String> tagMapFromBlobTags(BlobTags blobTags) {
-        Map<String, String> tags;
-        if (blobTags != null && blobTags.getBlobTagSet() != null) {
-            if (blobTags.getBlobTagSet().size() == 0){
-                return Collections.emptyMap();
-            }
-
-            tags = new HashMap<>();
+        if (blobTags == null || blobTags.getBlobTagSet() == null || blobTags.getBlobTagSet().isEmpty()) {
+            return Collections.emptyMap();
+        } else {
+            Map<String, String> tags = new HashMap<>();
             for (BlobTag tag : blobTags.getBlobTagSet()) {
                 tags.put(tag.getKey(), tag.getValue());
             }
+            return tags;
         }
-        else {
-            tags = Collections.emptyMap();
-        }
-
-        return tags;
     }
 
     /**
