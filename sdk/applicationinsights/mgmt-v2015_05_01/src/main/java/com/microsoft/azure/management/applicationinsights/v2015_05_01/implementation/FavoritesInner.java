@@ -85,7 +85,7 @@ public class FavoritesInner {
     /**
      * Gets a list of favorites defined within an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -99,7 +99,7 @@ public class FavoritesInner {
     /**
      * Gets a list of favorites defined within an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -112,7 +112,7 @@ public class FavoritesInner {
     /**
      * Gets a list of favorites defined within an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ApplicationInsightsComponentFavoriteInner&gt; object
@@ -129,7 +129,7 @@ public class FavoritesInner {
     /**
      * Gets a list of favorites defined within an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ApplicationInsightsComponentFavoriteInner&gt; object
@@ -169,7 +169,7 @@ public class FavoritesInner {
     /**
      * Gets a list of favorites defined within an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param favoriteType The type of favorite. Value can be either shared or user. Possible values include: 'shared', 'user'
      * @param sourceType Source type of favorite to return. When left out, the source type defaults to 'other' (not present in this enum). Possible values include: 'retention', 'notebook', 'sessions', 'events', 'userflows', 'funnel', 'impact', 'segmentation'
@@ -187,7 +187,7 @@ public class FavoritesInner {
     /**
      * Gets a list of favorites defined within an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param favoriteType The type of favorite. Value can be either shared or user. Possible values include: 'shared', 'user'
      * @param sourceType Source type of favorite to return. When left out, the source type defaults to 'other' (not present in this enum). Possible values include: 'retention', 'notebook', 'sessions', 'events', 'userflows', 'funnel', 'impact', 'segmentation'
@@ -204,7 +204,7 @@ public class FavoritesInner {
     /**
      * Gets a list of favorites defined within an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param favoriteType The type of favorite. Value can be either shared or user. Possible values include: 'shared', 'user'
      * @param sourceType Source type of favorite to return. When left out, the source type defaults to 'other' (not present in this enum). Possible values include: 'retention', 'notebook', 'sessions', 'events', 'userflows', 'funnel', 'impact', 'segmentation'
@@ -225,7 +225,7 @@ public class FavoritesInner {
     /**
      * Gets a list of favorites defined within an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param favoriteType The type of favorite. Value can be either shared or user. Possible values include: 'shared', 'user'
      * @param sourceType Source type of favorite to return. When left out, the source type defaults to 'other' (not present in this enum). Possible values include: 'retention', 'notebook', 'sessions', 'events', 'userflows', 'funnel', 'impact', 'segmentation'
@@ -273,7 +273,7 @@ public class FavoritesInner {
     /**
      * Get a single favorite by its FavoriteId, defined within an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param favoriteId The Id of a specific favorite defined in the Application Insights component
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -288,7 +288,7 @@ public class FavoritesInner {
     /**
      * Get a single favorite by its FavoriteId, defined within an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param favoriteId The Id of a specific favorite defined in the Application Insights component
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -302,7 +302,7 @@ public class FavoritesInner {
     /**
      * Get a single favorite by its FavoriteId, defined within an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param favoriteId The Id of a specific favorite defined in the Application Insights component
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -320,7 +320,7 @@ public class FavoritesInner {
     /**
      * Get a single favorite by its FavoriteId, defined within an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param favoriteId The Id of a specific favorite defined in the Application Insights component
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -366,7 +366,7 @@ public class FavoritesInner {
     /**
      * Adds a new favorites to an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param favoriteId The Id of a specific favorite defined in the Application Insights component
      * @param favoriteProperties Properties that need to be specified to create a new favorite and add it to an Application Insights component.
@@ -382,7 +382,7 @@ public class FavoritesInner {
     /**
      * Adds a new favorites to an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param favoriteId The Id of a specific favorite defined in the Application Insights component
      * @param favoriteProperties Properties that need to be specified to create a new favorite and add it to an Application Insights component.
@@ -397,7 +397,7 @@ public class FavoritesInner {
     /**
      * Adds a new favorites to an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param favoriteId The Id of a specific favorite defined in the Application Insights component
      * @param favoriteProperties Properties that need to be specified to create a new favorite and add it to an Application Insights component.
@@ -416,7 +416,7 @@ public class FavoritesInner {
     /**
      * Adds a new favorites to an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param favoriteId The Id of a specific favorite defined in the Application Insights component
      * @param favoriteProperties Properties that need to be specified to create a new favorite and add it to an Application Insights component.
@@ -467,7 +467,7 @@ public class FavoritesInner {
     /**
      * Updates a favorite that has already been added to an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param favoriteId The Id of a specific favorite defined in the Application Insights component
      * @param favoriteProperties Properties that need to be specified to update the existing favorite.
@@ -483,7 +483,7 @@ public class FavoritesInner {
     /**
      * Updates a favorite that has already been added to an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param favoriteId The Id of a specific favorite defined in the Application Insights component
      * @param favoriteProperties Properties that need to be specified to update the existing favorite.
@@ -498,7 +498,7 @@ public class FavoritesInner {
     /**
      * Updates a favorite that has already been added to an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param favoriteId The Id of a specific favorite defined in the Application Insights component
      * @param favoriteProperties Properties that need to be specified to update the existing favorite.
@@ -517,7 +517,7 @@ public class FavoritesInner {
     /**
      * Updates a favorite that has already been added to an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param favoriteId The Id of a specific favorite defined in the Application Insights component
      * @param favoriteProperties Properties that need to be specified to update the existing favorite.
@@ -568,7 +568,7 @@ public class FavoritesInner {
     /**
      * Remove a favorite that is associated to an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param favoriteId The Id of a specific favorite defined in the Application Insights component
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -582,7 +582,7 @@ public class FavoritesInner {
     /**
      * Remove a favorite that is associated to an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param favoriteId The Id of a specific favorite defined in the Application Insights component
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -596,7 +596,7 @@ public class FavoritesInner {
     /**
      * Remove a favorite that is associated to an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param favoriteId The Id of a specific favorite defined in the Application Insights component
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -614,7 +614,7 @@ public class FavoritesInner {
     /**
      * Remove a favorite that is associated to an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param favoriteId The Id of a specific favorite defined in the Application Insights component
      * @throws IllegalArgumentException thrown if parameters fail the validation

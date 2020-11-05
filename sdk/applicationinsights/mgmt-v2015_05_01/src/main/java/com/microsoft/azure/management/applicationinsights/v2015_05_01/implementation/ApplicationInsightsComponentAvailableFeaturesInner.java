@@ -17,13 +17,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ApplicationInsightsComponentAvailableFeaturesInner {
     /**
-     * A list of Application Insigths component feature.
+     * A list of Application Insights component feature.
      */
     @JsonProperty(value = "Result", access = JsonProperty.Access.WRITE_ONLY)
     private List<ApplicationInsightsComponentFeature> result;
 
     /**
-     * Get a list of Application Insigths component feature.
+     * Get a list of Application Insights component feature.
      *
      * @return the result value
      */

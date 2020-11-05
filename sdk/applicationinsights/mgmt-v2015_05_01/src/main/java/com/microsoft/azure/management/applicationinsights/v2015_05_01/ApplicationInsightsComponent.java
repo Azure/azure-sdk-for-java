@@ -19,6 +19,7 @@ import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.applicationinsights.v2015_05_01.implementation.InsightsManager;
 import org.joda.time.DateTime;
+import java.util.List;
 import com.microsoft.azure.management.applicationinsights.v2015_05_01.implementation.ApplicationInsightsComponentInner;
 
 /**
@@ -41,9 +42,19 @@ public interface ApplicationInsightsComponent extends HasInner<ApplicationInsigh
     ApplicationType applicationType();
 
     /**
+     * @return the connectionString value.
+     */
+    String connectionString();
+
+    /**
      * @return the creationDate value.
      */
     DateTime creationDate();
+
+    /**
+     * @return the disableIpMasking value.
+     */
+    Boolean disableIpMasking();
 
     /**
      * @return the flowType value.
@@ -61,6 +72,16 @@ public interface ApplicationInsightsComponent extends HasInner<ApplicationInsigh
     String hockeyAppToken();
 
     /**
+     * @return the immediatePurgeDataOn30Days value.
+     */
+    Boolean immediatePurgeDataOn30Days();
+
+    /**
+     * @return the ingestionMode value.
+     */
+    IngestionMode ingestionMode();
+
+    /**
      * @return the instrumentationKey value.
      */
     String instrumentationKey();
@@ -71,6 +92,11 @@ public interface ApplicationInsightsComponent extends HasInner<ApplicationInsigh
     String kind();
 
     /**
+     * @return the privateLinkScopedResources value.
+     */
+    List<PrivateLinkScopedResource> privateLinkScopedResources();
+
+    /**
      * @return the provisioningState value.
      */
     String provisioningState();
@@ -79,6 +105,11 @@ public interface ApplicationInsightsComponent extends HasInner<ApplicationInsigh
      * @return the requestSource value.
      */
     RequestSource requestSource();
+
+    /**
+     * @return the retentionInDays value.
+     */
+    Integer retentionInDays();
 
     /**
      * @return the samplingPercentage value.
@@ -118,7 +149,9 @@ public interface ApplicationInsightsComponent extends HasInner<ApplicationInsigh
         interface WithApplicationType {
            /**
             * Specifies applicationType.
-            */
+            * @param applicationType Type of application being monitored. Possible values include: 'web', 'other'
+            * @return the next definition stage
+*/
             WithKind withApplicationType(ApplicationType applicationType);
         }
 
@@ -128,46 +161,104 @@ public interface ApplicationInsightsComponent extends HasInner<ApplicationInsigh
         interface WithKind {
            /**
             * Specifies kind.
-            */
+            * @param kind The kind of application that this component refers to, used to customize UI. This value is a freeform string, values should typically be one of the following: web, ios, other, store, java, phone
+            * @return the next definition stage
+*/
             WithCreate withKind(String kind);
         }
 
         /**
-         * The stage of the applicationinsightscomponent update allowing to specify FlowType.
+         * The stage of the applicationinsightscomponent definition allowing to specify DisableIpMasking.
+         */
+        interface WithDisableIpMasking {
+            /**
+             * Specifies disableIpMasking.
+             * @param disableIpMasking Disable IP masking
+             * @return the next definition stage
+             */
+            WithCreate withDisableIpMasking(Boolean disableIpMasking);
+        }
+
+        /**
+         * The stage of the applicationinsightscomponent definition allowing to specify FlowType.
          */
         interface WithFlowType {
             /**
              * Specifies flowType.
+             * @param flowType Used by the Application Insights system to determine what kind of flow this component was created by. This is to be set to 'Bluefield' when creating/updating a component via the REST API. Possible values include: 'Bluefield'
+             * @return the next definition stage
              */
             WithCreate withFlowType(FlowType flowType);
         }
 
         /**
-         * The stage of the applicationinsightscomponent update allowing to specify HockeyAppId.
+         * The stage of the applicationinsightscomponent definition allowing to specify HockeyAppId.
          */
         interface WithHockeyAppId {
             /**
              * Specifies hockeyAppId.
+             * @param hockeyAppId The unique application ID created when a new application is added to HockeyApp, used for communications with HockeyApp
+             * @return the next definition stage
              */
             WithCreate withHockeyAppId(String hockeyAppId);
         }
 
         /**
-         * The stage of the applicationinsightscomponent update allowing to specify RequestSource.
+         * The stage of the applicationinsightscomponent definition allowing to specify ImmediatePurgeDataOn30Days.
+         */
+        interface WithImmediatePurgeDataOn30Days {
+            /**
+             * Specifies immediatePurgeDataOn30Days.
+             * @param immediatePurgeDataOn30Days Purge data immediately after 30 days
+             * @return the next definition stage
+             */
+            WithCreate withImmediatePurgeDataOn30Days(Boolean immediatePurgeDataOn30Days);
+        }
+
+        /**
+         * The stage of the applicationinsightscomponent definition allowing to specify IngestionMode.
+         */
+        interface WithIngestionMode {
+            /**
+             * Specifies ingestionMode.
+             * @param ingestionMode Indicates the flow of the ingestion. Possible values include: 'ApplicationInsights', 'ApplicationInsightsWithDiagnosticSettings', 'LogAnalytics'
+             * @return the next definition stage
+             */
+            WithCreate withIngestionMode(IngestionMode ingestionMode);
+        }
+
+        /**
+         * The stage of the applicationinsightscomponent definition allowing to specify RequestSource.
          */
         interface WithRequestSource {
             /**
              * Specifies requestSource.
+             * @param requestSource Describes what tool created this Application Insights component. Customers using this API should set this to the default 'rest'. Possible values include: 'rest'
+             * @return the next definition stage
              */
             WithCreate withRequestSource(RequestSource requestSource);
         }
 
         /**
-         * The stage of the applicationinsightscomponent update allowing to specify SamplingPercentage.
+         * The stage of the applicationinsightscomponent definition allowing to specify RetentionInDays.
+         */
+        interface WithRetentionInDays {
+            /**
+             * Specifies retentionInDays.
+             * @param retentionInDays Retention period in days
+             * @return the next definition stage
+             */
+            WithCreate withRetentionInDays(Integer retentionInDays);
+        }
+
+        /**
+         * The stage of the applicationinsightscomponent definition allowing to specify SamplingPercentage.
          */
         interface WithSamplingPercentage {
             /**
              * Specifies samplingPercentage.
+             * @param samplingPercentage Percentage of the data produced by the application being monitored that is being sampled for Application Insights telemetry
+             * @return the next definition stage
              */
             WithCreate withSamplingPercentage(Double samplingPercentage);
         }
@@ -177,13 +268,13 @@ public interface ApplicationInsightsComponent extends HasInner<ApplicationInsigh
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<ApplicationInsightsComponent>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithFlowType, DefinitionStages.WithHockeyAppId, DefinitionStages.WithRequestSource, DefinitionStages.WithSamplingPercentage {
+        interface WithCreate extends Creatable<ApplicationInsightsComponent>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithDisableIpMasking, DefinitionStages.WithFlowType, DefinitionStages.WithHockeyAppId, DefinitionStages.WithImmediatePurgeDataOn30Days, DefinitionStages.WithIngestionMode, DefinitionStages.WithRequestSource, DefinitionStages.WithRetentionInDays, DefinitionStages.WithSamplingPercentage {
         }
     }
     /**
      * The template for a ApplicationInsightsComponent update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<ApplicationInsightsComponent>, Resource.UpdateWithTags<Update>, UpdateStages.WithFlowType, UpdateStages.WithHockeyAppId, UpdateStages.WithRequestSource, UpdateStages.WithSamplingPercentage {
+    interface Update extends Appliable<ApplicationInsightsComponent>, Resource.UpdateWithTags<Update>, UpdateStages.WithDisableIpMasking, UpdateStages.WithFlowType, UpdateStages.WithHockeyAppId, UpdateStages.WithImmediatePurgeDataOn30Days, UpdateStages.WithIngestionMode, UpdateStages.WithRequestSource, UpdateStages.WithRetentionInDays, UpdateStages.WithSamplingPercentage {
     }
 
     /**
@@ -191,41 +282,97 @@ public interface ApplicationInsightsComponent extends HasInner<ApplicationInsigh
      */
     interface UpdateStages {
         /**
-         * The stage of the applicationinsightscomponent {0} allowing to specify FlowType.
+         * The stage of the applicationinsightscomponent update allowing to specify DisableIpMasking.
+         */
+        interface WithDisableIpMasking {
+            /**
+             * Specifies disableIpMasking.
+             * @param disableIpMasking Disable IP masking
+             * @return the next update stage
+             */
+            Update withDisableIpMasking(Boolean disableIpMasking);
+        }
+
+        /**
+         * The stage of the applicationinsightscomponent update allowing to specify FlowType.
          */
         interface WithFlowType {
             /**
              * Specifies flowType.
+             * @param flowType Used by the Application Insights system to determine what kind of flow this component was created by. This is to be set to 'Bluefield' when creating/updating a component via the REST API. Possible values include: 'Bluefield'
+             * @return the next update stage
              */
             Update withFlowType(FlowType flowType);
         }
 
         /**
-         * The stage of the applicationinsightscomponent {0} allowing to specify HockeyAppId.
+         * The stage of the applicationinsightscomponent update allowing to specify HockeyAppId.
          */
         interface WithHockeyAppId {
             /**
              * Specifies hockeyAppId.
+             * @param hockeyAppId The unique application ID created when a new application is added to HockeyApp, used for communications with HockeyApp
+             * @return the next update stage
              */
             Update withHockeyAppId(String hockeyAppId);
         }
 
         /**
-         * The stage of the applicationinsightscomponent {0} allowing to specify RequestSource.
+         * The stage of the applicationinsightscomponent update allowing to specify ImmediatePurgeDataOn30Days.
+         */
+        interface WithImmediatePurgeDataOn30Days {
+            /**
+             * Specifies immediatePurgeDataOn30Days.
+             * @param immediatePurgeDataOn30Days Purge data immediately after 30 days
+             * @return the next update stage
+             */
+            Update withImmediatePurgeDataOn30Days(Boolean immediatePurgeDataOn30Days);
+        }
+
+        /**
+         * The stage of the applicationinsightscomponent update allowing to specify IngestionMode.
+         */
+        interface WithIngestionMode {
+            /**
+             * Specifies ingestionMode.
+             * @param ingestionMode Indicates the flow of the ingestion. Possible values include: 'ApplicationInsights', 'ApplicationInsightsWithDiagnosticSettings', 'LogAnalytics'
+             * @return the next update stage
+             */
+            Update withIngestionMode(IngestionMode ingestionMode);
+        }
+
+        /**
+         * The stage of the applicationinsightscomponent update allowing to specify RequestSource.
          */
         interface WithRequestSource {
             /**
              * Specifies requestSource.
+             * @param requestSource Describes what tool created this Application Insights component. Customers using this API should set this to the default 'rest'. Possible values include: 'rest'
+             * @return the next update stage
              */
             Update withRequestSource(RequestSource requestSource);
         }
 
         /**
-         * The stage of the applicationinsightscomponent {0} allowing to specify SamplingPercentage.
+         * The stage of the applicationinsightscomponent update allowing to specify RetentionInDays.
+         */
+        interface WithRetentionInDays {
+            /**
+             * Specifies retentionInDays.
+             * @param retentionInDays Retention period in days
+             * @return the next update stage
+             */
+            Update withRetentionInDays(Integer retentionInDays);
+        }
+
+        /**
+         * The stage of the applicationinsightscomponent update allowing to specify SamplingPercentage.
          */
         interface WithSamplingPercentage {
             /**
              * Specifies samplingPercentage.
+             * @param samplingPercentage Percentage of the data produced by the application being monitored that is being sampled for Application Insights telemetry
+             * @return the next update stage
              */
             Update withSamplingPercentage(Double samplingPercentage);
         }

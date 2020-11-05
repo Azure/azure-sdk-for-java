@@ -28,7 +28,7 @@ public class ApplicationInsightsComponentFeature {
     private String meterId;
 
     /**
-     * The meter meter rate for the feature's meter.
+     * The meter rate for the feature's meter.
      */
     @JsonProperty(value = "MeterRateFrequency", access = JsonProperty.Access.WRITE_ONLY)
     private String meterRateFrequency;
@@ -46,13 +46,13 @@ public class ApplicationInsightsComponentFeature {
     private Boolean isHidden;
 
     /**
-     * A list of Application Insigths component feature capability.
+     * A list of Application Insights component feature capability.
      */
     @JsonProperty(value = "Capabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<ApplicationInsightsComponentFeatureCapability> capabilities;
 
     /**
-     * Desplay name of the feature.
+     * Display name of the feature.
      */
     @JsonProperty(value = "Title", access = JsonProperty.Access.WRITE_ONLY)
     private String title;
@@ -88,7 +88,7 @@ public class ApplicationInsightsComponentFeature {
     }
 
     /**
-     * Get the meter meter rate for the feature's meter.
+     * Get the meter rate for the feature's meter.
      *
      * @return the meterRateFrequency value
      */
@@ -115,7 +115,7 @@ public class ApplicationInsightsComponentFeature {
     }
 
     /**
-     * Get a list of Application Insigths component feature capability.
+     * Get a list of Application Insights component feature capability.
      *
      * @return the capabilities value
      */
@@ -124,7 +124,7 @@ public class ApplicationInsightsComponentFeature {
     }
 
     /**
-     * Get desplay name of the feature.
+     * Get display name of the feature.
      *
      * @return the title value
      */
