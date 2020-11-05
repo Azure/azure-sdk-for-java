@@ -1855,7 +1855,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                     Context.NONE);
             syncPoller.waitForCompletion();
             validateMultipageInvoiceData(syncPoller.getFinalResult());
-        }, MULTIPAGE_INVOICE_PDF);
+        }, MULTIPAGE_VENDOR_INVOICE_PDF);
     }
 
     // invoice - URL
@@ -1931,27 +1931,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             syncPoller.waitForCompletion();
             validatePrebuiltResultData(syncPoller.getFinalResult(), true, INVOICE);
         }, INVOICE_PDF);
-    }
-
-    /**
-     * Verify invoice card recognition with multipage pdf url.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled
-    public void recognizeMultipageInvoiceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerClient(httpClient, serviceVersion);
-        urlRunner(sourceUrl -> {
-            // confirm if page results should be returned for prebuilt recognition
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeInvoicesFromUrl(sourceUrl,
-                    new RecognizeInvoicesOptions()
-                        .setFieldElementsIncluded(true)
-                        .setPollInterval(durationTestMode),
-                    Context.NONE);
-            syncPoller.waitForCompletion();
-            validateMultipageInvoiceData(syncPoller.getFinalResult());
-        }, MULTIPAGE_INVOICE_PDF);
     }
 
     /**

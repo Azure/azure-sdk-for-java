@@ -19,7 +19,6 @@ import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -1606,11 +1605,9 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled
     public void recognizeInvoiceDataWithBlankPdf(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        // confirm if pageResults should be returned for prebuilt model recognition
         dataRunner((data, dataLength) -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
                 client.beginRecognizeInvoices(toFluxByteBuffer(data),
@@ -1650,7 +1647,6 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled
     public void recognizeMultipageInvoice(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         // confirm if pageResults should be returned for prebuilt model recognition
@@ -1664,7 +1660,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                         .setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller.waitForCompletion();
             validateMultipageInvoiceData(syncPoller.getFinalResult());
-        }, MULTIPAGE_INVOICE_PDF);
+        }, MULTIPAGE_VENDOR_INVOICE_PDF);
     }
 
     // invoice - URL
@@ -1714,9 +1710,9 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         invalidSourceUrlRunner((sourceUrl)
             -> assertThrows(HttpResponseException.class,
-            () -> client.beginRecognizeInvoicesFromUrl(sourceUrl,
-                new RecognizeInvoicesOptions()
-                    .setPollInterval(durationTestMode)).getSyncPoller()));
+                () -> client.beginRecognizeInvoicesFromUrl(sourceUrl,
+                    new RecognizeInvoicesOptions()
+                        .setPollInterval(durationTestMode)).getSyncPoller()));
     }
 
     /**
@@ -1729,34 +1725,14 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeInvoicesFromUrl(INVOICE_TEST_URL,
-                    new RecognizeInvoicesOptions()
-                        .setFieldElementsIncluded(true)
-                        .setPollInterval(durationTestMode)).getSyncPoller();
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeInvoicesFromUrl(INVOICE_TEST_URL,
+                new RecognizeInvoicesOptions()
+                    .setFieldElementsIncluded(true)
+                    .setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller.waitForCompletion();
             validatePrebuiltResultData(syncPoller.getFinalResult(), true, INVOICE);
         }, INVOICE_PDF);
-    }
-
-    /**
-     * Verify invoice card recognition with multipage pdf url.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled
-    public void recognizeMultipageInvoiceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        urlRunner(sourceUrl -> {
-            // confirm if page results should be returned for prebuilt recognition
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeInvoicesFromUrl(sourceUrl,
-                    new RecognizeInvoicesOptions()
-                        .setFieldElementsIncluded(true)
-                        .setPollInterval(durationTestMode)).getSyncPoller();
-            syncPoller.waitForCompletion();
-            validateMultipageInvoiceData(syncPoller.getFinalResult());
-        }, MULTIPAGE_INVOICE_PDF);
     }
 
     /**
@@ -1767,10 +1743,11 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     public void invoiceValidLocale(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
-            client.beginRecognizeInvoicesFromUrl(INVOICE_TEST_URL,
+            final SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
+                client.beginRecognizeInvoicesFromUrl(INVOICE_TEST_URL,
                 new RecognizeInvoicesOptions().setPollInterval(durationTestMode).setLocale("en-US"))
-                .getSyncPoller()
-                .getFinalResult();
+                .getSyncPoller();
+            syncPoller.getFinalResult();
             validateNetworkCallRecord("locale", "en-US");
         }, INVOICE_PDF);
     }

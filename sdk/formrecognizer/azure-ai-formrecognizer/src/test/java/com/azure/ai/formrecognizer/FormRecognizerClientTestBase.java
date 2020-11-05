@@ -36,6 +36,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.models.NetworkCallRecord;
+import com.azure.core.test.models.RecordedData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.SerializerAdapter;
 import org.junit.jupiter.api.Test;
@@ -96,6 +97,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static final String BUSINESS_CARD_PNG = "businessCard.png";
     static final String MULTIPAGE_BUSINESS_CARD_PDF = "business-card-multipage.pdf";
     static final String INVOICE_PDF = "Invoice_1.pdf";
+    static final String MULTIPAGE_VENDOR_INVOICE_PDF = "multipage_vendor_invoice.pdf";
 
     // Error code
     static final String BAD_ARGUMENT_CODE = "BadArgument";
@@ -923,6 +925,26 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     }
 
     static void validateMultipageInvoiceData(List<RecognizedForm> recognizedInvoices) {
+        assertEquals(1, recognizedInvoices.size());
+        RecognizedForm recognizedForm = recognizedInvoices.get(0);
+
+        assertEquals(1, recognizedForm.getPageRange().getFirstPageNumber());
+        assertEquals(2, recognizedForm.getPageRange().getLastPageNumber());
+        Map<String, FormField> recognizedInvoiceFields = recognizedForm.getFields();
+        final FormField remittanceAddressRecipient = recognizedInvoiceFields.get("RemittanceAddressRecipient");
+
+        assertEquals("Contoso Ltd.", remittanceAddressRecipient.getValue().asString());
+        assertEquals(1, remittanceAddressRecipient.getValueData().getPageNumber());
+        final FormField remittanceAddress = recognizedInvoiceFields.get("RemittanceAddress");
+
+        assertEquals("2345 Dogwood Lane Birch, Kansas 98123", remittanceAddress.getValue().asString());
+        assertEquals(1, remittanceAddress.getValueData().getPageNumber());
+
+        final FormField vendorName = recognizedInvoiceFields.get("VendorName");
+        assertEquals("Southridge Video", vendorName.getValue().asString());
+        assertEquals(2, vendorName.getValueData().getPageNumber());
+
+        assertEquals(2, recognizedForm.getPages().size());
     }
 
     protected String getEndpoint() {
@@ -1010,10 +1032,10 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     }
 
     void validateNetworkCallRecord(String requestParam, String value) {
+        final RecordedData copyRecordedData = interceptorManager.getRecordedData();
         final NetworkCallRecord networkCallRecord =
-            interceptorManager.getRecordedData().findFirstAndRemoveNetworkCall(record -> true);
-        interceptorManager.getRecordedData().addNetworkCall(networkCallRecord);
-
+            copyRecordedData.findFirstAndRemoveNetworkCall(record -> true);
+        copyRecordedData.addNetworkCall(networkCallRecord);
         URL url = null;
         try {
             url = new URL(networkCallRecord.getUri());

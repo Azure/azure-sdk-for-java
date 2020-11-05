@@ -146,12 +146,14 @@ final class Transforms {
         boolean pageResultsIsNullOrEmpty = CoreUtils.isNullOrEmpty(pageResults);
 
         forEachWithIndex(readResults, ((index, readResultItem) -> {
-            List<FormTable> perPageTableList = new ArrayList<>();
+            List<FormTable> perPageTableList = null;
 
             // add form tables
             if (!pageResultsIsNullOrEmpty) {
                 PageResult pageResultItem = pageResults.get(index);
-                perPageTableList = getPageTables(pageResultItem, readResults, pageResultItem.getPage());
+                if (pageResultItem != null) {
+                    perPageTableList = getPageTables(pageResultItem, readResults, pageResultItem.getPage());
+                }
             }
 
             // add form lines
@@ -215,22 +217,26 @@ final class Transforms {
      * @return The list of per page {@code FormTable}.
      */
     static List<FormTable> getPageTables(PageResult pageResultItem, List<ReadResult> readResults, int pageNumber) {
-        return pageResultItem.getTables().stream()
-            .map(dataTable ->
-                new FormTable(dataTable.getRows(), dataTable.getColumns(),
-                    dataTable.getCells()
-                        .stream()
-                        .map(dataTableCell -> new FormTableCell(
-                            dataTableCell.getRowIndex(), dataTableCell.getColumnIndex(),
-                            dataTableCell.getRowSpan() == null ? DEFAULT_TABLE_SPAN : dataTableCell.getRowSpan(),
-                            dataTableCell.getColumnSpan() == null ? DEFAULT_TABLE_SPAN : dataTableCell.getColumnSpan(),
-                            dataTableCell.getText(), toBoundingBox(dataTableCell.getBoundingBox()),
-                            dataTableCell.getConfidence(),
-                            dataTableCell.isHeader() == null ? false : dataTableCell.isHeader(),
-                            dataTableCell.isFooter() == null ? false : dataTableCell.isFooter(),
-                            pageNumber, setReferenceElements(dataTableCell.getElements(), readResults)))
-                        .collect(Collectors.toList()), pageNumber))
-            .collect(Collectors.toList());
+        if (pageResultItem.getTables() == null) {
+            return new ArrayList<>();
+        } else {
+            return pageResultItem.getTables().stream()
+                .map(dataTable ->
+                    new FormTable(dataTable.getRows(), dataTable.getColumns(),
+                        dataTable.getCells()
+                            .stream()
+                            .map(dataTableCell -> new FormTableCell(
+                                dataTableCell.getRowIndex(), dataTableCell.getColumnIndex(),
+                                dataTableCell.getRowSpan() == null ? DEFAULT_TABLE_SPAN : dataTableCell.getRowSpan(),
+                                dataTableCell.getColumnSpan() == null ? DEFAULT_TABLE_SPAN : dataTableCell.getColumnSpan(),
+                                dataTableCell.getText(), toBoundingBox(dataTableCell.getBoundingBox()),
+                                dataTableCell.getConfidence(),
+                                dataTableCell.isHeader() == null ? false : dataTableCell.isHeader(),
+                                dataTableCell.isFooter() == null ? false : dataTableCell.isFooter(),
+                                pageNumber, setReferenceElements(dataTableCell.getElements(), readResults)))
+                            .collect(Collectors.toList()), pageNumber))
+                .collect(Collectors.toList());
+        }
     }
 
     /**
