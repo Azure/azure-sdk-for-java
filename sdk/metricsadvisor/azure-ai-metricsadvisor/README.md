@@ -84,7 +84,7 @@ MetricsAdvisorAdministrationClient metricsAdvisorAdminClient =
 
 ### Data feed
 A data feed is what Metrics Advisor ingests from the user-specified data source such as Cosmos structure stream, SQL query result, and so on.
-It contains rows of timestamps, zero or more dimensions, one or more etrics. Therefore, multiple metrics could share the same data source and even the same data feed.
+It contains rows of timestamps, zero or more dimensions, one or more Metrics. Therefore, multiple metrics could share the same data source and even the same data feed.
 
 ### Data Feed Metric
 A metric is a quantifiable measure that is used to track and assess the status of a specific business process. It can be a combination of multiple time series values divided by dimensions, for example user count for a web vertical and en-us market.

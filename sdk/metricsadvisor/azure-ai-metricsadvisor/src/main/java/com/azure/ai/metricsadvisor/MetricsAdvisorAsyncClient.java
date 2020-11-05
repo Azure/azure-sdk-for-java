@@ -121,49 +121,55 @@ public class MetricsAdvisorAsyncClient {
      * List series definition for a metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricSeriesDefinitions#String-ListMetricSeriesDefinitionOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricSeriesDefinitions#String-OffsetDateTime-ListMetricSeriesDefinitionOptions}
      *
      * @param metricId metric unique id.
+     * @param activeSince the start time for querying series ingested after this time.
      * @param options the additional filtering attributes that can be provided to query the series.
      *
      * @return A {@link PagedFlux} of the {@link MetricSeriesDefinition metric series definitions}.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
-     * @throws NullPointerException thrown if the {@code metricId} or {@code options.activeSince}
+     * @throws NullPointerException thrown if the {@code metricId} or {@code activeSince}
      * is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MetricSeriesDefinition> listMetricSeriesDefinitions(
         String metricId,
-        ListMetricSeriesDefinitionOptions options) {
+        OffsetDateTime activeSince, ListMetricSeriesDefinitionOptions options) {
         try {
             return new PagedFlux<>(() ->
                 withContext(context ->
-                    listMetricSeriesDefinitionSinglePageAsync(metricId, options, context)),
+                    listMetricSeriesDefinitionSinglePageAsync(metricId, activeSince, options, context)),
                 continuationToken ->
-                    withContext(context -> listMetricSeriesDefinitionNextPageAsync(continuationToken, options,
-                        context)));
+                    withContext(context -> listMetricSeriesDefinitionNextPageAsync(continuationToken, activeSince,
+                        options, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
     }
 
     PagedFlux<MetricSeriesDefinition> listMetricSeriesDefinitions(String metricId,
-        ListMetricSeriesDefinitionOptions options, Context context) {
-        return new PagedFlux<>(() -> listMetricSeriesDefinitionSinglePageAsync(metricId, options, context),
-            continuationToken -> listMetricSeriesDefinitionNextPageAsync(continuationToken, options, context));
+        OffsetDateTime activeSince, ListMetricSeriesDefinitionOptions options, Context context) {
+        return new PagedFlux<>(() -> listMetricSeriesDefinitionSinglePageAsync(metricId, activeSince, options,
+            context),
+            continuationToken -> listMetricSeriesDefinitionNextPageAsync(continuationToken, activeSince, options,
+                context));
     }
 
     private Mono<PagedResponse<MetricSeriesDefinition>> listMetricSeriesDefinitionSinglePageAsync(String metricId,
-        ListMetricSeriesDefinitionOptions options, Context context) {
-        Objects.requireNonNull(options, "'options' cannot be null.");
+        OffsetDateTime activeSince, ListMetricSeriesDefinitionOptions options, Context context) {
 
-        if (options.getActiveSince() == null) {
-            Objects.requireNonNull(options, "'options.activeSince' is required and cannot be null.");
+        if (activeSince == null) {
+            Objects.requireNonNull(options, "'activeSince' is required and cannot be null.");
+        }
+
+        if (options == null) {
+            options = new ListMetricSeriesDefinitionOptions();
         }
 
         final MetricSeriesQueryOptions metricSeriesQueryOptions = new MetricSeriesQueryOptions()
-            .setActiveSince(options.getActiveSince()).setDimensionFilter(options.getDimensionCombinationsToFilter());
+            .setActiveSince(activeSince).setDimensionFilter(options.getDimensionCombinationsToFilter());
 
         return service.getMetricSeriesSinglePageAsync(UUID.fromString(metricId), metricSeriesQueryOptions,
             options.getSkip(), options.getTop(), context)
@@ -174,16 +180,19 @@ public class MetricsAdvisorAsyncClient {
     }
 
     private Mono<PagedResponse<MetricSeriesDefinition>> listMetricSeriesDefinitionNextPageAsync(String nextPageLink,
-        ListMetricSeriesDefinitionOptions options, Context context) {
+        OffsetDateTime activeSince, ListMetricSeriesDefinitionOptions options, Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
         }
-        Objects.requireNonNull(options, "'options' cannot be null.");
-        if (options.getActiveSince() == null) {
-            Objects.requireNonNull(options, "'options.activeSince' is required and cannot be null.");
+        if (activeSince == null) {
+            Objects.requireNonNull(options, "'activeSince' is required and cannot be null.");
+        }
+
+        if (options == null) {
+            options = new ListMetricSeriesDefinitionOptions();
         }
         final MetricSeriesQueryOptions metricSeriesQueryOptions = new MetricSeriesQueryOptions()
-            .setActiveSince(options.getActiveSince()).setDimensionFilter(options.getDimensionCombinationsToFilter());
+            .setActiveSince(activeSince).setDimensionFilter(options.getDimensionCombinationsToFilter());
 
         return service.getMetricSeriesNextSinglePageAsync(nextPageLink, metricSeriesQueryOptions, context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
@@ -393,7 +402,7 @@ public class MetricsAdvisorAsyncClient {
                     listMetricEnrichmentStatusSinglePageAsync(metricId, startTime, endTime, options, context)),
                 continuationToken ->
                     withContext(context -> listMetricEnrichmentStatusNextPageAsync(continuationToken,
-                        startTime, endTime, options, context)));
+                        startTime, endTime, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
@@ -405,7 +414,7 @@ public class MetricsAdvisorAsyncClient {
         return new PagedFlux<>(() -> listMetricEnrichmentStatusSinglePageAsync(metricId, startTime, endTime,
             options, context),
             continuationToken -> listMetricEnrichmentStatusNextPageAsync(continuationToken, startTime, endTime,
-                options, context));
+                context));
     }
 
     private Mono<PagedResponse<EnrichmentStatus>> listMetricEnrichmentStatusSinglePageAsync(String metricId,
@@ -426,9 +435,11 @@ public class MetricsAdvisorAsyncClient {
             options.getSkip(),
             options.getTop(),
             withTracing)
-            .doOnRequest(ignoredValue -> logger.info("Listing all dimension values for a metric"))
-            .doOnSuccess(response -> logger.info("Listed all dimension values for a metric - {}", response))
-            .doOnError(error -> logger.warning("Failed to list all dimension values for a metric information", error))
+            .doOnRequest(ignoredValue -> logger.info("Listing all metric enrichment status values for a metric"))
+            .doOnSuccess(response -> logger.info("Listed all metric enrichment status values for a metric - {}",
+                response))
+            .doOnError(error -> logger.warning("Failed to list all metric enrichment values for a metric information",
+                error))
             .map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
@@ -439,7 +450,7 @@ public class MetricsAdvisorAsyncClient {
     }
 
     private Mono<PagedResponse<EnrichmentStatus>> listMetricEnrichmentStatusNextPageAsync(String nextPageLink,
-        OffsetDateTime startTime, OffsetDateTime endTime, ListMetricEnrichmentStatusOptions options, Context context) {
+        OffsetDateTime startTime, OffsetDateTime endTime, Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
         }
@@ -606,6 +617,10 @@ public class MetricsAdvisorAsyncClient {
             .setStartTime(startTime)
             .setEndTime(endTime);
 
+        if (options == null) {
+            options = new ListAnomaliesDetectedOptions();
+        }
+
         if (options.getFilter() != null) {
             DetectionAnomalyFilterCondition innerFilter = AnomalyTransforms.toInnerFilter(options.getFilter(),
                 logger);
@@ -638,6 +653,10 @@ public class MetricsAdvisorAsyncClient {
         DetectionAnomalyResultQuery query = new DetectionAnomalyResultQuery()
             .setStartTime(startTime)
             .setEndTime(endTime);
+
+        if (options == null) {
+            options = new ListAnomaliesDetectedOptions();
+        }
 
         if (options.getFilter() != null) {
             DetectionAnomalyFilterCondition innerFilter = AnomalyTransforms.toInnerFilter(options.getFilter(),
@@ -687,8 +706,7 @@ public class MetricsAdvisorAsyncClient {
                         options,
                         context)),
                 continuationToken ->
-                    withContext(context -> listIncidentsForDetectionConfigNextPageAsync(continuationToken, startTime,
-                        endTime,
+                    withContext(context -> listIncidentsForDetectionConfigNextPageAsync(continuationToken,
                         context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> FluxUtil.monoError(logger, ex));
@@ -702,7 +720,7 @@ public class MetricsAdvisorAsyncClient {
             listIncidentsForDetectionConfigSinglePageAsync(detectionConfigurationId, startTime, endTime, options,
                 context),
             continuationToken ->
-                listIncidentsForDetectionConfigNextPageAsync(continuationToken, startTime, endTime, context));
+                listIncidentsForDetectionConfigNextPageAsync(continuationToken, context));
     }
 
     private Mono<PagedResponse<AnomalyIncident>> listIncidentsForDetectionConfigSinglePageAsync(
@@ -744,8 +762,7 @@ public class MetricsAdvisorAsyncClient {
     }
 
     private Mono<PagedResponse<AnomalyIncident>> listIncidentsForDetectionConfigNextPageAsync(
-        String nextPageLink,
-        OffsetDateTime startTime, OffsetDateTime endTime, Context context) {
+        String nextPageLink, Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
         }
@@ -1018,9 +1035,7 @@ public class MetricsAdvisorAsyncClient {
         return new PagedFlux<>(() ->
             listAlertsSinglePageAsync(alertConfigurationId, startTime, endTime, options, context),
             continuationToken ->
-                listAlertsNextPageAsync(continuationToken,
-                    startTime, endTime, options,
-                    context));
+                listAlertsNextPageAsync(continuationToken, startTime, endTime, options, context));
     }
 
     private Mono<PagedResponse<AnomalyAlert>> listAlertsSinglePageAsync(

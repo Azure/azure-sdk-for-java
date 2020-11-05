@@ -64,45 +64,43 @@ public class MetricsAdvisorClient {
      * List series (dimension combinations) from metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesDefinitions#String-ListMetricSeriesDefinitionOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesDefinitions#String-OffsetDateTime}
      *
      * @param metricId metric unique id.
-     * @param options the additional filtering attributes that can be provided to query the series.
-     *
+     * @param activeSince the start time for querying series ingested after this time.
      * @return A {@link PagedIterable} of the {@link MetricSeriesDefinition metric series definitions}.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
-     * @throws NullPointerException thrown if the {@code metricId} or {@code options.activeSince}
+     * @throws NullPointerException thrown if the {@code metricId} or {@code activeSince}
      * is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricSeriesDefinition> listMetricSeriesDefinitions(
-        String metricId,
-        ListMetricSeriesDefinitionOptions options) {
-        return listMetricSeriesDefinitions(metricId, options, Context.NONE);
+        String metricId, OffsetDateTime activeSince) {
+        return listMetricSeriesDefinitions(metricId, activeSince, null, Context.NONE);
     }
 
     /**
      * List series (dimension combinations) from metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesDefinitions#String-ListMetricSeriesDefinitionOptions-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesDefinitions#String-OffsetDateTime-ListMetricSeriesDefinitionOptions-Context}
      *
      * @param metricId metric unique id.
+     * @param activeSince the start time for querying series ingested after this time.
      * @param options the additional filtering attributes that can be provided to query the series.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link PagedIterable} of the {@link MetricSeriesDefinition metric series definitions}.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
-     * @throws NullPointerException thrown if the {@code metricId} or {@code options.activeSince}
+     * @throws NullPointerException thrown if the {@code metricId} or {@code activeSince}
      * is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MetricSeriesDefinition> listMetricSeriesDefinitions(
-        String metricId,
-        ListMetricSeriesDefinitionOptions options, Context context) {
-        return new PagedIterable<>(client.listMetricSeriesDefinitions(metricId, options,
+    public PagedIterable<MetricSeriesDefinition> listMetricSeriesDefinitions(String metricId,
+        OffsetDateTime activeSince, ListMetricSeriesDefinitionOptions options, Context context) {
+        return new PagedIterable<>(client.listMetricSeriesDefinitions(metricId, activeSince, options,
             context == null ? Context.NONE : context));
     }
 

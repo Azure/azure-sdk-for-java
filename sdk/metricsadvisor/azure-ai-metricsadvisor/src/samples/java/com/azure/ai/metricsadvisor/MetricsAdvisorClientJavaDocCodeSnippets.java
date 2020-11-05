@@ -91,48 +91,45 @@ public class MetricsAdvisorClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for
-     * {@link MetricsAdvisorClient#listMetricSeriesDefinitions(String, ListMetricSeriesDefinitionOptions)}
+     * {@link MetricsAdvisorClient#listMetricSeriesDefinitions(String, OffsetDateTime)}
      */
     public void listMetricSeriesDefinitions() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesDefinitions#String-ListMetricSeriesDefinitionOptions
-
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesDefinitions#String-OffsetDateTime
+        final OffsetDateTime activeSince = OffsetDateTime.parse("2020-07-10T00:00:00Z");
         metricsAdvisorClient.listMetricSeriesDefinitions(
             "metricId",
-            new ListMetricSeriesDefinitionOptions(OffsetDateTime.now())
-                .setDimensionCombinationToFilter(new HashMap<String, List<String>>() {{
-                        put("Dimension1", Arrays.asList("value1", "value2"));
-                    }})
-                .setTop(3))
+            activeSince)
             .forEach(metricSeriesDefinition -> {
                 System.out.printf("Data Feed Metric id for the retrieved series definition : %s%n",
                     metricSeriesDefinition.getMetricId());
                 System.out.printf("Data Feed Metric dimension: %s%n", metricSeriesDefinition.getSeriesKey().asMap());
             });
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesDefinitions#String-ListMetricSeriesDefinitionOptions
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesDefinitions#String-OffsetDateTime
     }
 
     /**
      * Code snippet for
-     * {@link MetricsAdvisorClient#listMetricSeriesDefinitions(String, ListMetricSeriesDefinitionOptions, Context)}
+     * {@link MetricsAdvisorClient#listMetricSeriesDefinitions(String, OffsetDateTime, ListMetricSeriesDefinitionOptions, Context)}
      */
     public void listMetricSeriesDefinitionsWithContext() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesDefinitions#String-ListMetricSeriesDefinitionOptions-Context
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesDefinitions#String-OffsetDateTime-ListMetricSeriesDefinitionOptions-Context
         String metricId = "b460abfc-7a58-47d7-9d99-21ee21fdfc6e";
+        final OffsetDateTime activeSince = OffsetDateTime.parse("2020-07-10T00:00:00Z");
         final ListMetricSeriesDefinitionOptions options
-            = new ListMetricSeriesDefinitionOptions(OffsetDateTime.parse("2020-07-10T00:00:00Z"))
+            = new ListMetricSeriesDefinitionOptions()
             .setTop(10)
             .setDimensionCombinationToFilter(new HashMap<String, List<String>>() {{
                     put("Dim2", Collections.singletonList("Angelfish"));
                 }});
 
-        metricsAdvisorClient.listMetricSeriesDefinitions(metricId, options, Context.NONE)
+        metricsAdvisorClient.listMetricSeriesDefinitions(metricId, activeSince, options, Context.NONE)
             .forEach(metricSeriesDefinition -> {
                 System.out.printf("Data Feed Metric id for the retrieved series definition : %s%n",
                     metricSeriesDefinition.getMetricId());
                 System.out.printf("Series Key:");
                 System.out.println(metricSeriesDefinition.getSeriesKey().asMap());
             });
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesDefinitions#String-ListMetricSeriesDefinitionOptions-Context
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesDefinitions#String-OffsetDateTime-ListMetricSeriesDefinitionOptions-Context
     }
 
     /**

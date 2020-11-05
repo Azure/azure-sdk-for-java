@@ -93,7 +93,7 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
     public void listMetricSeriesDefinitions(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
         client.listMetricSeriesDefinitions(METRIC_ID,
-            new ListMetricSeriesDefinitionOptions(TIME_SERIES_START_TIME))
+                TIME_SERIES_START_TIME)
             .forEach(metricSeriesDefinition -> {
                 assertNotNull(metricSeriesDefinition.getMetricId());
                 assertNotNull(metricSeriesDefinition.getSeriesKey());
@@ -108,11 +108,12 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
     public void listMetricSeriesDefinitionsDimensionFilter(HttpClient httpClient,
         MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
-        List<MetricSeriesDefinition> actualMetricSeriesDefinitions = client.listMetricSeriesDefinitions(METRIC_ID,
-            new ListMetricSeriesDefinitionOptions(TIME_SERIES_START_TIME)
+        List<MetricSeriesDefinition> actualMetricSeriesDefinitions
+            = client.listMetricSeriesDefinitions(METRIC_ID, TIME_SERIES_START_TIME,
+            new ListMetricSeriesDefinitionOptions()
                 .setDimensionCombinationToFilter(new HashMap<String, List<String>>() {{
                         put("city", Collections.singletonList("Miami"));
-                    }}))
+                    }}), Context.NONE)
             .stream().collect(Collectors.toList());
 
         actualMetricSeriesDefinitions.forEach(metricSeriesDefinition -> {

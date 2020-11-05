@@ -83,26 +83,27 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for
-     * {@link MetricsAdvisorAsyncClient#listMetricSeriesDefinitions(String, ListMetricSeriesDefinitionOptions)}
+     * {@link MetricsAdvisorAsyncClient#listMetricSeriesDefinitions(String, OffsetDateTime, ListMetricSeriesDefinitionOptions)}
      */
     public void listMetricSeriesDefinitions() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricSeriesDefinitions#String-ListMetricSeriesDefinitionOptions
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricSeriesDefinitions#String-OffsetDateTime-ListMetricSeriesDefinitionOptions
         String metricId = "b460abfc-7a58-47d7-9d99-21ee21fdfc6e";
+        final OffsetDateTime activeSince = OffsetDateTime.parse("2020-07-10T00:00:00Z");
         final ListMetricSeriesDefinitionOptions options
-            = new ListMetricSeriesDefinitionOptions(OffsetDateTime.parse("2020-07-10T00:00:00Z"))
+            = new ListMetricSeriesDefinitionOptions()
             .setTop(10)
             .setDimensionCombinationToFilter(new HashMap<String, List<String>>() {{
                     put("Dim2", Collections.singletonList("Angelfish"));
                 }});
 
-        metricsAdvisorAsyncClient.listMetricSeriesDefinitions(metricId, options)
+        metricsAdvisorAsyncClient.listMetricSeriesDefinitions(metricId, activeSince, options)
             .subscribe(metricSeriesDefinition -> {
                 System.out.printf("Data Feed Metric id for the retrieved series definition : %s%n",
                     metricSeriesDefinition.getMetricId());
                 System.out.printf("Series Key:");
                 System.out.println(metricSeriesDefinition.getSeriesKey().asMap());
             });
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricSeriesDefinitions#String-ListMetricSeriesDefinitionOptions
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricSeriesDefinitions#String-OffsetDateTime-ListMetricSeriesDefinitionOptions
     }
 
     /**

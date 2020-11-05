@@ -99,8 +99,7 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void listMetricSeriesDefinitions(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
-        StepVerifier.create(client.listMetricSeriesDefinitions(METRIC_ID,
-            new ListMetricSeriesDefinitionOptions(TIME_SERIES_START_TIME)))
+        StepVerifier.create(client.listMetricSeriesDefinitions(METRIC_ID, TIME_SERIES_START_TIME, null))
             .thenConsumeWhile(metricSeriesDefinition -> metricSeriesDefinition.getMetricId() != null
                 && metricSeriesDefinition.getSeriesKey() != null)
             .verifyComplete();
@@ -114,8 +113,8 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
     public void listMetricSeriesDefinitionsDimensionFilter(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
         List<MetricSeriesDefinition> actualMetricSeriesDefinitions = new ArrayList<>();
-        StepVerifier.create(client.listMetricSeriesDefinitions(METRIC_ID,
-            new ListMetricSeriesDefinitionOptions(TIME_SERIES_START_TIME)
+        StepVerifier.create(client.listMetricSeriesDefinitions(METRIC_ID, TIME_SERIES_START_TIME,
+            new ListMetricSeriesDefinitionOptions()
                 .setDimensionCombinationToFilter(new HashMap<String, List<String>>() {{
                         put("city", Collections.singletonList("Miami"));
                     }})))
