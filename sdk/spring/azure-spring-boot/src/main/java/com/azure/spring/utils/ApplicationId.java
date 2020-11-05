@@ -30,5 +30,7 @@ public class ApplicationId {
                                                  .orElse("unknown-version");
     public static final String AZURE_SPRING_KEY_VAULT = "az-sp-kv/" + VERSION;
     public static final String AZURE_SPRING_SERVICE_BUS = "az-sp-bus/" + VERSION;
+    public static final String AZURE_STORAGE_BLOB = "az-sp-sb/" + VERSION;
+    public static final String AZURE_STORAGE_FILES = "az-sp-sf/" + VERSION;
 
 }
