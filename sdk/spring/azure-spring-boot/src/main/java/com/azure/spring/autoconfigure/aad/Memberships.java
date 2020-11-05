@@ -22,7 +22,7 @@ public class Memberships {
 
     @JsonCreator
     public Memberships(
-        @JsonProperty("odata.nextLink") String odataNextLink,
+        @JsonProperty("@odata.nextLink") String odataNextLink,
         @JsonProperty("value") List<Membership> value) {
         this.odataNextLink = odataNextLink;
         this.value = value;
