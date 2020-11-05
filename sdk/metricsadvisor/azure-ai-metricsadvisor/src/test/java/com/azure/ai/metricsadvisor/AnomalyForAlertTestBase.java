@@ -9,6 +9,8 @@ import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.Assertions;
 
+import static com.azure.ai.metricsadvisor.AlertTestBase.ALERT_CONFIG_ID;
+
 public abstract class AnomalyForAlertTestBase extends MetricsAdvisorClientTestBase {
     public abstract void listAnomaliesForAlert(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
 
@@ -17,13 +19,13 @@ public abstract class AnomalyForAlertTestBase extends MetricsAdvisorClientTestBa
         static final ListAnomaliesForAlertInput INSTANCE = new ListAnomaliesForAlertInput();
         final ListAnomaliesAlertedOptions options = new ListAnomaliesAlertedOptions()
             .setTop(10);
-        final String alertConfigurationId = "ff3014a0-bbbb-41ec-a637-677e77b81299";
-        final String alertId = "1746b031c00";
+        final String alertConfigurationId = ALERT_CONFIG_ID;
+        final String alertId = "175434e3400";
     }
 
     protected static class ListAnomaliesForAlertOutput {
         static final ListAnomaliesForAlertOutput INSTANCE = new ListAnomaliesForAlertOutput();
-        final int expectedAnomalies = 3;
+        final int expectedAnomalies = 2;
     }
 
     protected void assertListAnomaliesForAlertOutput(Anomaly anomaly) {

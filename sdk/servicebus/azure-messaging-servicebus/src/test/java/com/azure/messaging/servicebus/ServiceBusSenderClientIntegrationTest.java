@@ -47,7 +47,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
             receiver.receiveMessages()
                 .take(messagesPending.get())
                 .map(message -> {
-                    logger.info("Message received: {}", message.getMessage().getSequenceNumber());
+                    logger.info("Message received: {}", message.getSequenceNumber());
                     return message;
                 })
                 .timeout(Duration.ofSeconds(5), Mono.empty())

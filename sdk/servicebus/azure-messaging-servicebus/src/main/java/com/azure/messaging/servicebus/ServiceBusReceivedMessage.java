@@ -17,6 +17,7 @@ import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME;
@@ -41,6 +42,7 @@ public final class ServiceBusReceivedMessage {
     private boolean isSettled = false;
 
     ServiceBusReceivedMessage(BinaryData body) {
+        Objects.requireNonNull(body, "'body' cannot be null.");
         amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(body.toBytes())));
     }
 
@@ -83,6 +85,15 @@ public final class ServiceBusReceivedMessage {
                 throw logger.logExceptionAsError(new IllegalStateException("Body type not valid "
                     + bodyType.toString()));
         }
+    }
+
+    /**
+     * Gets the actual payload/data wrapped by the {@link ServiceBusReceivedMessage}.
+     *
+     * @return A byte array representing the data.
+     */
+    public byte[] getBodyAsBytes() {
+        return getBody().toBytes();
     }
 
     /**

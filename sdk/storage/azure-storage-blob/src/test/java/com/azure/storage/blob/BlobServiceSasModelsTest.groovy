@@ -34,20 +34,26 @@ class BlobServiceSasModelsTest extends Specification {
             .setAddPermission(add)
             .setDeleteVersionPermission(deleteVersion)
             .setTagsPermission(tags)
+            .setListPermission(list)
+            .setMovePermission(move)
+            .setExecutePermission(execute)
 
         expect:
         perms.toString() == expectedString
 
         where:
-        read  | write | delete | create | add   | deleteVersion | tags  || expectedString
-        true  | false | false  | false  | false | false         | false || "r"
-        false | true  | false  | false  | false | false         | false || "w"
-        false | false | true   | false  | false | false         | false || "d"
-        false | false | false  | true   | false | false         | false || "c"
-        false | false | false  | false  | true  | false         | false || "a"
-        false | false | false  | false  | false | true          | false || "x"
-        false | false | false  | false  | false | false         | true  || "t"
-        true  | true  | true   | true   | true  | true          | true  || "racwdxt"
+        read  | write | delete | create | add   | deleteVersion | tags  | list  | move  | execute || expectedString
+        true  | false | false  | false  | false | false         | false | false | false | false   || "r"
+        false | true  | false  | false  | false | false         | false | false | false | false   || "w"
+        false | false | true   | false  | false | false         | false | false | false | false   || "d"
+        false | false | false  | true   | false | false         | false | false | false | false   || "c"
+        false | false | false  | false  | true  | false         | false | false | false | false   || "a"
+        false | false | false  | false  | false | true          | false | false | false | false   || "x"
+        false | false | false  | false  | false | false         | true  | false | false | false   || "t"
+        false | false | false  | false  | false | false         | false | true  | false | false   || "l"
+        false | false | false  | false  | false | false         | false | false | true  | false   || "m"
+        false | false | false  | false  | false | false         | false | false | false | true    || "e"
+        true  | true  | true   | true   | true  | true          | true  | true  | true  | true    || "racwdxltme"
     }
 
     @Unroll
@@ -63,18 +69,24 @@ class BlobServiceSasModelsTest extends Specification {
         perms.hasAddPermission() == add
         perms.hasDeleteVersionPermission() == deleteVersion
         perms.hasTagsPermission() == tags
+        perms.hasListPermission() == list
+        perms.hasMovePermission() == move
+        perms.hasExecutePermission() == execute
 
         where:
-        permString || read  | write | delete | create | add   | deleteVersion | tags
-        "r"        || true  | false | false  | false  | false | false         | false
-        "w"        || false | true  | false  | false  | false | false         | false
-        "d"        || false | false | true   | false  | false | false         | false
-        "c"        || false | false | false  | true   | false | false         | false
-        "a"        || false | false | false  | false  | true  | false         | false
-        "x"        || false | false | false  | false  | false | true          | false
-        "t"        || false | false | false  | false  | false | false         | true
-        "racwdxt"  || true  | true  | true   | true   | true  | true          | true
-        "dtcxwra"  || true  | true  | true   | true   | true  | true          | true
+        permString    || read  | write | delete | create | add   | deleteVersion | tags  | list  | move  | execute
+        "r"           || true  | false | false  | false  | false | false         | false | false | false | false
+        "w"           || false | true  | false  | false  | false | false         | false | false | false | false
+        "d"           || false | false | true   | false  | false | false         | false | false | false | false
+        "c"           || false | false | false  | true   | false | false         | false | false | false | false
+        "a"           || false | false | false  | false  | true  | false         | false | false | false | false
+        "x"           || false | false | false  | false  | false | true          | false | false | false | false
+        "t"           || false | false | false  | false  | false | false         | true  | false | false | false
+        "l"           || false | false | false  | false  | false | false         | false | true  | false | false
+        "m"           || false | false | false  | false  | false | false         | false | false | true  | false
+        "e"           || false | false | false  | false  | false | false         | false | false | false | true
+        "racwdxltme"  || true  | true  | true   | true   | true  | true          | true  | true  | true  | true
+        "dtcxewlrma"  || true  | true  | true   | true   | true  | true          | true  | true  | true  | true
     }
 
     def "BlobSASPermissions parse IA"() {
@@ -105,21 +117,25 @@ class BlobServiceSasModelsTest extends Specification {
             .setListPermission(list)
             .setDeleteVersionPermission(deleteVersion)
             .setTagsPermission(tags)
+            .setMovePermission(move)
+            .setExecutePermission(execute)
 
         expect:
         perms.toString() == expectedString
 
         where:
-        read  | write | delete | create | add   | list  | deleteVersion | tags  || expectedString
-        true  | false | false  | false  | false | false | false         | false || "r"
-        false | true  | false  | false  | false | false | false         | false || "w"
-        false | false | true   | false  | false | false | false         | false || "d"
-        false | false | false  | true   | false | false | false         | false || "c"
-        false | false | false  | false  | true  | false | false         | false || "a"
-        false | false | false  | false  | false | true  | false         | false || "l"
-        false | false | false  | false  | false | false | true          | false || "x"
-        false | false | false  | false  | false | false | false         | true  || "t"
-        true  | true  | true   | true   | true  | true  | true          | true  || "racwdxlt"
+        read  | write | delete | create | add   | deleteVersion | tags  | list  | move  | execute || expectedString
+        true  | false | false  | false  | false | false         | false | false | false | false   || "r"
+        false | true  | false  | false  | false | false         | false | false | false | false   || "w"
+        false | false | true   | false  | false | false         | false | false | false | false   || "d"
+        false | false | false  | true   | false | false         | false | false | false | false   || "c"
+        false | false | false  | false  | true  | false         | false | false | false | false   || "a"
+        false | false | false  | false  | false | true          | false | false | false | false   || "x"
+        false | false | false  | false  | false | false         | true  | false | false | false   || "t"
+        false | false | false  | false  | false | false         | false | true  | false | false   || "l"
+        false | false | false  | false  | false | false         | false | false | true  | false   || "m"
+        false | false | false  | false  | false | false         | false | false | false | true    || "e"
+        true  | true  | true   | true   | true  | true          | true  | true  | true  | true    || "racwdxltme"
     }
 
     @Unroll
@@ -133,22 +149,26 @@ class BlobServiceSasModelsTest extends Specification {
         perms.hasDeletePermission() == delete
         perms.hasCreatePermission() == create
         perms.hasAddPermission() == add
-        perms.hasListPermission() == list
         perms.hasDeleteVersionPermission() == deleteVersion
         perms.hasTagsPermission() == tags
+        perms.hasListPermission() == list
+        perms.hasMovePermission() == move
+        perms.hasExecutePermission() == execute
 
         where:
-        permString || read  | write | delete | create | add   | list  | deleteVersion | tags
-        "r"        || true  | false | false  | false  | false | false | false         | false
-        "w"        || false | true  | false  | false  | false | false | false         | false
-        "d"        || false | false | true   | false  | false | false | false         | false
-        "c"        || false | false | false  | true   | false | false | false         | false
-        "a"        || false | false | false  | false  | true  | false | false         | false
-        "l"        || false | false | false  | false  | false | true  | false         | false
-        "x"        || false | false | false  | false  | false | false | true          | false
-        "t"        || false | false | false  | false  | false | false | false         | true
-        "racwdxlt" || true  | true  | true   | true   | true  | true  | true          | true
-        "dctwxrla" || true  | true  | true   | true   | true  | true  | true          | true
+        permString    || read  | write | delete | create | add   | deleteVersion | tags  | list  | move  | execute
+        "r"           || true  | false | false  | false  | false | false         | false | false | false | false
+        "w"           || false | true  | false  | false  | false | false         | false | false | false | false
+        "d"           || false | false | true   | false  | false | false         | false | false | false | false
+        "c"           || false | false | false  | true   | false | false         | false | false | false | false
+        "a"           || false | false | false  | false  | true  | false         | false | false | false | false
+        "x"           || false | false | false  | false  | false | true          | false | false | false | false
+        "t"           || false | false | false  | false  | false | false         | true  | false | false | false
+        "l"           || false | false | false  | false  | false | false         | false | true  | false | false
+        "m"           || false | false | false  | false  | false | false         | false | false | true  | false
+        "e"           || false | false | false  | false  | false | false         | false | false | false | true
+        "racwdxltme"  || true  | true  | true   | true   | true  | true          | true  | true  | true  | true
+        "dtcxewlrma"  || true  | true  | true   | true   | true  | true          | true  | true  | true  | true
     }
 
     def "ContainerSASPermissions parse IA"() {
@@ -235,26 +255,5 @@ class BlobServiceSasModelsTest extends Specification {
         "container"  | "blob"  | null        | null      | new BlobSasPermission().setReadPermission(true)                                  || "b"      | "r"
         "container"  | "blob"  | "snapshot"  | null      | new BlobSasPermission().setReadPermission(true)                                  || "bs"     | "r"
         "container"  | "blob"  | null        | "version" | new BlobSasPermission().setReadPermission(true)                                  || "bv"     | "r"
-    }
-
-    @Unroll
-    def "ensure state permission illegal argument"() {
-        setup:
-        def e = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)
-        def p = new BlobContainerSasPermission().setReadPermission(true).setListPermission(true)
-
-        when:
-        def v = new BlobServiceSasSignatureValues(e, p)
-        BlobSasImplUtil implUtil = new BlobSasImplUtil(v, "containerName", "blobName", snapId, null)
-
-        implUtil.ensureState()
-
-        then:
-        thrown(IllegalArgumentException)
-
-        where:
-        snapId || _
-        null   || _
-        "id"   || _
     }
 }

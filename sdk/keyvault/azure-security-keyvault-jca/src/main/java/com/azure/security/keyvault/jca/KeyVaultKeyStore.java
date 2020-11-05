@@ -73,8 +73,9 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      * The constructor uses System.getProperty for
      * <code>azure.keyvault.uri</code>, <code>azure.keyvault.tenantId</code>,
      * <code>azure.keyvault.clientId</code>,
-     * <code>azure.keyvault.clientSecret</code> to initialize the keyvault
-     * client.
+     * <code>azure.keyvault.clientSecret</code> and
+     * <code>azure.keyvault.userAssignedIdentity</code> to initialize the
+     * keyvault client.
      * </p>
      */
     public KeyVaultKeyStore() {
@@ -83,7 +84,12 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         String tenantId = System.getProperty("azure.keyvault.tenantId");
         String clientId = System.getProperty("azure.keyvault.clientId");
         String clientSecret = System.getProperty("azure.keyvault.clientSecret");
-        keyVaultClient = new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret);
+        String managedIdentity = System.getProperty("azure.keyvault.managedIdentity");
+        if (clientId != null) {
+            keyVaultClient = new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret);
+        } else {
+            keyVaultClient = new KeyVaultClient(keyVaultUri, managedIdentity);
+        }
     }
 
     @Override
@@ -198,11 +204,20 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     public void engineLoad(KeyStore.LoadStoreParameter param) {
         if (param instanceof KeyVaultLoadStoreParameter) {
             KeyVaultLoadStoreParameter parameter = (KeyVaultLoadStoreParameter) param;
-            keyVaultClient = new KeyVaultClient(
-                    parameter.getUri(),
-                    parameter.getTenantId(),
-                    parameter.getClientId(),
-                    parameter.getClientSecret());
+            if (parameter.getClientId() != null) {
+                keyVaultClient = new KeyVaultClient(
+                        parameter.getUri(),
+                        parameter.getTenantId(),
+                        parameter.getClientId(),
+                        parameter.getClientSecret());
+            } else if (parameter.getUserAssignedIdentity() != null) {
+                keyVaultClient = new KeyVaultClient(
+                        parameter.getUri(),
+                        parameter.getUserAssignedIdentity()
+                );
+            } else {
+                keyVaultClient = new KeyVaultClient(parameter.getUri());
+            }
         }
         sideLoad();
     }

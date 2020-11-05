@@ -3,41 +3,41 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//feedback/metric",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "778561b1-528b-4a4e-b75f-fbfe9586f8c7",
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.2 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "65b6e815-cc22-4ed5-bcd8-16b6cc60ecac",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "e74a6ab2-b482-4ce8-b8c2-2ad4edbefa53",
-      "x-envoy-upstream-service-time" : "288",
+      "x-request-id" : "f15fe030-d18b-4c16-a5a1-9247c3d02ad8",
+      "x-envoy-upstream-service-time" : "247",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "e74a6ab2-b482-4ce8-b8c2-2ad4edbefa53",
+      "apim-request-id" : "f15fe030-d18b-4c16-a5a1-9247c3d02ad8",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "Date" : "Wed, 23 Sep 2020 22:29:17 GMT",
-      "Location" : "https://anuchan-cg-metric-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/e1c4fe2f-2ddc-4528-97d4-0aca823ec2b2"
+      "Date" : "Sat, 24 Oct 2020 23:52:00 GMT",
+      "Location" : "https://js-metrics-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/1f82a6a0-00a1-4621-9116-8bf6764b3157"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//feedback/metric/e1c4fe2f-2ddc-4528-97d4-0aca823ec2b2",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//feedback/metric/1f82a6a0-00a1-4621-9116-8bf6764b3157",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b19c3ae4-3b10-4f9e-b08e-588359b0cda1"
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.2 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8d3d6fff-3a01-4458-9b1f-b8fa3c793436"
     },
     "Response" : {
-      "x-request-id" : "7c15a965-badb-438c-a930-86ce92fc7d87",
-      "x-envoy-upstream-service-time" : "170",
+      "x-request-id" : "fa5f0d8f-6ca1-4a0d-9ca4-b90089791375",
+      "x-envoy-upstream-service-time" : "76",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "7c15a965-badb-438c-a930-86ce92fc7d87",
+      "apim-request-id" : "fa5f0d8f-6ca1-4a0d-9ca4-b90089791375",
       "retry-after" : "0",
-      "Content-Length" : "473",
+      "Content-Length" : "484",
       "StatusCode" : "200",
-      "Body" : "{\"feedbackId\":\"e1c4fe2f-2ddc-4528-97d4-0aca823ec2b2\",\"createdTime\":\"2020-09-23T22:29:17.737Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Amphibian\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2020-08-05T07:00:00Z\",\"endTime\":\"2020-08-07T07:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"},\"anomalyDetectionConfigurationId\":null,\"anomalyDetectionConfigurationSnapshot\":null}",
-      "Date" : "Wed, 23 Sep 2020 22:29:32 GMT",
+      "Body" : "{\"feedbackId\":\"1f82a6a0-00a1-4621-9116-8bf6764b3157\",\"createdTime\":\"2020-10-24T23:52:01.728Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimensionFilter\":{\"dimension\":{\"city\":\"Miami\",\"category\":\"Health & Personal Care\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2020-01-01T00:00:00Z\",\"endTime\":\"2020-10-22T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"},\"anomalyDetectionConfigurationId\":null,\"anomalyDetectionConfigurationSnapshot\":null}",
+      "Date" : "Sat, 24 Oct 2020 23:52:03 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

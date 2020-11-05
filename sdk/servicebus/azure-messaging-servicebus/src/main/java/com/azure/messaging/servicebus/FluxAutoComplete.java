@@ -19,15 +19,15 @@ import java.util.function.Function;
 /**
  * Flux operator that auto-completes or auto-abandons messages when control is returned successfully.
  */
-final class FluxAutoComplete extends FluxOperator<ServiceBusReceivedMessageContext, ServiceBusReceivedMessageContext> {
+final class FluxAutoComplete extends FluxOperator<ServiceBusMessageContext, ServiceBusMessageContext> {
     private final Semaphore completionLock;
-    private final Function<ServiceBusReceivedMessageContext, Mono<Void>> onComplete;
-    private final Function<ServiceBusReceivedMessageContext, Mono<Void>> onAbandon;
+    private final Function<ServiceBusMessageContext, Mono<Void>> onComplete;
+    private final Function<ServiceBusMessageContext, Mono<Void>> onAbandon;
     private final ClientLogger logger = new ClientLogger(FluxAutoComplete.class);
 
-    FluxAutoComplete(Flux<? extends ServiceBusReceivedMessageContext> upstream, Semaphore completionLock,
-        Function<ServiceBusReceivedMessageContext, Mono<Void>> onComplete,
-        Function<ServiceBusReceivedMessageContext, Mono<Void>> onAbandon) {
+    FluxAutoComplete(Flux<? extends ServiceBusMessageContext> upstream, Semaphore completionLock,
+                     Function<ServiceBusMessageContext, Mono<Void>> onComplete,
+                     Function<ServiceBusMessageContext, Mono<Void>> onAbandon) {
         super(upstream);
         this.completionLock = completionLock;
         this.onComplete = Objects.requireNonNull(onComplete, "'onComplete' cannot be null.");
@@ -40,7 +40,7 @@ final class FluxAutoComplete extends FluxOperator<ServiceBusReceivedMessageConte
      * @param coreSubscriber The subscriber interested in the published items.
      */
     @Override
-    public void subscribe(CoreSubscriber<? super ServiceBusReceivedMessageContext> coreSubscriber) {
+    public void subscribe(CoreSubscriber<? super ServiceBusMessageContext> coreSubscriber) {
         Objects.requireNonNull(coreSubscriber, "'coreSubscriber' cannot be null.");
 
         final AutoCompleteSubscriber subscriber =
@@ -49,17 +49,17 @@ final class FluxAutoComplete extends FluxOperator<ServiceBusReceivedMessageConte
         source.subscribe(subscriber);
     }
 
-    static final class AutoCompleteSubscriber extends BaseSubscriber<ServiceBusReceivedMessageContext> {
-        private final CoreSubscriber<? super ServiceBusReceivedMessageContext> downstream;
-        private final Function<ServiceBusReceivedMessageContext, Mono<Void>> onComplete;
-        private final Function<ServiceBusReceivedMessageContext, Mono<Void>> onAbandon;
+    static final class AutoCompleteSubscriber extends BaseSubscriber<ServiceBusMessageContext> {
+        private final CoreSubscriber<? super ServiceBusMessageContext> downstream;
+        private final Function<ServiceBusMessageContext, Mono<Void>> onComplete;
+        private final Function<ServiceBusMessageContext, Mono<Void>> onAbandon;
         private final Semaphore semaphore;
         private final ClientLogger logger;
 
-        AutoCompleteSubscriber(CoreSubscriber<? super ServiceBusReceivedMessageContext> downstream,
-            Semaphore completionLock,
-            Function<ServiceBusReceivedMessageContext, Mono<Void>> onComplete,
-            Function<ServiceBusReceivedMessageContext, Mono<Void>> onAbandon, ClientLogger logger) {
+        AutoCompleteSubscriber(CoreSubscriber<? super ServiceBusMessageContext> downstream,
+                               Semaphore completionLock,
+                               Function<ServiceBusMessageContext, Mono<Void>> onComplete,
+                               Function<ServiceBusMessageContext, Mono<Void>> onAbandon, ClientLogger logger) {
             this.downstream = downstream;
             this.onComplete = onComplete;
             this.onAbandon = onAbandon;
@@ -75,7 +75,7 @@ final class FluxAutoComplete extends FluxOperator<ServiceBusReceivedMessageConte
         }
 
         @Override
-        protected void hookOnNext(ServiceBusReceivedMessageContext value) {
+        protected void hookOnNext(ServiceBusMessageContext value) {
             final ServiceBusReceivedMessage message = value.getMessage();
             final String sequenceNumber = message != null ? String.valueOf(message.getSequenceNumber()) : "n/a";
 
@@ -131,8 +131,8 @@ final class FluxAutoComplete extends FluxOperator<ServiceBusReceivedMessageConte
          * @param context received message to apply function to.
          * @param operation The operation name.
          */
-        private void applyWithCatch(Function<ServiceBusReceivedMessageContext, Mono<Void>> function,
-            ServiceBusReceivedMessageContext context, String operation) {
+        private void applyWithCatch(Function<ServiceBusMessageContext, Mono<Void>> function,
+            ServiceBusMessageContext context, String operation) {
 
             // Do not settle the message again if it has already been settled.
             if (context.getMessage() != null && context.getMessage().isSettled()) {

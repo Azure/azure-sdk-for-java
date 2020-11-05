@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.jca;
 
-import com.azure.security.keyvault.jca.rest.CertificateBundle;
+import com.azure.security.keyvault.jca.model.CertificateBundle;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
