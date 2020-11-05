@@ -65,7 +65,7 @@ public class KeyClientTest extends KeyClientTestBase {
     }
 
     /**
-     * Tests that a RSA key created.
+     * Tests that an RSA key is created.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")

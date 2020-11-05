@@ -127,7 +127,7 @@ public abstract class KeyClientTestBase extends TestBase {
 
         tags.put("foo", "baz");
 
-        final CreateRsaKeyOptions createRsaKeyOptions = new CreateRsaKeyOptions(KEY_NAME)
+        final CreateRsaKeyOptions createRsaKeyOptions = new CreateRsaKeyOptions(generateResourceId(KEY_NAME))
             .setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
             .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC))
             .setTags(tags);
