@@ -5,6 +5,8 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.HealthcareTaskResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
+import com.azure.ai.textanalytics.implementation.TextAnalyticsErrorInformationPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.TextAnalyticsExceptionPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsOperationResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.Utility;
 import com.azure.ai.textanalytics.implementation.models.HealthcareJobState;
@@ -14,6 +16,8 @@ import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.HealthcareTaskResult;
 import com.azure.ai.textanalytics.models.RecognizeHealthcareEntityOptions;
+import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
+import com.azure.ai.textanalytics.models.TextAnalyticsErrorInformation;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsOperationResult;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
@@ -302,16 +306,20 @@ class AnalyzeHealthcareAsyncClient {
                 status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
                 break;
             case FAILED:
-                // TODO: wait for a swagger change, which will include a list of errors reported in HealthcareJobState.
-                throw logger.logExceptionAsError(new TextAnalyticsException("Analyze operation failed", null, null));
-                //analyzeOperationResultResponse.get.getValue()..getResults()
-                //    .map(documentError -> new TextAnalyticsException(
-                //        documentError.getError().getMessage(),
-                //                 TextAnalyticsErrorCode.fromString(documentError.getError().getCode().toString()),
-                //                 documentError.getError().getTarget()))
-                //    .collect(Collectors.toList())),
-                //null);
-                //);
+                final TextAnalyticsException exception = new TextAnalyticsException("Analyze operation failed",
+                    null, null);
+                TextAnalyticsExceptionPropertiesHelper.setErrorInformation(exception,
+                    analyzeOperationResultResponse.getValue().getErrors().stream()
+                        .map(error -> {
+                            final TextAnalyticsErrorInformation textAnalyticsErrorInformation =
+                                new TextAnalyticsErrorInformation();
+                            TextAnalyticsErrorInformationPropertiesHelper.setErrorCode(textAnalyticsErrorInformation,
+                                TextAnalyticsErrorCode.fromString(error.getCode().toString()));
+                            TextAnalyticsErrorInformationPropertiesHelper.setMessage(textAnalyticsErrorInformation,
+                                error.getMessage());
+                            return textAnalyticsErrorInformation;
+                        }).collect(Collectors.toList()));
+                throw logger.logExceptionAsError(exception);
             case CANCELLED:
                 logger.info("LongRunningOperation-Cancelled");
                 status = LongRunningOperationStatus.USER_CANCELLED;
