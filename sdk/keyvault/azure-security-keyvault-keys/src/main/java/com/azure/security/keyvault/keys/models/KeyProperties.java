@@ -267,7 +267,7 @@ public class KeyProperties {
      *
      * @return The exportable value.
      */
-    public boolean isExportable() {
+    public Boolean isExportable() {
         return this.exportable;
     }
 
