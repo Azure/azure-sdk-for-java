@@ -269,7 +269,8 @@ public class CryptographyAsyncClient {
     }
 
 
-    Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, CryptographyOptions options, Context context) {
+    Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, CryptographyOptions options,
+                                Context context) {
         Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
         Objects.requireNonNull(plaintext, "Plain text content to be encrypted cannot be null.");
 
@@ -591,7 +592,7 @@ public class CryptographyAsyncClient {
      * @return A {@link Mono} containing a the unwrapped key content.
      * @throws ResourceNotFoundException If the key cannot be found for wrap operation.
      * @throws UnsupportedOperationException If the unwrap operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code algorithm} or {@code encryptedKey} is null.
+     * @throws NullPointerException If {@code algorithm} or {@code encryptedKey} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UnwrapResult> unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey) {
@@ -622,7 +623,7 @@ public class CryptographyAsyncClient {
      * @return A {@link Mono} containing a the unwrapped key content.
      * @throws ResourceNotFoundException If the key cannot be found for wrap operation.
      * @throws UnsupportedOperationException If the unwrap operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code algorithm} or {@code encryptedKey} is null.
+     * @throws NullPointerException If {@code algorithm} or {@code encryptedKey} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UnwrapResult> unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, CryptographyOptions options) {
