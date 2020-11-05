@@ -109,6 +109,18 @@ public final class ShareProperties {
     private LeaseDurationType leaseDuration;
 
     /*
+     * The enabledProtocols property.
+     */
+    @JsonProperty(value = "EnabledProtocols")
+    private String enabledProtocols;
+
+    /*
+     * Possible values include: 'NoRootSquash', 'RootSquash', 'AllSquash'
+     */
+    @JsonProperty(value = "RootSquash")
+    private ShareRootSquash rootSquash;
+
+    /*
      * The metadata property.
      */
     @JsonProperty(value = "Metadata")
@@ -459,6 +471,48 @@ public final class ShareProperties {
      */
     public ShareProperties setLeaseDuration(LeaseDurationType leaseDuration) {
         this.leaseDuration = leaseDuration;
+        return this;
+    }
+
+    /**
+     * Get the enabledProtocols property: The enabledProtocols property.
+     *
+     * @return the enabledProtocols value.
+     */
+    public String getEnabledProtocols() {
+        return this.enabledProtocols;
+    }
+
+    /**
+     * Set the enabledProtocols property: The enabledProtocols property.
+     *
+     * @param enabledProtocols the enabledProtocols value to set.
+     * @return the ShareProperties object itself.
+     */
+    public ShareProperties setEnabledProtocols(String enabledProtocols) {
+        this.enabledProtocols = enabledProtocols;
+        return this;
+    }
+
+    /**
+     * Get the rootSquash property: Possible values include: 'NoRootSquash',
+     * 'RootSquash', 'AllSquash'.
+     *
+     * @return the rootSquash value.
+     */
+    public ShareRootSquash getRootSquash() {
+        return this.rootSquash;
+    }
+
+    /**
+     * Set the rootSquash property: Possible values include: 'NoRootSquash',
+     * 'RootSquash', 'AllSquash'.
+     *
+     * @param rootSquash the rootSquash value to set.
+     * @return the ShareProperties object itself.
+     */
+    public ShareProperties setRootSquash(ShareRootSquash rootSquash) {
+        this.rootSquash = rootSquash;
         return this;
     }
 

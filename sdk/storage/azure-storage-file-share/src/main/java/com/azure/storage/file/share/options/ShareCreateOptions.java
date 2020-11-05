@@ -5,6 +5,8 @@ package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.file.share.models.ShareAccessTier;
+import com.azure.storage.file.share.models.ShareEnabledProtocol;
+import com.azure.storage.file.share.models.ShareRootSquash;
 
 import java.util.Map;
 
@@ -17,6 +19,8 @@ public class ShareCreateOptions {
     private Integer quotaInGb;
     private Map<String, String> metadata;
     private ShareAccessTier accessTier;
+    private ShareEnabledProtocol enabledProtocol;
+    private ShareRootSquash rootSquash;
 
     /**
      * @return Size in GB to limit the share's growth.
@@ -63,6 +67,38 @@ public class ShareCreateOptions {
      */
     public ShareCreateOptions setAccessTier(ShareAccessTier accessTier) {
         this.accessTier = accessTier;
+        return this;
+    }
+
+    /**
+     * @return {@link ShareEnabledProtocol}
+     */
+    public ShareEnabledProtocol getEnabledProtocol() {
+        return enabledProtocol;
+    }
+
+    /**
+     * @param enabledProtocol {@link ShareEnabledProtocol}
+     * @return The updated options.
+     */
+    public ShareCreateOptions setEnabledProtocol(ShareEnabledProtocol enabledProtocol) {
+        this.enabledProtocol = enabledProtocol;
+        return this;
+    }
+
+    /**
+     * @return The root squash to set for the share. Only valid for NFS.
+     */
+    public ShareRootSquash getRootSquash() {
+        return rootSquash;
+    }
+
+    /**
+     * @param rootSquash The root squash to set for the share. Only valid for NFS.
+     * @return The updated options.
+     */
+    public ShareCreateOptions setRootSquash(ShareRootSquash rootSquash) {
+        this.rootSquash = rootSquash;
         return this;
     }
 }
