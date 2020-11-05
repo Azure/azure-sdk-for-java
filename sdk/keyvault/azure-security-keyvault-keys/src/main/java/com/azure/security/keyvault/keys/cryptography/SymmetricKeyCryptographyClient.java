@@ -18,16 +18,19 @@ import com.azure.security.keyvault.keys.models.JsonWebKey;
 import reactor.core.publisher.Mono;
 
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+
+import static com.azure.security.keyvault.keys.cryptography.SymmetricEncryptionAlgorithm.BLOCK_SIZE;
 
 class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
     private final ClientLogger logger = new ClientLogger(SymmetricKeyCryptographyClient.class);
 
     private byte[] key;
 
-    /*
-     * Creates a RsaKeyCryptographyClient that uses {@code serviceClient) to service requests
+    /**
+     * Creates a {@link SymmetricKeyCryptographyClient} to perform local cryptography operations.
      *
-     * @param key the key pair to use for cryptography operations.
+     * @param serviceClient The client to route the requests through.
      */
     SymmetricKeyCryptographyClient(CryptographyServiceClient serviceClient) {
         super(serviceClient);
@@ -46,14 +49,85 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, Context context, JsonWebKey jsonWebKey) {
-        return Mono.error(new UnsupportedOperationException("encrypt operation not supported for AES/OCT/Symmetric key"));
+    Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, Context context,
+                                     JsonWebKey jsonWebKey) {
+        this.key = getKey(jsonWebKey);
+
+        if (key == null || key.length == 0) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Key is empty."));
+        }
+
+        // Interpret the algorithm
+        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
+
+        if (!(baseAlgorithm instanceof SymmetricEncryptionAlgorithm)) {
+            return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
+        }
+
+        SymmetricEncryptionAlgorithm symmetricEncryptionAlgorithm = (SymmetricEncryptionAlgorithm) baseAlgorithm;
+
+        ICryptoTransform transform;
+
+        SecureRandom secureRandom = new SecureRandom();
+        byte[] iv = new byte[BLOCK_SIZE];
+        secureRandom.nextBytes(iv);
+
+        try {
+            transform = symmetricEncryptionAlgorithm.createEncryptor(this.key, iv, null);
+        } catch (Exception e) {
+            return Mono.error(e);
+        }
+
+        byte[] encrypted;
+
+        try {
+            encrypted = transform.doFinal(plaintext);
+        } catch (Exception e) {
+            return Mono.error(e);
+        }
+
+        return Mono.just(new EncryptResult(encrypted, algorithm, jsonWebKey.getId()));
     }
 
     @Override
     Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] cipherText, Context context,
                                      JsonWebKey jsonWebKey) {
-        return Mono.error(new UnsupportedOperationException("decrypt operation not supported for AES/OCT/Symmetric key"));
+        this.key = getKey(jsonWebKey);
+
+        if (key == null || key.length == 0) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Key is empty."));
+        }
+
+        // Interpret the algorithm
+        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
+
+        if (!(baseAlgorithm instanceof SymmetricEncryptionAlgorithm)) {
+            return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
+        }
+
+        SymmetricEncryptionAlgorithm symmetricEncryptionAlgorithm = (SymmetricEncryptionAlgorithm) baseAlgorithm;
+
+        ICryptoTransform transform;
+
+        SecureRandom secureRandom = new SecureRandom();
+        byte[] iv = new byte[BLOCK_SIZE];
+        secureRandom.nextBytes(iv);
+
+        try {
+            transform = symmetricEncryptionAlgorithm.createDecryptor(this.key, iv, null, null);
+        } catch (Exception e) {
+            return Mono.error(e);
+        }
+
+        byte[] decrypted;
+
+        try {
+            decrypted = transform.doFinal(cipherText);
+        } catch (Exception e) {
+            return Mono.error(e);
+        }
+
+        return Mono.just(new DecryptResult(decrypted, algorithm, jsonWebKey.getId()));
     }
 
     @Override
@@ -69,7 +143,6 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     Mono<WrapResult> wrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] key, Context context, JsonWebKey jsonWebKey) {
-
         this.key = getKey(jsonWebKey);
 
         if (key == null || key.length == 0) {
@@ -79,21 +152,21 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         // Interpret the algorithm
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
 
-        if (baseAlgorithm == null || !(baseAlgorithm instanceof LocalKeyWrapAlgorithm)) {
+        if (!(baseAlgorithm instanceof LocalKeyWrapAlgorithm)) {
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
         }
 
-        LocalKeyWrapAlgorithm algo = (LocalKeyWrapAlgorithm) baseAlgorithm;
+        LocalKeyWrapAlgorithm localKeyWrapAlgorithm = (LocalKeyWrapAlgorithm) baseAlgorithm;
 
-        ICryptoTransform transform = null;
+        ICryptoTransform transform;
 
         try {
-            transform = algo.createEncryptor(this.key, null, null);
+            transform = localKeyWrapAlgorithm.createEncryptor(this.key, null, null);
         } catch (Exception e) {
             return Mono.error(e);
         }
 
-        byte[] encrypted = null;
+        byte[] encrypted;
 
         try {
             encrypted = transform.doFinal(key);
@@ -107,20 +180,20 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
     @Override
     Mono<UnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context,
                                       JsonWebKey jsonWebKey) {
-        key = getKey(jsonWebKey);
+        this.key = getKey(jsonWebKey);
 
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
 
-        if (baseAlgorithm == null || !(baseAlgorithm instanceof LocalKeyWrapAlgorithm)) {
+        if (!(baseAlgorithm instanceof LocalKeyWrapAlgorithm)) {
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
         }
 
-        LocalKeyWrapAlgorithm algo = (LocalKeyWrapAlgorithm) baseAlgorithm;
+        LocalKeyWrapAlgorithm localKeyWrapAlgorithm = (LocalKeyWrapAlgorithm) baseAlgorithm;
 
         ICryptoTransform transform;
 
         try {
-            transform = algo.createDecryptor(key, null, null);
+            transform = localKeyWrapAlgorithm.createDecryptor(key, null, null);
         } catch (Exception e) {
             return Mono.error(e);
         }
