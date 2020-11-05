@@ -1037,7 +1037,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 if (throwable instanceof ServiceBusReceiverException) {
                     return throwable;
                 }
-
+                
                 switch (dispositionStatus) {
                     case COMPLETED:
                         return new ServiceBusReceiverException(throwable, ServiceBusErrorSource.COMPLETE);
