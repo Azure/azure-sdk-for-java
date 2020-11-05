@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.exception.AmqpResponseCode;
+import com.azure.core.experimental.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
 import com.azure.messaging.servicebus.administration.models.AuthorizationRule;
@@ -237,7 +238,7 @@ public class TestUtils {
     }
 
     public static ServiceBusMessage getServiceBusMessage(byte[] body, String messageId) {
-        final ServiceBusMessage message = new ServiceBusMessage(body);
+        final ServiceBusMessage message = new ServiceBusMessage(BinaryData.fromBytes(body));
         message.setMessageId(messageId);
         return message;
     }

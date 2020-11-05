@@ -45,6 +45,6 @@ public final class AlertTest extends AlertTestBase {
             cnt[0]++;
             assertAlertOutput(alert);
         }
-        Assertions.assertEquals(3, cnt[0]);
+        Assertions.assertEquals(4, cnt[0]);
     }
 }

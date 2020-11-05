@@ -19,13 +19,15 @@ import com.azure.core.util.Configuration;
 import java.util.Collections;
 import java.util.HashMap;
 
+import static com.azure.ai.metricsadvisor.AnomalyAlertTestBase.DETECTION_CONFIGURATION_ID;
 import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_ENDPOINT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class IncidentRootCauseTestBase extends TestBase {
 
-    static final String INCIDENT_ROOT_CAUSE_ID = "1516ffd506462aca05198391bb279aff-1746b031c00";
-    static final String INCIDENT_ROOT_CAUSE_CONFIGURATION_ID = "59f26a57-55f7-41eb-8899-a7268d125557";
+    static final String INCIDENT_ROOT_CAUSE_ID = "2583ff47fef9174e6d6bfe73415ad914-174d2024c00";
+    static final String INCIDENT_ROOT_CAUSE_CONFIGURATION_ID = DETECTION_CONFIGURATION_ID;
 
     @Override
     protected void beforeTest() {
@@ -55,14 +57,12 @@ public abstract class IncidentRootCauseTestBase extends TestBase {
         RootCause innerRootCause = new RootCause()
             .setRootCause(new DimensionGroupIdentity().setDimension(new HashMap<String, String>() {
                 {
-                    put("category", "Shoes Handbags & Sunglasses");
-                    put("city", "Chicago");
+                    put("category", "Electronics (Consumer)");
+                    put("city", "Karachi");
                 }
             }))
-            .setPath(Collections.singletonList("category"))
-            .setScore(0.23402075133615907)
-            .setDescription("Increase on category = Shoes Handbags & Sunglasses | city = Chicago contributes "
-            + "the most to current incident.");
+            .setPath(Collections.singletonList("city"))
+            .setDescription("Increase on category = Electronics (Consumer) | city = Karachi contributes the most to current incident.");
         return IncidentRootCauseTransforms.fromInner(innerRootCause);
     }
 
@@ -71,7 +71,7 @@ public abstract class IncidentRootCauseTestBase extends TestBase {
         assertEquals(expectedIncidentRootCause.getSeriesKey(), actualIncidentRootCause.getSeriesKey());
         assertEquals(expectedIncidentRootCause.getDescription(), actualIncidentRootCause.getDescription());
         assertEquals(expectedIncidentRootCause.getPaths(), actualIncidentRootCause.getPaths());
-        assertEquals(expectedIncidentRootCause.getConfidenceScore(), actualIncidentRootCause.getConfidenceScore());
+        assertNotNull(actualIncidentRootCause.getConfidenceScore());
     }
 
     String getEndpoint() {

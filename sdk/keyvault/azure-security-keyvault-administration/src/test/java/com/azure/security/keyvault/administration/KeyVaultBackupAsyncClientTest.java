@@ -106,12 +106,10 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
             asyncClient.beginBackup(blobStorageUrl, sasToken).blockLast();
 
         // Restore the backup
-        String backupBlobUri = backupPollResponse.getFinalResult().block();
-        String[] segments = backupBlobUri.split("/");
-        String folderName = segments[segments.length - 1];
+        String backupFolderUrl = backupPollResponse.getFinalResult().block();
 
         AsyncPollResponse<KeyVaultRestoreOperation, Void> restorePollResponse =
-            asyncClient.beginRestore(blobStorageUrl, sasToken, folderName).blockLast();
+            asyncClient.beginRestore(backupFolderUrl, sasToken).blockLast();
 
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, restorePollResponse.getStatus());
     }
@@ -136,14 +134,12 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
             asyncClient.beginBackup(blobStorageUrl, sasToken).blockLast();
 
         // Restore the backup
-        String backupBlobUri = backupPollResponse.getFinalResult().block();
-        String[] segments = backupBlobUri.split("/");
-        String folderName = segments[segments.length - 1];
-
+        String backupFolderUrl = backupPollResponse.getFinalResult().block();
         PollerFlux<KeyVaultRestoreOperation, Void> restorePollerFlux =
-            asyncClient.beginRestore(blobStorageUrl, sasToken, folderName);
-        String jobId = restorePollerFlux.blockFirst().getValue().getJobId();
+            asyncClient.beginRestore(backupFolderUrl, sasToken);
 
+        // Get job status via its ID
+        String jobId = restorePollerFlux.blockFirst().getValue().getJobId();
         PollerFlux<KeyVaultRestoreOperation, Void> restoreStatusPollerFlux = asyncClient.getRestoreOperation(jobId);
 
         AsyncPollResponse<KeyVaultRestoreOperation, Void> restorePollResponse = restorePollerFlux.blockLast();
@@ -177,12 +173,9 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
             asyncClient.beginBackup(blobStorageUrl, sasToken).blockLast();
 
         // Restore the backup
-        String backupBlobUri = backupPollResponse.getFinalResult().block();
-        String[] segments = backupBlobUri.split("/");
-        String folderName = segments[segments.length - 1];
-
+        String backupFolderUrl = backupPollResponse.getFinalResult().block();
         AsyncPollResponse<KeyVaultRestoreOperation, Void> selectiveRestorePollResponse =
-            asyncClient.beginSelectiveRestore("testKey", blobStorageUrl, sasToken, folderName).blockLast();
+            asyncClient.beginSelectiveRestore("testKey", backupFolderUrl, sasToken).blockLast();
 
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, selectiveRestorePollResponse.getStatus());
     }

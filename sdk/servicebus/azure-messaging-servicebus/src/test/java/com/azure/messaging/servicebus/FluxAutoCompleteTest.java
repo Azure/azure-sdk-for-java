@@ -33,11 +33,11 @@ import static org.mockito.Mockito.when;
  */
 class FluxAutoCompleteTest {
     @Mock
-    private Function<ServiceBusReceivedMessageContext, Mono<Void>> onComplete;
+    private Function<ServiceBusMessageContext, Mono<Void>> onComplete;
     @Mock
-    private Function<ServiceBusReceivedMessageContext, Mono<Void>> onAbandon;
+    private Function<ServiceBusMessageContext, Mono<Void>> onAbandon;
     @Mock
-    private CoreSubscriber<ServiceBusReceivedMessageContext> downstreamSubscriber;
+    private CoreSubscriber<ServiceBusMessageContext> downstreamSubscriber;
 
     private final Semaphore completionLock = new Semaphore(1);
 
@@ -59,7 +59,7 @@ class FluxAutoCompleteTest {
     @Test
     void constructor() {
         // Arrange
-        final TestPublisher<ServiceBusReceivedMessageContext> testPublisher = TestPublisher.create();
+        final TestPublisher<ServiceBusMessageContext> testPublisher = TestPublisher.create();
         when(onComplete.apply(any())).thenReturn(Mono.empty());
         when(onAbandon.apply(any())).thenReturn(Mono.empty());
 
@@ -75,11 +75,11 @@ class FluxAutoCompleteTest {
     @Test
     void completesOnSuccess() {
         // Arrange
-        final TestPublisher<ServiceBusReceivedMessageContext> testPublisher = TestPublisher.createCold();
+        final TestPublisher<ServiceBusMessageContext> testPublisher = TestPublisher.createCold();
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final ServiceBusReceivedMessageContext context = new ServiceBusReceivedMessageContext(message);
+        final ServiceBusMessageContext context = new ServiceBusMessageContext(message);
         final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
-        final ServiceBusReceivedMessageContext context2 = new ServiceBusReceivedMessageContext(message2);
+        final ServiceBusMessageContext context2 = new ServiceBusMessageContext(message2);
         final FluxAutoComplete autoComplete = new FluxAutoComplete(testPublisher.flux(), completionLock, onComplete, onAbandon);
 
         when(onComplete.apply(any())).thenReturn(Mono.empty());
@@ -100,11 +100,11 @@ class FluxAutoCompleteTest {
     @Test
     void abandonsOnFailure() {
         // Arrange
-        final TestPublisher<ServiceBusReceivedMessageContext> testPublisher = TestPublisher.createCold();
+        final TestPublisher<ServiceBusMessageContext> testPublisher = TestPublisher.createCold();
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final ServiceBusReceivedMessageContext context = new ServiceBusReceivedMessageContext(message);
+        final ServiceBusMessageContext context = new ServiceBusMessageContext(message);
         final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
-        final ServiceBusReceivedMessageContext context2 = new ServiceBusReceivedMessageContext(message2);
+        final ServiceBusMessageContext context2 = new ServiceBusMessageContext(message2);
         final FluxAutoComplete autoComplete = new FluxAutoComplete(testPublisher.flux(), completionLock, onComplete, onAbandon);
 
         when(onComplete.apply(any())).thenReturn(Mono.empty());
@@ -130,11 +130,11 @@ class FluxAutoCompleteTest {
     @Test
     void passesErrorDownstream() {
         // Arrange
-        final TestPublisher<ServiceBusReceivedMessageContext> testPublisher = TestPublisher.createCold();
+        final TestPublisher<ServiceBusMessageContext> testPublisher = TestPublisher.createCold();
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final ServiceBusReceivedMessageContext context = new ServiceBusReceivedMessageContext(message);
+        final ServiceBusMessageContext context = new ServiceBusMessageContext(message);
         final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
-        final ServiceBusReceivedMessageContext context2 = new ServiceBusReceivedMessageContext(message2);
+        final ServiceBusMessageContext context2 = new ServiceBusMessageContext(message2);
         final FluxAutoComplete autoComplete = new FluxAutoComplete(testPublisher.flux(), completionLock, onComplete, onAbandon);
         final Throwable testError = new IllegalArgumentException("Dummy exception");
 
@@ -159,15 +159,15 @@ class FluxAutoCompleteTest {
     @Test
     void doesNotContinueOnCancellation() {
         // Arrange
-        final TestPublisher<ServiceBusReceivedMessageContext> testPublisher = TestPublisher.createCold();
+        final TestPublisher<ServiceBusMessageContext> testPublisher = TestPublisher.createCold();
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final ServiceBusReceivedMessageContext context = new ServiceBusReceivedMessageContext(message);
+        final ServiceBusMessageContext context = new ServiceBusMessageContext(message);
         final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
-        final ServiceBusReceivedMessageContext context2 = new ServiceBusReceivedMessageContext(message2);
+        final ServiceBusMessageContext context2 = new ServiceBusMessageContext(message2);
         final ServiceBusReceivedMessage message3 = mock(ServiceBusReceivedMessage.class);
-        final ServiceBusReceivedMessageContext context3 = new ServiceBusReceivedMessageContext(message3);
+        final ServiceBusMessageContext context3 = new ServiceBusMessageContext(message3);
         final ServiceBusReceivedMessage message4 = mock(ServiceBusReceivedMessage.class);
-        final ServiceBusReceivedMessageContext context4 = new ServiceBusReceivedMessageContext(message4);
+        final ServiceBusMessageContext context4 = new ServiceBusMessageContext(message4);
         final FluxAutoComplete autoComplete = new FluxAutoComplete(testPublisher.flux(), completionLock, onComplete, onAbandon);
 
         when(onComplete.apply(any())).thenReturn(Mono.empty());
@@ -198,11 +198,11 @@ class FluxAutoCompleteTest {
     @Test
     void onCompleteErrors() {
         // Arrange
-        final TestPublisher<ServiceBusReceivedMessageContext> testPublisher = TestPublisher.createCold();
+        final TestPublisher<ServiceBusMessageContext> testPublisher = TestPublisher.createCold();
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final ServiceBusReceivedMessageContext context = new ServiceBusReceivedMessageContext(message);
+        final ServiceBusMessageContext context = new ServiceBusMessageContext(message);
         final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
-        final ServiceBusReceivedMessageContext context2 = new ServiceBusReceivedMessageContext(message2);
+        final ServiceBusMessageContext context2 = new ServiceBusMessageContext(message2);
 
         final FluxAutoComplete autoComplete = new FluxAutoComplete(testPublisher.flux(), completionLock, onComplete, onAbandon);
         final Throwable testError = new IllegalArgumentException("Dummy error");
