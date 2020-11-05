@@ -4,15 +4,15 @@
 package com.azure.cosmos.implementation.feedranges;
 
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.implementation.IRetryPolicy;
+import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
-import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.implementation.ShouldRetryResult;
 import reactor.core.publisher.Mono;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 abstract class FeedRangeContinuation {
-    private final FeedRangeInternal feedRange;
+    protected final FeedRangeInternal feedRange;
     private final String containerRid;
 
     // for mocking
@@ -48,11 +48,11 @@ abstract class FeedRangeContinuation {
         return FeedRangeCompositeContinuation.tryParse(toStringValue);
     }
 
-    public abstract IRetryPolicy.ShouldRetryResult handleChangeFeedNotModified(
+    public abstract ShouldRetryResult handleChangeFeedNotModified(
         RxDocumentServiceResponse responseMessage);
 
-    public abstract Mono<IRetryPolicy.ShouldRetryResult> handleSplitAsync(
-        CosmosAsyncContainer containerCore,
+    public abstract Mono<ShouldRetryResult> handleSplitAsync(
+        RxDocumentClientImpl client,
         RxDocumentServiceResponse responseMessage);
 
     public abstract void accept(FeedRangeContinuationVisitor visitor);

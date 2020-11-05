@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 
-abstract class FeedRangeInternal extends JsonSerializable implements FeedRange {
+public abstract class FeedRangeInternal extends JsonSerializable implements FeedRange {
     public abstract void accept(FeedRangeVisitor visitor);
 
     public abstract <T> Mono<T> acceptAsync(FeedRangeAsyncVisitor<T> visitor);

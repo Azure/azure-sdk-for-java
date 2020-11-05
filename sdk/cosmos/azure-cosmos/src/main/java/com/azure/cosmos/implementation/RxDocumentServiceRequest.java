@@ -1010,6 +1010,15 @@ public class RxDocumentServiceRequest implements Cloneable {
         this.isDisposed = true;
     }
 
+    /**
+     * Gets the request properties.
+     *
+     * @return the request properties.
+     */
+    public Map<String, Object> getProperties() {
+        return this.properties;
+    }
+
     private static Map<String, Object> getProperties(Object options) {
         if (options == null) {
             return null;
