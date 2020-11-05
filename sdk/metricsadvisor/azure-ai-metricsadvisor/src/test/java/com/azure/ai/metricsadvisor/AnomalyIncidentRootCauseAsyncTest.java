@@ -20,7 +20,7 @@ import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class IncidentRootCauseAsyncTest extends IncidentRootCauseTestBase {
+public class AnomalyIncidentRootCauseAsyncTest extends IncidentRootCauseTestBase {
 
     private MetricsAdvisorAsyncClient client;
 

@@ -3,16 +3,17 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.models.Incident;
+import com.azure.ai.metricsadvisor.models.AnomalyIncident;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
-public class IncidentDetectedTest extends IncidentDetectedTestBase {
+public class AnomalyIncidentDetectedTest extends IncidentDetectedTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
@@ -20,13 +21,14 @@ public class IncidentDetectedTest extends IncidentDetectedTestBase {
     public void listIncidentsDetected(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
 
-        PagedIterable<Incident> incidentsIterable
-            = client.listIncidentsForDetectionConfiguration(
+        PagedIterable<AnomalyIncident> incidentsIterable
+            = client.listIncidentsForDetectionConfig(
                 ListIncidentsDetectedInput.INSTANCE.detectionConfigurationId,
-                ListIncidentsDetectedInput.INSTANCE.options);
+            ListIncidentsDetectedInput.INSTANCE.startTime, ListIncidentsDetectedInput.INSTANCE.endTime,
+            ListIncidentsDetectedInput.INSTANCE.options, Context.NONE);
 
-        for (Incident incident : incidentsIterable) {
-            assertListIncidentsDetectedOutput(incident);
+        for (AnomalyIncident anomalyIncident : incidentsIterable) {
+            assertListIncidentsDetectedOutput(anomalyIncident);
         }
     }
 }

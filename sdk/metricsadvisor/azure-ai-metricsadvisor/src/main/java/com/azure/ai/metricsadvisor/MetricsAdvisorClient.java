@@ -4,12 +4,12 @@
 package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClientBuilder;
-import com.azure.ai.metricsadvisor.models.Alert;
-import com.azure.ai.metricsadvisor.models.Anomaly;
+import com.azure.ai.metricsadvisor.models.AnomalyAlert;
+import com.azure.ai.metricsadvisor.models.AnomalyIncident;
+import com.azure.ai.metricsadvisor.models.DataPointAnomaly;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.models.EnrichmentStatus;
 import com.azure.ai.metricsadvisor.models.ErrorCodeException;
-import com.azure.ai.metricsadvisor.models.Incident;
 import com.azure.ai.metricsadvisor.models.IncidentRootCause;
 import com.azure.ai.metricsadvisor.models.ListAlertOptions;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesAlertedOptions;
@@ -19,9 +19,8 @@ import com.azure.ai.metricsadvisor.models.ListIncidentsDetectedOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricDimensionValuesOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricEnrichmentStatusOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricFeedbackOptions;
-import com.azure.ai.metricsadvisor.models.ListMetricSeriesDataOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricSeriesDefinitionOptions;
-import com.azure.ai.metricsadvisor.models.ListValuesOfDimensionWithAnomaliesOptions;
+import com.azure.ai.metricsadvisor.models.ListDimensionValuesWithAnomaliesOptions;
 import com.azure.ai.metricsadvisor.models.MetricEnrichedSeriesData;
 import com.azure.ai.metricsadvisor.models.MetricFeedback;
 import com.azure.ai.metricsadvisor.models.MetricSeriesData;
@@ -39,7 +38,7 @@ import java.util.List;
 /**
  * This class provides an asynchronous client that contains all the operations that apply to Azure Metrics Advisor.
  *
- * <p><strong>Instantiating an synchronous Metric Advisor Client</strong></p>
+ * <p><strong>Instantiating an synchronous DataFeedMetric Advisor Client</strong></p>
  * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.instantiation}
  *
  * @see MetricsAdvisorClientBuilder
@@ -65,45 +64,43 @@ public class MetricsAdvisorClient {
      * List series (dimension combinations) from metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesDefinitions#String-ListMetricSeriesDefinitionOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesDefinitions#String-OffsetDateTime}
      *
      * @param metricId metric unique id.
-     * @param options the additional filtering attributes that can be provided to query the series.
-     *
+     * @param activeSince the start time for querying series ingested after this time.
      * @return A {@link PagedIterable} of the {@link MetricSeriesDefinition metric series definitions}.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
-     * @throws NullPointerException thrown if the {@code metricId} or {@code options.activeSince}
+     * @throws NullPointerException thrown if the {@code metricId} or {@code activeSince}
      * is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricSeriesDefinition> listMetricSeriesDefinitions(
-        String metricId,
-        ListMetricSeriesDefinitionOptions options) {
-        return listMetricSeriesDefinitions(metricId, options, Context.NONE);
+        String metricId, OffsetDateTime activeSince) {
+        return listMetricSeriesDefinitions(metricId, activeSince, null, Context.NONE);
     }
 
     /**
      * List series (dimension combinations) from metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesDefinitions#String-ListMetricSeriesDefinitionOptions-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesDefinitions#String-OffsetDateTime-ListMetricSeriesDefinitionOptions-Context}
      *
      * @param metricId metric unique id.
+     * @param activeSince the start time for querying series ingested after this time.
      * @param options the additional filtering attributes that can be provided to query the series.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link PagedIterable} of the {@link MetricSeriesDefinition metric series definitions}.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
-     * @throws NullPointerException thrown if the {@code metricId} or {@code options.activeSince}
+     * @throws NullPointerException thrown if the {@code metricId} or {@code activeSince}
      * is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MetricSeriesDefinition> listMetricSeriesDefinitions(
-        String metricId,
-        ListMetricSeriesDefinitionOptions options, Context context) {
-        return new PagedIterable<>(client.listMetricSeriesDefinitions(metricId, options,
+    public PagedIterable<MetricSeriesDefinition> listMetricSeriesDefinitions(String metricId,
+        OffsetDateTime activeSince, ListMetricSeriesDefinitionOptions options, Context context) {
+        return new PagedIterable<>(client.listMetricSeriesDefinitions(metricId, activeSince, options,
             context == null ? Context.NONE : context));
     }
 
@@ -111,7 +108,7 @@ public class MetricsAdvisorClient {
      * Get time series data from metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesData#String-List-ListMetricSeriesDataOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesData#String-List-OffsetDateTime-OffsetDateTime}
      *
      * @param metricId metric unique id.
      * @param seriesKeys the series key to filter.
@@ -119,24 +116,25 @@ public class MetricsAdvisorClient {
      * For example, let's say we've the dimensions 'category' and 'city',
      * so the api can query value of the dimension 'category', with series key as 'city=redmond'.
      * </p>
-     * @param options query time series data condition.
+     * @param startTime The start time for querying the time series data.
+     * @param endTime The end time for querying the time series data.
      *
      * @return A {@link PagedIterable} of the {@link MetricSeriesData metric series data points}.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
-     * @throws NullPointerException thrown if the {@code metricId}, {@code options.startTime} or {@code options.endTime}
+     * @throws NullPointerException thrown if the {@code metricId}, {@code startTime} or {@code endTime}
      * is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricSeriesData> listMetricSeriesData(String metricId,
-        List<DimensionKey> seriesKeys, ListMetricSeriesDataOptions options) {
-        return listMetricSeriesData(metricId, seriesKeys, options, Context.NONE);
+        List<DimensionKey> seriesKeys, OffsetDateTime startTime, OffsetDateTime endTime) {
+        return listMetricSeriesData(metricId, seriesKeys, startTime, endTime, Context.NONE);
     }
 
     /**
      * Get time series data from metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesData#String-List-ListMetricSeriesDataOptions-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesData#String-List-OffsetDateTime-OffsetDateTime-Context}
      *
      * @param metricId metric unique id.
      * @param seriesKeys the series key to filter.
@@ -144,64 +142,66 @@ public class MetricsAdvisorClient {
      * For example, let's say we've the dimensions 'category' and 'city',
      * so the api can query value of the dimension 'category', with series key as 'city=redmond'.
      * </p>
-     * @param options query time series data condition.
+     * @param startTime The start time for querying the time series data.
+     * @param endTime The end time for querying the time series data.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link PagedIterable} of the {@link MetricSeriesData metric series data points}.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
-     * @throws NullPointerException thrown if the {@code metricId}, {@code options.startTime} or {@code options.endTime}
+     * @throws NullPointerException thrown if the {@code metricId}, {@code startTime} or {@code endTime}
      * is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricSeriesData> listMetricSeriesData(String metricId, List<DimensionKey> seriesKeys,
-        ListMetricSeriesDataOptions options, Context context) {
-        return new PagedIterable<>(client.listMetricSeriesData(metricId, seriesKeys, options,
-            context == null ? Context.NONE : context));
+        OffsetDateTime startTime, OffsetDateTime endTime, Context context) {
+        return new PagedIterable<>(client.listMetricSeriesData(metricId, seriesKeys, startTime, endTime,
+                context == null ? Context.NONE : context));
     }
 
     /**
      * List the enrichment status for a metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricEnrichmentStatus#String-ListMetricEnrichmentStatusOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricEnrichmentStatus#String-OffsetDateTime-OffsetDateTime}
      *
      * @param metricId metric unique id.
-     * @param options th e additional configurable options to specify when querying the result..
-     *
+     * @param startTime The start time for querying the time series data.
+     * @param endTime The end time for querying the time series data.
      * @return the list of enrichment status's for the specified metric.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
-     * @throws NullPointerException thrown if {@code metricId}, {@code options.startTime} and {@code options.endTime}
+     * @throws NullPointerException thrown if {@code metricId}, {@code startTime} and {@code endTime}
      * is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EnrichmentStatus> listMetricEnrichmentStatus(
-        String metricId,
-        ListMetricEnrichmentStatusOptions options) {
-        return listMetricEnrichmentStatus(metricId, options, Context.NONE);
+        String metricId, OffsetDateTime startTime, OffsetDateTime endTime) {
+        return listMetricEnrichmentStatus(metricId, startTime, endTime, null, Context.NONE);
     }
 
     /**
      * List the enrichment status for a metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricEnrichmentStatus#String-ListMetricEnrichmentStatusOptions-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricEnrichmentStatus#String-OffsetDateTime-OffsetDateTime-ListMetricEnrichmentStatusOptions-Context}
      *
      * @param metricId metric unique id.
+     * @param startTime The start time for querying the time series data.
+     * @param endTime The end time for querying the time series data.
      * @param options th e additional configurable options to specify when querying the result..
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return the list of enrichment status's for the specified metric.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
-     * @throws NullPointerException thrown if {@code metricId}, {@code options.startTime} and {@code options.endTime}
+     * @throws NullPointerException thrown if {@code metricId}, {@code startTime} and {@code endTime}
      * is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EnrichmentStatus> listMetricEnrichmentStatus(
         String metricId,
-        ListMetricEnrichmentStatusOptions options, Context context) {
-        return new PagedIterable<>(client.listMetricEnrichmentStatus(metricId, options,
+        OffsetDateTime startTime, OffsetDateTime endTime, ListMetricEnrichmentStatusOptions options, Context context) {
+        return new PagedIterable<>(client.listMetricEnrichmentStatus(metricId, startTime, endTime, options,
             context == null ? Context.NONE : context));
     }
 
@@ -245,8 +245,8 @@ public class MetricsAdvisorClient {
      * @param seriesKeys The time series key list, each key identifies a specific time series.
      * @param detectionConfigurationId The id of the configuration used to enrich the time series
      *     identified by the keys in {@code seriesKeys}.
-     * @param startTime The start time.
-     * @param endTime The end time.
+     * @param startTime The start time of the time range within which the enriched data is returned.
+     * @param endTime The end time of the time range within which the enriched data is returned.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The enriched time series.
      * @throws IllegalArgumentException thrown if {@code detectionConfigurationId} fail the UUID format validation
@@ -272,45 +272,49 @@ public class MetricsAdvisorClient {
      * Fetch the anomalies identified by an anomaly detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomaliesForDetectionConfiguration#String-ListAnomaliesDetectedOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomaliesForDetectionConfig#String-OffsetDateTime-OffsetDateTime}
      *
      * @param detectionConfigurationId The anomaly detection configuration id.
-     * @param options The additional parameters.
+     * @param startTime The start time of the time range within which the anomalies were detected.
+     * @param endTime The end time of the time range within which the anomalies were detected.
      * @return The anomalies.
      * @throws IllegalArgumentException thrown if {@code detectionConfigurationId} does not conform
      *     to the UUID format specification
      *     or {@code options.filter} is used to set severity but either min or max severity is missing.
-     * @throws NullPointerException thrown if the {@code detectionConfigurationId} or {@code options}
-     *     or {@code options.startTime} or {@code options.endTime} is null.
+     * @throws NullPointerException thrown if the {@code detectionConfigurationId} or
+     * {@code startTime} or {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Anomaly> listAnomaliesForDetectionConfiguration(
-        String detectionConfigurationId,
-        ListAnomaliesDetectedOptions options) {
-        return listAnomaliesForDetectionConfiguration(detectionConfigurationId, options, Context.NONE);
+    public PagedIterable<DataPointAnomaly> listAnomaliesForDetectionConfig(
+        String detectionConfigurationId, OffsetDateTime startTime, OffsetDateTime endTime) {
+        return listAnomaliesForDetectionConfig(detectionConfigurationId, startTime, endTime, null, Context.NONE);
     }
 
     /**
      * Fetch the anomalies identified by an anomaly detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomaliesForDetectionConfiguration#String-ListAnomaliesDetectedOptions-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomaliesForDetectionConfig#String-OffsetDateTime-OffsetDateTime-ListAnomaliesDetectedOptions-Context}
      *
      * @param detectionConfigurationId The anomaly detection configuration id.
+     * @param startTime The start time of the time range within which the anomalies were detected.
+     * @param endTime The end time of the time range within which the anomalies were detected.
      * @param options The additional parameters.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The anomalies.
      * @throws IllegalArgumentException thrown if {@code detectionConfigurationId} does not conform
      *     to the UUID format specification
      *     or {@code options.filter} is used to set severity but either min or max severity is missing.
-     * @throws NullPointerException thrown if the {@code detectionConfigurationId} or {@code options}
-     *     or {@code options.startTime} or {@code options.endTime} is null.
+     * @throws NullPointerException thrown if the {@code detectionConfigurationId} or {@code startTime} or
+     * {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Anomaly> listAnomaliesForDetectionConfiguration(
+    public PagedIterable<DataPointAnomaly> listAnomaliesForDetectionConfig(
         String detectionConfigurationId,
-        ListAnomaliesDetectedOptions options, Context context) {
-        return new PagedIterable<>(client.listAnomaliesForDetectionConfiguration(detectionConfigurationId,
+        OffsetDateTime startTime, OffsetDateTime endTime, ListAnomaliesDetectedOptions options, Context context) {
+        return new PagedIterable<>(client.listAnomaliesForDetectionConfig(detectionConfigurationId,
+            startTime,
+            endTime,
             options,
             context == null ? Context.NONE : context));
     }
@@ -319,44 +323,46 @@ public class MetricsAdvisorClient {
      * Fetch the incidents identified by an anomaly detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForDetectionConfiguration#String-ListIncidentsDetectedOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForDetectionConfig#String-OffsetDateTime-OffsetDateTime}
      *
      * @param detectionConfigurationId The anomaly detection configuration id.
-     * @param options The additional parameters.
+     * @param startTime The start time of the time range within which the incidents were detected.
+     * @param endTime The end time of the time range within which the incidents were detected.
      * @return The incidents.
      * @throws IllegalArgumentException thrown if {@code detectionConfigurationId} does not conform
      *     to the UUID format specification.
      * @throws NullPointerException thrown if the {@code detectionConfigurationId} or {@code options}
-     *     or {@code options.startTime} or {@code options.endTime} is null.
+     *     or {@code startTime} or {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Incident> listIncidentsForDetectionConfiguration(
-        String detectionConfigurationId,
-        ListIncidentsDetectedOptions options) {
-        return listIncidentsForDetectionConfiguration(detectionConfigurationId, options, Context.NONE);
+    public PagedIterable<AnomalyIncident> listIncidentsForDetectionConfig(
+        String detectionConfigurationId, OffsetDateTime startTime, OffsetDateTime endTime) {
+        return listIncidentsForDetectionConfig(detectionConfigurationId, startTime, endTime, null, Context.NONE);
     }
 
     /**
      * Fetch the incidents identified by an anomaly detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForDetectionConfiguration#String-ListIncidentsDetectedOptions-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForDetectionConfig#String-OffsetDateTime-OffsetDateTime-ListIncidentsDetectedOptions-Context}
      *
      * @param detectionConfigurationId The anomaly detection configuration id.
+     * @param startTime The start time of the time range within which the incidents were detected.
+     * @param endTime The end time of the time range within which the incidents were detected.
      * @param options The additional parameters.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The incidents.
      * @throws IllegalArgumentException thrown if {@code detectionConfigurationId} does not conform
      *     to the UUID format specification.
-     * @throws NullPointerException thrown if the {@code detectionConfigurationId} or {@code options}
-     *     or {@code options.startTime} or {@code options.endTime} is null.
+     * @throws NullPointerException thrown if the {@code detectionConfigurationId} or {@code startTime} or
+     * {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Incident> listIncidentsForDetectionConfiguration(
+    public PagedIterable<AnomalyIncident> listIncidentsForDetectionConfig(
         String detectionConfigurationId,
-        ListIncidentsDetectedOptions options, Context context) {
-        return new PagedIterable<>(client.listIncidentsForDetectionConfiguration(detectionConfigurationId,
-            options,
+        OffsetDateTime startTime, OffsetDateTime endTime, ListIncidentsDetectedOptions options, Context context) {
+        return new PagedIterable<>(client.listIncidentsForDetectionConfig(detectionConfigurationId,
+            startTime, endTime, options,
             context == null ? Context.NONE : context));
     }
 
@@ -404,56 +410,57 @@ public class MetricsAdvisorClient {
     }
 
     /**
-     * List the root causes for an incident.
+     * List the root causes for an anomalyIncident.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentRootCauses#Incident}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentRootCauses#AnomalyIncident}
      *
-     * @param incident the incident for which you want to query root causes for.
+     * @param anomalyIncident the anomalyIncident for which you want to query root causes for.
      *
-     * @return the list of root causes for that incident.
+     * @return the list of root causes for that anomalyIncident.
      * @throws IllegalArgumentException thrown if {@code detectionConfigurationId} fail the UUID format validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if the {@code detectionConfigurationId} or {@code incidentId} is null.
      **/
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IncidentRootCause> listIncidentRootCauses(Incident incident) {
-        return new PagedIterable<>(client.listIncidentRootCauses(incident, Context.NONE));
+    public PagedIterable<IncidentRootCause> listIncidentRootCauses(AnomalyIncident anomalyIncident) {
+        return new PagedIterable<>(client.listIncidentRootCauses(anomalyIncident, Context.NONE));
     }
 
     /**
      * Fetch the values of a dimension that have anomalies.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listValuesOfDimensionWithAnomalies#String-String-ListValuesOfDimensionWithAnomaliesOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listDimensionValuesWithAnomalies#String-String-OffsetDateTime-OffsetDateTime}
      *
      * @param detectionConfigurationId Identifies the configuration used to detect the anomalies.
      * @param dimensionName The dimension name to retrieve the values for.
-     * @param options The additional parameters.
-     *
+     * @param startTime The start time of the time range within which the anomalies were identified.
+     * @param endTime The end time of the time range within which the anomalies were identified.
      * @return The dimension values with anomalies.
      * @throws IllegalArgumentException thrown if {@code detectionConfigurationId} does not conform
      * to the UUID format specification.
      * @throws NullPointerException thrown if the {@code detectionConfigurationId} or {@code dimensionName}
-     * or {@code options} or {@code options.startTime} or {@code options.endTime} is null.
+     * or {@code startTime} or {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> listValuesOfDimensionWithAnomalies(
+    public PagedIterable<String> listDimensionValuesWithAnomalies(
         String detectionConfigurationId,
-        String dimensionName,
-        ListValuesOfDimensionWithAnomaliesOptions options) {
-        return listValuesOfDimensionWithAnomalies(detectionConfigurationId,
-            dimensionName, options, Context.NONE);
+        String dimensionName, OffsetDateTime startTime, OffsetDateTime endTime) {
+        return listDimensionValuesWithAnomalies(detectionConfigurationId,
+            dimensionName, startTime, endTime, null, Context.NONE);
     }
 
     /**
      * Fetch the values of a dimension that have anomalies.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listValuesOfDimensionWithAnomalies#String-String-ListValuesOfDimensionWithAnomaliesOptions-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listDimensionValuesWithAnomalies#String-String-OffsetDateTime-OffsetDateTime-ListDimensionValuesWithAnomaliesOptions-Context}
      *
      * @param detectionConfigurationId Identifies the configuration used to detect the anomalies.
      * @param dimensionName The dimension name to retrieve the values for.
+     * @param startTime The start time of the time range within which the anomalies were identified.
+     * @param endTime The end time of the time range within which the anomalies were identified.
      * @param options The additional parameters.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
@@ -461,60 +468,62 @@ public class MetricsAdvisorClient {
      * @throws IllegalArgumentException thrown if {@code detectionConfigurationId} does not conform
      * to the UUID format specification.
      * @throws NullPointerException thrown if the {@code detectionConfigurationId} or {@code dimensionName}
-     * or {@code options} or {@code options.startTime} or {@code options.endTime} is null.
+     * or {@code startTime} or {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> listValuesOfDimensionWithAnomalies(
+    public PagedIterable<String> listDimensionValuesWithAnomalies(
         String detectionConfigurationId,
         String dimensionName,
-        ListValuesOfDimensionWithAnomaliesOptions options, Context context) {
-        return new PagedIterable<>(client.listValuesOfDimensionWithAnomalies(detectionConfigurationId,
-            dimensionName, options, context == null ? Context.NONE : context));
+        OffsetDateTime startTime, OffsetDateTime endTime,
+        ListDimensionValuesWithAnomaliesOptions options, Context context) {
+        return new PagedIterable<>(client.listDimensionValuesWithAnomalies(detectionConfigurationId,
+            dimensionName, startTime, endTime, options, context == null ? Context.NONE : context));
     }
 
     /**
      * Fetch the alerts triggered by an anomaly alert configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAlerts#String-ListAlertOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAlerts#String-OffsetDateTime-OffsetDateTime}
      *
      * @param alertConfigurationId The anomaly alert configuration id.
-     * @param options The additional parameters.
-     *
+     * @param startTime The start time of the time range within which the alerts were triggered.
+     * @param endTime The end time of the time range within which the alerts were triggered.
      * @return The alerts.
      * @throws IllegalArgumentException thrown if {@code alertConfigurationId} does not conform
      * to the UUID format specification.
-     * @throws NullPointerException thrown if the {@code alertConfigurationId} or {@code options}
-     * or {@code options.startTime} or {@code options.endTime} is null.
+     * @throws NullPointerException thrown if the {@code alertConfigurationId}
+     * or {@code startTime} or {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Alert> listAlerts(
-        String alertConfigurationId,
-        ListAlertOptions options) {
-        return listAlerts(alertConfigurationId, options, Context.NONE);
+    public PagedIterable<AnomalyAlert> listAlerts(
+        String alertConfigurationId, OffsetDateTime startTime, OffsetDateTime endTime) {
+        return listAlerts(alertConfigurationId, startTime, endTime, null, Context.NONE);
     }
 
     /**
      * Fetch the alerts triggered by an anomaly alert configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAlerts#String-ListAlertOptions-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAlerts#String-OffsetDateTime-OffsetDateTime-ListAlertOptions-Context}
      *
      * @param alertConfigurationId The anomaly alert configuration id.
+     * @param startTime The start time of the time range within which the alerts were triggered.
+     * @param endTime The end time of the time range within which the alerts were triggered.
      * @param options The additional parameters.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The alerts.
      * @throws IllegalArgumentException thrown if {@code alertConfigurationId} does not conform
      * to the UUID format specification.
-     * @throws NullPointerException thrown if the {@code alertConfigurationId} or {@code options}
-     * or {@code options.startTime} or {@code options.endTime} is null.
+     * @throws NullPointerException thrown if the {@code alertConfigurationId}
+     * or {@code startTime} or {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Alert> listAlerts(
+    public PagedIterable<AnomalyAlert> listAlerts(
         String alertConfigurationId,
-        ListAlertOptions options, Context context) {
-        return new PagedIterable<>(client.listAlerts(alertConfigurationId, options,
+        OffsetDateTime startTime, OffsetDateTime endTime, ListAlertOptions options, Context context) {
+        return new PagedIterable<>(client.listAlerts(alertConfigurationId, startTime, endTime, options,
             context == null ? Context.NONE : context));
     }
 
@@ -522,7 +531,7 @@ public class MetricsAdvisorClient {
      * Fetch the anomalies in an alert.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomaliesForAlert#String-String-ListAnomaliesAlertedOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomaliesForAlert#String-String}
      *
      * @param alertConfigurationId The anomaly alert configuration id.
      * @param alertId The alert id.
@@ -532,7 +541,7 @@ public class MetricsAdvisorClient {
      * @throws NullPointerException thrown if the {@code alertConfigurationId} or {@code alertId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Anomaly> listAnomaliesForAlert(
+    public PagedIterable<DataPointAnomaly> listAnomaliesForAlert(
         String alertConfigurationId,
         String alertId) {
         return listAnomaliesForAlert(alertConfigurationId, alertId, null, Context.NONE);
@@ -555,7 +564,7 @@ public class MetricsAdvisorClient {
      * @throws NullPointerException thrown if the {@code alertConfigurationId} or {@code alertId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Anomaly> listAnomaliesForAlert(
+    public PagedIterable<DataPointAnomaly> listAnomaliesForAlert(
         String alertConfigurationId,
         String alertId,
         ListAnomaliesAlertedOptions options, Context context) {
@@ -581,7 +590,7 @@ public class MetricsAdvisorClient {
      * @throws NullPointerException thrown if the {@code alertConfigurationId} or {@code alertId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Incident> listIncidentsForAlert(
+    public PagedIterable<AnomalyIncident> listIncidentsForAlert(
         String alertConfigurationId,
         String alertId,
         ListIncidentsAlertedOptions options) {
@@ -605,7 +614,7 @@ public class MetricsAdvisorClient {
      * @throws NullPointerException thrown if the {@code alertConfigurationId} or {@code alertId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Incident> listIncidentsForAlert(
+    public PagedIterable<AnomalyIncident> listIncidentsForAlert(
         String alertConfigurationId,
         String alertId,
         ListIncidentsAlertedOptions options, Context context) {

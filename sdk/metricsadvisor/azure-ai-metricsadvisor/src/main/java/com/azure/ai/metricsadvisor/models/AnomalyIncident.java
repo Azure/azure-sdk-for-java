@@ -10,55 +10,55 @@ import java.time.OffsetDateTime;
 /**
  * Describes an incident detected in a time series or a time series group.
  */
-public final class Incident {
+public final class AnomalyIncident {
     private String id;
     private String metricId;
     private String detectionConfigurationId;
     private DimensionKey rootDimensionKey;
-    private Severity severity;
-    private IncidentStatus status;
+    private AnomalySeverity severity;
+    private AnomalyIncidentStatus status;
     private OffsetDateTime startTime;
     private OffsetDateTime lastTime;
 
     static {
         IncidentHelper.setAccessor(new IncidentHelper.IncidentAccessor() {
             @Override
-            public void setId(Incident incident, String id) {
+            public void setId(AnomalyIncident incident, String id) {
                 incident.setId(id);
             }
 
             @Override
-            public void setMetricId(Incident incident, String metricId) {
+            public void setMetricId(AnomalyIncident incident, String metricId) {
                 incident.setMetricId(metricId);
             }
 
             @Override
-            public void setDetectionConfigurationId(Incident incident, String detectionConfigurationId) {
+            public void setDetectionConfigurationId(AnomalyIncident incident, String detectionConfigurationId) {
                 incident.setDetectionConfigurationId(detectionConfigurationId);
             }
 
             @Override
-            public void setRootDimensionKey(Incident incident, DimensionKey rootDimensionKey) {
+            public void setRootDimensionKey(AnomalyIncident incident, DimensionKey rootDimensionKey) {
                 incident.setRootDimensionKey(rootDimensionKey);
             }
 
             @Override
-            public void setSeverity(Incident incident, Severity severity) {
+            public void setSeverity(AnomalyIncident incident, AnomalySeverity severity) {
                 incident.setSeverity(severity);
             }
 
             @Override
-            public void setStatus(Incident incident, IncidentStatus status) {
+            public void setStatus(AnomalyIncident incident, AnomalyIncidentStatus status) {
                 incident.setStatus(status);
             }
 
             @Override
-            public void setStartTime(Incident incident, OffsetDateTime startTime) {
+            public void setStartTime(AnomalyIncident incident, OffsetDateTime startTime) {
                 incident.setStartTime(startTime);
             }
 
             @Override
-            public void setLastTime(Incident incident, OffsetDateTime lastTime) {
+            public void setLastTime(AnomalyIncident incident, OffsetDateTime lastTime) {
                 incident.setLastTime(lastTime);
             }
         });
@@ -107,7 +107,7 @@ public final class Incident {
      *
      * @return The severity.
      */
-    public Severity getSeverity() {
+    public AnomalySeverity getSeverity() {
         return this.severity;
     }
 
@@ -116,7 +116,7 @@ public final class Incident {
      *
      * @return The incident status.
      */
-    public  IncidentStatus getStatus() {
+    public AnomalyIncidentStatus getStatus() {
         return this.status;
     }
 
@@ -154,11 +154,11 @@ public final class Incident {
         this.rootDimensionKey = rootDimensionKey;
     }
 
-    void setSeverity(Severity severity) {
+    void setSeverity(AnomalySeverity severity) {
         this.severity = severity;
     }
 
-    void setStatus(IncidentStatus status) {
+    void setStatus(AnomalyIncidentStatus status) {
         this.status = status;
     }
 

@@ -9,10 +9,10 @@ import com.azure.ai.metricsadvisor.models.DataFeed;
 import com.azure.ai.metricsadvisor.models.DataFeedGranularity;
 import com.azure.ai.metricsadvisor.models.DataFeedGranularityType;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionSettings;
+import com.azure.ai.metricsadvisor.models.DataFeedMetric;
 import com.azure.ai.metricsadvisor.models.DataFeedOptions;
 import com.azure.ai.metricsadvisor.models.DataFeedSchema;
-import com.azure.ai.metricsadvisor.models.Dimension;
-import com.azure.ai.metricsadvisor.models.Metric;
+import com.azure.ai.metricsadvisor.models.DataFeedDimension;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import reactor.core.publisher.Mono;
 
@@ -32,14 +32,24 @@ public class DatafeedAsyncSample {
 
         // Create Data feed
         System.out.printf("Creating Data feed%n");
+        DataFeed appInsightsDataFeed = new DataFeed()
+            .setName("sample_db")
+            .setSource(new AzureAppInsightsDataFeedSource("application_id", "api_key", "azure_Cloud", "query"))
+            .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
+            .setSchema(
+                new DataFeedSchema(
+                    Arrays.asList(
+                        new DataFeedMetric().setName("cost"),
+                        new DataFeedMetric().setName("revenue")
+                )).setDimensions(
+                    Arrays.asList(
+                        new DataFeedDimension().setName("city"),
+                        new DataFeedDimension().setName("category")
+                    ))
+            ).setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse("2020-07-01T00:00:00Z")));
+
         final Mono<DataFeed> createdDataFeedMono = advisorAdministrationAsyncClient
-            .createDataFeed("sample_db",
-                new AzureAppInsightsDataFeedSource("application_id", "api_key", "azure_Cloud", "query"),
-                new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY),
-                new DataFeedSchema(Arrays.asList(new Metric().setName("cost"), new Metric().setName(
-                    "revenue"))).setDimensions(Arrays.asList(new Dimension().setName("city"),
-                    new Dimension().setName("category"))),
-                new DataFeedIngestionSettings(OffsetDateTime.parse("2020-07-01T00:00:00Z")), null);
+            .createDataFeed(appInsightsDataFeed);
 
         createdDataFeedMono
             .doOnSubscribe(__ ->
@@ -85,14 +95,14 @@ public class DatafeedAsyncSample {
         Mono<DataFeed> updateDataFeedMono = fetchDataFeedMono
             .flatMap(dataFeed -> {
                 return advisorAdministrationAsyncClient.updateDataFeed(dataFeed
-                    .setOptions(new DataFeedOptions().setAdmins(Arrays.asList("admin1@admin.com"))))
+                    .setOptions(new DataFeedOptions().setAdminEmails(Arrays.asList("admin1@admin.com"))))
                     .doOnSubscribe(__ ->
                         System.out.printf("Updating data feed: %s%n", dataFeed.getId()))
                     .doOnSuccess(config -> {
 
 
                         System.out.printf("Updated data feed%n");
-                        System.out.printf("Updated data feed admin list: %s%n", dataFeed.getOptions().getAdmins());
+                        System.out.printf("Updated data feed admin list: %s%n", dataFeed.getOptions().getAdminEmails());
                     });
             });
 

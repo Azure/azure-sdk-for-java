@@ -3,7 +3,7 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.models.Incident;
+import com.azure.ai.metricsadvisor.models.AnomalyIncident;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedFlux;
@@ -18,10 +18,8 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class IncidentDetectedAsyncTest extends IncidentDetectedTestBase {
-
+public class AnomalyIncidentForAlertAsyncTest extends IncidentForAlertTestBase {
     @BeforeAll
     static void beforeAll() {
         TestBase.setupClass();
@@ -36,21 +34,20 @@ public class IncidentDetectedAsyncTest extends IncidentDetectedTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Override
-    public void listIncidentsDetected(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
+    public void listIncidentsForAlert(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorAsyncClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
 
-        PagedFlux<Incident> incidentsFlux
-            = client.listIncidentsForDetectionConfiguration(
-            ListIncidentsDetectedInput.INSTANCE.detectionConfigurationId,
-            ListIncidentsDetectedInput.INSTANCE.options);
+        PagedFlux<AnomalyIncident> incidentsFlux
+            = client.listIncidentsForAlert(
+            ListIncidentsForAlertInput.INSTANCE.alertConfigurationId,
+            ListIncidentsForAlertInput.INSTANCE.alertId,
+            ListIncidentsForAlertInput.INSTANCE.options);
 
         Assertions.assertNotNull(incidentsFlux);
-        final int[] i = {0};
 
-        incidentsFlux.toIterable().forEach(incident -> {
-            i[0]++;
-            assertListIncidentsDetectedOutput(incident);
-        });
-        assertEquals(ListIncidentsDetectedOutput.INSTANCE.expectedIncidents, i[0]);
+        StepVerifier.create(incidentsFlux)
+            .assertNext(incident -> assertListIncidentsForAlertOutput(incident))
+            .expectNextCount(ListIncidentsForAlertOutput.INSTANCE.expectedIncidents - 1)
+            .verifyComplete();
     }
 }
