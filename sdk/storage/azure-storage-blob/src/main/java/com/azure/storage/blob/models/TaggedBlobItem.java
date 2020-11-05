@@ -4,6 +4,7 @@
 
 package com.azure.storage.blob.models;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,7 +19,7 @@ public final class TaggedBlobItem {
      * @param name The blob name
      */
     public TaggedBlobItem(String containerName, String name) {
-        this(containerName, name, new HashMap<>());
+        this(containerName, name, Collections.emptyMap());
     }
 
     /**

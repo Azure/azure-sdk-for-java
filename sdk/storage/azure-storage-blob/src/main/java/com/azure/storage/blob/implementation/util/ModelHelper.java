@@ -10,6 +10,7 @@ import com.azure.storage.blob.implementation.models.BlobDownloadHeaders;
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
 import com.azure.storage.blob.implementation.models.BlobItemPropertiesInternal;
 import com.azure.storage.blob.implementation.models.BlobTag;
+import com.azure.storage.blob.implementation.models.BlobTags;
 import com.azure.storage.blob.implementation.models.FilterBlobItem;
 import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
 import com.azure.storage.blob.models.BlobItem;
@@ -26,6 +27,7 @@ import com.azure.storage.common.implementation.Constants;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -247,13 +249,7 @@ public class ModelHelper {
         blobItem.setCurrentVersion(blobItemInternal.isCurrentVersion());
         blobItem.setIsPrefix(blobItemInternal.isPrefix());
 
-        Map<String, String> tags = new HashMap<>();
-        if (blobItemInternal.getBlobTags() != null && blobItemInternal.getBlobTags().getBlobTagSet() != null) {
-            for (BlobTag tag : blobItemInternal.getBlobTags().getBlobTagSet()) {
-                tags.put(tag.getKey(), tag.getValue());
-            }
-        }
-        blobItem.setTags(tags);
+        blobItem.setTags(tagMapFromBlobTags(blobItemInternal.getBlobTags()));
 
         blobItem.setObjectReplicationSourcePolicies(
             transformObjectReplicationMetadata(blobItemInternal.getObjectReplicationMetadata()));
@@ -262,14 +258,27 @@ public class ModelHelper {
     }
 
     public static TaggedBlobItem populateTaggedBlobItem(FilterBlobItem filterBlobItem) {
-        Map<String, String> tags = new HashMap<>();
-        if (filterBlobItem.getTags() != null && filterBlobItem.getTags().getBlobTagSet() != null) {
-            for (BlobTag tag : filterBlobItem.getTags().getBlobTagSet()) {
+        return new TaggedBlobItem(filterBlobItem.getContainerName(), filterBlobItem.getName(),
+            tagMapFromBlobTags(filterBlobItem.getTags()));
+    }
+
+    private static Map<String, String> tagMapFromBlobTags(BlobTags blobTags) {
+        Map<String, String> tags;
+        if (blobTags != null && blobTags.getBlobTagSet() != null) {
+            if (blobTags.getBlobTagSet().size() == 0){
+                return Collections.emptyMap();
+            }
+
+            tags = new HashMap<>();
+            for (BlobTag tag : blobTags.getBlobTagSet()) {
                 tags.put(tag.getKey(), tag.getValue());
             }
         }
+        else {
+            tags = Collections.emptyMap();
+        }
 
-        return new TaggedBlobItem(filterBlobItem.getContainerName(), filterBlobItem.getName(), tags);
+        return tags;
     }
 
     /**
