@@ -24,26 +24,6 @@ import java.util.Map;
  */
 public interface SqlStoredProcedureGetResults extends HasInner<SqlStoredProcedureGetResultsInner>, Indexable, Refreshable<SqlStoredProcedureGetResults>, Updatable<SqlStoredProcedureGetResults.Update>, HasManager<CosmosDBManager> {
     /**
-     * @return the _etag value.
-     */
-    String _etag();
-
-    /**
-     * @return the _rid value.
-     */
-    String _rid();
-
-    /**
-     * @return the _ts value.
-     */
-    Object _ts();
-
-    /**
-     * @return the body value.
-     */
-    String body();
-
-    /**
      * @return the id value.
      */
     String id();
@@ -59,9 +39,9 @@ public interface SqlStoredProcedureGetResults extends HasInner<SqlStoredProcedur
     String name();
 
     /**
-     * @return the sqlStoredProcedureGetResultsId value.
+     * @return the resource value.
      */
-    String sqlStoredProcedureGetResultsId();
+    SqlStoredProcedureGetPropertiesResource resource();
 
     /**
      * @return the tags value.

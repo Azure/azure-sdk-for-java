@@ -34,7 +34,7 @@ public class PercentilesInner {
     /** The Retrofit service to perform REST calls. */
     private PercentilesService service;
     /** The service client containing this operation class. */
-    private CosmosDBImpl client;
+    private CosmosDBManagementClientImpl client;
 
     /**
      * Initializes an instance of PercentilesInner.
@@ -42,7 +42,7 @@ public class PercentilesInner {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public PercentilesInner(Retrofit retrofit, CosmosDBImpl client) {
+    public PercentilesInner(Retrofit retrofit, CosmosDBManagementClientImpl client) {
         this.service = retrofit.create(PercentilesService.class);
         this.client = client;
     }
