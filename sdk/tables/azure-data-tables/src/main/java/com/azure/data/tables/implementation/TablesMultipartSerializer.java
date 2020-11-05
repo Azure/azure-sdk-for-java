@@ -3,9 +3,9 @@
 package com.azure.data.tables.implementation;
 
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -33,6 +33,29 @@ public class TablesMultipartSerializer extends TablesJacksonSerializer {
     private static final String BOUNDARY_DELIMETER = "--";
     private final ClientLogger logger = new ClientLogger(TablesMultipartSerializer.class);
 
+    private static class BatchOperationResponseParams {
+        private int statusCode;
+        private Object value;
+        private final HttpHeaders headers = new HttpHeaders();
+
+        BatchOperationResponse build() {
+            BatchOperationResponse response = ModelHelper.createBatchOperationResponse(statusCode, value);
+            headers.forEach(h -> response.getHeaders().put(h.getName(), h.getValue()));
+            return response;
+        }
+
+        void setStatusCode(int statusCode) {
+            this.statusCode = statusCode;
+        }
+
+        void setValue(Object value) {
+            this.value = value;
+        }
+
+        void putHeader(String name, String value) {
+            this.headers.put(name, value);
+        }
+    }
 
     @Override
     public void serialize(Object object, SerializerEncoding encoding, OutputStream outputStream) throws IOException {
@@ -63,7 +86,7 @@ public class TablesMultipartSerializer extends TablesJacksonSerializer {
 
     private void writeRequest(Object object, OutputStream os) throws IOException {
         HttpRequest request = ((BatchSubRequest) object).getHttpRequest();
-        String method = request.getHttpMethod() == HttpMethod.PATCH ? "MERGE" :request.getHttpMethod().toString();
+        String method = request.getHttpMethod() == HttpMethod.PATCH ? "MERGE" : request.getHttpMethod().toString();
 
         write("Content-Type: application/http\r\n", os);
         write("Content-Transfer-Encoding: binary\r\n\r\n", os);
@@ -110,44 +133,42 @@ public class TablesMultipartSerializer extends TablesJacksonSerializer {
                 throw logger.logExceptionAsError(new IllegalStateException("Invalid multipart response"));
             }
 
-            BatchOperationResponse response = null;
+            BatchOperationResponseParams responseParams = null;
             boolean foundBody = false;
             String body = null;
             List<BatchOperationResponse> responses = new ArrayList<>();
 
             while ((line = reader.readLine()) != null) {
                 if (line.startsWith(BOUNDARY_DELIMETER + "changesetresponse_")) {
-                    if (response != null) {
+                    if (responseParams != null) {
                         if (body != null && !body.isEmpty()) {
                             try {
-                                TableServiceError errorBody = deserialize(body, TableServiceError.class,
-                                    serializerEncoding);
-                                response.setValue(errorBody);
+                                responseParams.setValue(deserialize(body, TableServiceError.class, serializerEncoding));
                             } catch (IOException e) {
                                 logger.logThrowableAsWarning(
                                     new IOException("Unable to deserialize sub-response body", e));
-                                response.setValue(body);
+                                responseParams.setValue(body);
                             }
                         }
-                        responses.add(response);
+                        responses.add(responseParams.build());
                     }
-                    response = null;
+                    responseParams = null;
                     foundBody = false;
                     body = null;
-                } else if (response == null && line.startsWith("HTTP/1.1")) {
-                    response = new BatchOperationResponse();
+                } else if (responseParams == null && line.startsWith("HTTP/1.1")) {
+                    responseParams = new BatchOperationResponseParams();
                     // Characters 9-12 in the first line of the HTTP response are the status code
-                    response.setStatusCode(Integer.parseInt(line.substring(9, 12)));
-                } else if (response != null && !foundBody) {
+                    responseParams.setStatusCode(Integer.parseInt(line.substring(9, 12)));
+                } else if (responseParams != null && !foundBody) {
                     if (line.isEmpty()) {
                         // An empty line after the headers delimits the body
                         foundBody = true;
                     } else {
                         // A header line
                         String[] header = line.split(":", 2);
-                        response.putHeader(header[0].trim(), header[1].trim());
+                        responseParams.putHeader(header[0].trim(), header[1].trim());
                     }
-                } else if (response != null && !line.isEmpty()) {
+                } else if (responseParams != null && !line.isEmpty()) {
                     // The rest of the lines constitute the body until we get to the delimiter again
                     body = (body == null ? line : body + line) + "\r\n";
                 }

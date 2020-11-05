@@ -10,6 +10,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.tables.implementation.BatchImpl;
+import com.azure.data.tables.implementation.ModelHelper;
 import com.azure.data.tables.implementation.TablesMultipartSerializer;
 import com.azure.data.tables.implementation.models.BatchChangeSet;
 import com.azure.data.tables.implementation.models.BatchOperation;
@@ -298,7 +299,8 @@ public final class TableAsyncBatch {
 
                         // Attempt to attach a sub-request to each batch sub-response
                         if (changes != null && changes.getContents().get(i) != null) {
-                            subResponse.setRequest(changes.getContents().get(i).getHttpRequest());
+                            ModelHelper.updateBatchOperationResponse(subResponse,
+                                changes.getContents().get(i).getHttpRequest());
                         }
 
                         // If one sub-response was an error, we need to throw even though the service responded with 202
