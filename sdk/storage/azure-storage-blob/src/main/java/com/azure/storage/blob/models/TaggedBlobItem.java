@@ -5,7 +5,6 @@
 package com.azure.storage.blob.models;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
