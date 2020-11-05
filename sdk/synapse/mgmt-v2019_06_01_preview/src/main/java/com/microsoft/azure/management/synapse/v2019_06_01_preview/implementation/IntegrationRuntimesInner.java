@@ -100,9 +100,25 @@ public class IntegrationRuntimesInner {
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/start")
         Observable<Response<ResponseBody>> start(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("integrationRuntimeName") String integrationRuntimeName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.IntegrationRuntimes beginStart" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/start")
+        Observable<Response<ResponseBody>> beginStart(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("integrationRuntimeName") String integrationRuntimeName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.IntegrationRuntimes stop" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/stop")
         Observable<Response<ResponseBody>> stop(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("integrationRuntimeName") String integrationRuntimeName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.IntegrationRuntimes beginStop" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/stop")
+        Observable<Response<ResponseBody>> beginStop(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("integrationRuntimeName") String integrationRuntimeName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.IntegrationRuntimes enableInteractiveQuery" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/enableInteractiveQuery")
+        Observable<Response<ResponseBody>> enableInteractiveQuery(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("integrationRuntimeName") String integrationRuntimeName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.IntegrationRuntimes beginEnableInteractiveQuery" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/enableInteractiveQuery")
+        Observable<Response<ResponseBody>> beginEnableInteractiveQuery(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("integrationRuntimeName") String integrationRuntimeName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.IntegrationRuntimes listByWorkspaceNext" })
         @GET
@@ -1219,7 +1235,7 @@ public class IntegrationRuntimesInner {
      * @return the IntegrationRuntimeStatusResponseInner object if successful.
      */
     public IntegrationRuntimeStatusResponseInner start(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
-        return startWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName).toBlocking().single().body();
+        return startWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName).toBlocking().last().body();
     }
 
     /**
@@ -1245,7 +1261,7 @@ public class IntegrationRuntimesInner {
      * @param workspaceName The name of the workspace
      * @param integrationRuntimeName Integration runtime name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the IntegrationRuntimeStatusResponseInner object
+     * @return the observable for the request
      */
     public Observable<IntegrationRuntimeStatusResponseInner> startAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
         return startWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName).map(new Func1<ServiceResponse<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner>() {
@@ -1264,7 +1280,7 @@ public class IntegrationRuntimesInner {
      * @param workspaceName The name of the workspace
      * @param integrationRuntimeName Integration runtime name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the IntegrationRuntimeStatusResponseInner object
+     * @return the observable for the request
      */
     public Observable<ServiceResponse<IntegrationRuntimeStatusResponseInner>> startWithServiceResponseAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
         if (this.client.subscriptionId() == null) {
@@ -1282,12 +1298,92 @@ public class IntegrationRuntimesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.start(this.client.subscriptionId(), resourceGroupName, workspaceName, integrationRuntimeName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        Observable<Response<ResponseBody>> observable = service.start(this.client.subscriptionId(), resourceGroupName, workspaceName, integrationRuntimeName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<IntegrationRuntimeStatusResponseInner>() { }.getType());
+    }
+
+    /**
+     * Start integration runtime.
+     * Start an integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param integrationRuntimeName Integration runtime name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the IntegrationRuntimeStatusResponseInner object if successful.
+     */
+    public IntegrationRuntimeStatusResponseInner beginStart(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        return beginStartWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName).toBlocking().single().body();
+    }
+
+    /**
+     * Start integration runtime.
+     * Start an integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param integrationRuntimeName Integration runtime name
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<IntegrationRuntimeStatusResponseInner> beginStartAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName, final ServiceCallback<IntegrationRuntimeStatusResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginStartWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName), serviceCallback);
+    }
+
+    /**
+     * Start integration runtime.
+     * Start an integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param integrationRuntimeName Integration runtime name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the IntegrationRuntimeStatusResponseInner object
+     */
+    public Observable<IntegrationRuntimeStatusResponseInner> beginStartAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        return beginStartWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName).map(new Func1<ServiceResponse<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner>() {
+            @Override
+            public IntegrationRuntimeStatusResponseInner call(ServiceResponse<IntegrationRuntimeStatusResponseInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Start integration runtime.
+     * Start an integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param integrationRuntimeName Integration runtime name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the IntegrationRuntimeStatusResponseInner object
+     */
+    public Observable<ServiceResponse<IntegrationRuntimeStatusResponseInner>> beginStartWithServiceResponseAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (workspaceName == null) {
+            throw new IllegalArgumentException("Parameter workspaceName is required and cannot be null.");
+        }
+        if (integrationRuntimeName == null) {
+            throw new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.beginStart(this.client.subscriptionId(), resourceGroupName, workspaceName, integrationRuntimeName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<IntegrationRuntimeStatusResponseInner>>>() {
                 @Override
                 public Observable<ServiceResponse<IntegrationRuntimeStatusResponseInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<IntegrationRuntimeStatusResponseInner> clientResponse = startDelegate(response);
+                        ServiceResponse<IntegrationRuntimeStatusResponseInner> clientResponse = beginStartDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1296,7 +1392,7 @@ public class IntegrationRuntimesInner {
             });
     }
 
-    private ServiceResponse<IntegrationRuntimeStatusResponseInner> startDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<IntegrationRuntimeStatusResponseInner> beginStartDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<IntegrationRuntimeStatusResponseInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<IntegrationRuntimeStatusResponseInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
@@ -1316,7 +1412,7 @@ public class IntegrationRuntimesInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void stop(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
-        stopWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName).toBlocking().single().body();
+        stopWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName).toBlocking().last().body();
     }
 
     /**
@@ -1342,7 +1438,7 @@ public class IntegrationRuntimesInner {
      * @param workspaceName The name of the workspace
      * @param integrationRuntimeName Integration runtime name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the observable for the request
      */
     public Observable<Void> stopAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
         return stopWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName).map(new Func1<ServiceResponse<Void>, Void>() {
@@ -1361,7 +1457,7 @@ public class IntegrationRuntimesInner {
      * @param workspaceName The name of the workspace
      * @param integrationRuntimeName Integration runtime name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> stopWithServiceResponseAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
         if (this.client.subscriptionId() == null) {
@@ -1379,12 +1475,91 @@ public class IntegrationRuntimesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.stop(this.client.subscriptionId(), resourceGroupName, workspaceName, integrationRuntimeName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        Observable<Response<ResponseBody>> observable = service.stop(this.client.subscriptionId(), resourceGroupName, workspaceName, integrationRuntimeName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Stop integration runtime.
+     * Stop an integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param integrationRuntimeName Integration runtime name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginStop(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        beginStopWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName).toBlocking().single().body();
+    }
+
+    /**
+     * Stop integration runtime.
+     * Stop an integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param integrationRuntimeName Integration runtime name
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginStopAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginStopWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName), serviceCallback);
+    }
+
+    /**
+     * Stop integration runtime.
+     * Stop an integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param integrationRuntimeName Integration runtime name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginStopAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        return beginStopWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Stop integration runtime.
+     * Stop an integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param integrationRuntimeName Integration runtime name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginStopWithServiceResponseAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (workspaceName == null) {
+            throw new IllegalArgumentException("Parameter workspaceName is required and cannot be null.");
+        }
+        if (integrationRuntimeName == null) {
+            throw new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.beginStop(this.client.subscriptionId(), resourceGroupName, workspaceName, integrationRuntimeName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Void> clientResponse = stopDelegate(response);
+                        ServiceResponse<Void> clientResponse = beginStopDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1393,7 +1568,175 @@ public class IntegrationRuntimesInner {
             });
     }
 
-    private ServiceResponse<Void> stopDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Void> beginStopDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Enable interactive query in integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param integrationRuntimeName Integration runtime name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void enableInteractiveQuery(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        enableInteractiveQueryWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName).toBlocking().last().body();
+    }
+
+    /**
+     * Enable interactive query in integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param integrationRuntimeName Integration runtime name
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> enableInteractiveQueryAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(enableInteractiveQueryWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName), serviceCallback);
+    }
+
+    /**
+     * Enable interactive query in integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param integrationRuntimeName Integration runtime name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> enableInteractiveQueryAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        return enableInteractiveQueryWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Enable interactive query in integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param integrationRuntimeName Integration runtime name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> enableInteractiveQueryWithServiceResponseAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (workspaceName == null) {
+            throw new IllegalArgumentException("Parameter workspaceName is required and cannot be null.");
+        }
+        if (integrationRuntimeName == null) {
+            throw new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Observable<Response<ResponseBody>> observable = service.enableInteractiveQuery(this.client.subscriptionId(), resourceGroupName, workspaceName, integrationRuntimeName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Enable interactive query in integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param integrationRuntimeName Integration runtime name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginEnableInteractiveQuery(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        beginEnableInteractiveQueryWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName).toBlocking().single().body();
+    }
+
+    /**
+     * Enable interactive query in integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param integrationRuntimeName Integration runtime name
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginEnableInteractiveQueryAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginEnableInteractiveQueryWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName), serviceCallback);
+    }
+
+    /**
+     * Enable interactive query in integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param integrationRuntimeName Integration runtime name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginEnableInteractiveQueryAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        return beginEnableInteractiveQueryWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Enable interactive query in integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param integrationRuntimeName Integration runtime name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginEnableInteractiveQueryWithServiceResponseAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (workspaceName == null) {
+            throw new IllegalArgumentException("Parameter workspaceName is required and cannot be null.");
+        }
+        if (integrationRuntimeName == null) {
+            throw new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.beginEnableInteractiveQuery(this.client.subscriptionId(), resourceGroupName, workspaceName, integrationRuntimeName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginEnableInteractiveQueryDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginEnableInteractiveQueryDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
