@@ -11,6 +11,7 @@ import com.azure.ai.textanalytics.implementation.models.HealthcareJobState;
 import com.azure.ai.textanalytics.implementation.models.HealthcareResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.StringIndexType;
+import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.HealthcareTaskResult;
 import com.azure.ai.textanalytics.models.RecognizeHealthcareEntityOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
@@ -32,10 +33,12 @@ import com.azure.core.util.polling.PollingContext;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_DURATION;
@@ -45,6 +48,7 @@ import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.toJobState;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toRecognizeHealthcareEntitiesResultCollection;
+import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
@@ -172,6 +176,7 @@ class AnalyzeHealthcareAsyncClient {
         final HealthcareResult healthcareResult = healthcareJobState.getResults();
         final RecognizeHealthcareEntitiesResultCollection recognizeHealthcareEntitiesResults
             = toRecognizeHealthcareEntitiesResultCollection(healthcareResult);
+        final List<TextAnalyticsError> errors = healthcareJobState.getErrors();
 
         final HealthcareTaskResult healthcareTaskResult = new HealthcareTaskResult(
             // TODO: change back to UUID after service support it.
@@ -182,6 +187,10 @@ class AnalyzeHealthcareAsyncClient {
             healthcareJobState.getDisplayName(),
             healthcareJobState.getExpirationDateTime());
         HealthcareTaskResultPropertiesHelper.setResult(healthcareTaskResult, recognizeHealthcareEntitiesResults);
+        if (errors != null) {
+            HealthcareTaskResultPropertiesHelper.setErrors(healthcareTaskResult,
+                errors.stream().map(error -> toTextAnalyticsError(error)).collect(Collectors.toList()));
+        }
 
         return new PagedResponseBase<Void, HealthcareTaskResult>(
             response.getRequest(),

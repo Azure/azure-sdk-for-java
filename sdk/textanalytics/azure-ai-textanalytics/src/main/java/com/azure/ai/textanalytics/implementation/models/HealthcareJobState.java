@@ -6,6 +6,7 @@ package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * The HealthcareJobState model.
@@ -17,6 +18,12 @@ public final class HealthcareJobState extends JobMetadata {
      */
     @JsonProperty(value = "results")
     private HealthcareResult results;
+
+    /*
+     * The errors property.
+     */
+    @JsonProperty(value = "errors")
+    private List<TextAnalyticsError> errors;
 
     /*
      * The @nextLink property.
@@ -41,6 +48,26 @@ public final class HealthcareJobState extends JobMetadata {
      */
     public HealthcareJobState setResults(HealthcareResult results) {
         this.results = results;
+        return this;
+    }
+
+    /**
+     * Get the errors property: The errors property.
+     * 
+     * @return the errors value.
+     */
+    public List<TextAnalyticsError> getErrors() {
+        return this.errors;
+    }
+
+    /**
+     * Set the errors property: The errors property.
+     * 
+     * @param errors the errors value to set.
+     * @return the HealthcareJobState object itself.
+     */
+    public HealthcareJobState setErrors(List<TextAnalyticsError> errors) {
+        this.errors = errors;
         return this;
     }
 

@@ -4,7 +4,10 @@
 package com.azure.ai.textanalytics.implementation;
 
 import com.azure.ai.textanalytics.models.HealthcareTaskResult;
+import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.util.RecognizeHealthcareEntitiesResultCollection;
+
+import java.util.List;
 
 /**
  * The helper class to set the non-public properties of an {@link HealthcareTaskResult} instance.
@@ -18,8 +21,9 @@ public final class HealthcareTaskResultPropertiesHelper {
      * Type defining the methods to set the non-public properties of an {@link HealthcareTaskResult} instance.
      */
     public interface HealthcareTaskResultAccessor {
-        void setRecognizeHealthcareEntitiesResultCollection(HealthcareTaskResult healthcareTaskResult,
+        void setResult(HealthcareTaskResult healthcareTaskResult,
             RecognizeHealthcareEntitiesResultCollection recognizeHealthcareEntitiesResultCollection);
+        void setError(HealthcareTaskResult healthcareTaskResult, List<TextAnalyticsError> errors);
     }
 
     /**
@@ -33,7 +37,11 @@ public final class HealthcareTaskResultPropertiesHelper {
 
     public static void setResult(HealthcareTaskResult healthcareTaskResult,
         RecognizeHealthcareEntitiesResultCollection recognizeHealthcareEntitiesResultCollection) {
-        accessor.setRecognizeHealthcareEntitiesResultCollection(healthcareTaskResult,
+        accessor.setResult(healthcareTaskResult,
             recognizeHealthcareEntitiesResultCollection);
+    }
+
+    public static void setErrors(HealthcareTaskResult healthcareTaskResult, List<TextAnalyticsError> errors) {
+        accessor.setError(healthcareTaskResult, errors);
     }
 }

@@ -35,7 +35,6 @@ public final class RecognizeHealthcareEntitiesResultCollectionPropertiesHelper {
         accessor = recognizeHealthcareEntitiesResultCollectionAccessor;
     }
 
-
     public static void setModelVersion(RecognizeHealthcareEntitiesResultCollection healthcareEntitiesResultCollection,
         String modelVersion) {
         accessor.setModelVersion(healthcareEntitiesResultCollection, modelVersion);

@@ -7,15 +7,29 @@ import com.azure.ai.textanalytics.implementation.HealthcareTaskResultPropertiesH
 import com.azure.ai.textanalytics.util.RecognizeHealthcareEntitiesResultCollection;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /**
  * The HealthcareTaskResult model.
  */
 public final class HealthcareTaskResult extends JobMetadata {
     private RecognizeHealthcareEntitiesResultCollection healthcareEntitiesResults;
+    private List<TextAnalyticsError> errors;
 
     static {
-        HealthcareTaskResultPropertiesHelper.setAccessor(HealthcareTaskResult::setResult);
+        HealthcareTaskResultPropertiesHelper.setAccessor(
+            new HealthcareTaskResultPropertiesHelper.HealthcareTaskResultAccessor() {
+                @Override
+                public void setResult(HealthcareTaskResult healthcareTaskResult,
+                    RecognizeHealthcareEntitiesResultCollection recognizeHealthcareEntitiesResultCollection) {
+                    healthcareTaskResult.setResult(recognizeHealthcareEntitiesResultCollection);
+                }
+
+                @Override
+                public void setError(HealthcareTaskResult healthcareTaskResult, List<TextAnalyticsError> errors) {
+                    healthcareTaskResult.setErrors(errors);
+                }
+            });
     }
 
     /**
@@ -52,5 +66,24 @@ public final class HealthcareTaskResult extends JobMetadata {
      */
     private void setResult(RecognizeHealthcareEntitiesResultCollection healthcareEntitiesResults) {
         this.healthcareEntitiesResults = healthcareEntitiesResults;
+    }
+
+    /**
+     * Get a list of {@link TextAnalyticsError} for Healthcare tasks if operation failed.
+     *
+     * @return a list of {@link TextAnalyticsError}.
+     */
+    public List<TextAnalyticsError> getErrors() {
+        return this.errors;
+    }
+
+    /**
+     * The private setter to set the healthcareEntitiesResults property
+     * via {@link HealthcareTaskResultPropertiesHelper.HealthcareTaskResultAccessor}.
+     *
+     * @param errors a list of {@link TextAnalyticsError} for Healthcare tasks.
+     */
+    private void setErrors(List<TextAnalyticsError> errors) {
+        this.errors = errors;
     }
 }
