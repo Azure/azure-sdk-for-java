@@ -690,8 +690,4 @@
   <!-- Suppress checks in azure-core-experimental -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.experimental.jsonpatch.(JsonPatchDocumentSerializer|JsonPatchOperationSerializer).java"/>
-
-  <!-- Don't enforce non-static ClientLogger instances in com.azure.core.util.Option types-->
-  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ThrowFromClientLoggerCheck|GoodLoggingCheck)"
-            files="com.azure.core.implementation.Option.java"/>
 </suppressions>
