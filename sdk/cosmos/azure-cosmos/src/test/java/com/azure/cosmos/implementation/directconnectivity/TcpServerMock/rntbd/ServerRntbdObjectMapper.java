@@ -33,7 +33,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 /**
- * This class is copied from {@link RntbdObjectMapper}.
+ * The methods included in this class are copied from {@link RntbdObjectMapper}.
  */
 public final class ServerRntbdObjectMapper {
     private static final Logger logger = LoggerFactory.getLogger(RntbdObjectMapper.class);

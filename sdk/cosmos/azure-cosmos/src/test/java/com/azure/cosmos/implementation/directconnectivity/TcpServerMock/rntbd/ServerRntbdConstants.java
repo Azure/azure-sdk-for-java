@@ -17,9 +17,12 @@ import java.util.stream.Collector;
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 /**
- * Methods included in this class is copied from {@link RntbdConstants}.
+ * Methods included in this class are copied from {@link RntbdConstants}.
  */
 public class ServerRntbdConstants {
+
+    static final int CURRENT_PROTOCOL_VERSION = 0x00000001;
+
     private ServerRntbdConstants() {
     }
 
@@ -699,6 +702,43 @@ public class ServerRntbdConstants {
         private final ServerRntbdTokenType type;
 
         RntbdResponseHeader(final short id, final ServerRntbdTokenType type, final boolean isRequired) {
+            this.id = id;
+            this.type = type;
+            this.isRequired = isRequired;
+        }
+
+        public boolean isRequired() {
+            return this.isRequired;
+        }
+
+        public short id() {
+            return this.id;
+        }
+
+        public ServerRntbdTokenType type() {
+            return this.type;
+        }
+    }
+
+    enum RntbdContextRequestHeader implements RntbdHeader {
+
+        ProtocolVersion((short) 0x0000, ServerRntbdTokenType.ULong, true),
+        ClientVersion((short) 0x0001, ServerRntbdTokenType.SmallString, true),
+        UserAgent((short) 0x0002, ServerRntbdTokenType.SmallString, true);
+
+        public static final ImmutableMap<Short, RntbdContextRequestHeader> map;
+        public static final ImmutableSet<RntbdContextRequestHeader> set = Sets.immutableEnumSet(EnumSet.allOf(RntbdContextRequestHeader.class));
+
+        static {
+            final Collector<RntbdContextRequestHeader, ?, ImmutableMap<Short, RntbdContextRequestHeader>> collector = ImmutableMap.toImmutableMap(h -> h.id(), h -> h);
+            map = set.stream().collect(collector);
+        }
+
+        private final short id;
+        private final boolean isRequired;
+        private final ServerRntbdTokenType type;
+
+        RntbdContextRequestHeader(final short id, final ServerRntbdTokenType type, final boolean isRequired) {
             this.id = id;
             this.type = type;
             this.isRequired = isRequired;

@@ -9,7 +9,7 @@ import io.netty.buffer.ByteBuf;
 import java.util.UUID;
 
 /**
- * Methods included in this class is copied from com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestFrame.
+ * Methods included in this class are copied from com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestFrame.
  */
 final class ServerRntbdRequestFrame {
     // region Fields
@@ -29,6 +29,10 @@ final class ServerRntbdRequestFrame {
     // endregion
 
     // region Methods
+
+    UUID getActivityId() {
+        return this.activityId;
+    }
 
     ServerRntbdConstants.RntbdOperationType getOperationType() {
         return this.operationType;

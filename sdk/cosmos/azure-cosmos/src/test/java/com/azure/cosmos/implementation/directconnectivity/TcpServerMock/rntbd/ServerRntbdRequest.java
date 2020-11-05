@@ -11,7 +11,7 @@ import io.netty.buffer.ByteBuf;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
- * Methods included in this class is copied from {@link RntbdRequest}.
+ * Methods included in this class are copied from {@link RntbdRequest}.
  */
 public final class ServerRntbdRequest {
     private static final byte[] EMPTY_BYTE_ARRAY = {};

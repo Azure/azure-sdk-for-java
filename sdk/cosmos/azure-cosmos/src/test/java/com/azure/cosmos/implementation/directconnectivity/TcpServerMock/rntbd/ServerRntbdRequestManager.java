@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.directconnectivity.TcpServerMock.rntbd;
 
 import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.RequestResponseType;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContextRequest;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOption;
@@ -29,8 +28,8 @@ public final class ServerRntbdRequestManager extends ChannelDuplexHandler {
     @Override
     public void channelRead(final ChannelHandlerContext context, final Object message) {
         try{
-            if (message instanceof RntbdContextRequest) {
-                RntbdContextRequest request = (RntbdContextRequest) message;
+            if (message instanceof ServerRntbdContextRequest) {
+                ServerRntbdContextRequest request = (ServerRntbdContextRequest) message;
 
                 // let us write something
                 ServerRntbdContext response = new ServerRntbdContext(

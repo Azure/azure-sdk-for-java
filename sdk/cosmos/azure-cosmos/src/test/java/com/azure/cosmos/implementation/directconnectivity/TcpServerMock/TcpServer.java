@@ -26,10 +26,10 @@ package com.azure.cosmos.implementation.directconnectivity.TcpServerMock;
 
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.rntbd.ServerRntbdContextEncoder;
+import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.rntbd.ServerRntbdContextRequestDecoder;
 import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.rntbd.ServerRntbdRequestDecoder;
 import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.rntbd.ServerRntbdRequestFramer;
 import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.rntbd.ServerRntbdRequestManager;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContextRequestDecoder;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -86,7 +86,7 @@ public class TcpServer {
                             new SslHandler(engine),
                             new ServerRntbdRequestFramer(),
                             new ServerRntbdRequestDecoder(),
-                            new RntbdContextRequestDecoder(),
+                            new ServerRntbdContextRequestDecoder(),
                             new ServerRntbdContextEncoder(),
                             requestManager
                         );

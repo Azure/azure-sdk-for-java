@@ -16,7 +16,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkSt
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 /**
- * Methods included in this class is copied from com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdTokenType.
+ * Methods included in this class are copied from com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdTokenType.
  */
 public enum ServerRntbdTokenType {
     // All values are encoded as little endian byte sequences except for Guid

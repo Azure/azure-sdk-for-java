@@ -10,7 +10,7 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 import java.util.List;
 
 /**
- * Methods in this class is copied from {@link ServerRntbdRequestDecoder}.
+ * Methods in this class are copied from {@link ServerRntbdRequestDecoder}.
  */
 public final class ServerRntbdRequestDecoder extends ByteToMessageDecoder {
     /**
