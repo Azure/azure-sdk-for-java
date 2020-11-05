@@ -71,11 +71,12 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
                 byte[] plainText = new byte[100];
                 new Random(0x1234567L).nextBytes(plainText);
                 byte[] cipherText = cryptoClient.encrypt(algorithm, plainText).getCipherText();
-                byte[] decryptedText = serviceClient.decrypt(algorithm, cipherText, Context.NONE).block().getPlainText();
+                byte[] decryptedText =
+                    serviceClient.decrypt(algorithm, cipherText, null, Context.NONE).block().getPlainText();
 
                 assertArrayEquals(decryptedText, plainText);
 
-                cipherText = serviceClient.encrypt(algorithm, plainText, Context.NONE).block().getCipherText();
+                cipherText = serviceClient.encrypt(algorithm, plainText, null, Context.NONE).block().getCipherText();
                 decryptedText = cryptoClient.decrypt(algorithm, cipherText).getPlainText();
 
                 assertArrayEquals(decryptedText, plainText);
@@ -101,11 +102,13 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
                 byte[] plainText = new byte[100];
                 new Random(0x1234567L).nextBytes(plainText);
                 byte[] encryptedKey = cryptoClient.wrapKey(algorithm, plainText).getEncryptedKey();
-                byte[] decryptedKey = serviceClient.unwrapKey(algorithm, encryptedKey, Context.NONE).block().getKey();
+                byte[] decryptedKey =
+                    serviceClient.unwrapKey(algorithm, encryptedKey, null, Context.NONE).block().getKey();
 
                 assertArrayEquals(decryptedKey, plainText);
 
-                encryptedKey = serviceClient.wrapKey(algorithm, plainText, Context.NONE).block().getEncryptedKey();
+                encryptedKey =
+                    serviceClient.wrapKey(algorithm, plainText, null, Context.NONE).block().getEncryptedKey();
                 decryptedKey = cryptoClient.unwrapKey(algorithm, encryptedKey).getKey();
 
                 assertArrayEquals(decryptedKey, plainText);

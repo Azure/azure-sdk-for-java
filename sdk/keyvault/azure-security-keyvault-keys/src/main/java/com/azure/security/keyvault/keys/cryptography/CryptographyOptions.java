@@ -3,27 +3,14 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
-import com.azure.core.util.Base64Url;
-import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The key operations parameters.
+ * Represents optional parameters for cryptographic operations.
  */
-class KeyWrapUnwrapRequest {
-    /**
-     * algorithm identifier. Possible values include: 'RSA-OAEP',
-     * 'RSA-OAEP-256', 'RSA1_5'.
-     */
-    @JsonProperty(value = "alg", required = true)
-    private KeyWrapAlgorithm algorithm;
-
-    /**
-     * The value property.
-     */
-    @JsonProperty(value = "value", required = true)
-    private Base64Url value;
-
+@Fluent
+public class CryptographyOptions {
     /**
      * Initialization vector for symmetric algorithms.
      */
@@ -43,53 +30,6 @@ class KeyWrapUnwrapRequest {
     private byte[] tag;
 
     /**
-     * Get the algorithm value.
-     *
-     * @return the algorithm value
-     */
-    public KeyWrapAlgorithm getAlgorithm() {
-        return this.algorithm;
-    }
-
-    /**
-     * Set the algorithm value.
-     *
-     * @param algorithm the algorithm value to set
-     * @return the KeyOperationsParameters object itself.
-     */
-    public KeyWrapUnwrapRequest setAlgorithm(KeyWrapAlgorithm algorithm) {
-        this.algorithm = algorithm;
-        return this;
-    }
-
-    /**
-     * Get the value value.
-     *
-     * @return the value value
-     */
-    public byte[] getValue() {
-        if (this.value == null) {
-            return new byte[0];
-        }
-        return this.value.decodedBytes();
-    }
-
-    /**
-     * Set the value value.
-     *
-     * @param value the value value to set
-     * @return the KeyOperationsParameters object itself.
-     */
-    public KeyWrapUnwrapRequest setValue(byte[] value) {
-        if (value == null) {
-            this.value = null;
-        } else {
-            this.value = Base64Url.encode(value);
-        }
-        return this;
-    }
-
-    /**
      * Get the initialization vector to be used in the cryptographic operation using a symmetric algorithm.
      *
      * @return The initialization vector.
@@ -102,9 +42,9 @@ class KeyWrapUnwrapRequest {
      * Set the initialization vector to be used in the cryptographic operation using a symmetric algorithm.
      *
      * @param initializationVector The initialization vector to set.
-     * @return The updated {@link KeyWrapUnwrapRequest} object.
+     * @return The updated {@link CryptographyOptions} object.
      */
-    public KeyWrapUnwrapRequest setInitializationVector(byte[] initializationVector) {
+    public CryptographyOptions setInitializationVector(byte[] initializationVector) {
         this.initializationVector = initializationVector;
         return this;
     }
@@ -122,9 +62,9 @@ class KeyWrapUnwrapRequest {
      * Set additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
      *
      * @param additionalAuthenticatedData The additional authenticated data.
-     * @return The updated {@link KeyWrapUnwrapRequest} object.
+     * @return The updated {@link CryptographyOptions} object.
      */
-    public KeyWrapUnwrapRequest setAdditionalAuthenticatedData(byte[] additionalAuthenticatedData) {
+    public CryptographyOptions setAdditionalAuthenticatedData(byte[] additionalAuthenticatedData) {
         this.additionalAuthenticatedData = additionalAuthenticatedData;
         return this;
     }
@@ -142,9 +82,9 @@ class KeyWrapUnwrapRequest {
      * Set the tag to authenticate when performing decryption with an authenticated algorithm.
      *
      * @param tag The tag to set.
-     * @return The updated {@link KeyWrapUnwrapRequest} object.
+     * @return The updated {@link CryptographyOptions} object.
      */
-    public KeyWrapUnwrapRequest setTag(byte[] tag) {
+    public CryptographyOptions setTag(byte[] tag) {
         this.tag = tag;
         return this;
     }

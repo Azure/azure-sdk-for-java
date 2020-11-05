@@ -56,14 +56,15 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, Context context, JsonWebKey key) {
+    Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, CryptographyOptions options,
+                                     Context context, JsonWebKey key) {
         throw logger.logExceptionAsError(new UnsupportedOperationException(
             "Encrypt operation is not supported for EC key"));
     }
 
     @Override
-    Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] cipherText, Context context,
-                                     JsonWebKey key) {
+    Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] cipherText, CryptographyOptions options,
+                                     Context context, JsonWebKey key) {
         throw logger.logExceptionAsError(new UnsupportedOperationException(
             "Decrypt operation is not supported for EC key"));
     }
@@ -151,13 +152,14 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    Mono<WrapResult> wrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] key, Context context, JsonWebKey webKey) {
+    Mono<WrapResult> wrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] key, CryptographyOptions options, Context context,
+                                  JsonWebKey webKey) {
         return Mono.error(new UnsupportedOperationException("Wrap key operation is not supported for EC key"));
     }
 
     @Override
-    Mono<UnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context,
-                                      JsonWebKey key) {
+    Mono<UnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, CryptographyOptions options,
+                                      Context context, JsonWebKey key) {
         throw logger.logExceptionAsError(new UnsupportedOperationException(
             "Unwrap key operation is not supported for Ec key"));
     }
