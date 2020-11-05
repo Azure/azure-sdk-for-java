@@ -2,6 +2,9 @@
 
 ## 1.1.0-beta.1 (Unreleased)
 
+### Fixes and improvements
+
+- Removed logic to determine authorization scope based on digital twins instance URI.
 
 ## 1.0.0 (2020-10-30)
 
