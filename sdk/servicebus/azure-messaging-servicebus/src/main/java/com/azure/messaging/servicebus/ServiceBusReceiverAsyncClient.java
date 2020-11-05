@@ -894,7 +894,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     @Override
     public void close() {
-        if (isDisposed.getAndSet(true)) {
+        if (isDisposed.get()) {
             return;
         }
 
@@ -902,6 +902,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             completionLock.acquire();
         } catch (InterruptedException e) {
             logger.info("Unable to obtain completion lock.", e);
+        }
+
+        if (isDisposed.getAndSet(true)) {
+            return;
         }
 
         // Blocking until the last message has been completed.
