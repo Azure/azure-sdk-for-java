@@ -172,7 +172,7 @@ public class CryptographyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when
      * a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte-CryptographyOptions-Context}
      *
      * @param algorithm The algorithm to be used for encryption.
      * @param plaintext The content to be encrypted.
@@ -282,7 +282,7 @@ public class CryptographyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content
      * details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte-Context}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte-CryptographyOptions-Context}
      *
      * @param algorithm The algorithm to be used for decryption.
      * @param cipherText The content to be decrypted.
@@ -492,7 +492,7 @@ public class CryptographyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Wraps the key content. Subscribes to the call asynchronously and prints out the wrapped key details when a
      * response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.wrapKey#KeyWrapAlgorithm-byte-Context}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.wrapKey#KeyWrapAlgorithm-byte-CryptographyOptions-Context}
      *
      * @param algorithm The encryption algorithm to use for wrapping the key.
      * @param key The key content to be wrapped.
@@ -583,7 +583,7 @@ public class CryptographyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Unwraps the key content. Subscribes to the call asynchronously and prints out the unwrapped key details when a
      * response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.unwrapKey#KeyWrapAlgorithm-byte-Context}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.unwrapKey#KeyWrapAlgorithm-byte-CryptographyOptions-Context}
      *
      * @param algorithm The encryption algorithm to use for wrapping the key.
      * @param encryptedKey The encrypted key content to unwrap.
