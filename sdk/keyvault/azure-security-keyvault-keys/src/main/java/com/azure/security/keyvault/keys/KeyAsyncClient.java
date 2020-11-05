@@ -513,7 +513,7 @@ public final class KeyAsyncClient {
      * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
      * details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.keys.keyasyncclient.exportKey#name-environment}
+     * {@codesnippet com.azure.security.keyvault.keys.keyasyncclient.exportKey#String-String}
      *
      * @param name The name of the key to be exported.
      * @param environment The target environment assertion.
@@ -537,7 +537,7 @@ public final class KeyAsyncClient {
      * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
      * details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.keys.keyasyncclient.exportKey#name-version-environment}
+     * {@codesnippet com.azure.security.keyvault.keys.keyasyncclient.exportKey#String-String-String}
      *
      * @param name The name of the key to be exported.
      * @param version The key version.
@@ -563,7 +563,7 @@ public final class KeyAsyncClient {
      * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
      * details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.keys.keyasyncclient.exportKeyWithResponse#name-version-environment-response}
+     * {@codesnippet com.azure.security.keyvault.keys.keyasyncclient.exportKeyWithResponse#String-String-String}
      *
      * @param name The name of the key to be exported.
      * @param version The key version.

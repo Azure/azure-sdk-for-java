@@ -124,23 +124,23 @@ public final class KeyClientJavaDocCodeSnippets {
     public void exportKeySnippets() {
         KeyClient keyClient = createClient();
 
-        // BEGIN: com.azure.security.keyvault.keys.keyclient.exportKey#name-environment
+        // BEGIN: com.azure.security.keyvault.keys.keyclient.exportKey#String-String
         KeyVaultKey exportedKey = keyClient.exportKey("keyName", "environment");
         System.out.printf("Key was exported with name: %s and id: %s. \n", exportedKey.getName(), exportedKey.getId());
-        // END: com.azure.security.keyvault.keys.keyclient.exportKey#name-environment
+        // END: com.azure.security.keyvault.keys.keyclient.exportKey#String-String
 
-        // BEGIN: com.azure.security.keyvault.keys.keyclient.exportKey#name-version-environment
+        // BEGIN: com.azure.security.keyvault.keys.keyclient.exportKey#String-String-String
         KeyVaultKey exportKey = keyClient.exportKey("keyName", "version", "environment");
         System.out.printf("Key was exported with name: %s and id: %s. \n", exportKey.getName(),
             exportKey.getId());
-        // END: com.azure.security.keyvault.keys.keyclient.exportKey#name-version-environment
+        // END: com.azure.security.keyvault.keys.keyclient.exportKey#String-String-String
 
-        // BEGIN: com.azure.security.keyvault.keys.keyclient.exportKeyWithResponse#name-version-environment-response
+        // BEGIN: com.azure.security.keyvault.keys.keyclient.exportKeyWithResponse#String-String-String-Context
         KeyVaultKey exportedKeyFromResponse = keyClient.exportKeyWithResponse("keyName", "version", "environment",
             new Context(key1, value1)).getValue();
         System.out.printf("Key was exported with name: %s and id: %s. \n", exportedKeyFromResponse.getName(),
             exportedKeyFromResponse.getId());
-        // END: com.azure.security.keyvault.keys.keyclient.exportKeyWithResponse#name-version-environment-response
+        // END: com.azure.security.keyvault.keys.keyclient.exportKeyWithResponse#String-String-String-Context
     }
 
     /**

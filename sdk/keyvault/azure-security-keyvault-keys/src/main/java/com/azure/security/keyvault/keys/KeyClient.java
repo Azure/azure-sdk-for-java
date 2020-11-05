@@ -327,7 +327,7 @@ public final class KeyClient {
      * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
      * details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.keys.keyclient.exportKey#name-environment}
+     * {@codesnippet com.azure.security.keyvault.keys.keyclient.exportKey#String-String}
      *
      * @param name The name of the key to be exported.
      * @param environment The target environment assertion.
@@ -346,7 +346,7 @@ public final class KeyClient {
      * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
      * details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.keys.keyclient.exportKey#name-version-environment}
+     * {@codesnippet com.azure.security.keyvault.keys.keyclient.exportKey#String-String-String}
      *
      * @param name The name of the key to be exported.
      * @param version The key version.
@@ -367,11 +367,12 @@ public final class KeyClient {
      * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
      * details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.keys.keyclient.exportKeyWithResponse#name-version-environment-response}
+     * {@codesnippet com.azure.security.keyvault.keys.keyclient.exportKeyWithResponse#String-String-String-Context}
      *
      * @param name The name of the key to be exported.
      * @param version The key version.
      * @param environment The target environment assertion.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultKey exported key}.
      * @throws NullPointerException If the specified {@code name}, {@code version} or {@code environment} are
      * {@code null}.
