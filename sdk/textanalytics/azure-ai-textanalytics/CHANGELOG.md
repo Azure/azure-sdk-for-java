@@ -1,6 +1,7 @@
 # Release History
 ## 5.1.0-beta.3 (Unreleased)
-
+**New features**
+- Added support for Healthcare analysis, it is a long-running operation, and the cancellation supported. 
 
 ## 5.1.0-beta.2 (2020-10-06)
 ### Breaking changes
