@@ -119,8 +119,7 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
             ServiceBusConstants.OPERATION_TIMEOUT, tracerProvider, messageSerializer, () -> { });
 
         return sessionSpecificAsyncClient.createConsumerWithReceiveLink()
-            .flatMap( ignored -> Mono.just(sessionSpecificAsyncClient));
-
+            .thenReturn(sessionSpecificAsyncClient);
     }
 
     @Override

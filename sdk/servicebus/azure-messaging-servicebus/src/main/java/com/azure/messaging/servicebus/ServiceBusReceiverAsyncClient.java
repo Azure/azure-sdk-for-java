@@ -1051,7 +1051,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     Mono<ServiceBusAsyncConsumer> createConsumerWithReceiveLink() {
-        return Mono.defer(() -> Mono.just(getOrCreateConsumer()));
+        return Mono.fromCallable(this::getOrCreateConsumer);
     }
 
     private ServiceBusAsyncConsumer getOrCreateConsumer() {
