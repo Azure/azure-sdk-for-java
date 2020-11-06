@@ -57,7 +57,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class);
     private final AtomicInteger messagesPending = new AtomicInteger();
-    private final List<Long> messagesDeferredPending = new ArrayList<>();
     private final boolean isSessionEnabled = false;
 
     private ServiceBusReceiverAsyncClient receiver;
@@ -195,9 +194,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         StepVerifier.create(receiver.commitTransaction(transaction.get()))
             .verifyComplete();
 
-        if (dispositionStatus == DispositionStatus.DEFERRED) {
-            messagesDeferredPending.add(receivedMessage.getSequenceNumber());
-        }
     }
 
     /**
@@ -251,7 +247,20 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     void receiveTwoMessagesAutoComplete(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         final int entityIndex = 0;
-        setSenderAndReceiver(entityType, entityIndex, isSessionEnabled);
+        final boolean shareConnection = false;
+        final boolean useCredentials = false;
+
+        this.sender = getSenderBuilder(useCredentials, entityType, entityIndex, isSessionEnabled, shareConnection)
+            .buildAsyncClient();
+
+        if (isSessionEnabled) {
+            assertNotNull(sessionId, "'sessionId' should have been set.");
+            this.receiver = getSessionReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
+                .buildAsyncClient().acceptSession(sessionId).block();
+        } else {
+            this.receiver = getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
+                .buildAsyncClient();
+        }
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
@@ -261,15 +270,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         StepVerifier.create(receiver.receiveMessages())
             .assertNext(receivedMessage -> {
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-                receiver.complete(receivedMessage).block(Duration.ofSeconds(15));
             })
             .assertNext(receivedMessage -> {
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-                receiver.complete(receivedMessage).block(Duration.ofSeconds(15));
             })
             .thenCancel()
             .verify();
-
     }
 
     /**
@@ -280,7 +286,20 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     void receiveMessageAutoComplete(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         final int entityIndex = 0;
-        setSenderAndReceiver(entityType, entityIndex, isSessionEnabled);
+        final boolean shareConnection = false;
+        final boolean useCredentials = false;
+
+        this.sender = getSenderBuilder(useCredentials, entityType, entityIndex, isSessionEnabled, shareConnection)
+            .buildAsyncClient();
+
+        if (isSessionEnabled) {
+            assertNotNull(sessionId, "'sessionId' should have been set.");
+            this.receiver = getSessionReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
+                .buildAsyncClient().acceptSession(sessionId).block();
+        } else {
+            this.receiver = getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
+                .buildAsyncClient();
+        }
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
@@ -289,10 +308,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Assert
         StepVerifier.create(receiver.receiveMessages())
-            .assertNext(receivedMessage -> {
-                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-                receiver.complete(receivedMessage).block(Duration.ofSeconds(15));
-            })
+            .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, messageId, isSessionEnabled))
             .thenCancel()
             .verify();
 
@@ -323,9 +339,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // cleanup
         StepVerifier.create(receiver.receiveMessages())
-            .assertNext(receivedMessage -> {
-                receiver.complete(receivedMessage).block(Duration.ofSeconds(15));
-            })
+            .assertNext(receivedMessage -> receiver.complete(receivedMessage).block(OPERATION_TIMEOUT))
             .thenCancel()
             .verify();
     }
@@ -365,7 +379,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         StepVerifier.create(Mono.delay(Duration.ofSeconds(4)).then(receiver.receiveMessages().next()))
             .assertNext(receivedMessage -> {
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-                receiver.complete(receivedMessage).block(Duration.ofSeconds(15));
+                receiver.complete(receivedMessage).block(OPERATION_TIMEOUT);
                 messagesPending.decrementAndGet();
             })
             .verifyComplete();
@@ -454,8 +468,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             assertEquals(index, position);
         };
         final String messageId = UUID.randomUUID().toString();
-        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(10, messageId,
-            CONTENTS_BYTES);
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(10, messageId, CONTENTS_BYTES);
         if (isSessionEnabled) {
             messages.forEach(m -> m.setSessionId(sessionId));
         }
@@ -486,12 +499,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 .assertNext(message -> checkCorrectMessage.accept(message, 7))
                 .verifyComplete();
         } finally {
+            AtomicInteger completed = new AtomicInteger();
             StepVerifier.create(receiver.receiveMessages().take(messages.size()))
                 .thenConsumeWhile(receivedMessage -> {
-                    receiver.complete(receivedMessage).block(Duration.ofSeconds(15));
-                    return true;
+                    completed.incrementAndGet();
+                    receiver.complete(receivedMessage).block(OPERATION_TIMEOUT);
+                    return completed.get() <= messages.size();
                 })
-                .thenCancel()
+                .expectComplete()
                 .verify();
 
             messagesPending.addAndGet(-messages.size());
@@ -520,15 +535,15 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .verifyComplete();
 
         // cleanup
-        StepVerifier.create(receiver.receiveMessages())
+        StepVerifier.create(receiver.receiveMessages().take(maxMessages))
             .assertNext(receivedMessage -> {
                 receiver.complete(receivedMessage).block(Duration.ofSeconds(15));
             })
             .assertNext(receivedMessage -> {
                 receiver.complete(receivedMessage).block(Duration.ofSeconds(15));
             })
-            .thenCancel()
-            .verify();
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     /**
@@ -760,7 +775,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         switch (dispositionStatus) {
             case ABANDONED:
                 operation = receiver.abandon(receivedDeferredMessage);
-                messagesDeferredPending.add(receivedDeferredMessage.getSequenceNumber());
                 break;
             case SUSPENDED:
                 operation = receiver.deadLetter(receivedDeferredMessage);
@@ -830,7 +844,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                             actual));
                     }
                 }
-                receiver.complete(receivedMessage).block(Duration.ofSeconds(15));
+                receiver.complete(receivedMessage).block(OPERATION_TIMEOUT);
             })
             .thenCancel()
             .verify();
@@ -841,6 +855,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     void setAndGetSessionState(MessagingEntityType entityType) {
         // Arrange
         setSenderAndReceiver(entityType, 0, true);
+
         final byte[] sessionState = "Finished".getBytes(UTF_8);
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage messageToSend = getMessage(messageId, true);
