@@ -23,10 +23,12 @@
   `ServiceBusReceiverAsynClient` and `ServiceBusReceiverClient`.
 - Removed `SendVia` option from `ServiceBusClientBuilder`. See issue for more detail 
   [16942](https://github.com/Azure/azure-sdk-for-java/pull/16942).
-- Removed `sessionId` setting from `ServiceBusSessionReceiverClientBuilder` and moved it to 
-  `ServiceBusSessionReceiverAsyncClient`.
-- Removed `maxConcurrentSessions` from `ServiceBusSessionReceiverClientBuilder` and moved it to 
-  `ServiceBusSessionProcessorClientBuilder`.
+- Removed `sessionId` setting from `ServiceBusSessionReceiverClientBuilder` to the intermediate clients.
+- Moved the `maxConcurrentSessions` setting from `ServiceBusSessionReceiverClientBuilder` to 
+  ServiceBusSessionProcessorClientBuilder` as the feature of receiving messages from multiple sessions is moved from the
+  receiver client to the new `ServiceBusSessionProcessorClient`.
+- `ServiceBusSessionReceiverClient` and `ServiceBusSessionReceiverAsyncClient` now have methods that would take the 
+  sessionId to get a receiver client bound to the session.
 - Renamed `tryAdd` to `tryAddMessage` in `ServiceBusMessageBatch`.
   
 ### Bug Fixes
