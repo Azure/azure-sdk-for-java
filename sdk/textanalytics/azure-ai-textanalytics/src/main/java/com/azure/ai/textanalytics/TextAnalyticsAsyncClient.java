@@ -11,12 +11,15 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
+import com.azure.ai.textanalytics.models.HealthcareTaskResult;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
+import com.azure.ai.textanalytics.models.RecognizeHealthcareEntityOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
+import com.azure.ai.textanalytics.models.TextAnalyticsOperationResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
@@ -28,13 +31,17 @@ import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 import java.util.Objects;
+import java.util.UUID;
 
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.mapByIndex;
@@ -70,6 +77,7 @@ public final class TextAnalyticsAsyncClient {
     final RecognizeEntityAsyncClient recognizeEntityAsyncClient;
     final RecognizePiiEntityAsyncClient recognizePiiEntityAsyncClient;
     final RecognizeLinkedEntityAsyncClient recognizeLinkedEntityAsyncClient;
+    final AnalyzeHealthcareAsyncClient analyzeHealthcareAsyncClient;
 
     /**
      * Create a {@link TextAnalyticsAsyncClient} that sends requests to the Text Analytics services's endpoint. Each
@@ -92,6 +100,7 @@ public final class TextAnalyticsAsyncClient {
         this.recognizeEntityAsyncClient = new RecognizeEntityAsyncClient(service);
         this.recognizePiiEntityAsyncClient = new RecognizePiiEntityAsyncClient(service);
         this.recognizeLinkedEntityAsyncClient = new RecognizeLinkedEntityAsyncClient(service);
+        this.analyzeHealthcareAsyncClient = new AnalyzeHealthcareAsyncClient(service);
     }
 
     /**
@@ -1001,5 +1010,54 @@ public final class TextAnalyticsAsyncClient {
     public Mono<Response<AnalyzeSentimentResultCollection>> analyzeSentimentBatchWithResponse(
         Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options) {
         return analyzeSentimentAsyncClient.analyzeSentimentBatch(documents, options);
+    }
+
+    // Health Care
+    /**
+     * Analyze healthcare entities, entity linking, and entity relations in a list of
+     * {@link TextDocumentInput document} with provided request options.
+     *
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
+     *
+     * <p>Analyze healthcare entities, entity linking, and entity relations in a list of
+     * {@link TextDocumentInput document} and provided request options to
+     * show statistics. Subscribes to the call asynchronously and prints out the entity details when a response is
+     * received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeHealthcare#Iterable-RecognizeHealthcareEntityOptions}
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
+     * @param options The additional configurable {@link AnalyzeSentimentOptions options} that may be passed when
+     * analyzing sentiments.
+     *
+     * @return A {@link PollerFlux} that polls the analyze healthcare operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a {@link PagedFlux} of {@link HealthcareTaskResult}.
+     *
+     * @throws TextAnalyticsException If analyze operation fails.
+     * @throws NullPointerException If {@code jobId} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<TextAnalyticsOperationResult, PagedFlux<HealthcareTaskResult>> beginAnalyzeHealthcare(
+        Iterable<TextDocumentInput> documents, RecognizeHealthcareEntityOptions options) {
+        return analyzeHealthcareAsyncClient.beginAnalyzeHealthcare(documents, options, Context.NONE);
+    }
+
+    /**
+     * Cancel a long-running operation healthcare task by given job ID.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginCancelAnalyzeHealthcare#UUID}
+     *
+     * @param jobId A job identification number.
+     *
+     * @return A {@link PollerFlux} that polls the analyze healthcare operation until it has completed, has failed,
+     * or has been cancelled.
+     *
+     * @throws TextAnalyticsException If analyze operation fails.
+     * @throws NullPointerException If {@code jobId} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<TextAnalyticsOperationResult, Void> beginCancelAnalyzeHealthcare(UUID jobId) {
+        return analyzeHealthcareAsyncClient.beginCancelAnalyzeHealthcare(jobId, Context.NONE);
     }
 }

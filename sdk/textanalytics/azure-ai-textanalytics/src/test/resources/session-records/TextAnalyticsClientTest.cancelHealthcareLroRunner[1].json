@@ -1,0 +1,86 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//entities/health/jobs?stringIndexType=Utf16CodeUnit",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.3 (11.0.4; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2c872c73-33ea-484f-b30c-c48a7a46aa2d",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "260",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "operation-location" : "https://textanalytics-westeurope.ppe.cognitiveservices.azure.com/text/analytics/v3.1-preview.3/entities/health/jobs/ad1a47ff-192d-45d4-be5b-2bd8cceca3ac",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "7274aeea-cfc5-45d1-ad54-309fc8343cce",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "Date" : "Fri, 06 Nov 2020 03:32:22 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//entities/health/jobs/ad1a47ff-192d-45d4-be5b-2bd8cceca3ac",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.3 (11.0.4; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "09a5f812-70af-4a51-8da7-5b298a36773a",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "12",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "61635608-a8b7-4210-b43b-2134939a3487",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"ad1a47ff-192d-45d4-be5b-2bd8cceca3ac\",\"lastUpdateDateTime\":\"2020-11-06T03:32:23Z\",\"createdDateTime\":\"2020-11-06T03:32:23Z\",\"expirationDateTime\":\"2020-11-07T03:32:23Z\",\"status\":\"notStarted\",\"errors\":[]}",
+      "Date" : "Fri, 06 Nov 2020 03:32:22 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//entities/health/jobs/ad1a47ff-192d-45d4-be5b-2bd8cceca3ac",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.3 (11.0.4; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7c5930d6-64c1-4d5d-8f20-1fed499a2123",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "18",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "operation-location" : "https://textanalytics-westeurope.ppe.cognitiveservices.azure.com/text/analytics/v3.1-preview.3/entities/health/jobs/ad1a47ff-192d-45d4-be5b-2bd8cceca3ac",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "0dfbe65e-989d-4bb0-b75d-888ad59aa4ed",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "Date" : "Fri, 06 Nov 2020 03:32:24 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//entities/health/jobs/ad1a47ff-192d-45d4-be5b-2bd8cceca3ac",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.3 (11.0.4; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1a07bdd8-2fd1-4c61-8766-60e5b9519832",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "8",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "1392a184-a944-43ad-bece-e66d77ddfc22",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"ad1a47ff-192d-45d4-be5b-2bd8cceca3ac\",\"lastUpdateDateTime\":\"2020-11-06T03:32:24Z\",\"createdDateTime\":\"2020-11-06T03:32:23Z\",\"expirationDateTime\":\"2020-11-07T03:32:23Z\",\"status\":\"cancelled\",\"errors\":[]}",
+      "Date" : "Fri, 06 Nov 2020 03:32:29 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

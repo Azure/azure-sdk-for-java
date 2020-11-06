@@ -461,6 +461,9 @@
   <suppress checks="[a-zA-Z0-9]*" files="com.azure.data.schemaregistry.implementation.*"/>
   <suppress checks="[a-zA-Z0-9]*" files="com.microsoft.opentelemetry.exporter.azuremonitor.implementation.*"/>
 
+  <!-- Use the logger in a Utility static method. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.textanalytics.implementation.Utility.java"/>
+
   <!-- Suppress the check on code-gen classes -->
   <suppress checks="LineLength" files="com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilder"/>
   <suppress checks="LineLength" files="com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl"/>
