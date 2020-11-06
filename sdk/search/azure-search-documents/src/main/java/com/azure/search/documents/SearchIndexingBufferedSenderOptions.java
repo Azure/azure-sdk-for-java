@@ -189,7 +189,7 @@ public final class SearchIndexingBufferedSenderOptions<T> {
     }
 
     /**
-     * Sets the maximum duration that requests will be delay when the service is throttling.
+     * Sets the maximum duration that requests will be delayed when the service is throttling.
      * <p>
      * If {@code maxRetryDelay} is less than {@link #getRetryDelay()} then {@link #getRetryDelay()} will be used as the
      * maximum delay.
