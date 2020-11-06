@@ -57,7 +57,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class);
     private final AtomicInteger messagesPending = new AtomicInteger();
-    private final List<Long> messagesDeferredPending = new ArrayList<>();
     private final boolean isSessionEnabled = false;
 
     private ServiceBusReceiverAsyncClient receiver;
@@ -75,14 +74,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @Override
     protected void afterTest() {
         sharedBuilder = null;
-        final int pending = messagesPending.get();
-        final int pendingDeferred = messagesDeferredPending.size();
-        if (pending < 1 && pendingDeferred < 1) {
-            dispose(receiver, sender);
-            return;
-        }
-
-        // In the case that this test failed... we're going to drain the queue or subscription.
         try {
             dispose(receiver, sender);
         } catch (Exception e) {
