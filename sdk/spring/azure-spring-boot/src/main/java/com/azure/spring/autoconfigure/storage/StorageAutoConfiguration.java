@@ -39,7 +39,7 @@ public class StorageAutoConfiguration {
         return new BlobServiceClientBuilder()
             .endpoint(storageProperties.getBlobEndpoint())
             .credential(new StorageSharedKeyCredential(accountName, accountKey))
-            .httpLogOptions(new HttpLogOptions().setApplicationId(ApplicationId.AZURE_STORAGE_BLOB));
+            .httpLogOptions(new HttpLogOptions().setApplicationId(ApplicationId.AZURE_SPRING_STORAGE_BLOB));
     }
 
     @Bean
@@ -52,7 +52,7 @@ public class StorageAutoConfiguration {
         return new ShareServiceClientBuilder()
             .endpoint(storageProperties.getFileEndpoint())
             .credential(new StorageSharedKeyCredential(accountName, accountKey))
-            .httpLogOptions(new HttpLogOptions().setApplicationId(ApplicationId.AZURE_STORAGE_FILES));
+            .httpLogOptions(new HttpLogOptions().setApplicationId(ApplicationId.AZURE_SPRING_STORAGE_FILES));
     }
 
     @Configuration
