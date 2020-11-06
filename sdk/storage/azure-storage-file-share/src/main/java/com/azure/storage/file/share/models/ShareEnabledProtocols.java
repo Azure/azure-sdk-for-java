@@ -64,7 +64,7 @@ public class ShareEnabledProtocols {
         if (this.nfs) {
             return Constants.HeaderConstants.NFS_PROTOCOL;
         }
-        return null;
+        return "";
     }
 
     /**

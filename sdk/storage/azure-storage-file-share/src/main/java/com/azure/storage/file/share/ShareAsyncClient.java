@@ -305,6 +305,7 @@ public class ShareAsyncClient {
         context = context == null ? Context.NONE : context;
         options = options == null ? new ShareCreateOptions() : options;
         String enabledProtocol = options.getEnabledProtocol() == null ? null : options.getEnabledProtocol().toString();
+        enabledProtocol = "".equals(enabledProtocol) ? null : enabledProtocol;
         return azureFileStorageClient.shares()
             .createWithRestResponseAsync(shareName, null, options.getMetadata(), options.getQuotaInGb(),
                 options.getAccessTier(), enabledProtocol, options.getRootSquash(),
