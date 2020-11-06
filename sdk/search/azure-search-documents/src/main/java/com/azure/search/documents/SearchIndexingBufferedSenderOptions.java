@@ -180,7 +180,7 @@ public final class SearchIndexingBufferedSenderOptions<T> {
     }
 
     /**
-     * Gets the initial duration that requests will be delay when the service is throttling.
+     * Gets the initial duration that requests will be delayed when the service is throttling.
      *
      * @return The initial duration requests will delay when the service is throttling.
      */
