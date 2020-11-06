@@ -53,7 +53,8 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntitiesForDomainFilter;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedDocumentSentiment;
-import static com.azure.ai.textanalytics.TestUtils.getExpectedHealthcareTaskResult;
+import static com.azure.ai.textanalytics.TestUtils.getExpectedHealthcareTaskResultListForMultiplePages;
+import static com.azure.ai.textanalytics.TestUtils.getExpectedHealthcareTaskResultListForSinglePage;
 import static com.azure.ai.textanalytics.TestUtils.getLinkedEntitiesList1;
 import static com.azure.ai.textanalytics.TestUtils.getPiiEntitiesList1;
 import static com.azure.ai.textanalytics.TestUtils.getUnknownDetectedLanguage;
@@ -1527,16 +1528,32 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void healthcareLROWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void healthcareLroWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
-        healthcareLRO((documents, options) -> {
+        healthcareLroRunner((documents, options) -> {
             SyncPoller<TextAnalyticsOperationResult, PagedIterable<HealthcareTaskResult>>
                 syncPoller = client.beginAnalyzeHealthcare(documents, options, Context.NONE);
             syncPoller.waitForCompletion();
             PagedIterable<HealthcareTaskResult> healthcareTaskResults = syncPoller.getFinalResult();
             validateHealthcareTaskResult(
                 options.isIncludeStatistics(),
-                Arrays.asList(getExpectedHealthcareTaskResult()),
+                getExpectedHealthcareTaskResultListForSinglePage(),
+                healthcareTaskResults.stream().collect(Collectors.toList()));
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void healthcareLroPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        healthcareLroPaginationRunner((documents, options) -> {
+            SyncPoller<TextAnalyticsOperationResult, PagedIterable<HealthcareTaskResult>>
+                syncPoller = client.beginAnalyzeHealthcare(documents, options, Context.NONE);
+            syncPoller.waitForCompletion();
+            PagedIterable<HealthcareTaskResult> healthcareTaskResults = syncPoller.getFinalResult();
+            validateHealthcareTaskResult(
+                options.isIncludeStatistics(),
+                getExpectedHealthcareTaskResultListForMultiplePages(),
                 healthcareTaskResults.stream().collect(Collectors.toList()));
         });
     }
@@ -1545,9 +1562,9 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void cancelHealthcareLRO(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void cancelHealthcareLroRunner(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
-        cancelHealthcareLRO(documents -> {
+        cancelHealthcareLroRunner(documents -> {
             SyncPoller<TextAnalyticsOperationResult, PagedIterable<HealthcareTaskResult>>
                 syncPoller = client.beginAnalyzeHealthcare(documents, null, Context.NONE);
 

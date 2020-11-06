@@ -39,7 +39,7 @@ public class AnalyzeHealthcareTask {
                 .buildClient();
 
         List<TextDocumentInput> documents = new ArrayList<>();
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 3; i++) {
             documents.add(new TextDocumentInput(Integer.toString(i),
                 "The patient is a 54-year-old gentleman with a history of progressive angina over the past several months. "
             ));
@@ -71,7 +71,7 @@ public class AnalyzeHealthcareTask {
                 batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
             healthcareEntitiesResultCollection.forEach(healthcareEntitiesResult -> {
-                System.out.println("document id = " + healthcareEntitiesResult.getId());
+                System.out.println("Document id = " + healthcareEntitiesResult.getId());
                 System.out.println("Document entities: ");
                 HealthcareEntityCollection healthcareEntities = healthcareEntitiesResult.getEntities();
                 AtomicInteger ct = new AtomicInteger();

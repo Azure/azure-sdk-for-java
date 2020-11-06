@@ -10,8 +10,6 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public class RecognizeHealthcareEntityOptions extends TextAnalyticsRequestOptions {
-    private StringIndexType stringIndexType;
-
     /**
      * Set the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
      * If a model-version is not specified, the API will default to the latest, non-preview version.
@@ -37,27 +35,6 @@ public class RecognizeHealthcareEntityOptions extends TextAnalyticsRequestOption
     @Override
     public RecognizeHealthcareEntityOptions setIncludeStatistics(boolean includeStatistics) {
         super.setIncludeStatistics(includeStatistics);
-        return this;
-    }
-
-    /**
-     * Get the value of stringIndexType.
-     *
-     * @return The value of domainFilter.
-     */
-    public StringIndexType getStringIndexType() {
-        return stringIndexType;
-    }
-
-    /**
-     * Set the value of domainFilter.
-     *
-     * @param stringIndexType It spe
-     *
-     * @return The RecognizeHealthcareEntityOptions object itself.
-     */
-    public RecognizeHealthcareEntityOptions setStringIndexType(StringIndexType stringIndexType) {
-        this.stringIndexType = stringIndexType;
         return this;
     }
 }

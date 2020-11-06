@@ -297,11 +297,14 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     // Healthcare LRO
     @Test
-    abstract void healthcareLROWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void healthcareLroWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void healthcareLroPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     // Healthcare LRO - Cancellation
     @Test
-    abstract void cancelHealthcareLRO(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void cancelHealthcareLroRunner(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     // Detect Language runner
     void detectLanguageShowStatisticsRunner(BiConsumer<List<DetectLanguageInput>,
@@ -611,8 +614,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept("ơ̵̧̧̢̳̘̘͕͔͕̭̟̙͎͈̞͔̈̇̒̃͋̇̅͛̋͛̎́͑̄̐̂̎͗͝m̵͍͉̗̄̏͌̂̑̽̕͝͠g̵̢̡̢̡̨̡̧̛͉̞̯̠̤̣͕̟̫̫̼̰͓̦͖̣̣͎̋͒̈́̓̒̈̍̌̓̅͑̒̓̅̅͒̿̏́͗̀̇͛̏̀̈́̀̊̾̀̔͜͠͝ͅ " + text);
     }
 
-    // Healthcare LRO
-    void healthcareLRO(BiConsumer<List<TextDocumentInput>, RecognizeHealthcareEntityOptions> testRunner) {
+    // Healthcare LRO runner
+    void healthcareLroRunner(BiConsumer<List<TextDocumentInput>, RecognizeHealthcareEntityOptions> testRunner) {
         testRunner.accept(
             asList(
                 new TextDocumentInput("0", HEALTHCARE_INPUTS.get(0)),
@@ -620,9 +623,20 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             new RecognizeHealthcareEntityOptions().setIncludeStatistics(true));
     }
 
-    void cancelHealthcareLRO(Consumer<List<TextDocumentInput>> testRunner) {
+    void healthcareLroPaginationRunner(
+        BiConsumer<List<TextDocumentInput>, RecognizeHealthcareEntityOptions> testRunner) {
         List<TextDocumentInput> documents = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
+        // Service has 20 as the default size per page. So there will be 2 remaining page in the next page link
+        for (int i = 0; i < 22; i++) {
+            documents.add(new TextDocumentInput(Integer.toString(i), HEALTHCARE_INPUTS.get(0)));
+        }
+        testRunner.accept(documents, new RecognizeHealthcareEntityOptions().setIncludeStatistics(true));
+    }
+
+    // Healthcare LRO runner- Cancellation
+    void cancelHealthcareLroRunner(Consumer<List<TextDocumentInput>> testRunner) {
+        List<TextDocumentInput> documents = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
             documents.add(new TextDocumentInput(Integer.toString(i), HEALTHCARE_INPUTS.get(0)));
         }
         testRunner.accept(documents);
@@ -1024,6 +1038,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static void validateHealthcareTaskResult(boolean showStatistics, List<HealthcareTaskResult> expected,
         List<HealthcareTaskResult> actual) {
         assertEquals(expected.size(), actual.size());
+
         for (int i = 0; i < actual.size(); i++) {
             validateRecognizeHealthcareEntitiesResultCollection(showStatistics,
                 expected.get(i).getResult(), actual.get(i).getResult());

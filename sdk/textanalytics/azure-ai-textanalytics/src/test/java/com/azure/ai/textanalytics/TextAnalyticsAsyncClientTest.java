@@ -48,7 +48,8 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntitiesForDomainFilter;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedDocumentSentiment;
-import static com.azure.ai.textanalytics.TestUtils.getExpectedHealthcareTaskResult;
+import static com.azure.ai.textanalytics.TestUtils.getExpectedHealthcareTaskResultListForMultiplePages;
+import static com.azure.ai.textanalytics.TestUtils.getExpectedHealthcareTaskResultListForSinglePage;
 import static com.azure.ai.textanalytics.TestUtils.getLinkedEntitiesList1;
 import static com.azure.ai.textanalytics.TestUtils.getPiiEntitiesList1;
 import static com.azure.ai.textanalytics.TestUtils.getUnknownDetectedLanguage;
@@ -1591,9 +1592,9 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void healthcareLROWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void healthcareLroWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        healthcareLRO((documents, options) -> {
+        healthcareLroRunner((documents, options) -> {
             SyncPoller<TextAnalyticsOperationResult, PagedFlux<HealthcareTaskResult>>
                 syncPoller = client.beginAnalyzeHealthcare(documents, options).getSyncPoller();
             syncPoller.waitForCompletion();
@@ -1601,7 +1602,24 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 = syncPoller.getFinalResult();
             validateHealthcareTaskResult(
                 options.isIncludeStatistics(),
-                Arrays.asList(getExpectedHealthcareTaskResult()),
+                getExpectedHealthcareTaskResultListForSinglePage(),
+                healthcareEntitiesResultCollectionPagedFlux.toStream().collect(Collectors.toList()));
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void healthcareLroPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        healthcareLroPaginationRunner((documents, options) -> {
+            SyncPoller<TextAnalyticsOperationResult, PagedFlux<HealthcareTaskResult>>
+                syncPoller = client.beginAnalyzeHealthcare(documents, options).getSyncPoller();
+            syncPoller.waitForCompletion();
+            PagedFlux<HealthcareTaskResult> healthcareEntitiesResultCollectionPagedFlux
+                = syncPoller.getFinalResult();
+            validateHealthcareTaskResult(
+                options.isIncludeStatistics(),
+                getExpectedHealthcareTaskResultListForMultiplePages(),
                 healthcareEntitiesResultCollectionPagedFlux.toStream().collect(Collectors.toList()));
         });
     }
@@ -1610,9 +1628,9 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void cancelHealthcareLRO(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void cancelHealthcareLroRunner(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        cancelHealthcareLRO(documents -> {
+        cancelHealthcareLroRunner(documents -> {
             SyncPoller<TextAnalyticsOperationResult, PagedFlux<HealthcareTaskResult>>
                 syncPoller = client.beginAnalyzeHealthcare(documents, null).getSyncPoller();
 

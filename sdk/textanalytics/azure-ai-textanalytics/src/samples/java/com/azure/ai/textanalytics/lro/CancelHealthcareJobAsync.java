@@ -35,7 +35,7 @@ public class CancelHealthcareJobAsync {
                 .buildAsyncClient();
 
         List<TextDocumentInput> documents = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10; i++) {
             documents.add(new TextDocumentInput(Integer.toString(i),
                 "RECORD #333582770390100 | MH | 85986313 | | 054351 | 2/14/2001 12:00:00 AM | "
                     + "CORONARY ARTERY DISEASE | Signed | DIS | Admission Date: 5/22/2001 "

@@ -796,7 +796,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     /**
      * Code snippet for {@link TextAnalyticsAsyncClient#beginAnalyzeHealthcare(Iterable, RecognizeHealthcareEntityOptions)}
      */
-    public void analyzeBatchHealthcareMaxOverloadWithOpinionMining() {
+    public void analyzeHealthcareMaxOverload() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeHealthcare#Iterable-RecognizeHealthcareEntityOptions
         List<TextDocumentInput> documents = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
@@ -863,7 +863,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     /**
      * Code snippet for {@link TextAnalyticsAsyncClient#beginCancelAnalyzeHealthcare(UUID)}
      */
-    public void cancelAnalyzeBatchHealthcareMaxOverloadWithOpinionMining() {
+    public void cancelAnalyzeHealthcareMaxOverload() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginCancelAnalyzeHealthcare#UUID
         textAnalyticsAsyncClient.beginCancelAnalyzeHealthcare(UUID.fromString("{job_id_to_cancel}"))
             .map(response -> {

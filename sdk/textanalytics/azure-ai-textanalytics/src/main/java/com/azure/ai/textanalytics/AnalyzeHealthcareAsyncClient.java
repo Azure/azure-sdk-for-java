@@ -75,12 +75,8 @@ class AnalyzeHealthcareAsyncClient {
         try {
             inputDocumentsValidation(documents);
             String modelVersion = null;
-            StringIndexType stringIndexType = null;
             if (options != null) {
                 modelVersion = options.getModelVersion();
-                if (options.getStringIndexType() != null) {
-                    stringIndexType = StringIndexType.fromString(options.getStringIndexType().toString());
-                }
             }
             final Boolean finalIncludeStatistics = options == null ? null : options.isIncludeStatistics();
             return new PollerFlux<>(
@@ -89,7 +85,7 @@ class AnalyzeHealthcareAsyncClient {
                     new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
                     context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE),
                     modelVersion,
-                    stringIndexType)
+                    StringIndexType.UTF16CODE_UNIT) // Currently StringIndexType is not explored, we use it internally
                     .map(healthResponse -> {
                         final TextAnalyticsOperationResult textAnalyticsOperationResult =
                             new TextAnalyticsOperationResult();
@@ -114,12 +110,8 @@ class AnalyzeHealthcareAsyncClient {
         try {
             inputDocumentsValidation(documents);
             String modelVersion = null;
-            StringIndexType stringIndexType = null;
             if (options != null) {
                 modelVersion = options.getModelVersion();
-                if (options.getStringIndexType() != null) {
-                    stringIndexType = StringIndexType.fromString(options.getStringIndexType().toString());
-                }
             }
             final Boolean finalIncludeStatistics = options == null ? null : options.isIncludeStatistics();
             return new PollerFlux<>(
@@ -128,7 +120,7 @@ class AnalyzeHealthcareAsyncClient {
                     new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
                     context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE),
                     modelVersion,
-                    stringIndexType)
+                    StringIndexType.UTF16CODE_UNIT)  // Currently StringIndexType is not explored, we use it internally
                     .map(healthResponse -> {
                         final TextAnalyticsOperationResult textAnalyticsOperationResult =
                             new TextAnalyticsOperationResult();
