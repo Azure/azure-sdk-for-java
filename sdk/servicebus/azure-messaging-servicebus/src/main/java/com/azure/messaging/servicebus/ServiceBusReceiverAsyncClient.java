@@ -365,7 +365,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return monoError(logger, new NullPointerException(
                 "'options.transactionContext.transactionId' cannot be null."));
         }
-        return  updateDisposition(message, DispositionStatus.SUSPENDED, options.getDeadLetterReason(),
+        return updateDisposition(message, DispositionStatus.SUSPENDED, options.getDeadLetterReason(),
             options.getDeadLetterErrorDescription(), options.getPropertiesToModify(),
             options.getTransactionContext());
     }
@@ -919,7 +919,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     @Override
     public void close() {
-        if (isDisposed.getAndSet(true)) {
+        if (isDisposed.get()) {
             return;
         }
 
@@ -927,6 +927,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             completionLock.acquire();
         } catch (InterruptedException e) {
             logger.info("Unable to obtain completion lock.", e);
+        }
+
+        if (isDisposed.getAndSet(true)) {
+            return;
         }
 
         // Blocking until the last message has been completed.
@@ -980,6 +984,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         if (receiverOptions.getReceiveMode() != ReceiveMode.PEEK_LOCK) {
             return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
                 "'%s' is not supported on a receiver opened in ReceiveMode.RECEIVE_AND_DELETE.", dispositionStatus))));
+        } else if (message.isSettled()) {
+            return Mono.error(logger.logExceptionAsError(
+                new IllegalArgumentException("The message has either been deleted or already settled.")));
         }
 
         final String sessionIdToUse;
@@ -1001,16 +1008,18 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 logger.info("{}: Management node Update completed. Disposition: {}. Lock: {}.",
                     entityPath, dispositionStatus, lockToken);
 
+                message.setIsSettled();
                 managementNodeLocks.remove(lockToken);
                 renewalContainer.remove(lockToken);
             }));
 
         Mono<Void> updateDispositionOperation;
         if (sessionManager != null) {
-            updateDispositionOperation =  sessionManager.updateDisposition(lockToken, sessionId, dispositionStatus,
+            updateDispositionOperation = sessionManager.updateDisposition(lockToken, sessionId, dispositionStatus,
                 propertiesToModify, deadLetterReason, deadLetterErrorDescription, transactionContext)
                 .flatMap(isSuccess -> {
                     if (isSuccess) {
+                        message.setIsSettled();
                         renewalContainer.remove(lockToken);
                         return Mono.empty();
                     }
@@ -1028,16 +1037,19 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                     .then(Mono.fromRunnable(() -> {
                         logger.verbose("{}: Update completed. Disposition: {}. Lock: {}.",
                             entityPath, dispositionStatus, lockToken);
+
+                        message.setIsSettled();
                         renewalContainer.remove(lockToken);
                     }));
             }
         }
+
         return updateDispositionOperation
             .onErrorMap(throwable -> {
                 if (throwable instanceof ServiceBusReceiverException) {
                     return throwable;
                 }
-                
+
                 switch (dispositionStatus) {
                     case COMPLETED:
                         return new ServiceBusReceiverException(throwable, ServiceBusErrorSource.COMPLETE);
@@ -1046,7 +1058,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                     default:
                         return new ServiceBusReceiverException(throwable, ServiceBusErrorSource.UNKNOWN);
                 }
-
             });
     }
 
