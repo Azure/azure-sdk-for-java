@@ -26,51 +26,7 @@ The Azure Storage platform is Microsoft's cloud storage solution for modern data
 
 ## Examples
 
-Please use this `sample` as a reference for how to use **Azure Spring Boot Storage Starter** in your projects. 
 
-#### Auto-configuration for Azure Blob storage
-
-The `azure-spring-boot-starter-storage` provides the following configuration options in `application.properties`.
-
-Name | Description | Required  
----|---|---
- azure.storage.accountName | The name of the Azure Storage account. | Yes |
- azure.storage.accountKey | The access key of the Azure Storage account. | Yes |
- azure.storage.blob-endpoint | The blob endpoint URL of the Azure Storage account. | Optional when storage blob resource is used. |
- azure.storage.file-endpoint | The file endpoint URL of the Azure Storage account. | Optional when storage file resource is used |
-
-#### Autowire a resource 
-You can use the annotation of `@Value("blob://{containerName}/{blobName}")` to autowire a `Resource` with that in [Azure Blob storage][azure_storage].
-
-```java
-@Value("blob://{containerName}/{blobName}")
-private Resource blobFile;
-```
-
-#### Read and write to a resource 
- You can read a resource from Azure Blob storage with `getInputStream()` method.
-
-```java
- this.blobFile.getInputStream();
-```
-You can write to a resource in Azure Blob storage by casting the Spring `Resource` to `WritableResource`. 
-
-```java
-(WritableResource) this.blobFile).getOutputStream();
-```
-
-#### Other operations 
-The Spring Resource abstraction for Azure Storage also supports [other operations][other_operation] defined in Spring's `Resource` and `WritableResource` interface. 
-
-#### Autowire the BlobServiceClientBuilder
-You can autowire the `BlobServiceClientBuilder` and create a client using:
-```java
-@Autowire
-private BlobServiceClientBuilder blobServiceClientBuilder;
-
-private final BlobServiceAsyncClient blobServiceAsyncClient = blobServiceClientBuilder.buildAsyncClient();
-
-```
 
 ## Troubleshooting
 ### Enable client logging
