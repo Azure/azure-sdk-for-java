@@ -86,13 +86,14 @@ public class VirtualMachineScaleSetInner extends Resource {
     private VirtualMachineScaleSetIdentity identity;
 
     /**
-     * The virtual machine scale set zones.
+     * The virtual machine scale set zones. NOTE: Availability zones can only
+     * be set when you create the scale set.
      */
     @JsonProperty(value = "zones")
     private List<String> zones;
 
     /**
-     * Get the sku value.
+     * Get the virtual machine scale set sku.
      *
      * @return the sku value
      */
@@ -101,7 +102,7 @@ public class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Set the sku value.
+     * Set the virtual machine scale set sku.
      *
      * @param sku the sku value to set
      * @return the VirtualMachineScaleSetInner object itself.
@@ -112,7 +113,7 @@ public class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Get the plan value.
+     * Get specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable the image for programmatic use.  In the Azure portal, find the marketplace image that you want to use and then click **Want to deploy programmatically, Get Started -&gt;**. Enter any required information and then click **Save**.
      *
      * @return the plan value
      */
@@ -121,7 +122,7 @@ public class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Set the plan value.
+     * Set specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable the image for programmatic use.  In the Azure portal, find the marketplace image that you want to use and then click **Want to deploy programmatically, Get Started -&gt;**. Enter any required information and then click **Save**.
      *
      * @param plan the plan value to set
      * @return the VirtualMachineScaleSetInner object itself.
@@ -132,7 +133,7 @@ public class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Get the upgradePolicy value.
+     * Get the upgrade policy.
      *
      * @return the upgradePolicy value
      */
@@ -141,7 +142,7 @@ public class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Set the upgradePolicy value.
+     * Set the upgrade policy.
      *
      * @param upgradePolicy the upgradePolicy value to set
      * @return the VirtualMachineScaleSetInner object itself.
@@ -152,7 +153,7 @@ public class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Get the virtualMachineProfile value.
+     * Get the virtual machine profile.
      *
      * @return the virtualMachineProfile value
      */
@@ -161,7 +162,7 @@ public class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Set the virtualMachineProfile value.
+     * Set the virtual machine profile.
      *
      * @param virtualMachineProfile the virtualMachineProfile value to set
      * @return the VirtualMachineScaleSetInner object itself.
@@ -172,7 +173,7 @@ public class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get the provisioning state, which only appears in the response.
      *
      * @return the provisioningState value
      */
@@ -181,7 +182,7 @@ public class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Get the overprovision value.
+     * Get specifies whether the Virtual Machine Scale Set should be overprovisioned.
      *
      * @return the overprovision value
      */
@@ -190,7 +191,7 @@ public class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Set the overprovision value.
+     * Set specifies whether the Virtual Machine Scale Set should be overprovisioned.
      *
      * @param overprovision the overprovision value to set
      * @return the VirtualMachineScaleSetInner object itself.
@@ -201,7 +202,7 @@ public class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Get the uniqueId value.
+     * Get specifies the ID which uniquely identifies a Virtual Machine Scale Set.
      *
      * @return the uniqueId value
      */
@@ -210,7 +211,7 @@ public class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Get the singlePlacementGroup value.
+     * Get when true this limits the scale set to a single placement group, of max size 100 virtual machines.
      *
      * @return the singlePlacementGroup value
      */
@@ -219,7 +220,7 @@ public class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Set the singlePlacementGroup value.
+     * Set when true this limits the scale set to a single placement group, of max size 100 virtual machines.
      *
      * @param singlePlacementGroup the singlePlacementGroup value to set
      * @return the VirtualMachineScaleSetInner object itself.
@@ -230,7 +231,7 @@ public class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Get the identity value.
+     * Get the identity of the virtual machine scale set, if configured.
      *
      * @return the identity value
      */
@@ -239,7 +240,7 @@ public class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Set the identity value.
+     * Set the identity of the virtual machine scale set, if configured.
      *
      * @param identity the identity value to set
      * @return the VirtualMachineScaleSetInner object itself.
@@ -250,7 +251,7 @@ public class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Get the zones value.
+     * Get the virtual machine scale set zones. NOTE: Availability zones can only be set when you create the scale set.
      *
      * @return the zones value
      */
@@ -259,7 +260,7 @@ public class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Set the zones value.
+     * Set the virtual machine scale set zones. NOTE: Availability zones can only be set when you create the scale set.
      *
      * @param zones the zones value to set
      * @return the VirtualMachineScaleSetInner object itself.

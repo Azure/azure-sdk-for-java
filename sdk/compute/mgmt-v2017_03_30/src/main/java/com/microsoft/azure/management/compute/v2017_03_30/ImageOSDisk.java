@@ -76,7 +76,7 @@ public class ImageOSDisk {
     private StorageAccountTypes storageAccountType;
 
     /**
-     * Get the osType value.
+     * Get this property allows you to specify the type of the OS that is included in the disk if creating a VM from a custom image. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Windows** &lt;br&gt;&lt;br&gt; **Linux**. Possible values include: 'Windows', 'Linux'.
      *
      * @return the osType value
      */
@@ -85,7 +85,7 @@ public class ImageOSDisk {
     }
 
     /**
-     * Set the osType value.
+     * Set this property allows you to specify the type of the OS that is included in the disk if creating a VM from a custom image. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Windows** &lt;br&gt;&lt;br&gt; **Linux**. Possible values include: 'Windows', 'Linux'.
      *
      * @param osType the osType value to set
      * @return the ImageOSDisk object itself.
@@ -96,7 +96,7 @@ public class ImageOSDisk {
     }
 
     /**
-     * Get the osState value.
+     * Get the OS State. Possible values include: 'Generalized', 'Specialized'.
      *
      * @return the osState value
      */
@@ -105,7 +105,7 @@ public class ImageOSDisk {
     }
 
     /**
-     * Set the osState value.
+     * Set the OS State. Possible values include: 'Generalized', 'Specialized'.
      *
      * @param osState the osState value to set
      * @return the ImageOSDisk object itself.
@@ -116,7 +116,7 @@ public class ImageOSDisk {
     }
 
     /**
-     * Get the snapshot value.
+     * Get the snapshot.
      *
      * @return the snapshot value
      */
@@ -125,7 +125,7 @@ public class ImageOSDisk {
     }
 
     /**
-     * Set the snapshot value.
+     * Set the snapshot.
      *
      * @param snapshot the snapshot value to set
      * @return the ImageOSDisk object itself.
@@ -136,7 +136,7 @@ public class ImageOSDisk {
     }
 
     /**
-     * Get the managedDisk value.
+     * Get the managedDisk.
      *
      * @return the managedDisk value
      */
@@ -145,7 +145,7 @@ public class ImageOSDisk {
     }
 
     /**
-     * Set the managedDisk value.
+     * Set the managedDisk.
      *
      * @param managedDisk the managedDisk value to set
      * @return the ImageOSDisk object itself.
@@ -156,7 +156,7 @@ public class ImageOSDisk {
     }
 
     /**
-     * Get the blobUri value.
+     * Get the Virtual Hard Disk.
      *
      * @return the blobUri value
      */
@@ -165,7 +165,7 @@ public class ImageOSDisk {
     }
 
     /**
-     * Set the blobUri value.
+     * Set the Virtual Hard Disk.
      *
      * @param blobUri the blobUri value to set
      * @return the ImageOSDisk object itself.
@@ -176,7 +176,7 @@ public class ImageOSDisk {
     }
 
     /**
-     * Get the caching value.
+     * Get specifies the caching requirements. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **None** &lt;br&gt;&lt;br&gt; **ReadOnly** &lt;br&gt;&lt;br&gt; **ReadWrite** &lt;br&gt;&lt;br&gt; Default: **None for Standard storage. ReadOnly for Premium storage**. Possible values include: 'None', 'ReadOnly', 'ReadWrite'.
      *
      * @return the caching value
      */
@@ -185,7 +185,7 @@ public class ImageOSDisk {
     }
 
     /**
-     * Set the caching value.
+     * Set specifies the caching requirements. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **None** &lt;br&gt;&lt;br&gt; **ReadOnly** &lt;br&gt;&lt;br&gt; **ReadWrite** &lt;br&gt;&lt;br&gt; Default: **None for Standard storage. ReadOnly for Premium storage**. Possible values include: 'None', 'ReadOnly', 'ReadWrite'.
      *
      * @param caching the caching value to set
      * @return the ImageOSDisk object itself.
@@ -196,7 +196,7 @@ public class ImageOSDisk {
     }
 
     /**
-     * Get the diskSizeGB value.
+     * Get specifies the size of empty data disks in gigabytes. This element can be used to overwrite the name of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; This value cannot be larger than 1023 GB.
      *
      * @return the diskSizeGB value
      */
@@ -205,7 +205,7 @@ public class ImageOSDisk {
     }
 
     /**
-     * Set the diskSizeGB value.
+     * Set specifies the size of empty data disks in gigabytes. This element can be used to overwrite the name of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; This value cannot be larger than 1023 GB.
      *
      * @param diskSizeGB the diskSizeGB value to set
      * @return the ImageOSDisk object itself.
@@ -216,7 +216,7 @@ public class ImageOSDisk {
     }
 
     /**
-     * Get the storageAccountType value.
+     * Get specifies the storage account type for the managed disk. Possible values are: Standard_LRS or Premium_LRS. Possible values include: 'Standard_LRS', 'Premium_LRS'.
      *
      * @return the storageAccountType value
      */
@@ -225,7 +225,7 @@ public class ImageOSDisk {
     }
 
     /**
-     * Set the storageAccountType value.
+     * Set specifies the storage account type for the managed disk. Possible values are: Standard_LRS or Premium_LRS. Possible values include: 'Standard_LRS', 'Premium_LRS'.
      *
      * @param storageAccountType the storageAccountType value to set
      * @return the ImageOSDisk object itself.
