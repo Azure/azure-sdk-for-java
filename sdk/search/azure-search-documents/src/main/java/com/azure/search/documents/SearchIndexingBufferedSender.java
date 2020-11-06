@@ -16,7 +16,7 @@ import java.util.Collection;
  * index.
  */
 public final class SearchIndexingBufferedSender<T> {
-    private final SearchIndexingBufferedAsyncSender<T> client;
+    final SearchIndexingBufferedAsyncSender<T> client;
 
     SearchIndexingBufferedSender(SearchIndexingBufferedAsyncSender<T> client) {
         this.client = client;
@@ -32,12 +32,14 @@ public final class SearchIndexingBufferedSender<T> {
     }
 
     /**
-     * Gets the batch size.
+     * Gets the number of documents required in a batch for it to be flushed.
+     * <p>
+     * This configuration is only taken into account if auto flushing is enabled.
      *
-     * @return The batch size.
+     * @return The number of documents required before a flush is triggered.
      */
-    public int getBatchSize() {
-        return client.getBatchSize();
+    public int getInitialBatchActionCount() {
+        return client.getInitialBatchActionCount();
     }
 
     /**

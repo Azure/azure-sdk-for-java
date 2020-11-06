@@ -24,9 +24,10 @@ import static com.azure.core.util.FluxUtil.withContext;
 public final class SearchIndexingBufferedAsyncSender<T> {
     private final ClientLogger logger = new ClientLogger(SearchIndexingBufferedAsyncSender.class);
 
-    private final SearchIndexingPublisher<T> publisher;
     private final boolean autoFlush;
     private final long flushWindowMillis;
+
+    final SearchIndexingPublisher<T> publisher;
 
     private Timer autoFlushTimer;
     private final AtomicReference<TimerTask> flushTask = new AtomicReference<>();
@@ -51,12 +52,14 @@ public final class SearchIndexingBufferedAsyncSender<T> {
     }
 
     /**
-     * Gets the batch size.
+     * Gets the number of documents required in a batch for it to be flushed.
+     * <p>
+     * This configuration is only taken into account if auto flushing is enabled.
      *
-     * @return The batch size.
+     * @return The number of documents required before a flush is triggered.
      */
-    int getBatchSize() {
-        return publisher.getBatchSize();
+    public int getInitialBatchActionCount() {
+        return publisher.getInitialBatchActionCount();
     }
 
     /**
