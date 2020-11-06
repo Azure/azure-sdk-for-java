@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
 import com.azure.cosmos.implementation.IRetryPolicy;
 import com.azure.cosmos.implementation.ResourceThrottleRetryPolicy;
 import com.azure.cosmos.implementation.RetryPolicyWithDiagnostics;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import reactor.core.publisher.Mono;
 
@@ -30,11 +31,13 @@ final class BulkOperationRetryPolicy extends RetryPolicyWithDiagnostics {
 
     BulkOperationRetryPolicy(
         RxCollectionCache collectionCache,
-        String collectionLink,
+        String resourceFullName,
         ResourceThrottleRetryPolicy resourceThrottleRetryPolicy) {
 
         this.collectionCache = collectionCache;
-        this.collectionLink = collectionLink;
+
+        // Similar to PartitionKeyMismatchRetryPolicy constructor.
+        collectionLink = Utils.getCollectionName(resourceFullName);
         this.resourceThrottleRetryPolicy = resourceThrottleRetryPolicy;
     }
 
