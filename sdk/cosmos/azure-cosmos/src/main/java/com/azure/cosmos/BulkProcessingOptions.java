@@ -13,7 +13,7 @@ import java.time.Duration;
  * Encapsulates options for executing a bulk. This is immutable once
  * {@link CosmosAsyncContainer#processBulkOperations(Flux, BulkProcessingOptions)} is called, changing it will have no affect.
  */
-@Beta(Beta.SinceVersion.V4_8_0)
+@Beta(Beta.SinceVersion.V4_9_0)
 public final class BulkProcessingOptions<TContext> {
     private int maxMicroBatchSize = BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
     private int maxMicroBatchConcurrency = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_CONCURRENCY;

@@ -10,7 +10,7 @@ import com.azure.cosmos.util.Beta;
  * Encapsulates options that can be specified for an operation used in Bulk execution. It can be passed while
  * creating bulk request using {@link BulkOperations}.
  */
-@Beta(Beta.SinceVersion.V4_8_0)
+@Beta(Beta.SinceVersion.V4_9_0)
 public final class BulkItemRequestOptions {
     private String ifMatchETag;
     private String ifNoneMatchETag;

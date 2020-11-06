@@ -606,7 +606,7 @@ public class CosmosAsyncContainer {
      * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getThrowable()} to
      * get the exception.
      */
-    @Beta(Beta.SinceVersion.V4_8_0)
+    @Beta(Beta.SinceVersion.V4_9_0)
     public <TContext> Flux<CosmosBulkOperationResponse<TContext>> processBulkOperations(
         Flux<CosmosItemOperation> operations) {
 
@@ -636,7 +636,7 @@ public class CosmosAsyncContainer {
      * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getThrowable()} to
      * get the exception.
      */
-    @Beta(Beta.SinceVersion.V4_8_0)
+    @Beta(Beta.SinceVersion.V4_9_0)
     public <TContext> Flux<CosmosBulkOperationResponse<TContext>> processBulkOperations(
         Flux<CosmosItemOperation> operations,
         BulkProcessingOptions<TContext> bulkOptions) {

@@ -19,7 +19,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * {@link CosmosAsyncContainer#processBulkOperations(Flux, BulkProcessingOptions)}.
  *
  */
-@Beta(Beta.SinceVersion.V4_8_0)
+@Beta(Beta.SinceVersion.V4_9_0)
 public final class CosmosBulkItemResponse {
 
     private final String eTag;

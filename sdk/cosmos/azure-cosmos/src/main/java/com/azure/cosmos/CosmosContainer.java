@@ -574,7 +574,7 @@ public class CosmosContainer {
      * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getThrowable()} to
      * get the exception.
      */
-    @Beta(Beta.SinceVersion.V4_8_0)
+    @Beta(Beta.SinceVersion.V4_9_0)
     public <TContext> List<CosmosBulkOperationResponse<TContext>> processBulkOperations(
         List<CosmosItemOperation> operations) {
 
@@ -604,7 +604,7 @@ public class CosmosContainer {
      * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getThrowable()} to
      * get the exception.
      */
-    @Beta(Beta.SinceVersion.V4_8_0)
+    @Beta(Beta.SinceVersion.V4_9_0)
     public <TContext> List<CosmosBulkOperationResponse<TContext>> processBulkOperations(
         List<CosmosItemOperation> operations,
         BulkProcessingOptions<TContext> bulkOptions) {
