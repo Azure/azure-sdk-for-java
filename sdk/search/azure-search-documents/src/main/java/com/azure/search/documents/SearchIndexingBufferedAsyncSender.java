@@ -58,8 +58,8 @@ public final class SearchIndexingBufferedAsyncSender<T> {
      *
      * @return The number of documents required before a flush is triggered.
      */
-    public int getInitialBatchActionCount() {
-        return publisher.getInitialBatchActionCount();
+    int getBatchActionCount() {
+        return publisher.getBatchActionCount();
     }
 
     /**

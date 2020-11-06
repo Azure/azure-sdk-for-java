@@ -38,8 +38,8 @@ public final class SearchIndexingBufferedSender<T> {
      *
      * @return The number of documents required before a flush is triggered.
      */
-    public int getInitialBatchActionCount() {
-        return client.getInitialBatchActionCount();
+    int getBatchActionCount() {
+        return client.getBatchActionCount();
     }
 
     /**

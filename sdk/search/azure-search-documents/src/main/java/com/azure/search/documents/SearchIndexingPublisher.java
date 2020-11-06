@@ -6,6 +6,7 @@ package com.azure.search.documents;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.implementation.converters.IndexActionConverter;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexBatchException;
@@ -37,9 +38,11 @@ import java.util.stream.Collectors;
 final class SearchIndexingPublisher<T> {
     private static final double JITTER_FACTOR = 0.05;
 
+    private final ClientLogger logger = new ClientLogger(SearchIndexingPublisher.class);
+
     private final SearchAsyncClient client;
     private final boolean autoFlush;
-    private final int initialBatchActionCount;
+    private final int batchActionCount;
     private final int maxRetries;
     private final Duration retryDelay;
     private final Duration maxRetryDelay;
@@ -66,7 +69,7 @@ final class SearchIndexingPublisher<T> {
 
         this.client = client;
         this.autoFlush = options.getAutoFlush();
-        this.initialBatchActionCount = options.getInitialBatchActionCount();
+        this.batchActionCount = options.getInitialBatchActionCount();
         this.maxRetries = options.getMaxRetries();
         this.retryDelay = options.getRetryDelay();
         this.maxRetryDelay = (options.getMaxRetryDelay().compareTo(retryDelay) < 0)
@@ -102,8 +105,8 @@ final class SearchIndexingPublisher<T> {
         return actions.stream().map(TryTrackingIndexAction::getAction).collect(Collectors.toList());
     }
 
-    int getInitialBatchActionCount() {
-        return initialBatchActionCount;
+    int getBatchActionCount() {
+        return batchActionCount;
     }
 
     synchronized Mono<Void> addActions(Collection<IndexAction<T>> actions, Context context, Runnable rescheduleFlush) {
@@ -136,9 +139,9 @@ final class SearchIndexingPublisher<T> {
     }
 
     private Mono<Void> createAndProcessBatch(Context context) {
-        final List<TryTrackingIndexAction<T>> batchActions = new ArrayList<>(initialBatchActionCount);
+        final List<TryTrackingIndexAction<T>> batchActions = new ArrayList<>(batchActionCount);
         synchronized (actionsMutex) {
-            int size = Math.min(initialBatchActionCount, this.actions.size());
+            int size = Math.min(batchActionCount, this.actions.size());
             for (int i = 0; i < size; i++) {
                 TryTrackingIndexAction<T> action = actions.pop();
                 onActionSentConsumer.accept(action.getAction());
@@ -232,7 +235,12 @@ final class SearchIndexingPublisher<T> {
                 TryTrackingIndexAction<T> action = actions.stream().skip(batchResponse.getOffset())
                     .filter(a -> key.equals(a.getKey()))
                     .findFirst()
-                    .get();
+                    .orElse(null);
+
+                if (action == null) {
+                    logger.warning("Unable to correlate result key {} to initial document.", key);
+                    continue;
+                }
 
                 if (isSuccess(result.getStatusCode())) {
                     onActionSucceededConsumer.accept(action.getAction());
@@ -269,7 +277,7 @@ final class SearchIndexingPublisher<T> {
     }
 
     private boolean batchAvailableForProcessing() {
-        return actions.size() >= initialBatchActionCount;
+        return actions.size() >= batchActionCount;
     }
 
     private static boolean isSuccess(int statusCode) {
