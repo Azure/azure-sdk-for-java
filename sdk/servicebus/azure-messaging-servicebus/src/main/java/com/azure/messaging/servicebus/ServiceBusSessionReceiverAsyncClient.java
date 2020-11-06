@@ -114,10 +114,15 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
             receiverOptions.getPrefetchCount(), receiverOptions.getMaxLockRenewDuration(),
             receiverOptions.isEnableAutoComplete(), sessionId, null);
 
-        ServiceBusReceiverAsyncClient sessionSpecificAsyncClient = new ServiceBusReceiverAsyncClient(
-            fullyQualifiedNamespace, entityPath, entityType, newReceiverOptions, connectionProcessor,
+        return  Mono.defer(() -> {
+            ServiceBusReceiverAsyncClient sessionSpecificAsyncClient = new ServiceBusReceiverAsyncClient(
+                fullyQualifiedNamespace, entityPath, entityType, newReceiverOptions, connectionProcessor,
                 ServiceBusConstants.OPERATION_TIMEOUT, tracerProvider, messageSerializer, () -> { });
-        return sessionSpecificAsyncClient.createConsumerWithReceiveLink();
+
+            sessionSpecificAsyncClient.getOrCreateConsumer();
+
+            return Mono.just(sessionSpecificAsyncClient);
+        });
 
     }
 
