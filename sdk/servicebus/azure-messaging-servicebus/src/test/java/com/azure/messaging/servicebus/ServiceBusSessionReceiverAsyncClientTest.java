@@ -178,7 +178,8 @@ class ServiceBusSessionReceiverAsyncClientTest {
         );
 
         // Act & Assert
-        StepVerifier.create(client.acceptSession(sessionId).flatMapMany(ServiceBusReceiverAsyncClient::receiveMessages))
+        StepVerifier.create(client.acceptSession(sessionId)
+            .flatMapMany(ServiceBusReceiverAsyncClient::receiveMessagesWithContext))
             .then(() -> {
                 for (int i = 0; i < numberOfMessages; i++) {
                     messageSink.next(message);
@@ -267,7 +268,8 @@ class ServiceBusSessionReceiverAsyncClientTest {
         );
 
         // Act & Assert
-        StepVerifier.create(client.acceptNextSession().flatMapMany(ServiceBusReceiverAsyncClient::receiveMessages))
+        StepVerifier.create(client.acceptNextSession()
+            .flatMapMany(ServiceBusReceiverAsyncClient::receiveMessagesWithContext))
             .then(() -> {
                 for (int i = 0; i < numberOfMessages; i++) {
                     messageSink.next(message);
@@ -290,7 +292,8 @@ class ServiceBusSessionReceiverAsyncClientTest {
             })
             .thenAwait(Duration.ofSeconds(1)).thenCancel().verify();
 
-        StepVerifier.create(client.acceptNextSession().flatMapMany(ServiceBusReceiverAsyncClient::receiveMessages))
+        StepVerifier.create(client.acceptNextSession()
+            .flatMapMany(ServiceBusReceiverAsyncClient::receiveMessagesWithContext))
             .then(() -> {
                 for (int i = 0; i < 3; i++) {
                     messagePublisher2.next(message2);
@@ -311,7 +314,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
     }
 
     private static void assertMessageEquals(String sessionId, ServiceBusReceivedMessage expected,
-        ServiceBusReceivedMessageContext actual) {
+        ServiceBusMessageContext actual) {
         assertEquals(sessionId, actual.getSessionId());
         assertNull(actual.getThrowable());
 

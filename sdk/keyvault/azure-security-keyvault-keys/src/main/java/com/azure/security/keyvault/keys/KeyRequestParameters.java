@@ -16,7 +16,7 @@ import java.util.Map;
 class KeyRequestParameters {
     /**
      * The type of key to create. For valid values, see KeyType.
-     * Possible values include: 'EC', 'EC-HSM', 'RSA', 'RSA-HSM', 'oct'.
+     * Possible values include: 'EC', 'EC-HSM', 'RSA', 'RSA-HSM', 'oct', 'oct-HSM'.
      */
     @JsonProperty(value = "kty", required = true)
     private KeyType kty;

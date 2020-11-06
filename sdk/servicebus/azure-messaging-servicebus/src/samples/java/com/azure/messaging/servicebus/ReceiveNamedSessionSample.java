@@ -46,12 +46,11 @@ public class ReceiveNamedSessionSample {
             .buildClient();
         ServiceBusReceiverClient receiver = sessionReceiver.acceptSession("greetings");
         while (isRunning.get()) {
-            IterableStream<ServiceBusReceivedMessageContext> messages = receiver.receiveMessages(10, Duration.ofSeconds(30));
+            IterableStream<ServiceBusReceivedMessage> messages = receiver.receiveMessages(10, Duration.ofSeconds(30));
 
-            for (ServiceBusReceivedMessageContext context : messages) {
-                System.out.println("Processing message from session: " + context.getSessionId());
+            for (ServiceBusReceivedMessage message : messages) {
+                System.out.println("Processing message from session: " + message.getSessionId());
 
-                ServiceBusReceivedMessage message = context.getMessage();
                 boolean isSuccessfullyProcessed = processMessage(message);
 
                 if (isSuccessfullyProcessed) {

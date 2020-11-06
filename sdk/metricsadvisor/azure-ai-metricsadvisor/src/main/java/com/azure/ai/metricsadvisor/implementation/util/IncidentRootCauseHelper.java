@@ -22,7 +22,7 @@ public final class IncidentRootCauseHelper {
     public interface IncidentRootCauseAccessor {
         void setSeriesKey(IncidentRootCause rootCause, DimensionKey seriesKey);
         void setPaths(IncidentRootCause rootCause, List<String> paths);
-        void setConfidenceScore(IncidentRootCause rootCause, double confidenceScore);
+        void setContributionScore(IncidentRootCause rootCause, double confidenceScore);
         void setDescription(IncidentRootCause rootCause, String description);
     }
 
@@ -43,8 +43,8 @@ public final class IncidentRootCauseHelper {
         accessor.setPaths(rootCause, paths);
     }
 
-    static void setConfidenceScore(IncidentRootCause rootCause, double confidenceScore) {
-        accessor.setConfidenceScore(rootCause, confidenceScore);
+    static void setContributionScore(IncidentRootCause rootCause, double confidenceScore) {
+        accessor.setContributionScore(rootCause, confidenceScore);
     }
 
     static void setDescription(IncidentRootCause rootCause, String description) {

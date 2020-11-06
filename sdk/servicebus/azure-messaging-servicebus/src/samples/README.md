@@ -42,7 +42,6 @@ connection string value can be obtained by:
 
 ### Message sessions
 - [Send and receive messages from a session][SendAndReceiveSessionMessageSample]
-- [Receive messages from multiple available sessions][ReceiveMultipleSessionsAsyncSample]
 - [Receive messages from a specific session][ReceiveNamedSessionAsyncSample]
 - [Receive messages from the first available session][ReceiveSingleSessionAsyncSample]
 
@@ -68,7 +67,6 @@ Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING
 [ReceiveMessageAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveMessageAsyncSample.java
 [ReceiveMessageAzureIdentityAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveMessageAzureIdentityAsyncSample.java
 [ReceiveMessageSyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveMessageSyncSample.java
-[ReceiveMultipleSessionsAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveMultipleSessionsAsyncSample.java
 [ReceiveNamedSessionAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveNamedSessionAsyncSample.java
 [ReceiveSingleSessionAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveSingleSessionAsyncSample.java
 [SendAndReceiveSessionMessageSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/SendAndReceiveSessionMessageSample.java

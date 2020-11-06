@@ -82,9 +82,7 @@ public class SendAndReceiveSessionMessageSample {
             () -> System.out.println("Batch send complete."));
 
         // After sending that message, we receive the messages for that sessionId.
-        sessionReceiver.acceptSession(sessionId).flatMapMany(receiver -> receiver.receiveMessages().flatMap(context -> {
-            ServiceBusReceivedMessage message = context.getMessage();
-
+        sessionReceiver.acceptSession(sessionId).flatMapMany(receiver -> receiver.receiveMessages().flatMap(message -> {
             System.out.println("Received Message Id: " + message.getMessageId());
             System.out.println("Received Message Session Id: " + message.getSessionId());
             System.out.println("Received Message: " + message.getBody().toString());

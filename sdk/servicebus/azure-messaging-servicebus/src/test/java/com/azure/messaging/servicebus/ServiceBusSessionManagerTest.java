@@ -411,7 +411,7 @@ class ServiceBusSessionManagerTest {
     }
 
     private static void assertMessageEquals(String sessionId, ServiceBusReceivedMessage expected,
-        ServiceBusReceivedMessageContext actual) {
+        ServiceBusMessageContext actual) {
         assertEquals(sessionId, actual.getSessionId());
         assertNull(actual.getThrowable());
 
