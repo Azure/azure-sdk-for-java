@@ -6,7 +6,7 @@ package com.azure.security.keyvault.administration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignment;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignmentProperties;
-import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignmentScope;
+import com.azure.security.keyvault.administration.models.KeyVaultRoleScope;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinition;
 
 import java.util.ArrayList;
@@ -38,13 +38,13 @@ public class AccessControlHelloWorld {
         Let's get all of them. */
         List<KeyVaultRoleDefinition> roleDefinitions = new ArrayList<>();
 
-        for (KeyVaultRoleDefinition roleDefinition : accessControlClient.listRoleDefinitions(KeyVaultRoleAssignmentScope.GLOBAL)) {
+        for (KeyVaultRoleDefinition roleDefinition : accessControlClient.listRoleDefinitions(KeyVaultRoleScope.GLOBAL)) {
             roleDefinitions.add(roleDefinition);
             System.out.printf("Retrieved role definition with name: %s %n", roleDefinition.getName());
         }
 
         // Before assigning any new roles, let's list all the current role assignments.
-        for (KeyVaultRoleAssignment roleAssignment : accessControlClient.listRoleAssignments(KeyVaultRoleAssignmentScope.GLOBAL)) {
+        for (KeyVaultRoleAssignment roleAssignment : accessControlClient.listRoleAssignments(KeyVaultRoleScope.GLOBAL)) {
             System.out.printf("Retrieved role assignment with name: %s %n", roleAssignment.getName());
         }
 
@@ -61,21 +61,21 @@ public class AccessControlHelloWorld {
         KeyVaultRoleAssignmentProperties assignmentProperties =
             new KeyVaultRoleAssignmentProperties(roleDefinition.getId(), servicePrincipalId);
         KeyVaultRoleAssignment createdRoleAssignment =
-            accessControlClient.createRoleAssignment(KeyVaultRoleAssignmentScope.GLOBAL, assignmentProperties);
+            accessControlClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, assignmentProperties);
 
         System.out.printf("Created role assignment with name: %s %n", createdRoleAssignment.getName());
 
         /* To get an existing role assignment, we'll need the 'name' property from an existing assignment. Let's use the
         createdAssignment from the previous example. */
         KeyVaultRoleAssignment retrievedRoleAssignment =
-            accessControlClient.getRoleAssignment(KeyVaultRoleAssignmentScope.GLOBAL, createdRoleAssignment.getName());
+            accessControlClient.getRoleAssignment(KeyVaultRoleScope.GLOBAL, createdRoleAssignment.getName());
 
         System.out.printf("Retrieved role assignment with name: %s %n", retrievedRoleAssignment.getName());
 
         /* To remove a role assignment from a service principal, the role assignment must be deleted. Let's delete the
         createdAssignment from the previous example. */
         KeyVaultRoleAssignment deletedRoleAssignment =
-            accessControlClient.deleteRoleAssignment(KeyVaultRoleAssignmentScope.GLOBAL, createdRoleAssignment.getName());
+            accessControlClient.deleteRoleAssignment(KeyVaultRoleScope.GLOBAL, createdRoleAssignment.getName());
 
         System.out.printf("Deleted role assignment with name: %s %n", deletedRoleAssignment.getName());
     }
