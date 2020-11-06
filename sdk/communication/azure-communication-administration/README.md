@@ -271,12 +271,12 @@ createSearchOptions
 Duration duration = Duration.ofSeconds(1);
 PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
-SyncPoller<PhoneNumberReservation, PhoneNumberReservation> res = 
+SyncPoller<PhoneNumberReservation, PhoneNumberReservation> res =
     phoneNumberClient.beginCreateSearch(createSearchOptions, duration);
 res.waitForCompletion();
 PhoneNumberReservation result = res.getFinalResult();
 
-System.out.println("Search Id: " + result.getReservationId());
+System.out.println("Reservation Id: " + result.getReservationId());
 for (String phoneNumber: result.getPhoneNumbers()) {
     System.out.println("Phone Number: " + phoneNumber);
 }
@@ -289,7 +289,7 @@ Duration duration = Duration.ofSeconds(1);
 String phoneNumberSearchId = "SEARCH_ID_TO_PURCHASE";
 PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
-SyncPoller<Void, Void> res = 
+SyncPoller<Void, Void> res =
     phoneNumberClient.beginPurchaseSearch(phoneNumberSearchId, duration);
 res.waitForCompletion();
 ```
@@ -303,7 +303,7 @@ List<PhoneNumber> phoneNumbers = new ArrayList<>();
 phoneNumbers.add(phoneNumber);
 PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
-SyncPoller<PhoneNumberRelease, PhoneNumberRelease> res = 
+SyncPoller<PhoneNumberRelease, PhoneNumberRelease> res =
     phoneNumberClient.beginReleasePhoneNumbers(phoneNumbers, duration);
 res.waitForCompletion();
 PhoneNumberRelease result = res.getFinalResult();
