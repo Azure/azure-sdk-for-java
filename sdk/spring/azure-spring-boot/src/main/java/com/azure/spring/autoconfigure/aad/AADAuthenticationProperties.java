@@ -48,6 +48,12 @@ public class AADAuthenticationProperties {
     private String clientId;
 
     /**
+     * allowed multi-tenant ID.
+     * Must be configured when is a multi-tenant application
+     */
+    private List<String> allowedTenantIds =  Arrays.asList();
+
+    /**
      * API Access Key of the registered application.
      * Must be configured when OAuth2 authentication is done in front end
      */
@@ -347,6 +353,14 @@ public class AADAuthenticationProperties {
 
     public void setSessionStateless(Boolean sessionStateless) {
         this.sessionStateless = sessionStateless;
+    }
+
+    public List<String> getAllowedTenantIds() {
+        return allowedTenantIds;
+    }
+
+    public void setAllowedTenantIds(List<String> allowedTenantIds) {
+        this.allowedTenantIds = allowedTenantIds;
     }
 
     public boolean isAllowedGroup(String group) {

@@ -6,6 +6,7 @@ package com.azure.spring.autoconfigure.aad;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.proc.BadJOSEException;
 import com.nimbusds.jwt.proc.BadJWTException;
+import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -32,6 +33,7 @@ import java.util.stream.Stream;
 
 import static com.azure.spring.autoconfigure.aad.Constants.DEFAULT_AUTHORITY_SET;
 import static com.azure.spring.autoconfigure.aad.Constants.ROLE_PREFIX;
+import static com.azure.spring.autoconfigure.aad.Constants.SCOPE_PREFIX;
 
 /**
  * A stateless authentication filter which uses app roles feature of Azure Active Directory. Since it's a stateless
@@ -65,10 +67,14 @@ public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
         }
         try {
             final UserPrincipal userPrincipal = principalManager.buildUserPrincipal(aadIssuedBearerToken);
+            Set<SimpleGrantedAuthority> authorities = toSimpleGrantedAuthoritySet(userPrincipal);
+            if(userPrincipal.getClaim(AADTokenClaim.SCP) != null){
+                authorities.addAll(scopeToSimpleGrantedAuthoritySet(userPrincipal));
+            }
             final Authentication authentication = new PreAuthenticatedAuthenticationToken(
                 userPrincipal,
                 null,
-                toSimpleGrantedAuthoritySet(userPrincipal)
+                authorities
             );
             LOGGER.info("Request token verification success. {}", authentication);
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -106,5 +112,20 @@ public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
         return Optional.of(simpleGrantedAuthoritySet)
                        .filter(r -> !r.isEmpty())
                        .orElse(DEFAULT_AUTHORITY_SET);
+    }
+
+    protected Set<SimpleGrantedAuthority> scopeToSimpleGrantedAuthoritySet(UserPrincipal userPrincipal) {
+        Set<SimpleGrantedAuthority> scopeSimpleGrantedAuthoritySet =
+            Optional.of(((String)userPrincipal.getClaim(AADTokenClaim.SCP)))
+                .map(scopes->scopes.split(" "))
+                .map(Arrays::stream)
+                .orElseGet(Stream::empty)
+                .filter(StringUtils::hasText)
+                .map(s -> new SimpleGrantedAuthority(SCOPE_PREFIX + s))
+                .collect(Collectors.toSet());
+
+        return Optional.of(scopeSimpleGrantedAuthoritySet)
+            .filter(r -> !r.isEmpty())
+            .orElse(DEFAULT_AUTHORITY_SET);
     }
 }

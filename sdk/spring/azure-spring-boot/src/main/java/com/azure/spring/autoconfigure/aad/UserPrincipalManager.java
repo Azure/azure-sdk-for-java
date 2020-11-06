@@ -21,6 +21,9 @@ import com.nimbusds.jwt.proc.BadJWTException;
 import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
 import com.nimbusds.jwt.proc.DefaultJWTClaimsVerifier;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import net.minidev.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +37,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.springframework.util.StringUtils;
 
 /**
  * A user principal manager to load user info from JWT.
@@ -50,7 +54,7 @@ public class UserPrincipalManager {
     private final Boolean explicitAudienceCheck;
     private final Set<String> validAudiences = new HashSet<>();
 
-    /**ø
+    /**
      * Creates a new {@link UserPrincipalManager} with a predefined {@link JWKSource}.
      * <p>
      * This is helpful in cases the JWK is not a remote JWKSet or for unit testing.
@@ -181,6 +185,20 @@ public class UserPrincipalManager {
             || issuer.startsWith(STS_CHINA_CLOUD_API_ISSUER);
     }
 
+    private boolean isAADTenant(String tenant) {
+        if (tenant == null ) {
+            return false;
+        }
+        return tenant.equals(aadAuthenticationProperties.getTenantId());
+    }
+
+    private boolean isAllowedTenantId(String tenant) {
+        if (tenant == null) {
+            return false;
+        }
+        return aadAuthenticationProperties.getAllowedTenantIds().contains(tenant);
+    }
+
     private ConfigurableJWTProcessor<SecurityContext> getValidator(JWSAlgorithm jwsAlgorithm) {
         final ConfigurableJWTProcessor<SecurityContext> jwtProcessor = new DefaultJWTProcessor<>();
         final JWSKeySelector<SecurityContext> keySelector = new JWSVerificationKeySelector<>(jwsAlgorithm, keySource);
@@ -188,23 +206,34 @@ public class UserPrincipalManager {
         //TODO: would it make sense to inject it? and make it configurable or even allow to provide own implementation
         jwtProcessor.setJWTClaimsSetVerifier(new DefaultJWTClaimsVerifier<SecurityContext>() {
             @Override
-            public void verify(JWTClaimsSet claimsSet, SecurityContext ctx) throws BadJWTException {
+            public void verify(JWTClaimsSet claimsSet, SecurityContext ctx) throws BadJWTException{
                 super.verify(claimsSet, ctx);
                 final String issuer = claimsSet.getIssuer();
+                final String tenant = (String)claimsSet.getClaim(AADTokenClaim.TID);
                 if (!isAADIssuer(issuer)) {
                     throw new BadJWTException("Invalid token issuer");
                 }
                 if (explicitAudienceCheck) {
                     Optional<String> matchedAudience = claimsSet.getAudience()
-                                                                .stream()
-                                                                .filter(validAudiences::contains)
-                                                                .findFirst();
+                        .stream()
+                        .filter(validAudiences::contains)
+                        .findFirst();
                     if (matchedAudience.isPresent()) {
                         LOGGER.debug("Matched audience: [{}]", matchedAudience.get());
                     } else {
-                        throw new BadJWTException("Invalid token audience. Provided value " + claimsSet.getAudience()
-                            + "does not match neither client-id nor AppIdUri.");
+                        throw new BadJWTException(
+                            "Invalid token audience. Provided value " + claimsSet.getAudience()
+                                + "does not match neither client-id nor AppIdUri.");
                     }
+                }
+                if (aadAuthenticationProperties.getAllowedTenantIds().isEmpty() &&
+                    !StringUtils.isEmpty(aadAuthenticationProperties.getTenantId()) && !isAADTenant(tenant)) {
+                    throw new BadJWTException("Invalid token tenant. Provided value " + tenant
+                        + " does not match neither tenant.");
+                }
+                if(!aadAuthenticationProperties.getAllowedTenantIds().isEmpty() && !isAllowedTenantId(tenant)){
+                    throw new BadJWTException("Invalid token tenantId. Provided value " + tenant
+                        + " does not allow multi-tenant id.");
                 }
             }
         });
