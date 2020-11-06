@@ -4,6 +4,7 @@
 - Added support for healthcare analysis feature, it is a long-running operation, and the cancellation supported. 
 - Added support for analyze tasks feature, It analyzes multiple tasks, such as, entity recognition, PII entity recognition 
 and key phrases extraction simultaneously in a list of document.
+
 ## 5.1.0-beta.2 (2020-10-06)
 ### Breaking changes
 - Removed property `length` from `CategorizedEntity`, `SentenceSentiment`, `LinkedEntityMatch`, `AspectSentiment`, 

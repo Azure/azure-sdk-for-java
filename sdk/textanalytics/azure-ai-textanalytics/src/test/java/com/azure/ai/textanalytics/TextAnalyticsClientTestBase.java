@@ -315,7 +315,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     // Healthcare LRO - Cancellation
     @Test
-    abstract void cancelHealthcareLroRunner(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void cancelHealthcareLro(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     // Analyze LRO
     @Test
