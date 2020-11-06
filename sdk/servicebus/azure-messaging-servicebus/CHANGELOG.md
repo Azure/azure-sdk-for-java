@@ -30,6 +30,8 @@
   `ServiceBusSessionProcessorClientBuilder` as the feature of receiving messages from multiple sessions is moved from 
   the receiver client to the new `ServiceBusSessionProcessorClient`.
 - Renamed `tryAdd` to `tryAddMessage` in `ServiceBusMessageBatch`.
+- Removed `sessionId` specific methods from `ServiceBusReceiverAsynClient` and `ServiceBusReceiverClient` because now 
+  receiver client is always tied to one session. 
   
 ### Bug Fixes
 - `ServiceBusAdministrationClient`: Fixes serialization bug for creating and deserializing rules.
