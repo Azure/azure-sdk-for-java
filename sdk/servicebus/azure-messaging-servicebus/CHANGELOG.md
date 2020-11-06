@@ -1,7 +1,18 @@
 # Release History
 
-## 7.0.0-beta.7 (Unreleased)
+## 7.0.0-beta.7 (2020-11-06)
+### New Features
+- Added auto lock renew feature. Message or session lock will renew automatically.
+- Added auto complete feature. Message will complete or abandon automatically.
+- Session Receiver : accept session before start receiving.
+- Added ServiceBusProcessorClient
 
+### Breaking Changes
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.10.0`.
+- Upgraded `azure-core-experimental` dependency to `1.0.0-beta.8`.
+- Upgraded `azure-core-amqp` dependency to `1.7.0-beta.1`.
 
 ## 7.0.0-beta.6 (2020-09-11)
 - Add Amqp Message envelope in form of `AmqpAnnotatedMessage` as a property of `ServiceBusReceivedMessage` and
