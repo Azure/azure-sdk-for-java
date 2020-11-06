@@ -11,16 +11,6 @@ parameters:
 
 steps:
   - task: PowerShell@2
-    displayName: Retrieved all markdowns to scan
-    inputs:
-      pwsh: true
-      workingDirectory: '${{ parameters.WorkingDirectory }}'
-      filePath: ${{ parameters.ScriptDirectory }}/Scan-files-against-links.ps1
-      arguments: >
-        -deletedFiles (git diff origin/${env:SYSTEM_PULLREQUEST_TARGETBRANCH} HEAD --name-only --diff-filter=D)
-        -renamedFiles (git diff origin/${env:SYSTEM_PULLREQUEST_TARGETBRANCH} HEAD --diff-filter=R)
-        -changedMarkdowns ${{ parameters.Urls }}
-  - task: PowerShell@2
     displayName: Link verification check
     inputs:
       pwsh: true
