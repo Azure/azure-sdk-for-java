@@ -18,6 +18,8 @@ import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.SslConte
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import io.netty.handler.ssl.SslContext;
 import org.mockito.Mockito;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -30,6 +32,7 @@ public class ConnectionStateListenerTest {
 
     private static int port = 8082;
     private static String serverUriString = "rntbd://localhost:" + port;
+    private static final Logger logger = LoggerFactory.getLogger(ConnectionStateListenerTest.class);
 
     @DataProvider(name = "connectionStateListenerConfigProvider")
     public Object[][] connectionStateListenerConfigProvider() {
@@ -42,7 +45,7 @@ public class ConnectionStateListenerTest {
         };
     }
 
-    @Test(dataProvider = "connectionStateListenerConfigProvider")
+    @Test(groups = { "unit" }, dataProvider = "connectionStateListenerConfigProvider")
     public void connectionStateListener_OnConnectionEvent(boolean isTcpConnectionEndpointRediscoveryEnabled, RequestResponseType responseType, int times) {
         TcpServer server = TcpServerFactory.startNewRntbdServer(port);
         // Inject fake response
@@ -74,7 +77,7 @@ public class ConnectionStateListenerTest {
         try {
             client.invokeStoreAsync(targetUri, req).block();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info("expected failed request with reason {}", e);
         }
         finally {
             Mockito.verify(addressResolver, Mockito.times(times)).updateAddresses(Mockito.any(), Mockito.any());

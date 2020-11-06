@@ -5,6 +5,8 @@ package com.azure.cosmos.implementation.directconnectivity.TcpServerMock;
 
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManagerFactory;
@@ -22,6 +24,7 @@ import java.security.KeyStore;
  */
 public class SslContextUtils {
     private static final String STOREPASS = "rntbdTest";
+    private static final Logger logger = LoggerFactory.getLogger(SslContextUtils.class);
 
     public static SslContext CreateSslContext(String keyStore, boolean isServer) {
         SslContext sslContext = null;
@@ -45,7 +48,7 @@ public class SslContextUtils {
                 sslContext = SslContextBuilder.forClient().keyManager(keyManagerFactory).trustManager(trustManagerFactory).build();
             }
         } catch (Exception exception) {
-            exception.printStackTrace();
+            logger.error("Initializing sslContext failed {}", exception);
         }
 
         return sslContext;

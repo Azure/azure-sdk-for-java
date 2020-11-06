@@ -3,12 +3,16 @@
 
 package com.azure.cosmos.implementation.directconnectivity.TcpServerMock;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class TcpServerFactory {
 
     private final static ExecutorService executor = Executors.newFixedThreadPool(10);
+    private final static Logger logger = LoggerFactory.getLogger(TcpServerFactory.class);
 
     public static TcpServer startNewRntbdServer(int port) {
         TcpServer server = new TcpServer(port);
@@ -16,7 +20,7 @@ public class TcpServerFactory {
             try {
                 server.start();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                logger.error("Failed to start server {}", e);
             }
         });
 

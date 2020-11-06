@@ -131,7 +131,7 @@ public class TcpServer {
             parent.shutdownGracefully().sync();
             child.shutdownGracefully().sync();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.error("Error when shutting down server {}", e);
         }
     }
 
