@@ -367,14 +367,17 @@ public final class KeyVaultAccessControlAsyncClient {
         RoleAssignmentCreateParameters parameters =
             new RoleAssignmentCreateParameters()
                 .setProperties(roleAssignmentProperties);
-
-        return clientImpl.getRoleAssignments()
-            .createWithResponseAsync(vaultUrl, roleScope.toString(), name.toString(), parameters,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.info("Creating role assignment - {}", name))
-            .doOnSuccess(response -> logger.info("Created role assignment - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to create role assignment - {}", name, error))
-            .map(KeyVaultAccessControlAsyncClient::transformRoleAssignmentResponse);
+        try {
+            return clientImpl.getRoleAssignments()
+                .createWithResponseAsync(vaultUrl, roleScope.toString(), name.toString(), parameters,
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                .doOnRequest(ignored -> logger.info("Creating role assignment - {}", name))
+                .doOnSuccess(response -> logger.info("Created role assignment - {}", response.getValue().getName()))
+                .doOnError(error -> logger.warning("Failed to create role assignment - {}", name, error))
+                .map(KeyVaultAccessControlAsyncClient::transformRoleAssignmentResponse);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
     }
 
     /**

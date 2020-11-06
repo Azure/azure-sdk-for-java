@@ -21,7 +21,6 @@ import com.azure.security.keyvault.administration.implementation.KeyVaultBackupC
 import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
 import com.azure.security.keyvault.administration.implementation.models.Error;
 import com.azure.security.keyvault.administration.implementation.models.FullBackupOperation;
-import com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException;
 import com.azure.security.keyvault.administration.implementation.models.RestoreOperation;
 import com.azure.security.keyvault.administration.implementation.models.RestoreOperationParameters;
 import com.azure.security.keyvault.administration.implementation.models.SASTokenParameter;
@@ -142,23 +141,26 @@ public final class KeyVaultBackupAsyncClient {
      * @param sasToken A Shared Access Signature (SAS) token to authorize access to the blob.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return A {@link PollerFlux} polling on the {@link KeyVaultBackupOperation backup operation} status.
-     * @throws KeyVaultErrorException if the operation is unsuccessful.
      */
     Mono<Response<KeyVaultBackupOperation>> backupWithResponse(String blobStorageUrl, String sasToken, Context context) {
         SASTokenParameter sasTokenParameter = new SASTokenParameter()
             .setStorageResourceUri(blobStorageUrl)
             .setToken(sasToken);
 
-        return clientImpl.fullBackupWithResponseAsync(vaultUrl, sasTokenParameter,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.info("Backing up at URL - {}", blobStorageUrl))
-            .doOnSuccess(response -> logger.info("Backed up at URL - {}",
-                response.getValue().getAzureStorageBlobContainerUri()))
-            .doOnError(error -> logger.warning("Failed to backup at URL - {}", blobStorageUrl, error))
-            .map(backupOperationResponse ->
-                new SimpleResponse<>(backupOperationResponse.getRequest(), backupOperationResponse.getStatusCode(),
-                    backupOperationResponse.getHeaders(),
-                    (KeyVaultBackupOperation) transformToLongRunningOperation(backupOperationResponse.getValue())));
+        try {
+            return clientImpl.fullBackupWithResponseAsync(vaultUrl, sasTokenParameter,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                .doOnRequest(ignored -> logger.info("Backing up at URL - {}", blobStorageUrl))
+                .doOnSuccess(response -> logger.info("Backed up at URL - {}",
+                    response.getValue().getAzureStorageBlobContainerUri()))
+                .doOnError(error -> logger.warning("Failed to backup at URL - {}", blobStorageUrl, error))
+                .map(backupOperationResponse ->
+                    new SimpleResponse<>(backupOperationResponse.getRequest(), backupOperationResponse.getStatusCode(),
+                        backupOperationResponse.getHeaders(),
+                        (KeyVaultBackupOperation) transformToLongRunningOperation(backupOperationResponse.getValue())));
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
     }
 
     private Function<PollingContext<KeyVaultBackupOperation>, Mono<KeyVaultBackupOperation>> backupActivationOperation(String blobStorageUrl, String sasToken) {
@@ -204,19 +206,25 @@ public final class KeyVaultBackupAsyncClient {
                 logger.logExceptionAsError(e);
 
                 return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null));
+            } catch (RuntimeException e) {
+                return monoError(logger, e);
             }
         };
     }
 
     private Function<PollingContext<KeyVaultBackupOperation>, Mono<String>> backupFetchOperation() {
         return (pollingContext) -> {
-            String blobContainerUri =
-                pollingContext.getLatestResponse().getValue().getAzureStorageBlobContainerUri();
+            try {
+                String blobContainerUri =
+                    pollingContext.getLatestResponse().getValue().getAzureStorageBlobContainerUri();
 
-            if (blobContainerUri == null) {
-                return Mono.empty();
-            } else {
-                return Mono.just(blobContainerUri);
+                if (blobContainerUri == null) {
+                    return Mono.empty();
+                } else {
+                    return Mono.just(blobContainerUri);
+                }
+            } catch (RuntimeException e) {
+                return monoError(logger, e);
             }
         };
     }
@@ -263,13 +271,23 @@ public final class KeyVaultBackupAsyncClient {
     }
 
     private Function<PollingContext<KeyVaultBackupOperation>, Mono<PollResponse<KeyVaultBackupOperation>>> backupStatusPollOperation(String jobId) {
-        return (pollingContext) ->
-            withContext(context -> clientImpl.fullBackupStatusWithResponseAsync(vaultUrl, jobId,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE)))
-                .map(response ->
-                    new SimpleResponse<>(response,
-                        (KeyVaultBackupOperation) transformToLongRunningOperation(response.getValue())))
-                .flatMap(KeyVaultBackupAsyncClient::processBackupOperationResponse);
+        return (pollingContext) -> {
+            try {
+                return withContext(context -> clientImpl.fullBackupStatusWithResponseAsync(vaultUrl, jobId,
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE)))
+                    .map(response ->
+                        new SimpleResponse<>(response,
+                            (KeyVaultBackupOperation) transformToLongRunningOperation(response.getValue())))
+                    .flatMap(KeyVaultBackupAsyncClient::processBackupOperationResponse);
+            } catch (HttpResponseException e) {
+                //noinspection ThrowableNotThrown
+                logger.logExceptionAsError(e);
+
+                return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null));
+            } catch (RuntimeException e) {
+                return monoError(logger, e);
+            }
+        };
     }
 
     /**
@@ -323,7 +341,6 @@ public final class KeyVaultBackupAsyncClient {
      * @param sasToken A Shared Access Signature (SAS) token to authorize access to the blob.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return A {@link PollerFlux} polling on the {@link KeyVaultRestoreOperation backup operation} status.
-     * @throws KeyVaultErrorException if the operation is unsuccessful.
      */
     Mono<Response<KeyVaultRestoreOperation>> restoreWithResponse(String backupFolderUrl, String sasToken, Context context) {
         String[] segments = backupFolderUrl.split("/");
@@ -338,16 +355,22 @@ public final class KeyVaultBackupAsyncClient {
             .setSasTokenParameters(sasTokenParameter)
             .setFolderToRestore(folderName);
 
-        return clientImpl.fullRestoreOperationWithResponseAsync(vaultUrl, restoreOperationParameters,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.info("Restoring from location - {}", backupFolderUrl))
-            .doOnSuccess(response -> logger.info("Restored from location - {}", backupFolderUrl))
-            .doOnError(error ->
-                logger.warning("Failed to restore from location - {}", backupFolderUrl, error))
-            .map(restoreOperationResponse ->
-                new SimpleResponse<>(restoreOperationResponse.getRequest(), restoreOperationResponse.getStatusCode(),
-                    restoreOperationResponse.getHeaders(),
-                    (KeyVaultRestoreOperation) transformToLongRunningOperation(restoreOperationResponse.getValue())));
+        try {
+            return clientImpl.fullRestoreOperationWithResponseAsync(vaultUrl, restoreOperationParameters,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                .doOnRequest(ignored -> logger.info("Restoring from location - {}", backupFolderUrl))
+                .doOnSuccess(response -> logger.info("Restored from location - {}", backupFolderUrl))
+                .doOnError(error ->
+                    logger.warning("Failed to restore from location - {}", backupFolderUrl, error))
+                .map(restoreOperationResponse ->
+                    new SimpleResponse<>(restoreOperationResponse.getRequest(),
+                        restoreOperationResponse.getStatusCode(),
+                        restoreOperationResponse.getHeaders(),
+                        (KeyVaultRestoreOperation) transformToLongRunningOperation(
+                            restoreOperationResponse.getValue())));
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
     }
 
     private Function<PollingContext<KeyVaultRestoreOperation>, Mono<KeyVaultRestoreOperation>> restoreActivationOperation(String backupFolderUrl, String sasToken) {
@@ -394,6 +417,8 @@ public final class KeyVaultBackupAsyncClient {
                 logger.logExceptionAsError(e);
 
                 return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null));
+            } catch (RuntimeException e) {
+                return monoError(logger, e);
             }
         };
     }
@@ -426,13 +451,23 @@ public final class KeyVaultBackupAsyncClient {
     }
 
     private Function<PollingContext<KeyVaultRestoreOperation>, Mono<PollResponse<KeyVaultRestoreOperation>>> restoreStatusPollOperation(String jobId) {
-        return (pollingContext) ->
-            withContext(context -> clientImpl.restoreStatusWithResponseAsync(vaultUrl, jobId,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE)))
-                .map(response ->
-                    new SimpleResponse<>(response,
-                        (KeyVaultRestoreOperation) transformToLongRunningOperation(response.getValue())))
-                .flatMap(KeyVaultBackupAsyncClient::processRestoreOperationResponse);
+        return (pollingContext) -> {
+            try {
+                return withContext(context -> clientImpl.restoreStatusWithResponseAsync(vaultUrl, jobId,
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE)))
+                    .map(response ->
+                        new SimpleResponse<>(response,
+                            (KeyVaultRestoreOperation) transformToLongRunningOperation(response.getValue())))
+                    .flatMap(KeyVaultBackupAsyncClient::processRestoreOperationResponse);
+            } catch (HttpResponseException e) {
+                //noinspection ThrowableNotThrown
+                logger.logExceptionAsError(e);
+
+                return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null));
+            } catch (RuntimeException e) {
+                return monoError(logger, e);
+            }
+        };
     }
 
     /**
@@ -497,7 +532,6 @@ public final class KeyVaultBackupAsyncClient {
      * @param sasToken A Shared Access Signature (SAS) token to authorize access to the blob.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return A {@link PollerFlux} polling on the {@link KeyVaultRestoreOperation backup operation} status.
-     * @throws KeyVaultErrorException if the operation is unsuccessful.
      */
     Mono<Response<KeyVaultRestoreOperation>> selectiveRestoreWithResponse(String keyName, String backupFolderUrl, String sasToken, Context context) {
         String[] segments = backupFolderUrl.split("/");
@@ -513,19 +547,25 @@ public final class KeyVaultBackupAsyncClient {
                 .setSasTokenParameters(sasTokenParameter)
                 .setFolder(folderName);
 
-        return clientImpl.selectiveKeyRestoreOperationWithResponseAsync(vaultUrl, keyName,
-            selectiveKeyRestoreOperationParameters, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored ->
-                logger.info("Restoring key \"{}\" from location - {}", keyName, backupFolderUrl))
-            .doOnSuccess(response ->
-                logger.info("Restored key \"{}\" from location - {}", keyName, backupFolderUrl))
-            .doOnError(error ->
-                logger.warning("Failed to restore key \"{}\" from location - {}", keyName, backupFolderUrl, error))
-            .map(restoreOperationResponse ->
-                new SimpleResponse<>(restoreOperationResponse.getRequest(), restoreOperationResponse.getStatusCode(),
-                    restoreOperationResponse.getHeaders(),
-                    (KeyVaultRestoreOperation) transformToLongRunningOperation(restoreOperationResponse.getValue())));
+        try {
+            return clientImpl.selectiveKeyRestoreOperationWithResponseAsync(vaultUrl, keyName,
+                selectiveKeyRestoreOperationParameters, context.addData(AZ_TRACING_NAMESPACE_KEY,
+                    KEYVAULT_TRACING_NAMESPACE_VALUE))
+                .doOnRequest(ignored ->
+                    logger.info("Restoring key \"{}\" from location - {}", keyName, backupFolderUrl))
+                .doOnSuccess(response ->
+                    logger.info("Restored key \"{}\" from location - {}", keyName, backupFolderUrl))
+                .doOnError(error ->
+                    logger.warning("Failed to restore key \"{}\" from location - {}", keyName, backupFolderUrl, error))
+                .map(restoreOperationResponse ->
+                    new SimpleResponse<>(restoreOperationResponse.getRequest(),
+                        restoreOperationResponse.getStatusCode(),
+                        restoreOperationResponse.getHeaders(),
+                        (KeyVaultRestoreOperation) transformToLongRunningOperation(
+                            restoreOperationResponse.getValue())));
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
     }
 
     private Function<PollingContext<KeyVaultRestoreOperation>, Mono<KeyVaultRestoreOperation>> selectiveRestoreActivationOperation(String keyName, String backupFolderUrl, String sasToken) {
@@ -572,6 +612,8 @@ public final class KeyVaultBackupAsyncClient {
                 logger.logExceptionAsError(e);
 
                 return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null));
+            } catch (RuntimeException e) {
+                return monoError(logger, e);
             }
         };
     }
