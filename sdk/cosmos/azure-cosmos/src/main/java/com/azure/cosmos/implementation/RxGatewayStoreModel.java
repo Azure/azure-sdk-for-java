@@ -300,7 +300,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                        if (!(exception instanceof CosmosException)) {
                            // wrap in CosmosException
                            logger.error("Network failure", exception);
-                           dce = BridgeInternal.createCosmosException(0, exception);
+                           dce = BridgeInternal.createCosmosException(request.getResourceAddress(), 0, exception);
                            BridgeInternal.setRequestHeaders(dce, request.getHeaders());
                        } else {
                            dce = (CosmosException) exception;
@@ -342,7 +342,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                     String.format("%s, StatusCode: %s", cosmosError.getMessage(), statusCodeString),
                     cosmosError.getPartitionedQueryExecutionInfo());
 
-            CosmosException dce = BridgeInternal.createCosmosException(statusCode, cosmosError, headers.toMap());
+            CosmosException dce = BridgeInternal.createCosmosException(request.getResourceAddress(), statusCode, cosmosError, headers.toMap());
             BridgeInternal.setRequestHeaders(dce, request.getHeaders());
             throw dce;
         }
