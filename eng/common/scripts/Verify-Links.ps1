@@ -34,6 +34,7 @@ function NormalizeUrl([string]$url){
 
   if ($script:baseUrl -eq "") {
     # for base url default to containing directory
+    Write-Error "Possible error ===: $uri"
     $script:baseUrl = (new-object System.Uri($uri, ".")).ToString();
   }
 
