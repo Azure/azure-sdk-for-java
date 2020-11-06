@@ -27,14 +27,14 @@
   `ServiceBusSessionReceiverAsyncClient`.
 - Removed `maxConcurrentSessions` from `ServiceBusSessionReceiverClientBuilder` and moved it to 
   `ServiceBusSessionProcessorClientBuilder`.
-- Renamed `tryAddMessage` to `tryAdd` in `ServiceBusMessageBatch`.
+- Renamed `tryAdd` to `tryAddMessage` in `ServiceBusMessageBatch`.
   
 ### Bug Fixes
-- ServiceBusAdministrationClient: Fixes serialization bug for creating and deserializing rules.
+- `ServiceBusAdministrationClient`: Fixes serialization bug for creating and deserializing rules.
 
 ### Dependency Updates
 - Upgraded `azure-core` dependency to `1.10.0`.
-- Upgraded `azure-core-experimental` dependency to `1.0.0-beta.8`.
+- Added new `azure-core-experimental` dependency `1.0.0-beta.8`.
 - Upgraded `azure-core-amqp` dependency to `1.7.0-beta.1`.
 
 ## 7.0.0-beta.6 (2020-09-11)
