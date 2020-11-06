@@ -137,11 +137,8 @@ public final class PhoneNumberAsyncClient {
             if (phonePlanId == null) {
                 Mono.error(new NullPointerException("'phonePlanId' cannot be null."));
             }
-
-        LocationOptionsQueries locationOptionsQueries = new LocationOptionsQueries();
-        locationOptionsQueries.setLocationOptions(locationOptions);
-
-
+            LocationOptionsQueries locationOptionsQueries = new LocationOptionsQueries();
+            locationOptionsQueries.setLocationOptions(locationOptions);
             if (context == null) {
                 return phoneNumberAdministrations.getAllAreaCodesWithResponseAsync(
                     locationType, countryCode, phonePlanId, locationOptionsQueries);
@@ -565,7 +562,8 @@ public final class PhoneNumberAsyncClient {
         try {
             Objects.requireNonNull(phoneNumbers, "'phoneNumbers' cannot be null.");
 
-            List<String> phoneNumberStrings = phoneNumbers.stream().map(PhoneNumber::getValue).collect(Collectors.toList());
+            List<String> phoneNumberStrings =
+                phoneNumbers.stream().map(PhoneNumber::getValue).collect(Collectors.toList());
             ReleaseRequest releaseRequest = new ReleaseRequest();
             releaseRequest.setPhoneNumbers(phoneNumberStrings);
             if (context == null) {
