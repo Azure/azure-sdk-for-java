@@ -2040,7 +2040,6 @@ class BlockBlobAPITest extends APISpec {
         def options = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas)
             .setContentMd5(sourceProperties.getContentMd5())
             .setCopySourceBlobProperties(true)
-            .setMetadata(Collections.singletonMap("newkey", "newvalue"))
             .setDestinationRequestConditions(new BlobRequestConditions().setIfMatch(destinationPropertiesBefore.getETag()))
             .setSourceRequestConditions(new BlobRequestConditions().setIfMatch(sourceProperties.getETag()))
             .setHeaders(new BlobHttpHeaders().setContentType("text"))
@@ -2060,7 +2059,6 @@ class BlockBlobAPITest extends APISpec {
         blockBlobItem.ETag != null
         blockBlobItem.lastModified != null
         os.toByteArray() == defaultData.array()
-        destinationProperties.getMetadata().get("newkey") == "newvalue"
         destinationProperties.getContentLanguage() == "en-GB"
         destinationProperties.getContentType() == "text"
         destinationProperties.getAccessTier() == AccessTier.COOL

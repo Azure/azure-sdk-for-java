@@ -366,9 +366,10 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
         }
 
+        // TODO (kasobol-msft) add metadata back (https://github.com/Azure/azure-sdk-for-net/issues/15969)
         return this.azureBlobStorage.blockBlobs().putBlobFromUrlWithRestResponseAsync(
             null, null, 0,
-            url, null, options.getContentMd5(), options.getMetadata(),
+            url, null, options.getContentMd5(), null,
             destinationRequestConditions.getLeaseId(), options.getTier(),
             destinationRequestConditions.getIfModifiedSince(), destinationRequestConditions.getIfUnmodifiedSince(),
             destinationRequestConditions.getIfMatch(), destinationRequestConditions.getIfNoneMatch(),

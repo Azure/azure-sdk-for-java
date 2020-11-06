@@ -17,7 +17,6 @@ import java.util.Map;
 public class BlobUploadFromUrlOptions {
     private final String sourceUrl;
     private BlobHttpHeaders headers;
-    private Map<String, String> metadata;
     private Map<String, String> tags;
     private AccessTier tier;
     private byte[] contentMd5;
@@ -53,22 +52,6 @@ public class BlobUploadFromUrlOptions {
      */
     public BlobUploadFromUrlOptions setHeaders(BlobHttpHeaders headers) {
         this.headers = headers;
-        return this;
-    }
-
-    /**
-     * @return The metadata to associate with the blob.
-     */
-    public Map<String, String> getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * @param metadata The metadata to associate with the blob.
-     * @return The updated options
-     */
-    public BlobUploadFromUrlOptions setMetadata(Map<String, String> metadata) {
-        this.metadata = metadata;
         return this;
     }
 

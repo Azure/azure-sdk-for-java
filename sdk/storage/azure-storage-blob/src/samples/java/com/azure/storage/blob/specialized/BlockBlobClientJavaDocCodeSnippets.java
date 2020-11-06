@@ -183,7 +183,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
 
         System.out.printf("Uploaded BlockBlob MD5 is %s%n", Base64.getEncoder()
             .encodeToString(client.uploadFromUrlWithResponse(new BlobUploadFromUrlOptions(sourceUrl)
-                .setHeaders(headers).setMetadata(metadata).setTags(tags).setTier(AccessTier.HOT).setContentMd5(md5)
+                .setHeaders(headers).setTags(tags).setTier(AccessTier.HOT).setContentMd5(md5)
                 .setDestinationRequestConditions(requestConditions), timeout, context)
                 .getValue()
                 .getContentMd5()));
