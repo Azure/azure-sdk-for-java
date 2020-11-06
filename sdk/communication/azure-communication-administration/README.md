@@ -271,12 +271,12 @@ createSearchOptions
 Duration duration = Duration.ofSeconds(1);
 PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
-SyncPoller<PhoneNumberSearch, PhoneNumberSearch> res = 
+SyncPoller<PhoneNumberReservation, PhoneNumberReservation> res = 
     phoneNumberClient.beginCreateSearch(createSearchOptions, duration);
 res.waitForCompletion();
-PhoneNumberSearch result = res.getFinalResult();
+PhoneNumberReservation result = res.getFinalResult();
 
-System.out.println("Search Id: " + result.getSearchId());
+System.out.println("Search Id: " + result.getReservationId());
 for (String phoneNumber: result.getPhoneNumbers()) {
     System.out.println("Phone Number: " + phoneNumber);
 }

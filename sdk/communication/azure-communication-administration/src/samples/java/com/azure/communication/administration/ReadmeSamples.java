@@ -363,7 +363,7 @@ public class ReadmeSamples {
         res.waitForCompletion();
         PhoneNumberReservation result = res.getFinalResult();
 
-        System.out.println("Search Id: " + result.getReservationId());
+        System.out.println("Reservation Id: " + result.getReservationId());
         for (String phoneNumber: result.getPhoneNumbers()) {
             System.out.println("Phone Number: " + phoneNumber);
         }
