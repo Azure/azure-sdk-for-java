@@ -3,12 +3,14 @@
 
 package com.azure.storage.file.share.models;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.Constants;
 
 /**
  * Represents protocols that can be set on a share.
  */
 public class ShareEnabledProtocols {
+    private final ClientLogger logger = new ClientLogger(ShareEnabledProtocols.class);
 
     private boolean smb;
 
@@ -55,7 +57,7 @@ public class ShareEnabledProtocols {
     public String toString() {
         if (this.smb) {
             if (this.nfs) {
-                throw new IllegalArgumentException("SMB and NFS cannot both be set.");
+                throw logger.logExceptionAsError(new IllegalArgumentException("SMB and NFS cannot both be set."));
             }
             return Constants.HeaderConstants.SMB_PROTOCOL;
         }
