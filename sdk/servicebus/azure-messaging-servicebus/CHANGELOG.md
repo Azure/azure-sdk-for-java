@@ -9,7 +9,7 @@
   will be abandoned. This feature is enabled by default and can be disabled by calling `disableAutoComplete()` on 
   builder. 
 - An intermediate `ServiceBusSessionReceiverClient` is introduced to act as the factory which can then be used to accept 
-   sessions from the service. Accepting a session would give you the familiar receiver client tied to a single session.
+  sessions from the service. Accepting a session would give you the familiar receiver client tied to a single session.
 - Added `ServiceBusProcessorClient` which takes your callbacks to process messages and errors in an infinite loop. This 
   also supports working with sessions where you can provide the maximum number of sessions to work with concurrently. 
   When the client no longer receives any messages from one session, it rolls over to the next available session.
@@ -23,20 +23,20 @@
   `ServiceBusReceiverAsynClient` and `ServiceBusReceiverClient`.
 - Removed `SendVia` option from `ServiceBusClientBuilder`. See issue for more detail 
   [16942](https://github.com/Azure/azure-sdk-for-java/pull/16942).
-- Removed `sessionId` setting from `ServiceBusSessionReceiverClientBuilder` to the intermediate clients.
+- Removed `sessionId` setting from `ServiceBusSessionReceiverClientBuilder` as creating receiver clients bound to a 
+  single session is now a feature in the new intermediate clients `ServiceBusSessionReceiverClient` and 
+  `ServiceBusSessionReceiverAsyncClient`.
 - Moved the `maxConcurrentSessions` setting from `ServiceBusSessionReceiverClientBuilder` to 
-  ServiceBusSessionProcessorClientBuilder` as the feature of receiving messages from multiple sessions is moved from the
-  receiver client to the new `ServiceBusSessionProcessorClient`.
-- `ServiceBusSessionReceiverClient` and `ServiceBusSessionReceiverAsyncClient` now have methods that would take the 
-  sessionId to get a receiver client bound to the session.
+  `ServiceBusSessionProcessorClientBuilder` as the feature of receiving messages from multiple sessions is moved from 
+  the receiver client to the new `ServiceBusSessionProcessorClient`.
 - Renamed `tryAdd` to `tryAddMessage` in `ServiceBusMessageBatch`.
   
 ### Bug Fixes
 - `ServiceBusAdministrationClient`: Fixes serialization bug for creating and deserializing rules.
 
 ### Dependency Updates
+- Added new `azure-core-experimental` dependency with version `1.0.0-beta.8`.
 - Upgraded `azure-core` dependency to `1.10.0`.
-- Added new `azure-core-experimental` dependency `1.0.0-beta.8`.
 - Upgraded `azure-core-amqp` dependency to `1.7.0-beta.1`.
 
 ## 7.0.0-beta.6 (2020-09-11)
