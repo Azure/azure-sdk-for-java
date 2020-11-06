@@ -1,8 +1,6 @@
 param (
     # The root repo we scaned with.
-    [string[]] $RootRepo,
-    # The markdown files from the PR.
-    [string[]] $changedMarkdowns
+    [string[]] $RootRepo
 )
 $deletedFiles = (git diff origin/${env:SYSTEM_PULLREQUEST_TARGETBRANCH} HEAD --name-only --diff-filter=D)
 $renamedFiles = (git diff origin/${env:SYSTEM_PULLREQUEST_TARGETBRANCH} HEAD --diff-filter=R)
