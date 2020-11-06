@@ -18,7 +18,7 @@ import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 public interface IMessageReceiver extends IMessageEntityClient, IMessageBrowser {
 
     /**
-     * Get current receiver's {@link ReceiveMode}.
+     * Get current receiver's {@link RereceiveBatchceiveMode}.
      *
      * @return {@link ReceiveMode}
      */

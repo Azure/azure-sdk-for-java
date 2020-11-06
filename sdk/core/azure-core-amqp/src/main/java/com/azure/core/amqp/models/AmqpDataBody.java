@@ -3,11 +3,10 @@
 
 package com.azure.core.amqp.models;
 
-import com.azure.core.experimental.util.BinaryData;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -18,18 +17,13 @@ public final class AmqpDataBody implements AmqpMessageBody {
     private final byte[] data;
 
     /**
-     * Creates instance of {@link AmqpDataBody} with given {@link Iterable} of {@link BinaryData}. Please note
-     * that this version of the SDK supports only one element in given {@link Iterable} of {@link BinaryData}.
-     *
-     * <p>The {@link BinaryData} wraps byte array and is an abstraction over many different ways it can be represented.
-     * It provides many convenience API including APIs to serialize/deserialize object.
+     * Creates instance of {@link AmqpDataBody} with given {@link Iterable} of byte array. Please note that this version
+     * of the SDK supports only one element in given {@link Iterable}.
      *
      * @param data to be set on amqp body.
      *
      * @throws NullPointerException if {@code data} is null.
      * @throws IllegalArgumentException if size of 'data' is zero or greater than one.
-     *
-     * @see BinaryData
      */
     public AmqpDataBody(Iterable<byte[]> data) {
         Objects.requireNonNull(data, "'data' cannot be null.");
@@ -50,6 +44,17 @@ public final class AmqpDataBody implements AmqpMessageBody {
     }
 
     /**
+     * Creates instance of {@link AmqpDataBody} with given byte array.
+     *
+     * @param data to be set on amqp body.
+     *
+     * @throws NullPointerException if {@code data} is null.
+     */
+    public AmqpDataBody(byte[] data) {
+        this.data =Objects.requireNonNull(data, "'data' cannot be null.");
+    }
+
+    /**
      * Creates instance of {@link AmqpDataBody} with given {@link AmqpDataBody} instance.
      *
      * @param data used to create another instance of {@link AmqpDataBody}.
@@ -66,11 +71,10 @@ public final class AmqpDataBody implements AmqpMessageBody {
     }
 
     /**
-     * Gets {@link IterableStream} of byte array set on this {@link AmqpDataBody}.
-     *
+     * Gets an immutable list containing only of first byte array set on this {@link AmqpDataBody}.
      * @return data set on {@link AmqpDataBody}.
      */
-    public IterableStream<byte[]> getData() {
-        return new IterableStream<>(Collections.singleton(data));
+    public List<byte[]> getData() {
+        return Collections.singletonList(data);
     }
 }
