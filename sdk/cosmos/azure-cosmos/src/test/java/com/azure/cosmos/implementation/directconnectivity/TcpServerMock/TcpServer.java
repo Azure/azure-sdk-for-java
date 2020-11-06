@@ -65,7 +65,7 @@ public class TcpServer {
         requestManager = new ServerRntbdRequestManager();
     }
 
-    public void start(Promise promise) throws InterruptedException {
+    public void start(Promise<Boolean> promise) throws InterruptedException {
 
         SslContext sslContext = SslContextUtils.CreateSslContext(SERVER_KEYSTORE, true);
         Utils.checkNotNullOrThrow(sslContext, "sslContext", "");
@@ -127,7 +127,7 @@ public class TcpServer {
         }
     }
 
-    public void shutdown(Promise promise) {
+    public void shutdown(Promise<Boolean> promise) {
         try {
             parent.shutdownGracefully().sync();
             child.shutdownGracefully().sync();

@@ -21,7 +21,7 @@ public class TcpServerFactory {
     public static TcpServer startNewRntbdServer(int port) throws ExecutionException, InterruptedException {
         TcpServer server = new TcpServer(port);
 
-        Promise promise = new DefaultPromise(GlobalEventExecutor.INSTANCE);
+        Promise<Boolean> promise = new DefaultPromise<Boolean>(GlobalEventExecutor.INSTANCE);
         executor.execute(() -> {
             try {
                 server.start(promise);
@@ -36,7 +36,7 @@ public class TcpServerFactory {
     }
 
     public static void shutdownRntbdServer(TcpServer server) throws ExecutionException, InterruptedException {
-        Promise promise = new DefaultPromise(GlobalEventExecutor.INSTANCE);
+        Promise<Boolean> promise = new DefaultPromise<Boolean>(GlobalEventExecutor.INSTANCE);
         executor.execute(() -> server.shutdown(promise));
         // only return when server has shutdown.
         promise.get();
