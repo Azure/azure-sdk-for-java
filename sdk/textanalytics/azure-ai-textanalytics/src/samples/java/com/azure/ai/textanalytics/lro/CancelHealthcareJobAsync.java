@@ -10,7 +10,6 @@ import com.azure.ai.textanalytics.models.TextAnalyticsOperationResult;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 
@@ -62,10 +61,13 @@ public class CancelHealthcareJobAsync {
         System.out.printf("The Job ID that is cancelling is %s.%n", pollResponse.getValue().getResultId());
 
         client.beginCancelAnalyzeHealthcare(UUID.fromString(pollResponse.getValue().getResultId()))
-            .flatMap(AsyncPollResponse::getFinalResult)
-            .subscribe(dummyVar -> System.out.println("Start cancelling"));
+            .map(response -> {
+                System.out.println(response.getStatus());
+                return response;
+            })
+            .subscribe(dummyVar -> System.out.println("Job is successfully cancelled."));
 
-        //syncPoller.waitForCompletion();
+        syncPoller.waitForCompletion();
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
         // the thread so the program does not end before the send operation is complete. Using .block() instead of

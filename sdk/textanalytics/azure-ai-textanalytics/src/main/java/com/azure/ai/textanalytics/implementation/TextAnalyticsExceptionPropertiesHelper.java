@@ -20,7 +20,7 @@ public final class TextAnalyticsExceptionPropertiesHelper {
      * Type defining the methods to set the non-public properties of an {@link TextAnalyticsException} instance.
      */
     public interface TextAnalyticsExceptionAccessor {
-        void setErrorInformation(TextAnalyticsException textAnalyticsException,
+        void setErrorInformationList(TextAnalyticsException textAnalyticsException,
             List<TextAnalyticsErrorInformation> errorInformation);
     }
 
@@ -33,8 +33,8 @@ public final class TextAnalyticsExceptionPropertiesHelper {
         accessor = textAnalyticsExceptionAccessor;
     }
 
-    public static void setErrorInformation(TextAnalyticsException textAnalyticsException,
+    public static void setErrorInformationList(TextAnalyticsException textAnalyticsException,
         List<TextAnalyticsErrorInformation> errorInformation) {
-        accessor.setErrorInformation(textAnalyticsException, errorInformation);
+        accessor.setErrorInformationList(textAnalyticsException, errorInformation);
     }
 }

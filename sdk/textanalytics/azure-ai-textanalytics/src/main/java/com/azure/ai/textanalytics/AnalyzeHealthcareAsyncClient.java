@@ -223,10 +223,7 @@ class AnalyzeHealthcareAsyncClient {
                     service.healthStatusWithResponseAsync(resultId, context, null, null, null)),
                 (activationResponse, pollingContext) -> monoError(logger,
                     new RuntimeException("Cancellation of healthcare task cancellation is not supported.")),
-                (resultId) -> {
-                    monoError(logger, new RuntimeException("Fetching of healthcare task result is not supported."));
-                    return null;
-                }
+                (resultId) -> Mono.empty()
             );
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
@@ -308,7 +305,7 @@ class AnalyzeHealthcareAsyncClient {
             case FAILED:
                 final TextAnalyticsException exception = new TextAnalyticsException("Analyze operation failed",
                     null, null);
-                TextAnalyticsExceptionPropertiesHelper.setErrorInformation(exception,
+                TextAnalyticsExceptionPropertiesHelper.setErrorInformationList(exception,
                     analyzeOperationResultResponse.getValue().getErrors().stream()
                         .map(error -> {
                             final TextAnalyticsErrorInformation textAnalyticsErrorInformation =

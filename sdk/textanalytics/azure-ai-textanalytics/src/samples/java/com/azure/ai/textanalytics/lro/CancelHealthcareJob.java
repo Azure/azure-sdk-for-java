@@ -57,9 +57,13 @@ public class CancelHealthcareJob {
 
         PollResponse<TextAnalyticsOperationResult> pollResponse = syncPoller.poll();
 
-        System.out.printf("The Job ID that is cancelling is %s.", pollResponse.getValue().getResultId());
+        System.out.printf("The Job ID that is cancelling is %s.%n", pollResponse.getValue().getResultId());
 
-        client.beginCancelAnalyzeHealthcare(UUID.fromString(pollResponse.getValue().getResultId()), Context.NONE);
+        final SyncPoller<TextAnalyticsOperationResult, Void> textAnalyticsOperationResultVoidSyncPoller
+            = client.beginCancelAnalyzeHealthcare(UUID.fromString(pollResponse.getValue().getResultId()), Context.NONE);
+
+        final PollResponse<TextAnalyticsOperationResult> poll = textAnalyticsOperationResultVoidSyncPoller.poll();
+        System.out.printf("Task status: %s.%n", poll.getStatus());
 
         syncPoller.waitForCompletion();
     }

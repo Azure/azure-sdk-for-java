@@ -19,10 +19,10 @@ public class TextAnalyticsException extends AzureException {
     private final TextAnalyticsErrorCode errorCode;
     private final String target;
 
-    private List<TextAnalyticsErrorInformation> errorInformation;
+    private List<TextAnalyticsErrorInformation> errorInformationList;
 
     static {
-        TextAnalyticsExceptionPropertiesHelper.setAccessor(TextAnalyticsException::setErrorInformation);
+        TextAnalyticsExceptionPropertiesHelper.setAccessor(TextAnalyticsException::setErrorInformationList);
     }
 
     /**
@@ -72,17 +72,17 @@ public class TextAnalyticsException extends AzureException {
      *
      * @return the unmodifiable error information list for this exception.
      */
-    public List<TextAnalyticsErrorInformation> getErrorInformation() {
-        return Collections.unmodifiableList(this.errorInformation);
+    public List<TextAnalyticsErrorInformation> getErrorInformationList() {
+        return Collections.unmodifiableList(this.errorInformationList);
     }
 
     /**
      * The private setter to set the errors property
      * via {@link TextAnalyticsExceptionPropertiesHelper.TextAnalyticsExceptionAccessor}.
      *
-     * @param errorInformation the list of {@link TextAnalyticsErrorInformation}
+     * @param errorInformationList the list of {@link TextAnalyticsErrorInformation}
      */
-    private void setErrorInformation(List<TextAnalyticsErrorInformation> errorInformation) {
-        this.errorInformation = errorInformation;
+    private void setErrorInformationList(List<TextAnalyticsErrorInformation> errorInformationList) {
+        this.errorInformationList = errorInformationList;
     }
 }

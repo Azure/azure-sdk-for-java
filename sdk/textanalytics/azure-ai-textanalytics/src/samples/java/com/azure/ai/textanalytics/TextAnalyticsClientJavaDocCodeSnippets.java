@@ -37,6 +37,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 
 import java.util.ArrayList;
@@ -896,8 +897,11 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void cancelAnalyzeBatchHealthcareMaxOverloadWithOpinionMining() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.beginCancelAnalyzeHealthcare#UUID-Context
-        textAnalyticsClient.beginCancelAnalyzeHealthcare(UUID.fromString("{job_id_to_cancel}"), Context.NONE);
+        final SyncPoller<TextAnalyticsOperationResult, Void> textAnalyticsOperationResultVoidSyncPoller
+            = textAnalyticsClient.beginCancelAnalyzeHealthcare(UUID.fromString("{job_id_to_cancel}"), Context.NONE);
+
+        final PollResponse<TextAnalyticsOperationResult> poll = textAnalyticsOperationResultVoidSyncPoller.poll();
+        System.out.printf("Task status: %s.%n", poll.getStatus());
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.beginCancelAnalyzeHealthcare#UUID-Context
     }
-
 }

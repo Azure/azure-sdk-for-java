@@ -866,7 +866,11 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     public void cancelAnalyzeBatchHealthcareMaxOverloadWithOpinionMining() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginCancelAnalyzeHealthcare#UUID
         textAnalyticsAsyncClient.beginCancelAnalyzeHealthcare(UUID.fromString("{job_id_to_cancel}"))
-            .subscribe(val -> System.out.println("job is cancelled"));
+            .map(response -> {
+                System.out.println(response.getStatus());
+                return response;
+            })
+            .subscribe(dummyVar -> System.out.println("Job is successfully cancelled."));
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginCancelAnalyzeHealthcare#UUID
     }
 }
