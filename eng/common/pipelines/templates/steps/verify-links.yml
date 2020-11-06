@@ -17,7 +17,7 @@ steps:
       workingDirectory: '${{ parameters.WorkingDirectory }}/${{ parameters.Directory }}'
       filePath: ${{ parameters.ScriptDirectory }}/Verify-Links.ps1
       arguments: >
-        -urls $(markdownsToScan)
+        -urls ${{ parameters.Urls }}
         -rootUrl "file://${{ parameters.WorkingDirectory }}/${{ parameters.Directory }}"
         -recursive: ${{ parameters.Recursive }} 
         -ignoreLinksFile ${{ parameters.IgnoreLinksFile }}
