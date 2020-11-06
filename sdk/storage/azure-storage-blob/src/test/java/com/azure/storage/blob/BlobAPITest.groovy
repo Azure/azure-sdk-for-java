@@ -1452,6 +1452,66 @@ class BlobAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    def "Set tags lease"() {
+        setup:
+        def tags = new HashMap<String, String>()
+        tags.put("foo", "bar")
+        def leaseID = setupBlobLeaseCondition(bc, receivedLeaseID)
+        def bac = new BlobRequestConditions().setLeaseId(leaseID)
+
+        when:
+        def response = bc.setTagsWithResponse(new BlobSetTagsOptions(tags).setRequestConditions(bac), null, null)
+
+        then:
+        response.getStatusCode() == 204
+        bc.getTags() == tags
+    }
+
+    def "Get tags lease"() {
+        setup:
+        def tags = new HashMap<String, String>()
+        tags.put("foo", "bar")
+        def leaseID = setupBlobLeaseCondition(bc, receivedLeaseID)
+        def bac = new BlobRequestConditions().setLeaseId(leaseID)
+        bc.setTagsWithResponse(new BlobSetTagsOptions(tags).setRequestConditions(bac), null, null)
+
+        when:
+        def response = bc.getTagsWithResponse(new BlobGetTagsOptions().setRequestConditions(bac), null, null)
+
+        then:
+        response.getStatusCode() == 200
+        response.getValue() == tags
+    }
+
+    def "Set tags lease fail"() {
+        setup:
+        def tags = new HashMap<String, String>()
+        tags.put("foo", "bar")
+        def bac = new BlobRequestConditions().setLeaseId(garbageLeaseID)
+
+        when:
+        bc.setTagsWithResponse(new BlobSetTagsOptions(tags).setRequestConditions(bac), null, null)
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getStatusCode() == 412
+    }
+
+    def "Get tags lease fail"() {
+        setup:
+        def tags = new HashMap<String, String>()
+        tags.put("foo", "bar")
+        bc.setTags(tags)
+        def bac = new BlobRequestConditions().setLeaseId(garbageLeaseID)
+
+        when:
+        bc.getTagsWithResponse(new BlobGetTagsOptions().setRequestConditions(bac), null, null)
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getStatusCode() == 412
+    }
+
     def "Snapshot"() {
         when:
         def response = bc.createSnapshotWithResponse(null, null, null, null)

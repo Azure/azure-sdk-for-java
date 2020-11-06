@@ -1426,7 +1426,7 @@ public class BlobAsyncClientBase {
         BlobRequestConditions requestConditions = (options.getRequestConditions() == null)
             ? new BlobRequestConditions() : options.getRequestConditions();
         return this.azureBlobStorage.blobs().getTagsWithRestResponseAsync(null, null, null, null, snapshot,
-            versionId, requestConditions.getTagsConditions(), context)
+            versionId, requestConditions.getTagsConditions(), requestConditions.getLeaseId(), context)
             .map(response -> {
                 Map<String, String> tags = new HashMap<>();
                 for (BlobTag tag : response.getValue().getBlobTagSet()) {
@@ -1489,7 +1489,7 @@ public class BlobAsyncClientBase {
         }
         BlobTags t = new BlobTags().setBlobTagSet(tagList);
         return this.azureBlobStorage.blobs().setTagsWithRestResponseAsync(null, null, null, versionId, null, null, null,
-            requestConditions.getTagsConditions(), t, context)
+            requestConditions.getTagsConditions(), requestConditions.getLeaseId(), t, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 

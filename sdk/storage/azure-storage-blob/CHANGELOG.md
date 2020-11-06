@@ -1,5 +1,9 @@
 # Release History
 
+## unknown; service version 2020-04-08
+- Added lease ID parameter to Get and Set Blob Tags.
+- Added blob tags to BlobServiceClient.findBlobsByTags() result.
+
 ## 12.9.0-beta.3 (Unreleased)
 - Fixed a bug where interspersed element types returned by page listing would deserialize incorrectly.
 - Fixed a bug where BlobInputStream would not eTag lock on the blob, resulting in undesirable behavior if the blob was modified in the middle of reading. 
