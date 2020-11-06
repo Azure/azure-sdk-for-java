@@ -225,7 +225,8 @@ public final class BlobItemProperties {
     private RehydratePriority rehydratePriority;
 
     /*
-     * The sealed property.
+     * The sealed property. Whether or not the blob is sealed  (marked as read only).
+     * This is only returned for Append blobs.
      */
     @JsonProperty(value = "Sealed")
     private Boolean sealed;
@@ -948,7 +949,7 @@ public final class BlobItemProperties {
     /**
      * Get the sealed property: The sealed property.
      *
-     * @return the isSealed value.
+     * @return Whether or not the blob is sealed  (marked as read only). This is only applicable for Append blobs.
      */
     public Boolean isSealed() {
         return this.sealed;
@@ -957,7 +958,7 @@ public final class BlobItemProperties {
     /**
      * Set the sealed property: The sealed property.
      *
-     * @param sealed the sealed value to set.
+     * @param sealed Whether or not the blob is sealed  (marked as read only). This is only applicable for Append blobs.
      * @return the BlobItemProperties object itself.
      */
     public BlobItemProperties setSealed(Boolean sealed) {
