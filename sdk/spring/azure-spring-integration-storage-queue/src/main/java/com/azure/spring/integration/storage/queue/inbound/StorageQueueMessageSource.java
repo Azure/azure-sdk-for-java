@@ -15,8 +15,8 @@ import org.springframework.util.Assert;
  */
 public class StorageQueueMessageSource extends AbstractMessageSource<Message<?>> {
 
-    private StorageQueueOperation storageQueueOperation;
-    private String destination;
+    private final StorageQueueOperation storageQueueOperation;
+    private final String destination;
 
     public StorageQueueMessageSource(String destination, StorageQueueOperation storageQueueOperation) {
         Assert.hasText(destination, "destination can't be null or empty");

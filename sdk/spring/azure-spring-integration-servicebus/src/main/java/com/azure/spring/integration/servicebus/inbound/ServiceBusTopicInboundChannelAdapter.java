@@ -8,6 +8,9 @@ import com.azure.spring.integration.core.api.SubscribeByGroupOperation;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
+/**
+ * Inbound channel adapter for Service Bus Topic.
+ */
 public class ServiceBusTopicInboundChannelAdapter extends AbstractInboundChannelAdapter {
 
     public ServiceBusTopicInboundChannelAdapter(String destination,

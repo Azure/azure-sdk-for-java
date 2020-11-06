@@ -8,6 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.jproxy.ProxyServer;
 import com.azure.messaging.eventhubs.jproxy.SimpleProxy;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import org.apache.qpid.proton.engine.SslDomain;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
@@ -19,6 +20,7 @@ import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.SocketAddress;
 import java.net.URI;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +40,8 @@ public class ProxyReceiveTest extends IntegrationTestBase {
 
     @BeforeAll
     public static void setup() throws IOException {
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+
         proxyServer = new SimpleProxy(PROXY_PORT);
         proxyServer.start(null);
 
@@ -59,16 +63,20 @@ public class ProxyReceiveTest extends IntegrationTestBase {
 
     @AfterAll()
     public static void cleanup() throws Exception {
-        if (proxyServer != null) {
-            proxyServer.stop();
+        try {
+            if (proxyServer != null) {
+                proxyServer.stop();
+            }
+        } finally {
+            ProxySelector.setDefault(defaultProxySelector);
+            StepVerifier.resetDefaultTimeout();
         }
-
-        ProxySelector.setDefault(defaultProxySelector);
     }
 
     @Test
     public void testReceiverStartOfStreamFilters() {
         final EventHubConsumerAsyncClient consumer = createBuilder()
+            .verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
             .buildAsyncConsumerClient();

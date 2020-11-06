@@ -779,7 +779,7 @@ public final class QueueAsyncClient {
      * @param popReceipt Unique identifier that must match for the message to be updated
      * @param messageText Updated value for the message
      * @param visibilityTimeout The timeout period for how long the message is invisible in the queue in seconds. The
-     * timeout period must be between 1 second and 7 days.
+     * timeout period must be between 1 second and 7 days. The default value is Duration.ZERO.
      * @return A {@link UpdateMessageResult} that contains the new
      * {@link UpdateMessageResult#getPopReceipt() popReceipt} to interact with the message,
      * additionally contains the updated metadata about the message.
@@ -812,7 +812,7 @@ public final class QueueAsyncClient {
      * @param popReceipt Unique identifier that must match for the message to be updated
      * @param messageText Updated value for the message
      * @param visibilityTimeout The timeout period for how long the message is invisible in the queue in seconds. The
-     * timeout period must be between 1 second and 7 days.
+     * timeout period must be between 1 second and 7 days. The default value is Duration.ZERO.
      * @return A {@link UpdateMessageResult} that contains the new
      * {@link UpdateMessageResult#getPopReceipt() popReceipt} to interact with the message,
      * additionally contains the updated metadata about the message.
@@ -833,6 +833,7 @@ public final class QueueAsyncClient {
         String messageText, Duration visibilityTimeout, Context context) {
         QueueMessage message = messageText == null ? null : new QueueMessage().setMessageText(messageText);
         context = context == null ? Context.NONE : context;
+        visibilityTimeout = visibilityTimeout == null ? Duration.ZERO : visibilityTimeout;
         return client.messageIds().updateWithRestResponseAsync(queueName, messageId, popReceipt,
                 (int) visibilityTimeout.getSeconds(), message, null, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))

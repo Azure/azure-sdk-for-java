@@ -12,14 +12,14 @@
   <artifactId>azure-spring-integration-sample-storage-queue</artifactId>
   <groupId>com.azure.spring</groupId>
   <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-sample-storage-queue;current} -->
-  <name>Azure Spring Cloud Storage Queue Integration Sample</name>
+  <name>Azure Spring Integration Sample Storage Queue</name>
 
   <dependencyManagement>
     <dependencies>
       <dependency>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-dependencies</artifactId>
-        <version>Hoxton.SR7</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-dependencies;external_dependency} -->
+        <version>Hoxton.SR8</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-dependencies;external_dependency} -->
         <type>pom</type>
         <scope>import</scope>
       </dependency>

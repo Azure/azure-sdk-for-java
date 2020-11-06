@@ -7,6 +7,9 @@ import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.redis.RedisCache;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 
+/**
+ * Resource manager for Redis cache.
+ */
 public class RedisCacheManager extends AzureManager<RedisCache, String> {
 
     public RedisCacheManager(Azure azure, AzureProperties azureProperties) {

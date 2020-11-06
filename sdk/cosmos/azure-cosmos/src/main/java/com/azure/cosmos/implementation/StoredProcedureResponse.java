@@ -135,4 +135,8 @@ public final class StoredProcedureResponse {
     public CosmosDiagnostics getCosmosDiagnostics() {
         return this.response.getCosmosDiagnostics();
     }
+
+    public RxDocumentServiceResponse getRxDocumentServiceResponse() {
+        return response;
+    }
 }

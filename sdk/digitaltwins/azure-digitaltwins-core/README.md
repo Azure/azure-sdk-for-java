@@ -18,7 +18,7 @@ For the best development experience, developers should use the official Microsof
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-digitaltwins-core</artifactId>
-  <version>1.0.0-beta.3</version>
+  <version>1.0.1</version>
 </dependency>
 ```
 
@@ -118,5 +118,5 @@ For more information see the Code of Conduct FAQ or contact opencode@microsoft.c
 [token_credential]: https://docs.microsoft.com/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable
 [digital_twins_documentation]: https://docs.microsoft.com/azure/digital-twins/
 [azure_cli]: https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest
-[iot_cli_extension]: https://docs.microsoft.com/azure/iot-pnp/howto-use-iot-pnp-cli
+[iot_cli_extension]: https://github.com/Azure/azure-iot-cli-extension/releases
 [iot_cli_doc]: https://docs.microsoft.com/cli/azure/ext/azure-iot/dt?view=azure-cli-latest

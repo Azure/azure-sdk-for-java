@@ -9,7 +9,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
+/**
+ * Inbound channel adapter for Event Hubs.
+ */
 public class EventHubInboundChannelAdapter extends AbstractInboundChannelAdapter {
+
     private static final Logger LOG = LoggerFactory.getLogger(EventHubInboundChannelAdapter.class);
 
     public EventHubInboundChannelAdapter(String destination, SubscribeByGroupOperation subscribeByGroupOperation,

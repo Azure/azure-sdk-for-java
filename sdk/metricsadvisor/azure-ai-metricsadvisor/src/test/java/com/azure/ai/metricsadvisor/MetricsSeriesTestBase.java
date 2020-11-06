@@ -10,44 +10,47 @@ import com.azure.core.util.Configuration;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 
 import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_ENDPOINT;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class MetricsSeriesTestBase extends MetricsAdvisorClientTestBase {
 
-    static final String METRIC_ID = "3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5";
-    static final String DIMENSION_NAME = "Dim1";
-    static final Iterable<?> EXPECTED_DIMENSION_VALUES = Arrays.asList("Common Alder",
-        "Common Ash",
-        "Common Beech",
-        "Common Hazel",
-        "Common Juniper",
-        "Common Lime",
-        "Common Walnut",
-        "Common Yew",
-        "Copper Beech");
+    static final String METRIC_ID = "27e3015f-04fd-44ba-a20b-bc529a0aebae";
+    static final String DIMENSION_NAME = "category";
+    static final Iterable<?> EXPECTED_DIMENSION_VALUES = Arrays.asList("Music",
+        "Musical Instruments",
+        "Office Products",
+        "Outdoors",
+        "Personal Computers",
+        "Shoes Handbags & Sunglasses",
+        "Software & Computer Games",
+        "Sports",
+        "Sports Collectibles",
+        "__SUM__",
+        "Tools & Home Improvement").stream().sorted().collect(Collectors.toList());
 
-    static final int EXPECTED_DIMENSION_VALUES_COUNT = 29;
+    static final int EXPECTED_DIMENSION_VALUES_COUNT = 31;
     static final OffsetDateTime TIME_SERIES_START_TIME = OffsetDateTime.parse("2020-01-01T00:00:00Z");
-    static final OffsetDateTime TIME_SERIES_END_TIME = OffsetDateTime.parse("2020-09-09T00:00:00Z");
+    static final OffsetDateTime TIME_SERIES_END_TIME = OffsetDateTime.parse("2020-10-22T00:00:00Z");
     static final HashMap<String, String> SERIES_KEY_FILTER = new HashMap<String, String>() {{
-            put("Dim1", "Common Lime");
-            put("Dim2", "Amphibian");
+            put("city", "Miami");
+            put("category", "Health & Personal Care");
         }};
 
     // Pre-configured test resource.
     protected static class ListEnrichmentStatusInput {
         static final ListEnrichmentStatusInput INSTANCE = new ListEnrichmentStatusInput();
         final ListMetricEnrichmentStatusOptions options =
-            new ListMetricEnrichmentStatusOptions(TIME_SERIES_START_TIME, TIME_SERIES_END_TIME);
+            new ListMetricEnrichmentStatusOptions();
 
         final String metricId = METRIC_ID;
     }
 
     protected static class ListEnrichmentStatusOutput {
         static final ListEnrichmentStatusOutput INSTANCE = new ListEnrichmentStatusOutput();
-        final int expectedStatuses = 3;
+        final int expectedStatuses = 30;
     }
 
     static void validateEnrichmentStatus(EnrichmentStatus actualEnrichmentStatus) {

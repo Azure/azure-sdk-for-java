@@ -12,14 +12,14 @@
   <artifactId>azure-spring-cloud-sample-eventhubs-kafka</artifactId>
   <groupId>com.azure.spring</groupId>
   <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-sample-eventhubs-kafka;current} -->
-  <name>Azure Spring Cloud Event Hub using Kafka Binder Sample</name>
+  <name>Azure Spring Cloud Sample Event Hubs Kafka</name>
 
   <dependencyManagement>
     <dependencies>
       <dependency>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-dependencies</artifactId>
-        <version>Hoxton.SR7</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-dependencies;external_dependency} -->
+        <version>Hoxton.SR8</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-dependencies;external_dependency} -->
         <type>pom</type>
         <scope>import</scope>
       </dependency>

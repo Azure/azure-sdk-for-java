@@ -6,7 +6,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
-import com.azure.digitaltwins.core.models.BasicDigitalTwin;
 import com.azure.digitaltwins.core.models.QueryOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -21,7 +20,7 @@ import static org.assertj.core.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class QueryTests extends QueryTestBase{
+public class QueryTests extends QueryTestBase {
 
     private final ClientLogger logger = new ClientLogger(ComponentsTests.class);
 
@@ -37,22 +36,22 @@ public class QueryTests extends QueryTestBase{
 
         try {
             String roomModelPayload = TestAssetsHelper.getRoomModelPayload(roomModelId, floorModelId);
-            client.createModelsWithResponse(new ArrayList<>(Arrays.asList(roomModelPayload)), null, Context.NONE);
+            client.createModelsWithResponse(new ArrayList<>(Arrays.asList(roomModelPayload)), Context.NONE);
 
             // Create a room twin with property "IsOccupied" : true
             String roomTwin = TestAssetsHelper.getRoomTwinPayload(roomModelId);
             for (int i = 0; i < pageSize + 1; i++) {
                 String roomTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
                 roomTwinIds.add(roomTwinId);
-                client.createDigitalTwinWithResponse(roomTwinId, roomTwin, String.class, null, Context.NONE);
+                client.createOrReplaceDigitalTwinWithResponse(roomTwinId, roomTwin, String.class, null, Context.NONE);
             }
 
             String queryString = "SELECT * FROM digitaltwins where IsOccupied = true";
 
             PagedIterable<BasicDigitalTwin> pagedQueryResponse = client.query(queryString, BasicDigitalTwin.class, new QueryOptions().setMaxItemsPerPage(pageSize), Context.NONE);
 
-            for(BasicDigitalTwin digitalTwin : pagedQueryResponse){
-                assertThat(digitalTwin.getCustomProperties().get("IsOccupied"))
+            for (BasicDigitalTwin digitalTwin : pagedQueryResponse) {
+                assertThat(digitalTwin.getContents().get("IsOccupied"))
                     .as("IsOccupied should be true")
                     .isEqualTo(true);
             }
@@ -62,7 +61,7 @@ public class QueryTests extends QueryTestBase{
             // Test that page size hint works, and that all returned pages either have the page size hint amount of
             // elements, or have no continuation token (signaling that it is the last page)
             int pageCount = 0;
-            for (Page<BasicDigitalTwin> digitalTwinsPage : pagedQueryResponse.iterableByPage()){
+            for (Page<BasicDigitalTwin> digitalTwinsPage : pagedQueryResponse.iterableByPage()) {
                 pageCount++;
                 int elementsPerPage = 0;
                 for (BasicDigitalTwin basicDigitalTwin : digitalTwinsPage.getElements()) {
@@ -75,19 +74,16 @@ public class QueryTests extends QueryTestBase{
             }
 
             assertTrue(pageCount > 1, "Expected more than one page of query results");
-        }
-        finally {
+        } finally {
             // Cleanup
             try {
                 for (String roomTwinId : roomTwinIds) {
                     client.deleteDigitalTwin(roomTwinId);
                 }
-                if (roomModelId != null){
+                if (roomModelId != null) {
                     client.deleteModel(roomModelId);
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 fail("Failed to cleanup due to: ", ex);
             }
         }

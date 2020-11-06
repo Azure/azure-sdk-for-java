@@ -12,6 +12,7 @@ import com.azure.core.amqp.implementation.RequestResponseUtils;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpMessageHeader;
 import com.azure.core.amqp.models.AmqpMessageProperties;
+import com.azure.core.experimental.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.ManagementConstants;
 import com.azure.messaging.servicebus.implementation.MessageWithLockToken;
@@ -122,7 +123,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
 
         final ServiceBusMessage brokeredMessage = (ServiceBusMessage) object;
         final Message amqpMessage = Proton.message();
-        final byte[] body = brokeredMessage.getBody();
+        final byte[] body = brokeredMessage.getBody().toBytes();
 
         //TODO (conniey): support AMQP sequence and AMQP value.
         amqpMessage.setBody(new Data(new Binary(body)));
@@ -357,7 +358,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             logger.warning(String.format(Messages.MESSAGE_NOT_OF_TYPE, "null"));
             bytes = EMPTY_BYTE_ARRAY;
         }
-        final ServiceBusReceivedMessage brokeredMessage = new ServiceBusReceivedMessage(bytes);
+        final ServiceBusReceivedMessage brokeredMessage = new ServiceBusReceivedMessage(BinaryData.fromBytes(bytes));
         AmqpAnnotatedMessage brokeredAmqpAnnotatedMessage = brokeredMessage.getAmqpAnnotatedMessage();
 
         // Application properties

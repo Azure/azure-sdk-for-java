@@ -9,10 +9,15 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.guava25.base.Preconditions;
+import com.azure.cosmos.implementation.routing.LocationHelper;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -396,13 +401,13 @@ public class CosmosClientBuilder {
      * Gets the boolean which indicates whether to only return the headers and status code in Cosmos DB response
      * in case of Create, Update and Delete operations on CosmosItem.
      *
-     * If set to false (which is by default), this removes the resource from response. It reduces networking
-     * and CPU load by not sending the resource back over the network and serializing it
+     * If set to false (which is by default), service doesn't return payload in the response. It reduces networking
+     * and CPU load by not sending the payload back over the network and serializing it
      * on the client.
      *
      * By-default, this is false.
      *
-     * @return a boolean indicating whether resource will be included in the response or not
+     * @return a boolean indicating whether payload will be included in the response or not
      */
     boolean isContentResponseOnWriteEnabled() {
         return contentResponseOnWriteEnabled;
@@ -412,14 +417,14 @@ public class CosmosClientBuilder {
      * Sets the boolean to only return the headers and status code in Cosmos DB response
      * in case of Create, Update and Delete operations on CosmosItem.
      *
-     * If set to false (which is by default), this removes the resource from response. It reduces networking
-     * and CPU load by not sending the resource back over the network and serializing it on the client.
+     * If set to false (which is by default), service doesn't return payload in the response. It reduces networking
+     * and CPU load by not sending the payload back over the network and serializing it on the client.
      *
      * This feature does not impact RU usage for read or write operations.
      *
      * By-default, this is false.
      *
-     * @param contentResponseOnWriteEnabled a boolean indicating whether resource will be included in the response or not
+     * @param contentResponseOnWriteEnabled a boolean indicating whether payload will be included in the response or not
      * @return current cosmosClientBuilder
      */
     public CosmosClientBuilder contentResponseOnWriteEnabled(boolean contentResponseOnWriteEnabled) {
@@ -736,6 +741,24 @@ public class CosmosClientBuilder {
     }
 
     private void validateConfig() {
+        URI uri;
+        try {
+            uri = new URI(serviceEndpoint);
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("invalid serviceEndpoint", e);
+        }
+
+        if (preferredRegions != null) {
+            // validate preferredRegions
+            preferredRegions.stream().forEach(
+                preferredRegion -> {
+                    Preconditions.checkArgument(StringUtils.trimToNull(preferredRegion) != null, "preferredRegion can't be empty");
+                    String trimmedPreferredRegion = preferredRegion.toLowerCase(Locale.ROOT).replace(" ", "");
+                    LocationHelper.getLocationEndpoint(uri, trimmedPreferredRegion);
+                }
+            );
+        }
+
         ifThrowIllegalArgException(this.serviceEndpoint == null,
             "cannot buildAsyncClient client without service endpoint");
         ifThrowIllegalArgException(
