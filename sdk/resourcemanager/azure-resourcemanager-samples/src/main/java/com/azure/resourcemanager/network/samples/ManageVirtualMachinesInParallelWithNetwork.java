@@ -176,7 +176,7 @@ public final class ManageVirtualMachinesInParallelWithNetwork {
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                         .withRootUsername(userName)
                         .withRootPassword(password)
-                        .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                        .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                         .withNewStorageAccount(creatableStorageAccount);
                 frontendCreatableVirtualMachines.add(creatableVirtualMachine);
             }
@@ -194,7 +194,7 @@ public final class ManageVirtualMachinesInParallelWithNetwork {
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                         .withRootUsername(userName)
                         .withRootPassword(password)
-                        .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                        .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                         .withNewStorageAccount(creatableStorageAccount);
                 backendCreatableVirtualMachines.add(creatableVirtualMachine);
             }

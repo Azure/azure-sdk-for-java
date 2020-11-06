@@ -74,7 +74,7 @@ public final class ManageVirtualMachinesInParallel {
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                         .withRootUsername(userName)
                         .withRootPassword(password)
-                        .withSize(VirtualMachineSizeTypes.STANDARD_DS3_V2)
+                        .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                         .withNewStorageAccount(creatableStorageAccount);
                 creatableVirtualMachines.add(creatableVirtualMachine);
             }

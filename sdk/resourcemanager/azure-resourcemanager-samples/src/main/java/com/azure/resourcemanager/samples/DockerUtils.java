@@ -210,7 +210,7 @@ public class DockerUtils {
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername(vmUserName)
                 .withRootPassword(vmPassword)
-                .withSize(VirtualMachineSizeTypes.STANDARD_D2_V2)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .create();
 
         Date t2 = new Date();
