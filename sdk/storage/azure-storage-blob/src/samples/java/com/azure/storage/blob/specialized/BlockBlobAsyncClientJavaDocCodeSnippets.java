@@ -167,7 +167,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         client.uploadFromUrlWithResponse(new BlobUploadFromUrlOptions(sourceUrl).setHeaders(headers)
-            .setMetadata(metadata).setTags(tags).setTier(AccessTier.HOT).setContentMd5(md5)
+            .setTags(tags).setTier(AccessTier.HOT).setContentMd5(md5)
             .setDestinationRequestConditions(requestConditions))
             .subscribe(response -> System.out.printf("Uploaded BlockBlob from URL, MD5 is %s%n",
                 Base64.getEncoder().encodeToString(response.getValue().getContentMd5())));
