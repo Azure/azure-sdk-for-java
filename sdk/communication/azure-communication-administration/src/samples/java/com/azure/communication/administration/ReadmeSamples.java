@@ -16,7 +16,7 @@ import com.azure.communication.administration.models.LocationOptionsDetails;
 import com.azure.communication.administration.models.LocationOptionsQuery;
 import com.azure.communication.administration.models.PhoneNumberCountry;
 import com.azure.communication.administration.models.PhoneNumberRelease;
-import com.azure.communication.administration.models.PhoneNumberSearch;
+import com.azure.communication.administration.models.PhoneNumberReservation;
 import com.azure.communication.administration.models.PhonePlan;
 import com.azure.communication.administration.models.PhonePlanGroup;
 import com.azure.communication.administration.models.PstnConfiguration;
@@ -297,9 +297,9 @@ public class ReadmeSamples {
     /**
      * Sample code to create a phone number search
      *
-     * @return PhoneNumberSearch for the phone plan
+     * @return PhoneNumberReservation for the phone plan
      */
-    public PhoneNumberSearch createPhoneNumberSearch() {
+    public PhoneNumberReservation createPhoneNumberReservation() {
         String phonePlanId = "PHONE_PLAN_ID";
 
         List<String> phonePlanIds = new ArrayList<>();
@@ -316,7 +316,7 @@ public class ReadmeSamples {
         CreateSearchResponse createSearchResponse = phoneNumberClient.createSearch(createSearchOptions);
 
         System.out.println("SearchId: " + createSearchResponse.getSearchId());
-        PhoneNumberSearch phoneNumberSearch = phoneNumberClient.getSearchById(createSearchResponse.getSearchId());
+        PhoneNumberReservation phoneNumberSearch = phoneNumberClient.getSearchById(createSearchResponse.getSearchId());
 
         for (String phoneNumber
             : phoneNumberSearch.getPhoneNumbers()) {
@@ -354,16 +354,16 @@ public class ReadmeSamples {
             .setDisplayName("NAME_FOR_SEARCH")
             .setPhonePlanIds(phonePlanIds)
             .setQuantity(2);
-        
+
         Duration duration = Duration.ofSeconds(1);
         PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
-        SyncPoller<PhoneNumberSearch, PhoneNumberSearch> res = 
+        SyncPoller<PhoneNumberReservation, PhoneNumberReservation> res =
             phoneNumberClient.beginCreateSearch(createSearchOptions, duration);
         res.waitForCompletion();
-        PhoneNumberSearch result = res.getFinalResult();
+        PhoneNumberReservation result = res.getFinalResult();
 
-        System.out.println("Search Id: " + result.getSearchId());
+        System.out.println("Search Id: " + result.getReservationId());
         for (String phoneNumber: result.getPhoneNumbers()) {
             System.out.println("Phone Number: " + phoneNumber);
         }
@@ -377,7 +377,7 @@ public class ReadmeSamples {
         String phoneNumberSearchId = "SEARCH_ID_TO_PURCHASE";
         PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
-        SyncPoller<Void, Void> res = 
+        SyncPoller<Void, Void> res =
             phoneNumberClient.beginPurchaseSearch(phoneNumberSearchId, duration);
         res.waitForCompletion();
     }
@@ -392,7 +392,7 @@ public class ReadmeSamples {
         phoneNumbers.add(phoneNumber);
         PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
-        SyncPoller<PhoneNumberRelease, PhoneNumberRelease> res = 
+        SyncPoller<PhoneNumberRelease, PhoneNumberRelease> res =
             phoneNumberClient.beginReleasePhoneNumbers(phoneNumbers, duration);
         res.waitForCompletion();
         PhoneNumberRelease result = res.getFinalResult();
