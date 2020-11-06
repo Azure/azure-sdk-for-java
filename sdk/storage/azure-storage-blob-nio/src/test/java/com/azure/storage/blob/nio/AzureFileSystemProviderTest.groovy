@@ -136,6 +136,7 @@ class AzureFileSystemProviderTest extends APISpec {
     }
 
     @Unroll
+    @Requires( {playbackMode()}) /* TODO: (gapra) Reenable when list blobs by hier works again. Seems to be a service issue. */
     def "CreateDir parent exists"() {
         setup:
         def fs = createFS(config)
@@ -325,6 +326,7 @@ class AzureFileSystemProviderTest extends APISpec {
     }
 
     @Unroll
+    @Requires( {playbackMode()}) /* TODO: (gapra) Reenable when list blobs by hier works again. Seems to be a service issue. */
     def "Copy source"() {
         setup:
         def fs = createFS(config)
@@ -389,6 +391,7 @@ class AzureFileSystemProviderTest extends APISpec {
     }
 
     @Unroll
+    @Requires( {playbackMode()}) /* TODO: (gapra) Reenable when list blobs by hier works again. Seems to be a service issue. */
     def "Copy destination"() {
         setup:
         def fs = createFS(config)
@@ -508,6 +511,7 @@ class AzureFileSystemProviderTest extends APISpec {
     }
 
     @Unroll
+    @Requires( {playbackMode()}) /* TODO: (gapra) Reenable when list blobs by hier works again. Seems to be a service issue. */
     def "Copy depth"() {
         setup:
         def fs = createFS(config)
@@ -669,6 +673,7 @@ class AzureFileSystemProviderTest extends APISpec {
     }
 
     @Unroll
+    @Requires( {playbackMode()}) /* TODO: (gapra) Reenable when list blobs by hier works again. Seems to be a service issue. */
     def "Delete"() {
         setup:
         def fs = createFS(config)
@@ -733,6 +738,7 @@ class AzureFileSystemProviderTest extends APISpec {
         thrown(NoSuchFileException)
     }
 
+    @Requires( {playbackMode()}) /* TODO: (gapra) Reenable when list blobs by hier works again. Seems to be a service issue. */
     def "Delete default dir"() {
         setup:
         def fs = createFS(config)
@@ -765,6 +771,7 @@ class AzureFileSystemProviderTest extends APISpec {
         thrown(IOException)
     }
 
+    @Requires( {playbackMode()}) /* TODO: (gapra) Reenable when list blobs by hier works again. Seems to be a service issue. */
     def "DirectoryStream"() {
         setup:
         def fs = createFS(config)
@@ -886,6 +893,7 @@ class AzureFileSystemProviderTest extends APISpec {
         thrown(IOException)
     }
 
+    @Requires( {playbackMode()}) /* TODO: (gapra) Reenable when list blobs by hier works again. Seems to be a service issue. */
     def "OutputStream options default"() {
         setup:
         def fs = createFS(config)

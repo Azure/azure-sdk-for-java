@@ -159,7 +159,7 @@ class APISpec extends Specification {
 
         interceptorManager.close()
     }
-    
+
     static Mono<ByteBuffer> collectBytesInBuffer(Flux<ByteBuffer> content) {
         return FluxUtil.collectBytesInByteBufferStream(content).map { bytes -> ByteBuffer.wrap(bytes) }
     }
@@ -180,6 +180,10 @@ class APISpec extends Specification {
 
     static boolean liveMode() {
         return setupTestMode() == TestMode.LIVE
+    }
+
+    static boolean playbackMode() {
+        return setupTestMode() == TestMode.PLAYBACK
     }
 
     String getAccountKey(String accountType) {
