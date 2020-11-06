@@ -46,6 +46,12 @@ public class ShareEnabledProtocols {
         return this;
     }
 
+    /**
+     * Converts the given protocols to a {@code String}.
+     *
+     * @return A {@code String} which represents the enabled protocols.
+     * @throws IllegalArgumentException If both SMB and NFS are set.
+     */
     public String toString() {
         if (this.smb) {
             if (this.nfs) {
@@ -59,6 +65,13 @@ public class ShareEnabledProtocols {
         return null;
     }
 
+    /**
+     * Parses a {@code String} into a {@code SharEnabledProtocol}.
+     *
+     * @param str The string to parse.
+     * @return A {@code ShareEnabledProtocol} represented by the string.
+     * @throws IllegalArgumentException If the String is not a recognized protocol.
+     */
     public static ShareEnabledProtocols parse(String str) {
         if (str == null) {
             return null;
