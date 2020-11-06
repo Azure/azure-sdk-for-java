@@ -4,6 +4,7 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
+import com.azure.ai.textanalytics.models.AnalyzeTasksResult;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.HealthcareTaskResult;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
@@ -40,6 +41,7 @@ import static com.azure.ai.textanalytics.TestUtils.SENTIMENT_OFFSET_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.getCategorizedEntitiesList1;
 import static com.azure.ai.textanalytics.TestUtils.getDetectedLanguageEnglish;
 import static com.azure.ai.textanalytics.TestUtils.getDetectedLanguageSpanish;
+import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeTasksResult;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchCategorizedEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchDetectedLanguages;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchKeyPhrases;
@@ -1637,6 +1639,23 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             PollResponse<TextAnalyticsOperationResult> pollResponse = syncPoller.poll();
             client.beginCancelAnalyzeHealthcare(UUID.fromString(pollResponse.getValue().getResultId()));
             syncPoller.waitForCompletion();
+        });
+    }
+
+    // Analyze LRO
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeTasksWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        analyzeTasksLroRunner(documents -> (jobManifestTasks, options) -> {
+            SyncPoller<TextAnalyticsOperationResult, PagedFlux<AnalyzeTasksResult>> syncPoller =
+                client.beginAnalyze(documents, "Test1", jobManifestTasks, options).getSyncPoller();
+            syncPoller.waitForCompletion();
+            PagedFlux<AnalyzeTasksResult> result = syncPoller.getFinalResult();
+            validateAnalyzeTasksResultList(options.isIncludeStatistics(),
+                Arrays.asList(getExpectedAnalyzeTasksResult()),
+                result.toStream().collect(Collectors.toList()));
         });
     }
 }

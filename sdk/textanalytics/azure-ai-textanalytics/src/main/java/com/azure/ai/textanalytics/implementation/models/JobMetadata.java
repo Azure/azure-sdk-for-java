@@ -6,8 +6,8 @@ package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
-import java.util.UUID;
 
 /**
  * The JobMetadata model.
@@ -36,7 +36,7 @@ public class JobMetadata {
      * The jobId property.
      */
     @JsonProperty(value = "jobId", required = true)
-    private UUID jobId;
+    private String jobId;
 
     /*
      * The lastUpdateDateTime property.
@@ -52,7 +52,7 @@ public class JobMetadata {
 
     /**
      * Get the createdDateTime property: The createdDateTime property.
-     * 
+     *
      * @return the createdDateTime value.
      */
     public OffsetDateTime getCreatedDateTime() {
@@ -61,7 +61,7 @@ public class JobMetadata {
 
     /**
      * Set the createdDateTime property: The createdDateTime property.
-     * 
+     *
      * @param createdDateTime the createdDateTime value to set.
      * @return the JobMetadata object itself.
      */
@@ -72,7 +72,7 @@ public class JobMetadata {
 
     /**
      * Get the displayName property: The displayName property.
-     * 
+     *
      * @return the displayName value.
      */
     public String getDisplayName() {
@@ -81,7 +81,7 @@ public class JobMetadata {
 
     /**
      * Set the displayName property: The displayName property.
-     * 
+     *
      * @param displayName the displayName value to set.
      * @return the JobMetadata object itself.
      */
@@ -92,7 +92,7 @@ public class JobMetadata {
 
     /**
      * Get the expirationDateTime property: The expirationDateTime property.
-     * 
+     *
      * @return the expirationDateTime value.
      */
     public OffsetDateTime getExpirationDateTime() {
@@ -101,7 +101,7 @@ public class JobMetadata {
 
     /**
      * Set the expirationDateTime property: The expirationDateTime property.
-     * 
+     *
      * @param expirationDateTime the expirationDateTime value to set.
      * @return the JobMetadata object itself.
      */
@@ -112,27 +112,27 @@ public class JobMetadata {
 
     /**
      * Get the jobId property: The jobId property.
-     * 
+     *
      * @return the jobId value.
      */
-    public UUID getJobId() {
+    public String getJobId() {
         return this.jobId;
     }
 
     /**
      * Set the jobId property: The jobId property.
-     * 
+     *
      * @param jobId the jobId value to set.
      * @return the JobMetadata object itself.
      */
-    public JobMetadata setJobId(UUID jobId) {
+    public JobMetadata setJobId(String jobId) {
         this.jobId = jobId;
         return this;
     }
 
     /**
      * Get the lastUpdateDateTime property: The lastUpdateDateTime property.
-     * 
+     *
      * @return the lastUpdateDateTime value.
      */
     public OffsetDateTime getLastUpdateDateTime() {
@@ -141,7 +141,7 @@ public class JobMetadata {
 
     /**
      * Set the lastUpdateDateTime property: The lastUpdateDateTime property.
-     * 
+     *
      * @param lastUpdateDateTime the lastUpdateDateTime value to set.
      * @return the JobMetadata object itself.
      */
@@ -152,7 +152,7 @@ public class JobMetadata {
 
     /**
      * Get the status property: The status property.
-     * 
+     *
      * @return the status value.
      */
     public State getStatus() {
@@ -161,7 +161,7 @@ public class JobMetadata {
 
     /**
      * Set the status property: The status property.
-     * 
+     *
      * @param status the status value to set.
      * @return the JobMetadata object itself.
      */

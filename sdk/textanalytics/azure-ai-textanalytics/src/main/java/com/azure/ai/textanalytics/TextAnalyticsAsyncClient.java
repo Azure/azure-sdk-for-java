@@ -6,12 +6,15 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
+import com.azure.ai.textanalytics.models.AnalyzeTasksOptions;
+import com.azure.ai.textanalytics.models.AnalyzeTasksResult;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.HealthcareTaskResult;
+import com.azure.ai.textanalytics.models.JobManifestTasks;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
@@ -78,6 +81,7 @@ public final class TextAnalyticsAsyncClient {
     final RecognizePiiEntityAsyncClient recognizePiiEntityAsyncClient;
     final RecognizeLinkedEntityAsyncClient recognizeLinkedEntityAsyncClient;
     final AnalyzeHealthcareAsyncClient analyzeHealthcareAsyncClient;
+    final AnalyzeTasksAsyncClient analyzeTasksAsyncClient;
 
     /**
      * Create a {@link TextAnalyticsAsyncClient} that sends requests to the Text Analytics services's endpoint. Each
@@ -101,6 +105,7 @@ public final class TextAnalyticsAsyncClient {
         this.recognizePiiEntityAsyncClient = new RecognizePiiEntityAsyncClient(service);
         this.recognizeLinkedEntityAsyncClient = new RecognizeLinkedEntityAsyncClient(service);
         this.analyzeHealthcareAsyncClient = new AnalyzeHealthcareAsyncClient(service);
+        this.analyzeTasksAsyncClient = new AnalyzeTasksAsyncClient(service);
     }
 
     /**
@@ -1059,5 +1064,35 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<TextAnalyticsOperationResult, Void> beginCancelAnalyzeHealthcare(UUID jobId) {
         return analyzeHealthcareAsyncClient.beginCancelAnalyzeHealthcare(jobId, Context.NONE);
+    }
+
+    // Analyze LRO
+    /**
+     * Analyze tasks, such as, entity recognition, PII entity recognition and key phrases extraction in a list of
+     * {@link TextDocumentInput document} with provided request options.
+     *
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyze#Iterable-String-JobManifestTasks-AnalyzeTasksOptions}
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
+     * @param displayName Job's display name.
+     * @param jobManifestTasks A collection of analyze tasks, such as entity recognition, PII, and key phrase tasks.
+     * @param options The additional configurable {@link AnalyzeTasksOptions options} that may be passed when
+     * analyzing a collection of tasks.
+     *
+     * @return A {@link PollerFlux} that polls the analyze a collection of tasks operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedFlux} of
+     * {@link AnalyzeTasksResult}.
+     *
+     * @throws TextAnalyticsException If analyze operation fails.
+     * @throws NullPointerException If {@code jobId} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<TextAnalyticsOperationResult, PagedFlux<AnalyzeTasksResult>> beginAnalyze(
+        Iterable<TextDocumentInput> documents, String displayName, JobManifestTasks jobManifestTasks,
+        AnalyzeTasksOptions options) {
+        return analyzeTasksAsyncClient.beginAnalyze(documents, displayName, jobManifestTasks, options, Context.NONE);
     }
 }

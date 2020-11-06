@@ -26,7 +26,7 @@ public final class HealthcareTaskResult extends JobMetadata {
                 }
 
                 @Override
-                public void setError(HealthcareTaskResult healthcareTaskResult, List<TextAnalyticsError> errors) {
+                public void setErrors(HealthcareTaskResult healthcareTaskResult, List<TextAnalyticsError> errors) {
                     healthcareTaskResult.setErrors(errors);
                 }
             });

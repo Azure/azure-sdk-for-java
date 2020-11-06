@@ -176,7 +176,7 @@ class AnalyzeHealthcareAsyncClient {
 
         final HealthcareTaskResult healthcareTaskResult = new HealthcareTaskResult(
             // TODO: change back to UUID after service support it.
-            healthcareJobState.getJobId().toString(),
+            healthcareJobState.getJobId(),
             healthcareJobState.getCreatedDateTime(),
             healthcareJobState.getLastUpdateDateTime(),
             toJobState(healthcareJobState.getStatus()),

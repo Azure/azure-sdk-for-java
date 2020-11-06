@@ -4,12 +4,15 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
+import com.azure.ai.textanalytics.models.AnalyzeTasksOptions;
+import com.azure.ai.textanalytics.models.AnalyzeTasksResult;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.HealthcareTaskResult;
+import com.azure.ai.textanalytics.models.JobManifestTasks;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
@@ -925,4 +928,38 @@ public final class TextAnalyticsClient {
     public SyncPoller<TextAnalyticsOperationResult, Void> beginCancelAnalyzeHealthcare(UUID jobId, Context context) {
         return client.analyzeHealthcareAsyncClient.beginCancelAnalyzeHealthcare(jobId, context).getSyncPoller();
     }
+
+    // Analyze
+
+    /**
+     * Analyze tasks, such as, entity recognition, PII entity recognition and key phrases extraction in a list of
+     * {@link TextDocumentInput document} with provided request options.
+     *
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyze#Iterable-String-JobManifestTasks-AnalyzeTasksOptions-Context}
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
+     * @param displayName Job's display name.
+     * @param jobManifestTasks A collection of analyze tasks, such as entity recognition, PII, and key phrase tasks.
+     * @param options The additional configurable {@link AnalyzeTasksOptions options} that may be passed when
+     * analyzing a collection of tasks.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link SyncPoller} that polls the analyze a collection of tasks operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedIterable} of
+     * {@link AnalyzeTasksResult}.
+     *
+     * @throws TextAnalyticsException If analyze operation fails.
+     * @throws NullPointerException If {@code jobId} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<TextAnalyticsOperationResult, PagedIterable<AnalyzeTasksResult>> beginAnalyze(
+        Iterable<TextDocumentInput> documents, String displayName, JobManifestTasks jobManifestTasks,
+        AnalyzeTasksOptions options, Context context) {
+        return client.analyzeTasksAsyncClient.beginAnalyzeIterable(documents, displayName, jobManifestTasks, options,
+            context).getSyncPoller();
+    }
+
 }

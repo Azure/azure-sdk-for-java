@@ -61,7 +61,7 @@ public final class TextAnalyticsClientImpl {
 
     /**
      * Gets Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com).
-     * 
+     *
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -70,7 +70,7 @@ public final class TextAnalyticsClientImpl {
 
     /**
      * Sets Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com).
-     * 
+     *
      * @param endpoint the endpoint value.
      * @return the service client itself.
      */
@@ -86,7 +86,7 @@ public final class TextAnalyticsClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -102,7 +102,7 @@ public final class TextAnalyticsClientImpl {
 
     /**
      * Initializes an instance of TextAnalyticsClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
     public TextAnalyticsClientImpl(HttpPipeline httpPipeline) {
@@ -125,7 +125,7 @@ public final class TextAnalyticsClientImpl {
         @Get("/analyze/jobs/{jobId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<AnalyzeJobState>> analyzeStatus(@HostParam("Endpoint") String endpoint, @PathParam("jobId") UUID jobId, @QueryParam("showStats") Boolean showStats, @QueryParam("$top") Integer top, @QueryParam("$skip") Integer skip, Context context);
+        Mono<SimpleResponse<AnalyzeJobState>> analyzeStatus(@HostParam("Endpoint") String endpoint, @PathParam("jobId") String jobId, @QueryParam("showStats") Boolean showStats, @QueryParam("$top") Integer top, @QueryParam("$skip") Integer skip, Context context);
 
         @Get("/entities/health/jobs/{jobId}")
         @ExpectedResponses({200})
@@ -175,7 +175,7 @@ public final class TextAnalyticsClientImpl {
 
     /**
      * Submit a collection of text documents for analysis. Specify one or more unique tasks to be executed.
-     * 
+     *
      * @param body Collection of documents to analyze and tasks to execute.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -189,7 +189,7 @@ public final class TextAnalyticsClientImpl {
 
     /**
      * Submit a collection of text documents for analysis. Specify one or more unique tasks to be executed.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @param body Collection of documents to analyze and tasks to execute.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -204,7 +204,7 @@ public final class TextAnalyticsClientImpl {
 
     /**
      * Get the status of an analysis job.  A job may consist of one or more tasks.  Once all tasks are completed, the job will transition to the completed state and results will be available for each task.
-     * 
+     *
      * @param jobId Job ID.
      * @param showStats (Optional) if set to true, response will contain request and document level statistics.
      * @param top (Optional) Set the maximum number of results per task. When both $top and $skip are specified, $skip is applied first.
@@ -215,13 +215,13 @@ public final class TextAnalyticsClientImpl {
      * @return the status of an analysis job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AnalyzeJobState>> analyzeStatusWithResponseAsync(UUID jobId, Boolean showStats, Integer top, Integer skip) {
+    public Mono<SimpleResponse<AnalyzeJobState>> analyzeStatusWithResponseAsync(String jobId, Boolean showStats, Integer top, Integer skip) {
         return FluxUtil.withContext(context -> service.analyzeStatus(this.getEndpoint(), jobId, showStats, top, skip, context));
     }
 
     /**
      * Get the status of an analysis job.  A job may consist of one or more tasks.  Once all tasks are completed, the job will transition to the completed state and results will be available for each task.
-     * 
+     *
      * @param jobId Job ID.
      * @param context The context to associate with this operation.
      * @param showStats (Optional) if set to true, response will contain request and document level statistics.
@@ -233,13 +233,13 @@ public final class TextAnalyticsClientImpl {
      * @return the status of an analysis job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AnalyzeJobState>> analyzeStatusWithResponseAsync(UUID jobId, Context context, Boolean showStats, Integer top, Integer skip) {
+    public Mono<SimpleResponse<AnalyzeJobState>> analyzeStatusWithResponseAsync(String jobId, Context context, Boolean showStats, Integer top, Integer skip) {
         return service.analyzeStatus(this.getEndpoint(), jobId, showStats, top, skip, context);
     }
 
     /**
      * Get details of the healthcare prediction job specified by the jobId.
-     * 
+     *
      * @param jobId Job ID.
      * @param top (Optional) Set the maximum number of results per task. When both $top and $skip are specified, $skip is applied first.
      * @param skip (Optional) Set the number of elements to offset in the response. When both $top and $skip are specified, $skip is applied first.
@@ -256,7 +256,7 @@ public final class TextAnalyticsClientImpl {
 
     /**
      * Get details of the healthcare prediction job specified by the jobId.
-     * 
+     *
      * @param jobId Job ID.
      * @param context The context to associate with this operation.
      * @param top (Optional) Set the maximum number of results per task. When both $top and $skip are specified, $skip is applied first.
@@ -274,7 +274,7 @@ public final class TextAnalyticsClientImpl {
 
     /**
      * Cancel healthcare prediction job.
-     * 
+     *
      * @param jobId Job ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -288,7 +288,7 @@ public final class TextAnalyticsClientImpl {
 
     /**
      * Cancel healthcare prediction job.
-     * 
+     *
      * @param jobId Job ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -303,7 +303,7 @@ public final class TextAnalyticsClientImpl {
 
     /**
      * Start a healthcare analysis job to recognize healthcare related entities (drugs, conditions, symptoms, etc) and their relations.
-     * 
+     *
      * @param input Contains a set of input documents to be analyzed by the service.
      * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is not specified, the API should default to the latest, non-preview version.
      * @param stringIndexType (Optional) Specifies the method used to interpret string offsets.  Defaults to Text Elements (Graphemes) according to Unicode v8.0.0. For additional information see https://aka.ms/text-analytics-offsets.
@@ -319,7 +319,7 @@ public final class TextAnalyticsClientImpl {
 
     /**
      * Start a healthcare analysis job to recognize healthcare related entities (drugs, conditions, symptoms, etc) and their relations.
-     * 
+     *
      * @param input Contains a set of input documents to be analyzed by the service.
      * @param context The context to associate with this operation.
      * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is not specified, the API should default to the latest, non-preview version.
@@ -336,7 +336,7 @@ public final class TextAnalyticsClientImpl {
 
     /**
      * The API returns a list of general named entities in a given document. For the list of supported entity types, check &lt;a href="https://aka.ms/taner"&gt;Supported Entity Types in Text Analytics API&lt;/a&gt;. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
-     * 
+     *
      * @param input Contains a set of input documents to be analyzed by the service.
      * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is not specified, the API should default to the latest, non-preview version.
      * @param showStats (Optional) if set to true, response will contain request and document level statistics.
@@ -353,7 +353,7 @@ public final class TextAnalyticsClientImpl {
 
     /**
      * The API returns a list of general named entities in a given document. For the list of supported entity types, check &lt;a href="https://aka.ms/taner"&gt;Supported Entity Types in Text Analytics API&lt;/a&gt;. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
-     * 
+     *
      * @param input Contains a set of input documents to be analyzed by the service.
      * @param context The context to associate with this operation.
      * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is not specified, the API should default to the latest, non-preview version.
@@ -371,7 +371,7 @@ public final class TextAnalyticsClientImpl {
 
     /**
      * The API returns a list of entities with personal information (\"SSN\", \"Bank Account\" etc) in the document. For the list of supported entity types, check &lt;a href="https://aka.ms/tanerpii"&gt;Supported Entity Types in Text Analytics API&lt;/a&gt;. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
-     * 
+     *
      * @param input Contains a set of input documents to be analyzed by the service.
      * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is not specified, the API should default to the latest, non-preview version.
      * @param showStats (Optional) if set to true, response will contain request and document level statistics.
@@ -389,7 +389,7 @@ public final class TextAnalyticsClientImpl {
 
     /**
      * The API returns a list of entities with personal information (\"SSN\", \"Bank Account\" etc) in the document. For the list of supported entity types, check &lt;a href="https://aka.ms/tanerpii"&gt;Supported Entity Types in Text Analytics API&lt;/a&gt;. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
-     * 
+     *
      * @param input Contains a set of input documents to be analyzed by the service.
      * @param context The context to associate with this operation.
      * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is not specified, the API should default to the latest, non-preview version.
@@ -408,7 +408,7 @@ public final class TextAnalyticsClientImpl {
 
     /**
      * The API returns a list of recognized entities with links to a well-known knowledge base. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
-     * 
+     *
      * @param input Contains a set of input documents to be analyzed by the service.
      * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is not specified, the API should default to the latest, non-preview version.
      * @param showStats (Optional) if set to true, response will contain request and document level statistics.
@@ -425,7 +425,7 @@ public final class TextAnalyticsClientImpl {
 
     /**
      * The API returns a list of recognized entities with links to a well-known knowledge base. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
-     * 
+     *
      * @param input Contains a set of input documents to be analyzed by the service.
      * @param context The context to associate with this operation.
      * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is not specified, the API should default to the latest, non-preview version.
@@ -443,7 +443,7 @@ public final class TextAnalyticsClientImpl {
 
     /**
      * The API returns a list of strings denoting the key phrases in the input text. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
-     * 
+     *
      * @param input Contains a set of input documents to be analyzed by the service.
      * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is not specified, the API should default to the latest, non-preview version.
      * @param showStats (Optional) if set to true, response will contain request and document level statistics.
@@ -459,7 +459,7 @@ public final class TextAnalyticsClientImpl {
 
     /**
      * The API returns a list of strings denoting the key phrases in the input text. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
-     * 
+     *
      * @param input Contains a set of input documents to be analyzed by the service.
      * @param context The context to associate with this operation.
      * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is not specified, the API should default to the latest, non-preview version.
@@ -476,7 +476,7 @@ public final class TextAnalyticsClientImpl {
 
     /**
      * The API returns the detected language and a numeric score between 0 and 1. Scores close to 1 indicate 100% certainty that the identified language is true. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
-     * 
+     *
      * @param input Collection of documents to analyze for language endpoint.
      * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is not specified, the API should default to the latest, non-preview version.
      * @param showStats (Optional) if set to true, response will contain request and document level statistics.
@@ -492,7 +492,7 @@ public final class TextAnalyticsClientImpl {
 
     /**
      * The API returns the detected language and a numeric score between 0 and 1. Scores close to 1 indicate 100% certainty that the identified language is true. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
-     * 
+     *
      * @param input Collection of documents to analyze for language endpoint.
      * @param context The context to associate with this operation.
      * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is not specified, the API should default to the latest, non-preview version.
@@ -509,7 +509,7 @@ public final class TextAnalyticsClientImpl {
 
     /**
      * The API returns a detailed sentiment analysis for the input text. The analysis is done in multiple levels of granularity, start from the a document level, down to sentence and key terms (aspects) and opinions.
-     * 
+     *
      * @param input Contains a set of input documents to be analyzed by the service.
      * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is not specified, the API should default to the latest, non-preview version.
      * @param showStats (Optional) if set to true, response will contain request and document level statistics.
@@ -527,7 +527,7 @@ public final class TextAnalyticsClientImpl {
 
     /**
      * The API returns a detailed sentiment analysis for the input text. The analysis is done in multiple levels of granularity, start from the a document level, down to sentence and key terms (aspects) and opinions.
-     * 
+     *
      * @param input Contains a set of input documents to be analyzed by the service.
      * @param context The context to associate with this operation.
      * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is not specified, the API should default to the latest, non-preview version.

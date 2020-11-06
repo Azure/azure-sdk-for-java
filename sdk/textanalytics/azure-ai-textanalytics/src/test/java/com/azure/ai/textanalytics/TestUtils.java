@@ -3,6 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.implementation.AnalyzeTasksResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.HealthcareEntityCollectionPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.HealthcareEntityPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.HealthcareEntityRelationPropertiesHelper;
@@ -10,6 +11,7 @@ import com.azure.ai.textanalytics.implementation.HealthcareTaskResultPropertiesH
 import com.azure.ai.textanalytics.implementation.RecognizeHealthcareEntitiesResultCollectionPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.RecognizeHealthcareEntitiesResultPropertiesHelper;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
+import com.azure.ai.textanalytics.models.AnalyzeTasksResult;
 import com.azure.ai.textanalytics.models.AspectSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
@@ -111,6 +113,8 @@ final class TestUtils {
     static final List<String> HEALTHCARE_INPUTS = asList(
         "The patient is a 54-year-old gentleman with a history of progressive angina over the past several months.",
         "The patient went for six minutes with minimal ST depressions in the anterior lateral leads , thought due to fatigue and wrist pain , his anginal equivalent.");
+
+    static final List<String> ANALYZE_TASK_INPUTS = asList(CATEGORIZED_ENTITY_INPUTS.get(0), PII_ENTITY_INPUTS.get(0));
 
     // "personal" and "social" are common to both English and Spanish and if given with limited context the
     // response will be based on the "US" country hint. If the origin of the text is known to be coming from
@@ -661,6 +665,82 @@ final class TestUtils {
         RecognizeHealthcareEntitiesResultPropertiesHelper.setEntities(healthcareEntitiesResult,
             healthcareEntityCollection);
         return healthcareEntitiesResult;
+    }
+
+    static AnalyzeTasksResult getExpectedAnalyzeTasksResult() {
+        // Categorized Entities
+        IterableStream<CategorizedEntity> categorizedEntityList1 = new IterableStream<>(getCategorizedEntitiesList1());
+        //TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(44, 1);
+        RecognizeEntitiesResult recognizeEntitiesResult1 = new RecognizeEntitiesResult("0", null,
+            null, new CategorizedEntityCollection(categorizedEntityList1, null));
+        IterableStream<CategorizedEntity> categorizedEntityList2 = new IterableStream<>(
+            asList(
+                new CategorizedEntity("Microsoft", EntityCategory.ORGANIZATION, null, 0.0, 0),
+                new CategorizedEntity("employee", EntityCategory.PERSON_TYPE, null, 0.0, 10),
+                new CategorizedEntity("859", EntityCategory.QUANTITY, "Number", 0.0, 28),
+                new CategorizedEntity("98", EntityCategory.QUANTITY, "Number", 0.0, 32),
+                new CategorizedEntity("0987", EntityCategory.QUANTITY, "Number", 0.0, 35),
+                new CategorizedEntity("API", EntityCategory.SKILL, null, 0.0, 61)
+            )
+        );
+        //TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(44, 1);
+        RecognizeEntitiesResult recognizeEntitiesResult2 = new RecognizeEntitiesResult("1", null,
+            null, new CategorizedEntityCollection(categorizedEntityList2, null));
+
+        RecognizeEntitiesResultCollection recognizeEntitiesResults = new RecognizeEntitiesResultCollection(
+            asList(recognizeEntitiesResult1, recognizeEntitiesResult2),
+            "2020-04-01", null
+            //new TextDocumentBatchStatistics(2, 2, 0, 2)
+        );
+
+        // PII
+        PiiEntityCollection piiEntityCollection1 = new PiiEntityCollection(new IterableStream<>(new ArrayList<>()),
+            "I had a wonderful trip to Seattle last week.", null);
+        PiiEntityCollection piiEntityCollection2 = new PiiEntityCollection(new IterableStream<>(getPiiEntitiesList1()),
+            "********* employee with ssn *********** is using our awesome API's.", null);
+        //TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(67, 1);
+        //TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(67, 1);
+        RecognizePiiEntitiesResult recognizePiiEntitiesResult1 =
+            new RecognizePiiEntitiesResult("0", null, null, piiEntityCollection1);
+        RecognizePiiEntitiesResult recognizePiiEntitiesResult2 =
+            new RecognizePiiEntitiesResult("1", null, null, piiEntityCollection2);
+
+        RecognizePiiEntitiesResultCollection recognizePiiEntitiesResults = new RecognizePiiEntitiesResultCollection(
+            asList(recognizePiiEntitiesResult1, recognizePiiEntitiesResult2),
+            "2020-07-01",
+            new TextDocumentBatchStatistics(2, 2, 0, 2)
+        );
+
+        // Key Phrases
+
+        //TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(49, 1);
+        //TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(21, 1);
+
+        ExtractKeyPhraseResult extractKeyPhraseResult1 = new ExtractKeyPhraseResult("0", null,
+            null, new KeyPhrasesCollection(new IterableStream<>(asList("wonderful trip", "Seattle", "week")), null));
+        ExtractKeyPhraseResult extractKeyPhraseResult2 = new ExtractKeyPhraseResult("1", null,
+            null, new KeyPhrasesCollection(new IterableStream<>(asList("Microsoft employee", "ssn", "awesome API's")), null));
+
+        TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(2, 2, 0, 2);
+        List<ExtractKeyPhraseResult> extractKeyPhraseResultList = asList(extractKeyPhraseResult1, extractKeyPhraseResult2);
+
+        ExtractKeyPhrasesResultCollection extractKeyPhraseResults = new ExtractKeyPhrasesResultCollection(
+            extractKeyPhraseResultList, "2020-07-01", null);
+
+        final AnalyzeTasksResult analyzeTasksResult = new AnalyzeTasksResult(
+            null, null, null, null, "Test1", null);
+        AnalyzeTasksResultPropertiesHelper.setStatistics(analyzeTasksResult, textDocumentBatchStatistics);
+        AnalyzeTasksResultPropertiesHelper.setCompleted(analyzeTasksResult, 3);
+        AnalyzeTasksResultPropertiesHelper.setFailed(analyzeTasksResult, 0);
+        AnalyzeTasksResultPropertiesHelper.setInProgress(analyzeTasksResult, 0);
+        AnalyzeTasksResultPropertiesHelper.setTotal(analyzeTasksResult, 3);
+        AnalyzeTasksResultPropertiesHelper.setEntityRecognitionTasks(analyzeTasksResult,
+            asList(recognizeEntitiesResults));
+        AnalyzeTasksResultPropertiesHelper.setEntityRecognitionPiiTasks(analyzeTasksResult,
+            asList(recognizePiiEntitiesResults));
+        AnalyzeTasksResultPropertiesHelper.setKeyPhraseExtractionTasks(analyzeTasksResult,
+            asList(extractKeyPhraseResults));
+        return analyzeTasksResult;
     }
 
     /**

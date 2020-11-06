@@ -4,14 +4,21 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
+import com.azure.ai.textanalytics.models.AnalyzeTasksOptions;
+import com.azure.ai.textanalytics.models.AnalyzeTasksResult;
 import com.azure.ai.textanalytics.models.AspectSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
+import com.azure.ai.textanalytics.models.EntitiesTask;
+import com.azure.ai.textanalytics.models.EntitiesTaskParameters;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityLink;
 import com.azure.ai.textanalytics.models.HealthcareTaskResult;
+import com.azure.ai.textanalytics.models.JobManifestTasks;
+import com.azure.ai.textanalytics.models.KeyPhrasesTask;
+import com.azure.ai.textanalytics.models.KeyPhrasesTaskParameters;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.MinedOpinion;
@@ -19,6 +26,8 @@ import com.azure.ai.textanalytics.models.OpinionSentiment;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
+import com.azure.ai.textanalytics.models.PiiTask;
+import com.azure.ai.textanalytics.models.PiiTaskParameters;
 import com.azure.ai.textanalytics.models.RecognizeHealthcareEntityOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
@@ -47,12 +56,14 @@ import com.azure.core.util.IterableStream;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TestUtils.CATEGORIZED_ENTITY_INPUTS;
@@ -305,6 +316,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     // Healthcare LRO - Cancellation
     @Test
     abstract void cancelHealthcareLroRunner(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    // Analyze LRO
+    @Test
+    abstract void analyzeTasksWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     // Detect Language runner
     void detectLanguageShowStatisticsRunner(BiConsumer<List<DetectLanguageInput>,
@@ -640,6 +655,22 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             documents.add(new TextDocumentInput(Integer.toString(i), HEALTHCARE_INPUTS.get(0)));
         }
         testRunner.accept(documents);
+    }
+
+    // Analyze LRO
+    void analyzeTasksLroRunner(Function<List<TextDocumentInput>, BiConsumer<JobManifestTasks, AnalyzeTasksOptions>> testRunner) {
+        JobManifestTasks jobManifestTasks = new JobManifestTasks()
+            .setEntityRecognitionTasks(Arrays.asList(
+                new EntitiesTask().setParameters(new EntitiesTaskParameters().setModelVersion("latest"))))
+            .setKeyPhraseExtractionTasks(Arrays.asList(
+                new KeyPhrasesTask().setParameters(new KeyPhrasesTaskParameters().setModelVersion("latest"))))
+            .setEntityRecognitionPiiTasks(Arrays.asList(
+                new PiiTask().setParameters(new PiiTaskParameters().setModelVersion("latest"))));
+
+        testRunner.apply(asList(
+            new TextDocumentInput("0", CATEGORIZED_ENTITY_INPUTS.get(0)),
+            new TextDocumentInput("1", PII_ENTITY_INPUTS.get(0))))
+            .accept(jobManifestTasks, new AnalyzeTasksOptions().setIncludeStatistics(false));
     }
 
     String getEndpoint() {
@@ -1042,6 +1073,52 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         for (int i = 0; i < actual.size(); i++) {
             validateRecognizeHealthcareEntitiesResultCollection(showStatistics,
                 expected.get(i).getResult(), actual.get(i).getResult());
+        }
+    }
+
+    // Analyze tasks
+    static void validateAnalyzeTasksResultList(boolean showStatistics, List<AnalyzeTasksResult> expected,
+        List<AnalyzeTasksResult> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < actual.size(); i++) {
+            validateAnalyzeTasksResult(showStatistics, expected.get(i), actual.get(i));
+        }
+    }
+
+    static void validateAnalyzeTasksResult(boolean showStatistics, AnalyzeTasksResult expected,
+        AnalyzeTasksResult actual) {
+        assertEquals(expected.getCompleted(), actual.getCompleted());
+        assertEquals(expected.getFailed(), actual.getFailed());
+        assertEquals(expected.getInProgress(), actual.getInProgress());
+        assertEquals(expected.getTotal(), actual.getTotal());
+        assertEquals(expected.getDisplayName(), actual.getDisplayName());
+
+        validateEntityRecognitionTasks(showStatistics, expected.getEntityRecognitionTasks(), actual.getEntityRecognitionTasks());
+        validateEntityRecognitionPiiTasks(showStatistics, expected.getEntityRecognitionPiiTasks(), actual.getEntityRecognitionPiiTasks());
+        validateKeyPhrasesExtractionTasks(showStatistics, expected.getKeyPhraseExtractionTasks(), actual.getKeyPhraseExtractionTasks());
+    }
+
+    static void validateEntityRecognitionTasks(boolean showStatistics,
+        List<RecognizeEntitiesResultCollection> expected, List<RecognizeEntitiesResultCollection> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < actual.size(); i++) {
+            validateCategorizedEntitiesResultCollection(showStatistics, expected.get(i), actual.get(i));
+        }
+    }
+
+    static void validateEntityRecognitionPiiTasks(boolean showStatistics,
+        List<RecognizePiiEntitiesResultCollection> expected, List<RecognizePiiEntitiesResultCollection> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < actual.size(); i++) {
+            validatePiiEntitiesResultCollection(showStatistics, expected.get(i), actual.get(i));
+        }
+    }
+
+    static void validateKeyPhrasesExtractionTasks(boolean showStatistics,
+        List<ExtractKeyPhrasesResultCollection> expected, List<ExtractKeyPhrasesResultCollection> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < actual.size(); i++) {
+            validateExtractKeyPhrasesResultCollection(showStatistics, expected.get(i), actual.get(i));
         }
     }
 

@@ -23,7 +23,7 @@ public final class HealthcareTaskResultPropertiesHelper {
     public interface HealthcareTaskResultAccessor {
         void setResult(HealthcareTaskResult healthcareTaskResult,
             RecognizeHealthcareEntitiesResultCollection recognizeHealthcareEntitiesResultCollection);
-        void setError(HealthcareTaskResult healthcareTaskResult, List<TextAnalyticsError> errors);
+        void setErrors(HealthcareTaskResult healthcareTaskResult, List<TextAnalyticsError> errors);
     }
 
     /**
@@ -42,6 +42,6 @@ public final class HealthcareTaskResultPropertiesHelper {
     }
 
     public static void setErrors(HealthcareTaskResult healthcareTaskResult, List<TextAnalyticsError> errors) {
-        accessor.setError(healthcareTaskResult, errors);
+        accessor.setErrors(healthcareTaskResult, errors);
     }
 }
