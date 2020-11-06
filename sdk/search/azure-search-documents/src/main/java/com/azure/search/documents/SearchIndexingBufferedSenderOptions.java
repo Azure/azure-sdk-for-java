@@ -138,7 +138,7 @@ public final class SearchIndexingBufferedSenderOptions<T> {
      * <p>
      * Default value is {@code 3}.
      *
-     * @param maxRetries The number of times a document will attempt indexing before it is considered failed.
+     * @param maxRetries The number of times a document will retry indexing before it is considered failed.
      * @return The updated SearchIndexingBufferedSenderOptions object.
      * @throws IllegalArgumentException If {@code documentTryLimit} is less than one.
      */
