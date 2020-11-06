@@ -3,7 +3,7 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.models.Anomaly;
+import com.azure.ai.metricsadvisor.models.DataPointAnomaly;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesAlertedOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
@@ -28,16 +28,16 @@ public abstract class AnomalyForAlertTestBase extends MetricsAdvisorClientTestBa
         final int expectedAnomalies = 2;
     }
 
-    protected void assertListAnomaliesForAlertOutput(Anomaly anomaly) {
-        Assertions.assertNotNull(anomaly);
-        Assertions.assertNotNull(anomaly.getMetricId());
-        Assertions.assertNotNull(anomaly.getSeverity());
-        Assertions.assertNotNull(anomaly.getStatus());
-        Assertions.assertNotNull(anomaly.getCreatedTime());
-        Assertions.assertNotNull(anomaly.getModifiedTime());
-        Assertions.assertNotNull(anomaly.getTimestamp());
-        Assertions.assertNotNull(anomaly.getDetectionConfigurationId());
-        Assertions.assertNotNull(anomaly.getSeriesKey());
-        Assertions.assertFalse(anomaly.getSeriesKey().asMap().isEmpty());
+    protected void assertListAnomaliesForAlertOutput(DataPointAnomaly dataPointAnomaly) {
+        Assertions.assertNotNull(dataPointAnomaly);
+        Assertions.assertNotNull(dataPointAnomaly.getMetricId());
+        Assertions.assertNotNull(dataPointAnomaly.getSeverity());
+        Assertions.assertNotNull(dataPointAnomaly.getStatus());
+        Assertions.assertNotNull(dataPointAnomaly.getCreatedTime());
+        Assertions.assertNotNull(dataPointAnomaly.getModifiedTime());
+        Assertions.assertNotNull(dataPointAnomaly.getTimestamp());
+        Assertions.assertNotNull(dataPointAnomaly.getDetectionConfigurationId());
+        Assertions.assertNotNull(dataPointAnomaly.getSeriesKey());
+        Assertions.assertFalse(dataPointAnomaly.getSeriesKey().asMap().isEmpty());
     }
 }

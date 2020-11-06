@@ -71,7 +71,7 @@ public abstract class IncidentRootCauseTestBase extends TestBase {
         assertEquals(expectedIncidentRootCause.getSeriesKey(), actualIncidentRootCause.getSeriesKey());
         assertEquals(expectedIncidentRootCause.getDescription(), actualIncidentRootCause.getDescription());
         assertEquals(expectedIncidentRootCause.getPaths(), actualIncidentRootCause.getPaths());
-        assertNotNull(actualIncidentRootCause.getConfidenceScore());
+        assertNotNull(actualIncidentRootCause.getContributionScore());
     }
 
     String getEndpoint() {

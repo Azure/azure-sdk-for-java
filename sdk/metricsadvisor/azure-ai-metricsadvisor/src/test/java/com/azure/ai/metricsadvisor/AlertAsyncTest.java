@@ -3,7 +3,7 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.models.Alert;
+import com.azure.ai.metricsadvisor.models.AnomalyAlert;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedFlux;
@@ -21,8 +21,10 @@ public final class AlertAsyncTest extends AlertTestBase {
     public void listAlerts(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorAsyncClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
 
-        PagedFlux<Alert> alertsFlux
-            = client.listAlerts(ListAlertsInput.INSTANCE.alertConfigurationId, ListAlertsInput.INSTANCE.options);
+        PagedFlux<AnomalyAlert> alertsFlux
+            = client.listAlerts(ListAlertsInput.INSTANCE.alertConfigurationId, ListAlertsInput.INSTANCE.startTime,
+            ListAlertsInput.INSTANCE.endTime, ListAlertsInput.INSTANCE.options
+        );
 
         Assertions.assertNotNull(alertsFlux);
 

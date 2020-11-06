@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -269,6 +270,53 @@ public class ServiceBusProcessorTest {
         assertTrue(success, "Failed to receive all expected messages");
 
         verify(asyncClient, times(5)).abandon(any(ServiceBusReceivedMessage.class));
+    }
+
+    @Test
+    public void testUserMessageHandlerErrorWithAutoCompleteDisabled() throws InterruptedException {
+
+        Flux<ServiceBusMessageContext> messageFlux =
+            Flux.create(emitter -> {
+                for (int i = 0; i < 5; i++) {
+                    ServiceBusReceivedMessage serviceBusReceivedMessage =
+                        new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
+                    serviceBusReceivedMessage.setMessageId(String.valueOf(i));
+                    ServiceBusMessageContext serviceBusMessageContext =
+                        new ServiceBusMessageContext(serviceBusReceivedMessage);
+                    emitter.next(serviceBusMessageContext);
+                }
+            });
+
+        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder =
+            mock(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class);
+
+        ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        when(receiverBuilder.buildAsyncClient()).thenReturn(asyncClient);
+        when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux);
+        when(asyncClient.isConnectionClosed()).thenReturn(false);
+        doNothing().when(asyncClient).close();
+
+        AtomicInteger messageId = new AtomicInteger();
+        CountDownLatch countDownLatch = new CountDownLatch(5);
+        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder,
+            messageContext -> {
+                assertEquals(String.valueOf(messageId.getAndIncrement()), messageContext.getMessage().getMessageId());
+                throw new IllegalStateException(); // throw error from user handler
+            },
+            error -> {
+                assertTrue(error instanceof ServiceBusReceiverException);
+                ServiceBusReceiverException exception = (ServiceBusReceiverException) error;
+                assertTrue(exception.getErrorSource() == ServiceBusErrorSource.USER_CALLBACK);
+                countDownLatch.countDown();
+            },
+            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1).setDisableAutoComplete(true));
+
+        serviceBusProcessorClient.start();
+        boolean success = countDownLatch.await(5, TimeUnit.SECONDS);
+        serviceBusProcessorClient.close();
+        assertTrue(success, "Failed to receive all expected messages");
+
+        verify(asyncClient, never()).abandon(any(ServiceBusReceivedMessage.class));
     }
 
     private ServiceBusClientBuilder.ServiceBusReceiverClientBuilder getBuilder(
