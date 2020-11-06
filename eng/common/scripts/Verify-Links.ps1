@@ -278,6 +278,11 @@ if ($urls) {
     Write-Host "Usage $($MyInvocation.MyCommand.Name) <urls>";
     exit 1;
   }  
+  if($urls.length -eq 1) {
+    # Sometimes it passed the string seperated by whitespace to represent the array. 
+    # If not seperate by space, this will return the original array.
+    $urls = $urls -split '\s+' -match '\S'
+  }
 }
 
 if ($PSVersionTable.PSVersion.Major -lt 6)

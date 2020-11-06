@@ -10,11 +10,6 @@ parameters:
   BranchReplacementName: "${env:SYSTEM_PULLREQUEST_SOURCECOMMITID}"
 
 steps:
-  - pwsh:
-      $deleted = git ls-files --deleted
-      echo "##vso[task.setvariable variable=deletedFiles]$deleted"
-    displayName: Retrieved deleted files
-    workingDirectory: '${{ parameters.WorkingDirectory }}'
   - task: PowerShell@2
     displayName: Retrieved all markdowns to scan
     inputs:
@@ -22,8 +17,8 @@ steps:
       workingDirectory: '${{ parameters.WorkingDirectory }}'
       filePath: ${{ parameters.ScriptDirectory }}/Scan-files-against-links.ps1
       arguments: >
-        -gitUrl: $(Build.Repository.Uri)
-        -link $(deletedFiles)
+        -deletedFiles (git diff origin/${env:SYSTEM_PULLREQUEST_TARGETBRANCH} HEAD --name-only --diff-filter=D)
+        -renamedFiles (git diff origin/${env:SYSTEM_PULLREQUEST_TARGETBRANCH} HEAD --diff-filter=R)
         -changedMarkdowns ${{ parameters.Urls }}
   - task: PowerShell@2
     displayName: Link verification check
