@@ -6,7 +6,8 @@
   for 5 minutes.
 - Added auto complete feature to the async receiver clients. Once the client completes executing the user provided 
   callback for a message, the message will be completed. If the user provided callback throws an error, the message 
-  will be abandoned.
+  will be abandoned. This feature is enabled by default and can be disabled by calling `disableAutoComplete()` on 
+  builder. 
 - An intermediate `ServiceBusSessionReceiverClient` is introduced to act as the factory which can then be used to accept 
    sessions from the service. Accepting a session would give you the familiar receiver client tied to a single session.
 - Added `ServiceBusProcessorClient` which takes your callbacks to process messages and errors in an infinite loop. This 
@@ -26,6 +27,7 @@
   `ServiceBusSessionReceiverAsyncClient`.
 - Removed `maxConcurrentSessions` from `ServiceBusSessionReceiverClientBuilder` and moved it to 
   `ServiceBusSessionProcessorClientBuilder`.
+- Renamed `tryAddMessage` to `tryAdd` in `ServiceBusMessageBatch`.
   
 ### Bug Fixes
 - ServiceBusAdministrationClient: Fixes serialization bug for creating and deserializing rules.
