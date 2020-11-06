@@ -21,9 +21,6 @@ import com.nimbusds.jwt.proc.BadJWTException;
 import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
 import com.nimbusds.jwt.proc.DefaultJWTClaimsVerifier;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import net.minidev.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -185,18 +182,19 @@ public class UserPrincipalManager {
             || issuer.startsWith(STS_CHINA_CLOUD_API_ISSUER);
     }
 
-    private boolean isAADTenant(String tenant) {
-        if (tenant == null) {
-            return false;
-        }
-        return tenant.equals(aadAuthenticationProperties.getTenantId());
-    }
-
     private boolean isAllowedTenantId(String tenant) {
         if (tenant == null) {
             return false;
         }
-        return aadAuthenticationProperties.getAllowedTenantIds().contains(tenant);
+        if(isEmptyAllowTenantIds()){
+            return tenant.equals(aadAuthenticationProperties.getTenantId());
+        }else {
+            return aadAuthenticationProperties.getAllowedTenantIds().contains(tenant);
+        }
+    }
+
+    private boolean isEmptyAllowTenantIds(){
+        return aadAuthenticationProperties.getAllowedTenantIds().isEmpty();
     }
 
     private ConfigurableJWTProcessor<SecurityContext> getValidator(JWSAlgorithm jwsAlgorithm) {
@@ -226,12 +224,12 @@ public class UserPrincipalManager {
                                 + "does not match neither client-id nor AppIdUri.");
                     }
                 }
-                if (aadAuthenticationProperties.getAllowedTenantIds().isEmpty() &&
-                    !StringUtils.isEmpty(aadAuthenticationProperties.getTenantId()) && !isAADTenant(tenant)) {
+                if (isEmptyAllowTenantIds() && !StringUtils.isEmpty(aadAuthenticationProperties.getTenantId())
+                    && !isAllowedTenantId(tenant)) {
                     throw new BadJWTException("Invalid token tenant. Provided value " + tenant
                         + " does not match neither tenant.");
                 }
-                if (!aadAuthenticationProperties.getAllowedTenantIds().isEmpty() && !isAllowedTenantId(tenant)) {
+                if (!isEmptyAllowTenantIds() && !isAllowedTenantId(tenant)) {
                     throw new BadJWTException("Invalid token tenantId. Provided value " + tenant
                         + " does not allow multi-tenant id.");
                 }

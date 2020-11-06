@@ -40,7 +40,7 @@ public class AzureADGraphClientTest {
     @Test
     public void testConvertGroupToGrantedAuthorities() {
         final Set<String> groups = ImmutableSet.of("Test_Group");
-        final Set<SimpleGrantedAuthority> authorities = adGraphClient.toGrantedAuthoritySet(groups);
+        final Set<SimpleGrantedAuthority> authorities = adGraphClient.toGrantedAuthoritySet(groups,null);
         assertThat(authorities)
             .hasSize(1)
             .extracting(GrantedAuthority::getAuthority)
@@ -50,7 +50,7 @@ public class AzureADGraphClientTest {
     @Test
     public void testConvertGroupToGrantedAuthoritiesUsingAllowedGroups() {
         final Set<String> groups = ImmutableSet.of("Test_Group", "Another_Group");
-        final Set<SimpleGrantedAuthority> authorities = adGraphClient.toGrantedAuthoritySet(groups);
+        final Set<SimpleGrantedAuthority> authorities = adGraphClient.toGrantedAuthoritySet(groups,null);
         assertThat(authorities)
             .hasSize(1)
             .extracting(GrantedAuthority::getAuthority)

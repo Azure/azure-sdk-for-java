@@ -67,14 +67,10 @@ public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
         }
         try {
             final UserPrincipal userPrincipal = principalManager.buildUserPrincipal(aadIssuedBearerToken);
-            Set<SimpleGrantedAuthority> authorities = toSimpleGrantedAuthoritySet(userPrincipal);
-            if (userPrincipal.getClaim(AADTokenClaim.SCP) != null) {
-                authorities.addAll(scopeToSimpleGrantedAuthoritySet(userPrincipal));
-            }
             final Authentication authentication = new PreAuthenticatedAuthenticationToken(
                 userPrincipal,
                 null,
-                authorities
+                toSimpleGrantedAuthoritySet(userPrincipal)
             );
             LOGGER.info("Request token verification success. {}", authentication);
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -107,25 +103,22 @@ public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
                     .map(Collection::stream)
                     .orElseGet(Stream::empty)
                     .filter(StringUtils::hasText)
-                    .map(s -> new SimpleGrantedAuthority(ROLE_PREFIX + s))
+                    .map(role -> new SimpleGrantedAuthority(ROLE_PREFIX + role))
                     .collect(Collectors.toSet());
+        if (userPrincipal.getClaim(AADTokenClaim.SCP) != null) {
+            Set<SimpleGrantedAuthority> scopeSimpleGrantedAuthoritySet =
+                Optional.of(((String) userPrincipal.getClaim(AADTokenClaim.SCP)))
+                    .map(scopes -> scopes.split(" "))
+                    .map(Arrays::stream)
+                    .orElseGet(Stream::empty)
+                    .filter(StringUtils::hasText)
+                    .map(scope -> new SimpleGrantedAuthority(SCOPE_PREFIX + scope))
+                    .collect(Collectors.toSet());
+            simpleGrantedAuthoritySet.addAll(scopeSimpleGrantedAuthoritySet);
+        }
         return Optional.of(simpleGrantedAuthoritySet)
                        .filter(r -> !r.isEmpty())
                        .orElse(DEFAULT_AUTHORITY_SET);
     }
 
-    protected Set<SimpleGrantedAuthority> scopeToSimpleGrantedAuthoritySet(UserPrincipal userPrincipal) {
-        Set<SimpleGrantedAuthority> scopeSimpleGrantedAuthoritySet =
-            Optional.of(((String) userPrincipal.getClaim(AADTokenClaim.SCP)))
-                .map(scopes -> scopes.split(" "))
-                .map(Arrays::stream)
-                .orElseGet(Stream::empty)
-                .filter(StringUtils::hasText)
-                .map(s -> new SimpleGrantedAuthority(SCOPE_PREFIX + s))
-                .collect(Collectors.toSet());
-
-        return Optional.of(scopeSimpleGrantedAuthoritySet)
-            .filter(r -> !r.isEmpty())
-            .orElse(DEFAULT_AUTHORITY_SET);
-    }
 }

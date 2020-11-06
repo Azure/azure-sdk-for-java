@@ -10,7 +10,6 @@ import com.nimbusds.jose.proc.BadJOSEException;
 import com.nimbusds.jose.util.ResourceRetriever;
 import com.nimbusds.jwt.proc.BadJWTException;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -19,12 +18,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -40,8 +37,6 @@ import java.text.ParseException;
 import java.util.Optional;
 
 import static com.azure.spring.autoconfigure.aad.Constants.BEARER_PREFIX;
-import static com.azure.spring.autoconfigure.aad.Constants.DEFAULT_AUTHORITY_SET;
-import static com.azure.spring.autoconfigure.aad.Constants.ROLE_PREFIX;
 import static com.azure.spring.autoconfigure.aad.Constants.SCOPE_PREFIX;
 
 /**
@@ -129,15 +124,11 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
                 userPrincipal.setGroups(azureADGraphClient.getGroups(accessTokenForGraphApi));
                 httpSession.setAttribute(CURRENT_USER_PRINCIPAL, userPrincipal);
             }
-            Set<SimpleGrantedAuthority> authorities = azureADGraphClient
-                .toGrantedAuthoritySet(userPrincipal.getGroups());
-            if (userPrincipal.getClaim(AADTokenClaim.SCP) != null) {
-                authorities.addAll(scopeToSimpleGrantedAuthoritySet(userPrincipal));
-            }
             final Authentication authentication = new PreAuthenticatedAuthenticationToken(
                 userPrincipal,
                 null,
-                authorities
+                azureADGraphClient.toGrantedAuthoritySet(userPrincipal.getGroups(),
+                    (String)userPrincipal.getClaim(AADTokenClaim.SCP))
             );
             LOGGER.info("Request token verification success. {}", authentication);
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -181,8 +172,6 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
                 .map(s -> new SimpleGrantedAuthority(SCOPE_PREFIX + s))
                 .collect(Collectors.toSet());
 
-        return Optional.of(scopeSimpleGrantedAuthoritySet)
-            .filter(r -> !r.isEmpty())
-            .orElse(DEFAULT_AUTHORITY_SET);
+        return scopeSimpleGrantedAuthoritySet;
     }
 }
