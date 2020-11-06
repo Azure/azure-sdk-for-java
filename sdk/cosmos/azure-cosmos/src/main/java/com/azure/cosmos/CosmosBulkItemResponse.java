@@ -43,7 +43,6 @@ public final class CosmosBulkItemResponse {
                            Map<String, String> responseHeaders,
                            CosmosDiagnostics cosmosDiagnostics) {
 
-        checkNotNull(statusCode, "expected non-null statusCode");
         checkNotNull(responseHeaders, "expected non-null responseHeaders");
 
         this.eTag = eTag;

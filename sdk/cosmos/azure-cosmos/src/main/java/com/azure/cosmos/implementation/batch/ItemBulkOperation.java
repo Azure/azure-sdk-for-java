@@ -4,11 +4,9 @@
 package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosItemOperation;
 import com.azure.cosmos.CosmosItemOperationType;
 import com.azure.cosmos.implementation.JsonSerializable;
-import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.PartitionKey;
@@ -59,30 +57,39 @@ public final class ItemBulkOperation<TInternal> implements CosmosItemOperation {
         final JsonSerializable jsonSerializable = new JsonSerializable();
 
         jsonSerializable.set(
-            BatchRequestResponseConstant.FIELD_OPERATION_TYPE,
+            BatchRequestResponseConstants.FIELD_OPERATION_TYPE,
             BridgeInternal.getOperationValueForCosmosItemOperationType(this.getOperationType()));
 
         if (StringUtils.isNotEmpty(this.getPartitionKeyJson())) {
-            jsonSerializable.set(BatchRequestResponseConstant.FIELD_PARTITION_KEY, this.getPartitionKeyJson());
+            jsonSerializable.set(BatchRequestResponseConstants.FIELD_PARTITION_KEY, this.getPartitionKeyJson());
         }
 
         if (StringUtils.isNotEmpty(this.getId())) {
-            jsonSerializable.set(BatchRequestResponseConstant.FIELD_ID, this.getId());
+            jsonSerializable.set(BatchRequestResponseConstants.FIELD_ID, this.getId());
         }
 
         if (this.getItemInternal() != null) {
-            jsonSerializable.set(BatchRequestResponseConstant.FIELD_RESOURCE_BODY, this.getItemInternal());
+            jsonSerializable.set(BatchRequestResponseConstants.FIELD_RESOURCE_BODY, this.getItemInternal());
         }
 
         if (this.getRequestOptions() != null) {
             RequestOptions requestOptions = this.getRequestOptions();
 
             if (StringUtils.isNotEmpty(requestOptions.getIfMatchETag())) {
-                jsonSerializable.set(BatchRequestResponseConstant.FIELD_IF_MATCH, requestOptions.getIfMatchETag());
+                jsonSerializable.set(BatchRequestResponseConstants.FIELD_IF_MATCH, requestOptions.getIfMatchETag());
             }
 
             if (StringUtils.isNotEmpty(requestOptions.getIfNoneMatchETag())) {
-                jsonSerializable.set(BatchRequestResponseConstant.FIELD_IF_NONE_MATCH, requestOptions.getIfNoneMatchETag());
+                jsonSerializable.set(BatchRequestResponseConstants.FIELD_IF_NONE_MATCH, requestOptions.getIfNoneMatchETag());
+            }
+
+            //  If content response on write is not enabled, and operation is document write - then add
+            //  minimalReturnPreference field, Otherwise don't add this field, which means return the full response.
+            if (requestOptions.isContentResponseOnWriteEnabled() != null) {
+                if (!requestOptions.isContentResponseOnWriteEnabled() && BulkExecutorUtil.isWriteOperation(operationType)) {
+                    jsonSerializable.set(BatchRequestResponseConstants.FIELD_MINIMAL_RETURN_PREFERENCE, true);
+                }
+
             }
         }
 

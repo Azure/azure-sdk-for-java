@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.batch;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosItemOperation;
+import com.azure.cosmos.CosmosItemOperationType;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.TransactionalBatchOperationResult;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
@@ -35,19 +36,27 @@ final class BulkExecutorUtil {
         return PartitionKeyRangeServerBatchRequest.createBatchRequest(
             partitionKeyRangeId,
             operations,
-            BatchRequestResponseConstant.MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES,
-            BatchRequestResponseConstant.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST);
+            BatchRequestResponseConstants.MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES,
+            BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST);
     }
 
-    static void setRetryPolicyForBulk(CosmosItemOperation cosmosItemOperation, ThrottlingRetryOptions throttlingRetryOptions) {
-        if(cosmosItemOperation instanceof ItemBulkOperation<?>) {
+    static void setRetryPolicyForBulk(
+        AsyncDocumentClient docClientWrapper,
+        CosmosAsyncContainer container,
+        CosmosItemOperation cosmosItemOperation,
+        ThrottlingRetryOptions throttlingRetryOptions) {
+
+        if (cosmosItemOperation instanceof ItemBulkOperation<?>) {
             final ItemBulkOperation<?> itemBulkOperation = (ItemBulkOperation<?>) cosmosItemOperation;
 
             ResourceThrottleRetryPolicy resourceThrottleRetryPolicy = new ResourceThrottleRetryPolicy(
                 throttlingRetryOptions.getMaxRetryAttemptsOnThrottledRequests(),
                 throttlingRetryOptions.getMaxRetryWaitTime());
 
-            BulkOperationRetryPolicy bulkRetryPolicy = new BulkOperationRetryPolicy(resourceThrottleRetryPolicy);
+            BulkOperationRetryPolicy bulkRetryPolicy = new BulkOperationRetryPolicy(
+                docClientWrapper.getCollectionCache(),
+                BridgeInternal.getLink(container),
+                resourceThrottleRetryPolicy);
             itemBulkOperation.setRetryPolicy(bulkRetryPolicy);
 
         } else {
@@ -62,7 +71,7 @@ final class BulkExecutorUtil {
         headers.put(HttpConstants.HttpHeaders.E_TAG, result.getETag());
         headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, String.valueOf(result.getRequestCharge()));
 
-        if(result.getRetryAfterDuration() != null) {
+        if (result.getRetryAfterDuration() != null) {
             headers.put(HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS, String.valueOf(result.getRetryAfterDuration().toMillis()));
         }
 
@@ -77,7 +86,7 @@ final class BulkExecutorUtil {
 
         checkNotNull(operation, "expected non-null operation");
 
-        if(operation instanceof ItemBulkOperation<?>) {
+        if (operation instanceof ItemBulkOperation<?>) {
             final ItemBulkOperation<?> itemBulkOperation = (ItemBulkOperation<?>) operation;
 
             final Mono<String> pkRangeIdMono = BulkExecutorUtil.getCollectionInfoAsync(docClientWrapper, container)
@@ -110,7 +119,7 @@ final class BulkExecutorUtil {
         checkNotNull(operation, "expected non-null operation");
 
         final PartitionKey partitionKey = operation.getPartitionKeyValue();
-        if(partitionKey == null) {
+        if (partitionKey == null) {
             return ModelBridgeInternal.getNonePartitionKey(partitionKeyDefinition);
         } else {
             return BridgeInternal.getPartitionKeyInternal(partitionKey);
@@ -130,5 +139,12 @@ final class BulkExecutorUtil {
                 null,
                 resourceAddress,
                 null);
+    }
+
+    static boolean isWriteOperation(CosmosItemOperationType cosmosItemOperationType) {
+        return cosmosItemOperationType == CosmosItemOperationType.CREATE ||
+            cosmosItemOperationType == CosmosItemOperationType.REPLACE ||
+            cosmosItemOperationType == CosmosItemOperationType.UPSERT ||
+            cosmosItemOperationType == CosmosItemOperationType.DELETE;
     }
 }

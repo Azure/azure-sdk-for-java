@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
 import com.azure.cosmos.implementation.IRetryPolicy;
 import com.azure.cosmos.implementation.ResourceThrottleRetryPolicy;
 import com.azure.cosmos.implementation.RetryPolicyWithDiagnostics;
+import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import reactor.core.publisher.Mono;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -22,10 +23,18 @@ final class BulkOperationRetryPolicy extends RetryPolicyWithDiagnostics {
 
     private static final int MAX_RETRIES = 1;
 
+    private final RxCollectionCache collectionCache;
+    private final String collectionLink;
     private final ResourceThrottleRetryPolicy resourceThrottleRetryPolicy;
     private int attemptedRetries;
 
-    BulkOperationRetryPolicy(ResourceThrottleRetryPolicy resourceThrottleRetryPolicy) {
+    BulkOperationRetryPolicy(
+        RxCollectionCache collectionCache,
+        String collectionLink,
+        ResourceThrottleRetryPolicy resourceThrottleRetryPolicy) {
+
+        this.collectionCache = collectionCache;
+        this.collectionLink = collectionLink;
         this.resourceThrottleRetryPolicy = resourceThrottleRetryPolicy;
     }
 
@@ -59,12 +68,28 @@ final class BulkOperationRetryPolicy extends RetryPolicyWithDiagnostics {
     boolean shouldRetryForGone(int statusCode, int subStatusCode) {
 
         if (statusCode == StatusCodes.GONE
-            && (subStatusCode == SubStatusCodes.PARTITION_KEY_RANGE_GONE || subStatusCode == SubStatusCodes.NAME_CACHE_IS_STALE)
+            && (subStatusCode == SubStatusCodes.PARTITION_KEY_RANGE_GONE ||
+                subStatusCode == SubStatusCodes.NAME_CACHE_IS_STALE ||
+                subStatusCode == SubStatusCodes.COMPLETING_SPLIT ||
+                subStatusCode == SubStatusCodes.COMPLETING_PARTITION_MIGRATION)
             && this.attemptedRetries < MAX_RETRIES) {
+
             this.attemptedRetries++;
+
+            if (subStatusCode == SubStatusCodes.NAME_CACHE_IS_STALE) {
+                refreshCollectionCache();
+            }
+
             return true;
         }
 
         return false;
+    }
+
+    private void refreshCollectionCache() {
+        this.collectionCache.refresh(
+            null,
+            this.collectionLink,
+            null);
     }
 }

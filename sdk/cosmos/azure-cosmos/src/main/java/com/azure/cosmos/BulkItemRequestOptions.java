@@ -12,53 +12,96 @@ import com.azure.cosmos.util.Beta;
  */
 @Beta(Beta.SinceVersion.V4_8_0)
 public final class BulkItemRequestOptions {
-    private ConsistencyLevel consistencyLevel;
-    private String sessionToken;
+    private String ifMatchETag;
+    private String ifNoneMatchETag;
+    private Boolean contentResponseOnWriteEnabled;
 
     /**
-     * Gets the consistency level required for the request.
+     * Gets the If-Match (ETag) associated with the operation in {@link CosmosItemOperation}.
      *
-     * @return the consistency level.
+     * @return ifMatchETag the ifMatchETag associated with the request.
      */
-    ConsistencyLevel getConsistencyLevel() {
-        return consistencyLevel;
+    public String getIfMatchETag() {
+        return this.ifMatchETag;
     }
 
     /**
-     * Sets the consistency level required for the request.
+     * Sets the If-Match (ETag) associated with the operation in {@link CosmosItemOperation}.
      *
-     * @param consistencyLevel the consistency level.
-     * @return the BulkItemRequestOptions.
+     * @param ifMatchETag the ifMatchETag associated with the request.
+     * @return the current request options
      */
-    BulkItemRequestOptions setConsistencyLevel(ConsistencyLevel consistencyLevel) {
-        this.consistencyLevel = consistencyLevel;
+    public BulkItemRequestOptions setIfMatchETag(final String ifMatchETag) {
+        this.ifMatchETag = ifMatchETag;
         return this;
     }
 
     /**
-     * Gets the token for use with session consistency.
+     * Gets the If-None-Match (ETag) associated with the request in operation in {@link CosmosItemOperation}.
      *
-     * @return the session token.
+     * @return the ifNoneMatchETag associated with the request.
      */
-    public String getSessionToken() {
-        return sessionToken;
+    public String getIfNoneMatchETag() {
+        return this.ifNoneMatchETag;
     }
 
     /**
-     * Sets the token for use with session consistency.
+     * Sets the If-None-Match (ETag) associated with the request in operation in {@link CosmosItemOperation}.
      *
-     * @param sessionToken the session token.
-     * @return the BulkItemRequestOptions.
+     * @param ifNoneMatchEtag the ifNoneMatchETag associated with the request.
+     * @return the current request options.
      */
-    public BulkItemRequestOptions setSessionToken(String sessionToken) {
-        this.sessionToken = sessionToken;
+    public BulkItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
+        this.ifNoneMatchETag = ifNoneMatchEtag;
+        return this;
+    }
+
+    /**
+     * Gets the boolean to only return the headers and status code in Cosmos DB response
+     * in case of Create, Update and Delete operations in {@link CosmosItemOperation}.
+     *
+     * If set to false, service doesn't return payload in the response. It reduces networking
+     * and CPU load by not sending the payload back over the network and serializing it on the client.
+     *
+     * This feature does not impact RU usage for read or write operations.
+     *
+     * By-default, this is null.
+     *
+     * @return a boolean indicating whether payload will be included in the response or not for this operation.
+     */
+    public Boolean isContentResponseOnWriteEnabled() {
+        return contentResponseOnWriteEnabled;
+    }
+
+    /**
+     * Sets the boolean to only return the headers and status code in Cosmos DB response
+     * in case of Create, Update and Delete operations in {@link CosmosItemOperation}.
+     *
+     * If set to false, service doesn't return payload in the response. It reduces networking
+     * and CPU load by not sending the payload back over the network and serializing it on the client.
+     *
+     * This feature does not impact RU usage for read or write operations.
+     *
+     * By-default, this is null.
+     *
+     * NOTE: This flag is also present on {@link com.azure.cosmos.CosmosClientBuilder}, however if specified
+     * here, it will override the value specified in {@link com.azure.cosmos.CosmosClientBuilder} for this request.
+     *
+     * @param contentResponseOnWriteEnabled a boolean indicating whether payload will be included
+     * in the response or not for this operation.
+     *
+     * @return the current request options.
+     */
+    public BulkItemRequestOptions setContentResponseOnWriteEnabled(Boolean contentResponseOnWriteEnabled) {
+        this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
         return this;
     }
 
     RequestOptions toRequestOptions() {
         final RequestOptions requestOptions = new RequestOptions();
-        requestOptions.setConsistencyLevel(getConsistencyLevel());
-        requestOptions.setSessionToken(sessionToken);
+        requestOptions.setIfMatchETag(getIfMatchETag());
+        requestOptions.setIfNoneMatchETag(getIfNoneMatchETag());
+        requestOptions.setContentResponseOnWriteEnabled(isContentResponseOnWriteEnabled());
         return requestOptions;
     }
 }

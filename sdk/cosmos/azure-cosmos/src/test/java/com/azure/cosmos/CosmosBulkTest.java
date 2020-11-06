@@ -3,6 +3,9 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.ISessionToken;
+import com.azure.cosmos.implementation.guava25.base.Function;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
@@ -304,5 +307,322 @@ public class CosmosBulkTest  extends BatchTestBase {
         logger.info("Total count of request for this test case: " + countRequest);
 
         return countRequest;
+    }
+
+    // Error tests
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void bulkETagTest() {
+        this.createJsonTestDocs(bulkContainer);
+
+        {
+            BatchTestBase.TestDoc testDocToCreate = this.populateTestDoc(this.partitionKey1);
+
+            BatchTestBase.TestDoc testDocToReplace = this.getTestDocCopy(this.TestDocPk1ExistingA);
+            testDocToReplace.setCost(testDocToReplace.getCost() + 1);
+
+            CosmosItemResponse<TestDoc> response = bulkContainer.readItem(
+                this.TestDocPk1ExistingA.getId(),
+                this.getPartitionKey(this.partitionKey1),
+                TestDoc.class);
+
+            assertThat(response.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+
+            BulkItemRequestOptions firstReplaceOptions = new BulkItemRequestOptions();
+            firstReplaceOptions.setIfMatchETag(response.getETag());
+
+            List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+            cosmosItemOperations.add(BulkOperations.newCreateItemOperation(testDocToCreate, new PartitionKey(this.partitionKey1)));
+            cosmosItemOperations.add(BulkOperations.newReplaceItemOperation(
+                testDocToReplace.getId(), testDocToReplace, new PartitionKey(this.partitionKey1), firstReplaceOptions));
+
+            List<CosmosBulkOperationResponse<Object>> bulkResponses = bulkContainer
+                .processBulkOperations(cosmosItemOperations);
+
+            assertThat(bulkResponses.size()).isEqualTo(cosmosItemOperations.size());
+
+            assertThat(bulkResponses.get(0).getResponse().getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+            assertThat(bulkResponses.get(1).getResponse().getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+
+            // Ensure that the replace overwrote the doc from the first operation
+            this.verifyByRead(bulkContainer, testDocToCreate, bulkResponses.get(0).getResponse().getETag());
+            this.verifyByRead(bulkContainer, testDocToReplace, bulkResponses.get(1).getResponse().getETag());
+        }
+
+        {
+            TestDoc testDocToReplace = this.getTestDocCopy(this.TestDocPk1ExistingB);
+            testDocToReplace.setCost(testDocToReplace.getCost() + 1);
+
+            BulkItemRequestOptions replaceOptions = new BulkItemRequestOptions();
+            replaceOptions.setIfMatchETag(String.valueOf(this.getRandom().nextInt()));
+
+            List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+            cosmosItemOperations.add(BulkOperations.newReplaceItemOperation(
+                testDocToReplace.getId(), testDocToReplace, new PartitionKey(this.partitionKey1), replaceOptions));
+
+            List<CosmosBulkOperationResponse<Object>> bulkResponses = bulkContainer
+                .processBulkOperations(cosmosItemOperations);
+
+            assertThat(bulkResponses.size()).isEqualTo(cosmosItemOperations.size());
+
+            assertThat(bulkResponses.get(0).getResponse().getStatusCode()).isEqualTo(HttpResponseStatus.PRECONDITION_FAILED.code());
+
+            // ensure the item was not updated
+            this.verifyByRead(bulkContainer, this.TestDocPk1ExistingB);
+        }
+
+        {
+            // Not modified case in etag
+            CosmosItemResponse<TestDoc> response = bulkContainer.readItem(
+                this.TestDocPk1ExistingA.getId(),
+                this.getPartitionKey(this.partitionKey1),
+                TestDoc.class);
+
+            assertThat(response.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+
+            BulkItemRequestOptions readOptions = new BulkItemRequestOptions();
+            readOptions.setIfMatchETag(response.getETag());
+
+            BatchTestBase.TestDoc testDocToCreate = this.populateTestDoc(this.partitionKey1);
+
+            List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+            cosmosItemOperations.add(BulkOperations.newReadItemOperation(
+                this.TestDocPk1ExistingA.getId(),
+                this.getPartitionKey(this.partitionKey1),
+                readOptions));
+            cosmosItemOperations.add(BulkOperations.newCreateItemOperation(testDocToCreate, new PartitionKey(this.partitionKey1)));
+
+            List<CosmosBulkOperationResponse<Object>> bulkResponses = bulkContainer
+                .processBulkOperations(cosmosItemOperations);
+
+            assertThat(bulkResponses.size()).isEqualTo(cosmosItemOperations.size());
+
+            assertThat(bulkResponses.get(0).getResponse().getStatusCode()).isEqualTo(HttpResponseStatus.NOT_MODIFIED.code());
+            assertThat(bulkResponses.get(1).getResponse().getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+            assertThat(bulkResponses.get(1).getResponse().getItem(TestDoc.class)).isEqualTo(testDocToCreate);
+
+            this.verifyByRead(bulkContainer, testDocToCreate);
+        }
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void bulkWithInvalidCreateTest() {
+        // partition key mismatch between doc and and value passed in to the operation
+        CosmosItemOperation operation =
+            BulkOperations.newCreateItemOperation(
+                this.populateTestDoc(UUID.randomUUID().toString()), new PartitionKey(this.partitionKey1));
+
+        this.runWithError(
+            bulkContainer,
+            operations -> operations.add(operation),
+            HttpResponseStatus.BAD_REQUEST);
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void bulkWithReadOfNonExistentEntityTest() {
+        CosmosItemOperation operation = BulkOperations.newReadItemOperation(
+            UUID.randomUUID().toString(),
+            new PartitionKey(this.partitionKey1));
+
+        this.runWithError(
+            bulkContainer,
+            operations -> operations.add(operation),
+            HttpResponseStatus.NOT_FOUND);
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void bulkWithReplaceOfStaleEntity() {
+        this.createJsonTestDocs(bulkContainer);
+
+        TestDoc staleTestDocToReplace = this.getTestDocCopy(this.TestDocPk1ExistingA);
+        staleTestDocToReplace.setCost(staleTestDocToReplace.getCost() + 1);
+
+        BulkItemRequestOptions staleReplaceOptions = new BulkItemRequestOptions();
+        staleReplaceOptions.setIfMatchETag(UUID.randomUUID().toString());
+
+        CosmosItemOperation operation = BulkOperations.newReplaceItemOperation(
+            staleTestDocToReplace.getId(),
+            staleTestDocToReplace,
+            new PartitionKey(this.partitionKey1),
+            staleReplaceOptions);
+
+        this.runWithError(
+            bulkContainer,
+            operations -> operations.add(operation),
+            HttpResponseStatus.PRECONDITION_FAILED);
+
+        // make sure the stale doc hasn't changed
+        this.verifyByRead(bulkContainer, this.TestDocPk1ExistingA);
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void bulkithDeleteOfNonExistentEntity() {
+
+        CosmosItemOperation operation =
+            BulkOperations.newDeleteItemOperation(
+                UUID.randomUUID().toString(), new PartitionKey(this.partitionKey1));
+
+        this.runWithError(
+            bulkContainer,
+            operations -> operations.add(operation),
+            HttpResponseStatus.NOT_FOUND);
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void bulkWithCreateConflict() {
+        this.createJsonTestDocs(bulkContainer);
+
+        // try to create a doc with id that already exists (should return a Conflict)
+        TestDoc conflictingTestDocToCreate = this.getTestDocCopy(this.TestDocPk1ExistingA);
+        conflictingTestDocToCreate.setCost(conflictingTestDocToCreate.getCost());
+
+        CosmosItemOperation operation = BulkOperations.newCreateItemOperation(
+            conflictingTestDocToCreate,
+            new PartitionKey(this.partitionKey1));
+
+        this.runWithError(
+            bulkContainer,
+            operations -> operations.add(operation),
+            HttpResponseStatus.CONFLICT);
+
+        // make sure the conflicted doc hasn't changed
+        this.verifyByRead(bulkContainer, this.TestDocPk1ExistingA);
+    }
+
+    private void runWithError(
+        CosmosContainer container,
+        Function<List<CosmosItemOperation>, Boolean> appendOperation,
+        HttpResponseStatus expectedFailedOperationStatusCode) {
+
+        TestDoc testDocToCreate = this.populateTestDoc(this.partitionKey1);
+        TestDoc anotherTestDocToCreate = this.populateTestDoc(this.partitionKey1);
+
+        List<CosmosItemOperation> operations = new ArrayList<>();
+        operations.add(BulkOperations.newCreateItemOperation(testDocToCreate, new PartitionKey(this.partitionKey1)));
+
+        appendOperation.apply(operations);
+
+        operations.add(BulkOperations.newCreateItemOperation(anotherTestDocToCreate, new PartitionKey(this.partitionKey1)));
+
+        List<CosmosBulkOperationResponse<Object>> bulkResponses = bulkContainer.processBulkOperations(operations);
+
+        assertThat(bulkResponses.size()).isEqualTo(operations.size());
+
+        assertThat(bulkResponses.get(0).getResponse().getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+        assertThat(bulkResponses.get(1).getResponse().getStatusCode()).isEqualTo(expectedFailedOperationStatusCode.code());
+        assertThat(bulkResponses.get(2).getResponse().getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+
+        this.verifyByRead(container, testDocToCreate);
+        this.verifyByRead(container, anotherTestDocToCreate);
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void bulkSessionTokenTest() {
+        this.createJsonTestDocs(bulkContainer);
+
+        CosmosItemResponse<TestDoc> readResponse = bulkContainer.readItem(
+            this.TestDocPk1ExistingC.getId(),
+            this.getPartitionKey(this.partitionKey1),
+            TestDoc.class);
+
+        assertThat(readResponse.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        ISessionToken sessionToken = this.getSessionToken(readResponse.getSessionToken());
+
+        // Batch without Read operation
+        TestDoc testDocToCreate = this.populateTestDoc(this.partitionKey1);
+        TestDoc testDocToReplace = this.getTestDocCopy(this.TestDocPk1ExistingA);
+        testDocToReplace.setCost(testDocToReplace.getCost() + 1);
+        TestDoc testDocToUpsert = this.populateTestDoc(this.partitionKey1);
+
+        List<CosmosItemOperation> operations = new ArrayList<>();
+        operations.add(
+            BulkOperations.newCreateItemOperation(testDocToCreate, new PartitionKey(this.partitionKey1)));
+        operations.add(
+            BulkOperations.newReplaceItemOperation(testDocToReplace.getId(), testDocToReplace, new PartitionKey(this.partitionKey1)));
+        operations.add(
+            BulkOperations.newUpsertItemOperation(testDocToUpsert, new PartitionKey(this.partitionKey1)));
+        operations.add(
+            BulkOperations.newDeleteItemOperation(this.TestDocPk1ExistingC.getId(), new PartitionKey(this.partitionKey1)));
+
+        List<CosmosBulkOperationResponse<Object>> bulkResponses = bulkContainer.processBulkOperations(operations);
+
+        assertThat(bulkResponses.size()).isEqualTo(operations.size());
+
+        assertThat(bulkResponses.get(0).getResponse().getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+        assertThat(this.getSessionToken((bulkResponses.get(0).getResponse().getSessionToken())).getLSN())
+            .isGreaterThan(sessionToken.getLSN());
+
+        assertThat(bulkResponses.get(1).getResponse().getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(this.getSessionToken((bulkResponses.get(1).getResponse().getSessionToken())).getLSN())
+            .isGreaterThan(sessionToken.getLSN());
+
+        assertThat(bulkResponses.get(2).getResponse().getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+        assertThat(this.getSessionToken((bulkResponses.get(2).getResponse().getSessionToken())).getLSN())
+            .isGreaterThan(sessionToken.getLSN());
+
+        assertThat(bulkResponses.get(3).getResponse().getStatusCode()).isEqualTo(HttpResponseStatus.NO_CONTENT.code());
+        assertThat(this.getSessionToken((bulkResponses.get(2).getResponse().getSessionToken())).getLSN())
+            .isGreaterThan(sessionToken.getLSN());
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void bulkSContentResponseOnWriteTest() {
+        this.createJsonTestDocs(bulkContainer);
+
+        TestDoc testDocToCreate = this.populateTestDoc(this.partitionKey1);
+        TestDoc testDocToReplace = this.getTestDocCopy(this.TestDocPk1ExistingA);
+        testDocToReplace.setCost(testDocToReplace.getCost() + 1);
+        TestDoc testDocToUpsert = this.populateTestDoc(this.partitionKey1);
+
+        BulkItemRequestOptions contentResponseDisableRequestOption = new BulkItemRequestOptions()
+            .setContentResponseOnWriteEnabled(false);
+
+        List<CosmosItemOperation> operations = new ArrayList<>();
+        operations.add(
+            BulkOperations.newCreateItemOperation(testDocToCreate, new PartitionKey(this.partitionKey1)));
+
+        operations.add(
+            BulkOperations.newReplaceItemOperation(
+                testDocToReplace.getId(),
+                testDocToReplace,
+                new PartitionKey(this.partitionKey1),
+                contentResponseDisableRequestOption));
+
+        operations.add(
+            BulkOperations.newUpsertItemOperation(
+                testDocToUpsert,
+                new PartitionKey(this.partitionKey1),
+                contentResponseDisableRequestOption));
+
+        operations.add(
+            BulkOperations.newDeleteItemOperation(this.TestDocPk1ExistingC.getId(), new PartitionKey(this.partitionKey1)));
+
+        operations.add(BulkOperations.newReadItemOperation(
+            this.TestDocPk1ExistingD.getId(),
+            new PartitionKey(this.partitionKey1),
+            contentResponseDisableRequestOption));
+
+        operations.add(BulkOperations.newReadItemOperation(this.TestDocPk1ExistingB.getId(), new PartitionKey(this.partitionKey1)));
+
+        List<CosmosBulkOperationResponse<Object>> bulkResponses = bulkContainer.processBulkOperations(operations);
+        assertThat(bulkResponses.size()).isEqualTo(operations.size());
+
+        assertThat(bulkResponses.get(0).getResponse().getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+        assertThat(bulkResponses.get(0).getResponse().getItem(TestDoc.class)).isEqualTo(testDocToCreate);
+
+        assertThat(bulkResponses.get(1).getResponse().getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(bulkResponses.get(1).getResponse().getItem(TestDoc.class)).isNull();
+
+        assertThat(bulkResponses.get(2).getResponse().getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+        assertThat(bulkResponses.get(2).getResponse().getItem(TestDoc.class)).isNull();
+
+        assertThat(bulkResponses.get(3).getResponse().getStatusCode()).isEqualTo(HttpResponseStatus.NO_CONTENT.code());
+        assertThat(bulkResponses.get(3).getResponse().getItem(TestDoc.class)).isNull(); // by default null
+
+        assertThat(bulkResponses.get(4).getResponse().getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        // Doesn't matter for read, it will still return the response
+        assertThat(bulkResponses.get(4).getResponse().getItem(TestDoc.class)).isEqualTo(this.TestDocPk1ExistingD);
+
+        assertThat(bulkResponses.get(5).getResponse().getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(bulkResponses.get(5).getResponse().getItem(TestDoc.class)).isEqualTo(this.TestDocPk1ExistingB);
     }
 }

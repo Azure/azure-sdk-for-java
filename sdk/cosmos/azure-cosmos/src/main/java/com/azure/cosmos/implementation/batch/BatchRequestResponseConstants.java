@@ -7,7 +7,7 @@ package com.azure.cosmos.implementation.batch;
  * This contains all the extra constants needed for batch/bulk. This will be usefull even if Hybrid row comes in.
  * This contains all the constants we have in Backend. Any addition to backend should be added here.
  */
-public final class BatchRequestResponseConstant {
+public final class BatchRequestResponseConstants {
 
     // Size limits:
     public static final int MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES = 220201;

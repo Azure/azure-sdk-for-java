@@ -39,10 +39,10 @@ public class PartitionKeyRangeServerBatchRequestTests {
         }};
 
         ServerOperationBatchRequest serverOperationBatchRequest = PartitionKeyRangeServerBatchRequest.createBatchRequest(
-        "0",
+            "0",
             operations,
-        200000,
-        2);
+            200000,
+            2);
 
         assertThat(serverOperationBatchRequest.getBatchRequest().getOperations().size()).isEqualTo(operations.size());
         assertThat(serverOperationBatchRequest.getBatchRequest().getOperations()).isEqualTo(operations);

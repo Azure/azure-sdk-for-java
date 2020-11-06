@@ -3,7 +3,7 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.batch.BatchRequestResponseConstant;
+import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
 import com.azure.cosmos.util.Beta;
 import reactor.core.publisher.Flux;
 
@@ -15,9 +15,9 @@ import java.time.Duration;
  */
 @Beta(Beta.SinceVersion.V4_8_0)
 public final class BulkProcessingOptions<TContext> {
-    private int maxMicroBatchSize = BatchRequestResponseConstant.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
-    private int maxMicroBatchConcurrency = BatchRequestResponseConstant.DEFAULT_MAX_MICRO_BATCH_CONCURRENCY;
-    private Duration maxMicroBatchInterval = Duration.ofMillis(BatchRequestResponseConstant.DEFAULT_MAX_MICRO_BATCH_INTERVAL_IN_MILLISECONDS);
+    private int maxMicroBatchSize = BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
+    private int maxMicroBatchConcurrency = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_CONCURRENCY;
+    private Duration maxMicroBatchInterval = Duration.ofMillis(BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_INTERVAL_IN_MILLISECONDS);
     private final TContext batchContext;
 
     public BulkProcessingOptions(TContext batchContext) {

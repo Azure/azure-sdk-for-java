@@ -47,8 +47,8 @@ public class CosmosBulkItemResponseTest {
         ServerOperationBatchRequest serverOperationBatchRequest = PartitionKeyRangeServerBatchRequest.createBatchRequest(
             PartitionKey.NONE.toString(),
             Arrays.asList(arrayOperations),
-            BatchRequestResponseConstant.MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES,
-            BatchRequestResponseConstant.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST);
+            BatchRequestResponseConstants.MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES,
+            BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST);
 
         // Create dummy result
         TransactionalBatchOperationResult transactionalBatchOperationResult = BridgeInternal.createTransactionBatchResult(
@@ -133,8 +133,8 @@ public class CosmosBulkItemResponseTest {
         ServerOperationBatchRequest serverOperationBatchRequest = PartitionKeyRangeServerBatchRequest.createBatchRequest(
             PartitionKey.NONE.toString(),
             Arrays.asList(arrayOperations),
-            BatchRequestResponseConstant.MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES,
-            BatchRequestResponseConstant.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST);
+            BatchRequestResponseConstants.MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES,
+            BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST);
 
 
         // Create dummy result

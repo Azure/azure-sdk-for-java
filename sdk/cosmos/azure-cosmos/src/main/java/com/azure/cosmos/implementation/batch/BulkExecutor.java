@@ -35,6 +35,26 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
+/**
+ * The Core logic of bulk execution is here.
+ *
+ * The actual execution of the flux of operations. It is done in following steps:
+
+ * 1. Getting partition key range ID and grouping operations using that id.
+ * 2. For the flux of operations in a group, adding buffering based on size and a duration.
+ * 3. For the operation we get in after buffering, process it using a batch request and return
+ *    a wrapper having request, response(if-any) and exception(if-any). Either response or exception will be there.
+ *
+ * 4. Any internal retry is done by adding in an intermediate sink for each grouped flux.
+ * 5. Any operation which failed due to partition key range gone is retried by putting it in the main sink which leads
+ *    to re-calculation of partition key range id.
+ * 6. At the end and this is very essential, we close all the sinks as the sink continues to waits for more and the
+ *    execution isn't finished even if all the operations have been executed(figured out by completion call of source)
+ *    Sink will more to a new interface from 3.5 and this is documentation for it:
+ *    * https://github.com/reactor/reactor-core/blob/master/docs/asciidoc/processors.adoc
+ *
+ *    For our use case, Sinks.many().unicast() will work.
+ */
 public final class BulkExecutor<TContext> {
 
     private final static Logger logger = LoggerFactory.getLogger(BulkExecutor.class);
@@ -85,17 +105,6 @@ public final class BulkExecutor<TContext> {
         groupSinks = new ArrayList<>();
     }
 
-    /**
-     * The actual execution of the flux of operations. It is done in 5 steps:
-
-     * 1. Getting partition key range ID and grouping operations using that id.
-     * 2. For the flux of operations in a group, adding buffering based on size and a duration.
-     * 3. For the operation we get in after buffering, process it using a batch request and return
-     *    a wrapper having request, response(if-any) and exception(if-any). Either response or exception will be there.
-     *
-     * 4. Any internal retry is done by adding in an intermediate sink for each grouped flux.
-     * 5. Any operation which failed due to partition key range gone is retried by re calculating it's range id.
-     */
     public Flux<CosmosBulkOperationResponse<TContext>> execute() {
 
         Flux<CosmosBulkOperationResponse<TContext>> responseFlux = this.inputOperations
@@ -106,7 +115,11 @@ public final class BulkExecutor<TContext> {
             .doOnNext((CosmosItemOperation cosmosItemOperation) -> {
 
                 // Set the retry policy before starting execution. Should only happens once.
-                BulkExecutorUtil.setRetryPolicyForBulk(cosmosItemOperation, this.throttlingRetryOptions);
+                BulkExecutorUtil.setRetryPolicyForBulk(
+                    docClientWrapper,
+                    this.container,
+                    cosmosItemOperation,
+                    this.throttlingRetryOptions);
 
                 totalCount.incrementAndGet();
             })
@@ -209,7 +222,7 @@ public final class BulkExecutor<TContext> {
 
         if (!operationResult.isSuccessStatusCode()) {
 
-            if(itemOperation instanceof ItemBulkOperation<?>) {
+            if (itemOperation instanceof ItemBulkOperation<?>) {
 
                 return ((ItemBulkOperation<?>) itemOperation).getRetryPolicy().shouldRetry(operationResult).flatMap(
                     result -> {
@@ -238,13 +251,13 @@ public final class BulkExecutor<TContext> {
         Throwable throwable,
         FluxSink<CosmosItemOperation> groupSink) {
 
-        if(throwable instanceof CosmosException && itemOperation instanceof ItemBulkOperation<?>) {
+        if (throwable instanceof CosmosException && itemOperation instanceof ItemBulkOperation<?>) {
             CosmosException cosmosException = (CosmosException) throwable;
             ItemBulkOperation<?> itemBulkOperation = (ItemBulkOperation<?>) itemOperation;
 
-            // First check if it failed due to split, so the operations need to go in a different group. If it is put in
-            // the mainSink.
-            if(cosmosException.getStatusCode() == HttpResponseStatus.GONE.code() &&
+            // First check if it failed due to split, so the operations need to go in a different pk range group. So
+            // add it in the mainSink.
+            if (cosmosException.getStatusCode() == HttpResponseStatus.GONE.code() &&
                 itemBulkOperation.getRetryPolicy().shouldRetryForGone(
                     cosmosException.getStatusCode(),
                     cosmosException.getSubStatusCode())) {
