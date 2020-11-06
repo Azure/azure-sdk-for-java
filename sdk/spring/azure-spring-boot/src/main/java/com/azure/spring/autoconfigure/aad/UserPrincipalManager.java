@@ -186,7 +186,7 @@ public class UserPrincipalManager {
     }
 
     private boolean isAADTenant(String tenant) {
-        if (tenant == null ) {
+        if (tenant == null) {
             return false;
         }
         return tenant.equals(aadAuthenticationProperties.getTenantId());
@@ -206,10 +206,10 @@ public class UserPrincipalManager {
         //TODO: would it make sense to inject it? and make it configurable or even allow to provide own implementation
         jwtProcessor.setJWTClaimsSetVerifier(new DefaultJWTClaimsVerifier<SecurityContext>() {
             @Override
-            public void verify(JWTClaimsSet claimsSet, SecurityContext ctx) throws BadJWTException{
+            public void verify(JWTClaimsSet claimsSet, SecurityContext ctx) throws BadJWTException {
                 super.verify(claimsSet, ctx);
                 final String issuer = claimsSet.getIssuer();
-                final String tenant = (String)claimsSet.getClaim(AADTokenClaim.TID);
+                final String tenant = (String) claimsSet.getClaim(AADTokenClaim.TID);
                 if (!isAADIssuer(issuer)) {
                     throw new BadJWTException("Invalid token issuer");
                 }
@@ -231,7 +231,7 @@ public class UserPrincipalManager {
                     throw new BadJWTException("Invalid token tenant. Provided value " + tenant
                         + " does not match neither tenant.");
                 }
-                if(!aadAuthenticationProperties.getAllowedTenantIds().isEmpty() && !isAllowedTenantId(tenant)){
+                if (!aadAuthenticationProperties.getAllowedTenantIds().isEmpty() && !isAllowedTenantId(tenant)) {
                     throw new BadJWTException("Invalid token tenantId. Provided value " + tenant
                         + " does not allow multi-tenant id.");
                 }

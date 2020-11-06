@@ -68,7 +68,7 @@ public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
         try {
             final UserPrincipal userPrincipal = principalManager.buildUserPrincipal(aadIssuedBearerToken);
             Set<SimpleGrantedAuthority> authorities = toSimpleGrantedAuthoritySet(userPrincipal);
-            if(userPrincipal.getClaim(AADTokenClaim.SCP) != null){
+            if (userPrincipal.getClaim(AADTokenClaim.SCP) != null) {
                 authorities.addAll(scopeToSimpleGrantedAuthoritySet(userPrincipal));
             }
             final Authentication authentication = new PreAuthenticatedAuthenticationToken(
@@ -116,8 +116,8 @@ public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
 
     protected Set<SimpleGrantedAuthority> scopeToSimpleGrantedAuthoritySet(UserPrincipal userPrincipal) {
         Set<SimpleGrantedAuthority> scopeSimpleGrantedAuthoritySet =
-            Optional.of(((String)userPrincipal.getClaim(AADTokenClaim.SCP)))
-                .map(scopes->scopes.split(" "))
+            Optional.of(((String) userPrincipal.getClaim(AADTokenClaim.SCP)))
+                .map(scopes -> scopes.split(" "))
                 .map(Arrays::stream)
                 .orElseGet(Stream::empty)
                 .filter(StringUtils::hasText)

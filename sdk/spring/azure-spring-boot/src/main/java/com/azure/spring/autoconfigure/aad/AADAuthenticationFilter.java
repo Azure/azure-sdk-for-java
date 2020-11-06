@@ -131,7 +131,7 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
             }
             Set<SimpleGrantedAuthority> authorities = azureADGraphClient
                 .toGrantedAuthoritySet(userPrincipal.getGroups());
-            if(userPrincipal.getClaim(AADTokenClaim.SCP) != null){
+            if (userPrincipal.getClaim(AADTokenClaim.SCP) != null) {
                 authorities.addAll(scopeToSimpleGrantedAuthoritySet(userPrincipal));
             }
             final Authentication authentication = new PreAuthenticatedAuthenticationToken(
@@ -173,8 +173,8 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
 
     protected Set<SimpleGrantedAuthority> scopeToSimpleGrantedAuthoritySet(UserPrincipal userPrincipal) {
         Set<SimpleGrantedAuthority> scopeSimpleGrantedAuthoritySet =
-            Optional.of(((String)userPrincipal.getClaim(AADTokenClaim.SCP)))
-                .map(scopes->scopes.split(" "))
+            Optional.of(((String) userPrincipal.getClaim(AADTokenClaim.SCP)))
+                .map(scopes -> scopes.split(" "))
                 .map(Arrays::stream)
                 .orElseGet(Stream::empty)
                 .filter(StringUtils::hasText)
