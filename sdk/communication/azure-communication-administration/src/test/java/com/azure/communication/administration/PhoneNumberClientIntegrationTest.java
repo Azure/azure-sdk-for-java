@@ -13,7 +13,7 @@ import com.azure.communication.administration.models.NumberConfigurationResponse
 import com.azure.communication.administration.models.NumberUpdateCapabilities;
 import com.azure.communication.administration.models.PhoneNumberCountry;
 import com.azure.communication.administration.models.PhoneNumberEntity;
-import com.azure.communication.administration.models.PhoneNumberSearch;
+import com.azure.communication.administration.models.PhoneNumberReservation;
 import com.azure.communication.administration.models.PhonePlan;
 import com.azure.communication.administration.models.PhonePlanGroup;
 import com.azure.communication.administration.models.PstnConfiguration;
@@ -239,18 +239,18 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getSearchById(HttpClient httpClient) {
-        PhoneNumberSearch search = this.getClient(httpClient).getSearchById(SEARCH_ID);
+        PhoneNumberReservation search = this.getClient(httpClient).getSearchById(SEARCH_ID);
 
-        assertEquals(SEARCH_ID, search.getSearchId());
+        assertEquals(SEARCH_ID, search.getReservationId());
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getSearchByIdWithResponse(HttpClient httpClient) {
-        Response<PhoneNumberSearch> response = this.getClient(httpClient).getSearchByIdWithResponse(SEARCH_ID, Context.NONE);
+        Response<PhoneNumberReservation> response = this.getClient(httpClient).getSearchByIdWithResponse(SEARCH_ID, Context.NONE);
 
         assertEquals(200, response.getStatusCode());
-        assertEquals(SEARCH_ID, response.getValue().getSearchId());
+        assertEquals(SEARCH_ID, response.getValue().getReservationId());
     }
 
     @ParameterizedTest

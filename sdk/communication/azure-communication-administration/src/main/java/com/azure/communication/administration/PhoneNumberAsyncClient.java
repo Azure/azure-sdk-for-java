@@ -25,7 +25,7 @@ import com.azure.communication.administration.models.ReleaseResponse;
 import com.azure.communication.administration.models.ReleaseStatus;
 import com.azure.communication.administration.models.UpdateNumberCapabilitiesResponse;
 import com.azure.communication.administration.models.NumberConfiguration;
-import com.azure.communication.administration.models.PhoneNumberSearch;
+import com.azure.communication.administration.models.PhoneNumberReservation;
 import com.azure.communication.administration.models.SearchStatus;
 import com.azure.communication.administration.models.UpdateNumberCapabilitiesRequest;
 import com.azure.communication.administration.models.UpdatePhoneNumberCapabilitiesResponse;
@@ -602,10 +602,10 @@ public final class PhoneNumberAsyncClient {
      * Gets a search by ID.
      *
      * @param searchId ID of the search
-     * @return A {@link Mono} containing a {@link PhoneNumberSearch} representing the search.
+     * @return A {@link Mono} containing a {@link PhoneNumberReservation} representing the search.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumberSearch> getSearchById(String searchId) {
+    public Mono<PhoneNumberReservation> getSearchById(String searchId) {
         return getSearchByIdWithResponse(searchId).flatMap(FluxUtil::toMono);
     }
 
@@ -614,14 +614,14 @@ public final class PhoneNumberAsyncClient {
      *
      * @param searchId ID of the search
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue()} value returns
-     * a {@link PhoneNumberSearch} representing the search.
+     * a {@link PhoneNumberReservation} representing the search.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PhoneNumberSearch>> getSearchByIdWithResponse(String searchId) {
+    public Mono<Response<PhoneNumberReservation>> getSearchByIdWithResponse(String searchId) {
         return getSearchByIdWithResponse(searchId, null);
     }
 
-    Mono<Response<PhoneNumberSearch>> getSearchByIdWithResponse(String searchId, Context context) {
+    Mono<Response<PhoneNumberReservation>> getSearchByIdWithResponse(String searchId, Context context) {
         Objects.requireNonNull(searchId, "'searchId' cannot be null.");
 
         try {
@@ -765,17 +765,17 @@ public final class PhoneNumberAsyncClient {
     }
 
     /**
-     * Initiates a search and returns a {@link PhoneNumberSearch} usable by other functions
-     * This function returns a Long Running Operation poller that allows you to 
+     * Initiates a search and returns a {@link PhoneNumberReservation} usable by other functions
+     * This function returns a Long Running Operation poller that allows you to
      * wait indefinitely until the operation is complete.
-     * 
+     *
      * @param options A {@link CreateSearchOptions} with the search options
-     * @param pollInterval The time our long running operation will keep on polling 
+     * @param pollInterval The time our long running operation will keep on polling
      * until it gets a result from the server
      * @return A {@link PollerFlux} object with the search result
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<PhoneNumberSearch, PhoneNumberSearch> beginCreateSearch(
+    public PollerFlux<PhoneNumberReservation, PhoneNumberReservation> beginCreateSearch(
         CreateSearchOptions options, Duration pollInterval) {
         Objects.requireNonNull(options, "'options' cannot be null.");
 
@@ -783,33 +783,33 @@ public final class PhoneNumberAsyncClient {
             pollInterval = defaultPollInterval;
         }
 
-        return new PollerFlux<PhoneNumberSearch, PhoneNumberSearch>(pollInterval,
+        return new PollerFlux<PhoneNumberReservation, PhoneNumberReservation>(pollInterval,
             createSearchActivationOperation(options),
             createSearchPollOperation(),
             cancelSearchOperation(),
             createSearchFetchResultOperation());
     }
 
-    private Function<PollingContext<PhoneNumberSearch>, Mono<PhoneNumberSearch>> 
+    private Function<PollingContext<PhoneNumberReservation>, Mono<PhoneNumberReservation>>
         createSearchActivationOperation(CreateSearchOptions options) {
         return (pollingContext) -> {
-            Mono<PhoneNumberSearch> response = createSearch(options).flatMap(createSearchResponse -> {
+            Mono<PhoneNumberReservation> response = createSearch(options).flatMap(createSearchResponse -> {
                 String searchId = createSearchResponse.getSearchId();
-                Mono<PhoneNumberSearch> phoneNumberSearch = getSearchById(searchId);
+                Mono<PhoneNumberReservation> phoneNumberSearch = getSearchById(searchId);
                 return phoneNumberSearch;
             });
             return response;
         };
     }
 
-    private Function<PollingContext<PhoneNumberSearch>, Mono<PollResponse<PhoneNumberSearch>>> 
+    private Function<PollingContext<PhoneNumberReservation>, Mono<PollResponse<PhoneNumberReservation>>>
         createSearchPollOperation() {
         return pollingContext ->
-            getSearchById(pollingContext.getLatestResponse().getValue().getSearchId())
+            getSearchById(pollingContext.getLatestResponse().getValue().getReservationId())
                 .flatMap(getSearchResponse -> {
                     SearchStatus status = getSearchResponse.getStatus();
-                    if (status.equals(SearchStatus.EXPIRED) 
-                        || status.equals(SearchStatus.CANCELLED) 
+                    if (status.equals(SearchStatus.EXPIRED)
+                        || status.equals(SearchStatus.CANCELLED)
                         || status.equals(SearchStatus.RESERVED)) {
                         return Mono.just(new PollResponse<>(
                         LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, getSearchResponse));
@@ -822,17 +822,17 @@ public final class PhoneNumberAsyncClient {
                 });
     }
 
-    private BiFunction<PollingContext<PhoneNumberSearch>,
-        PollResponse<PhoneNumberSearch>, Mono<PhoneNumberSearch>> 
+    private BiFunction<PollingContext<PhoneNumberReservation>,
+        PollResponse<PhoneNumberReservation>, Mono<PhoneNumberReservation>>
         cancelSearchOperation() {
         return (pollingContext, firstResponse) -> {
-            cancelSearch(pollingContext.getLatestResponse().getValue().getSearchId());
+            cancelSearch(pollingContext.getLatestResponse().getValue().getReservationId());
             return Mono.just(pollingContext.getLatestResponse().getValue());
         };
     }
 
-    private Function<PollingContext<PhoneNumberSearch>,
-        Mono<PhoneNumberSearch>> createSearchFetchResultOperation() {
+    private Function<PollingContext<PhoneNumberReservation>,
+        Mono<PhoneNumberReservation>> createSearchFetchResultOperation() {
         return pollingContext -> {
             return Mono.just(pollingContext.getLatestResponse().getValue());
         };
@@ -840,11 +840,11 @@ public final class PhoneNumberAsyncClient {
 
     /**
      * Initiates a purchase process and polls until a terminal state is reached
-     * This function returns a Long Running Operation poller that allows you to 
+     * This function returns a Long Running Operation poller that allows you to
      * wait indefinitely until the operation is complete.
      *
      * @param searchId ID of the search
-     * @param pollInterval The time our long running operation will keep on polling 
+     * @param pollInterval The time our long running operation will keep on polling
      * until it gets a result from the server
      * @return A {@link PollerFlux} object.
      */
@@ -852,7 +852,7 @@ public final class PhoneNumberAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<Void, Void> beginPurchaseSearch(String searchId, Duration pollInterval) {
         Objects.requireNonNull(searchId, "'searchId' can not be null.");
-        
+
         if (pollInterval == null) {
             pollInterval = defaultPollInterval;
         }
@@ -864,7 +864,7 @@ public final class PhoneNumberAsyncClient {
             purchaseSearchFetchResultOperation());
     }
 
-    private Function<PollingContext<Void>, 
+    private Function<PollingContext<Void>,
         Mono<Void>> purchaseSearchActivationOperation(String searchId) {
         return (pollingContext) -> {
             return purchaseSearch(searchId);
@@ -880,7 +880,7 @@ public final class PhoneNumberAsyncClient {
                     return Mono.just(new PollResponse<>(
                     LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null));
                 }
-                if (statusResponse.equals(SearchStatus.ERROR) 
+                if (statusResponse.equals(SearchStatus.ERROR)
                     || statusResponse.equals(SearchStatus.EXPIRED)) {
                     return Mono.just(new PollResponse<>(
                     LongRunningOperationStatus.FAILED, null));
@@ -899,16 +899,16 @@ public final class PhoneNumberAsyncClient {
 
  /**
      * Releases the given phone numbers.
-     * This function returns a Long Running Operation poller that allows you to 
+     * This function returns a Long Running Operation poller that allows you to
      * wait indefinitely until the operation is complete.
-     * 
+     *
      * @param phoneNumbers A list of {@link PhoneNumber} with the desired numbers to release
-     * @param pollInterval The time our long running operation will keep on polling 
+     * @param pollInterval The time our long running operation will keep on polling
      * until it gets a result from the server
      * @return A {@link PollerFlux} object with the release entity
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<PhoneNumberRelease, PhoneNumberRelease> 
+    public PollerFlux<PhoneNumberRelease, PhoneNumberRelease>
         beginReleasePhoneNumbers(List<PhoneNumber> phoneNumbers, Duration pollInterval) {
         Objects.requireNonNull(phoneNumbers, "'phoneNumbers' cannot be null.");
 
@@ -924,7 +924,7 @@ public final class PhoneNumberAsyncClient {
             releaseNumbersFetchResultOperation());
     }
 
-    private Function<PollingContext<PhoneNumberRelease>, Mono<PhoneNumberRelease>> 
+    private Function<PollingContext<PhoneNumberRelease>, Mono<PhoneNumberRelease>>
         releaseNumbersActivationOperation(List<PhoneNumber> phoneNumbers) {
         return (pollingContext) -> {
             Mono<PhoneNumberRelease> response = releasePhoneNumbers(phoneNumbers)
@@ -937,13 +937,13 @@ public final class PhoneNumberAsyncClient {
         };
     }
 
-    private Function<PollingContext<PhoneNumberRelease>, Mono<PollResponse<PhoneNumberRelease>>> 
+    private Function<PollingContext<PhoneNumberRelease>, Mono<PollResponse<PhoneNumberRelease>>>
         releaseNumbersPollOperation() {
         return pollingContext ->
             getReleaseById(pollingContext.getLatestResponse().getValue().getReleaseId())
                 .flatMap(getReleaseResponse -> {
                     ReleaseStatus status = getReleaseResponse.getStatus();
-                    if (status.equals(ReleaseStatus.COMPLETE) 
+                    if (status.equals(ReleaseStatus.COMPLETE)
                         || status.equals(ReleaseStatus.EXPIRED)) {
                         return Mono.just(new PollResponse<>(
                         LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, getReleaseResponse));

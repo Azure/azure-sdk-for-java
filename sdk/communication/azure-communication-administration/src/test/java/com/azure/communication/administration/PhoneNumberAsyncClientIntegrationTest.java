@@ -14,7 +14,7 @@ import com.azure.communication.administration.models.NumberUpdateCapabilities;
 import com.azure.communication.administration.models.PhoneNumberCountry;
 import com.azure.communication.administration.models.PhoneNumberEntity;
 import com.azure.communication.administration.models.PhoneNumberRelease;
-import com.azure.communication.administration.models.PhoneNumberSearch;
+import com.azure.communication.administration.models.PhoneNumberReservation;
 import com.azure.communication.administration.models.PhonePlan;
 import com.azure.communication.administration.models.PhonePlanGroup;
 import com.azure.communication.administration.models.PstnConfiguration;
@@ -51,7 +51,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
     named = "SKIP_PHONENUMBER_INTEGRATION_TESTS",
     matches = "(?i)(true)")
 public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegrationTestBase {
-   
+
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createAsyncPhoneNumberClientWithConnectionString(HttpClient httpClient) {
@@ -66,7 +66,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
             })
             .verifyComplete();
     }
-    
+
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void listAllPhoneNumbers(HttpClient httpClient) {
@@ -325,11 +325,11 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getSearchById(HttpClient httpClient) {
-        Mono<PhoneNumberSearch> mono = this.getClient(httpClient).getSearchById(SEARCH_ID);
+        Mono<PhoneNumberReservation> mono = this.getClient(httpClient).getSearchById(SEARCH_ID);
 
         StepVerifier.create(mono)
             .assertNext(item -> {
-                assertEquals(SEARCH_ID, item.getSearchId());
+                assertEquals(SEARCH_ID, item.getReservationId());
             })
             .verifyComplete();
     }
@@ -337,12 +337,12 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getSearchByIdWithResponse(HttpClient httpClient) {
-        Mono<Response<PhoneNumberSearch>> mono = this.getClient(httpClient).getSearchByIdWithResponse(SEARCH_ID, Context.NONE);
+        Mono<Response<PhoneNumberReservation>> mono = this.getClient(httpClient).getSearchByIdWithResponse(SEARCH_ID, Context.NONE);
 
         StepVerifier.create(mono)
             .assertNext(item -> {
                 assertEquals(200, item.getStatusCode());
-                assertEquals(SEARCH_ID, item.getValue().getSearchId());
+                assertEquals(SEARCH_ID, item.getValue().getReservationId());
             })
             .verifyComplete();
     }
@@ -467,15 +467,15 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
         Duration duration = Duration.ofSeconds(1);
         PhoneNumberAsyncClient client = this.getClient(httpClient);
-        PollerFlux<PhoneNumberSearch, PhoneNumberSearch> poller = 
+        PollerFlux<PhoneNumberReservation, PhoneNumberReservation> poller =
             client.beginCreateSearch(createSearchOptions, duration);
-        Mono<AsyncPollResponse<PhoneNumberSearch, PhoneNumberSearch>> asyncRes = poller.last();
+        Mono<AsyncPollResponse<PhoneNumberReservation, PhoneNumberReservation>> asyncRes = poller.last();
         StepVerifier.create(asyncRes)
             .assertNext(item -> {
                 assertEquals(item.getValue().getPhoneNumbers().size(), 2);
-                assertNotNull(item.getValue().getSearchId());
+                assertNotNull(item.getValue().getReservationId());
             })
-            .verifyComplete();        
+            .verifyComplete();
     }
 
     @ParameterizedTest
@@ -484,10 +484,10 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
         Duration pollInterval = Duration.ofSeconds(1);
         PhoneNumberAsyncClient client = this.getClient(httpClient);
         PollerFlux<Void, Void> poller =
-            client.beginPurchaseSearch(SEARCH_ID, pollInterval); 
+            client.beginPurchaseSearch(SEARCH_ID, pollInterval);
         poller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
             .blockLast();
-        Mono<PhoneNumberSearch> testResult = client.getSearchById(SEARCH_ID);
+        Mono<PhoneNumberReservation> testResult = client.getSearchById(SEARCH_ID);
         StepVerifier.create(testResult)
             .assertNext(item -> {
                 assertEquals(SearchStatus.SUCCESS, item.getStatus());
@@ -509,7 +509,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
             .assertNext(item -> {
                 assertEquals(ReleaseStatus.COMPLETE, item.getValue().getStatus());
             })
-            .verifyComplete();        
+            .verifyComplete();
     }
 
     private PhoneNumberAsyncClient getClient(HttpClient httpClient) {
