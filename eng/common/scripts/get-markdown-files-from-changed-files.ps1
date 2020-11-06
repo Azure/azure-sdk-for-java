@@ -7,6 +7,9 @@ param (
 $deletedFiles = (git diff origin/${env:SYSTEM_PULLREQUEST_TARGETBRANCH} HEAD --name-only --diff-filter=D)
 $renamedFiles = (git diff origin/${env:SYSTEM_PULLREQUEST_TARGETBRANCH} HEAD --diff-filter=R)
 $changedMarkdowns = (git diff origin/${env:SYSTEM_PULLREQUEST_TARGETBRANCH} HEAD --name-only -- '*.md')
+# Removed the deleted markdowns. 
+$changedMarkdowns = $changedMarkdowns |Where-Object { $deletedFiles -notcontains $_ }
+
 $beforeRenameFiles = @()
 # Retrieve the renamed from files.
 foreach($file in $renamedFiles) {
