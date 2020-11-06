@@ -71,7 +71,7 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
             asyncClient.beginBackup(blobStorageUrl, sasToken);
         String jobId = backupPollerFlux.blockFirst().getValue().getJobId();
 
-        PollerFlux<KeyVaultBackupOperation, String> backupStatusPollerFlux = asyncClient.getBackupOperation(jobId);
+        PollerFlux<KeyVaultBackupOperation, String> backupStatusPollerFlux = asyncClient.beginBackup(jobId);
 
         AsyncPollResponse<KeyVaultBackupOperation, String> backupPollResponse = backupPollerFlux.blockLast();
         AsyncPollResponse<KeyVaultBackupOperation, String> backupStatusPollResponse =
@@ -142,7 +142,7 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
 
         // Get job status via its ID
         String jobId = restorePollerFlux.blockFirst().getValue().getJobId();
-        PollerFlux<KeyVaultRestoreOperation, Void> restoreStatusPollerFlux = asyncClient.getRestoreOperation(jobId);
+        PollerFlux<KeyVaultRestoreOperation, Void> restoreStatusPollerFlux = asyncClient.beginRestore(jobId);
 
         AsyncPollResponse<KeyVaultRestoreOperation, Void> restorePollResponse = restorePollerFlux.blockLast();
         AsyncPollResponse<KeyVaultRestoreOperation, Void> restoreStatusPollResponse =

@@ -46,7 +46,7 @@ public class ResumeBackupAndRestoreAsync {
         /* At some later time, another client can use the persisted operation ID, check the status and retrieve the
         result of a previously started backup operation. */
         Mono<AsyncPollResponse<KeyVaultBackupOperation, String>> backupMono =
-            backupAsyncClient.getBackupOperation(backupJobId)
+            backupAsyncClient.beginBackup(backupJobId)
                 .doOnNext(pollResponse -> {
                     System.out.println("-----------------------------------------------------------------------------");
                     System.out.println(pollResponse.getStatus());
@@ -65,7 +65,7 @@ public class ResumeBackupAndRestoreAsync {
 
         /* Similarly to as with backup operations, you can check the status and retrieve the result of a previously
         started restore operation. */
-        backupAsyncClient.getRestoreOperation(restoreJobId)
+        backupAsyncClient.beginRestore(restoreJobId)
             .doOnNext(pollResponse -> {
                 System.out.println("-----------------------------------------------------------------------------");
                 System.out.println(pollResponse.getStatus());

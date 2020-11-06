@@ -255,10 +255,10 @@ public final class KeyVaultBackupAsyncClient {
      *
      * @param jobId The operation identifier.
      * @throws NullPointerException if the {@code jobId} is null.
-     * @return A {@link PollerFlux} polling on the {@link KeyVaultRestoreOperation backup operation} status.
+     * @return A {@link PollerFlux} polling on the {@link KeyVaultBackupOperation backup operation} status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<KeyVaultBackupOperation, String> getBackupOperation(String jobId) {
+    public PollerFlux<KeyVaultBackupOperation, String> beginBackup(String jobId) {
         Objects.requireNonNull(jobId,
             String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
                 "'jobId'"));
@@ -297,7 +297,7 @@ public final class KeyVaultBackupAsyncClient {
      * the blob container where the backup resides. This would be the exact value that is returned as the result of a
      * backup operation. An example of such a URL may look like the following: https://contoso.blob.core.windows.net/backup/mhsm-contoso-2020090117323313.
      * @param sasToken A Shared Access Signature (SAS) token to authorize access to the blob.
-     * @return A {@link PollerFlux} polling on the {@link KeyVaultRestoreOperation backup operation} status.
+     * @return A {@link PollerFlux} polling on the {@link KeyVaultRestoreOperation restore operation} status.
      * @throws NullPointerException if the {@code backupFolderUrl} or {@code sasToken} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -313,7 +313,7 @@ public final class KeyVaultBackupAsyncClient {
      * backup operation. An example of such a URL may look like the following: https://contoso.blob.core.windows.net/backup/mhsm-contoso-2020090117323313.
      * @param sasToken A Shared Access Signature (SAS) token to authorize access to the blob.
      * @param pollingInterval The interval at which the operation status will be polled for.
-     * @return A {@link PollerFlux} polling on the {@link KeyVaultRestoreOperation backup operation} status.
+     * @return A {@link PollerFlux} polling on the {@link KeyVaultRestoreOperation restore operation} status.
      * @throws NullPointerException if the {@code backupFolderUrl} or {@code sasToken} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -431,14 +431,14 @@ public final class KeyVaultBackupAsyncClient {
     }
 
     /**
-     * Gets a pending {@link KeyVaultRestoreOperation full or selective restore operation} from the Key Vault.
+     * Gets a pending {@link KeyVaultRestoreOperation full restore operation} from the Key Vault.
      *
      * @param jobId The operation identifier.
      * @throws NullPointerException if the {@code jobId} is null.
      * @return A {@link PollerFlux} polling on the {@link KeyVaultRestoreOperation restore operation} status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<KeyVaultRestoreOperation, Void> getRestoreOperation(String jobId) {
+    public PollerFlux<KeyVaultRestoreOperation, Void> beginRestore(String jobId) {
         Objects.requireNonNull(jobId,
             String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
                 "'jobId'"));
@@ -479,7 +479,7 @@ public final class KeyVaultBackupAsyncClient {
      * the blob container where the backup resides. This would be the exact value that is returned as the result of a
      * backup operation. An example of such a URL may look like the following: https://contoso.blob.core.windows.net/backup/mhsm-contoso-2020090117323313.
      * @param sasToken A Shared Access Signature (SAS) token to authorize access to the blob.
-     * @return A {@link PollerFlux} polling on the {@link KeyVaultRestoreOperation backup operation} status.
+     * @return A {@link PollerFlux} polling on the {@link KeyVaultRestoreOperation restore operation} status.
      * @throws NullPointerException if the {@code keyName}, {@code backupFolderUrl} or {@code sasToken} are {@code
      * null}.
      */
@@ -498,7 +498,7 @@ public final class KeyVaultBackupAsyncClient {
      * backup operation. An example of such a URL may look like the following: https://contoso.blob.core.windows.net/backup/mhsm-contoso-2020090117323313.
      * @param sasToken A Shared Access Signature (SAS) token to authorize access to the blob.
      * @param pollingInterval The interval at which the operation status will be polled for.
-     * @return A {@link PollerFlux} polling on the {@link KeyVaultRestoreOperation backup operation} status.
+     * @return A {@link PollerFlux} polling on the {@link KeyVaultRestoreOperation restore operation} status.
      * @throws NullPointerException if the {@code keyName}, {@code backupFolderUrl} or {@code sasToken} are {@code
      * null}.
      */
@@ -519,6 +519,18 @@ public final class KeyVaultBackupAsyncClient {
             selectiveRestorePollOperation(),
             (pollingContext, firstResponse) -> Mono.empty(),
             (pollingContext) -> Mono.empty());
+    }
+
+    /**
+     * Gets a pending {@link KeyVaultRestoreOperation selective restore operation} from the Key Vault.
+     *
+     * @param jobId The operation identifier.
+     * @throws NullPointerException if the {@code jobId} is null.
+     * @return A {@link PollerFlux} polling on the {@link KeyVaultRestoreOperation restore operation} status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<KeyVaultRestoreOperation, Void> beginSelectiveRestore(String jobId) {
+        return beginRestore(jobId);
     }
 
     /**

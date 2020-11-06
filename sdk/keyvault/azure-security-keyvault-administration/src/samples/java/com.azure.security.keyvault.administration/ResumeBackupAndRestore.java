@@ -45,7 +45,7 @@ public class ResumeBackupAndRestore {
         /* At some later time, another client can use the persisted operation ID, check the status and retrieve the
         result of a previously started backup operation. */
         SyncPoller<KeyVaultBackupOperation, String> anotherBackupPoller =
-            backupClient.getBackupOperation(backupJobId);
+            backupClient.beginBackup(backupJobId);
 
         anotherBackupPoller.waitForCompletion();
 
@@ -61,7 +61,7 @@ public class ResumeBackupAndRestore {
         /* Similarly to as with backup operations, you can check the status and retrieve the result of a previously
         started restore operation. */
         SyncPoller<KeyVaultRestoreOperation, Void> anotherRestorePoller =
-            backupClient.getRestoreOperation(restoreJobId);
+            backupClient.beginRestore(restoreJobId);
 
         anotherRestorePoller.waitForCompletion();
     }

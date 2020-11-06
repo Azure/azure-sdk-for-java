@@ -69,7 +69,7 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
         SyncPoller<KeyVaultBackupOperation, String> backupPoller = client.beginBackup(blobStorageUrl, sasToken);
         String jobId = backupPoller.poll().getValue().getJobId();
 
-        SyncPoller<KeyVaultBackupOperation, String> backupStatusPoller = client.getBackupOperation(jobId);
+        SyncPoller<KeyVaultBackupOperation, String> backupStatusPoller = client.beginBackup(jobId);
 
         KeyVaultBackupOperation backupOperation = backupPoller.waitForCompletion().getValue();
         KeyVaultBackupOperation backupStatusOperation = backupStatusPoller.waitForCompletion().getValue();
@@ -137,7 +137,7 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
 
         // Get job status via its ID
         String jobId = restorePoller.poll().getValue().getJobId();
-        SyncPoller<KeyVaultRestoreOperation, Void> restoreStatusPoller = client.getRestoreOperation(jobId);
+        SyncPoller<KeyVaultRestoreOperation, Void> restoreStatusPoller = client.beginRestore(jobId);
 
         KeyVaultRestoreOperation restoreOperation = restorePoller.waitForCompletion().getValue();
         KeyVaultRestoreOperation restoreStatusOperation = restoreStatusPoller.waitForCompletion().getValue();
