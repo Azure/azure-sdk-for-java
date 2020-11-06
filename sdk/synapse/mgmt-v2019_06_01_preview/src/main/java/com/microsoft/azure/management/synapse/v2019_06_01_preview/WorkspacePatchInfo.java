@@ -36,6 +36,18 @@ public class WorkspacePatchInfo {
     private String sqlAdministratorLoginPassword;
 
     /**
+     * Managed Virtual Network Settings.
+     */
+    @JsonProperty(value = "properties.managedVirtualNetworkSettings")
+    private ManagedVirtualNetworkSettings managedVirtualNetworkSettings;
+
+    /**
+     * Babylon Configuration.
+     */
+    @JsonProperty(value = "properties.babylonConfiguration")
+    private BabylonConfiguration babylonConfiguration;
+
+    /**
      * Resource provisioning state.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
@@ -98,6 +110,46 @@ public class WorkspacePatchInfo {
      */
     public WorkspacePatchInfo withSqlAdministratorLoginPassword(String sqlAdministratorLoginPassword) {
         this.sqlAdministratorLoginPassword = sqlAdministratorLoginPassword;
+        return this;
+    }
+
+    /**
+     * Get managed Virtual Network Settings.
+     *
+     * @return the managedVirtualNetworkSettings value
+     */
+    public ManagedVirtualNetworkSettings managedVirtualNetworkSettings() {
+        return this.managedVirtualNetworkSettings;
+    }
+
+    /**
+     * Set managed Virtual Network Settings.
+     *
+     * @param managedVirtualNetworkSettings the managedVirtualNetworkSettings value to set
+     * @return the WorkspacePatchInfo object itself.
+     */
+    public WorkspacePatchInfo withManagedVirtualNetworkSettings(ManagedVirtualNetworkSettings managedVirtualNetworkSettings) {
+        this.managedVirtualNetworkSettings = managedVirtualNetworkSettings;
+        return this;
+    }
+
+    /**
+     * Get babylon Configuration.
+     *
+     * @return the babylonConfiguration value
+     */
+    public BabylonConfiguration babylonConfiguration() {
+        return this.babylonConfiguration;
+    }
+
+    /**
+     * Set babylon Configuration.
+     *
+     * @param babylonConfiguration the babylonConfiguration value to set
+     * @return the WorkspacePatchInfo object itself.
+     */
+    public WorkspacePatchInfo withBabylonConfiguration(BabylonConfiguration babylonConfiguration) {
+        this.babylonConfiguration = babylonConfiguration;
         return this;
     }
 

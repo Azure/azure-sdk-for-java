@@ -20,6 +20,7 @@ import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation.SynapseManager;
 import java.util.Map;
 import java.util.List;
+import java.util.UUID;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation.PrivateEndpointConnectionInner;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation.WorkspaceInner;
 
@@ -27,6 +28,11 @@ import com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation
  * Type representing Workspace.
  */
 public interface Workspace extends HasInner<WorkspaceInner>, Resource, GroupableResourceCore<SynapseManager, WorkspaceInner>, HasResourceGroup, Refreshable<Workspace>, Updatable<Workspace.Update>, HasManager<SynapseManager> {
+    /**
+     * @return the babylonConfiguration value.
+     */
+    BabylonConfiguration babylonConfiguration();
+
     /**
      * @return the connectivityEndpoints value.
      */
@@ -36,6 +42,11 @@ public interface Workspace extends HasInner<WorkspaceInner>, Resource, Groupable
      * @return the defaultDataLakeStorage value.
      */
     DataLakeStorageAccountDetails defaultDataLakeStorage();
+
+    /**
+     * @return the encryption value.
+     */
+    EncryptionDetails encryption();
 
     /**
      * @return the extraProperties value.
@@ -56,6 +67,11 @@ public interface Workspace extends HasInner<WorkspaceInner>, Resource, Groupable
      * @return the managedVirtualNetwork value.
      */
     String managedVirtualNetwork();
+
+    /**
+     * @return the managedVirtualNetworkSettings value.
+     */
+    ManagedVirtualNetworkSettings managedVirtualNetworkSettings();
 
     /**
      * @return the privateEndpointConnections value.
@@ -83,6 +99,11 @@ public interface Workspace extends HasInner<WorkspaceInner>, Resource, Groupable
     VirtualNetworkProfile virtualNetworkProfile();
 
     /**
+     * @return the workspaceUID value.
+     */
+    UUID workspaceUID();
+
+    /**
      * The entirety of the Workspace definition.
      */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithCreate {
@@ -102,6 +123,18 @@ public interface Workspace extends HasInner<WorkspaceInner>, Resource, Groupable
          * The stage of the Workspace definition allowing to specify the resource group.
          */
         interface WithGroup extends GroupableResourceCore.DefinitionStages.WithGroup<WithCreate> {
+        }
+
+        /**
+         * The stage of the workspace definition allowing to specify BabylonConfiguration.
+         */
+        interface WithBabylonConfiguration {
+            /**
+             * Specifies babylonConfiguration.
+             * @param babylonConfiguration Babylon Configuration
+             * @return the next definition stage
+             */
+            WithCreate withBabylonConfiguration(BabylonConfiguration babylonConfiguration);
         }
 
         /**
@@ -126,6 +159,18 @@ public interface Workspace extends HasInner<WorkspaceInner>, Resource, Groupable
              * @return the next definition stage
              */
             WithCreate withDefaultDataLakeStorage(DataLakeStorageAccountDetails defaultDataLakeStorage);
+        }
+
+        /**
+         * The stage of the workspace definition allowing to specify Encryption.
+         */
+        interface WithEncryption {
+            /**
+             * Specifies encryption.
+             * @param encryption The encryption details of the workspace
+             * @return the next definition stage
+             */
+            WithCreate withEncryption(EncryptionDetails encryption);
         }
 
         /**
@@ -162,6 +207,18 @@ public interface Workspace extends HasInner<WorkspaceInner>, Resource, Groupable
              * @return the next definition stage
              */
             WithCreate withManagedVirtualNetwork(String managedVirtualNetwork);
+        }
+
+        /**
+         * The stage of the workspace definition allowing to specify ManagedVirtualNetworkSettings.
+         */
+        interface WithManagedVirtualNetworkSettings {
+            /**
+             * Specifies managedVirtualNetworkSettings.
+             * @param managedVirtualNetworkSettings Managed Virtual Network Settings
+             * @return the next definition stage
+             */
+            WithCreate withManagedVirtualNetworkSettings(ManagedVirtualNetworkSettings managedVirtualNetworkSettings);
         }
 
         /**
@@ -217,19 +274,31 @@ public interface Workspace extends HasInner<WorkspaceInner>, Resource, Groupable
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Workspace>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithConnectivityEndpoints, DefinitionStages.WithDefaultDataLakeStorage, DefinitionStages.WithIdentity, DefinitionStages.WithManagedResourceGroupName, DefinitionStages.WithManagedVirtualNetwork, DefinitionStages.WithPrivateEndpointConnections, DefinitionStages.WithSqlAdministratorLogin, DefinitionStages.WithSqlAdministratorLoginPassword, DefinitionStages.WithVirtualNetworkProfile {
+        interface WithCreate extends Creatable<Workspace>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithBabylonConfiguration, DefinitionStages.WithConnectivityEndpoints, DefinitionStages.WithDefaultDataLakeStorage, DefinitionStages.WithEncryption, DefinitionStages.WithIdentity, DefinitionStages.WithManagedResourceGroupName, DefinitionStages.WithManagedVirtualNetwork, DefinitionStages.WithManagedVirtualNetworkSettings, DefinitionStages.WithPrivateEndpointConnections, DefinitionStages.WithSqlAdministratorLogin, DefinitionStages.WithSqlAdministratorLoginPassword, DefinitionStages.WithVirtualNetworkProfile {
         }
     }
     /**
      * The template for a Workspace update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Workspace>, Resource.UpdateWithTags<Update>, UpdateStages.WithIdentity, UpdateStages.WithSqlAdministratorLoginPassword {
+    interface Update extends Appliable<Workspace>, Resource.UpdateWithTags<Update>, UpdateStages.WithBabylonConfiguration, UpdateStages.WithIdentity, UpdateStages.WithManagedVirtualNetworkSettings, UpdateStages.WithSqlAdministratorLoginPassword {
     }
 
     /**
      * Grouping of Workspace update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the workspace update allowing to specify BabylonConfiguration.
+         */
+        interface WithBabylonConfiguration {
+            /**
+             * Specifies babylonConfiguration.
+             * @param babylonConfiguration Babylon Configuration
+             * @return the next update stage
+             */
+            Update withBabylonConfiguration(BabylonConfiguration babylonConfiguration);
+        }
+
         /**
          * The stage of the workspace update allowing to specify Identity.
          */
@@ -240,6 +309,18 @@ public interface Workspace extends HasInner<WorkspaceInner>, Resource, Groupable
              * @return the next update stage
              */
             Update withIdentity(ManagedIdentity identity);
+        }
+
+        /**
+         * The stage of the workspace update allowing to specify ManagedVirtualNetworkSettings.
+         */
+        interface WithManagedVirtualNetworkSettings {
+            /**
+             * Specifies managedVirtualNetworkSettings.
+             * @param managedVirtualNetworkSettings Managed Virtual Network Settings
+             * @return the next update stage
+             */
+            Update withManagedVirtualNetworkSettings(ManagedVirtualNetworkSettings managedVirtualNetworkSettings);
         }
 
         /**
