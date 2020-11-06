@@ -27,7 +27,7 @@ import com.microsoft.azure.management.compute.v2020_06_01.Plan;
 import java.util.List;
 import com.microsoft.azure.management.compute.v2020_06_01.VirtualMachineScaleSetVMInstanceView;
 import java.util.ArrayList;
-import com.microsoft.azure.management.compute.v2020_06_01.VirtualMachineVirtualMachineExtension;
+import com.microsoft.azure.management.compute.v2020_06_01.VirtualMachineExtension;
 
 class VirtualMachineScaleSetVMImpl extends CreatableUpdatableImpl<VirtualMachineScaleSetVM, VirtualMachineScaleSetVMInner, VirtualMachineScaleSetVMImpl> implements VirtualMachineScaleSetVM, VirtualMachineScaleSetVM.Update {
     private final ComputeManager manager;
@@ -181,11 +181,11 @@ class VirtualMachineScaleSetVMImpl extends CreatableUpdatableImpl<VirtualMachine
     }
 
     @Override
-    public List<VirtualMachineVirtualMachineExtension> resources() {
-        List<VirtualMachineVirtualMachineExtension> lst = new ArrayList<VirtualMachineVirtualMachineExtension>();
+    public List<VirtualMachineExtension> resources() {
+        List<VirtualMachineExtension> lst = new ArrayList<VirtualMachineExtension>();
         if (this.inner().resources() != null) {
             for (VirtualMachineExtensionInner inner : this.inner().resources()) {
-                lst.add( new VirtualMachineVirtualMachineExtensionImpl(inner, manager()));
+                lst.add( new VirtualMachineExtensionImpl(inner, manager()));
             }
         }
         return lst;
