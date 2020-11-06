@@ -26,7 +26,7 @@ public interface IntegrationRuntimeObjectMetadatas extends HasInner<IntegrationR
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<SsisObjectMetadataListResponse> getAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName);
+    Observable<SsisObjectMetadataListResponse> listAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName);
 
     /**
      * Refresh integration runtime object metadata.
