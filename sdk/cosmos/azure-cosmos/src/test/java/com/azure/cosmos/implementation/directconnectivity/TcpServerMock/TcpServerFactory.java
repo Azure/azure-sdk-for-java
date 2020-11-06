@@ -3,9 +3,13 @@
 
 package com.azure.cosmos.implementation.directconnectivity.TcpServerMock;
 
+import io.netty.util.concurrent.DefaultPromise;
+import io.netty.util.concurrent.GlobalEventExecutor;
+import io.netty.util.concurrent.Promise;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -14,21 +18,28 @@ public class TcpServerFactory {
     private final static ExecutorService executor = Executors.newFixedThreadPool(10);
     private final static Logger logger = LoggerFactory.getLogger(TcpServerFactory.class);
 
-    public static TcpServer startNewRntbdServer(int port) {
+    public static TcpServer startNewRntbdServer(int port) throws ExecutionException, InterruptedException {
         TcpServer server = new TcpServer(port);
+
+        Promise promise = new DefaultPromise(GlobalEventExecutor.INSTANCE);
         executor.execute(() -> {
             try {
-                server.start();
+                server.start(promise);
             } catch (InterruptedException e) {
                 logger.error("Failed to start server {}", e);
             }
         });
 
-        // Change to only return server when server started.
+        // only return server when server has started successfully.
+        promise.get();
         return server;
     }
 
-    public static void shutdownRntbdServer(TcpServer server) {
-        executor.execute(server::shutdown);
+    public static void shutdownRntbdServer(TcpServer server) throws ExecutionException, InterruptedException {
+        Promise promise = new DefaultPromise(GlobalEventExecutor.INSTANCE);
+        executor.execute(() -> server.shutdown(promise));
+        // only return when server has shutdown.
+        promise.get();
+        return;
     }
 }

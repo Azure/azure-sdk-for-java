@@ -25,6 +25,7 @@ import org.testng.annotations.Test;
 
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 
@@ -46,7 +47,11 @@ public class ConnectionStateListenerTest {
     }
 
     @Test(groups = { "unit" }, dataProvider = "connectionStateListenerConfigProvider")
-    public void connectionStateListener_OnConnectionEvent(boolean isTcpConnectionEndpointRediscoveryEnabled, RequestResponseType responseType, int times) {
+    public void connectionStateListener_OnConnectionEvent(
+        boolean isTcpConnectionEndpointRediscoveryEnabled,
+        RequestResponseType responseType,
+        int times) throws ExecutionException, InterruptedException {
+
         TcpServer server = TcpServerFactory.startNewRntbdServer(port);
         // Inject fake response
         server.injectServerResponse(responseType);

@@ -43,6 +43,7 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslHandler;
+import io.netty.util.concurrent.Promise;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,7 +65,7 @@ public class TcpServer {
         requestManager = new ServerRntbdRequestManager();
     }
 
-    public void start() throws InterruptedException {
+    public void start(Promise promise) throws InterruptedException {
 
         SslContext sslContext = SslContextUtils.CreateSslContext(SERVER_KEYSTORE, true);
         Utils.checkNotNullOrThrow(sslContext, "sslContext", "");
@@ -112,7 +113,7 @@ public class TcpServer {
                         "{} started and listening for connections on {}",
                         TcpServer.class.getSimpleName(),
                         f.channel().localAddress());
-
+                    promise.setSuccess(Boolean.TRUE);
                 }
             });
 
@@ -126,12 +127,14 @@ public class TcpServer {
         }
     }
 
-    public void shutdown() {
+    public void shutdown(Promise promise) {
         try {
             parent.shutdownGracefully().sync();
             child.shutdownGracefully().sync();
+            promise.setSuccess(Boolean.TRUE);
         } catch (InterruptedException e) {
             logger.error("Error when shutting down server {}", e);
+            promise.setFailure(e);
         }
     }
 
