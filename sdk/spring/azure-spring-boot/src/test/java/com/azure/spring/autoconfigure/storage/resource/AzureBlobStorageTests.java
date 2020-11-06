@@ -3,8 +3,6 @@
 
 package com.azure.spring.autoconfigure.storage.resource;
 
-import com.azure.spring.autoconfigure.storage.resource.AzureStorageProtocolResolver;
-import com.azure.spring.autoconfigure.storage.resource.BlobStorageResource;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;

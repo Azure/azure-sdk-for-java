@@ -9,6 +9,9 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
+/**
+ * Storage properties.
+ */
 @Validated
 @ConfigurationProperties("azure.storage")
 public class StorageProperties {
