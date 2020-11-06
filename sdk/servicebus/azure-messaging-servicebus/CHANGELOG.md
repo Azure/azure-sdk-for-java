@@ -7,13 +7,28 @@
 - Added auto complete feature to the async receiver clients. Once the client completes executing the user provided 
   callback for a message, the message will be completed. If the user provided callback throws an error, the message 
   will be abandoned.
-- An intermediate SessionReceiverClient is introduced to act as the factory which can then be used to accept sessions 
-  from the service. Accepting a session would give you the familiar receiver client tied to a single session.
-- Added ServiceBusProcessorClient which takes your callbacks to process messages and errors in an infinite loop. This 
+- An intermediate `ServiceBusSessionReceiverClient` is introduced to act as the factory which can then be used to accept 
+   sessions from the service. Accepting a session would give you the familiar receiver client tied to a single session.
+- Added `ServiceBusProcessorClient` which takes your callbacks to process messages and errors in an infinite loop. This 
   also supports working with sessions where you can provide the maximum number of sessions to work with concurrently. 
   When the client no longer receives any messages from one session, it rolls over to the next available session.
+- Added `BinaryData` in `ServiceBusReceivedMessage` and `ServiceBusMessage`. `BinaryData` is convenience wrapper over
+  byte array and provides object serialization functionality.
+- Added `ServicebusReceiverException` and `ServiceBusErrorSource` to provide better handling of errors while receiving 
+  messages.
 
 ### Breaking Changes
+- Changed `receiveMessages` API to return `ServiceBusReceivedMessage` instead of ServiceBusReceivedMessageContext in 
+  `ServiceBusReceiverAsynClient` and `ServiceBusReceiverClient`.
+- Removed `SendVia` option from `ServiceBusClientBuilder`. See issue for more detail 
+  [16942](https://github.com/Azure/azure-sdk-for-java/pull/16942).
+- Removed `sessionId` setting from `ServiceBusSessionReceiverClientBuilder` and moved it to 
+  `ServiceBusSessionReceiverAsyncClient`.
+- Removed `maxConcurrentSessions` from `ServiceBusSessionReceiverClientBuilder` and moved it to 
+  `ServiceBusSessionProcessorClientBuilder`.
+  
+### Bug Fixes
+- ServiceBusAdministrationClient: Fixes serialization bug for creating and deserializing rules.
 
 ### Dependency Updates
 - Upgraded `azure-core` dependency to `1.10.0`.
