@@ -39,6 +39,6 @@ $allMarkdowns = [string[]]($markdownContainLinks | Sort-Object | Get-Unique)
 
 Write-Host "Here are all markdown files need to scan against:"
 foreach ($file in $allMarkdowns) {
-    Write-Host "    $allMarkdowns"
+    Write-Host "    $file"
 }
 return $allMarkdowns
