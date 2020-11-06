@@ -1,6 +1,7 @@
-:instruction: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source
 :azure-spring-boot-starter-storage: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-storage
 :azure-storage: https://docs.microsoft.com/azure/storage/
+:application-properties: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-sample-storage-resource/src/main/resources/application.properties
+:instruction: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source
 :microsoft-account: https://azure.microsoft.com/account/
 :storage-howto-blob: https://docs.microsoft.com/azure/storage/storage-java-how-to-use-blob-storage
 :storage-howto-file: https://docs.microsoft.com/azure/storage/storage-java-how-to-use-file-storage
@@ -38,7 +39,7 @@ dependencies {
 
 1. Create {azure-storage}[Azure Storage]
 
-2. Update link:src/main/resources/application.properties[application.properties]
+2. Update {application-properties}[application.properties]
 
 +
 ....
