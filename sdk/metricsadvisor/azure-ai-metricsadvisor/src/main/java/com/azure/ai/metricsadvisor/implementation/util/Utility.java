@@ -3,6 +3,8 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
+import com.azure.ai.metricsadvisor.implementation.models.ErrorCodeException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -29,5 +31,21 @@ public final class Utility {
         }
         throw LOGGER.logExceptionAsError(
             new RuntimeException("Failed to parse operation header for result Id from: " + operationLocation));
+    }
+
+    /**
+     * Mapping a {@link ErrorCodeException} to {@link HttpResponseException} if exist. Otherwise, return
+     * original {@link Throwable}.
+     *
+     * @param throwable A {@link Throwable}.
+     * @return A {@link HttpResponseException} or the original throwable type.
+     */
+    public static Throwable mapToHttpResponseExceptionIfExist(Throwable throwable) {
+        if (throwable instanceof ErrorCodeException) {
+            ErrorCodeException errorCodeException = (ErrorCodeException) throwable;
+            return new HttpResponseException(errorCodeException.getMessage(), errorCodeException.getResponse(),
+                errorCodeException.getValue());
+        }
+        return throwable;
     }
 }

@@ -12,11 +12,11 @@ import com.azure.ai.metricsadvisor.models.DataFeedSchema;
 import com.azure.ai.metricsadvisor.models.DataFeedSourceType;
 import com.azure.ai.metricsadvisor.models.DataFeedStatus;
 import com.azure.ai.metricsadvisor.models.ErrorCode;
-import com.azure.ai.metricsadvisor.models.ErrorCodeException;
 import com.azure.ai.metricsadvisor.models.ListDataFeedFilter;
 import com.azure.ai.metricsadvisor.models.ListDataFeedOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.ai.metricsadvisor.models.PostgreSqlDataFeedSource;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -751,9 +751,9 @@ public class DataFeedClientTest extends DataFeedTestBase {
                 client.deleteDataFeedWithResponse(createdDataFeed.getId(), Context.NONE).getStatusCode());
 
             // Act & Assert
-            ErrorCodeException exception = assertThrows(ErrorCodeException.class, () ->
+            HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
                 client.getDataFeedWithResponse(createdDataFeed.getId(), Context.NONE));
-            final ErrorCode errorCode = exception.getValue();
+            final ErrorCode errorCode = (ErrorCode) exception.getValue();
             assertEquals(errorCode.getCode(), "ERROR_INVALID_PARAMETER");
             assertEquals(errorCode.getMessage(), "datafeedId is invalid.");
         }, SQL_SERVER_DB);

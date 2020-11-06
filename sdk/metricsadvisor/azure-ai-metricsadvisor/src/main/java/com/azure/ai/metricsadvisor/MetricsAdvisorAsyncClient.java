@@ -36,12 +36,12 @@ import com.azure.ai.metricsadvisor.implementation.util.MetricEnrichedSeriesDataT
 import com.azure.ai.metricsadvisor.implementation.util.MetricFeedbackTransforms;
 import com.azure.ai.metricsadvisor.implementation.util.MetricSeriesDataTransforms;
 import com.azure.ai.metricsadvisor.implementation.util.MetricSeriesDefinitionTransforms;
+import com.azure.ai.metricsadvisor.implementation.util.Utility;
 import com.azure.ai.metricsadvisor.models.AnomalyAlert;
 import com.azure.ai.metricsadvisor.models.AnomalyIncident;
 import com.azure.ai.metricsadvisor.models.DataPointAnomaly;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.models.EnrichmentStatus;
-import com.azure.ai.metricsadvisor.models.ErrorCodeException;
 import com.azure.ai.metricsadvisor.models.IncidentRootCause;
 import com.azure.ai.metricsadvisor.models.ListAlertOptions;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesAlertedOptions;
@@ -129,7 +129,7 @@ public class MetricsAdvisorAsyncClient {
      *
      * @return A {@link PagedFlux} of the {@link MetricSeriesDefinition metric series definitions}.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if the {@code metricId} or {@code activeSince}
      * is null.
      */
@@ -176,6 +176,7 @@ public class MetricsAdvisorAsyncClient {
             .doOnRequest(ignoredValue -> logger.info("Listing information metric series definitions"))
             .doOnSuccess(response -> logger.info("Listed metric series definitions - {}", response))
             .doOnError(error -> logger.warning("Failed to list metric series definitions information - {}", error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(res -> MetricSeriesDefinitionTransforms.fromInnerResponse(res));
     }
 
@@ -199,6 +200,7 @@ public class MetricsAdvisorAsyncClient {
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(res -> MetricSeriesDefinitionTransforms.fromInnerResponse(res));
     }
 
@@ -219,7 +221,7 @@ public class MetricsAdvisorAsyncClient {
      *
      * @return A {@link PagedFlux} of the {@link MetricSeriesData metric series data points}.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if the {@code metricId}, {@code startTime} or {@code endTime}
      * is null.
      */
@@ -261,6 +263,7 @@ public class MetricsAdvisorAsyncClient {
 
         return service.getMetricDataWithResponseAsync(UUID.fromString(metricId), metricDataQueryOptions,
             context)
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(response -> MetricSeriesDataTransforms.fromInnerResponse(response));
     }
 
@@ -275,7 +278,7 @@ public class MetricsAdvisorAsyncClient {
      *
      * @return the {@link PagedFlux} of the dimension values for that metric.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if the {@code metricId} or {@code dimensionName} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -297,7 +300,7 @@ public class MetricsAdvisorAsyncClient {
      *
      * @return the {@link PagedFlux} of the dimension values for that metric.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if the {@code metricId} or {@code dimensionName} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -341,6 +344,7 @@ public class MetricsAdvisorAsyncClient {
             .doOnRequest(ignoredValue -> logger.info("Listing all dimension values for a metric"))
             .doOnSuccess(response -> logger.info("Listed all dimension values for a metric"))
             .doOnError(error -> logger.warning("Failed to list all dimension values for a metric information", error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
@@ -366,6 +370,7 @@ public class MetricsAdvisorAsyncClient {
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
@@ -388,7 +393,7 @@ public class MetricsAdvisorAsyncClient {
      *
      * @return the list of enrichment status's for the specified metric.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if {@code metricId}, {@code startTime} and {@code endTime}
      * is null.
      */
@@ -440,6 +445,7 @@ public class MetricsAdvisorAsyncClient {
                 response))
             .doOnError(error -> logger.warning("Failed to list all metric enrichment values for a metric information",
                 error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
@@ -467,6 +473,7 @@ public class MetricsAdvisorAsyncClient {
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
@@ -551,6 +558,7 @@ public class MetricsAdvisorAsyncClient {
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the EnrichedSeries"))
             .doOnSuccess(response -> logger.info("Retrieved the EnrichedSeries {}", response))
             .doOnError(error -> logger.warning("Failed to retrieve EnrichedSeries", error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
@@ -639,6 +647,7 @@ public class MetricsAdvisorAsyncClient {
             .doOnRequest(ignoredValue -> logger.info("Listing anomalies detected"))
             .doOnSuccess(response -> logger.info("Listed anomalies {}", response))
             .doOnError(error -> logger.warning("Failed to list the anomalies detected", error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(response -> AnomalyTransforms.fromInnerPagedResponse(response));
     }
 
@@ -676,6 +685,7 @@ public class MetricsAdvisorAsyncClient {
                 response))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(response -> AnomalyTransforms.fromInnerPagedResponse(response));
     }
 
@@ -758,6 +768,7 @@ public class MetricsAdvisorAsyncClient {
             .doOnRequest(ignoredValue -> logger.info("Listing incidents detected"))
             .doOnSuccess(response -> logger.info("Listed incidents {}", response))
             .doOnError(error -> logger.warning("Failed to list the incidents detected", error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(response -> IncidentTransforms.fromInnerPagedResponse(response));
     }
 
@@ -774,6 +785,7 @@ public class MetricsAdvisorAsyncClient {
                 response))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(response -> IncidentTransforms.fromInnerPagedResponse(response));
     }
 
@@ -788,7 +800,7 @@ public class MetricsAdvisorAsyncClient {
      *
      * @return the list of root causes for that incident.
      * @throws IllegalArgumentException thrown if {@code detectionConfigurationId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if the {@code detectionConfigurationId} or {@code incidentId} is null.
      **/
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -831,7 +843,7 @@ public class MetricsAdvisorAsyncClient {
      *
      * @return the list of root causes for that anomalyIncident.
      * @throws IllegalArgumentException thrown if {@code detectionConfigurationId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if the {@code detectionConfigurationId} or {@code incidentId} is null.
      **/
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -866,6 +878,7 @@ public class MetricsAdvisorAsyncClient {
             .doOnSuccess(response -> logger.info("Retrieved the IncidentRootCauses - {}", response))
             .doOnError(error -> logger.warning("Failed to retrieve the incident root causes - {}",
                 anomalyIncident.getDetectionConfigurationId(), error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(res -> IncidentRootCauseTransforms.fromInnerResponse(res));
     }
 
@@ -964,7 +977,8 @@ public class MetricsAdvisorAsyncClient {
             withTracing)
             .doOnRequest(ignoredValue -> logger.info("Listing dimension values with anomalies"))
             .doOnSuccess(response -> logger.info("Listed dimension values with anomalies {}", response))
-            .doOnError(error -> logger.warning("Failed to list the dimension values with anomalies", error));
+            .doOnError(error -> logger.warning("Failed to list the dimension values with anomalies", error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
     }
 
     private Mono<PagedResponse<String>> listDimensionValuesWithAnomaliesNextPageAsync(
@@ -992,7 +1006,8 @@ public class MetricsAdvisorAsyncClient {
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
-                error));
+                error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
     }
 
     /**
@@ -1063,7 +1078,8 @@ public class MetricsAdvisorAsyncClient {
             withTracing)
             .doOnRequest(ignoredValue -> logger.info("Listing alerts"))
             .doOnSuccess(response -> logger.info("Listed alerts {}", response))
-            .doOnError(error -> logger.warning("Failed to list the alerts", error));
+            .doOnError(error -> logger.warning("Failed to list the alerts", error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
     }
 
     private Mono<PagedResponse<AnomalyAlert>> listAlertsNextPageAsync(
@@ -1086,7 +1102,8 @@ public class MetricsAdvisorAsyncClient {
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
-                error));
+                error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
     }
 
     /**
@@ -1171,6 +1188,7 @@ public class MetricsAdvisorAsyncClient {
             .doOnRequest(ignoredValue -> logger.info("Listing anomalies for alert"))
             .doOnSuccess(response -> logger.info("Listed anomalies {}", response))
             .doOnError(error -> logger.warning("Failed to list the anomalies for alert", error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(response -> AnomalyTransforms.fromInnerPagedResponse(response));
     }
 
@@ -1189,6 +1207,7 @@ public class MetricsAdvisorAsyncClient {
                 response))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(response -> AnomalyTransforms.fromInnerPagedResponse(response));
     }
 
@@ -1250,6 +1269,7 @@ public class MetricsAdvisorAsyncClient {
             .doOnRequest(ignoredValue -> logger.info("Listing incidents for alert"))
             .doOnSuccess(response -> logger.info("Listed incidents {}", response))
             .doOnError(error -> logger.warning("Failed to list the incidents for alert", error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(response -> IncidentTransforms.fromInnerPagedResponse(response));
     }
 
@@ -1266,6 +1286,7 @@ public class MetricsAdvisorAsyncClient {
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(response -> IncidentTransforms.fromInnerPagedResponse(response));
     }
 
@@ -1389,7 +1410,8 @@ public class MetricsAdvisorAsyncClient {
         return service.createMetricFeedbackWithResponseAsync(innerMetricFeedback, context)
             .flatMap(createdMetricFeedbackResponse ->
                 getFeedbackWithResponse(parseOperationId(createdMetricFeedbackResponse
-                    .getDeserializedHeaders().getLocation())));
+                    .getDeserializedHeaders().getLocation())))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
     }
 
     /**
@@ -1433,6 +1455,7 @@ public class MetricsAdvisorAsyncClient {
     Mono<Response<MetricFeedback>> getFeedbackWithResponse(String feedbackId, Context context) {
         Objects.requireNonNull(feedbackId, "'feedbackId' is required.");
         return service.getMetricFeedbackWithResponseAsync(UUID.fromString(feedbackId), context)
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(metricFeedbackResponse -> new SimpleResponse<>(metricFeedbackResponse,
                 MetricFeedbackTransforms.fromInner(metricFeedbackResponse.getValue())));
     }
@@ -1448,7 +1471,7 @@ public class MetricsAdvisorAsyncClient {
      * @return A {@link PagedFlux} containing information of all the {@link MetricFeedback metric feedbacks}
      * in the account.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if the {@code metricId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1469,7 +1492,7 @@ public class MetricsAdvisorAsyncClient {
      * @return A {@link PagedFlux} containing information of all the {@link MetricFeedback metric feedbacks} in
      * the account.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if the {@code metricId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1513,6 +1536,7 @@ public class MetricsAdvisorAsyncClient {
             .doOnRequest(ignoredValue -> logger.info("Listing information for all metric feedbacks"))
             .doOnSuccess(response -> logger.info("Listed metric feedbacks - {}", response))
             .doOnError(error -> logger.warning("Failed to list all metric feedbacks information", error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
@@ -1534,6 +1558,7 @@ public class MetricsAdvisorAsyncClient {
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),

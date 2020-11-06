@@ -32,7 +32,7 @@ import com.azure.ai.metricsadvisor.implementation.models.EnrichmentStatusList;
 import com.azure.ai.metricsadvisor.implementation.models.EnrichmentStatusQueryOption;
 import com.azure.ai.metricsadvisor.implementation.models.EntityStatus;
 import com.azure.ai.metricsadvisor.models.AnomalyAlert;
-import com.azure.ai.metricsadvisor.models.ErrorCodeException;
+import com.azure.ai.metricsadvisor.implementation.models.ErrorCodeException;
 import com.azure.ai.metricsadvisor.implementation.models.Granularity;
 import com.azure.ai.metricsadvisor.implementation.models.HookInfo;
 import com.azure.ai.metricsadvisor.implementation.models.HookInfoPatch;

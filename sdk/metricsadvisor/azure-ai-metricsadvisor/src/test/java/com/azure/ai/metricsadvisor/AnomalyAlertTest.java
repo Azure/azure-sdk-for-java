@@ -5,11 +5,11 @@ package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient;
 import com.azure.ai.metricsadvisor.models.AnomalyAlertConfiguration;
-import com.azure.ai.metricsadvisor.models.ErrorCodeException;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConfiguration;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConfigurationsOperator;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertScope;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
@@ -188,11 +188,10 @@ public final class AnomalyAlertTest extends AnomalyAlertTestBase {
             assertEquals(response.getStatusCode(), HttpResponseStatus.NO_CONTENT.code());
 
             // Act & Assert
-            Exception exception = assertThrows(ErrorCodeException.class, () ->
+            Exception exception = assertThrows(HttpResponseException.class, () ->
                 client.getAnomalyAlertConfig(createdAnomalyAlert.getId()));
-            assertEquals(ErrorCodeException.class, exception.getClass());
-            final ErrorCodeException errorCodeException = ((ErrorCodeException) exception);
-            assertEquals(HttpResponseStatus.NOT_FOUND.code(), errorCodeException.getResponse().getStatusCode());
+            final HttpResponseException httpResponseException = ((HttpResponseException) exception);
+            assertEquals(HttpResponseStatus.NOT_FOUND.code(), httpResponseException.getResponse().getStatusCode());
         });
     }
 

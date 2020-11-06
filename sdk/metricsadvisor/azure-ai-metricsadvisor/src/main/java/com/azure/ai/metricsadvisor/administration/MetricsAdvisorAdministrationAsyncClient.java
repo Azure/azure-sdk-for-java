@@ -217,6 +217,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
             .setViewers(finalDataFeedOptions.getViewerEmails())
             .setAdmins(finalDataFeedOptions.getAdminEmails())
             .setActionLinkTemplate(finalDataFeedOptions.getActionLinkTemplate()), withTracing)
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .flatMap(createDataFeedResponse -> {
                 final String dataFeedId =
                     parseOperationId(createDataFeedResponse.getDeserializedHeaders().getLocation());
@@ -266,6 +267,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
         Objects.requireNonNull(dataFeedId, "'dataFeedId' cannot be null.");
 
         return service.getDataFeedByIdWithResponseAsync(UUID.fromString(dataFeedId), context)
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(response -> new SimpleResponse<>(response, DataFeedTransforms.fromInner(response.getValue())));
     }
 
@@ -345,6 +347,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
                 .setAdmins(dataFeedOptions.getAdminEmails())
                 .setStatus(DataFeedDetailPatchStatus.fromString(dataFeed.getStatus().toString()))
                 .setActionLinkTemplate(dataFeedOptions.getActionLinkTemplate()), withTracing)
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .flatMap(updatedDataFeedResponse -> getDataFeedWithResponse(dataFeed.getId()));
     }
 
@@ -389,6 +392,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
     Mono<Response<Void>> deleteDataFeedWithResponse(String dataFeedId, Context context) {
         Objects.requireNonNull(dataFeedId, "'dataFeedId' cannot be null.");
         return service.deleteDataFeedWithResponseAsync(UUID.fromString(dataFeedId), context)
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -454,6 +458,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
             .doOnRequest(ignoredValue -> logger.info("Listing information for all data feeds"))
             .doOnSuccess(response -> logger.info("Listed data feeds {}", response))
             .doOnError(error -> logger.warning("Failed to list all data feeds information - {}", error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
@@ -473,6 +478,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
@@ -544,7 +550,8 @@ public class MetricsAdvisorAdministrationAsyncClient {
             context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignoredValue -> logger.info("Listing ingestion status for data feed"))
             .doOnSuccess(response -> logger.info("Listed ingestion status {}", response))
-            .doOnError(error -> logger.warning("Failed to ingestion status for data feed", error));
+            .doOnError(error -> logger.warning("Failed to ingestion status for data feed", error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
     }
 
     private Mono<PagedResponse<DataFeedIngestionStatus>> listDataFeedIngestionStatusNextPageAsync(
@@ -566,7 +573,8 @@ public class MetricsAdvisorAdministrationAsyncClient {
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {} {}",
                 nextPageLink, response))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
-                error));
+                error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
     }
 
     /**
@@ -644,7 +652,8 @@ public class MetricsAdvisorAdministrationAsyncClient {
             context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignoredValue -> logger.info("Resetting ingestion status for the data feed"))
             .doOnSuccess(response -> logger.info("Ingestion status got reset {}", response))
-            .doOnError(error -> logger.warning("Failed to reset ingestion status for the data feed", error));
+            .doOnError(error -> logger.warning("Failed to reset ingestion status for the data feed", error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
     }
 
     /**
@@ -662,6 +671,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataFeedIngestionProgress> getDataFeedIngestionProgress(String dataFeedId) {
         return getDataFeedIngestionProgressWithResponse(dataFeedId, Context.NONE)
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(Response::getValue);
     }
 
@@ -693,7 +703,8 @@ public class MetricsAdvisorAdministrationAsyncClient {
             context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignoredValue -> logger.info("Retrieving ingestion progress for metric"))
             .doOnSuccess(response -> logger.info("Retrieved ingestion progress {}", response))
-            .doOnError(error -> logger.warning("Failed to retrieve ingestion progress for metric", error));
+            .doOnError(error -> logger.warning("Failed to retrieve ingestion progress for metric", error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
     }
 
     /**
@@ -720,6 +731,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
         String metricId,
         AnomalyDetectionConfiguration detectionConfiguration) {
         return createMetricAnomalyDetectionConfigWithResponse(metricId, detectionConfiguration)
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(Response::getValue);
     }
 
@@ -772,10 +784,12 @@ public class MetricsAdvisorAdministrationAsyncClient {
             .doOnSubscribe(ignoredValue -> logger.info("Creating AnomalyDetectionConfiguration"))
             .doOnSuccess(response -> logger.info("Created AnomalyDetectionConfiguration"))
             .doOnError(error -> logger.warning("Failed to create AnomalyDetectionConfiguration", error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .flatMap(response -> {
                 final String configurationId
                     = Utility.parseOperationId(response.getDeserializedHeaders().getLocation());
                 return getMetricAnomalyDetectionConfigWithResponse(configurationId, context)
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
                     .map(configurationResponse -> new ResponseBase<Void, AnomalyDetectionConfiguration>(
                         response.getRequest(),
                         response.getStatusCode(),
@@ -801,6 +815,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
     public Mono<AnomalyDetectionConfiguration> getMetricAnomalyDetectionConfig(
         String detectionConfigurationId) {
         return getMetricAnomalyDetectionConfigWithResponse(detectionConfigurationId)
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(Response::getValue);
     }
 
@@ -839,6 +854,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
             .doOnSuccess(response -> logger.info("Retrieved AnomalyDetectionConfiguration - {}", response))
             .doOnError(error -> logger.warning("Failed to retrieve AnomalyDetectionConfiguration - {}",
                 detectionConfigurationId, error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(response -> {
                 AnomalyDetectionConfiguration configuration
                     = DetectionConfigurationTransforms.fromInner(response.getValue());
@@ -865,6 +881,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
     public Mono<AnomalyDetectionConfiguration> updateMetricAnomalyDetectionConfig(
         AnomalyDetectionConfiguration detectionConfiguration) {
         return updateMetricAnomalyDetectionConfigWithResponse(detectionConfiguration)
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(Response::getValue);
     }
 
@@ -905,8 +922,10 @@ public class MetricsAdvisorAdministrationAsyncClient {
             .doOnSubscribe(ignoredValue -> logger.info("Updating AnomalyDetectionConfiguration"))
             .doOnSuccess(response -> logger.info("Updated AnomalyDetectionConfiguration"))
             .doOnError(error -> logger.warning("Failed to update AnomalyDetectionConfiguration", error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .flatMap(response -> {
                 return getMetricAnomalyDetectionConfigWithResponse(detectionConfiguration.getId(), context)
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
                     .map(configurationResponse -> new ResponseBase<Void, AnomalyDetectionConfiguration>(
                         response.getRequest(),
                         response.getStatusCode(),
@@ -966,7 +985,8 @@ public class MetricsAdvisorAdministrationAsyncClient {
             context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignoredValue -> logger.info("Deleting MetricAnomalyDetectionConfiguration"))
             .doOnSuccess(response -> logger.info("Deleted MetricAnomalyDetectionConfiguration"))
-            .doOnError(error -> logger.warning("Failed to delete MetricAnomalyDetectionConfiguration", error));
+            .doOnError(error -> logger.warning("Failed to delete MetricAnomalyDetectionConfiguration", error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
     }
 
     /**
@@ -1009,6 +1029,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
             .doOnError(error -> logger.warning(
                 "Failed to list MetricAnomalyDetectionConfiguration for a metric",
                 error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(response -> {
                 final AnomalyDetectionConfigurationList innerConfigurationList = response.getValue();
                 List<AnomalyDetectionConfiguration> configurationList;
@@ -1048,6 +1069,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NotificationHook> createHook(NotificationHook notificationHook) {
         return createHookWithResponse(notificationHook)
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(Response::getValue);
     }
 
@@ -1080,6 +1102,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
             .doOnRequest(ignoredValue -> logger.info("Creating NotificationHook"))
             .doOnSuccess(response -> logger.info("Created NotificationHook {}", response))
             .doOnError(error -> logger.warning("Failed to create notificationHook", error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .flatMap(response -> {
                 final String hookUri = response.getDeserializedHeaders().getLocation();
                 final String hookId = parseOperationId(hookUri);
@@ -1137,6 +1160,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
             .doOnRequest(ignoredValue -> logger.info("Retrieving NotificationHook"))
             .doOnSuccess(response -> logger.info("Retrieved NotificationHook {}", response))
             .doOnError(error -> logger.warning("Failed to retrieve hook", error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(innerResponse -> new ResponseBase<Void, NotificationHook>(innerResponse.getRequest(),
                 innerResponse.getStatusCode(),
                 innerResponse.getHeaders(),
@@ -1191,6 +1215,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
             .doOnRequest(ignoredValue -> logger.info("Updating NotificationHook"))
             .doOnSuccess(response -> logger.info("Updated NotificationHook {}", response))
             .doOnError(error -> logger.warning("Failed to update notificationHook", error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .flatMap(response -> getHookWithResponse(notificationHook.getId(), context)
                 .map(hookResponse -> new ResponseBase<Void, NotificationHook>(response.getRequest(),
                     response.getStatusCode(),
@@ -1242,7 +1267,8 @@ public class MetricsAdvisorAdministrationAsyncClient {
         return service.deleteHookWithResponseAsync(UUID.fromString(hookId), context)
             .doOnRequest(ignoredValue -> logger.info("Deleting NotificationHook"))
             .doOnSuccess(response -> logger.info("Deleted NotificationHook"))
-            .doOnError(error -> logger.warning("Failed to delete hook", error));
+            .doOnError(error -> logger.warning("Failed to delete hook", error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
     }
 
     /**
@@ -1298,6 +1324,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
             .doOnRequest(ignoredValue -> logger.info("Listing hooks"))
             .doOnSuccess(response -> logger.info("Listed hooks {}", response))
             .doOnError(error -> logger.warning("Failed to list the hooks", error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(response -> HookTransforms.fromInnerPagedResponse(logger, response));
     }
 
@@ -1313,6 +1340,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
                 response))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(response -> HookTransforms.fromInnerPagedResponse(logger, response));
     }
 
@@ -1378,9 +1406,11 @@ public class MetricsAdvisorAdministrationAsyncClient {
             .doOnSuccess(response -> logger.info("Created AnomalyAlertConfiguration - {}", response))
             .doOnError(error -> logger.warning("Failed to create AnomalyAlertConfiguration - {}",
                 innerAlertConfiguration, error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .flatMap(response -> {
                 final String configurationId = parseOperationId(response.getDeserializedHeaders().getLocation());
                 return getAnomalyAlertConfigWithResponse(configurationId, context)
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
                     .map(getResponse -> new ResponseBase<Void, AnomalyAlertConfiguration>(response.getRequest(),
                         response.getStatusCode(),
                         response.getHeaders(),
@@ -1444,6 +1474,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
             .doOnSuccess(response -> logger.info("Retrieved AnomalyDetectionConfiguration - {}", response))
             .doOnError(error -> logger.warning("Failed to retrieve AnomalyDetectionConfiguration - {}",
                 alertConfigurationId, error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(response -> new ResponseBase<Void, AnomalyAlertConfiguration>(response.getRequest(),
                 response.getStatusCode(),
                 response.getHeaders(), AlertConfigurationTransforms.fromInner(response.getValue()), null));
@@ -1509,7 +1540,9 @@ public class MetricsAdvisorAdministrationAsyncClient {
             .doOnSuccess(response -> logger.info("Updated AnomalyAlertConfiguration - {}", response))
             .doOnError(error -> logger.warning("Failed to update AnomalyAlertConfiguration - {}",
                 innerAlertConfiguration, error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .flatMap(response -> getAnomalyAlertConfigWithResponse(alertConfiguration.getId(), context)
+                .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
                 .map(getResponse -> new ResponseBase<Void, AnomalyAlertConfiguration>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
@@ -1566,7 +1599,8 @@ public class MetricsAdvisorAdministrationAsyncClient {
             .doOnSubscribe(ignoredValue -> logger.info("Deleting AnomalyAlertConfiguration - {}", alertConfigurationId))
             .doOnSuccess(response -> logger.info("Deleted AnomalyAlertConfiguration - {}", response))
             .doOnError(error -> logger.warning("Failed to delete AnomalyAlertConfiguration - {}",
-                alertConfigurationId, error));
+                alertConfigurationId, error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
     }
 
     /**
@@ -1607,6 +1641,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
 
         return service.getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationWithResponseAsync(
             UUID.fromString(detectionConfigurationId), withTracing)
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(response -> {
                 List<AnomalyAlertConfiguration> configurationList;
                 final AnomalyAlertingConfigurationList innerConfigurationList = response.getValue();
