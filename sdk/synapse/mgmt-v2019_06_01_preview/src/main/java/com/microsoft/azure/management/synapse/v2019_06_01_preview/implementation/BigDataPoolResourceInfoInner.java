@@ -12,6 +12,8 @@ import com.microsoft.azure.management.synapse.v2019_06_01_preview.AutoScalePrope
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.AutoPauseProperties;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.LibraryRequirements;
+import java.util.List;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.LibraryInfo;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.NodeSize;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.NodeSizeFamily;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -55,6 +57,12 @@ public class BigDataPoolResourceInfoInner extends Resource {
     private Boolean isComputeIsolationEnabled;
 
     /**
+     * Whether session level library/package management is enabled or not.
+     */
+    @JsonProperty(value = "properties.sessionLevelPackagesEnabled")
+    private Boolean sessionLevelPackagesEnabled;
+
+    /**
      * The Spark events folder.
      */
     @JsonProperty(value = "properties.sparkEventsFolder")
@@ -73,6 +81,18 @@ public class BigDataPoolResourceInfoInner extends Resource {
     private LibraryRequirements libraryRequirements;
 
     /**
+     * List of custom libraries/packages associated with the spark pool.
+     */
+    @JsonProperty(value = "properties.customLibraries")
+    private List<LibraryInfo> customLibraries;
+
+    /**
+     * Spark configuration file to specify additional properties.
+     */
+    @JsonProperty(value = "properties.sparkConfigProperties")
+    private LibraryRequirements sparkConfigProperties;
+
+    /**
      * The Apache Spark version.
      */
     @JsonProperty(value = "properties.sparkVersion")
@@ -87,7 +107,7 @@ public class BigDataPoolResourceInfoInner extends Resource {
     /**
      * The level of compute power that each node in the Big Data pool has.
      * Possible values include: 'None', 'Small', 'Medium', 'Large', 'XLarge',
-     * 'XXLarge'.
+     * 'XXLarge', 'XXXLarge'.
      */
     @JsonProperty(value = "properties.nodeSize")
     private NodeSize nodeSize;
@@ -200,6 +220,26 @@ public class BigDataPoolResourceInfoInner extends Resource {
     }
 
     /**
+     * Get whether session level library/package management is enabled or not.
+     *
+     * @return the sessionLevelPackagesEnabled value
+     */
+    public Boolean sessionLevelPackagesEnabled() {
+        return this.sessionLevelPackagesEnabled;
+    }
+
+    /**
+     * Set whether session level library/package management is enabled or not.
+     *
+     * @param sessionLevelPackagesEnabled the sessionLevelPackagesEnabled value to set
+     * @return the BigDataPoolResourceInfoInner object itself.
+     */
+    public BigDataPoolResourceInfoInner withSessionLevelPackagesEnabled(Boolean sessionLevelPackagesEnabled) {
+        this.sessionLevelPackagesEnabled = sessionLevelPackagesEnabled;
+        return this;
+    }
+
+    /**
      * Get the Spark events folder.
      *
      * @return the sparkEventsFolder value
@@ -260,6 +300,46 @@ public class BigDataPoolResourceInfoInner extends Resource {
     }
 
     /**
+     * Get list of custom libraries/packages associated with the spark pool.
+     *
+     * @return the customLibraries value
+     */
+    public List<LibraryInfo> customLibraries() {
+        return this.customLibraries;
+    }
+
+    /**
+     * Set list of custom libraries/packages associated with the spark pool.
+     *
+     * @param customLibraries the customLibraries value to set
+     * @return the BigDataPoolResourceInfoInner object itself.
+     */
+    public BigDataPoolResourceInfoInner withCustomLibraries(List<LibraryInfo> customLibraries) {
+        this.customLibraries = customLibraries;
+        return this;
+    }
+
+    /**
+     * Get spark configuration file to specify additional properties.
+     *
+     * @return the sparkConfigProperties value
+     */
+    public LibraryRequirements sparkConfigProperties() {
+        return this.sparkConfigProperties;
+    }
+
+    /**
+     * Set spark configuration file to specify additional properties.
+     *
+     * @param sparkConfigProperties the sparkConfigProperties value to set
+     * @return the BigDataPoolResourceInfoInner object itself.
+     */
+    public BigDataPoolResourceInfoInner withSparkConfigProperties(LibraryRequirements sparkConfigProperties) {
+        this.sparkConfigProperties = sparkConfigProperties;
+        return this;
+    }
+
+    /**
      * Get the Apache Spark version.
      *
      * @return the sparkVersion value
@@ -300,7 +380,7 @@ public class BigDataPoolResourceInfoInner extends Resource {
     }
 
     /**
-     * Get the level of compute power that each node in the Big Data pool has. Possible values include: 'None', 'Small', 'Medium', 'Large', 'XLarge', 'XXLarge'.
+     * Get the level of compute power that each node in the Big Data pool has. Possible values include: 'None', 'Small', 'Medium', 'Large', 'XLarge', 'XXLarge', 'XXXLarge'.
      *
      * @return the nodeSize value
      */
@@ -309,7 +389,7 @@ public class BigDataPoolResourceInfoInner extends Resource {
     }
 
     /**
-     * Set the level of compute power that each node in the Big Data pool has. Possible values include: 'None', 'Small', 'Medium', 'Large', 'XLarge', 'XXLarge'.
+     * Set the level of compute power that each node in the Big Data pool has. Possible values include: 'None', 'Small', 'Medium', 'Large', 'XLarge', 'XXLarge', 'XXXLarge'.
      *
      * @param nodeSize the nodeSize value to set
      * @return the BigDataPoolResourceInfoInner object itself.
