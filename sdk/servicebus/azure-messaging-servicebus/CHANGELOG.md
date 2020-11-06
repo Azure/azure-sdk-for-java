@@ -2,10 +2,16 @@
 
 ## 7.0.0-beta.7 (2020-11-06)
 ### New Features
-- Added auto lock renew feature. Message or session lock will renew automatically.
-- Added auto complete feature. Message will complete or abandon automatically.
-- Session Receiver : accept session before start receiving.
-- Added ServiceBusProcessorClient
+- Added automatic message and session lock renewal feature on the receiver clients. By default, this will be done 
+  for 5 minutes.
+- Added auto complete feature to the async receiver clients. Once the client completes executing the user provided 
+  callback for a message, the message will be completed. If the user provided callback throws an error, the message 
+  will be abandoned.
+- An intermediate SessionReceiverClient is introduced to act as the factory which can then be used to accept sessions 
+  from the service. Accepting a session would give you the familiar receiver client tied to a single session.
+- Added ServiceBusProcessorClient which takes your callbacks to process messages and errors in an infinite loop. This 
+  also supports working with sessions where you can provide the maximum number of sessions to work with concurrently. 
+  When the client no longer receives any messages from one session, it rolls over to the next available session.
 
 ### Breaking Changes
 
