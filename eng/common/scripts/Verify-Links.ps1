@@ -295,6 +295,10 @@ $checkedLinks = @{};
 $badLinks = @{};
 $pageUrisToCheck = new-object System.Collections.Queue
 foreach ($url in $urls) {
+  if (!$url) {
+    LogWarning "There is an empty markdown in the input urls."
+    continue
+  }
   $uri = NormalizeUrl $url  
   $pageUrisToCheck.Enqueue($uri);
 }
