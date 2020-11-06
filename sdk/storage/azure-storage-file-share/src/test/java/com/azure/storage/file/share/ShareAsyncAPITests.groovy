@@ -212,7 +212,7 @@ class ShareAsyncAPITests extends APISpec {
             assert it.getValue().getProvisionedIngressMBps()
             assert it.getValue().getProvisionedEgressMBps()
             assert it.getValue().getNextAllowedQuotaDowngradeTime()
-            assert it.getValue().getEnabledProtocols() == enabledProtocol
+            assert it.getValue().getEnabledProtocols().toString() == enabledProtocol.toString()
             assert it.getValue().getRootSquash() == rootSquash
         }.verifyComplete()
 
