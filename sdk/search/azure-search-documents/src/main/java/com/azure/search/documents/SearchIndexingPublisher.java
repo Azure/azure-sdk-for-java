@@ -189,7 +189,7 @@ final class SearchIndexingPublisher<T> {
                  * that any further.
                  */
                 int statusCode = exception.getResponse().getStatusCode();
-                if (exception.getResponse().getStatusCode() == HttpURLConnection.HTTP_ENTITY_TOO_LARGE) {
+                if (statusCode == HttpURLConnection.HTTP_ENTITY_TOO_LARGE) {
                     int actionCount = actions.size();
                     if (actionCount == 1) {
                         return Flux.just(new IndexBatchResponse(statusCode, null, actionsOffset, actionCount, true));
