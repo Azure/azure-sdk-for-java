@@ -90,5 +90,6 @@ If the package or a related package supports it, include tips for logging or ena
 
 <!-- LINKS -->
 [style-guide-msft]: https://docs.microsoft.com/style-guide/capitalization
+[EventHubProducerAsyncClient]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/azure-messaging-eventhubs/src/main/java/com/azure/messaging/eventhubs/EventHubProducerAsyncClient.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftemplate%2Fazure-sdk-template%2FREADME.png)
