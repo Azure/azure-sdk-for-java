@@ -1,12 +1,14 @@
 param (
     # The root repo we scaned with.
-    [string[]] $RootRepo
+    [string[]] $RootRepo = "./"
 )
 $deletedFiles = (git diff origin/${env:SYSTEM_PULLREQUEST_TARGETBRANCH} HEAD --name-only --diff-filter=D)
 $renamedFiles = (git diff origin/${env:SYSTEM_PULLREQUEST_TARGETBRANCH} HEAD --diff-filter=R)
 $changedMarkdowns = (git diff origin/${env:SYSTEM_PULLREQUEST_TARGETBRANCH} HEAD --name-only -- '*.md')
-# Removed the deleted markdowns. 
-$changedMarkdowns = $changedMarkdowns |Where-Object { $deletedFiles -notcontains $_ }
+# These are for local testing.
+# $deletedFiles = (git diff origin/master HEAD --name-only --diff-filter=D)
+# $renamedFiles = (git diff origin/master HEAD --diff-filter=R)
+# $changedMarkdowns = (git diff origin/master HEAD --name-only -- '*.md')
 
 $beforeRenameFiles = @()
 # Retrieve the renamed from files.
@@ -16,15 +18,18 @@ foreach($file in $renamedFiles) {
     }
 }
 # A combined list of deleted and renamed files.
-$relativePathLinks += ($deletedFiles + $beforeRenameFiles)
-
+$relativePathLinks = ($deletedFiles + $beforeRenameFiles)
+# Removed the deleted markdowns. 
+$changedMarkdowns = $changedMarkdowns | Where-Object { $relativePathLinks -notcontains $_ }
 # Scan all markdowns and find if it contains the deleted or renamed files.
 $markdownContainLinks = @()
-foreach ($f in (Get-ChildItem -Path $RootRepo -Recurse -Include *.md)) {
-    $content = Get-Content -Path $f -Raw
-    foreach($l in $fullPathLinks) {
+$allMarkdownFiles = Get-ChildItem -Path $RootRepo -Recurse -Include *.md
+foreach ($f in $allMarkdownFiles) {
+    $filePath = $f.ToString()
+    $content = Get-Content -Path $filePath -Raw
+    foreach($l in $relativePathLinks) {
         if ($content -match $l) {
-            $markdownContainLinks += $f
+            $markdownContainLinks += $filePath
             break
         }
     }
