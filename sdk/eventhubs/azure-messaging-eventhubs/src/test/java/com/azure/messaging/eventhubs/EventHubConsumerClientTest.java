@@ -121,7 +121,7 @@ public class EventHubConsumerClientTest {
             }));
 
         asyncConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, messageSerializer, CONSUMER_GROUP, PREFETCH, Schedulers.parallel(), false, onClientClosed);
+            connectionProcessor, messageSerializer, null, CONSUMER_GROUP, PREFETCH, Schedulers.parallel(), false, onClientClosed);
         consumer = new EventHubConsumerClient(asyncConsumer, Duration.ofSeconds(10));
     }
 
@@ -145,8 +145,8 @@ public class EventHubConsumerClientTest {
     public void lastEnqueuedEventInformationIsNull() {
         // Arrange
         final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(
-            HOSTNAME, EVENT_HUB_NAME, connectionProcessor, messageSerializer, CONSUMER_GROUP,
-            PREFETCH, Schedulers.parallel(), false, onClientClosed);
+            HOSTNAME, EVENT_HUB_NAME, connectionProcessor, messageSerializer, null,
+            CONSUMER_GROUP, PREFETCH, Schedulers.parallel(), false, onClientClosed);
         final EventHubConsumerClient consumer = new EventHubConsumerClient(runtimeConsumer, Duration.ofSeconds(5));
         final int numberOfEvents = 10;
         sendMessages(sink, numberOfEvents, PARTITION_ID);
@@ -175,8 +175,8 @@ public class EventHubConsumerClientTest {
         // Arrange
         final ReceiveOptions options = new ReceiveOptions().setTrackLastEnqueuedEventProperties(true);
         final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(
-            HOSTNAME, EVENT_HUB_NAME, connectionProcessor, messageSerializer, CONSUMER_GROUP, PREFETCH,
-            Schedulers.parallel(), false, onClientClosed);
+            HOSTNAME, EVENT_HUB_NAME, connectionProcessor, messageSerializer, null, CONSUMER_GROUP,
+            PREFETCH, Schedulers.parallel(), false, onClientClosed);
         final EventHubConsumerClient consumer = new EventHubConsumerClient(runtimeConsumer, Duration.ofSeconds(5));
 
         final int numberOfEvents = 10;

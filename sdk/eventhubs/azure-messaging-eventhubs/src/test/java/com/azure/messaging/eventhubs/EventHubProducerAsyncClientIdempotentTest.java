@@ -134,7 +134,7 @@ class EventHubProducerAsyncClientIdempotentTest {
         Map<String, PartitionPublishingState> internalStates = new HashMap<>();
         initialStates.forEach((k, v) -> internalStates.put(k, new PartitionPublishingState(v)));
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
-            tracerProvider, messageSerializer, testScheduler, false, onClientClosed,
+            tracerProvider, messageSerializer, null, testScheduler, false, onClientClosed,
             true, internalStates);
 
         Map<Symbol, Object> remoteProperties = new HashMap<>();

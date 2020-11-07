@@ -154,6 +154,29 @@ public class EventHubProducerClient implements Closeable {
     }
 
     /**
+     * Creates an {@link ObjectBatch} that can fit as many events as the transport allows.
+     *
+     * @param objectType The class of the object type.
+     * @param <T> The type of object.
+     * @return The object batch.
+     */
+    public <T> ObjectBatch<T> createBatch(Class<T> objectType) {
+        return producer.createBatch(objectType).block();
+    }
+
+    /**
+     * Creates an {@link ObjectBatch} that can fit as many events as the transport allows.
+     *
+     * @param objectType The class of the object type.
+     * @param options A set of options used to configure the {@link ObjectBatch}.
+     * @param <T> The type of object.
+     * @return The object batch.
+     */
+    public <T> ObjectBatch<T> createBatch(Class<T> objectType, CreateBatchOptions options) {
+        return producer.createBatch(objectType, options).block();
+    }
+
+    /**
      * Sends a single event to the associated Event Hub. If the size of the single event exceeds the maximum size
      * allowed, an exception will be triggered and the send will fail.
      *
@@ -229,6 +252,19 @@ public class EventHubProducerClient implements Closeable {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void send(Iterable<EventData> events, SendOptions options) {
         producer.send(events, options).block();
+    }
+
+    /**
+     * Sends the object batch to the associated Event Hub.
+     *
+     * @param objectBatch The batch to send to the service.
+     * @param <T> object type
+     * @throws NullPointerException if {@code objectBatch} is {@code null}.
+     * @see EventHubProducerAsyncClient#createBatch(Class)
+     * @see EventHubProducerAsyncClient#createBatch(Class, CreateBatchOptions)
+     */
+    public <T> void send(ObjectBatch<T> objectBatch) {
+        producer.send(objectBatch).block();
     }
 
     /**
