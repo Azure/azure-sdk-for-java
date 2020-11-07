@@ -296,7 +296,7 @@ class EventHubMessageSerializer implements MessageSerializer {
     /*
      * Sets AMQP protocol header values on the AMQP message.
      */
-    private static void setSystemProperties(EventData eventData, Message message) {
+    static void setSystemProperties(EventData eventData, Message message) {
         if (eventData.getSystemProperties() == null || eventData.getSystemProperties().isEmpty()) {
             return;
         }
@@ -349,6 +349,11 @@ class EventHubMessageSerializer implements MessageSerializer {
                     case REPLY_TO_GROUP_ID:
                         message.setReplyToGroupId((String) value);
                         break;
+                    case PRODUCER_EPOCH_ANNOTATION_NAME:
+                    case PRODUCER_ID_ANNOTATION_NAME:
+                    case PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME:
+                        setMessageAnnotation(message, key, value);
+                        break;
                     default:
                         throw new IllegalArgumentException(
                             String.format(
@@ -356,13 +361,17 @@ class EventHubMessageSerializer implements MessageSerializer {
                                 key));
                 }
             } else {
-                final MessageAnnotations messageAnnotations = (message.getMessageAnnotations() == null)
-                    ? new MessageAnnotations(new HashMap<>())
-                    : message.getMessageAnnotations();
-                messageAnnotations.getValue().put(Symbol.getSymbol(key), value);
-                message.setMessageAnnotations(messageAnnotations);
+                setMessageAnnotation(message, key, value);
             }
         });
+    }
+
+    static void setMessageAnnotation(Message message, String key, Object value) {
+        final MessageAnnotations messageAnnotations = (message.getMessageAnnotations() == null)
+            ? new MessageAnnotations(new HashMap<>())
+            : message.getMessageAnnotations();
+        messageAnnotations.getValue().put(Symbol.getSymbol(key), value);
+        message.setMessageAnnotations(messageAnnotations);
     }
 
     private static int getPayloadSize(Message msg) {

@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.util.Context;
 
 import java.nio.ByteBuffer;
@@ -20,8 +21,10 @@ import java.util.Set;
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.PUBLISHER_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.PRODUCER_EPOCH_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.PRODUCER_ID_ANNOTATION_NAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -57,13 +60,16 @@ public class EventData {
     private final SystemProperties systemProperties;
     private Context context;
 
+    private Long publishedGroupId;
+    private Short publishedOwnerLevel;
+    private Integer publishedSequenceNumber;
+
     static {
         final Set<String> properties = new HashSet<>();
         properties.add(OFFSET_ANNOTATION_NAME.getValue());
         properties.add(PARTITION_KEY_ANNOTATION_NAME.getValue());
         properties.add(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
         properties.add(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
-        properties.add(PUBLISHER_ANNOTATION_NAME.getValue());
 
         RESERVED_SYSTEM_PROPERTIES = Collections.unmodifiableSet(properties);
     }
@@ -214,6 +220,80 @@ public class EventData {
     }
 
     /**
+     * Gets the producer sequence number that was assigned during publishing, if the event was successfully
+     * published by a sequence-aware producer.  If the producer was not configured to apply
+     * sequence numbering or if the event has not yet been successfully published, this member
+     * will be {@code null}.
+     *
+     * The published sequence number is only populated and relevant when certain features
+     * of the producer are enabled. For example, it is used by idempotent publishing.
+     *
+     * @return The publishing sequence number assigned to the event at the time it was successfully published.
+     * {@code null} if the {@link EventData} hasn't been sent or it's sent without idempotent publishing enabled.
+     */
+    public Integer getPublishedSequenceNumber() {
+        return publishedSequenceNumber;
+    }
+
+    /**
+     * Gets the producer group id that was assigned during publishing, if the event was successfully
+     * published by a sequence-aware producer.  If the producer was not configured to apply
+     * sequence numbering or if the event has not yet been successfully published, this member
+     * will be {@code null}.
+     *
+     * The producer group id is only populated and relevant when certain features
+     * of the producer are enabled. For example, it is used by idempotent publishing.
+     *
+     * @return The producer group id assigned to the event at the time it was successfully published.
+     * {@code null} if the {@link EventData} hasn't been sent or it's sent without idempotent publishing enabled.
+     */
+    Long getPublishedGroupId() {
+        return publishedGroupId;
+    }
+
+    /**
+     * Gets the producer owner level that was assigned during publishing, if the event was successfully
+     * published by a sequence-aware producer.  If the producer was not configured to apply
+     * sequence numbering or if the event has not yet been successfully published, this member
+     * will be {@code null}.
+     *
+     * The producer owner level is only populated and relevant when certain features
+     * of the producer are enabled. For example, it is used by idempotent publishing.
+     *
+     * @return The producer owner level assigned to the event at the time it was successfully published.
+     * {@code null} if the {@link EventData} hasn't been sent or it's sent without idempotent publishing enabled.
+     */
+    Short getPublishedOwnerLevel() {
+        return publishedOwnerLevel;
+    }
+
+    void setProducerGroupIdInSysProperties(Long producerGroupId) {
+        this.getSystemProperties().put(
+            AmqpMessageConstant.PRODUCER_ID_ANNOTATION_NAME.getValue(),
+            producerGroupId
+        );
+    }
+
+    void setProducerOwnerLevelInSysProperties(Short producerOwnerLevel) {
+        this.getSystemProperties().put(
+            AmqpMessageConstant.PRODUCER_EPOCH_ANNOTATION_NAME.getValue(),
+            producerOwnerLevel
+        );
+    }
+
+    void setPublishedSequenceNumberInSysProperties(Integer publishedSequenceNumber) {
+        this.getSystemProperties().put(
+            AmqpMessageConstant.PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(),
+            publishedSequenceNumber);
+    }
+
+    void commitProducerDataFromSysProperties() {
+        this.publishedGroupId = this.systemProperties.getPublishedGroupId();
+        this.publishedOwnerLevel = this.systemProperties.getPublishedOwnerLevel();
+        this.publishedSequenceNumber = this.systemProperties.getPublishedSequenceNumber();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -347,6 +427,18 @@ public class EventData {
          */
         private Long getSequenceNumber() {
             return sequenceNumber;
+        }
+
+        private Integer getPublishedSequenceNumber() {
+            return (Integer) this.get(PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
+        }
+
+        private Long getPublishedGroupId() {
+            return (Long) this.get(PRODUCER_ID_ANNOTATION_NAME.getValue());
+        }
+
+        private Short getPublishedOwnerLevel() {
+            return (Short) this.get(PRODUCER_EPOCH_ANNOTATION_NAME.getValue());
         }
 
         @SuppressWarnings("unchecked")
