@@ -82,7 +82,6 @@ public class EventData {
         RESERVED_SYSTEM_PROPERTIES = Collections.unmodifiableSet(properties);
     }
 
-
     /**
      * Creates an event containing the {@code body}.
      *
@@ -129,6 +128,7 @@ public class EventData {
         this.context = Objects.requireNonNull(context, "'context' cannot be null.");
         this.systemProperties =  Objects.requireNonNull(systemProperties, "'systemProperties' cannot be null.");
         this.properties = new HashMap<>();
+        this.commitProducerDataFromSysProperties();  // populate producer publishing when receiving an event.
     }
 
     /**

@@ -34,7 +34,6 @@ import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnectio
 import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
 import org.apache.qpid.proton.engine.SslDomain;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
@@ -437,7 +436,6 @@ public class EventHubClientBuilder {
             states.forEach((partitionId, state) -> {
                 this.initialPartitionPublishingStates.put(partitionId, new PartitionPublishingState(state));
             });
-            this.initialPartitionPublishingStates = Collections.unmodifiableMap(this.initialPartitionPublishingStates);
         } else {
             this.initialPartitionPublishingStates = null;
         }

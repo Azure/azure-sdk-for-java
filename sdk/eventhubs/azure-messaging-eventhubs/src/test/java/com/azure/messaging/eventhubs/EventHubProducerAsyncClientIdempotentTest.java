@@ -15,6 +15,8 @@ import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
@@ -39,6 +41,8 @@ import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -133,8 +137,35 @@ class EventHubProducerAsyncClientIdempotentTest {
 
         Map<String, PartitionPublishingState> internalStates = new HashMap<>();
         initialStates.forEach((k, v) -> internalStates.put(k, new PartitionPublishingState(v)));
+        ObjectSerializer objectSerializer = new ObjectSerializer() {
+            private Object o = new Object();
+            @Override
+            public <T> T deserialize(InputStream inputStream, TypeReference<T> typeReference) {
+                return deserializeAsync(inputStream, typeReference).block();
+            }
+
+            @SuppressWarnings("unchecked")
+            @Override
+            public <T> Mono<T> deserializeAsync(InputStream inputStream, TypeReference<T> typeReference) {
+                if (typeReference.getJavaType().getTypeName().equals(o.getClass().getTypeName())) {
+                    return Mono.just((T) o);
+                }
+                return null;
+            }
+
+            @Override
+            public void serialize(OutputStream outputStream, Object o) {
+                this.serializeAsync(outputStream, o).block();
+            }
+
+            @Override
+            public Mono<Void> serializeAsync(OutputStream outputStream, Object o) {
+                return Mono.empty();
+            }
+
+        };
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
-            tracerProvider, messageSerializer, null, testScheduler, false, onClientClosed,
+            tracerProvider, messageSerializer, objectSerializer, testScheduler, false, onClientClosed,
             true, internalStates);
 
         Map<Symbol, Object> remoteProperties = new HashMap<>();
@@ -379,5 +410,23 @@ class EventHubProducerAsyncClientIdempotentTest {
         } finally {
             Mockito.reset(sendLink2);
         }
+    }
+
+    @Test
+    void sendObjectBatch() {
+        ObjectBatch<Object> objectBatch = producer.createBatch(Object.class,
+            new CreateBatchOptions().setPartitionId(PARTITION_0)).block();
+        objectBatch.tryAdd(new Object());
+        objectBatch.tryAdd(new Object());
+        StepVerifier.create(producer.send(objectBatch))
+            .verifyComplete();
+        assertEquals(objectBatch.getStartingPublishedSequenceNumber(), PRODUCER_SEQ_NUMBER);
+
+        StepVerifier.create(producer.getPartitionPublishingProperties(PARTITION_0))
+            .assertNext(properties -> {
+                assertEquals(properties.getOwnerLevel(), PRODUCER_OWNER_LEVEL);
+                assertEquals(properties.getProducerGroupId(), PRODUCER_GROUP_ID);
+                assertEquals(properties.getSequenceNumber(), PRODUCER_SEQ_NUMBER + objectBatch.getCount());
+            }).verifyComplete();
     }
 }
