@@ -3,9 +3,12 @@
 
 package com.azure.security.keyvault.administration.models;
 
+import com.azure.core.annotation.Immutable;
+
 /**
  * A class that contains the details of a backup operation.
  */
+@Immutable
 public final class KeyVaultBackupOperation extends KeyVaultLongRunningOperation {
     private final String azureStorageBlobContainerUri;
 

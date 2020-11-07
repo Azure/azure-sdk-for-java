@@ -3,11 +3,14 @@
 
 package com.azure.security.keyvault.administration.models;
 
+import com.azure.core.annotation.Immutable;
+
 import java.util.List;
 
 /**
  * A class that defines a role definition's properties.
  */
+@Immutable
 public final class KeyVaultRoleDefinitionProperties {
     private final String roleName;
     private final String description;

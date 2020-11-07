@@ -3,9 +3,12 @@
 
 package com.azure.security.keyvault.administration.models;
 
+import com.azure.core.annotation.Immutable;
+
 /**
  * A class that contains the details of a restore operation.
  */
+@Immutable
 public final class KeyVaultRestoreOperation extends KeyVaultLongRunningOperation {
     /**
      * Creates an object containing the details of a {@link KeyVaultRestoreOperation}.
