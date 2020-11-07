@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0 (2020-11-09)
+## 1.2.0-beta.3 (Unreleased)
 
 ### New Features
 - Added Azure Service Fabric Managed Identity support to `ManagedIdentityCredential`
