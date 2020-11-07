@@ -35,8 +35,10 @@ public class KeyVaultLongRunningOperation {
         this.status = status;
         this.statusDetails = statusDetails;
         this.error = error;
-        this.startTime = OffsetDateTime.ofInstant(Instant.ofEpochSecond(startTime), ZoneOffset.UTC);
-        this.endTime = OffsetDateTime.ofInstant(Instant.ofEpochSecond(endTime), ZoneOffset.UTC);
+        this.startTime = startTime == null ? null
+            : OffsetDateTime.ofInstant(Instant.ofEpochSecond(startTime), ZoneOffset.UTC);
+        this.endTime = endTime == null ? null
+            : OffsetDateTime.ofInstant(Instant.ofEpochSecond(endTime), ZoneOffset.UTC);
         this.jobId = jobId;
     }
 
