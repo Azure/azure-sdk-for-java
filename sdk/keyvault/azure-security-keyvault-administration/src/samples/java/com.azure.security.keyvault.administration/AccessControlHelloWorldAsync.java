@@ -61,11 +61,9 @@ public class AccessControlHelloWorldAsync {
         az ad signed-in-user show --query objectId */
         String servicePrincipalId = "<service-principal-id>";
         KeyVaultRoleDefinition roleDefinition = roleDefinitions.get(0);
-        KeyVaultRoleAssignmentProperties assignmentProperties =
-            new KeyVaultRoleAssignmentProperties(roleDefinition.getId(), servicePrincipalId);
         KeyVaultRoleAssignment createdRoleAssignment =
-            accessControlAsyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, assignmentProperties)
-                .block();
+            accessControlAsyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinition.getId(),
+                servicePrincipalId).block();
 
         /* To get an existing role assignment, we'll need the 'name' property from an existing assignment. Let's use the
         createdAssignment from the previous example. */

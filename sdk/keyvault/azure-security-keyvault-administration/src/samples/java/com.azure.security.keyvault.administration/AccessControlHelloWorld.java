@@ -58,10 +58,9 @@ public class AccessControlHelloWorld {
         az ad signed-in-user show --query objectId */
         String servicePrincipalId = "<service-principal-id>";
         KeyVaultRoleDefinition roleDefinition = roleDefinitions.get(0);
-        KeyVaultRoleAssignmentProperties assignmentProperties =
-            new KeyVaultRoleAssignmentProperties(roleDefinition.getId(), servicePrincipalId);
         KeyVaultRoleAssignment createdRoleAssignment =
-            accessControlClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, assignmentProperties);
+            accessControlClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinition.getId(),
+                servicePrincipalId);
 
         System.out.printf("Created role assignment with name: %s %n", createdRoleAssignment.getName());
 

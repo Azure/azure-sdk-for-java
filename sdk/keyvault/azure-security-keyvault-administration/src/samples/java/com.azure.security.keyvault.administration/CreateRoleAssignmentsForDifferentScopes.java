@@ -42,11 +42,8 @@ public class CreateRoleAssignmentsForDifferentScopes {
         String roleDefinitionId = "<role-definition-id>";
         String servicePrincipalId = "<service-principal-id>";
 
-        KeyVaultRoleAssignmentProperties roleAssignmentProperties =
-            new KeyVaultRoleAssignmentProperties(roleDefinitionId, servicePrincipalId);
-
         KeyVaultRoleAssignment roleAssignmentForAllKeys =
-            accessControlClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignmentProperties);
+            accessControlClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinitionId, servicePrincipalId);
 
         System.out.printf("Created role assignment with name: %s %n", roleAssignmentForAllKeys.getName());
 
@@ -56,8 +53,8 @@ public class CreateRoleAssignmentsForDifferentScopes {
         String keyId = "<key-id>";
 
         KeyVaultRoleAssignment roleAssignmentForSingleKey =
-            accessControlClient.createRoleAssignment(KeyVaultRoleScope.fromString(keyId),
-                roleAssignmentProperties);
+            accessControlClient.createRoleAssignment(KeyVaultRoleScope.fromString(keyId), roleDefinitionId,
+                servicePrincipalId);
 
         System.out.printf("Created role assignment with name: %s %n", roleAssignmentForSingleKey.getName());
     }

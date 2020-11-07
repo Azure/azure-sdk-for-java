@@ -110,15 +110,16 @@ public final class KeyVaultAccessControlClient {
      *
      * @param roleScope The {@link KeyVaultRoleScope roleScope} of the {@link KeyVaultRoleAssignment} to
      * create.
-     * @param properties Properties for the {@link KeyVaultRoleAssignment}.
-     * @return The created {@link KeyVaultRoleAssignment}.
-     * @throws NullPointerException if the {@link KeyVaultRoleScope roleScope} or
-     * {@link KeyVaultRoleAssignmentProperties properties} are {@code null}.
+     * @param roleDefinitionId The {@link KeyVaultRoleDefinition role definition} ID for the role assignment.
+     * @param principalId The principal ID assigned to the role. This maps to the ID inside the Active Directory.
+     * @return A {@link Mono} containing the created {@link KeyVaultRoleAssignment}.
+     * @throws NullPointerException if the {@link KeyVaultRoleScope roleScope}, {@link String roleAssignmentName},
+     * {@link String roleDefinitionId} or {@link String principalId} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyVaultRoleAssignment createRoleAssignment(KeyVaultRoleScope roleScope, KeyVaultRoleAssignmentProperties properties) {
-        return createRoleAssignmentWithResponse(roleScope, UUID.randomUUID().toString(), properties, Context.NONE)
-            .getValue();
+    public KeyVaultRoleAssignment createRoleAssignment(KeyVaultRoleScope roleScope, String roleDefinitionId, String principalId) {
+        return createRoleAssignmentWithResponse(roleScope, UUID.randomUUID().toString(), roleDefinitionId, principalId,
+            Context.NONE).getValue();
     }
 
     /**
@@ -128,14 +129,16 @@ public final class KeyVaultAccessControlClient {
      * create.
      * @param roleAssignmentName The roleAssignmentName used to create the {@link KeyVaultRoleAssignment}. It can be any
      * valid UUID.
-     * @param properties Properties for the {@link KeyVaultRoleAssignment}.
+     * @param roleDefinitionId The {@link KeyVaultRoleDefinition role definition} ID for the role assignment.
+     * @param principalId The principal ID assigned to the role. This maps to the ID inside the Active Directory.
      * @return The created {@link KeyVaultRoleAssignment}.
      * @throws NullPointerException if the {@link KeyVaultRoleScope roleScope}, {@link String roleAssignmentName} or
      * {@link KeyVaultRoleAssignmentProperties properties} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyVaultRoleAssignment createRoleAssignment(KeyVaultRoleScope roleScope, String roleAssignmentName, KeyVaultRoleAssignmentProperties properties) {
-        return createRoleAssignmentWithResponse(roleScope, roleAssignmentName, properties, Context.NONE).getValue();
+    public KeyVaultRoleAssignment createRoleAssignment(KeyVaultRoleScope roleScope, String roleAssignmentName, String roleDefinitionId, String principalId) {
+        return createRoleAssignmentWithResponse(roleScope, roleAssignmentName, roleAssignmentName, principalId,
+            Context.NONE).getValue();
     }
 
     /**
@@ -145,7 +148,8 @@ public final class KeyVaultAccessControlClient {
      * create.
      * @param roleAssignmentName The roleAssignmentName used to create the {@link KeyVaultRoleAssignment}. It can be any
      * valid UUID.
-     * @param properties Properties for the {@link KeyVaultRoleAssignment}.
+     * @param roleDefinitionId The {@link KeyVaultRoleDefinition role definition} ID for the role assignment.
+     * @param principalId The principal ID assigned to the role. This maps to the ID inside the Active Directory.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the created
      * {@link KeyVaultRoleAssignment}.
@@ -153,8 +157,8 @@ public final class KeyVaultAccessControlClient {
      * {@link KeyVaultRoleAssignmentProperties properties} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyVaultRoleAssignment> createRoleAssignmentWithResponse(KeyVaultRoleScope roleScope, String roleAssignmentName, KeyVaultRoleAssignmentProperties properties, Context context) {
-        return asyncClient.createRoleAssignmentWithResponse(roleScope, roleAssignmentName, properties, context).block();
+    public Response<KeyVaultRoleAssignment> createRoleAssignmentWithResponse(KeyVaultRoleScope roleScope, String roleAssignmentName, String roleDefinitionId, String principalId, Context context) {
+        return asyncClient.createRoleAssignmentWithResponse(roleScope, roleAssignmentName, roleDefinitionId, principalId, context).block();
     }
 
     /**
