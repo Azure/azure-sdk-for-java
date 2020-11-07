@@ -26,7 +26,7 @@ license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: HandleItem,ShareFileHttpHeaders,ShareItem,ShareServiceProperties,ShareCorsRule,ShareProperties,Range,FileRange,ClearRange,ShareFileRangeList,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType,ShareAccessTier
+custom-types: HandleItem,ShareFileHttpHeaders,ShareServiceProperties,ShareCorsRule,Range,FileRange,ClearRange,ShareFileRangeList,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType,ShareAccessTier
 ```
 
 ### Query Parameters
@@ -588,17 +588,17 @@ directive:
     }
 ```
 
-### ShareProperties
+### SharePropertiesInternal
 ``` yaml
 directive:
 - from: swagger-document
   where: $.definitions
   transform: >
-    if (!$.ShareProperties.properties.Metadata) {
-        const path = $.ShareItem.properties.Metadata.$ref;
-        $.ShareProperties.properties.Metadata = { "$ref": path };
+    if (!$.SharePropertiesInternal.properties.Metadata) {
+        const path = $.ShareItemInternal.properties.Metadata.$ref;
+        $.SharePropertiesInternal.properties.Metadata = { "$ref": path };
     }
-    $.ShareProperties.properties.Etag["x-ms-client-name"] = "eTag";
+    $.SharePropertiesInternal.properties.Etag["x-ms-client-name"] = "eTag";
 ```
 
 ### ShareUsageBytes
