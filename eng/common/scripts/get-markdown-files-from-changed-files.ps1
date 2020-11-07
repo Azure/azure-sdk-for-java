@@ -20,7 +20,7 @@ foreach($file in $renamedFiles) {
 # A combined list of deleted and renamed files.
 $relativePathLinks = ($deletedFiles + $beforeRenameFiles)
 # Removed the deleted markdowns. 
-$changedMarkdowns = $changedMarkdowns | Where-Object { $relativePathLinks -notcontains $_ }
+$changedMarkdowns = $changedMarkdowns | Where-Object { $deletedFiles -notcontains $_ }
 # Scan all markdowns and find if it contains the deleted or renamed files.
 $markdownContainLinks = @()
 $allMarkdownFiles = Get-ChildItem -Path $RootRepo -Recurse -Include *.md
