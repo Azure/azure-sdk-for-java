@@ -121,7 +121,7 @@ public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatc
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                 .withRootUsername(userName)
                 .withRootPassword("Abcdef.123456")
-                .withSize(VirtualMachineSizeTypes.STANDARD_A1)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .defineNewExtension("packetCapture")
                 .withPublisher("Microsoft.Azure.NetworkWatcher")
                 .withType("NetworkWatcherAgentLinux")
@@ -143,7 +143,7 @@ public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatc
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                 .withRootUsername(userName)
                 .withRootPassword("Abcdef.123456")
-                .withSize(VirtualMachineSizeTypes.STANDARD_A1);
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"));
 
         vmDefinitions.add(vm1);
         vmDefinitions.add(vm2);

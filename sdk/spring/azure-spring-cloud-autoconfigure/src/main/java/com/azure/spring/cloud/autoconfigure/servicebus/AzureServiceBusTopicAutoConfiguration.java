@@ -52,7 +52,7 @@ public class AzureServiceBusTopicAutoConfiguration {
         if (resourceManagerProvider != null) {
             clientFactory.setNamespace(serviceBusProperties.getNamespace());
             clientFactory.setResourceManagerProvider(resourceManagerProvider);
-        } else {
+        } else if (connectionString != null) {
             TelemetryCollector.getInstance().addProperty(SERVICE_BUS_TOPIC, NAMESPACE,
                 ServiceBusUtils.getNamespace(connectionString));
         }

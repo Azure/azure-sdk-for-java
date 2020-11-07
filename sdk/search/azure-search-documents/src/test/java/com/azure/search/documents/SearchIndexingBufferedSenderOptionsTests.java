@@ -15,12 +15,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests {@link SearchIndexingBufferedSenderOptions}.
  */
 public class SearchIndexingBufferedSenderOptionsTests {
-    private Boolean autoFlush;
-    private Duration flushWindow;
-    private Integer batchSize;
-    private Integer documentTryLimit;
     @Test
-    public void autoFlushDefaultsTrue() {
+    public void autoFlushDefaults() {
         SearchIndexingBufferedSenderOptions<Integer> options = new SearchIndexingBufferedSenderOptions<>();
         assertTrue(options.getAutoFlush());
 
@@ -29,7 +25,7 @@ public class SearchIndexingBufferedSenderOptionsTests {
     }
 
     @Test
-    public void flushWindowDefaults60Seconds() {
+    public void flushWindowDefaults() {
         SearchIndexingBufferedSenderOptions<Integer> options = new SearchIndexingBufferedSenderOptions<>();
         assertEquals(Duration.ofSeconds(60), options.getAutoFlushWindow());
 
@@ -38,34 +34,66 @@ public class SearchIndexingBufferedSenderOptionsTests {
     }
 
     @Test
-    public void batchSizeDefaults500() {
+    public void initialBatchActionCountDefaults() {
         SearchIndexingBufferedSenderOptions<Integer> options = new SearchIndexingBufferedSenderOptions<>();
-        assertEquals(500, options.getBatchSize());
+        assertEquals(512, options.getInitialBatchActionCount());
 
-        options.setBatchSize(null);
-        assertEquals(500, options.getBatchSize());
+        options.setInitialBatchActionCount(null);
+        assertEquals(512, options.getInitialBatchActionCount());
     }
 
     @Test
     public void invalidBatchSizeThrows() {
         SearchIndexingBufferedSenderOptions<Integer> options = new SearchIndexingBufferedSenderOptions<>();
-        assertThrows(IllegalArgumentException.class, () -> options.setBatchSize(0));
-        assertThrows(IllegalArgumentException.class, () -> options.setBatchSize(-1));
+        assertThrows(IllegalArgumentException.class, () -> options.setInitialBatchActionCount(0));
+        assertThrows(IllegalArgumentException.class, () -> options.setInitialBatchActionCount(-1));
     }
 
     @Test
-    public void documentTryLimitDefaults10() {
+    public void maxRetriesDefaults() {
         SearchIndexingBufferedSenderOptions<Integer> options = new SearchIndexingBufferedSenderOptions<>();
-        assertEquals(3, options.getDocumentTryLimit());
+        assertEquals(3, options.getMaxRetries());
 
-        options.setDocumentTryLimit(null);
-        assertEquals(3, options.getDocumentTryLimit());
+        options.setMaxRetries(null);
+        assertEquals(3, options.getMaxRetries());
     }
 
     @Test
-    public void invalidDocumentTryLimitThrows() {
+    public void invalidMaxRetriesThrows() {
         SearchIndexingBufferedSenderOptions<Integer> options = new SearchIndexingBufferedSenderOptions<>();
-        assertThrows(IllegalArgumentException.class, () -> options.setDocumentTryLimit(0));
-        assertThrows(IllegalArgumentException.class, () -> options.setDocumentTryLimit(-1));
+        assertThrows(IllegalArgumentException.class, () -> options.setMaxRetries(0));
+        assertThrows(IllegalArgumentException.class, () -> options.setMaxRetries(-1));
+    }
+
+    @Test
+    public void retryDelayDefaults() {
+        SearchIndexingBufferedSenderOptions<Integer> options = new SearchIndexingBufferedSenderOptions<>();
+        assertEquals(Duration.ofMillis(800), options.getRetryDelay());
+
+        options.setRetryDelay(null);
+        assertEquals(Duration.ofMillis(800), options.getRetryDelay());
+    }
+
+    @Test
+    public void invalidRetryDelayThrows() {
+        SearchIndexingBufferedSenderOptions<Integer> options = new SearchIndexingBufferedSenderOptions<>();
+        assertThrows(IllegalArgumentException.class, () -> options.setRetryDelay(Duration.ZERO));
+        assertThrows(IllegalArgumentException.class, () -> options.setRetryDelay(Duration.ofMillis(-1)));
+    }
+
+    @Test
+    public void maxRetryDelayDefaults() {
+        SearchIndexingBufferedSenderOptions<Integer> options = new SearchIndexingBufferedSenderOptions<>();
+        assertEquals(Duration.ofMinutes(1), options.getMaxRetryDelay());
+
+        options.setRetryDelay(null);
+        assertEquals(Duration.ofMinutes(1), options.getMaxRetryDelay());
+    }
+
+    @Test
+    public void invalidMaxRetryDelayThrows() {
+        SearchIndexingBufferedSenderOptions<Integer> options = new SearchIndexingBufferedSenderOptions<>();
+        assertThrows(IllegalArgumentException.class, () -> options.setMaxRetryDelay(Duration.ZERO));
+        assertThrows(IllegalArgumentException.class, () -> options.setMaxRetryDelay(Duration.ofMillis(-1)));
     }
 }

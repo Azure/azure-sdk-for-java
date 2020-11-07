@@ -49,6 +49,11 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
                 systemProperties.put("azure.keyvault.clientSecret", clientSecret);
             }
 
+            String managedIdentity = environment.getProperty("azure.keyvault.managedIdentity");
+            if (managedIdentity != null) {
+                systemProperties.put("azure.keyvault.managedIdentity", managedIdentity);
+            }
+
             String keyStoreType = environment.getProperty("server.ssl.key-store-type");
 
             if (keyStoreType != null && keyStoreType.equals("AzureKeyVault")) {

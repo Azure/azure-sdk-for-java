@@ -154,10 +154,10 @@ stages:
               python --version
               python -m pip install setuptools termcolor in_place
               python sdk/spring/scripts/replace_util.py --module cosmos --log debug --color false
-            condition: eq(variables['DisplayName'], 'Spring Emulator only Integration Tests')
+            condition: and(succeededOrFailed(), eq(variables['DisplayName'], 'Spring Emulator only Integration Tests'))
             displayName: 'Run replace_util.py'
           - task: Maven@3
-            condition: eq(variables['DisplayName'], 'Spring Emulator only Integration Tests')
+            condition: and(succeededOrFailed(), eq(variables['DisplayName'], 'Spring Emulator only Integration Tests'))
             displayName: 'Run tests again: $(DisplayName)'
             inputs:
               mavenPomFile: pom.xml
