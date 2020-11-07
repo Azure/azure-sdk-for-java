@@ -61,6 +61,6 @@ public class ReleasePolicy {
      * @return The policy rules represented by a blob.
      */
     public byte[] getData() {
-        return this.data.decodedBytes();
+        return this.data == null ? null : this.data.decodedBytes();
     }
 }
