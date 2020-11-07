@@ -27,12 +27,6 @@ public class KeyVaultKey {
     @JsonProperty(value = "key")
     private JsonWebKey key;
 
-    /**
-     * The key release policy.
-     */
-    @JsonProperty(value = "release_policy")
-    private KeyReleasePolicy keyReleasePolicy;
-
     KeyVaultKey() {
         properties = new KeyProperties();
     }
@@ -104,12 +98,12 @@ public class KeyVaultKey {
     }
 
     /**
-     * Get the key release policy of the key.
+     * Get the policy rules under which the key can be exported.
      *
-     * @return The key release policy.
+     * @return The release policy.
      */
-    public KeyReleasePolicy getKeyReleasePolicy() {
-        return this.keyReleasePolicy;
+    public ReleasePolicy getReleasePolicy() {
+        return properties.getReleasePolicy();
     }
 
     /**
@@ -135,5 +129,10 @@ public class KeyVaultKey {
     @JsonProperty("managed")
     private void setManaged(boolean managed) {
         properties.setManaged(managed);
+    }
+
+    @JsonProperty(value = "release_policy")
+    private void setReleasePolicy(ReleasePolicy releasePolicy) {
+        properties.setReleasePolicy(releasePolicy);
     }
 }

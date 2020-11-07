@@ -111,12 +111,12 @@ public class ImportKeyOptions extends KeyProperties {
     /**
      * Set the policy rules under which the key can be exported.
      *
-     * @param keyReleasePolicy The key release policy to set.
+     * @param releasePolicy The release policy to set.
      * @return The updated {@link ImportKeyOptions} object.
      */
     @Override
-    public ImportKeyOptions setKeyReleasePolicy(KeyReleasePolicy keyReleasePolicy) {
-        this.keyReleasePolicy = keyReleasePolicy;
+    public ImportKeyOptions setReleasePolicy(ReleasePolicy releasePolicy) {
+        this.releasePolicy = releasePolicy;
         return this;
     }
 }

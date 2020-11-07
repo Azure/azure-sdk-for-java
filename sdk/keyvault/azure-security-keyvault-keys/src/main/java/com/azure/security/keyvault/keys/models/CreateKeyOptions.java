@@ -58,7 +58,7 @@ public class CreateKeyOptions {
     /**
      * The policy rules under which the key can be exported.
      */
-    private KeyReleasePolicy keyReleasePolicy;
+    private ReleasePolicy releasePolicy;
 
     /**
      * Creates instance of KeyCreateOptions with {@code name} as key name and {@code keyType} as type of the key.
@@ -206,20 +206,20 @@ public class CreateKeyOptions {
     /**
      * Get the policy rules under which the key can be exported.
      *
-     * @return The key release policy.
+     * @return The release policy.
      */
-    public KeyReleasePolicy getKeyReleasePolicy() {
-        return keyReleasePolicy;
+    public ReleasePolicy getReleasePolicy() {
+        return releasePolicy;
     }
 
     /**
      * Set the policy rules under which the key can be exported.
      *
-     * @param keyReleasePolicy The key release policy to set.
+     * @param releasePolicy The release policy to set.
      * @return The updated {@link CreateKeyOptions} object.
      */
-    public CreateKeyOptions setKeyReleasePolicy(KeyReleasePolicy keyReleasePolicy) {
-        this.keyReleasePolicy = keyReleasePolicy;
+    public CreateKeyOptions setReleasePolicy(ReleasePolicy releasePolicy) {
+        this.releasePolicy = releasePolicy;
         return this;
     }
 

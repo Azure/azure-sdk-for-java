@@ -4,39 +4,28 @@
 package com.azure.security.keyvault.keys.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.Base64Url;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Class that contains the policy rules under which the key can be exported.
  */
 @Fluent
-public class KeyReleasePolicy {
+public class ReleasePolicy {
     /**
-     * Content type and version of key release policy. The default value is:
-     * 'application/json; charset=utf-8; version=1.0'.
+     * Content type and version of key release policy.
      */
     @JsonProperty(value = "contentType")
-    private String contentType = "application/json; charset=utf-8; version=1.0";
+    private String contentType;
 
     /**
      * Blob encoding the policy rules under which the key can be exported.
      */
     @JsonProperty(value = "data")
-    private byte[] data;
+    private Base64Url data;
 
     /**
-     * Creates an instance of {@link KeyReleasePolicy}.
-     *
-     * @param data Blob encoding the policy rules under which the key can be exported.
-     */
-    public KeyReleasePolicy(byte[] data) {
-        this.data = new byte[data.length];
-
-        System.arraycopy(data, 0, this.data, 0, data.length);
-    }
-
-    /**
-     * Get the content type of the key release policy.
+     * Get the content type of the release policy.
      *
      * @return The content type.
      */
@@ -45,14 +34,24 @@ public class KeyReleasePolicy {
     }
 
     /**
-     * Set the content type of the key release policy. The default value is:
-     * 'application/json; charset=utf-8; version=1.0'.
+     * Set the content type of the release policy.
      *
      * @param contentType The content type to set.
-     * @return The updated {@link KeyReleasePolicy} object.
+     * @return The updated {@link ReleasePolicy} object.
      */
-    public KeyReleasePolicy setContentType(String contentType) {
+    public ReleasePolicy setContentType(String contentType) {
         this.contentType = contentType;
+        return this;
+    }
+
+    /**
+     * Set the blob encoding the policy rules under which the key can be exported.
+     *
+     * @param data Blob encoding the policy rules under which the key can be exported.
+     * @return The updated {@link ReleasePolicy} object.
+     */
+    public ReleasePolicy setData(byte[] data) {
+        this.data = Base64Url.encode(data);
         return this;
     }
 
@@ -62,6 +61,6 @@ public class KeyReleasePolicy {
      * @return The policy rules represented by a blob.
      */
     public byte[] getData() {
-        return data.clone();
+        return this.data.decodedBytes();
     }
 }

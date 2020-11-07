@@ -105,9 +105,9 @@ public class KeyProperties {
     Boolean exportable;
 
     /**
-     * Indicates if the private key can be exported.
+     * The policy rules under which the key can be exported.
      */
-    KeyReleasePolicy keyReleasePolicy;
+    ReleasePolicy releasePolicy;
 
     /**
      * Gets the number of days a key is retained before being deleted for a soft delete-enabled Key Vault.
@@ -285,20 +285,20 @@ public class KeyProperties {
     /**
      * Get the policy rules under which the key can be exported.
      *
-     * @return The key release policy.
+     * @return The release policy.
      */
-    public KeyReleasePolicy getKeyReleasePolicy() {
-        return keyReleasePolicy;
+    public ReleasePolicy getReleasePolicy() {
+        return releasePolicy;
     }
 
     /**
      * Set the policy rules under which the key can be exported.
      *
-     * @param keyReleasePolicy The key release policy to set.
+     * @param releasePolicy The release policy to set.
      * @return The updated {@link KeyProperties} object.
      */
-    public KeyProperties setKeyReleasePolicy(KeyReleasePolicy keyReleasePolicy) {
-        this.keyReleasePolicy = keyReleasePolicy;
+    public KeyProperties setReleasePolicy(ReleasePolicy releasePolicy) {
+        this.releasePolicy = releasePolicy;
         return this;
     }
 
