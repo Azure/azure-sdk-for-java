@@ -67,18 +67,24 @@ public final class KeyVaultAccessControlAsyncClient {
     private final KeyVaultAccessControlClientImpl clientImpl;
 
     /**
-     * The Kay Vault URL this client is associated to.
+     * The Key Vault URL this client is associated to.
      */
     private final String vaultUrl;
 
     /**
+     * The Key Vault Administration Service version to use with this client.
+     */
+    private final String serviceVersion;
+
+    /**
      * Package private constructor to be used by {@link KeyVaultAccessControlClientBuilder}.
      */
-    KeyVaultAccessControlAsyncClient(URL vaultUrl, HttpPipeline httpPipeline) {
+    KeyVaultAccessControlAsyncClient(URL vaultUrl, HttpPipeline httpPipeline, KeyVaultAdministrationServiceVersion serviceVersion) {
         Objects.requireNonNull(vaultUrl,
             KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
 
         this.vaultUrl = vaultUrl.toString();
+        this.serviceVersion = serviceVersion.getVersion();
 
         clientImpl = new KeyVaultAccessControlClientImplBuilder()
             .pipeline(httpPipeline)

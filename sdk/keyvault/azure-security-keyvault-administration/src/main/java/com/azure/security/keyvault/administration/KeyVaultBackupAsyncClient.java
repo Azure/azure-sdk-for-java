@@ -65,9 +65,14 @@ public final class KeyVaultBackupAsyncClient {
     private final KeyVaultBackupClientImpl clientImpl;
 
     /**
-     * The Kay Vault URL this client is associated to.
+     * The Key Vault URL this client is associated to.
      */
     private final String vaultUrl;
+
+    /**
+     * The Key Vault Administration Service version to use with this client.
+     */
+    private final String serviceVersion;
 
     Duration getDefaultPollingInterval() {
         return DEFAULT_POLLING_INTERVAL;
@@ -76,11 +81,12 @@ public final class KeyVaultBackupAsyncClient {
     /**
      * Package private constructor to be used by {@link KeyVaultBackupClientBuilder}.
      */
-    KeyVaultBackupAsyncClient(URL vaultUrl, HttpPipeline httpPipeline) {
+    KeyVaultBackupAsyncClient(URL vaultUrl, HttpPipeline httpPipeline, KeyVaultAdministrationServiceVersion serviceVersion) {
         Objects.requireNonNull(vaultUrl,
             KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
 
         this.vaultUrl = vaultUrl.toString();
+        this.serviceVersion = serviceVersion.getVersion();
 
         clientImpl = new KeyVaultBackupClientImplBuilder()
             .pipeline(httpPipeline)
