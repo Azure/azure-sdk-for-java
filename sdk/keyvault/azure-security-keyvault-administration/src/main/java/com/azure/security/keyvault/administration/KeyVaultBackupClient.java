@@ -79,6 +79,19 @@ public final class KeyVaultBackupClient {
     }
 
     /**
+     * Gets a pending {@link KeyVaultBackupOperation backup operation} from the Key Vault.
+     *
+     * @param jobId The operation identifier.
+     * @param pollingInterval The interval at which the operation status will be polled for.
+     * @throws NullPointerException if the {@code jobId} is null.
+     * @return A {@link SyncPoller} polling on the {@link KeyVaultBackupOperation backup operation} status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<KeyVaultBackupOperation, String> beginBackup(String jobId, Duration pollingInterval) {
+        return asyncClient.beginBackup(jobId, pollingInterval).getSyncPoller();
+    }
+
+    /**
      * Initiates a full restore of the Key Vault.
      *
      * @param backupFolderUrl The URL for the Blob Storage resource where the backup is located, including the path to
@@ -119,6 +132,19 @@ public final class KeyVaultBackupClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<KeyVaultRestoreOperation, Void> beginRestore(String jobId) {
         return asyncClient.beginRestore(jobId).getSyncPoller();
+    }
+
+    /**
+     * Gets a pending {@link KeyVaultRestoreOperation full restore operation} from the Key Vault.
+     *
+     * @param jobId The operation identifier.
+     * @param pollingInterval The interval at which the operation status will be polled for.
+     * @throws NullPointerException if the {@code jobId} is null.
+     * @return A {@link SyncPoller} to poll on the {@link KeyVaultRestoreOperation restore operation} status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<KeyVaultRestoreOperation, Void> beginRestore(String jobId, Duration pollingInterval) {
+        return asyncClient.beginRestore(jobId, pollingInterval).getSyncPoller();
     }
 
     /**
@@ -168,5 +194,18 @@ public final class KeyVaultBackupClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<KeyVaultRestoreOperation, Void> beginSelectiveRestore(String jobId) {
         return asyncClient.beginSelectiveRestore(jobId).getSyncPoller();
+    }
+
+    /**
+     * Gets a pending {@link KeyVaultRestoreOperation selective restore operation} from the Key Vault.
+     *
+     * @param jobId The operation identifier.
+     * @param pollingInterval The interval at which the operation status will be polled for.
+     * @throws NullPointerException if the {@code jobId} is null.
+     * @return A {@link SyncPoller} to poll on the {@link KeyVaultRestoreOperation restore operation} status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<KeyVaultRestoreOperation, Void> beginSelectiveRestore(String jobId, Duration pollingInterval) {
+        return asyncClient.beginSelectiveRestore(jobId, pollingInterval).getSyncPoller();
     }
 }

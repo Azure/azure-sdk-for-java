@@ -74,7 +74,7 @@ public final class KeyVaultBackupAsyncClient {
      */
     private final String serviceVersion;
 
-    Duration getDefaultPollingInterval() {
+    static Duration getDefaultPollingInterval() {
         return DEFAULT_POLLING_INTERVAL;
     }
 
@@ -265,11 +265,24 @@ public final class KeyVaultBackupAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<KeyVaultBackupOperation, String> beginBackup(String jobId) {
+        return beginBackup(jobId, getDefaultPollingInterval());
+    }
+
+    /**
+     * Gets a pending {@link KeyVaultBackupOperation backup operation} from the Key Vault.
+     *
+     * @param jobId The operation identifier.
+     * @param pollingInterval The interval at which the operation status will be polled for.
+     * @throws NullPointerException if the {@code jobId} is null.
+     * @return A {@link PollerFlux} polling on the {@link KeyVaultBackupOperation backup operation} status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<KeyVaultBackupOperation, String> beginBackup(String jobId, Duration pollingInterval) {
         Objects.requireNonNull(jobId,
             String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
                 "'jobId'"));
 
-        return new PollerFlux<>(Duration.ofSeconds(1),
+        return new PollerFlux<>(pollingInterval,
             (pollingContext) -> Mono.empty(),
             backupStatusPollOperation(jobId),
             (pollingContext, firstResponse) -> Mono.error(new RuntimeException("Cancellation is not supported")),
@@ -445,11 +458,24 @@ public final class KeyVaultBackupAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<KeyVaultRestoreOperation, Void> beginRestore(String jobId) {
+        return beginRestore(jobId, getDefaultPollingInterval());
+    }
+
+    /**
+     * Gets a pending {@link KeyVaultRestoreOperation full restore operation} from the Key Vault.
+     *
+     * @param jobId The operation identifier.
+     * @param pollingInterval The interval at which the operation status will be polled for.
+     * @throws NullPointerException if the {@code jobId} is null.
+     * @return A {@link PollerFlux} polling on the {@link KeyVaultRestoreOperation restore operation} status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<KeyVaultRestoreOperation, Void> beginRestore(String jobId, Duration pollingInterval) {
         Objects.requireNonNull(jobId,
             String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
                 "'jobId'"));
 
-        return new PollerFlux<>(Duration.ofSeconds(1),
+        return new PollerFlux<>(pollingInterval,
             (pollingContext) -> Mono.empty(),
             restoreStatusPollOperation(jobId),
             (pollingContext, firstResponse) -> Mono.error(new RuntimeException("Cancellation is not supported")),
@@ -537,6 +563,19 @@ public final class KeyVaultBackupAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<KeyVaultRestoreOperation, Void> beginSelectiveRestore(String jobId) {
         return beginRestore(jobId);
+    }
+
+    /**
+     * Gets a pending {@link KeyVaultRestoreOperation selective restore operation} from the Key Vault.
+     *
+     * @param jobId The operation identifier.
+     * @param pollingInterval The interval at which the operation status will be polled for.
+     * @throws NullPointerException if the {@code jobId} is null.
+     * @return A {@link PollerFlux} polling on the {@link KeyVaultRestoreOperation restore operation} status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<KeyVaultRestoreOperation, Void> beginSelectiveRestore(String jobId, Duration pollingInterval) {
+        return beginRestore(jobId, pollingInterval);
     }
 
     /**
