@@ -1,5 +1,8 @@
 # Release History
 
+## 7.0.0-beta.8 (Unreleased)
+
+
 ## 7.0.0-beta.7 (2020-11-06)
 ### New Features
 - Added automatic message and session lock renewal feature on the receiver clients. By default, this will be done 
