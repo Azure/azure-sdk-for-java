@@ -37,7 +37,7 @@ To quickly create the needed Service Bus resources in Azure and to receive a con
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-servicebus</artifactId>
-    <version>7.0.0-beta.6</version>
+    <version>7.0.0-beta.7</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -86,7 +86,7 @@ platform. First, add the package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.0.9</version>
+    <version>1.1.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -198,9 +198,9 @@ ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
 
 // Receives a batch of messages when 10 messages are received or until 30 seconds have elapsed, whichever
 // happens first.
-IterableStream<ServiceBusReceivedMessageContext> messages = receiver.receiveMessages(10, Duration.ofSeconds(30));
-messages.forEach(context -> {
-    ServiceBusReceivedMessage message = context.getMessage();
+IterableStream<ServiceBusReceivedMessage> messages = receiver.receiveMessages(10, Duration.ofSeconds(30));
+messages.forEach(message -> {
+
     System.out.printf("Id: %s. Contents: %s%n", message.getMessageId(),
         message.getBody().toString());
 });
@@ -224,8 +224,8 @@ ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
 
 // receive() operation continuously fetches messages until the subscription is disposed.
 // The stream is infinite, and completes when the subscription or receiver is closed.
-Disposable subscription = receiver.receiveMessages().subscribe(context -> {
-    ServiceBusReceivedMessage message = context.getMessage();
+Disposable subscription = receiver.receiveMessages().subscribe(message -> {
+
     System.out.printf("Id: %s%n", message.getMessageId());
     System.out.printf("Contents: %s%n", message.getBody().toString());
 }, error -> {
@@ -250,10 +250,10 @@ overloads. The sample below completes a received message from synchronous
 <!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L145-L151 -->
 ```java
 // This fetches a batch of 10 messages or until the default operation timeout has elapsed.
-receiver.receiveMessages(10).forEach(context -> {
-    ServiceBusReceivedMessage message = context.getMessage();
-
+receiver.receiveMessages(10).forEach(message -> {
     // Process message and then complete it.
+    System.out.println("Completing message " + message.getLockToken());
+
     receiver.complete(message);
 });
 ```

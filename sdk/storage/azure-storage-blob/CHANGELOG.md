@@ -1,14 +1,15 @@
 # Release History
 
-## unknown; service version 2020-04-08
-- Added lease ID parameter to Get and Set Blob Tags.
-- Added blob tags to BlobServiceClient.findBlobsByTags() result.
-
 ## 12.9.0-beta.3 (Unreleased)
 - Fixed a bug where interspersed element types returned by page listing would deserialize incorrectly.
 - Fixed a bug where BlobInputStream would not eTag lock on the blob, resulting in undesirable behavior if the blob was modified in the middle of reading. 
 - Renamed BlobDownloadToFileOptions.rangeGetContentMd5 to BlobDownloadToFileOptions.retrieveContentRangeMd5.
+- Added support for the 2020-04-08 service version. 
 - Added support to upload block blob from URL.
+- Added support for move and execute permissions on blob SAS and container SAS, and list permissions on blob SAS.
+- Added support to specify a preauthorized user id and correlation id for user delegation SAS.
+- Added lease ID parameter to Get and Set Blob Tags.
+- Added blob tags to BlobServiceClient.findBlobsByTags() result.
 
 ## 12.9.0-beta.2 (2020-10-08)
 - Added support to specify whether or not a pipeline policy should be added per call or per retry.

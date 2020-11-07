@@ -109,7 +109,7 @@ public final class ManageStorageAccountNetworkRules {
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername("tirekicker")
                     .withRootPassword("12NewPA$$w0rd!")
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .create();
 
             System.out.println("Created the VM: " + linuxVM.id());

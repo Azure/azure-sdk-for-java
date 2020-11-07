@@ -38,7 +38,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     private final ClientLogger logger = new ClientLogger(ServiceBusProcessorClient.class);
     private final ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder sessionReceiverBuilder;
     private final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder;
-    private final Consumer<ServiceBusProcessorMessageContext> processMessage;
+    private final Consumer<ServiceBusReceivedMessageContext> processMessage;
     private final Consumer<Throwable> processError;
     private final ServiceBusProcessorClientOptions processorOptions;
     private final AtomicReference<Subscription> receiverSubscription = new AtomicReference<>();
@@ -55,7 +55,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      * @param processorOptions Options to configure this instance of the processor.
      */
     ServiceBusProcessorClient(ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder sessionReceiverBuilder,
-                              Consumer<ServiceBusProcessorMessageContext> processMessage,
+                              Consumer<ServiceBusReceivedMessageContext> processMessage,
                               Consumer<Throwable> processError, ServiceBusProcessorClientOptions processorOptions) {
         this.sessionReceiverBuilder = Objects.requireNonNull(sessionReceiverBuilder,
             "'sessionReceiverBuilder' cannot be null");
@@ -75,7 +75,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      * @param processorOptions Options to configure this instance of the processor.
      */
     ServiceBusProcessorClient(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder,
-                              Consumer<ServiceBusProcessorMessageContext> processMessage,
+                              Consumer<ServiceBusReceivedMessageContext> processMessage,
                               Consumer<Throwable> processError, ServiceBusProcessorClientOptions processorOptions) {
         this.receiverBuilder = Objects.requireNonNull(receiverBuilder, "'receiverBuilder' cannot be null");
         this.processMessage = Objects.requireNonNull(processMessage, "'processMessage' cannot be null");
@@ -148,10 +148,10 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
             return;
         }
         ServiceBusReceiverAsyncClient receiverClient = asyncClient.get();
-        receiverClient.receiveMessages()
+        receiverClient.receiveMessagesWithContext()
             .parallel(processorOptions.getMaxConcurrentCalls())
             .runOn(Schedulers.boundedElastic())
-            .subscribe(new Subscriber<ServiceBusReceivedMessageContext>() {
+            .subscribe(new Subscriber<ServiceBusMessageContext>() {
                 @Override
                 public void onSubscribe(Subscription subscription) {
                     receiverSubscription.set(subscription);
@@ -159,18 +159,20 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                 }
 
                 @Override
-                public void onNext(ServiceBusReceivedMessageContext serviceBusReceivedMessageContext) {
-                    if (serviceBusReceivedMessageContext.hasError()) {
-                        handleError(serviceBusReceivedMessageContext.getThrowable());
+                public void onNext(ServiceBusMessageContext serviceBusMessageContext) {
+                    if (serviceBusMessageContext.hasError()) {
+                        handleError(serviceBusMessageContext.getThrowable());
                     } else {
                         try {
-                            ServiceBusProcessorMessageContext serviceBusProcessorMessageContext =
-                                new ServiceBusProcessorMessageContext(receiverClient, serviceBusReceivedMessageContext);
-                            processMessage.accept(serviceBusProcessorMessageContext);
+                            ServiceBusReceivedMessageContext serviceBusReceivedMessageContext =
+                                new ServiceBusReceivedMessageContext(receiverClient, serviceBusMessageContext);
+                            processMessage.accept(serviceBusReceivedMessageContext);
                         } catch (Exception ex) {
-                            handleError(ex);
-                            logger.warning("Error when processing message. Abandoning message.", ex);
-                            abandonMessage(serviceBusReceivedMessageContext, receiverClient);
+                            handleError(new ServiceBusReceiverException(ex, ServiceBusErrorSource.USER_CALLBACK));
+                            if (!processorOptions.isDisableAutoComplete()) {
+                                logger.warning("Error when processing message. Abandoning message.", ex);
+                                abandonMessage(serviceBusMessageContext, receiverClient);
+                            }
                         }
                     }
                     if (isRunning.get()) {
@@ -198,10 +200,10 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
             });
     }
 
-    private void abandonMessage(ServiceBusReceivedMessageContext serviceBusReceivedMessageContext,
+    private void abandonMessage(ServiceBusMessageContext serviceBusMessageContext,
                                 ServiceBusReceiverAsyncClient receiverClient) {
         try {
-            receiverClient.abandon(serviceBusReceivedMessageContext.getMessage()).block();
+            receiverClient.abandon(serviceBusMessageContext.getMessage()).block();
         } catch (Exception exception) {
             logger.verbose("Failed to abandon message", exception);
         }

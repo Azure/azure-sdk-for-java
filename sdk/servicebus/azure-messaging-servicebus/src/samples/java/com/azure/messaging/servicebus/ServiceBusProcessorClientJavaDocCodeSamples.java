@@ -15,16 +15,16 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
      */
     public void createServiceBusProcessorClient() {
         // BEGIN: com.azure.messaging.servicebus.servicebusprocessorclient.instantiation
-        Consumer<ServiceBusProcessorMessageContext> messageProcessor = context -> {
+        Consumer<ServiceBusReceivedMessageContext> messageProcessor = context -> {
             ServiceBusReceivedMessage message = context.getMessage();
             System.out.println("Received message " + message.getBody().toString());
         };
 
         Consumer<Throwable> errorHandler = throwable -> {
             System.out.println("Error when receiving messages " + throwable.getMessage());
-            if (throwable instanceof ServiceBusAmqpException) {
-                ServiceBusAmqpException serviceBusAmqpException = (ServiceBusAmqpException) throwable;
-                System.out.println("Error source " + serviceBusAmqpException.getErrorSource());
+            if (throwable instanceof ServiceBusReceiverException) {
+                ServiceBusReceiverException serviceBusReceiverException = (ServiceBusReceiverException) throwable;
+                System.out.println("Error source " + serviceBusReceiverException.getErrorSource());
             }
         };
 
@@ -43,7 +43,7 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
      */
     public void createSessionEnabledServiceBusProcessorClient() {
         // BEGIN: com.azure.messaging.servicebus.servicebusprocessorclient.sessionclientinstantiation
-        Consumer<ServiceBusProcessorMessageContext> messageProcessor = context -> {
+        Consumer<ServiceBusReceivedMessageContext> messageProcessor = context -> {
             ServiceBusReceivedMessage message = context.getMessage();
             System.out.println("Received message " + message.getBody().toString()
                 + " session: " + message.getSessionId());
@@ -51,9 +51,9 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
 
         Consumer<Throwable> errorHandler = throwable -> {
             System.out.println("Error when receiving messages " + throwable.getMessage());
-            if (throwable instanceof ServiceBusAmqpException) {
-                ServiceBusAmqpException serviceBusAmqpException = (ServiceBusAmqpException) throwable;
-                System.out.println("Error source " + serviceBusAmqpException.getErrorSource());
+            if (throwable instanceof ServiceBusReceiverException) {
+                ServiceBusReceiverException serviceBusReceiverException = (ServiceBusReceiverException) throwable;
+                System.out.println("Error source " + serviceBusReceiverException.getErrorSource());
             }
         };
 
@@ -74,16 +74,16 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
     public void createAndStartServiceBusProcessorClient() throws InterruptedException {
 
         // BEGIN: com.azure.messaging.servicebus.servicebusprocessorclient.start
-        Consumer<ServiceBusProcessorMessageContext> messageProcessor = context -> {
+        Consumer<ServiceBusReceivedMessageContext> messageProcessor = context -> {
             ServiceBusReceivedMessage message = context.getMessage();
             System.out.println("Received message " + message.getBody().toString());
         };
 
         Consumer<Throwable> errorHandler = throwable -> {
             System.out.println("Error when receiving messages " + throwable.getMessage());
-            if (throwable instanceof ServiceBusAmqpException) {
-                ServiceBusAmqpException serviceBusAmqpException = (ServiceBusAmqpException) throwable;
-                System.out.println("Error source " + serviceBusAmqpException.getErrorSource());
+            if (throwable instanceof ServiceBusReceiverException) {
+                ServiceBusReceiverException serviceBusReceiverException = (ServiceBusReceiverException) throwable;
+                System.out.println("Error source " + serviceBusReceiverException.getErrorSource());
             }
         };
 
@@ -105,7 +105,7 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
      */
     public void createAndStartSessionEnabledServiceBusProcessorClient() {
         // BEGIN: com.azure.messaging.servicebus.servicebusprocessorclient.startsession
-        Consumer<ServiceBusProcessorMessageContext> messageProcessor = context -> {
+        Consumer<ServiceBusReceivedMessageContext> messageProcessor = context -> {
             ServiceBusReceivedMessage message = context.getMessage();
             System.out.println("Received message " + message.getBody().toString()
                 + " session: " + message.getSessionId());
@@ -113,9 +113,9 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
 
         Consumer<Throwable> errorHandler = throwable -> {
             System.out.println("Error when receiving messages " + throwable.getMessage());
-            if (throwable instanceof ServiceBusAmqpException) {
-                ServiceBusAmqpException serviceBusAmqpException = (ServiceBusAmqpException) throwable;
-                System.out.println("Error source " + serviceBusAmqpException.getErrorSource());
+            if (throwable instanceof ServiceBusReceiverException) {
+                ServiceBusReceiverException serviceBusReceiverException = (ServiceBusReceiverException) throwable;
+                System.out.println("Error source " + serviceBusReceiverException.getErrorSource());
             }
         };
 

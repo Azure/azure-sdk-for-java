@@ -8,6 +8,9 @@
 - Renamed setAccessTier to setProperties and deprecated setQuotaInGb in favor of setProperties.
 - Renamed DeleteSnapshotsOptionType to ShareSnapshotsDeleteOptionType in ShareClient.delete
 - Removed ability to create a ShareLeaseClient for a Share or Share Snapshot. This feature has been rescheduled for future release.
+- Added support for the 2020-04-08 service version. 
+- Added support for specifying enabled protocols on share creation
+- Added support for setting root squash on share creation and through set properties.
 
 ## 12.7.0-beta.1 (2020-10-01)
 - Added support for the 2020-02-10 service version. 

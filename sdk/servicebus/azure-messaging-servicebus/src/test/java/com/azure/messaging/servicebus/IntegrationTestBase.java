@@ -349,7 +349,7 @@ public abstract class IntegrationTestBase extends TestBase {
         return isSessionEnabled ? message.setSessionId(sessionId) : message;
     }
 
-    protected void assertMessageEquals(ServiceBusReceivedMessageContext context, String messageId, boolean isSessionEnabled) {
+    protected void assertMessageEquals(ServiceBusMessageContext context, String messageId, boolean isSessionEnabled) {
         Assertions.assertNotNull(context);
         Assertions.assertNotNull(context.getMessage());
         assertMessageEquals(context.getMessage(), messageId, isSessionEnabled);

@@ -3,7 +3,7 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.models.Anomaly;
+import com.azure.ai.metricsadvisor.models.DataPointAnomaly;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesAlertedOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
@@ -24,18 +24,18 @@ public class ListsAnomaliesForAlertsSample {
         final ListAnomaliesAlertedOptions options = new ListAnomaliesAlertedOptions()
             .setTop(10);
 
-        PagedIterable<Anomaly> anomaliesIterable = advisorClient.listAnomaliesForAlert(
+        PagedIterable<DataPointAnomaly> anomaliesIterable = advisorClient.listAnomaliesForAlert(
             alertConfigurationId,
             alertId);
 
-        for (Anomaly anomaly : anomaliesIterable) {
-            System.out.printf("Metric Id: %s%n", anomaly.getMetricId());
-            System.out.printf("Detection Configuration Id: %s%n", anomaly.getDetectionConfigurationId());
-            System.out.printf("Anomaly Created Time: %s%n", anomaly.getCreatedTime());
-            System.out.printf("Anomaly Modified Time: %s%n", anomaly.getModifiedTime());
-            System.out.printf("Anomaly Severity: %s%n", anomaly.getSeverity());
-            System.out.printf("Anomaly Status: %s%n", anomaly.getStatus());
-            System.out.printf("Series Key: %s%n", anomaly.getSeriesKey().asMap());
+        for (DataPointAnomaly dataPointAnomaly : anomaliesIterable) {
+            System.out.printf("Data Feed Metric Id: %s%n", dataPointAnomaly.getMetricId());
+            System.out.printf("Detection Configuration Id: %s%n", dataPointAnomaly.getDetectionConfigurationId());
+            System.out.printf("DataPoint Anomaly Created Time: %s%n", dataPointAnomaly.getCreatedTime());
+            System.out.printf("DataPoint Anomaly Modified Time: %s%n", dataPointAnomaly.getModifiedTime());
+            System.out.printf("DataPoint Anomaly Severity: %s%n", dataPointAnomaly.getSeverity());
+            System.out.printf("DataPoint Anomaly Status: %s%n", dataPointAnomaly.getStatus());
+            System.out.printf("Series Key: %s%n", dataPointAnomaly.getSeriesKey().asMap());
         }
     }
 }
