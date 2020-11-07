@@ -5,7 +5,8 @@ package com.azure.security.keyvault.administration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 
-import java.net.URI;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * A class that defines the scope of a role.
@@ -18,7 +19,7 @@ public final class KeyVaultRoleScope extends ExpandableStringEnum<KeyVaultRoleSc
      * Creates or finds a {@link KeyVaultRoleScope} from its string representation.
      *
      * @param name A name to look for.
-     * @return The corresponding {@link KeyVaultRoleScope}
+     * @return The corresponding {@link KeyVaultRoleScope}.
      */
     public static KeyVaultRoleScope fromString(String name) {
         return fromString(name, KeyVaultRoleScope.class);
@@ -27,10 +28,20 @@ public final class KeyVaultRoleScope extends ExpandableStringEnum<KeyVaultRoleSc
     /**
      * Creates or finds a {@link KeyVaultRoleScope} from its string representation.
      *
-     * @param uri A URI to look for.
-     * @return The corresponding {@link KeyVaultRoleScope}
+     * @param url A string representing a URL containing the name of the scope to look for.
+     * @return The corresponding {@link KeyVaultRoleScope}.
      */
-    public static KeyVaultRoleScope fromUri(URI uri) {
-        return fromString(uri.getRawPath(), KeyVaultRoleScope.class);
+    public static KeyVaultRoleScope fromUrl(String url) throws MalformedURLException {
+        return fromString(new URL(url).getPath(), KeyVaultRoleScope.class);
+    }
+
+    /**
+     * Creates or finds a {@link KeyVaultRoleScope} from its string representation.
+     *
+     * @param url A URL containing the name of the scope to look for.
+     * @return The corresponding {@link KeyVaultRoleScope}.
+     */
+    public static KeyVaultRoleScope fromUrl(URL url) {
+        return fromString(url.getPath(), KeyVaultRoleScope.class);
     }
 }
