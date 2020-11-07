@@ -2291,6 +2291,13 @@
     <Bug pattern="NP_NULL_ON_SOME_PATH"/>
   </Match>
 
+  <!-- The transient fields are not used if deserialization happens. -->
+  <Match>
+      <Class name="com.azure.identity.implementation.MsalAuthenticationAccount"/>
+      <Field name="authenticationRecord"/>
+      <Bug pattern="SE_TRANSIENT_FIELD_NOT_RESTORED"/>
+  </Match>
+  
   <!-- These fields are designed to be not written. They are for deserializing. -->
   <Match>
       <Class name="com.azure.identity.implementation.LinuxKeyRingAccessor$GError"/>
