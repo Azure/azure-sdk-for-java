@@ -11,8 +11,8 @@ package com.microsoft.azure.management.synapse.v2019_06_01_preview.implementatio
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.ErrorContractException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceFuture;
@@ -74,7 +74,7 @@ public class SqlPoolUsagesInner {
      * @param workspaceName The name of the workspace
      * @param sqlPoolName SQL pool name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SqlPoolUsageInner&gt; object if successful.
      */
@@ -195,10 +195,10 @@ public class SqlPoolUsagesInner {
             });
     }
 
-    private ServiceResponse<PageImpl<SqlPoolUsageInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<SqlPoolUsageInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<SqlPoolUsageInner>> listDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SqlPoolUsageInner>, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SqlPoolUsageInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -208,7 +208,7 @@ public class SqlPoolUsagesInner {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SqlPoolUsageInner&gt; object if successful.
      */
@@ -311,10 +311,10 @@ public class SqlPoolUsagesInner {
             });
     }
 
-    private ServiceResponse<PageImpl<SqlPoolUsageInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<SqlPoolUsageInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<SqlPoolUsageInner>> listNextDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SqlPoolUsageInner>, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SqlPoolUsageInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 

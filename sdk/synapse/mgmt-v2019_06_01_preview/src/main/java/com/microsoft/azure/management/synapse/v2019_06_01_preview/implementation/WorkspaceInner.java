@@ -12,6 +12,11 @@ import com.microsoft.azure.management.synapse.v2019_06_01_preview.DataLakeStorag
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.VirtualNetworkProfile;
 import java.util.Map;
 import java.util.List;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.EncryptionDetails;
+import java.util.UUID;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.ManagedVirtualNetworkSettings;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.WorkspaceRepositoryConfiguration;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.BabylonConfiguration;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.ManagedIdentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -82,10 +87,40 @@ public class WorkspaceInner extends Resource {
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /**
+     * The encryption details of the workspace.
+     */
+    @JsonProperty(value = "properties.encryption")
+    private EncryptionDetails encryption;
+
+    /**
+     * The workspace unique identifier.
+     */
+    @JsonProperty(value = "properties.workspaceUID", access = JsonProperty.Access.WRITE_ONLY)
+    private UUID workspaceUID;
+
+    /**
      * Workspace level configs and feature flags.
      */
     @JsonProperty(value = "properties.extraProperties", access = JsonProperty.Access.WRITE_ONLY)
     private Map<String, Object> extraProperties;
+
+    /**
+     * Managed Virtual Network Settings.
+     */
+    @JsonProperty(value = "properties.managedVirtualNetworkSettings")
+    private ManagedVirtualNetworkSettings managedVirtualNetworkSettings;
+
+    /**
+     * Git integration settings.
+     */
+    @JsonProperty(value = "properties.workspaceRepositoryConfiguration")
+    private WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration;
+
+    /**
+     * Babylon Configuration.
+     */
+    @JsonProperty(value = "properties.babylonConfiguration")
+    private BabylonConfiguration babylonConfiguration;
 
     /**
      * Identity of the workspace.
@@ -263,12 +298,101 @@ public class WorkspaceInner extends Resource {
     }
 
     /**
+     * Get the encryption details of the workspace.
+     *
+     * @return the encryption value
+     */
+    public EncryptionDetails encryption() {
+        return this.encryption;
+    }
+
+    /**
+     * Set the encryption details of the workspace.
+     *
+     * @param encryption the encryption value to set
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withEncryption(EncryptionDetails encryption) {
+        this.encryption = encryption;
+        return this;
+    }
+
+    /**
+     * Get the workspace unique identifier.
+     *
+     * @return the workspaceUID value
+     */
+    public UUID workspaceUID() {
+        return this.workspaceUID;
+    }
+
+    /**
      * Get workspace level configs and feature flags.
      *
      * @return the extraProperties value
      */
     public Map<String, Object> extraProperties() {
         return this.extraProperties;
+    }
+
+    /**
+     * Get managed Virtual Network Settings.
+     *
+     * @return the managedVirtualNetworkSettings value
+     */
+    public ManagedVirtualNetworkSettings managedVirtualNetworkSettings() {
+        return this.managedVirtualNetworkSettings;
+    }
+
+    /**
+     * Set managed Virtual Network Settings.
+     *
+     * @param managedVirtualNetworkSettings the managedVirtualNetworkSettings value to set
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withManagedVirtualNetworkSettings(ManagedVirtualNetworkSettings managedVirtualNetworkSettings) {
+        this.managedVirtualNetworkSettings = managedVirtualNetworkSettings;
+        return this;
+    }
+
+    /**
+     * Get git integration settings.
+     *
+     * @return the workspaceRepositoryConfiguration value
+     */
+    public WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration() {
+        return this.workspaceRepositoryConfiguration;
+    }
+
+    /**
+     * Set git integration settings.
+     *
+     * @param workspaceRepositoryConfiguration the workspaceRepositoryConfiguration value to set
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withWorkspaceRepositoryConfiguration(WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration) {
+        this.workspaceRepositoryConfiguration = workspaceRepositoryConfiguration;
+        return this;
+    }
+
+    /**
+     * Get babylon Configuration.
+     *
+     * @return the babylonConfiguration value
+     */
+    public BabylonConfiguration babylonConfiguration() {
+        return this.babylonConfiguration;
+    }
+
+    /**
+     * Set babylon Configuration.
+     *
+     * @param babylonConfiguration the babylonConfiguration value to set
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withBabylonConfiguration(BabylonConfiguration babylonConfiguration) {
+        this.babylonConfiguration = babylonConfiguration;
+        return this;
     }
 
     /**

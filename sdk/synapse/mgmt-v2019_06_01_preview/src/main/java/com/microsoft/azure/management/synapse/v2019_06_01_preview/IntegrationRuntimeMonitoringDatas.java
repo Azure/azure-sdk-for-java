@@ -26,6 +26,6 @@ public interface IntegrationRuntimeMonitoringDatas extends HasInner<IntegrationR
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<IntegrationRuntimeMonitoringData> getAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName);
+    Observable<IntegrationRuntimeMonitoringData> listAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName);
 
 }
