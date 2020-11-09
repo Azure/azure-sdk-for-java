@@ -23,6 +23,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
     private final ManagedIdentityServiceCredential managedIdentityServiceCredential;
     private final ClientLogger logger = new ClientLogger(ManagedIdentityCredential.class);
 
+    static final String PROPERTY_IMDS_ENDPOINT = "IMDS_ENDPOINT";
     static final String PROPERTY_IDENTITY_SERVER_THUMBPRINT = "IDENTITY_SERVER_THUMBPRINT";
 
 
@@ -42,10 +43,12 @@ public final class ManagedIdentityCredential implements TokenCredential {
                 if (configuration.contains(PROPERTY_IDENTITY_SERVER_THUMBPRINT)) {
                     managedIdentityServiceCredential = new ServiceFabricMsiCredential(clientId, identityClient);
                 } else {
-                    managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, identityClient);
+                    managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, identityClient);
                 }
+            } else if (configuration.contains(PROPERTY_IMDS_ENDPOINT)) {
+                managedIdentityServiceCredential = new ArcIdentityCredential(clientId, identityClient);
             } else {
-                managedIdentityServiceCredential = null;
+                managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, identityClient);
             }
         } else if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)) {
             managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, identityClient);
@@ -68,13 +71,13 @@ public final class ManagedIdentityCredential implements TokenCredential {
         if (managedIdentityServiceCredential == null) {
             return Mono.error(logger.logExceptionAsError(
                 new CredentialUnavailableException("ManagedIdentityCredential authentication unavailable. "
-                                + "The Target Azure platform could not be determined from environment variables.")));
+                   + "The Target Azure platform could not be determined from environment variables.")));
         }
         return managedIdentityServiceCredential.authenticate(request)
-                   .doOnSuccess((t -> logger.info(String.format("Azure Identity => Managed Identity environment: %s",
-                       managedIdentityServiceCredential.getEnvironment()))))
-                   .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
-                   .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
+            .doOnSuccess((t -> logger.info(String.format("Azure Identity => Managed Identity environment: %s",
+                    managedIdentityServiceCredential.getEnvironment()))))
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
+            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
     }
 }
 
