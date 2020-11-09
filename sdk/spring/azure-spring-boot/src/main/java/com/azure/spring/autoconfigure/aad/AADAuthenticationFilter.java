@@ -128,7 +128,7 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
                 userPrincipal,
                 null,
                 azureADGraphClient.toGrantedAuthoritySet(userPrincipal.getGroups(),
-                    (String)userPrincipal.getClaim(AADTokenClaim.SCP))
+                    (String) userPrincipal.getClaim(AADTokenClaim.SCP))
             );
             LOGGER.info("Request token verification success. {}", authentication);
             SecurityContextHolder.getContext().setAuthentication(authentication);

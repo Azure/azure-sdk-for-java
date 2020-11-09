@@ -150,15 +150,15 @@ public class AzureADGraphClient {
      * @throws IOException throw exception if get groups failed by IOException.
      */
     public Set<SimpleGrantedAuthority> getGrantedAuthorities(String graphApiToken) throws IOException {
-        return toGrantedAuthoritySet(getGroups(graphApiToken),null);
+        return toGrantedAuthoritySet(getGroups(graphApiToken), null);
     }
 
-    public Set<SimpleGrantedAuthority> toGrantedAuthoritySet(final Set<String> groups,String scopes) {
+    public Set<SimpleGrantedAuthority> toGrantedAuthoritySet(final Set<String> groups, String scopes) {
         Set<SimpleGrantedAuthority> grantedAuthoritySet =
             groups.stream()
-                  .filter(aadAuthenticationProperties::isAllowedGroup)
-                  .map(group -> new SimpleGrantedAuthority(ROLE_PREFIX + group))
-                  .collect(Collectors.toSet());
+                .filter(aadAuthenticationProperties::isAllowedGroup)
+                .map(group -> new SimpleGrantedAuthority(ROLE_PREFIX + group))
+                .collect(Collectors.toSet());
         if (!StringUtils.isEmpty(scopes)) {
             Set<SimpleGrantedAuthority> scopeSimpleGrantedAuthoritySet =
                 Optional.of(scopes)
@@ -171,8 +171,8 @@ public class AzureADGraphClient {
             grantedAuthoritySet.addAll(scopeSimpleGrantedAuthoritySet);
         }
         return Optional.of(grantedAuthoritySet)
-                       .filter(g -> !g.isEmpty())
-                       .orElse(DEFAULT_AUTHORITY_SET);
+            .filter(g -> !g.isEmpty())
+            .orElse(DEFAULT_AUTHORITY_SET);
     }
 
     /**

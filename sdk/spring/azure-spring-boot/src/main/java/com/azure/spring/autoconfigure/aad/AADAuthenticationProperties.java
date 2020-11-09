@@ -51,7 +51,7 @@ public class AADAuthenticationProperties {
      * allowed multi-tenant ID.
      * Must be configured when is a multi-tenant application
      */
-    private List<String> allowedTenantIds =  Arrays.asList();
+    private List<String> allowedTenantIds = new ArrayList<>();
 
     /**
      * API Access Key of the registered application.

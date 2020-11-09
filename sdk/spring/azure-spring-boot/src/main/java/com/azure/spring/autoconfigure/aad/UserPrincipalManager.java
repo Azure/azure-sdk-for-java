@@ -186,14 +186,14 @@ public class UserPrincipalManager {
         if (tenant == null) {
             return false;
         }
-        if(isEmptyAllowTenantIds()){
+        if (isEmptyAllowTenantIds()) {
             return tenant.equals(aadAuthenticationProperties.getTenantId());
-        }else {
+        } else {
             return aadAuthenticationProperties.getAllowedTenantIds().contains(tenant);
         }
     }
 
-    private boolean isEmptyAllowTenantIds(){
+    private boolean isEmptyAllowTenantIds() {
         return aadAuthenticationProperties.getAllowedTenantIds().isEmpty();
     }
 
