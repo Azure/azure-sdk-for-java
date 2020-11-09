@@ -9,20 +9,14 @@ import com.nimbusds.jose.jwk.source.JWKSetCache;
 import com.nimbusds.jose.proc.BadJOSEException;
 import com.nimbusds.jose.util.ResourceRetriever;
 import com.nimbusds.jwt.proc.BadJWTException;
-import java.util.Arrays;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.naming.ServiceUnavailableException;
@@ -37,7 +31,6 @@ import java.text.ParseException;
 import java.util.Optional;
 
 import static com.azure.spring.autoconfigure.aad.Constants.BEARER_PREFIX;
-import static com.azure.spring.autoconfigure.aad.Constants.SCOPE_PREFIX;
 
 /**
  * A stateful authentication filter which uses Microsoft Graph groups to authorize. Both ID token and access token are
@@ -160,18 +153,5 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
                        .map(SecurityContext::getAuthentication)
                        .map(Authentication::isAuthenticated)
                        .orElse(false);
-    }
-
-    protected Set<SimpleGrantedAuthority> scopeToSimpleGrantedAuthoritySet(UserPrincipal userPrincipal) {
-        Set<SimpleGrantedAuthority> scopeSimpleGrantedAuthoritySet =
-            Optional.of(((String) userPrincipal.getClaim(AADTokenClaim.SCP)))
-                .map(scopes -> scopes.split(" "))
-                .map(Arrays::stream)
-                .orElseGet(Stream::empty)
-                .filter(StringUtils::hasText)
-                .map(s -> new SimpleGrantedAuthority(SCOPE_PREFIX + s))
-                .collect(Collectors.toSet());
-
-        return scopeSimpleGrantedAuthoritySet;
     }
 }
