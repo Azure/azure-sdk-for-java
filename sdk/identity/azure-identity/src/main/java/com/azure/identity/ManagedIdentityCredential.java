@@ -42,10 +42,10 @@ public final class ManagedIdentityCredential implements TokenCredential {
             if (configuration.contains(Configuration.PROPERTY_IDENTITY_HEADER)) {
                 if (configuration.contains(PROPERTY_IDENTITY_SERVER_THUMBPRINT)) {
                     managedIdentityServiceCredential = new ServiceFabricMsiCredential(clientId, identityClient);
-                }else {
+                } else {
                     managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, identityClient);
                 }
-            }  else if (configuration.contains(PROPERTY_IMDS_ENDPOINT)) {
+            } else if (configuration.contains(PROPERTY_IMDS_ENDPOINT)) {
                 managedIdentityServiceCredential = new ArcIdentityCredential(clientId, identityClient);
             } else {
                 managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, identityClient);

@@ -1035,6 +1035,12 @@ public class IdentityClient {
                                     + "Connection to IMDS endpoint cannot be established, "
                                     + e.getMessage() + ".", e));
                     }
+                    if (responseCode == 400) {
+                        throw logger.logExceptionAsError(
+                            new CredentialUnavailableException(
+                                "ManagedIdentityCredential authentication unavailable. "
+                                    + "Connection to IMDS endpoint cannot be established.", null));
+                    }
                     if (responseCode == 410
                             || responseCode == 429
                             || responseCode == 404
