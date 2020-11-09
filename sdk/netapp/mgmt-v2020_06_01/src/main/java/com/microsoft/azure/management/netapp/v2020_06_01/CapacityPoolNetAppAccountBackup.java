@@ -25,6 +25,11 @@ import org.joda.time.DateTime;
  */
 public interface CapacityPoolNetAppAccountBackup extends HasInner<BackupInner>, Indexable, Refreshable<CapacityPoolNetAppAccountBackup>, Updatable<CapacityPoolNetAppAccountBackup.Update>, HasManager<NetAppManager> {
     /**
+     * @return the backupId value.
+     */
+    String backupId();
+
+    /**
      * @return the backupType value.
      */
     String backupType();

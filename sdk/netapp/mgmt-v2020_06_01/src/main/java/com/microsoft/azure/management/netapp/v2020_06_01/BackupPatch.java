@@ -25,6 +25,13 @@ public class BackupPatch {
     private Map<String, String> tags;
 
     /**
+     * backupId.
+     * UUID v4 used to identify the Backup.
+     */
+    @JsonProperty(value = "properties.backupId", access = JsonProperty.Access.WRITE_ONLY)
+    private String backupId;
+
+    /**
      * name.
      * The creation date of the backup.
      */
@@ -73,6 +80,15 @@ public class BackupPatch {
     public BackupPatch withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
+    }
+
+    /**
+     * Get uUID v4 used to identify the Backup.
+     *
+     * @return the backupId value
+     */
+    public String backupId() {
+        return this.backupId;
     }
 
     /**

@@ -25,6 +25,13 @@ public class BackupInner extends ProxyResource {
     private String location;
 
     /**
+     * backupId.
+     * UUID v4 used to identify the Backup.
+     */
+    @JsonProperty(value = "properties.backupId", access = JsonProperty.Access.WRITE_ONLY)
+    private String backupId;
+
+    /**
      * name.
      * The creation date of the backup.
      */
@@ -73,6 +80,15 @@ public class BackupInner extends ProxyResource {
     public BackupInner withLocation(String location) {
         this.location = location;
         return this;
+    }
+
+    /**
+     * Get uUID v4 used to identify the Backup.
+     *
+     * @return the backupId value
+     */
+    public String backupId() {
+        return this.backupId;
     }
 
     /**

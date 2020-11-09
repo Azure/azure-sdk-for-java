@@ -42,6 +42,11 @@ class NetAppAccountBackupImpl extends IndexableRefreshableWrapperImpl<NetAppAcco
 
 
     @Override
+    public String backupId() {
+        return this.inner().backupId();
+    }
+
+    @Override
     public String backupType() {
         return this.inner().backupType();
     }
