@@ -288,6 +288,10 @@
             files="com.azure.endtoend.identity.IdentityTest.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
             files="com.azure.endtoend.identity.WebJobsIdentityTest.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
+            files="com.azure.endtoend.identity.ManagedIdentityCredentialTest.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
+            files="com.azure.endtoend.identity.MultiTenantTest.java"/>
 
   <!-- Accesses Windows native credential api, doesn't follow java style.-->
   <suppress checks="MethodName|MemberName|VisibilityModifier|TypeName"

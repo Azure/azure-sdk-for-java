@@ -4,7 +4,6 @@
 package com.azure.endtoend.identity;
 
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
 
 import java.util.Locale;
 
@@ -21,12 +20,7 @@ public class IdentityTest {
      * @throws IllegalStateException if AZURE_IDENTITY_TEST_PLATFORM is not set to "user" or "system"
      */
     public static void main(String[] args) throws IllegalStateException {
-        if (CoreUtils.isNullOrEmpty(CONFIGURATION.get(AZURE_IDENTITY_TEST_PLATFORM))) {
-            throw new IllegalStateException("Identity Test platform is not set. Set environemnt "
-                                                               + "variable AZURE_IDENTITY_TEST_PLATFORM to webjobs");
-        }
-
-        String platform = CONFIGURATION.get(AZURE_IDENTITY_TEST_PLATFORM).toLowerCase(Locale.ENGLISH);
+        String platform = CONFIGURATION.get(AZURE_IDENTITY_TEST_PLATFORM, "").toLowerCase(Locale.ENGLISH);
         switch (platform) {
             case "webjobs":
                 WebJobsIdentityTest webJobsIdentityTest  = new WebJobsIdentityTest();
@@ -37,8 +31,8 @@ public class IdentityTest {
                 multiTenantTest.run();
                 break;
             default:
-                throw (new IllegalStateException("Invalid Test Platform is configured for AZURE_IDENTITY_TEST_PLATFORM."
-                                                                               + "Possible value is webjobs."));
+                ManagedIdentityCredentialTest managedIdentityCredentialTest = new ManagedIdentityCredentialTest();
+                managedIdentityCredentialTest.run();
         }
     }
 }
