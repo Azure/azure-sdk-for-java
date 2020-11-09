@@ -16,14 +16,14 @@ import com.microsoft.azure.management.monitor.v2019_11_01.AggregationType;
 import com.microsoft.azure.management.monitor.v2019_11_01.Unit;
 
 class MetricDefinitionImpl extends WrapperImpl<MetricDefinitionInner> implements MetricDefinition {
-    private final InsightsManager manager;
-    MetricDefinitionImpl(MetricDefinitionInner inner, InsightsManager manager) {
+    private final MonitorManager manager;
+    MetricDefinitionImpl(MetricDefinitionInner inner, MonitorManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

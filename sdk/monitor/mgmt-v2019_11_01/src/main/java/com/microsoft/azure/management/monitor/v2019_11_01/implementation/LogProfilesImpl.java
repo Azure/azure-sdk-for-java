@@ -21,9 +21,9 @@ import com.microsoft.azure.arm.utils.PagedListConverter;
 
 class LogProfilesImpl extends WrapperImpl<LogProfilesInner> implements LogProfiles {
     private PagedListConverter<LogProfileResourceInner, LogProfileResource> converter;
-    private final InsightsManager manager;
+    private final MonitorManager manager;
 
-    LogProfilesImpl(InsightsManager manager) {
+    LogProfilesImpl(MonitorManager manager) {
         super(manager.inner().logProfiles());
         this.manager = manager;
         this.converter = new PagedListConverter<LogProfileResourceInner, LogProfileResource>() {
@@ -34,7 +34,7 @@ class LogProfilesImpl extends WrapperImpl<LogProfilesInner> implements LogProfil
         };
     }
 
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

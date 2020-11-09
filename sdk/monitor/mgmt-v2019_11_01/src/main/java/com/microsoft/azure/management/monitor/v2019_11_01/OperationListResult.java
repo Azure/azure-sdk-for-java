@@ -10,7 +10,7 @@ package com.microsoft.azure.management.monitor.v2019_11_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.monitor.v2019_11_01.implementation.InsightsManager;
+import com.microsoft.azure.management.monitor.v2019_11_01.implementation.MonitorManager;
 import com.microsoft.azure.management.monitor.v2019_11_01.implementation.OperationListResultInner;
 import com.microsoft.azure.management.monitor.v2019_11_01.implementation.OperationInner;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Type representing OperationListResult.
  */
-public interface OperationListResult extends HasInner<OperationListResultInner>, HasManager<InsightsManager> {
+public interface OperationListResult extends HasInner<OperationListResultInner>, HasManager<MonitorManager> {
     /**
      * @return the nextLink value.
      */

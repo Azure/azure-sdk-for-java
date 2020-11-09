@@ -49,7 +49,7 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 /**
  * Entry point to Azure Insights resource management.
  */
-public final class InsightsManager extends ManagerCore<InsightsManager, MonitorManagementClientImpl> {
+public final class MonitorManager extends ManagerCore<MonitorManager, MonitorManagementClientImpl> {
     private AutoscaleSettings autoscaleSettings;
     private Operations operations;
     private AlertRuleIncidents alertRuleIncidents;
@@ -78,22 +78,22 @@ public final class InsightsManager extends ManagerCore<InsightsManager, MonitorM
     private PrivateEndpointConnections privateEndpointConnections;
     private PrivateLinkScopedResources privateLinkScopedResources;
     /**
-    * Get a Configurable instance that can be used to create InsightsManager with optional configuration.
+    * Get a Configurable instance that can be used to create MonitorManager with optional configuration.
     *
     * @return the instance allowing configurations
     */
     public static Configurable configure() {
-        return new InsightsManager.ConfigurableImpl();
+        return new MonitorManager.ConfigurableImpl();
     }
     /**
-    * Creates an instance of InsightsManager that exposes Insights resource management API entry points.
+    * Creates an instance of MonitorManager that exposes Insights resource management API entry points.
     *
     * @param credentials the credentials to use
     * @param subscriptionId the subscription UUID
-    * @return the InsightsManager
+    * @return the MonitorManager
     */
-    public static InsightsManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-        return new InsightsManager(new RestClient.Builder()
+    public static MonitorManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
+        return new MonitorManager(new RestClient.Builder()
             .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
             .withCredentials(credentials)
             .withSerializerAdapter(new AzureJacksonAdapter())
@@ -101,27 +101,27 @@ public final class InsightsManager extends ManagerCore<InsightsManager, MonitorM
             .build(), subscriptionId);
     }
     /**
-    * Creates an instance of InsightsManager that exposes Insights resource management API entry points.
+    * Creates an instance of MonitorManager that exposes Insights resource management API entry points.
     *
     * @param restClient the RestClient to be used for API calls.
     * @param subscriptionId the subscription UUID
-    * @return the InsightsManager
+    * @return the MonitorManager
     */
-    public static InsightsManager authenticate(RestClient restClient, String subscriptionId) {
-        return new InsightsManager(restClient, subscriptionId);
+    public static MonitorManager authenticate(RestClient restClient, String subscriptionId) {
+        return new MonitorManager(restClient, subscriptionId);
     }
     /**
     * The interface allowing configurations to be set.
     */
     public interface Configurable extends AzureConfigurable<Configurable> {
         /**
-        * Creates an instance of InsightsManager that exposes Insights management API entry points.
+        * Creates an instance of MonitorManager that exposes Insights management API entry points.
         *
         * @param credentials the credentials to use
         * @param subscriptionId the subscription UUID
         * @return the interface exposing Insights management API entry points that work across subscriptions
         */
-        InsightsManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
+        MonitorManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
     }
 
     /**
@@ -398,11 +398,11 @@ public final class InsightsManager extends ManagerCore<InsightsManager, MonitorM
     * The implementation for Configurable interface.
     */
     private static final class ConfigurableImpl extends AzureConfigurableCoreImpl<Configurable> implements Configurable {
-        public InsightsManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-           return InsightsManager.authenticate(buildRestClient(credentials), subscriptionId);
+        public MonitorManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
+           return MonitorManager.authenticate(buildRestClient(credentials), subscriptionId);
         }
      }
-    private InsightsManager(RestClient restClient, String subscriptionId) {
+    private MonitorManager(RestClient restClient, String subscriptionId) {
         super(
             restClient,
             subscriptionId,

@@ -13,14 +13,14 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 
 class ScopedResourceImpl extends CreatableUpdatableImpl<ScopedResource, ScopedResourceInner, ScopedResourceImpl> implements ScopedResource, ScopedResource.Definition, ScopedResource.Update {
-    private final InsightsManager manager;
+    private final MonitorManager manager;
     private String resourceGroupName;
     private String scopeName;
     private String name;
     private String clinkedResourceId;
     private String ulinkedResourceId;
 
-    ScopedResourceImpl(String name, InsightsManager manager) {
+    ScopedResourceImpl(String name, MonitorManager manager) {
         super(name, new ScopedResourceInner());
         this.manager = manager;
         // Set resource name
@@ -28,7 +28,7 @@ class ScopedResourceImpl extends CreatableUpdatableImpl<ScopedResource, ScopedRe
         //
     }
 
-    ScopedResourceImpl(ScopedResourceInner inner, InsightsManager manager) {
+    ScopedResourceImpl(ScopedResourceInner inner, MonitorManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -41,7 +41,7 @@ class ScopedResourceImpl extends CreatableUpdatableImpl<ScopedResource, ScopedRe
     }
 
     @Override
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

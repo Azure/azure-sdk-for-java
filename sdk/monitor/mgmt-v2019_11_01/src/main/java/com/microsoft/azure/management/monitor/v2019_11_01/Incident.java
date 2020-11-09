@@ -11,13 +11,13 @@ package com.microsoft.azure.management.monitor.v2019_11_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.monitor.v2019_11_01.implementation.IncidentInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.monitor.v2019_11_01.implementation.InsightsManager;
+import com.microsoft.azure.management.monitor.v2019_11_01.implementation.MonitorManager;
 import org.joda.time.DateTime;
 
 /**
  * Type representing Incident.
  */
-public interface Incident extends HasInner<IncidentInner>, HasManager<InsightsManager> {
+public interface Incident extends HasInner<IncidentInner>, HasManager<MonitorManager> {
     /**
      * @return the activatedTime value.
      */

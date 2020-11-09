@@ -10,13 +10,13 @@ package com.microsoft.azure.management.monitor.v2019_11_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.monitor.v2019_11_01.implementation.InsightsManager;
+import com.microsoft.azure.management.monitor.v2019_11_01.implementation.MonitorManager;
 import com.microsoft.azure.management.monitor.v2019_11_01.implementation.LocalizableStringInner;
 
 /**
  * Type representing LocalizableString.
  */
-public interface LocalizableString extends HasInner<LocalizableStringInner>, HasManager<InsightsManager> {
+public interface LocalizableString extends HasInner<LocalizableStringInner>, HasManager<MonitorManager> {
     /**
      * @return the localizedValue value.
      */

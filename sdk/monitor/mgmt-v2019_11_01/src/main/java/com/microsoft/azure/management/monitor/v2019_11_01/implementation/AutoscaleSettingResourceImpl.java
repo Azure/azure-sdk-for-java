@@ -17,9 +17,9 @@ import com.microsoft.azure.management.monitor.v2019_11_01.AutoscaleProfile;
 import com.microsoft.azure.management.monitor.v2019_11_01.AutoscaleNotification;
 import rx.functions.Func1;
 
-class AutoscaleSettingResourceImpl extends GroupableResourceCoreImpl<AutoscaleSettingResource, AutoscaleSettingResourceInner, AutoscaleSettingResourceImpl, InsightsManager> implements AutoscaleSettingResource, AutoscaleSettingResource.Definition, AutoscaleSettingResource.Update {
+class AutoscaleSettingResourceImpl extends GroupableResourceCoreImpl<AutoscaleSettingResource, AutoscaleSettingResourceInner, AutoscaleSettingResourceImpl, MonitorManager> implements AutoscaleSettingResource, AutoscaleSettingResource.Definition, AutoscaleSettingResource.Update {
     private AutoscaleSettingResourcePatch updateParameter;
-    AutoscaleSettingResourceImpl(String name, AutoscaleSettingResourceInner inner, InsightsManager manager) {
+    AutoscaleSettingResourceImpl(String name, AutoscaleSettingResourceInner inner, MonitorManager manager) {
         super(name, inner, manager);
         this.updateParameter = new AutoscaleSettingResourcePatch();
     }

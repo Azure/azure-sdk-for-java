@@ -17,14 +17,14 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.management.monitor.v2019_11_01.EventData;
 
 class TenantActivityLogsImpl extends WrapperImpl<TenantActivityLogsInner> implements TenantActivityLogs {
-    private final InsightsManager manager;
+    private final MonitorManager manager;
 
-    TenantActivityLogsImpl(InsightsManager manager) {
+    TenantActivityLogsImpl(MonitorManager manager) {
         super(manager.inner().tenantActivityLogs());
         this.manager = manager;
     }
 
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

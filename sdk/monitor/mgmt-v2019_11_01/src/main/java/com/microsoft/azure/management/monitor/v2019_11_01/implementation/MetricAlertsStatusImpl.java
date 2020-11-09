@@ -16,14 +16,14 @@ import rx.functions.Func1;
 import com.microsoft.azure.management.monitor.v2019_11_01.MetricAlertStatusCollection;
 
 class MetricAlertsStatusImpl extends WrapperImpl<MetricAlertsStatusInner> implements MetricAlertsStatus {
-    private final InsightsManager manager;
+    private final MonitorManager manager;
 
-    MetricAlertsStatusImpl(InsightsManager manager) {
+    MetricAlertsStatusImpl(MonitorManager manager) {
         super(manager.inner().metricAlertsStatus());
         this.manager = manager;
     }
 
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

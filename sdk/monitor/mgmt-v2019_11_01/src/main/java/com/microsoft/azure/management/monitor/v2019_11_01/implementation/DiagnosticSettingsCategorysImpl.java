@@ -17,14 +17,14 @@ import com.microsoft.azure.management.monitor.v2019_11_01.DiagnosticSettingsCate
 import com.microsoft.azure.management.monitor.v2019_11_01.DiagnosticSettingsCategoryResourceCollection;
 
 class DiagnosticSettingsCategorysImpl extends WrapperImpl<DiagnosticSettingsCategorysInner> implements DiagnosticSettingsCategorys {
-    private final InsightsManager manager;
+    private final MonitorManager manager;
 
-    DiagnosticSettingsCategorysImpl(InsightsManager manager) {
+    DiagnosticSettingsCategorysImpl(MonitorManager manager) {
         super(manager.inner().diagnosticSettingsCategorys());
         this.manager = manager;
     }
 
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

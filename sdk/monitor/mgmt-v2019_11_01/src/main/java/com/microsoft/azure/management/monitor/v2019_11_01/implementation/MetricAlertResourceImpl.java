@@ -19,9 +19,9 @@ import com.microsoft.azure.management.monitor.v2019_11_01.MetricAlertCriteria;
 import com.microsoft.azure.management.monitor.v2019_11_01.MetricAlertAction;
 import rx.functions.Func1;
 
-class MetricAlertResourceImpl extends GroupableResourceCoreImpl<MetricAlertResource, MetricAlertResourceInner, MetricAlertResourceImpl, InsightsManager> implements MetricAlertResource, MetricAlertResource.Definition, MetricAlertResource.Update {
+class MetricAlertResourceImpl extends GroupableResourceCoreImpl<MetricAlertResource, MetricAlertResourceInner, MetricAlertResourceImpl, MonitorManager> implements MetricAlertResource, MetricAlertResource.Definition, MetricAlertResource.Update {
     private MetricAlertResourcePatch updateParameter;
-    MetricAlertResourceImpl(String name, MetricAlertResourceInner inner, InsightsManager manager) {
+    MetricAlertResourceImpl(String name, MetricAlertResourceInner inner, MonitorManager manager) {
         super(name, inner, manager);
         this.updateParameter = new MetricAlertResourcePatch();
     }

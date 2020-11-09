@@ -21,9 +21,9 @@ import rx.functions.Func1;
 class LogProfileResourceImpl extends CreatableUpdatableImpl<LogProfileResource, LogProfileResourceInner, LogProfileResourceImpl> implements LogProfileResource, LogProfileResource.Definition, LogProfileResource.Update {
     private String logProfileName;
     private LogProfileResourcePatch updateParameter;
-    private final InsightsManager manager;
+    private final MonitorManager manager;
 
-    LogProfileResourceImpl(String name, InsightsManager manager) {
+    LogProfileResourceImpl(String name, MonitorManager manager) {
         super(name, new LogProfileResourceInner());
         this.manager = manager;
         // Set resource name
@@ -32,7 +32,7 @@ class LogProfileResourceImpl extends CreatableUpdatableImpl<LogProfileResource, 
         this.updateParameter = new LogProfileResourcePatch();
     }
 
-    LogProfileResourceImpl(LogProfileResourceInner inner, InsightsManager manager) {
+    LogProfileResourceImpl(LogProfileResourceInner inner, MonitorManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -44,7 +44,7 @@ class LogProfileResourceImpl extends CreatableUpdatableImpl<LogProfileResource, 
     }
 
     @Override
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

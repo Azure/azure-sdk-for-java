@@ -19,9 +19,9 @@ import com.microsoft.azure.management.monitor.v2019_11_01.LogSettings;
 class DiagnosticSettingsResourceImpl extends CreatableUpdatableImpl<DiagnosticSettingsResource, DiagnosticSettingsResourceInner, DiagnosticSettingsResourceImpl> implements DiagnosticSettingsResource, DiagnosticSettingsResource.Definition, DiagnosticSettingsResource.Update {
     private String resourceUri;
     private String name;
-    private final InsightsManager manager;
+    private final MonitorManager manager;
 
-    DiagnosticSettingsResourceImpl(String name, InsightsManager manager) {
+    DiagnosticSettingsResourceImpl(String name, MonitorManager manager) {
         super(name, new DiagnosticSettingsResourceInner());
         this.manager = manager;
         // Set resource name
@@ -29,7 +29,7 @@ class DiagnosticSettingsResourceImpl extends CreatableUpdatableImpl<DiagnosticSe
         //
     }
 
-    DiagnosticSettingsResourceImpl(DiagnosticSettingsResourceInner inner, InsightsManager manager) {
+    DiagnosticSettingsResourceImpl(DiagnosticSettingsResourceInner inner, MonitorManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -41,7 +41,7 @@ class DiagnosticSettingsResourceImpl extends CreatableUpdatableImpl<DiagnosticSe
     }
 
     @Override
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

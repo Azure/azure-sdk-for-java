@@ -14,14 +14,14 @@ import org.joda.time.Period;
 import java.util.List;
 
 class ResponseImpl extends WrapperImpl<ResponseInner> implements Response {
-    private final InsightsManager manager;
-    ResponseImpl(ResponseInner inner, InsightsManager manager) {
+    private final MonitorManager manager;
+    ResponseImpl(ResponseInner inner, MonitorManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

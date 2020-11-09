@@ -18,14 +18,14 @@ import com.microsoft.azure.management.monitor.v2019_11_01.CalculateBaselineRespo
 import com.microsoft.azure.management.monitor.v2019_11_01.TimeSeriesInformation;
 
 class MetricBaselinesImpl extends WrapperImpl<MetricBaselinesInner> implements MetricBaselines {
-    private final InsightsManager manager;
+    private final MonitorManager manager;
 
-    MetricBaselinesImpl(InsightsManager manager) {
+    MetricBaselinesImpl(MonitorManager manager) {
         super(manager.inner().metricBaselines());
         this.manager = manager;
     }
 
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

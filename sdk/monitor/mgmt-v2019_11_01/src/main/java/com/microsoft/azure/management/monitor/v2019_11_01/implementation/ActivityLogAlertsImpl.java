@@ -23,8 +23,8 @@ import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
 
-class ActivityLogAlertsImpl extends GroupableResourcesCoreImpl<ActivityLogAlertResource, ActivityLogAlertResourceImpl, ActivityLogAlertResourceInner, ActivityLogAlertsInner, InsightsManager>  implements ActivityLogAlerts {
-    protected ActivityLogAlertsImpl(InsightsManager manager) {
+class ActivityLogAlertsImpl extends GroupableResourcesCoreImpl<ActivityLogAlertResource, ActivityLogAlertResourceImpl, ActivityLogAlertResourceInner, ActivityLogAlertsInner, MonitorManager>  implements ActivityLogAlerts {
+    protected ActivityLogAlertsImpl(MonitorManager manager) {
         super(manager.inner().activityLogAlerts(), manager);
     }
 

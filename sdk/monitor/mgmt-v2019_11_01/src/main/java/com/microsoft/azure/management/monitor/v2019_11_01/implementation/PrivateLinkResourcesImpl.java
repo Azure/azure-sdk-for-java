@@ -17,14 +17,14 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.management.monitor.v2019_11_01.PrivateLinkResource;
 
 class PrivateLinkResourcesImpl extends WrapperImpl<PrivateLinkResourcesInner> implements PrivateLinkResources {
-    private final InsightsManager manager;
+    private final MonitorManager manager;
 
-    PrivateLinkResourcesImpl(InsightsManager manager) {
+    PrivateLinkResourcesImpl(MonitorManager manager) {
         super(manager.inner().privateLinkResources());
         this.manager = manager;
     }
 
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

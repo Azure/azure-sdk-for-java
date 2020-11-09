@@ -25,9 +25,9 @@ import com.microsoft.azure.management.monitor.v2019_11_01.AzureFunctionReceiver;
 import com.microsoft.azure.management.monitor.v2019_11_01.ArmRoleReceiver;
 import rx.functions.Func1;
 
-class ActionGroupResourceImpl extends GroupableResourceCoreImpl<ActionGroupResource, ActionGroupResourceInner, ActionGroupResourceImpl, InsightsManager> implements ActionGroupResource, ActionGroupResource.Definition, ActionGroupResource.Update {
+class ActionGroupResourceImpl extends GroupableResourceCoreImpl<ActionGroupResource, ActionGroupResourceInner, ActionGroupResourceImpl, MonitorManager> implements ActionGroupResource, ActionGroupResource.Definition, ActionGroupResource.Update {
     private ActionGroupPatchBody updateParameter;
-    ActionGroupResourceImpl(String name, ActionGroupResourceInner inner, InsightsManager manager) {
+    ActionGroupResourceImpl(String name, ActionGroupResourceInner inner, MonitorManager manager) {
         super(name, inner, manager);
         this.updateParameter = new ActionGroupPatchBody();
     }

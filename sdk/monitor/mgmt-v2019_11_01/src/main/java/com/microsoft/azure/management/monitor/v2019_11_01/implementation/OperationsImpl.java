@@ -16,14 +16,14 @@ import rx.Observable;
 import com.microsoft.azure.management.monitor.v2019_11_01.OperationListResult;
 
 class OperationsImpl extends WrapperImpl<OperationsInner> implements Operations {
-    private final InsightsManager manager;
+    private final MonitorManager manager;
 
-    OperationsImpl(InsightsManager manager) {
+    OperationsImpl(MonitorManager manager) {
         super(manager.inner().operations());
         this.manager = manager;
     }
 
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

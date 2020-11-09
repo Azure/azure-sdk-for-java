@@ -14,18 +14,18 @@ import rx.Observable;
 import org.joda.time.DateTime;
 
 class IncidentImpl extends WrapperImpl<IncidentInner> implements Incident {
-    private final InsightsManager manager;
+    private final MonitorManager manager;
     private String resourceGroupName;
     private String ruleName;
     private String incidentName;
 
-    IncidentImpl(IncidentInner inner,  InsightsManager manager) {
+    IncidentImpl(IncidentInner inner,  MonitorManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

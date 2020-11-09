@@ -10,7 +10,7 @@ package com.microsoft.azure.management.monitor.v2019_11_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.monitor.v2019_11_01.implementation.InsightsManager;
+import com.microsoft.azure.management.monitor.v2019_11_01.implementation.MonitorManager;
 import com.microsoft.azure.management.monitor.v2019_11_01.implementation.ResponseInner;
 import org.joda.time.Period;
 import com.microsoft.azure.management.monitor.v2019_11_01.implementation.MetricInner;
@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Type representing Response.
  */
-public interface Response extends HasInner<ResponseInner>, HasManager<InsightsManager> {
+public interface Response extends HasInner<ResponseInner>, HasManager<MonitorManager> {
     /**
      * @return the cost value.
      */

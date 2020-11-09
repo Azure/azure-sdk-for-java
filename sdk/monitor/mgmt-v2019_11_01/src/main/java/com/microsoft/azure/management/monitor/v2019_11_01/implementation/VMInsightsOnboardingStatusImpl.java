@@ -16,14 +16,14 @@ import com.microsoft.azure.management.monitor.v2019_11_01.DataStatus;
 import com.microsoft.azure.management.monitor.v2019_11_01.OnboardingStatus;
 
 class VMInsightsOnboardingStatusImpl extends WrapperImpl<VMInsightsOnboardingStatusInner> implements VMInsightsOnboardingStatus {
-    private final InsightsManager manager;
-    VMInsightsOnboardingStatusImpl(VMInsightsOnboardingStatusInner inner, InsightsManager manager) {
+    private final MonitorManager manager;
+    VMInsightsOnboardingStatusImpl(VMInsightsOnboardingStatusInner inner, MonitorManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

@@ -15,14 +15,14 @@ import com.microsoft.azure.management.monitor.v2019_11_01.TimeSeriesBaseline;
 import org.joda.time.Period;
 
 class SingleMetricBaselineImpl extends WrapperImpl<SingleMetricBaselineInner> implements SingleMetricBaseline {
-    private final InsightsManager manager;
-    SingleMetricBaselineImpl(SingleMetricBaselineInner inner, InsightsManager manager) {
+    private final MonitorManager manager;
+    SingleMetricBaselineImpl(SingleMetricBaselineInner inner, MonitorManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

@@ -21,9 +21,9 @@ import com.microsoft.azure.arm.utils.PagedListConverter;
 
 class SubscriptionDiagnosticSettingsImpl extends WrapperImpl<SubscriptionDiagnosticSettingsInner> implements SubscriptionDiagnosticSettings {
     private PagedListConverter<SubscriptionDiagnosticSettingsResourceInner, SubscriptionDiagnosticSettingsResource> converter;
-    private final InsightsManager manager;
+    private final MonitorManager manager;
 
-    SubscriptionDiagnosticSettingsImpl(InsightsManager manager) {
+    SubscriptionDiagnosticSettingsImpl(MonitorManager manager) {
         super(manager.inner().subscriptionDiagnosticSettings());
         this.manager = manager;
         this.converter = new PagedListConverter<SubscriptionDiagnosticSettingsResourceInner, SubscriptionDiagnosticSettingsResource>() {
@@ -34,7 +34,7 @@ class SubscriptionDiagnosticSettingsImpl extends WrapperImpl<SubscriptionDiagnos
         };
     }
 
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

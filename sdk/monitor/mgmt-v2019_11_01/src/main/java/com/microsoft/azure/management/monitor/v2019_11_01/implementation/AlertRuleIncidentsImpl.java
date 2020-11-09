@@ -17,14 +17,14 @@ import java.util.List;
 import com.microsoft.azure.management.monitor.v2019_11_01.Incident;
 
 class AlertRuleIncidentsImpl extends WrapperImpl<AlertRuleIncidentsInner> implements AlertRuleIncidents {
-    private final InsightsManager manager;
+    private final MonitorManager manager;
 
-    AlertRuleIncidentsImpl(InsightsManager manager) {
+    AlertRuleIncidentsImpl(MonitorManager manager) {
         super(manager.inner().alertRuleIncidents());
         this.manager = manager;
     }
 
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

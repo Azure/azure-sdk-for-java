@@ -18,9 +18,9 @@ import com.microsoft.azure.management.monitor.v2019_11_01.ErrorResponseCommon;
 class OperationStatusImpl extends IndexableRefreshableWrapperImpl<OperationStatus, OperationStatusInner> implements OperationStatus {
     private String asyncOperationId;
     private String resourceGroupName;
-    private final InsightsManager manager;
+    private final MonitorManager manager;
 
-    OperationStatusImpl(OperationStatusInner inner,  InsightsManager manager) {
+    OperationStatusImpl(OperationStatusInner inner,  MonitorManager manager) {
         super(null, inner);
         this.manager = manager;
         // set resource ancestor and positional variables
@@ -29,7 +29,7 @@ class OperationStatusImpl extends IndexableRefreshableWrapperImpl<OperationStatu
     }
 
     @Override
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

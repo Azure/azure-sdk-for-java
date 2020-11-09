@@ -11,13 +11,13 @@ package com.microsoft.azure.management.monitor.v2019_11_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.monitor.v2019_11_01.implementation.MetricAlertStatusCollectionInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.monitor.v2019_11_01.implementation.InsightsManager;
+import com.microsoft.azure.management.monitor.v2019_11_01.implementation.MonitorManager;
 import java.util.List;
 
 /**
  * Type representing MetricAlertStatusCollection.
  */
-public interface MetricAlertStatusCollection extends HasInner<MetricAlertStatusCollectionInner>, HasManager<InsightsManager> {
+public interface MetricAlertStatusCollection extends HasInner<MetricAlertStatusCollectionInner>, HasManager<MonitorManager> {
     /**
      * @return the value value.
      */

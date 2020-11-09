@@ -16,14 +16,14 @@ import rx.Observable;
 import com.microsoft.azure.management.monitor.v2019_11_01.VMInsightsOnboardingStatus;
 
 class VMInsightsImpl extends WrapperImpl<VMInsightsInner> implements VMInsights {
-    private final InsightsManager manager;
+    private final MonitorManager manager;
 
-    VMInsightsImpl(InsightsManager manager) {
+    VMInsightsImpl(MonitorManager manager) {
         super(manager.inner().vMInsights());
         this.manager = manager;
     }
 
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

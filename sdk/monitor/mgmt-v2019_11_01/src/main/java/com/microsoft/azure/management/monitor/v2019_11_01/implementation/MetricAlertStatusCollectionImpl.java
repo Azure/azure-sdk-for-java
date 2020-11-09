@@ -15,18 +15,18 @@ import java.util.List;
 import com.microsoft.azure.management.monitor.v2019_11_01.MetricAlertStatus;
 
 class MetricAlertStatusCollectionImpl extends WrapperImpl<MetricAlertStatusCollectionInner> implements MetricAlertStatusCollection {
-    private final InsightsManager manager;
+    private final MonitorManager manager;
     private String resourceGroupName;
     private String ruleName;
     private String statusName;
 
-    MetricAlertStatusCollectionImpl(MetricAlertStatusCollectionInner inner,  InsightsManager manager) {
+    MetricAlertStatusCollectionImpl(MetricAlertStatusCollectionInner inner,  MonitorManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

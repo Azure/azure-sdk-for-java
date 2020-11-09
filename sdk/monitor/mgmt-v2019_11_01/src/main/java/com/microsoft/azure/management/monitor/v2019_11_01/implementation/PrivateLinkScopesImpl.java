@@ -23,8 +23,8 @@ import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
 
-class PrivateLinkScopesImpl extends GroupableResourcesCoreImpl<AzureMonitorPrivateLinkScope, AzureMonitorPrivateLinkScopeImpl, AzureMonitorPrivateLinkScopeInner, PrivateLinkScopesInner, InsightsManager>  implements PrivateLinkScopes {
-    protected PrivateLinkScopesImpl(InsightsManager manager) {
+class PrivateLinkScopesImpl extends GroupableResourcesCoreImpl<AzureMonitorPrivateLinkScope, AzureMonitorPrivateLinkScopeImpl, AzureMonitorPrivateLinkScopeInner, PrivateLinkScopesInner, MonitorManager>  implements PrivateLinkScopes {
+    protected PrivateLinkScopesImpl(MonitorManager manager) {
         super(manager.inner().privateLinkScopes(), manager);
     }
 

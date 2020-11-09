@@ -23,8 +23,8 @@ import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
 
-class AutoscaleSettingsImpl extends GroupableResourcesCoreImpl<AutoscaleSettingResource, AutoscaleSettingResourceImpl, AutoscaleSettingResourceInner, AutoscaleSettingsInner, InsightsManager>  implements AutoscaleSettings {
-    protected AutoscaleSettingsImpl(InsightsManager manager) {
+class AutoscaleSettingsImpl extends GroupableResourcesCoreImpl<AutoscaleSettingResource, AutoscaleSettingResourceImpl, AutoscaleSettingResourceInner, AutoscaleSettingsInner, MonitorManager>  implements AutoscaleSettings {
+    protected AutoscaleSettingsImpl(MonitorManager manager) {
         super(manager.inner().autoscaleSettings(), manager);
     }
 

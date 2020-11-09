@@ -13,14 +13,14 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import java.util.List;
 
 class OperationListResultImpl extends WrapperImpl<OperationListResultInner> implements OperationListResult {
-    private final InsightsManager manager;
-    OperationListResultImpl(OperationListResultInner inner, InsightsManager manager) {
+    private final MonitorManager manager;
+    OperationListResultImpl(OperationListResultInner inner, MonitorManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

@@ -10,13 +10,13 @@ package com.microsoft.azure.management.monitor.v2019_11_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.monitor.v2019_11_01.implementation.InsightsManager;
+import com.microsoft.azure.management.monitor.v2019_11_01.implementation.MonitorManager;
 import com.microsoft.azure.management.monitor.v2019_11_01.implementation.MetricNamespaceInner;
 
 /**
  * Type representing MetricNamespace.
  */
-public interface MetricNamespace extends HasInner<MetricNamespaceInner>, HasManager<InsightsManager> {
+public interface MetricNamespace extends HasInner<MetricNamespaceInner>, HasManager<MonitorManager> {
     /**
      * @return the id value.
      */

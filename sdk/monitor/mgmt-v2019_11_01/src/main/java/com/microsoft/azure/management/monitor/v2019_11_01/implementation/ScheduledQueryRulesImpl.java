@@ -23,8 +23,8 @@ import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
 
-class ScheduledQueryRulesImpl extends GroupableResourcesCoreImpl<LogSearchRuleResource, LogSearchRuleResourceImpl, LogSearchRuleResourceInner, ScheduledQueryRulesInner, InsightsManager>  implements ScheduledQueryRules {
-    protected ScheduledQueryRulesImpl(InsightsManager manager) {
+class ScheduledQueryRulesImpl extends GroupableResourcesCoreImpl<LogSearchRuleResource, LogSearchRuleResourceImpl, LogSearchRuleResourceInner, ScheduledQueryRulesInner, MonitorManager>  implements ScheduledQueryRules {
+    protected ScheduledQueryRulesImpl(MonitorManager manager) {
         super(manager.inner().scheduledQueryRules(), manager);
     }
 

@@ -16,14 +16,14 @@ import rx.Observable;
 import com.microsoft.azure.management.monitor.v2019_11_01.Response;
 
 class MetricsImpl extends WrapperImpl<MetricsInner> implements Metrics {
-    private final InsightsManager manager;
+    private final MonitorManager manager;
 
-    MetricsImpl(InsightsManager manager) {
+    MetricsImpl(MonitorManager manager) {
         super(manager.inner().metrics());
         this.manager = manager;
     }
 
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

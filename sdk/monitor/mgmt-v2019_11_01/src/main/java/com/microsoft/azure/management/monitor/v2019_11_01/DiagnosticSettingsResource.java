@@ -16,13 +16,13 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.monitor.v2019_11_01.implementation.InsightsManager;
+import com.microsoft.azure.management.monitor.v2019_11_01.implementation.MonitorManager;
 import java.util.List;
 
 /**
  * Type representing DiagnosticSettingsResource.
  */
-public interface DiagnosticSettingsResource extends HasInner<DiagnosticSettingsResourceInner>, Indexable, Updatable<DiagnosticSettingsResource.Update>, Refreshable<DiagnosticSettingsResource>, HasManager<InsightsManager> {
+public interface DiagnosticSettingsResource extends HasInner<DiagnosticSettingsResourceInner>, Indexable, Updatable<DiagnosticSettingsResource.Update>, Refreshable<DiagnosticSettingsResource>, HasManager<MonitorManager> {
     /**
      * @return the eventHubAuthorizationRuleId value.
      */

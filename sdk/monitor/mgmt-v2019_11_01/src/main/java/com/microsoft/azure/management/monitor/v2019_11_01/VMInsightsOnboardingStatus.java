@@ -10,14 +10,14 @@ package com.microsoft.azure.management.monitor.v2019_11_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.monitor.v2019_11_01.implementation.InsightsManager;
+import com.microsoft.azure.management.monitor.v2019_11_01.implementation.MonitorManager;
 import com.microsoft.azure.management.monitor.v2019_11_01.implementation.VMInsightsOnboardingStatusInner;
 import java.util.List;
 
 /**
  * Type representing VMInsightsOnboardingStatus.
  */
-public interface VMInsightsOnboardingStatus extends HasInner<VMInsightsOnboardingStatusInner>, HasManager<InsightsManager> {
+public interface VMInsightsOnboardingStatus extends HasInner<VMInsightsOnboardingStatusInner>, HasManager<MonitorManager> {
     /**
      * @return the data value.
      */

@@ -17,14 +17,14 @@ import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 
 class PrivateLinkScopeOperationStatusImpl extends WrapperImpl<PrivateLinkScopeOperationStatusInner> implements PrivateLinkScopeOperationStatus {
-    private final InsightsManager manager;
+    private final MonitorManager manager;
 
-    PrivateLinkScopeOperationStatusImpl(InsightsManager manager) {
+    PrivateLinkScopeOperationStatusImpl(MonitorManager manager) {
         super(manager.inner().privateLinkScopeOperationStatus());
         this.manager = manager;
     }
 
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

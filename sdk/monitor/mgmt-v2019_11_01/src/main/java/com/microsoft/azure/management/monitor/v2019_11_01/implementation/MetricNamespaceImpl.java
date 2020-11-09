@@ -13,14 +13,14 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.monitor.v2019_11_01.MetricNamespaceName;
 
 class MetricNamespaceImpl extends WrapperImpl<MetricNamespaceInner> implements MetricNamespace {
-    private final InsightsManager manager;
-    MetricNamespaceImpl(MetricNamespaceInner inner, InsightsManager manager) {
+    private final MonitorManager manager;
+    MetricNamespaceImpl(MetricNamespaceInner inner, MonitorManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

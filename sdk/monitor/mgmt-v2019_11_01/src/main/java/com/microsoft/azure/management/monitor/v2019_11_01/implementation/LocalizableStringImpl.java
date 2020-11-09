@@ -12,14 +12,14 @@ import com.microsoft.azure.management.monitor.v2019_11_01.LocalizableString;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class LocalizableStringImpl extends WrapperImpl<LocalizableStringInner> implements LocalizableString {
-    private final InsightsManager manager;
-    LocalizableStringImpl(LocalizableStringInner inner, InsightsManager manager) {
+    private final MonitorManager manager;
+    LocalizableStringImpl(LocalizableStringInner inner, MonitorManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

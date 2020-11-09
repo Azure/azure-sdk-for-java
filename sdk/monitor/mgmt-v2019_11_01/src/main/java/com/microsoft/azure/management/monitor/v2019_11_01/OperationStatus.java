@@ -13,13 +13,13 @@ import com.microsoft.azure.management.monitor.v2019_11_01.implementation.Operati
 import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.monitor.v2019_11_01.implementation.InsightsManager;
+import com.microsoft.azure.management.monitor.v2019_11_01.implementation.MonitorManager;
 import org.joda.time.DateTime;
 
 /**
  * Type representing OperationStatus.
  */
-public interface OperationStatus extends HasInner<OperationStatusInner>, Indexable, Refreshable<OperationStatus>, HasManager<InsightsManager> {
+public interface OperationStatus extends HasInner<OperationStatusInner>, Indexable, Refreshable<OperationStatus>, HasManager<MonitorManager> {
     /**
      * @return the endTime value.
      */

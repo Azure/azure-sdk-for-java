@@ -14,12 +14,12 @@ import rx.Observable;
 import java.util.List;
 
 class PrivateLinkResourceImpl extends IndexableRefreshableWrapperImpl<PrivateLinkResource, PrivateLinkResourceInner> implements PrivateLinkResource {
-    private final InsightsManager manager;
+    private final MonitorManager manager;
     private String resourceGroupName;
     private String scopeName;
     private String groupName;
 
-    PrivateLinkResourceImpl(PrivateLinkResourceInner inner,  InsightsManager manager) {
+    PrivateLinkResourceImpl(PrivateLinkResourceInner inner,  MonitorManager manager) {
         super(null, inner);
         this.manager = manager;
         // set resource ancestor and positional variables
@@ -29,7 +29,7 @@ class PrivateLinkResourceImpl extends IndexableRefreshableWrapperImpl<PrivateLin
     }
 
     @Override
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

@@ -10,7 +10,7 @@ package com.microsoft.azure.management.monitor.v2019_11_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.monitor.v2019_11_01.implementation.InsightsManager;
+import com.microsoft.azure.management.monitor.v2019_11_01.implementation.MonitorManager;
 import com.microsoft.azure.management.monitor.v2019_11_01.implementation.DiagnosticSettingsCategoryResourceCollectionInner;
 import com.microsoft.azure.management.monitor.v2019_11_01.implementation.DiagnosticSettingsCategoryResourceInner;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Type representing DiagnosticSettingsCategoryResourceCollection.
  */
-public interface DiagnosticSettingsCategoryResourceCollection extends HasInner<DiagnosticSettingsCategoryResourceCollectionInner>, HasManager<InsightsManager> {
+public interface DiagnosticSettingsCategoryResourceCollection extends HasInner<DiagnosticSettingsCategoryResourceCollectionInner>, HasManager<MonitorManager> {
     /**
      * @return the value value.
      */

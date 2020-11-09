@@ -16,14 +16,14 @@ import com.microsoft.azure.management.monitor.v2019_11_01.BaselineMetadataValue;
 import org.joda.time.DateTime;
 
 class BaselineResponseImpl extends WrapperImpl<BaselineResponseInner> implements BaselineResponse {
-    private final InsightsManager manager;
-    BaselineResponseImpl(BaselineResponseInner inner, InsightsManager manager) {
+    private final MonitorManager manager;
+    BaselineResponseImpl(BaselineResponseInner inner, MonitorManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

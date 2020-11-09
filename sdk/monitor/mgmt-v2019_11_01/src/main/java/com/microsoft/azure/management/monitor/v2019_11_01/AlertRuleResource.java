@@ -17,7 +17,7 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.monitor.v2019_11_01.implementation.InsightsManager;
+import com.microsoft.azure.management.monitor.v2019_11_01.implementation.MonitorManager;
 import java.util.List;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.monitor.v2019_11_01.implementation.AlertRuleResourceInner;
@@ -25,7 +25,7 @@ import com.microsoft.azure.management.monitor.v2019_11_01.implementation.AlertRu
 /**
  * Type representing AlertRuleResource.
  */
-public interface AlertRuleResource extends HasInner<AlertRuleResourceInner>, Resource, GroupableResourceCore<InsightsManager, AlertRuleResourceInner>, HasResourceGroup, Refreshable<AlertRuleResource>, Updatable<AlertRuleResource.Update>, HasManager<InsightsManager> {
+public interface AlertRuleResource extends HasInner<AlertRuleResourceInner>, Resource, GroupableResourceCore<MonitorManager, AlertRuleResourceInner>, HasResourceGroup, Refreshable<AlertRuleResource>, Updatable<AlertRuleResource.Update>, HasManager<MonitorManager> {
     /**
      * @return the actions value.
      */

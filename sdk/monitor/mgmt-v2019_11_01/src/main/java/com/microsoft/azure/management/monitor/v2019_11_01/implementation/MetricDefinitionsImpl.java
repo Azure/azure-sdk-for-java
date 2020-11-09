@@ -17,14 +17,14 @@ import java.util.List;
 import com.microsoft.azure.management.monitor.v2019_11_01.MetricDefinition;
 
 class MetricDefinitionsImpl extends WrapperImpl<MetricDefinitionsInner> implements MetricDefinitions {
-    private final InsightsManager manager;
+    private final MonitorManager manager;
 
-    MetricDefinitionsImpl(InsightsManager manager) {
+    MetricDefinitionsImpl(MonitorManager manager) {
         super(manager.inner().metricDefinitions());
         this.manager = manager;
     }
 
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

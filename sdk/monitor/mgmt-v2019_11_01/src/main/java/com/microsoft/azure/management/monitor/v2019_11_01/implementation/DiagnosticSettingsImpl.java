@@ -18,14 +18,14 @@ import com.microsoft.azure.management.monitor.v2019_11_01.DiagnosticSettingsReso
 import com.microsoft.azure.management.monitor.v2019_11_01.DiagnosticSettingsResourceCollection;
 
 class DiagnosticSettingsImpl extends WrapperImpl<DiagnosticSettingsInner> implements DiagnosticSettings {
-    private final InsightsManager manager;
+    private final MonitorManager manager;
 
-    DiagnosticSettingsImpl(InsightsManager manager) {
+    DiagnosticSettingsImpl(MonitorManager manager) {
         super(manager.inner().diagnosticSettings());
         this.manager = manager;
     }
 
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

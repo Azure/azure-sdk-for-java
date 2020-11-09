@@ -23,8 +23,8 @@ import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
 
-class AlertRulesImpl extends GroupableResourcesCoreImpl<AlertRuleResource, AlertRuleResourceImpl, AlertRuleResourceInner, AlertRulesInner, InsightsManager>  implements AlertRules {
-    protected AlertRulesImpl(InsightsManager manager) {
+class AlertRulesImpl extends GroupableResourcesCoreImpl<AlertRuleResource, AlertRuleResourceImpl, AlertRuleResourceInner, AlertRulesInner, MonitorManager>  implements AlertRules {
+    protected AlertRulesImpl(MonitorManager manager) {
         super(manager.inner().alertRules(), manager);
     }
 

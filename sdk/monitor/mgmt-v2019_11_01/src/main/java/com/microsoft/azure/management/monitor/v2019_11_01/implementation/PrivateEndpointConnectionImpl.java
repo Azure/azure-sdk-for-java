@@ -15,12 +15,12 @@ import com.microsoft.azure.management.monitor.v2019_11_01.PrivateEndpointPropert
 import com.microsoft.azure.management.monitor.v2019_11_01.PrivateLinkServiceConnectionStateProperty;
 
 class PrivateEndpointConnectionImpl extends CreatableUpdatableImpl<PrivateEndpointConnection, PrivateEndpointConnectionInner, PrivateEndpointConnectionImpl> implements PrivateEndpointConnection, PrivateEndpointConnection.Definition, PrivateEndpointConnection.Update {
-    private final InsightsManager manager;
+    private final MonitorManager manager;
     private String resourceGroupName;
     private String scopeName;
     private String privateEndpointConnectionName;
 
-    PrivateEndpointConnectionImpl(String name, InsightsManager manager) {
+    PrivateEndpointConnectionImpl(String name, MonitorManager manager) {
         super(name, new PrivateEndpointConnectionInner());
         this.manager = manager;
         // Set resource name
@@ -28,7 +28,7 @@ class PrivateEndpointConnectionImpl extends CreatableUpdatableImpl<PrivateEndpoi
         //
     }
 
-    PrivateEndpointConnectionImpl(PrivateEndpointConnectionInner inner, InsightsManager manager) {
+    PrivateEndpointConnectionImpl(PrivateEndpointConnectionInner inner, MonitorManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -41,7 +41,7 @@ class PrivateEndpointConnectionImpl extends CreatableUpdatableImpl<PrivateEndpoi
     }
 
     @Override
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

@@ -17,14 +17,14 @@ import java.util.List;
 import com.microsoft.azure.management.monitor.v2019_11_01.LocalizableString;
 
 class EventCategoriesImpl extends WrapperImpl<EventCategoriesInner> implements EventCategories {
-    private final InsightsManager manager;
+    private final MonitorManager manager;
 
-    EventCategoriesImpl(InsightsManager manager) {
+    EventCategoriesImpl(MonitorManager manager) {
         super(manager.inner().eventCategories());
         this.manager = manager;
     }
 
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

@@ -18,14 +18,14 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.management.monitor.v2019_11_01.ScopedResource;
 
 class PrivateLinkScopedResourcesImpl extends WrapperImpl<PrivateLinkScopedResourcesInner> implements PrivateLinkScopedResources {
-    private final InsightsManager manager;
+    private final MonitorManager manager;
 
-    PrivateLinkScopedResourcesImpl(InsightsManager manager) {
+    PrivateLinkScopedResourcesImpl(MonitorManager manager) {
         super(manager.inner().privateLinkScopedResources());
         this.manager = manager;
     }
 
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

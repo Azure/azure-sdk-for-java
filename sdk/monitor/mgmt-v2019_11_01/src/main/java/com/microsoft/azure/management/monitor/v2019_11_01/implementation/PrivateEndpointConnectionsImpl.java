@@ -18,14 +18,14 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.management.monitor.v2019_11_01.PrivateEndpointConnection;
 
 class PrivateEndpointConnectionsImpl extends WrapperImpl<PrivateEndpointConnectionsInner> implements PrivateEndpointConnections {
-    private final InsightsManager manager;
+    private final MonitorManager manager;
 
-    PrivateEndpointConnectionsImpl(InsightsManager manager) {
+    PrivateEndpointConnectionsImpl(MonitorManager manager) {
         super(manager.inner().privateEndpointConnections());
         this.manager = manager;
     }
 
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

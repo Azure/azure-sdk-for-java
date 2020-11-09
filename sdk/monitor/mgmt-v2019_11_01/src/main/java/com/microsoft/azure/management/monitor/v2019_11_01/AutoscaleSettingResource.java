@@ -17,14 +17,14 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.monitor.v2019_11_01.implementation.InsightsManager;
+import com.microsoft.azure.management.monitor.v2019_11_01.implementation.MonitorManager;
 import java.util.List;
 import com.microsoft.azure.management.monitor.v2019_11_01.implementation.AutoscaleSettingResourceInner;
 
 /**
  * Type representing AutoscaleSettingResource.
  */
-public interface AutoscaleSettingResource extends HasInner<AutoscaleSettingResourceInner>, Resource, GroupableResourceCore<InsightsManager, AutoscaleSettingResourceInner>, HasResourceGroup, Refreshable<AutoscaleSettingResource>, Updatable<AutoscaleSettingResource.Update>, HasManager<InsightsManager> {
+public interface AutoscaleSettingResource extends HasInner<AutoscaleSettingResourceInner>, Resource, GroupableResourceCore<MonitorManager, AutoscaleSettingResourceInner>, HasResourceGroup, Refreshable<AutoscaleSettingResource>, Updatable<AutoscaleSettingResource.Update>, HasManager<MonitorManager> {
     /**
      * @return the autoscaleSettingResourceName value.
      */

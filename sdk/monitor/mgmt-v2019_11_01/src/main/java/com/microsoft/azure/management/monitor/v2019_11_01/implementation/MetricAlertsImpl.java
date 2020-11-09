@@ -23,8 +23,8 @@ import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
 
-class MetricAlertsImpl extends GroupableResourcesCoreImpl<MetricAlertResource, MetricAlertResourceImpl, MetricAlertResourceInner, MetricAlertsInner, InsightsManager>  implements MetricAlerts {
-    protected MetricAlertsImpl(InsightsManager manager) {
+class MetricAlertsImpl extends GroupableResourcesCoreImpl<MetricAlertResource, MetricAlertResourceImpl, MetricAlertResourceInner, MetricAlertsInner, MonitorManager>  implements MetricAlerts {
+    protected MetricAlertsImpl(MonitorManager manager) {
         super(manager.inner().metricAlerts(), manager);
     }
 

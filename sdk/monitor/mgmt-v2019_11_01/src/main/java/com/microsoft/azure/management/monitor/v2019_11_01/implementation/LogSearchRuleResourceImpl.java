@@ -20,9 +20,9 @@ import com.microsoft.azure.management.monitor.v2019_11_01.Schedule;
 import com.microsoft.azure.management.monitor.v2019_11_01.Action;
 import rx.functions.Func1;
 
-class LogSearchRuleResourceImpl extends GroupableResourceCoreImpl<LogSearchRuleResource, LogSearchRuleResourceInner, LogSearchRuleResourceImpl, InsightsManager> implements LogSearchRuleResource, LogSearchRuleResource.Definition, LogSearchRuleResource.Update {
+class LogSearchRuleResourceImpl extends GroupableResourceCoreImpl<LogSearchRuleResource, LogSearchRuleResourceInner, LogSearchRuleResourceImpl, MonitorManager> implements LogSearchRuleResource, LogSearchRuleResource.Definition, LogSearchRuleResource.Update {
     private LogSearchRuleResourcePatch updateParameter;
-    LogSearchRuleResourceImpl(String name, LogSearchRuleResourceInner inner, InsightsManager manager) {
+    LogSearchRuleResourceImpl(String name, LogSearchRuleResourceInner inner, MonitorManager manager) {
         super(name, inner, manager);
         this.updateParameter = new LogSearchRuleResourcePatch();
     }

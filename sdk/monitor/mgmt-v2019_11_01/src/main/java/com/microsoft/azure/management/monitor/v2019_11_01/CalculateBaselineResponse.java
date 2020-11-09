@@ -10,7 +10,7 @@ package com.microsoft.azure.management.monitor.v2019_11_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.monitor.v2019_11_01.implementation.InsightsManager;
+import com.microsoft.azure.management.monitor.v2019_11_01.implementation.MonitorManager;
 import com.microsoft.azure.management.monitor.v2019_11_01.implementation.CalculateBaselineResponseInner;
 import com.microsoft.azure.management.monitor.v2019_11_01.implementation.BaselineInner;
 import java.util.List;
@@ -19,7 +19,7 @@ import org.joda.time.DateTime;
 /**
  * Type representing CalculateBaselineResponse.
  */
-public interface CalculateBaselineResponse extends HasInner<CalculateBaselineResponseInner>, HasManager<InsightsManager> {
+public interface CalculateBaselineResponse extends HasInner<CalculateBaselineResponseInner>, HasManager<MonitorManager> {
     /**
      * @return the baseline value.
      */

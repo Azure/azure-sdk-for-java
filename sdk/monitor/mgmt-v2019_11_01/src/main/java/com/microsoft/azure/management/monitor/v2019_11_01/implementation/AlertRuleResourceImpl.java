@@ -18,9 +18,9 @@ import com.microsoft.azure.management.monitor.v2019_11_01.RuleCondition;
 import com.microsoft.azure.management.monitor.v2019_11_01.RuleAction;
 import rx.functions.Func1;
 
-class AlertRuleResourceImpl extends GroupableResourceCoreImpl<AlertRuleResource, AlertRuleResourceInner, AlertRuleResourceImpl, InsightsManager> implements AlertRuleResource, AlertRuleResource.Definition, AlertRuleResource.Update {
+class AlertRuleResourceImpl extends GroupableResourceCoreImpl<AlertRuleResource, AlertRuleResourceInner, AlertRuleResourceImpl, MonitorManager> implements AlertRuleResource, AlertRuleResource.Definition, AlertRuleResource.Update {
     private AlertRuleResourcePatch updateParameter;
-    AlertRuleResourceImpl(String name, AlertRuleResourceInner inner, InsightsManager manager) {
+    AlertRuleResourceImpl(String name, AlertRuleResourceInner inner, MonitorManager manager) {
         super(name, inner, manager);
         this.updateParameter = new AlertRuleResourcePatch();
     }

@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.ArrayList;
 import com.microsoft.azure.management.monitor.v2019_11_01.PrivateEndpointConnection;
 
-class AzureMonitorPrivateLinkScopeImpl extends GroupableResourceCoreImpl<AzureMonitorPrivateLinkScope, AzureMonitorPrivateLinkScopeInner, AzureMonitorPrivateLinkScopeImpl, InsightsManager> implements AzureMonitorPrivateLinkScope, AzureMonitorPrivateLinkScope.Definition, AzureMonitorPrivateLinkScope.Update {
-    AzureMonitorPrivateLinkScopeImpl(String name, AzureMonitorPrivateLinkScopeInner inner, InsightsManager manager) {
+class AzureMonitorPrivateLinkScopeImpl extends GroupableResourceCoreImpl<AzureMonitorPrivateLinkScope, AzureMonitorPrivateLinkScopeInner, AzureMonitorPrivateLinkScopeImpl, MonitorManager> implements AzureMonitorPrivateLinkScope, AzureMonitorPrivateLinkScope.Definition, AzureMonitorPrivateLinkScope.Update {
+    AzureMonitorPrivateLinkScopeImpl(String name, AzureMonitorPrivateLinkScopeInner inner, MonitorManager manager) {
         super(name, inner, manager);
     }
 

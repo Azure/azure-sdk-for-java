@@ -17,14 +17,14 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.monitor.v2019_11_01.implementation.InsightsManager;
+import com.microsoft.azure.management.monitor.v2019_11_01.implementation.MonitorManager;
 import java.util.List;
 import com.microsoft.azure.management.monitor.v2019_11_01.implementation.AzureMonitorPrivateLinkScopeInner;
 
 /**
  * Type representing AzureMonitorPrivateLinkScope.
  */
-public interface AzureMonitorPrivateLinkScope extends HasInner<AzureMonitorPrivateLinkScopeInner>, Resource, GroupableResourceCore<InsightsManager, AzureMonitorPrivateLinkScopeInner>, HasResourceGroup, Refreshable<AzureMonitorPrivateLinkScope>, Updatable<AzureMonitorPrivateLinkScope.Update>, HasManager<InsightsManager> {
+public interface AzureMonitorPrivateLinkScope extends HasInner<AzureMonitorPrivateLinkScopeInner>, Resource, GroupableResourceCore<MonitorManager, AzureMonitorPrivateLinkScopeInner>, HasResourceGroup, Refreshable<AzureMonitorPrivateLinkScope>, Updatable<AzureMonitorPrivateLinkScope.Update>, HasManager<MonitorManager> {
     /**
      * @return the privateEndpointConnections value.
      */

@@ -17,9 +17,9 @@ import com.microsoft.azure.management.monitor.v2019_11_01.SubscriptionLogSetting
 
 class SubscriptionDiagnosticSettingsResourceImpl extends CreatableUpdatableImpl<SubscriptionDiagnosticSettingsResource, SubscriptionDiagnosticSettingsResourceInner, SubscriptionDiagnosticSettingsResourceImpl> implements SubscriptionDiagnosticSettingsResource, SubscriptionDiagnosticSettingsResource.Definition, SubscriptionDiagnosticSettingsResource.Update {
     private String name;
-    private final InsightsManager manager;
+    private final MonitorManager manager;
 
-    SubscriptionDiagnosticSettingsResourceImpl(String name, InsightsManager manager) {
+    SubscriptionDiagnosticSettingsResourceImpl(String name, MonitorManager manager) {
         super(name, new SubscriptionDiagnosticSettingsResourceInner());
         this.manager = manager;
         // Set resource name
@@ -27,7 +27,7 @@ class SubscriptionDiagnosticSettingsResourceImpl extends CreatableUpdatableImpl<
         //
     }
 
-    SubscriptionDiagnosticSettingsResourceImpl(SubscriptionDiagnosticSettingsResourceInner inner, InsightsManager manager) {
+    SubscriptionDiagnosticSettingsResourceImpl(SubscriptionDiagnosticSettingsResourceInner inner, MonitorManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -38,7 +38,7 @@ class SubscriptionDiagnosticSettingsResourceImpl extends CreatableUpdatableImpl<
     }
 
     @Override
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

@@ -17,14 +17,14 @@ import java.util.List;
 import com.microsoft.azure.management.monitor.v2019_11_01.MetricNamespace;
 
 class MetricNamespacesImpl extends WrapperImpl<MetricNamespacesInner> implements MetricNamespaces {
-    private final InsightsManager manager;
+    private final MonitorManager manager;
 
-    MetricNamespacesImpl(InsightsManager manager) {
+    MetricNamespacesImpl(MonitorManager manager) {
         super(manager.inner().metricNamespaces());
         this.manager = manager;
     }
 
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

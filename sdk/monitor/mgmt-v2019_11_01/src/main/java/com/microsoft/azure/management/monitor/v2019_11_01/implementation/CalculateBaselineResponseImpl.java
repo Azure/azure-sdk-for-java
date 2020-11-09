@@ -14,14 +14,14 @@ import java.util.List;
 import org.joda.time.DateTime;
 
 class CalculateBaselineResponseImpl extends WrapperImpl<CalculateBaselineResponseInner> implements CalculateBaselineResponse {
-    private final InsightsManager manager;
-    CalculateBaselineResponseImpl(CalculateBaselineResponseInner inner, InsightsManager manager) {
+    private final MonitorManager manager;
+    CalculateBaselineResponseImpl(CalculateBaselineResponseInner inner, MonitorManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

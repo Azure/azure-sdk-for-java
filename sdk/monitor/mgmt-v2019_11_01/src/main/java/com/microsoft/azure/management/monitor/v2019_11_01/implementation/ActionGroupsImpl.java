@@ -23,8 +23,8 @@ import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
 
-class ActionGroupsImpl extends GroupableResourcesCoreImpl<ActionGroupResource, ActionGroupResourceImpl, ActionGroupResourceInner, ActionGroupsInner, InsightsManager>  implements ActionGroups {
-    protected ActionGroupsImpl(InsightsManager manager) {
+class ActionGroupsImpl extends GroupableResourcesCoreImpl<ActionGroupResource, ActionGroupResourceImpl, ActionGroupResourceInner, ActionGroupsInner, MonitorManager>  implements ActionGroups {
+    protected ActionGroupsImpl(MonitorManager manager) {
         super(manager.inner().actionGroups(), manager);
     }
 

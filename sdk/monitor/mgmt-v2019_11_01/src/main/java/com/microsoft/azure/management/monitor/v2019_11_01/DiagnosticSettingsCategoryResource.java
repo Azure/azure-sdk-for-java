@@ -10,13 +10,13 @@ package com.microsoft.azure.management.monitor.v2019_11_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.monitor.v2019_11_01.implementation.InsightsManager;
+import com.microsoft.azure.management.monitor.v2019_11_01.implementation.MonitorManager;
 import com.microsoft.azure.management.monitor.v2019_11_01.implementation.DiagnosticSettingsCategoryResourceInner;
 
 /**
  * Type representing DiagnosticSettingsCategoryResource.
  */
-public interface DiagnosticSettingsCategoryResource extends HasInner<DiagnosticSettingsCategoryResourceInner>, HasManager<InsightsManager> {
+public interface DiagnosticSettingsCategoryResource extends HasInner<DiagnosticSettingsCategoryResourceInner>, HasManager<MonitorManager> {
     /**
      * @return the categoryType value.
      */

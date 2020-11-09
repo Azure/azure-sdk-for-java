@@ -13,14 +13,14 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import java.util.List;
 
 class DiagnosticSettingsCategoryResourceCollectionImpl extends WrapperImpl<DiagnosticSettingsCategoryResourceCollectionInner> implements DiagnosticSettingsCategoryResourceCollection {
-    private final InsightsManager manager;
-    DiagnosticSettingsCategoryResourceCollectionImpl(DiagnosticSettingsCategoryResourceCollectionInner inner, InsightsManager manager) {
+    private final MonitorManager manager;
+    DiagnosticSettingsCategoryResourceCollectionImpl(DiagnosticSettingsCategoryResourceCollectionInner inner, MonitorManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

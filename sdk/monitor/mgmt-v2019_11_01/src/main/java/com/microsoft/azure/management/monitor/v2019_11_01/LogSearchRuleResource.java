@@ -17,14 +17,14 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.monitor.v2019_11_01.implementation.InsightsManager;
+import com.microsoft.azure.management.monitor.v2019_11_01.implementation.MonitorManager;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.monitor.v2019_11_01.implementation.LogSearchRuleResourceInner;
 
 /**
  * Type representing LogSearchRuleResource.
  */
-public interface LogSearchRuleResource extends HasInner<LogSearchRuleResourceInner>, Resource, GroupableResourceCore<InsightsManager, LogSearchRuleResourceInner>, HasResourceGroup, Refreshable<LogSearchRuleResource>, Updatable<LogSearchRuleResource.Update>, HasManager<InsightsManager> {
+public interface LogSearchRuleResource extends HasInner<LogSearchRuleResourceInner>, Resource, GroupableResourceCore<MonitorManager, LogSearchRuleResourceInner>, HasResourceGroup, Refreshable<LogSearchRuleResource>, Updatable<LogSearchRuleResource.Update>, HasManager<MonitorManager> {
     /**
      * @return the action value.
      */

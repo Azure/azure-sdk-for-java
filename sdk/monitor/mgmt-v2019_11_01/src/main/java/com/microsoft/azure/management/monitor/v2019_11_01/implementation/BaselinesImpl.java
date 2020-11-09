@@ -17,14 +17,14 @@ import java.util.List;
 import com.microsoft.azure.management.monitor.v2019_11_01.SingleMetricBaseline;
 
 class BaselinesImpl extends WrapperImpl<BaselinesInner> implements Baselines {
-    private final InsightsManager manager;
+    private final MonitorManager manager;
 
-    BaselinesImpl(InsightsManager manager) {
+    BaselinesImpl(MonitorManager manager) {
         super(manager.inner().baselines());
         this.manager = manager;
     }
 
-    public InsightsManager manager() {
+    public MonitorManager manager() {
         return this.manager;
     }
 

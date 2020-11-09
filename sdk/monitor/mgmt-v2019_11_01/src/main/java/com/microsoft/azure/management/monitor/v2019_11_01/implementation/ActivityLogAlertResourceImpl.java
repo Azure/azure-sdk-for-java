@@ -17,9 +17,9 @@ import com.microsoft.azure.management.monitor.v2019_11_01.ActivityLogAlertAllOfC
 import com.microsoft.azure.management.monitor.v2019_11_01.ActivityLogAlertActionList;
 import rx.functions.Func1;
 
-class ActivityLogAlertResourceImpl extends GroupableResourceCoreImpl<ActivityLogAlertResource, ActivityLogAlertResourceInner, ActivityLogAlertResourceImpl, InsightsManager> implements ActivityLogAlertResource, ActivityLogAlertResource.Definition, ActivityLogAlertResource.Update {
+class ActivityLogAlertResourceImpl extends GroupableResourceCoreImpl<ActivityLogAlertResource, ActivityLogAlertResourceInner, ActivityLogAlertResourceImpl, MonitorManager> implements ActivityLogAlertResource, ActivityLogAlertResource.Definition, ActivityLogAlertResource.Update {
     private ActivityLogAlertPatchBody updateParameter;
-    ActivityLogAlertResourceImpl(String name, ActivityLogAlertResourceInner inner, InsightsManager manager) {
+    ActivityLogAlertResourceImpl(String name, ActivityLogAlertResourceInner inner, MonitorManager manager) {
         super(name, inner, manager);
         this.updateParameter = new ActivityLogAlertPatchBody();
     }

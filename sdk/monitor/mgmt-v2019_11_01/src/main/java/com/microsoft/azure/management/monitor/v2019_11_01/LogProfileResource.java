@@ -16,14 +16,14 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.monitor.v2019_11_01.implementation.InsightsManager;
+import com.microsoft.azure.management.monitor.v2019_11_01.implementation.MonitorManager;
 import java.util.Map;
 import java.util.List;
 
 /**
  * Type representing LogProfileResource.
  */
-public interface LogProfileResource extends HasInner<LogProfileResourceInner>, Indexable, Updatable<LogProfileResource.Update>, Refreshable<LogProfileResource>, HasManager<InsightsManager> {
+public interface LogProfileResource extends HasInner<LogProfileResourceInner>, Indexable, Updatable<LogProfileResource.Update>, Refreshable<LogProfileResource>, HasManager<MonitorManager> {
     /**
      * @return the categories value.
      */
