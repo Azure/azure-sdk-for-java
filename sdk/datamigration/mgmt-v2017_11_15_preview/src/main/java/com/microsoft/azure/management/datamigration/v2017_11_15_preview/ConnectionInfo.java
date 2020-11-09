@@ -16,14 +16,10 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Defines the connection properties of a server.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Unknown")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = ConnectionInfo.class)
+@JsonTypeName("ConnectionInfo")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "SqlConnectionInfo", value = SqlConnectionInfo.class),
-    @JsonSubTypes.Type(name = "Migrate.SqlServer.SqlDb", value = MigrateSqlServerSqlDbTaskProperties.class),
-    @JsonSubTypes.Type(name = "GetUserTables.Sql", value = GetUserTablesSqlTaskProperties.class),
-    @JsonSubTypes.Type(name = "ConnectToTarget.SqlDb", value = ConnectToTargetSqlDbTaskProperties.class),
-    @JsonSubTypes.Type(name = "ConnectToSource.SqlServer", value = ConnectToSourceSqlServerTaskProperties.class)
+    @JsonSubTypes.Type(name = "SqlConnectionInfo", value = SqlConnectionInfo.class)
 })
 public class ConnectionInfo {
     /**
