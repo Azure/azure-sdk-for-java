@@ -76,6 +76,11 @@ public class AADOAuth2AutoConfiguration {
         return new InMemoryClientRegistrationRepository(azureClientRegistration());
     }
 
+    @Bean
+    public AccessTokenProvider accessTokenProvider(){
+        return new AccessTokenProvider();
+    }
+
     private ClientRegistration azureClientRegistration() {
         String tenantId = aadAuthenticationProperties.getTenantId().trim();
         Assert.hasText(tenantId, "azure.activedirectory.tenant-id should have text.");
