@@ -1358,6 +1358,13 @@
     <Bug pattern="SE_BAD_FIELD" />
   </Match>
 
+  <!-- TextAnalyticsClientImplBuilder is under implementation folder, skip URF_UNREAD_FIELD check for serviceVersion property -->
+  <Match>
+    <Class name="com.azure.ai.textanalytics.implementation.TextAnalyticsClientImplBuilder" />
+    <Field name="serviceVersion" />
+    <Bug pattern="URF_UNREAD_FIELD" />
+  </Match>
+
   <!-- Exception is required to catch, ref: code comment in the OrderbyRowComparer::compare() method  -->
   <Match>
     <Class name="com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer"/>
@@ -2390,7 +2397,7 @@
     <Method name="getUserName" />
     <Bug pattern="NM_CONFUSING" />
   </Match>
- 
+
   <!-- Disabling false positives in azure-core -->
   <!-- This Issue has been resolved as per spotbugs's recommended solution but the static checker still flags it, its a known issue with this rule. -->
   <Match>
