@@ -3,12 +3,18 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.microsoft.aad.msal4j.*;
+import com.microsoft.aad.msal4j.ClientCredentialFactory;
+import com.microsoft.aad.msal4j.ConfidentialClientApplication;
+import com.microsoft.aad.msal4j.IAuthenticationResult;
+import com.microsoft.aad.msal4j.IConfidentialClientApplication;
+import com.microsoft.aad.msal4j.OnBehalfOfParameters;
+import com.microsoft.aad.msal4j.UserAssertion;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.naming.ServiceUnavailableException;
 import java.net.MalformedURLException;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Provide an AccessTokenProvider by obo flow
@@ -18,18 +24,18 @@ public class AccessTokenProvider {
     @Autowired
     private AADAuthenticationProperties aadAuthenticationProperties;
 
-    private String clientId = aadAuthenticationProperties.getClientId();
-    private String clientSecret = aadAuthenticationProperties.getClientSecret();
+    private final String clientId = aadAuthenticationProperties.getClientId();
+    private final String clientSecret = aadAuthenticationProperties.getClientSecret();
 
-    private static String AUTHORITY = "https://login.microsoftonline.com/common/";
+    private static final String authority = "https://login.microsoftonline.com/common/";
 
     private ConfidentialClientApplication createClientApplication() throws MalformedURLException {
         return ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.createFromSecret(clientSecret)).
-            authority(AUTHORITY).
-            build();
+            authority(authority).build();
     }
 
-    public String acquireTokenByOboflow(Set<String> scope, String accessToken) throws Throwable {
+    public String acquireTokenByOboflow(Set<String> scope, String accessToken) throws
+        ExecutionException, InterruptedException, ServiceUnavailableException, MalformedURLException {
 
         IConfidentialClientApplication app = createClientApplication();
 
@@ -41,7 +47,7 @@ public class AccessTokenProvider {
                     scope,
                     userAssertion).
                     build()).
-                get();
+                    get();
 
         if (updatedResult == null) {
             throw new ServiceUnavailableException("authentication result was null");

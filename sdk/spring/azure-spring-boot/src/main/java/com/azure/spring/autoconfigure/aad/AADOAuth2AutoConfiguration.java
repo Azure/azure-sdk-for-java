@@ -77,7 +77,7 @@ public class AADOAuth2AutoConfiguration {
     }
 
     @Bean
-    public AccessTokenProvider accessTokenProvider(){
+    public AccessTokenProvider accessTokenProvider() {
         return new AccessTokenProvider();
     }
 
