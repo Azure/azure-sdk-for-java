@@ -51,7 +51,7 @@ public interface CapacityPool extends HasInner<CapacityPoolInner>, Indexable, Re
     /**
      * @return the serviceLevel value.
      */
-    ServiceLevel serviceLevel();
+    PoolServiceLevel serviceLevel();
 
     /**
      * @return the size value.
@@ -118,7 +118,7 @@ public interface CapacityPool extends HasInner<CapacityPoolInner>, Indexable, Re
             * @param serviceLevel The service level of the file system. Possible values include: 'Standard', 'Premium', 'Ultra'
             * @return the next definition stage
             */
-            WithSize withServiceLevel(ServiceLevel serviceLevel);
+            WithSize withServiceLevel(PoolServiceLevel serviceLevel);
         }
 
         /**
@@ -172,7 +172,7 @@ public interface CapacityPool extends HasInner<CapacityPoolInner>, Indexable, Re
              * @param serviceLevel The service level of the file system. Possible values include: 'Standard', 'Premium', 'Ultra'
              * @return the next update stage
              */
-            Update withServiceLevel(ServiceLevel serviceLevel);
+            Update withServiceLevel(PatchServiceLevel serviceLevel);
         }
 
         /**
