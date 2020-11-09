@@ -301,7 +301,7 @@ gracefully by catching the exception and display the additional information abou
 <!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L256-L260 -->
 ```java
 try {
-    metricsAdvisorClient.getMetricFeedback("non_existing_feedback_id");
+    metricsAdvisorClient.getFeedback("non_existing_feedback_id");
 } catch (HttpResponseException e) {
     System.out.println(e.getMessage());
 }

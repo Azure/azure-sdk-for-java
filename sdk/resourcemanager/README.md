@@ -341,7 +341,7 @@ If you would like to become an active contributor to this project please follow 
 5. Create new Pull Request
 
 <!-- LINKS -->
-[docs]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-resourcemanager/latest/index.html
+[docs]: https://azure.github.io/azure-sdk-for-java/mangement.html
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity

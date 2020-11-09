@@ -254,7 +254,7 @@ public class ReadmeSamples {
      */
     public void handlingException() {
         try {
-            metricsAdvisorClient.getMetricFeedback("non_existing_feedback_id");
+            metricsAdvisorClient.getFeedback("non_existing_feedback_id");
         } catch (HttpResponseException e) {
             System.out.println(e.getMessage());
         }

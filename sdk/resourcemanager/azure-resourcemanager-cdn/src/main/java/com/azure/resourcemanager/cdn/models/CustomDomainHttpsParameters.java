@@ -33,6 +33,12 @@ public class CustomDomainHttpsParameters {
     @JsonProperty(value = "protocolType", required = true)
     private ProtocolType protocolType;
 
+    /*
+     * TLS protocol version that will be used for Https
+     */
+    @JsonProperty(value = "minimumTlsVersion")
+    private MinimumTlsVersion minimumTlsVersion;
+
     /**
      * Get the protocolType property: Defines the TLS extension protocol that is used for secure delivery.
      *
@@ -50,6 +56,26 @@ public class CustomDomainHttpsParameters {
      */
     public CustomDomainHttpsParameters withProtocolType(ProtocolType protocolType) {
         this.protocolType = protocolType;
+        return this;
+    }
+
+    /**
+     * Get the minimumTlsVersion property: TLS protocol version that will be used for Https.
+     *
+     * @return the minimumTlsVersion value.
+     */
+    public MinimumTlsVersion minimumTlsVersion() {
+        return this.minimumTlsVersion;
+    }
+
+    /**
+     * Set the minimumTlsVersion property: TLS protocol version that will be used for Https.
+     *
+     * @param minimumTlsVersion the minimumTlsVersion value to set.
+     * @return the CustomDomainHttpsParameters object itself.
+     */
+    public CustomDomainHttpsParameters withMinimumTlsVersion(MinimumTlsVersion minimumTlsVersion) {
+        this.minimumTlsVersion = minimumTlsVersion;
         return this;
     }
 

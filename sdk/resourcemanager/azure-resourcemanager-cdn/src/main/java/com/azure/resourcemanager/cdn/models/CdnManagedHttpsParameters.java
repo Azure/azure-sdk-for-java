@@ -48,6 +48,20 @@ public final class CdnManagedHttpsParameters extends CustomDomainHttpsParameters
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public CdnManagedHttpsParameters withProtocolType(ProtocolType protocolType) {
+        super.withProtocolType(protocolType);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CdnManagedHttpsParameters withMinimumTlsVersion(MinimumTlsVersion minimumTlsVersion) {
+        super.withMinimumTlsVersion(minimumTlsVersion);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

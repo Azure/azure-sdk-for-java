@@ -4,6 +4,7 @@
 package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.AuthenticationRecord;
 import com.azure.identity.implementation.util.ValidationUtil;
 
@@ -18,6 +19,7 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
     private Integer port;
     private boolean automaticAuthentication = true;
     private String redirectUrl;
+    String clientId = IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID;
 
     /**
      * Sets the port for the local HTTP server, for which {@code http://localhost:{port}} must be

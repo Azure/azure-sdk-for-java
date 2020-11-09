@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -76,7 +77,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @Host("{$host}")
     @ServiceInterface(name = "CdnManagementClientE")
     private interface EndpointsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
                 + "/{profileName}/endpoints")
@@ -88,9 +89,10 @@ public final class EndpointsClientImpl implements EndpointsClient {
             @PathParam("profileName") String profileName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
                 + "/{profileName}/endpoints/{endpointName}")
@@ -103,9 +105,10 @@ public final class EndpointsClientImpl implements EndpointsClient {
             @PathParam("endpointName") String endpointName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
                 + "/{profileName}/endpoints/{endpointName}")
@@ -119,9 +122,10 @@ public final class EndpointsClientImpl implements EndpointsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") EndpointInner endpointParam,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
                 + "/{profileName}/endpoints/{endpointName}")
@@ -135,9 +139,10 @@ public final class EndpointsClientImpl implements EndpointsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") EndpointUpdateParameters endpointUpdateProperties,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
                 + "/{profileName}/endpoints/{endpointName}")
@@ -150,9 +155,10 @@ public final class EndpointsClientImpl implements EndpointsClient {
             @PathParam("endpointName") String endpointName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
                 + "/{profileName}/endpoints/{endpointName}/start")
@@ -165,9 +171,10 @@ public final class EndpointsClientImpl implements EndpointsClient {
             @PathParam("endpointName") String endpointName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
                 + "/{profileName}/endpoints/{endpointName}/stop")
@@ -180,9 +187,10 @@ public final class EndpointsClientImpl implements EndpointsClient {
             @PathParam("endpointName") String endpointName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
                 + "/{profileName}/endpoints/{endpointName}/purge")
@@ -196,9 +204,10 @@ public final class EndpointsClientImpl implements EndpointsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") PurgeParameters contentFilePaths,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
                 + "/{profileName}/endpoints/{endpointName}/load")
@@ -212,9 +221,10 @@ public final class EndpointsClientImpl implements EndpointsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") LoadParameters contentFilePaths,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
                 + "/{profileName}/endpoints/{endpointName}/validateCustomDomain")
@@ -228,9 +238,10 @@ public final class EndpointsClientImpl implements EndpointsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ValidateCustomDomainInput customDomainProperties,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
                 + "/{profileName}/endpoints/{endpointName}/checkResourceUsage")
@@ -243,21 +254,28 @@ public final class EndpointsClientImpl implements EndpointsClient {
             @PathParam("endpointName") String endpointName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EndpointListResult>> listByProfileNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourceUsageListResult>> listResourceUsageNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -292,6 +310,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -302,6 +321,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                             profileName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .<PagedResponse<EndpointInner>>map(
                 res ->
@@ -348,6 +368,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByProfile(
@@ -356,6 +377,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                 profileName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context)
             .map(
                 res ->
@@ -472,6 +494,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -483,6 +506,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                             endpointName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -526,6 +550,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -535,6 +560,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                 endpointName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -648,6 +674,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
         } else {
             endpoint.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -660,6 +687,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             endpoint,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -711,6 +739,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
         } else {
             endpoint.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .create(
@@ -721,6 +750,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 endpoint,
+                accept,
                 context);
     }
 
@@ -921,8 +951,9 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Updates an existing CDN endpoint with the specified endpoint name under the specified subscription, resource
-     * group and profile. Only tags and Origin HostHeader can be updated after creating an endpoint. To update origins,
-     * use the Update Origin operation. To update custom domains, use the Update Custom Domain operation.
+     * group and profile. Only tags can be updated after creating an endpoint. To update origins, use the Update Origin
+     * operation. To update origin groups, use the Update Origin group operation. To update custom domains, use the
+     * Update Custom Domain operation.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -969,6 +1000,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
         } else {
             endpointUpdateProperties.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -981,14 +1013,16 @@ public final class EndpointsClientImpl implements EndpointsClient {
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             endpointUpdateProperties,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Updates an existing CDN endpoint with the specified endpoint name under the specified subscription, resource
-     * group and profile. Only tags and Origin HostHeader can be updated after creating an endpoint. To update origins,
-     * use the Update Origin operation. To update custom domains, use the Update Custom Domain operation.
+     * group and profile. Only tags can be updated after creating an endpoint. To update origins, use the Update Origin
+     * operation. To update origin groups, use the Update Origin group operation. To update custom domains, use the
+     * Update Custom Domain operation.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -1037,6 +1071,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
         } else {
             endpointUpdateProperties.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -1047,13 +1082,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 endpointUpdateProperties,
+                accept,
                 context);
     }
 
     /**
      * Updates an existing CDN endpoint with the specified endpoint name under the specified subscription, resource
-     * group and profile. Only tags and Origin HostHeader can be updated after creating an endpoint. To update origins,
-     * use the Update Origin operation. To update custom domains, use the Update Custom Domain operation.
+     * group and profile. Only tags can be updated after creating an endpoint. To update origins, use the Update Origin
+     * operation. To update origin groups, use the Update Origin group operation. To update custom domains, use the
+     * Update Custom Domain operation.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -1081,8 +1118,9 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Updates an existing CDN endpoint with the specified endpoint name under the specified subscription, resource
-     * group and profile. Only tags and Origin HostHeader can be updated after creating an endpoint. To update origins,
-     * use the Update Origin operation. To update custom domains, use the Update Custom Domain operation.
+     * group and profile. Only tags can be updated after creating an endpoint. To update origins, use the Update Origin
+     * operation. To update origin groups, use the Update Origin group operation. To update custom domains, use the
+     * Update Custom Domain operation.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -1113,8 +1151,9 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Updates an existing CDN endpoint with the specified endpoint name under the specified subscription, resource
-     * group and profile. Only tags and Origin HostHeader can be updated after creating an endpoint. To update origins,
-     * use the Update Origin operation. To update custom domains, use the Update Custom Domain operation.
+     * group and profile. Only tags can be updated after creating an endpoint. To update origins, use the Update Origin
+     * operation. To update origin groups, use the Update Origin group operation. To update custom domains, use the
+     * Update Custom Domain operation.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -1137,8 +1176,9 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Updates an existing CDN endpoint with the specified endpoint name under the specified subscription, resource
-     * group and profile. Only tags and Origin HostHeader can be updated after creating an endpoint. To update origins,
-     * use the Update Origin operation. To update custom domains, use the Update Custom Domain operation.
+     * group and profile. Only tags can be updated after creating an endpoint. To update origins, use the Update Origin
+     * operation. To update origin groups, use the Update Origin group operation. To update custom domains, use the
+     * Update Custom Domain operation.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -1164,8 +1204,9 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Updates an existing CDN endpoint with the specified endpoint name under the specified subscription, resource
-     * group and profile. Only tags and Origin HostHeader can be updated after creating an endpoint. To update origins,
-     * use the Update Origin operation. To update custom domains, use the Update Custom Domain operation.
+     * group and profile. Only tags can be updated after creating an endpoint. To update origins, use the Update Origin
+     * operation. To update origin groups, use the Update Origin group operation. To update custom domains, use the
+     * Update Custom Domain operation.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -1190,8 +1231,9 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Updates an existing CDN endpoint with the specified endpoint name under the specified subscription, resource
-     * group and profile. Only tags and Origin HostHeader can be updated after creating an endpoint. To update origins,
-     * use the Update Origin operation. To update custom domains, use the Update Custom Domain operation.
+     * group and profile. Only tags can be updated after creating an endpoint. To update origins, use the Update Origin
+     * operation. To update origin groups, use the Update Origin group operation. To update custom domains, use the
+     * Update Custom Domain operation.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -1218,8 +1260,9 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Updates an existing CDN endpoint with the specified endpoint name under the specified subscription, resource
-     * group and profile. Only tags and Origin HostHeader can be updated after creating an endpoint. To update origins,
-     * use the Update Origin operation. To update custom domains, use the Update Custom Domain operation.
+     * group and profile. Only tags can be updated after creating an endpoint. To update origins, use the Update Origin
+     * operation. To update origin groups, use the Update Origin group operation. To update custom domains, use the
+     * Update Custom Domain operation.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -1242,8 +1285,9 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Updates an existing CDN endpoint with the specified endpoint name under the specified subscription, resource
-     * group and profile. Only tags and Origin HostHeader can be updated after creating an endpoint. To update origins,
-     * use the Update Origin operation. To update custom domains, use the Update Custom Domain operation.
+     * group and profile. Only tags can be updated after creating an endpoint. To update origins, use the Update Origin
+     * operation. To update origin groups, use the Update Origin group operation. To update custom domains, use the
+     * Update Custom Domain operation.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -1303,6 +1347,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1314,6 +1359,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                             endpointName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1356,6 +1402,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -1365,6 +1412,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                 endpointName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -1559,6 +1607,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1570,6 +1619,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                             endpointName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1612,6 +1662,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .start(
@@ -1621,6 +1672,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                 endpointName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -1820,6 +1872,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1831,6 +1884,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                             endpointName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1873,6 +1927,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .stop(
@@ -1882,6 +1937,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                 endpointName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -2084,6 +2140,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
         if (contentPaths == null) {
             return Mono.error(new IllegalArgumentException("Parameter contentPaths is required and cannot be null."));
         }
+        final String accept = "application/json";
         PurgeParameters contentFilePaths = new PurgeParameters();
         contentFilePaths.withContentPaths(contentPaths);
         return FluxUtil
@@ -2098,6 +2155,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             contentFilePaths,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -2143,6 +2201,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
         if (contentPaths == null) {
             return Mono.error(new IllegalArgumentException("Parameter contentPaths is required and cannot be null."));
         }
+        final String accept = "application/json";
         PurgeParameters contentFilePaths = new PurgeParameters();
         contentFilePaths.withContentPaths(contentPaths);
         context = this.client.mergeContext(context);
@@ -2155,6 +2214,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 contentFilePaths,
+                accept,
                 context);
     }
 
@@ -2358,6 +2418,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
         if (contentPaths == null) {
             return Mono.error(new IllegalArgumentException("Parameter contentPaths is required and cannot be null."));
         }
+        final String accept = "application/json";
         LoadParameters contentFilePaths = new LoadParameters();
         contentFilePaths.withContentPaths(contentPaths);
         return FluxUtil
@@ -2372,6 +2433,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             contentFilePaths,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -2417,6 +2479,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
         if (contentPaths == null) {
             return Mono.error(new IllegalArgumentException("Parameter contentPaths is required and cannot be null."));
         }
+        final String accept = "application/json";
         LoadParameters contentFilePaths = new LoadParameters();
         contentFilePaths.withContentPaths(contentPaths);
         context = this.client.mergeContext(context);
@@ -2429,6 +2492,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 contentFilePaths,
+                accept,
                 context);
     }
 
@@ -2632,6 +2696,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
         if (hostname == null) {
             return Mono.error(new IllegalArgumentException("Parameter hostname is required and cannot be null."));
         }
+        final String accept = "application/json";
         ValidateCustomDomainInput customDomainProperties = new ValidateCustomDomainInput();
         customDomainProperties.withHostname(hostname);
         return FluxUtil
@@ -2646,6 +2711,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             customDomainProperties,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -2691,6 +2757,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
         if (hostname == null) {
             return Mono.error(new IllegalArgumentException("Parameter hostname is required and cannot be null."));
         }
+        final String accept = "application/json";
         ValidateCustomDomainInput customDomainProperties = new ValidateCustomDomainInput();
         customDomainProperties.withHostname(hostname);
         context = this.client.mergeContext(context);
@@ -2703,6 +2770,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 customDomainProperties,
+                accept,
                 context);
     }
 
@@ -2806,6 +2874,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2817,6 +2886,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                             endpointName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .<PagedResponse<ResourceUsageInner>>map(
                 res ->
@@ -2867,6 +2937,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listResourceUsage(
@@ -2876,6 +2947,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                 endpointName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context)
             .map(
                 res ->
@@ -2976,8 +3048,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByProfileNext(nextLink, context))
+            .withContext(context -> service.listByProfileNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<EndpointInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -3005,9 +3084,16 @@ public final class EndpointsClientImpl implements EndpointsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByProfileNext(nextLink, context)
+            .listByProfileNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -3033,8 +3119,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listResourceUsageNext(nextLink, context))
+            .withContext(context -> service.listResourceUsageNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<ResourceUsageInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -3063,9 +3156,16 @@ public final class EndpointsClientImpl implements EndpointsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listResourceUsageNext(nextLink, context)
+            .listResourceUsageNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
