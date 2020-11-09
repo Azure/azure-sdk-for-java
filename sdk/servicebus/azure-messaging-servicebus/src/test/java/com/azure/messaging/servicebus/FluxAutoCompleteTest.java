@@ -19,6 +19,8 @@ import java.time.Duration;
 import java.util.concurrent.Semaphore;
 import java.util.function.Function;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
@@ -221,5 +223,76 @@ class FluxAutoCompleteTest {
         verify(onComplete).apply(context);
         verify(onComplete).apply(context2);
         verifyNoInteractions(onAbandon);
+    }
+
+    /**
+     * Verifies that if a message has been settled, we will not try to complete it.
+     */
+    @Test
+    void doesNotCompleteOnSettledMessage() {
+        // Arrange
+        final TestPublisher<ServiceBusMessageContext> testPublisher = TestPublisher.createCold();
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        when(message.isSettled()).thenReturn(true);
+
+        final ServiceBusMessageContext context = new ServiceBusMessageContext(message);
+        final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
+        final ServiceBusMessageContext context2 = new ServiceBusMessageContext(message2);
+
+        final FluxAutoComplete autoComplete = new FluxAutoComplete(testPublisher.flux(), completionLock, onComplete, onAbandon);
+
+        when(onComplete.apply(any())).thenReturn(Mono.empty());
+        when(onAbandon.apply(any())).thenReturn(Mono.empty());
+
+        // Act
+        StepVerifier.create(autoComplete)
+            .then(() -> testPublisher.next(context, context2))
+            .expectNext(context, context2)
+            .then(() -> testPublisher.complete())
+            .expectComplete()
+            .verify();
+
+        // Assert
+        verify(onComplete, never()).apply(context);
+        verify(onComplete).apply(context2);
+        verifyNoInteractions(onAbandon);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    void onErrorCancelsUpstream() {
+        // Arrange
+        final TestPublisher<ServiceBusMessageContext> testPublisher = TestPublisher.createCold();
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        when(message.isSettled()).thenReturn(false);
+        final ServiceBusMessageContext context = new ServiceBusMessageContext(message);
+
+        final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
+        when(message2.isSettled()).thenReturn(false);
+        final ServiceBusMessageContext context2 = new ServiceBusMessageContext(message2);
+
+        final FluxAutoComplete autoComplete = new FluxAutoComplete(testPublisher.flux(), completionLock, onComplete, onAbandon);
+        final CloneNotSupportedException testError = new CloneNotSupportedException("TEST error");
+
+        when(onComplete.apply(any())).thenReturn(Mono.error(testError), Mono.empty());
+        when(onAbandon.apply(any())).thenReturn(Mono.empty());
+
+        // Act
+        StepVerifier.create(autoComplete)
+            .then(() -> testPublisher.next(context, context2))
+            .expectNext(context)
+            .consumeErrorWith(error -> {
+                final Throwable cause = error.getCause();
+                assertNotNull(cause);
+                assertEquals(testError, cause);
+            })
+            .verify();
+
+        // Assert
+        verify(onComplete).apply(context);
+        verify(onComplete, never()).apply(context2);
+        verifyNoInteractions(onAbandon);
+
+        testPublisher.assertCancelled();
     }
 }

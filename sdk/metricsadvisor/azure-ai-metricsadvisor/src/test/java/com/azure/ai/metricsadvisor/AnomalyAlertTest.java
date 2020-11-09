@@ -12,6 +12,7 @@ import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertScope;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestBase;
 import com.azure.core.util.Context;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.AfterAll;
@@ -35,11 +36,12 @@ import static com.azure.ai.metricsadvisor.TestUtils.INCORRECT_UUID_ERROR;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class AnomalyAlertTest extends AnomalyAlertTestBase {
+public final class AnomalyAlertTest extends AnomalyAlertTestBase {
     private MetricsAdvisorAdministrationClient client;
 
     @BeforeAll
     static void beforeAll() {
+        TestBase.setupClass();
         StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
     }
 
@@ -61,12 +63,12 @@ public class AnomalyAlertTest extends AnomalyAlertTestBase {
             List<AnomalyAlertConfiguration> actualAnomalyAlertList = new ArrayList<>();
             List<AnomalyAlertConfiguration> expectedAnomalyAlertList =
                 inputAnomalyAlertList.stream().map(inputAnomalyAlert ->
-                    client.createAnomalyAlertConfiguration(inputAnomalyAlert))
+                    client.createAnomalyAlertConfig(inputAnomalyAlert))
                     .collect(Collectors.toList());
 
             // Act
             final AtomicInteger i = new AtomicInteger(-1);
-            client.listAnomalyAlertConfigurations(inputAnomalyAlertList.get(i.incrementAndGet())
+            client.listAnomalyAlertConfigs(inputAnomalyAlertList.get(i.incrementAndGet())
                 .getMetricAlertConfigurations().get(i.get()).getDetectionConfigurationId())
                 .forEach(actualAnomalyAlertList::add);
 
@@ -87,7 +89,7 @@ public class AnomalyAlertTest extends AnomalyAlertTestBase {
             expectedAnomalyAlertList.forEach(expectedAnomalyAlert -> validateAnomalyAlertResult(expectedAnomalyAlert,
                 actualList.get(i.get())));
 
-            expectedAnomalyAlertIdList.forEach(inputConfigId -> client.deleteAnomalyAlertConfiguration(inputConfigId));
+            expectedAnomalyAlertIdList.forEach(inputConfigId -> client.deleteAnomalyAlertConfig(inputConfigId));
         });
     }
 
@@ -104,7 +106,7 @@ public class AnomalyAlertTest extends AnomalyAlertTestBase {
         client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
         // Act & Assert
         Exception exception = assertThrows(NullPointerException.class, () ->
-            client.getAnomalyAlertConfiguration(null));
+            client.getAnomalyAlertConfig(null));
         assertEquals(exception.getMessage(), "'alertConfigurationId' is required.");
     }
 
@@ -119,7 +121,7 @@ public class AnomalyAlertTest extends AnomalyAlertTestBase {
 
         // Act & Assert
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
-            client.getAnomalyAlertConfiguration(INCORRECT_UUID));
+            client.getAnomalyAlertConfig(INCORRECT_UUID));
         assertEquals(exception.getMessage(), INCORRECT_UUID_ERROR);
     }
 
@@ -136,16 +138,16 @@ public class AnomalyAlertTest extends AnomalyAlertTestBase {
         listAnomalyAlertRunner(anomalyAlertConfigurationList -> {
             final AnomalyAlertConfiguration inputAnomalyAlertConfiguration = anomalyAlertConfigurationList.get(0);
             final AnomalyAlertConfiguration createdAnomalyAlert =
-                client.createAnomalyAlertConfiguration(inputAnomalyAlertConfiguration);
+                client.createAnomalyAlertConfig(inputAnomalyAlertConfiguration);
             alertConfigurationId.set(createdAnomalyAlert.getId());
 
             // Act & Assert
             Response<AnomalyAlertConfiguration> anomalyAlertConfigurationResponse =
-                client.getAnomalyAlertConfigurationWithResponse(alertConfigurationId.get(), Context.NONE);
+                client.getAnomalyAlertConfigWithResponse(alertConfigurationId.get(), Context.NONE);
             assertEquals(anomalyAlertConfigurationResponse.getStatusCode(), HttpResponseStatus.OK.code());
             validateAnomalyAlertResult(createdAnomalyAlert, anomalyAlertConfigurationResponse.getValue());
         });
-        client.deleteAnomalyAlertConfiguration(alertConfigurationId.get());
+        client.deleteAnomalyAlertConfig(alertConfigurationId.get());
     }
 
     // Create Anomaly alert configuration
@@ -162,11 +164,11 @@ public class AnomalyAlertTest extends AnomalyAlertTestBase {
         creatAnomalyAlertRunner(inputAnomalyAlertConfig -> {
             // Act & Assert
             AnomalyAlertConfiguration createdAnomalyAlertConfig =
-                client.createAnomalyAlertConfiguration(inputAnomalyAlertConfig);
+                client.createAnomalyAlertConfig(inputAnomalyAlertConfig);
             alertConfigurationId.set(createdAnomalyAlertConfig.getId());
             validateAnomalyAlertResult(inputAnomalyAlertConfig, createdAnomalyAlertConfig);
         });
-        client.deleteAnomalyAlertConfiguration(alertConfigurationId.get());
+        client.deleteAnomalyAlertConfig(alertConfigurationId.get());
     }
 
     /**
@@ -179,15 +181,15 @@ public class AnomalyAlertTest extends AnomalyAlertTestBase {
         client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
         creatAnomalyAlertRunner(inputAnomalyAlertConfig -> {
             final AnomalyAlertConfiguration createdAnomalyAlert =
-                client.createAnomalyAlertConfiguration(inputAnomalyAlertConfig);
+                client.createAnomalyAlertConfig(inputAnomalyAlertConfig);
 
-            Response<Void> response = client.deleteAnomalyAlertConfigurationWithResponse(createdAnomalyAlert.getId(),
+            Response<Void> response = client.deleteAnomalyAlertConfigWithResponse(createdAnomalyAlert.getId(),
                 Context.NONE);
             assertEquals(response.getStatusCode(), HttpResponseStatus.NO_CONTENT.code());
 
             // Act & Assert
             Exception exception = assertThrows(ErrorCodeException.class, () ->
-                client.getAnomalyAlertConfiguration(createdAnomalyAlert.getId()));
+                client.getAnomalyAlertConfig(createdAnomalyAlert.getId()));
             assertEquals(ErrorCodeException.class, exception.getClass());
             final ErrorCodeException errorCodeException = ((ErrorCodeException) exception);
             assertEquals(HttpResponseStatus.NOT_FOUND.code(), errorCodeException.getResponse().getStatusCode());
@@ -209,7 +211,7 @@ public class AnomalyAlertTest extends AnomalyAlertTestBase {
         creatAnomalyAlertRunner(inputAnomalyAlert -> {
             // Arrange
             final AnomalyAlertConfiguration createdAnomalyAlert =
-                client.createAnomalyAlertConfiguration(inputAnomalyAlert);
+                client.createAnomalyAlertConfig(inputAnomalyAlert);
 
             inputAnomalyAlertConfigId.set(createdAnomalyAlert.getId());
 
@@ -222,7 +224,7 @@ public class AnomalyAlertTest extends AnomalyAlertTestBase {
 
             // Act & Assert
             // add metricAnomalyAlertConfiguration and operator
-            final AnomalyAlertConfiguration updatedAnomalyAlertConfiguration = client.updateAnomalyAlertConfiguration(
+            final AnomalyAlertConfiguration updatedAnomalyAlertConfiguration = client.updateAnomalyAlertConfig(
                 createdAnomalyAlert.setMetricAlertConfigurations(
                     Arrays.asList(metricAnomalyAlertConfiguration, metricAnomalyAlertConfiguration2))
                     .setCrossMetricsOperator(MetricAnomalyAlertConfigurationsOperator.XOR));
@@ -234,12 +236,12 @@ public class AnomalyAlertTest extends AnomalyAlertTestBase {
 
             // clear the set configurations, not allowed
             Exception exception = assertThrows(NullPointerException.class, () ->
-                client.updateAnomalyAlertConfiguration(createdAnomalyAlert.setMetricAlertConfigurations(null)));
+                client.updateAnomalyAlertConfig(createdAnomalyAlert.setMetricAlertConfigurations(null)));
             assertEquals("'alertConfiguration.metricAnomalyAlertConfigurations' is "
                    + "required and cannot be empty", exception.getMessage());
         });
 
-        client.deleteAnomalyAlertConfiguration(inputAnomalyAlertConfigId.get());
+        client.deleteAnomalyAlertConfig(inputAnomalyAlertConfigId.get());
     }
 
     // TODO (savaity) update cannot be used to clear a set description?
@@ -255,25 +257,25 @@ public class AnomalyAlertTest extends AnomalyAlertTestBase {
     //     creatAnomalyAlertRunner(inputAnomalyAlert -> {
     //         // Arrange
     //         final AnomalyAlertConfiguration createdAnomalyAlert =
-    //             client.createAnomalyAlertConfiguration(inputAnomalyAlert).block();
+    //             client.createAnomalyAlertConfig(inputAnomalyAlert).block();
     //
     //         inputAnomalyAlertConfigId.set(createdAnomalyAlert.getId());
     //
     //         // Act & Assert
-    //         StepVerifier.create(client.updateAnomalyAlertConfiguration(
+    //         StepVerifier.create(client.updateAnomalyAlertConfig(
     //             createdAnomalyAlert.setDescription("updated_description")
     //                 .setCrossMetricsOperator(MetricAnomalyAlertConfigurationsOperator.XOR)))
     //             .assertNext(updatedAnomalyAlert ->
     //                 assertEquals("updated_description", updatedAnomalyAlert.getDescription())).verifyComplete();
     //
     //         // clear the set description, not allowed
-    //         StepVerifier.create(client.updateAnomalyAlertConfiguration(
+    //         StepVerifier.create(client.updateAnomalyAlertConfig(
     //             createdAnomalyAlert.setDescription(null)))
     //             .assertNext(anomalyAlertConfiguration -> assertNull(anomalyAlertConfiguration.getDescription()))
     //             .verifyComplete();
     //
     //     });
-    //     client.deleteAnomalyAlertConfigurationWithResponse(inputAnomalyAlertConfigId.get()).block();
+    //     client.deleteAnomalyAlertConfigWithResponse(inputAnomalyAlertConfigId.get()).block();
     // }
 
     /**
@@ -288,15 +290,15 @@ public class AnomalyAlertTest extends AnomalyAlertTestBase {
         creatAnomalyAlertRunner(inputAnomalyAlert -> {
             // Arrange
             final AnomalyAlertConfiguration createdAnomalyAlert =
-                client.createAnomalyAlertConfiguration(inputAnomalyAlert);
+                client.createAnomalyAlertConfig(inputAnomalyAlert);
 
             inputAnomalyAlertConfigId.set(createdAnomalyAlert.getId());
 
             // Act & Assert
-            final AnomalyAlertConfiguration updatedAnomalyAlertConfiguration = client.updateAnomalyAlertConfiguration(
+            final AnomalyAlertConfiguration updatedAnomalyAlertConfiguration = client.updateAnomalyAlertConfig(
                 createdAnomalyAlert.removeHookToAlert(ALERT_HOOK_ID));
             assertEquals(0, updatedAnomalyAlertConfiguration.getIdOfHooksToAlert().size());
         });
-        client.deleteAnomalyAlertConfiguration(inputAnomalyAlertConfigId.get());
+        client.deleteAnomalyAlertConfig(inputAnomalyAlertConfigId.get());
     }
 }

@@ -38,15 +38,15 @@ public class ListEnrichedSeriesSample {
         for (MetricEnrichedSeriesData enrichedData : enrichedDataIterable) {
             System.out.printf("Series Key %s%n:", enrichedData.getSeriesKey().asMap());
             System.out.println("List of data points for this series");
-            System.out.println(enrichedData.getValueList());
+            System.out.println(enrichedData.getMetricValues());
             System.out.println("Timestamps of the data related to this time series:");
-            System.out.println(enrichedData.getTimestampList());
+            System.out.println(enrichedData.getTimestamps());
             System.out.println("The expected values of the data points calculated by the smart detector:");
-            System.out.println(enrichedData.getExpectedValueList());
+            System.out.println(enrichedData.getExpectedMetricValues());
             System.out.println("The lower boundary values of the data points calculated by smart detector:");
-            System.out.println(enrichedData.getLowerBoundaryList());
+            System.out.println(enrichedData.getLowerBoundaryValues());
             System.out.println("the periods calculated for the data points in the time series:");
-            System.out.println(enrichedData.getPeriodList());
+            System.out.println(enrichedData.getPeriods());
         }
     }
 }
