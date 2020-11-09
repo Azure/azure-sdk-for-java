@@ -2261,7 +2261,7 @@
   <!-- Exclude from spring related classes -->
   <Match>
     <Or>
-      <Class name="com.azure.spring.support.GetHashMac"/> <!-- false positive -->
+      <Class name="com.azure.spring.utils.GetHashMac"/> <!-- false positive -->
       <Class name="com.azure.spring.utils.PropertyLoader"/> <!-- false positive -->
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
