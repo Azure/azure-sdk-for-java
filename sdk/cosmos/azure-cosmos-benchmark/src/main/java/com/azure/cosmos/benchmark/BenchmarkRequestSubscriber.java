@@ -15,6 +15,7 @@ import reactor.core.publisher.BaseSubscriber;
 import java.time.Duration;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Consumer;
 
 public class BenchmarkRequestSubscriber<T> extends BaseSubscriber<T> {
     final static Logger logger = LoggerFactory.getLogger(BenchmarkRequestSubscriber.class);
@@ -27,16 +28,28 @@ public class BenchmarkRequestSubscriber<T> extends BaseSubscriber<T> {
 
     public Timer.Context context;
 
+    private final Consumer<AtomicLong> initializeMetersIfSkippedEnoughOperations;
+
     public BenchmarkRequestSubscriber(Meter successMeter,
                                       Meter failureMeter,
                                       Semaphore concurrencyControlSemaphore,
                                       AtomicLong count,
                                       Duration diagnosticsThresholdDuration) {
+        this(successMeter, failureMeter, concurrencyControlSemaphore, count, diagnosticsThresholdDuration, null);
+    }
+
+    public BenchmarkRequestSubscriber(Meter successMeter,
+                                      Meter failureMeter,
+                                      Semaphore concurrencyControlSemaphore,
+                                      AtomicLong count,
+                                      Duration diagnosticsThresholdDuration,
+                                      Consumer<AtomicLong> initializeMetersIfSkippedEnoughOperations) {
         this.successMeter = successMeter;
         this.failureMeter = failureMeter;
         this.concurrencyControlSemaphore = concurrencyControlSemaphore;
         this.count = count;
         this.diagnosticsThresholdDuration = diagnosticsThresholdDuration;
+        this.initializeMetersIfSkippedEnoughOperations = initializeMetersIfSkippedEnoughOperations;
     }
 
     @Override
@@ -68,6 +81,9 @@ public class BenchmarkRequestSubscriber<T> extends BaseSubscriber<T> {
         context.stop();
         successMeter.mark();
         concurrencyControlSemaphore.release();
+        if (this.initializeMetersIfSkippedEnoughOperations != null) {
+            this.initializeMetersIfSkippedEnoughOperations.accept(count);
+        }
 
         synchronized (count) {
             count.incrementAndGet();
@@ -82,6 +98,9 @@ public class BenchmarkRequestSubscriber<T> extends BaseSubscriber<T> {
         logger.error("Encountered failure {} on thread {}",
             throwable.getMessage(), Thread.currentThread().getName(), throwable);
         concurrencyControlSemaphore.release();
+        if (this.initializeMetersIfSkippedEnoughOperations != null) {
+            this.initializeMetersIfSkippedEnoughOperations.accept(count);
+        }
 
         synchronized (count) {
             count.incrementAndGet();

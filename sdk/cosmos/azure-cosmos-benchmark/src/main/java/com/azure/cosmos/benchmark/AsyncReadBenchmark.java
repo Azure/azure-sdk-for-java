@@ -6,14 +6,10 @@ package com.azure.cosmos.benchmark;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.codahale.metrics.Timer;
-import org.apache.commons.lang3.RandomUtils;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
-
-import java.time.Duration;
 
 class AsyncReadBenchmark extends AsyncBenchmark<PojoizedJson> {
 
@@ -78,34 +74,26 @@ class AsyncReadBenchmark extends AsyncBenchmark<PojoizedJson> {
 
     private void readLatency(Mono<PojoizedJson> readItem, BaseSubscriber<PojoizedJson> baseSubscriber, long i) {
         Mono sparsitySleepMono = sparsityMono(i);
-        Mono<PojoizedJson> result = readItem;
+        Mono<PojoizedJson> result;
         LatencySubscriber<PojoizedJson> latencySubscriber = new LatencySubscriber<>(baseSubscriber);
-        if (sparsitySleepMono != null) {
-            result = sparsitySleepMono.flux().flatMap(
-                null,
-                null,
-                () -> {
-                    latencySubscriber.context = latency.time();
-                    return readItem;
-                }).single();
-        } else {
-            latencySubscriber.context = latency.time();
-        }
+        result = sparsitySleepMono.flux().flatMap(
+            null,
+            null,
+            () -> {
+                latencySubscriber.context = latency.time();
+                return readItem;
+            }).single();
 
         result.subscribeOn(Schedulers.parallel()).subscribe(latencySubscriber);
     }
 
     private void readThroughput(Mono<PojoizedJson> readItem, BaseSubscriber<PojoizedJson> baseSubscriber, long i) {
         Mono sparsitySleepMono = sparsityMono(i);
-        Mono<PojoizedJson> result = readItem;
-        if (sparsitySleepMono != null) {
-            result = sparsitySleepMono.flux().flatMap(
-                null,
-                null,
-                () -> {
-                    return readItem;
-                }).single();
-        }
+        Mono<PojoizedJson> result;
+        result = sparsitySleepMono.flux().flatMap(
+            null,
+            null,
+            () -> readItem).single();
 
         result.subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
     }
