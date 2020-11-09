@@ -127,7 +127,7 @@ Check out sample models [here](https://github.com/Azure/azure-sdk-for-java/tree/
 Example of using sync client to create models.
 
 ```java
-List<String> modelsList = new ArrayList<>(Arrays.asList(newComponentModelPayload, newModelPayload));
+List<String> modelsList = Arrays.asList(newComponentModelPayload, newModelPayload);
 List<DigitalTwinsModelData> modelList =  syncClient.createModels(modelsList);
 
 for (DigitalTwinsModelData model : modelList) {
@@ -163,9 +163,9 @@ asynClient.listModels()
 Use `getModel` with model's unique identifier to get a specific model.
 
 ```java
-asyncClient.createOrReplaceDigitalTwin(twinId, twinContent)
+asyncClient.getModel(modelId)
     .subscribe(
-        twin -> System.out.println("Created digital twin: " + twinId + "\n\t Body: " + twin),
+        model -> System.out.println("Retrieved model with Id: " + model.getModelId()),
         throwable -> System.out.println("Could not create digital twin " + twinId + " due to " + throwable)
     )
 ```
@@ -197,10 +197,9 @@ One option is to use the provided class BasicDigitalTwin for serialization and d
 ```java
 // Create digital twin with component payload using the BasicDigitalTwin serialization helper
 
-BasicDigitalTwin basicTwin = new BasicDigitalTwin()
-    .setId(basicDigitalTwinId)
+BasicDigitalTwin basicTwin = new BasicDigitalTwin(basicDigitalTwinId)
     .setMetadata(
-        new DigitalTwinMetadata()
+        new BasicDigitalTwinMetadata()
             .setModelId(modelId)
     )
     .addToContents("Prop1", "Value1")
@@ -208,11 +207,10 @@ BasicDigitalTwin basicTwin = new BasicDigitalTwin()
     .addToContents(
         "Component1",
         new BasicDigitalTwinComponent()
-            .addroperty("ComponentProp1", "Component value 1")
-            .addroperty("ComponentProp2", 123)
-    );
+            .addToContents("ComponentProp1", "Component value 1")
+            .addToContents("ComponentProp2", 123));
 
-BasicDigitalTwin basicTwinResponse = syncClient.createOrReplaceDigitalTwin(basicDtId, basicTwin, BasicDigitalTwin.class);
+BasicDigitalTwin basicTwinResponse = syncClient.createOrReplaceDigitalTwin(basicDigitalTwinId, basicTwin, BasicDigitalTwin.class);
 ```
 
 Alternatively, you can create your own custom data types to serialize and deserialize your digital twins.
@@ -281,12 +279,11 @@ To update a component or in other words to replace, remove and/or add a componen
 
 ```C# Snippet:DigitalTwinsSampleUpdateComponent
 // Update Component1 by replacing the property ComponentProp1 value,
-// using the UpdateOperationUtility to build the payload.
-UpdateOperationUtility jsonPatchDocument = new UpdateOperationUtility();
+// using the JsonPatchDocument to build the update operation patch document.
+JsonPatchDocument updateOp = new JsonPatchDocument()
+    .appendReplace("/ComponentProp1", "Some new Value");
 
-jsonPatchDocument.appendReplaceOperation("/ComponentProp1", "Some new Value");
-
-client.updateComponent(basicDigitalTwinId, "Component1", jsonPatchDocument.getUpdateOperations());
+client.updateComponent(basicDigitalTwinId, "Component1", updateOp);
 ```
 
 ### Get digital twin components
@@ -306,15 +303,20 @@ String getComponentResponse = client.getComponent(digitalTwinId, "Component1", S
 One option is to use the provided class BasicRelationship for serialization and deserialization.
 
 ```java
-BasicRelationship buildingFloorRelationshipPayload = new BasicRelationship()
-    .setId(buildingFloorRelationshipId)
-    .setSourceId(buildingTwinId)
-    .setTargetId(floorTwinId)
-    .setName("contains")
+BasicRelationship buildingToFloorBasicRelationship = 
+new BasicRelationship(
+        "myRelationshipId",
+        "mySourceDigitalTwinId",
+        "myTargetDigitalTwinId",
+        "contains")
     .addProperty("Prop1", "Prop1 value")
     .addProperty("Prop2", 6);
 
-client.createOrReplaceRelationship(buildingTwinId, buildingFloorRelationshipId, buildingFloorRelationshipPayload, BasicRelationship.class);
+BasicRelationship createdRelationship = client.createOrReplaceRelationship(
+    "mySourceDigitalTwinId",
+    "myRelationshipId",
+    buildingToFloorBasicRelationship,
+    BasicRelationship.class);
 ```
 
 ### Get and deserialize a digital twin relationship
@@ -383,12 +385,10 @@ client.deleteRelationship(buildingTwinId, buildingFloorRelationshipId);
 To create an event route, provide an Id of an event route such as "sampleEventRoute" and event route data containing the endpoint and optional filter like the example shown below.
 
 ```java
-String filter = "$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'";
-DigitalTwinsEventRoute eventRoute = new EventRoute();
-eventRoute.setEndpointName(eventRouteEndpointName);
-eventRoute.setFilter(filter);
+String filter ="$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'";
 
-client.createOrReplaceEventRoute(eventRouteId, eventRoute);
+DigitalTwinsEventRoute eventRoute = new DigitalTwinsEventRoute("myEndpointName").setFilter(filter);
+client.createOrReplaceEventRoute("myEventRouteId", eventRoute);
 ```
 
 For more information on the event route filter language, see the "how to manage routes" [filter events documentation](https://docs.microsoft.com/azure/digital-twins/how-to-manage-routes-apis-cli#filter-events).
@@ -398,17 +398,10 @@ For more information on the event route filter language, see the "how to manage 
 List a specific event route given event route Id or all event routes setting options with `GetEventRouteAsync` and `GetEventRoutesAsync`.
 
 ```java
-PagedIterable<DigitalTwinsEventRoute> eventRoutes = client.listEventRoutes();
+PagedIterable<DigitalTwinsEventRoute> listResponse =  client.listEventRoutes();
 
-for (DigitalTwinsEventRoute eventRoute : eventRoutes) {
-    existingEventRouteId = eventRoute.getId();
-    System.out.println(String.format("\tEventRouteId: %s", eventRoute.getId()));
-    System.out.println(String.format("\tEventRouteEndpointName: %s", eventRoute.getEndpointName()));
-    if (eventRoute.getFilter() != null)
-    {
-        System.out.println(String.format("\tFilter: %s", eventRoute.getFilter()));
-    }
-}
+listResponse.forEach(
+    eventRoute -> System.out.println("Retrieved event route with Id: " + eventRoute.getEventRouteId()));
 ```
 
 ### Delete event routes
