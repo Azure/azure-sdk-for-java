@@ -31,8 +31,8 @@ public final class SearchIndexingBufferedSenderOptions<T> {
 
     private Boolean autoFlush;
     private Duration autoFlushWindow;
-    private Integer initialBatchActionCount;
-    private Integer maxRetries;
+    private int initialBatchActionCount = DEFAULT_INITIAL_BATCH_ACTION_COUNT;
+    private int maxRetries = DEFAULT_MAX_RETRIES;
     private Duration retryDelay;
     private Duration maxRetryDelay;
 
@@ -45,7 +45,7 @@ public final class SearchIndexingBufferedSenderOptions<T> {
 
     /**
      * Sets the flag determining whether a buffered sender will automatically flush its document batch based on the
-     * configurations of {@link #setAutoFlushWindow(Duration)} and {@link #setInitialBatchActionCount(Integer)}.
+     * configurations of {@link #setAutoFlushWindow(Duration)} and {@link #setInitialBatchActionCount(int)}.
      * <p>
      * If {@code autoFlush} is null the buffered sender will be set to automatically flush.
      *
@@ -70,11 +70,11 @@ public final class SearchIndexingBufferedSenderOptions<T> {
      * Sets the duration between a buffered sender sending documents to be indexed.
      * <p>
      * The buffered sender will reset the duration when documents are sent for indexing, either by reaching {@link
-     * #setInitialBatchActionCount(Integer)} or by a manual trigger.
+     * #setInitialBatchActionCount(int)} or by a manual trigger.
      * <p>
      * If {@code flushWindow} is negative or zero and {@link #setAutoFlush(Boolean)} is enabled the buffered sender will
-     * only flush when {@link #setInitialBatchActionCount(Integer)} is met. If {@code flushWindow} is null a default
-     * value of 60 seconds is used.
+     * only flush when {@link #setInitialBatchActionCount(int)} is met. If {@code flushWindow} is null a default value
+     * of 60 seconds is used.
      *
      * @param autoFlushWindow Duration between document batches being sent for indexing.
      * @return The updated SearchIndexingBufferedSenderOptions object.
@@ -88,7 +88,7 @@ public final class SearchIndexingBufferedSenderOptions<T> {
      * Gets the {@link Duration} that the buffered sender will wait between sending documents to be indexed.
      * <p>
      * The buffered sender will reset the duration when documents are sent for indexing, either by reaching {@link
-     * #setInitialBatchActionCount(Integer)} or by a manual trigger.
+     * #setInitialBatchActionCount(int)} or by a manual trigger.
      * <p>
      * If the duration is less than or equal to zero the buffered sender will only flush when {@link
      * #getInitialBatchActionCount()} is triggered.
@@ -112,10 +112,11 @@ public final class SearchIndexingBufferedSenderOptions<T> {
      * @return The updated SearchIndexingBufferedSenderOptions object.
      * @throws IllegalArgumentException If {@code batchSize} is less than one.
      */
-    public SearchIndexingBufferedSenderOptions<T> setInitialBatchActionCount(Integer initialBatchActionCount) {
-        if (initialBatchActionCount != null && initialBatchActionCount < 1) {
+    public SearchIndexingBufferedSenderOptions<T> setInitialBatchActionCount(int initialBatchActionCount) {
+        if (initialBatchActionCount < 1) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'batchSize' cannot be less than one."));
         }
+
         this.initialBatchActionCount = initialBatchActionCount;
         return this;
     }
@@ -128,7 +129,7 @@ public final class SearchIndexingBufferedSenderOptions<T> {
      * @return The number of documents required before a flush is triggered.
      */
     public int getInitialBatchActionCount() {
-        return (initialBatchActionCount == null) ? DEFAULT_INITIAL_BATCH_ACTION_COUNT : initialBatchActionCount;
+        return initialBatchActionCount;
     }
 
     /**
@@ -142,8 +143,8 @@ public final class SearchIndexingBufferedSenderOptions<T> {
      * @return The updated SearchIndexingBufferedSenderOptions object.
      * @throws IllegalArgumentException If {@code documentTryLimit} is less than one.
      */
-    public SearchIndexingBufferedSenderOptions<T> setMaxRetries(Integer maxRetries) {
-        if (maxRetries != null && maxRetries < 1) {
+    public SearchIndexingBufferedSenderOptions<T> setMaxRetries(int maxRetries) {
+        if (maxRetries < 1) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("'maxRetries' cannot be less than one."));
         }
@@ -158,7 +159,7 @@ public final class SearchIndexingBufferedSenderOptions<T> {
      * @return The number of times a document will attempt indexing.
      */
     public int getMaxRetries() {
-        return (maxRetries == null) ? DEFAULT_MAX_RETRIES : maxRetries;
+        return maxRetries;
     }
 
     /**
@@ -198,7 +199,8 @@ public final class SearchIndexingBufferedSenderOptions<T> {
      *
      * @param maxRetryDelay The maximum duration requests will delay when the service is throttling.
      * @return The updated SearchIndexingBufferedSenderOptions object.
-     * @throws IllegalArgumentException If {@code maxRetryDelay.isNegative()} or {@code maxRetryDelay.isZero()} is true.
+     * @throws IllegalArgumentException If {@code maxRetryDelay.isNegative()} or {@code maxRetryDelay.isZero()} is
+     * true.
      */
     public SearchIndexingBufferedSenderOptions<T> setMaxRetryDelay(Duration maxRetryDelay) {
         if (maxRetryDelay != null && (maxRetryDelay.isNegative() || maxRetryDelay.isZero())) {

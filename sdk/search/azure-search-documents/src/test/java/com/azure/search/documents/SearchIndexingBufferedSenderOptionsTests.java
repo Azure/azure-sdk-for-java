@@ -37,9 +37,6 @@ public class SearchIndexingBufferedSenderOptionsTests {
     public void initialBatchActionCountDefaults() {
         SearchIndexingBufferedSenderOptions<Integer> options = new SearchIndexingBufferedSenderOptions<>();
         assertEquals(512, options.getInitialBatchActionCount());
-
-        options.setInitialBatchActionCount(null);
-        assertEquals(512, options.getInitialBatchActionCount());
     }
 
     @Test
@@ -52,9 +49,6 @@ public class SearchIndexingBufferedSenderOptionsTests {
     @Test
     public void maxRetriesDefaults() {
         SearchIndexingBufferedSenderOptions<Integer> options = new SearchIndexingBufferedSenderOptions<>();
-        assertEquals(3, options.getMaxRetries());
-
-        options.setMaxRetries(null);
         assertEquals(3, options.getMaxRetries());
     }
 
