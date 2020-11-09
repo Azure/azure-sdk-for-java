@@ -12,7 +12,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos-spark_3-0_2-12</artifactId>
-  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
+  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-spark_3-0_2-12;current} -->
   <packaging>jar</packaging>
   <name>OLTP Spark Connector for Azure Cosmos DB SQL API</name>
   <description>OLTP Spark Connector for Azure Cosmos DB SQL API</description>
@@ -53,18 +53,18 @@
     <dependency>
       <groupId>org.scala-lang</groupId>
       <artifactId>scala-library</artifactId>
-      <version>2.12.10</version> <!-- {x-include-update;org.scala-lang:scala-library;external_dependency} -->
+      <version>2.12.10</version> <!-- {x-version-update;org.scala-lang:scala-library;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-sql_2.12</artifactId>
-      <version>3.0.1</version> <!-- {x-include-update;org.apache.spark:spark-sql_2.12;external_dependency} -->
+      <version>3.0.1</version> <!-- {x-version-update;org.apache.spark:spark-sql_2.12;external_dependency} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.scalatest</groupId>
       <artifactId>scalatest_2.12</artifactId>
-      <version>3.2.2</version> <!-- {x-include-update;org.scalatest:scalatest_2.12;external_dependency} -->
+      <version>3.2.2</version> <!-- {x-version-update;org.scalatest:scalatest_2.12;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- Added this provided dependency to include necessary annotations used by "reactor-core".
@@ -111,7 +111,7 @@
       <plugin>
         <groupId>net.alchim31.maven</groupId>
         <artifactId>scala-maven-plugin</artifactId>
-        <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <version>3.8.1</version> <!-- {x-version-update;net.alchim31.maven:scala-maven-plugin;external_dependency} -->
         <configuration>
           <source>11</source>
           <target>11</target>
@@ -160,7 +160,7 @@
       <plugin>
         <groupId>org.scalastyle</groupId>
         <artifactId>scalastyle-maven-plugin</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.0</version> <!-- {x-version-update;org.scalastyle:scalastyle-maven-plugin;external_dependency} -->
         <configuration>
           <verbose>false</verbose>
           <failOnViolation>true</failOnViolation>
