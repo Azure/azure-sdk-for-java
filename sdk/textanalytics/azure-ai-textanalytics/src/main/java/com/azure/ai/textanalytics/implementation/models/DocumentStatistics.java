@@ -7,7 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DocumentStatistics model. */
+/** if showStats=true was specified in the request this field will contain information about the document payload. */
 @Fluent
 public final class DocumentStatistics {
     /*

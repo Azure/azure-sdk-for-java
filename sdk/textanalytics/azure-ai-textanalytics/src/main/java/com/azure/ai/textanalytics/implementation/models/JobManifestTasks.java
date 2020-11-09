@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The JobManifestTasks model. */
+/** The set of tasks to execute on the input documents. Cannot specify the same task more than once. */
 @Fluent
 public final class JobManifestTasks {
     /*
