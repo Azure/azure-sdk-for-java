@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.cdn.models.CdnEndpoint;
 import com.azure.resourcemanager.cdn.models.CustomRuleList;
 import com.azure.resourcemanager.cdn.models.ManagedRuleSetList;
 import com.azure.resourcemanager.cdn.models.PolicyResourceState;
@@ -70,7 +69,7 @@ public class CdnWebApplicationFirewallPolicyInner extends Resource {
      * Firewall policy.
      */
     @JsonProperty(value = "properties.endpointLinks", access = JsonProperty.Access.WRITE_ONLY)
-    private List<CdnEndpoint> endpointLinks;
+    private List<CdnEndpointInner> endpointLinks;
 
     /*
      * Provisioning state of the WebApplicationFirewallPolicy.
@@ -212,7 +211,7 @@ public class CdnWebApplicationFirewallPolicyInner extends Resource {
      *
      * @return the endpointLinks value.
      */
-    public List<CdnEndpoint> endpointLinks() {
+    public List<CdnEndpointInner> endpointLinks() {
         return this.endpointLinks;
     }
 
