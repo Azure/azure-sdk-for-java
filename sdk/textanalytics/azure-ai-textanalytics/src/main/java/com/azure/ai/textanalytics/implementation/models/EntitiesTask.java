@@ -7,9 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The EntitiesTask model.
- */
+/** The EntitiesTask model. */
 @Fluent
 public final class EntitiesTask {
     /*
@@ -20,7 +18,7 @@ public final class EntitiesTask {
 
     /**
      * Get the parameters property: The parameters property.
-     * 
+     *
      * @return the parameters value.
      */
     public EntitiesTaskParameters getParameters() {
@@ -29,7 +27,7 @@ public final class EntitiesTask {
 
     /**
      * Set the parameters property: The parameters property.
-     * 
+     *
      * @param parameters the parameters value to set.
      * @return the EntitiesTask object itself.
      */

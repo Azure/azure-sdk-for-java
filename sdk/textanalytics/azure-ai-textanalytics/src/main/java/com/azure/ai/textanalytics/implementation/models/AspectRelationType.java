@@ -7,23 +7,15 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for AspectRelationType.
- */
+/** Defines values for AspectRelationType. */
 public enum AspectRelationType {
-    /**
-     * Enum value opinion.
-     */
+    /** Enum value opinion. */
     OPINION("opinion"),
 
-    /**
-     * Enum value aspect.
-     */
+    /** Enum value aspect. */
     ASPECT("aspect");
 
-    /**
-     * The actual serialized value for a AspectRelationType instance.
-     */
+    /** The actual serialized value for a AspectRelationType instance. */
     private final String value;
 
     AspectRelationType(String value) {
@@ -32,7 +24,7 @@ public enum AspectRelationType {
 
     /**
      * Parses a serialized value to a AspectRelationType instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed AspectRelationType object, or null if unable to parse.
      */

@@ -7,9 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The AspectConfidenceScoreLabel model.
- */
+/** Represents the confidence scores across all sentiment classes: positive, neutral, negative. */
 @Fluent
 public final class AspectConfidenceScoreLabel {
     /*
@@ -26,7 +24,7 @@ public final class AspectConfidenceScoreLabel {
 
     /**
      * Get the positive property: The positive property.
-     * 
+     *
      * @return the positive value.
      */
     public double getPositive() {
@@ -35,7 +33,7 @@ public final class AspectConfidenceScoreLabel {
 
     /**
      * Set the positive property: The positive property.
-     * 
+     *
      * @param positive the positive value to set.
      * @return the AspectConfidenceScoreLabel object itself.
      */
@@ -46,7 +44,7 @@ public final class AspectConfidenceScoreLabel {
 
     /**
      * Get the negative property: The negative property.
-     * 
+     *
      * @return the negative value.
      */
     public double getNegative() {
@@ -55,7 +53,7 @@ public final class AspectConfidenceScoreLabel {
 
     /**
      * Set the negative property: The negative property.
-     * 
+     *
      * @param negative the negative value to set.
      * @return the AspectConfidenceScoreLabel object itself.
      */

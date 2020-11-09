@@ -7,9 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The EntitiesTaskParameters model.
- */
+/** The EntitiesTaskParameters model. */
 @Fluent
 public final class EntitiesTaskParameters {
     /*
@@ -26,7 +24,7 @@ public final class EntitiesTaskParameters {
 
     /**
      * Get the modelVersion property: The model-version property.
-     * 
+     *
      * @return the modelVersion value.
      */
     public String getModelVersion() {
@@ -35,7 +33,7 @@ public final class EntitiesTaskParameters {
 
     /**
      * Set the modelVersion property: The model-version property.
-     * 
+     *
      * @param modelVersion the modelVersion value to set.
      * @return the EntitiesTaskParameters object itself.
      */
@@ -46,7 +44,7 @@ public final class EntitiesTaskParameters {
 
     /**
      * Get the stringIndexType property: The stringIndexType property.
-     * 
+     *
      * @return the stringIndexType value.
      */
     public StringIndexTypeResponse getStringIndexType() {
@@ -55,7 +53,7 @@ public final class EntitiesTaskParameters {
 
     /**
      * Set the stringIndexType property: The stringIndexType property.
-     * 
+     *
      * @param stringIndexType the stringIndexType value to set.
      * @return the EntitiesTaskParameters object itself.
      */

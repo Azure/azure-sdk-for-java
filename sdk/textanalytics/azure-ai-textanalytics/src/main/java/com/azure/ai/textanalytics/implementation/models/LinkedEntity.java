@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The LinkedEntity model.
- */
+/** The LinkedEntity model. */
 @Fluent
 public final class LinkedEntity {
     /*
@@ -57,7 +55,7 @@ public final class LinkedEntity {
 
     /**
      * Get the name property: Entity Linking formal name.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -66,7 +64,7 @@ public final class LinkedEntity {
 
     /**
      * Set the name property: Entity Linking formal name.
-     * 
+     *
      * @param name the name value to set.
      * @return the LinkedEntity object itself.
      */
@@ -76,9 +74,8 @@ public final class LinkedEntity {
     }
 
     /**
-     * Get the matches property: List of instances this entity appears in the
-     * text.
-     * 
+     * Get the matches property: List of instances this entity appears in the text.
+     *
      * @return the matches value.
      */
     public List<Match> getMatches() {
@@ -86,9 +83,8 @@ public final class LinkedEntity {
     }
 
     /**
-     * Set the matches property: List of instances this entity appears in the
-     * text.
-     * 
+     * Set the matches property: List of instances this entity appears in the text.
+     *
      * @param matches the matches value to set.
      * @return the LinkedEntity object itself.
      */
@@ -99,7 +95,7 @@ public final class LinkedEntity {
 
     /**
      * Get the language property: Language used in the data source.
-     * 
+     *
      * @return the language value.
      */
     public String getLanguage() {
@@ -108,7 +104,7 @@ public final class LinkedEntity {
 
     /**
      * Set the language property: Language used in the data source.
-     * 
+     *
      * @param language the language value to set.
      * @return the LinkedEntity object itself.
      */
@@ -118,9 +114,8 @@ public final class LinkedEntity {
     }
 
     /**
-     * Get the id property: Unique identifier of the recognized entity from the
-     * data source.
-     * 
+     * Get the id property: Unique identifier of the recognized entity from the data source.
+     *
      * @return the id value.
      */
     public String getId() {
@@ -128,9 +123,8 @@ public final class LinkedEntity {
     }
 
     /**
-     * Set the id property: Unique identifier of the recognized entity from the
-     * data source.
-     * 
+     * Set the id property: Unique identifier of the recognized entity from the data source.
+     *
      * @param id the id value to set.
      * @return the LinkedEntity object itself.
      */
@@ -141,7 +135,7 @@ public final class LinkedEntity {
 
     /**
      * Get the url property: URL for the entity's page from the data source.
-     * 
+     *
      * @return the url value.
      */
     public String getUrl() {
@@ -150,7 +144,7 @@ public final class LinkedEntity {
 
     /**
      * Set the url property: URL for the entity's page from the data source.
-     * 
+     *
      * @param url the url value to set.
      * @return the LinkedEntity object itself.
      */
@@ -160,9 +154,8 @@ public final class LinkedEntity {
     }
 
     /**
-     * Get the dataSource property: Data source used to extract entity linking,
-     * such as Wiki/Bing etc.
-     * 
+     * Get the dataSource property: Data source used to extract entity linking, such as Wiki/Bing etc.
+     *
      * @return the dataSource value.
      */
     public String getDataSource() {
@@ -170,9 +163,8 @@ public final class LinkedEntity {
     }
 
     /**
-     * Set the dataSource property: Data source used to extract entity linking,
-     * such as Wiki/Bing etc.
-     * 
+     * Set the dataSource property: Data source used to extract entity linking, such as Wiki/Bing etc.
+     *
      * @param dataSource the dataSource value to set.
      * @return the LinkedEntity object itself.
      */
@@ -182,9 +174,8 @@ public final class LinkedEntity {
     }
 
     /**
-     * Get the bingId property: Bing Entity Search API unique identifier of the
-     * recognized entity.
-     * 
+     * Get the bingId property: Bing Entity Search API unique identifier of the recognized entity.
+     *
      * @return the bingId value.
      */
     public String getBingId() {
@@ -192,9 +183,8 @@ public final class LinkedEntity {
     }
 
     /**
-     * Set the bingId property: Bing Entity Search API unique identifier of the
-     * recognized entity.
-     * 
+     * Set the bingId property: Bing Entity Search API unique identifier of the recognized entity.
+     *
      * @param bingId the bingId value to set.
      * @return the LinkedEntity object itself.
      */

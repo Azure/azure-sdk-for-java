@@ -7,9 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The HealthcareEntityLink model.
- */
+/** The HealthcareEntityLink model. */
 @Fluent
 public final class HealthcareEntityLink {
     /*
@@ -25,9 +23,8 @@ public final class HealthcareEntityLink {
     private String id;
 
     /**
-     * Get the dataSource property: Entity Catalog. Examples include: UMLS,
-     * CHV, MSH, etc.
-     * 
+     * Get the dataSource property: Entity Catalog. Examples include: UMLS, CHV, MSH, etc.
+     *
      * @return the dataSource value.
      */
     public String getDataSource() {
@@ -35,9 +32,8 @@ public final class HealthcareEntityLink {
     }
 
     /**
-     * Set the dataSource property: Entity Catalog. Examples include: UMLS,
-     * CHV, MSH, etc.
-     * 
+     * Set the dataSource property: Entity Catalog. Examples include: UMLS, CHV, MSH, etc.
+     *
      * @param dataSource the dataSource value to set.
      * @return the HealthcareEntityLink object itself.
      */
@@ -48,7 +44,7 @@ public final class HealthcareEntityLink {
 
     /**
      * Get the id property: Entity id in the given source catalog.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -57,7 +53,7 @@ public final class HealthcareEntityLink {
 
     /**
      * Set the id property: Entity id in the given source catalog.
-     * 
+     *
      * @param id the id value to set.
      * @return the HealthcareEntityLink object itself.
      */

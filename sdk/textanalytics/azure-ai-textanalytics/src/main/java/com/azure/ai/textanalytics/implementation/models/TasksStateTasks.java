@@ -8,16 +8,14 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The TasksStateTasks model.
- */
+/** The TasksStateTasks model. */
 @Fluent
 public final class TasksStateTasks {
     /*
      * The details property.
      */
     @JsonProperty(value = "details")
-    private List<TaskState> details;
+    private TasksStateTasksDetails details;
 
     /*
      * The completed property.
@@ -66,7 +64,7 @@ public final class TasksStateTasks {
      *
      * @return the details value.
      */
-    public List<TaskState> getDetails() {
+    public TasksStateTasksDetails getDetails() {
         return this.details;
     }
 
@@ -76,7 +74,7 @@ public final class TasksStateTasks {
      * @param details the details value to set.
      * @return the TasksStateTasks object itself.
      */
-    public TasksStateTasks setDetails(List<TaskState> details) {
+    public TasksStateTasks setDetails(TasksStateTasksDetails details) {
         this.details = details;
         return this;
     }
@@ -162,8 +160,7 @@ public final class TasksStateTasks {
     }
 
     /**
-     * Get the entityRecognitionTasks property: The entityRecognitionTasks
-     * property.
+     * Get the entityRecognitionTasks property: The entityRecognitionTasks property.
      *
      * @return the entityRecognitionTasks value.
      */
@@ -172,21 +169,19 @@ public final class TasksStateTasks {
     }
 
     /**
-     * Set the entityRecognitionTasks property: The entityRecognitionTasks
-     * property.
+     * Set the entityRecognitionTasks property: The entityRecognitionTasks property.
      *
      * @param entityRecognitionTasks the entityRecognitionTasks value to set.
      * @return the TasksStateTasks object itself.
      */
     public TasksStateTasks setEntityRecognitionTasks(
-        List<TasksStateTasksEntityRecognitionTasksItem> entityRecognitionTasks) {
+            List<TasksStateTasksEntityRecognitionTasksItem> entityRecognitionTasks) {
         this.entityRecognitionTasks = entityRecognitionTasks;
         return this;
     }
 
     /**
-     * Get the entityRecognitionPiiTasks property: The
-     * entityRecognitionPiiTasks property.
+     * Get the entityRecognitionPiiTasks property: The entityRecognitionPiiTasks property.
      *
      * @return the entityRecognitionPiiTasks value.
      */
@@ -195,22 +190,19 @@ public final class TasksStateTasks {
     }
 
     /**
-     * Set the entityRecognitionPiiTasks property: The
-     * entityRecognitionPiiTasks property.
+     * Set the entityRecognitionPiiTasks property: The entityRecognitionPiiTasks property.
      *
-     * @param entityRecognitionPiiTasks the entityRecognitionPiiTasks value to
-     * set.
+     * @param entityRecognitionPiiTasks the entityRecognitionPiiTasks value to set.
      * @return the TasksStateTasks object itself.
      */
     public TasksStateTasks setEntityRecognitionPiiTasks(
-        List<TasksStateTasksEntityRecognitionPiiTasksItem> entityRecognitionPiiTasks) {
+            List<TasksStateTasksEntityRecognitionPiiTasksItem> entityRecognitionPiiTasks) {
         this.entityRecognitionPiiTasks = entityRecognitionPiiTasks;
         return this;
     }
 
     /**
-     * Get the keyPhraseExtractionTasks property: The keyPhraseExtractionTasks
-     * property.
+     * Get the keyPhraseExtractionTasks property: The keyPhraseExtractionTasks property.
      *
      * @return the keyPhraseExtractionTasks value.
      */
@@ -219,15 +211,13 @@ public final class TasksStateTasks {
     }
 
     /**
-     * Set the keyPhraseExtractionTasks property: The keyPhraseExtractionTasks
-     * property.
+     * Set the keyPhraseExtractionTasks property: The keyPhraseExtractionTasks property.
      *
-     * @param keyPhraseExtractionTasks the keyPhraseExtractionTasks value to
-     * set.
+     * @param keyPhraseExtractionTasks the keyPhraseExtractionTasks value to set.
      * @return the TasksStateTasks object itself.
      */
     public TasksStateTasks setKeyPhraseExtractionTasks(
-        List<TasksStateTasksKeyPhraseExtractionTasksItem> keyPhraseExtractionTasks) {
+            List<TasksStateTasksKeyPhraseExtractionTasksItem> keyPhraseExtractionTasks) {
         this.keyPhraseExtractionTasks = keyPhraseExtractionTasks;
         return this;
     }

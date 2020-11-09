@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The SentenceAspect model.
- */
+/** The SentenceAspect model. */
 @Fluent
 public final class SentenceAspect {
     /*
@@ -51,9 +49,8 @@ public final class SentenceAspect {
     private List<AspectRelation> relations;
 
     /**
-     * Get the sentiment property: Aspect level sentiment for the aspect in the
-     * sentence.
-     * 
+     * Get the sentiment property: Aspect level sentiment for the aspect in the sentence.
+     *
      * @return the sentiment value.
      */
     public TokenSentimentValue getSentiment() {
@@ -61,9 +58,8 @@ public final class SentenceAspect {
     }
 
     /**
-     * Set the sentiment property: Aspect level sentiment for the aspect in the
-     * sentence.
-     * 
+     * Set the sentiment property: Aspect level sentiment for the aspect in the sentence.
+     *
      * @param sentiment the sentiment value to set.
      * @return the SentenceAspect object itself.
      */
@@ -73,9 +69,8 @@ public final class SentenceAspect {
     }
 
     /**
-     * Get the confidenceScores property: Aspect level sentiment confidence
-     * scores for the aspect in the sentence.
-     * 
+     * Get the confidenceScores property: Aspect level sentiment confidence scores for the aspect in the sentence.
+     *
      * @return the confidenceScores value.
      */
     public AspectConfidenceScoreLabel getConfidenceScores() {
@@ -83,9 +78,8 @@ public final class SentenceAspect {
     }
 
     /**
-     * Set the confidenceScores property: Aspect level sentiment confidence
-     * scores for the aspect in the sentence.
-     * 
+     * Set the confidenceScores property: Aspect level sentiment confidence scores for the aspect in the sentence.
+     *
      * @param confidenceScores the confidenceScores value to set.
      * @return the SentenceAspect object itself.
      */
@@ -95,9 +89,8 @@ public final class SentenceAspect {
     }
 
     /**
-     * Get the offset property: The aspect offset from the start of the
-     * sentence.
-     * 
+     * Get the offset property: The aspect offset from the start of the sentence.
+     *
      * @return the offset value.
      */
     public int getOffset() {
@@ -105,9 +98,8 @@ public final class SentenceAspect {
     }
 
     /**
-     * Set the offset property: The aspect offset from the start of the
-     * sentence.
-     * 
+     * Set the offset property: The aspect offset from the start of the sentence.
+     *
      * @param offset the offset value to set.
      * @return the SentenceAspect object itself.
      */
@@ -118,7 +110,7 @@ public final class SentenceAspect {
 
     /**
      * Get the length property: The length of the aspect.
-     * 
+     *
      * @return the length value.
      */
     public int getLength() {
@@ -127,7 +119,7 @@ public final class SentenceAspect {
 
     /**
      * Set the length property: The length of the aspect.
-     * 
+     *
      * @param length the length value to set.
      * @return the SentenceAspect object itself.
      */
@@ -138,7 +130,7 @@ public final class SentenceAspect {
 
     /**
      * Get the text property: The aspect text detected.
-     * 
+     *
      * @return the text value.
      */
     public String getText() {
@@ -147,7 +139,7 @@ public final class SentenceAspect {
 
     /**
      * Set the text property: The aspect text detected.
-     * 
+     *
      * @param text the text value to set.
      * @return the SentenceAspect object itself.
      */
@@ -157,9 +149,8 @@ public final class SentenceAspect {
     }
 
     /**
-     * Get the relations property: The array of either opinion or aspect object
-     * which is related to the aspect.
-     * 
+     * Get the relations property: The array of either opinion or aspect object which is related to the aspect.
+     *
      * @return the relations value.
      */
     public List<AspectRelation> getRelations() {
@@ -167,9 +158,8 @@ public final class SentenceAspect {
     }
 
     /**
-     * Set the relations property: The array of either opinion or aspect object
-     * which is related to the aspect.
-     * 
+     * Set the relations property: The array of either opinion or aspect object which is related to the aspect.
+     *
      * @param relations the relations value to set.
      * @return the SentenceAspect object itself.
      */

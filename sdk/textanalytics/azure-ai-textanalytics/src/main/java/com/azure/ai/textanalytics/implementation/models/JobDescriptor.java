@@ -7,9 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The JobDescriptor model.
- */
+/** The JobDescriptor model. */
 @Fluent
 public class JobDescriptor {
     /*
@@ -19,9 +17,8 @@ public class JobDescriptor {
     private String displayName;
 
     /**
-     * Get the displayName property: Optional display name for the analysis
-     * job.
-     * 
+     * Get the displayName property: Optional display name for the analysis job.
+     *
      * @return the displayName value.
      */
     public String getDisplayName() {
@@ -29,9 +26,8 @@ public class JobDescriptor {
     }
 
     /**
-     * Set the displayName property: Optional display name for the analysis
-     * job.
-     * 
+     * Set the displayName property: Optional display name for the analysis job.
+     *
      * @param displayName the displayName value to set.
      * @return the JobDescriptor object itself.
      */

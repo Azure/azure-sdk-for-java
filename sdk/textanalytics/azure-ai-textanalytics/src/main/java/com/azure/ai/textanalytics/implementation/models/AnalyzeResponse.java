@@ -8,9 +8,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the analyze operation.
- */
+/** Contains all response data for the analyze operation. */
 public final class AnalyzeResponse extends ResponseBase<AnalyzeHeaders, Void> {
     /**
      * Creates an instance of AnalyzeResponse.
@@ -21,8 +19,8 @@ public final class AnalyzeResponse extends ResponseBase<AnalyzeHeaders, Void> {
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public AnalyzeResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value,
-        AnalyzeHeaders headers) {
+    public AnalyzeResponse(
+            HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, AnalyzeHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

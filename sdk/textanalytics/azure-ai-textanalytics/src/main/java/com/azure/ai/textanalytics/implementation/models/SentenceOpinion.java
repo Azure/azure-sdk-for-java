@@ -7,9 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The SentenceOpinion model.
- */
+/** The SentenceOpinion model. */
 @Fluent
 public final class SentenceOpinion {
     /*
@@ -50,9 +48,8 @@ public final class SentenceOpinion {
     private boolean isNegated;
 
     /**
-     * Get the sentiment property: Opinion level sentiment for the aspect in
-     * the sentence.
-     * 
+     * Get the sentiment property: Opinion level sentiment for the aspect in the sentence.
+     *
      * @return the sentiment value.
      */
     public TokenSentimentValue getSentiment() {
@@ -60,9 +57,8 @@ public final class SentenceOpinion {
     }
 
     /**
-     * Set the sentiment property: Opinion level sentiment for the aspect in
-     * the sentence.
-     * 
+     * Set the sentiment property: Opinion level sentiment for the aspect in the sentence.
+     *
      * @param sentiment the sentiment value to set.
      * @return the SentenceOpinion object itself.
      */
@@ -72,9 +68,8 @@ public final class SentenceOpinion {
     }
 
     /**
-     * Get the confidenceScores property: Opinion level sentiment confidence
-     * scores for the aspect in the sentence.
-     * 
+     * Get the confidenceScores property: Opinion level sentiment confidence scores for the aspect in the sentence.
+     *
      * @return the confidenceScores value.
      */
     public AspectConfidenceScoreLabel getConfidenceScores() {
@@ -82,9 +77,8 @@ public final class SentenceOpinion {
     }
 
     /**
-     * Set the confidenceScores property: Opinion level sentiment confidence
-     * scores for the aspect in the sentence.
-     * 
+     * Set the confidenceScores property: Opinion level sentiment confidence scores for the aspect in the sentence.
+     *
      * @param confidenceScores the confidenceScores value to set.
      * @return the SentenceOpinion object itself.
      */
@@ -94,9 +88,8 @@ public final class SentenceOpinion {
     }
 
     /**
-     * Get the offset property: The opinion offset from the start of the
-     * sentence.
-     * 
+     * Get the offset property: The opinion offset from the start of the sentence.
+     *
      * @return the offset value.
      */
     public int getOffset() {
@@ -104,9 +97,8 @@ public final class SentenceOpinion {
     }
 
     /**
-     * Set the offset property: The opinion offset from the start of the
-     * sentence.
-     * 
+     * Set the offset property: The opinion offset from the start of the sentence.
+     *
      * @param offset the offset value to set.
      * @return the SentenceOpinion object itself.
      */
@@ -117,7 +109,7 @@ public final class SentenceOpinion {
 
     /**
      * Get the length property: The length of the opinion.
-     * 
+     *
      * @return the length value.
      */
     public int getLength() {
@@ -126,7 +118,7 @@ public final class SentenceOpinion {
 
     /**
      * Set the length property: The length of the opinion.
-     * 
+     *
      * @param length the length value to set.
      * @return the SentenceOpinion object itself.
      */
@@ -137,7 +129,7 @@ public final class SentenceOpinion {
 
     /**
      * Get the text property: The aspect text detected.
-     * 
+     *
      * @return the text value.
      */
     public String getText() {
@@ -146,7 +138,7 @@ public final class SentenceOpinion {
 
     /**
      * Set the text property: The aspect text detected.
-     * 
+     *
      * @param text the text value to set.
      * @return the SentenceOpinion object itself.
      */
@@ -156,9 +148,8 @@ public final class SentenceOpinion {
     }
 
     /**
-     * Get the isNegated property: The indicator representing if the opinion is
-     * negated.
-     * 
+     * Get the isNegated property: The indicator representing if the opinion is negated.
+     *
      * @return the isNegated value.
      */
     public boolean isNegated() {
@@ -166,9 +157,8 @@ public final class SentenceOpinion {
     }
 
     /**
-     * Set the isNegated property: The indicator representing if the opinion is
-     * negated.
-     * 
+     * Set the isNegated property: The indicator representing if the opinion is negated.
+     *
      * @param isNegated the isNegated value to set.
      * @return the SentenceOpinion object itself.
      */

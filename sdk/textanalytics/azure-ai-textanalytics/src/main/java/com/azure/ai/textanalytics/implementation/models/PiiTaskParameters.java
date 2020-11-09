@@ -7,9 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The PiiTaskParameters model.
- */
+/** The PiiTaskParameters model. */
 @Fluent
 public final class PiiTaskParameters {
     /*
@@ -32,7 +30,7 @@ public final class PiiTaskParameters {
 
     /**
      * Get the domain property: The domain property.
-     * 
+     *
      * @return the domain value.
      */
     public PiiTaskParametersDomain getDomain() {
@@ -41,7 +39,7 @@ public final class PiiTaskParameters {
 
     /**
      * Set the domain property: The domain property.
-     * 
+     *
      * @param domain the domain value to set.
      * @return the PiiTaskParameters object itself.
      */
@@ -52,7 +50,7 @@ public final class PiiTaskParameters {
 
     /**
      * Get the modelVersion property: The model-version property.
-     * 
+     *
      * @return the modelVersion value.
      */
     public String getModelVersion() {
@@ -61,7 +59,7 @@ public final class PiiTaskParameters {
 
     /**
      * Set the modelVersion property: The model-version property.
-     * 
+     *
      * @param modelVersion the modelVersion value to set.
      * @return the PiiTaskParameters object itself.
      */
@@ -72,7 +70,7 @@ public final class PiiTaskParameters {
 
     /**
      * Get the stringIndexType property: The stringIndexType property.
-     * 
+     *
      * @return the stringIndexType value.
      */
     public StringIndexTypeResponse getStringIndexType() {
@@ -81,7 +79,7 @@ public final class PiiTaskParameters {
 
     /**
      * Set the stringIndexType property: The stringIndexType property.
-     * 
+     *
      * @param stringIndexType the stringIndexType value to set.
      * @return the PiiTaskParameters object itself.
      */

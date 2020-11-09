@@ -7,9 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The JobManifest model.
- */
+/** The JobManifest model. */
 @Fluent
 public class JobManifest {
     /*
@@ -20,9 +18,9 @@ public class JobManifest {
     private JobManifestTasks tasks;
 
     /**
-     * Get the tasks property: The set of tasks to execute on the input
-     * documents. Cannot specify the same task more than once.
-     * 
+     * Get the tasks property: The set of tasks to execute on the input documents. Cannot specify the same task more
+     * than once.
+     *
      * @return the tasks value.
      */
     public JobManifestTasks getTasks() {
@@ -30,9 +28,9 @@ public class JobManifest {
     }
 
     /**
-     * Set the tasks property: The set of tasks to execute on the input
-     * documents. Cannot specify the same task more than once.
-     * 
+     * Set the tasks property: The set of tasks to execute on the input documents. Cannot specify the same task more
+     * than once.
+     *
      * @param tasks the tasks value to set.
      * @return the JobManifest object itself.
      */

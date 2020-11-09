@@ -7,9 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The TasksStateTasksEntityRecognitionTasksItem model.
- */
+/** The TasksStateTasksEntityRecognitionTasksItem model. */
 @Fluent
 public final class TasksStateTasksEntityRecognitionTasksItem extends TaskState {
     /*
@@ -20,7 +18,7 @@ public final class TasksStateTasksEntityRecognitionTasksItem extends TaskState {
 
     /**
      * Get the results property: The results property.
-     * 
+     *
      * @return the results value.
      */
     public EntitiesResult getResults() {
@@ -29,7 +27,7 @@ public final class TasksStateTasksEntityRecognitionTasksItem extends TaskState {
 
     /**
      * Set the results property: The results property.
-     * 
+     *
      * @param results the results value to set.
      * @return the TasksStateTasksEntityRecognitionTasksItem object itself.
      */

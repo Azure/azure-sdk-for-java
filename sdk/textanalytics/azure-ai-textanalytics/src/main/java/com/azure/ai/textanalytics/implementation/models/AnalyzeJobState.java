@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The AnalyzeJobState model.
- */
+/** The AnalyzeJobState model. */
 @Fluent
 public final class AnalyzeJobState extends JobMetadata {
     /*
@@ -40,7 +38,7 @@ public final class AnalyzeJobState extends JobMetadata {
 
     /**
      * Get the errors property: The errors property.
-     * 
+     *
      * @return the errors value.
      */
     public List<TextAnalyticsError> getErrors() {
@@ -49,7 +47,7 @@ public final class AnalyzeJobState extends JobMetadata {
 
     /**
      * Set the errors property: The errors property.
-     * 
+     *
      * @param errors the errors value to set.
      * @return the AnalyzeJobState object itself.
      */
@@ -59,9 +57,9 @@ public final class AnalyzeJobState extends JobMetadata {
     }
 
     /**
-     * Get the statistics property: if showStats=true was specified in the
-     * request this field will contain information about the request payload.
-     * 
+     * Get the statistics property: if showStats=true was specified in the request this field will contain information
+     * about the request payload.
+     *
      * @return the statistics value.
      */
     public RequestStatistics getStatistics() {
@@ -69,9 +67,9 @@ public final class AnalyzeJobState extends JobMetadata {
     }
 
     /**
-     * Set the statistics property: if showStats=true was specified in the
-     * request this field will contain information about the request payload.
-     * 
+     * Set the statistics property: if showStats=true was specified in the request this field will contain information
+     * about the request payload.
+     *
      * @param statistics the statistics value to set.
      * @return the AnalyzeJobState object itself.
      */
@@ -82,7 +80,7 @@ public final class AnalyzeJobState extends JobMetadata {
 
     /**
      * Get the tasks property: The tasks property.
-     * 
+     *
      * @return the tasks value.
      */
     public TasksStateTasks getTasks() {
@@ -91,7 +89,7 @@ public final class AnalyzeJobState extends JobMetadata {
 
     /**
      * Set the tasks property: The tasks property.
-     * 
+     *
      * @param tasks the tasks value to set.
      * @return the AnalyzeJobState object itself.
      */
@@ -102,7 +100,7 @@ public final class AnalyzeJobState extends JobMetadata {
 
     /**
      * Get the nextLink property: The @nextLink property.
-     * 
+     *
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -111,7 +109,7 @@ public final class AnalyzeJobState extends JobMetadata {
 
     /**
      * Set the nextLink property: The @nextLink property.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the AnalyzeJobState object itself.
      */

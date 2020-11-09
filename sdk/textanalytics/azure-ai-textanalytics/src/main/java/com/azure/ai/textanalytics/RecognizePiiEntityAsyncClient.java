@@ -211,11 +211,11 @@ class RecognizePiiEntityAsyncClient {
         }
         return service.entitiesRecognitionPiiWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE),
             modelVersion,
             includeStatistics,
             domainFilter,
-            StringIndexType.UTF16CODE_UNIT)
+            StringIndexType.UTF16CODE_UNIT,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info(
                 "Start recognizing Personally Identifiable Information entities for a batch of documents."))
             .doOnSuccess(response -> logger.info(

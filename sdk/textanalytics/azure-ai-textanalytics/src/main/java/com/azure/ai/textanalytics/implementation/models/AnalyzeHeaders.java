@@ -7,9 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The AnalyzeHeaders model.
- */
+/** The AnalyzeHeaders model. */
 @Fluent
 public final class AnalyzeHeaders {
     /*
@@ -20,7 +18,7 @@ public final class AnalyzeHeaders {
 
     /**
      * Get the operationLocation property: The Operation-Location property.
-     * 
+     *
      * @return the operationLocation value.
      */
     public String getOperationLocation() {
@@ -29,7 +27,7 @@ public final class AnalyzeHeaders {
 
     /**
      * Set the operationLocation property: The Operation-Location property.
-     * 
+     *
      * @param operationLocation the operationLocation value to set.
      * @return the AnalyzeHeaders object itself.
      */

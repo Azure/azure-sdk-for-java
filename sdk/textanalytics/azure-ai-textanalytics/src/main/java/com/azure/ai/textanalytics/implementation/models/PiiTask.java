@@ -7,9 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The PiiTask model.
- */
+/** The PiiTask model. */
 @Fluent
 public final class PiiTask {
     /*
@@ -20,7 +18,7 @@ public final class PiiTask {
 
     /**
      * Get the parameters property: The parameters property.
-     * 
+     *
      * @return the parameters value.
      */
     public PiiTaskParameters getParameters() {
@@ -29,7 +27,7 @@ public final class PiiTask {
 
     /**
      * Set the parameters property: The parameters property.
-     * 
+     *
      * @param parameters the parameters value to set.
      * @return the PiiTask object itself.
      */
