@@ -20,9 +20,10 @@ import reactor.core.publisher.Mono;
  */
 @Immutable
 public final class ManagedIdentityCredential implements TokenCredential {
-    private final AppServiceMsiCredential appServiceMSICredential;
-    private final VirtualMachineMsiCredential virtualMachineMSICredential;
+    private final ManagedIdentityServiceCredential managedIdentityServiceCredential;
     private final ClientLogger logger = new ClientLogger(ManagedIdentityCredential.class);
+
+    static final String PROPERTY_IDENTITY_SERVER_THUMBPRINT = "IDENTITY_SERVER_THUMBPRINT";
 
 
     /**
@@ -36,14 +37,20 @@ public final class ManagedIdentityCredential implements TokenCredential {
             .identityClientOptions(identityClientOptions)
             .build();
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
-        if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)
-                || (configuration.contains(Configuration.PROPERTY_IDENTITY_ENDPOINT)
-                        && configuration.contains(Configuration.PROPERTY_IDENTITY_HEADER))) {
-            appServiceMSICredential = new AppServiceMsiCredential(clientId, identityClient);
-            virtualMachineMSICredential = null;
+        if (configuration.contains(Configuration.PROPERTY_IDENTITY_ENDPOINT)) {
+            if (configuration.contains(Configuration.PROPERTY_IDENTITY_HEADER)) {
+                if (configuration.contains(PROPERTY_IDENTITY_SERVER_THUMBPRINT)) {
+                    managedIdentityServiceCredential = new ServiceFabricMsiCredential(clientId, identityClient);
+                } else {
+                    managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, identityClient);
+                }
+            } else {
+                managedIdentityServiceCredential = null;
+            }
+        } else if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)) {
+            managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, identityClient);
         } else {
-            virtualMachineMSICredential = new VirtualMachineMsiCredential(clientId, identityClient);
-            appServiceMSICredential = null;
+            managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, identityClient);
         }
         LoggingUtil.logAvailableEnvironmentVariables(logger, configuration);
     }
@@ -53,23 +60,22 @@ public final class ManagedIdentityCredential implements TokenCredential {
      * @return the client ID of user assigned or system assigned identity.
      */
     public String getClientId() {
-        return this.appServiceMSICredential != null
-            ? this.appServiceMSICredential.getClientId()
-            : this.virtualMachineMSICredential.getClientId();
+        return managedIdentityServiceCredential.getClientId();
     }
 
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
-        Mono<AccessToken> accessTokenMono;
-        if (appServiceMSICredential != null) {
-            accessTokenMono = appServiceMSICredential.authenticate(request)
-                .doOnSuccess((t -> logger.info("Azure Identity => Managed Identity environment: MSI_ENDPOINT")));
-        } else {
-            accessTokenMono = virtualMachineMSICredential.authenticate(request)
-                .doOnSuccess((t -> logger.info("Azure Identity => Managed Identity environment: IMDS")));
+        if (managedIdentityServiceCredential == null) {
+            return Mono.error(logger.logExceptionAsError(
+                new CredentialUnavailableException("ManagedIdentityCredential authentication unavailable. "
+                                + "The Target Azure platform could not be determined from environment variables.")));
         }
-        return accessTokenMono
-            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
-            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
+        return managedIdentityServiceCredential.authenticate(request)
+                   .doOnSuccess((t -> logger.info(String.format("Azure Identity => Managed Identity environment: %s",
+                       managedIdentityServiceCredential.getEnvironment()))))
+                   .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
+                   .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
     }
 }
+
+

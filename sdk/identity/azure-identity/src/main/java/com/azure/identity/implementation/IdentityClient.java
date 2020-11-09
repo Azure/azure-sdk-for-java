@@ -23,6 +23,7 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.DeviceCodeInfo;
 import com.azure.identity.implementation.util.CertificateUtil;
+import com.azure.identity.implementation.util.IdentitySslUtil;
 import com.azure.identity.implementation.util.ScopeUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
@@ -44,6 +45,7 @@ import com.microsoft.aad.msal4jextensions.persistence.linux.KeyRingAccessExcepti
 import com.sun.jna.Platform;
 import reactor.core.publisher.Mono;
 
+import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -118,6 +120,7 @@ public class IdentityClient {
     private static final String MSI_ENDPOINT_VERSION = "2017-09-01";
     private static final String ADFS_TENANT = "adfs";
     private static final String HTTP_LOCALHOST = "http://localhost";
+    private static final String SERVICE_FABRIC_MANAGED_IDENTITY_API_VERSION = "2019-07-01-preview";
     private final ClientLogger logger = new ClientLogger(IdentityClient.class);
 
     private final IdentityClientOptions options;
@@ -743,6 +746,67 @@ public class IdentityClient {
 
                         return authenticateWithPublicClientCache(request, requestedAccount);
                     }));
+    }
+
+
+    /**
+     * Asynchronously acquire a token from the App Service Managed Service Identity endpoint.
+     *
+     * @param identityEndpoint the Identity endpoint to acquire token from
+     * @param identityHeader the identity header to acquire token with
+     * @param request the details of the token request
+     * @return a Publisher that emits an AccessToken
+     */
+    public Mono<AccessToken> authenticateToServiceFabricManagedIdentityEndpoint(String identityEndpoint,
+                                                                                String identityHeader,
+                                                                                String thumbprint,
+                                                                                TokenRequestContext request) {
+        return Mono.fromCallable(() -> {
+
+            HttpsURLConnection connection = null;
+            String endpoint = identityEndpoint;
+            String headerValue = identityHeader;
+            String endpointVersion = SERVICE_FABRIC_MANAGED_IDENTITY_API_VERSION;
+
+            String resource = ScopeUtil.scopesToResource(request.getScopes());
+            StringBuilder payload = new StringBuilder();
+
+            payload.append("resource=");
+            payload.append(URLEncoder.encode(resource, "UTF-8"));
+            payload.append("&api-version=");
+            payload.append(URLEncoder.encode(endpointVersion, "UTF-8"));
+            if (clientId != null) {
+                payload.append("&client_id=");
+                payload.append(URLEncoder.encode(clientId, "UTF-8"));
+            }
+
+            try {
+
+                URL url = new URL(String.format("%s?%s", endpoint, payload));
+                connection = (HttpsURLConnection) url.openConnection();
+
+                IdentitySslUtil.addTrustedCertificateThumbprint(getClass().getSimpleName(), connection,
+                    thumbprint);
+                connection.setRequestMethod("GET");
+                if (headerValue != null) {
+                    connection.setRequestProperty("Secret", headerValue);
+                }
+                connection.setRequestProperty("Metadata", "true");
+
+                connection.connect();
+
+                Scanner s = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name())
+                                .useDelimiter("\\A");
+
+                String result = s.hasNext() ? s.next() : "";
+                return SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
+
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+            }
+        });
     }
 
     /**

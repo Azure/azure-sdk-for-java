@@ -33,6 +33,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import reactor.test.StepVerifier;
 
+import javax.net.ssl.HttpsURLConnection;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -55,7 +56,7 @@ import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 @RunWith(PowerMockRunner.class)
-@PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*"})
+@PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "javax.net.ssl.*", "org.xml.*"})
 @PrepareForTest({CertificateUtil.class, ClientCredentialFactory.class, Runtime.class, URL.class, ConfidentialClientApplication.class, ConfidentialClientApplication.Builder.class, PublicClientApplication.class, PublicClientApplication.Builder.class, IdentityClient.class})
 public class IdentityClientTests {
 
@@ -206,6 +207,32 @@ public class IdentityClientTests {
         // test
         IdentityClient client = new IdentityClientBuilder().build();
         AccessToken token = client.authenticateToManagedIdentityEndpoint(null, null, endpoint, secret, request).block();
+        Assert.assertEquals("token1", token.getToken());
+        Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
+    }
+
+    @Test
+    public void testValidServiceFabricCodeFlow() throws Exception {
+        // setup
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        String endpoint = "http://localhost";
+        String secret = "secret";
+        String thumbprint = "950a2c88d57b5e19ac5119315f9ec199ff3cb823";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        configuration.put("IDENTITY_ENDPOINT", endpoint);
+        configuration.put("IDENTITY_HEADER", secret);
+        configuration.put("IDENTITY_SERVER_THUMBPRINT", thumbprint);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("M/d/yyyy H:mm:ss XXX");
+        String tokenJson = "{ \"access_token\" : \"token1\", \"expires_on\" : \"" + expiresOn.format(dtf) + "\" }";
+
+        // mock
+        mockForServiceFabricCodeFlow(tokenJson);
+
+        // test
+        IdentityClient client = new IdentityClientBuilder().build();
+        AccessToken token = client.authenticateToServiceFabricManagedIdentityEndpoint(endpoint, secret,
+            thumbprint, request).block();
         Assert.assertEquals("token1", token.getToken());
         Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
     }
@@ -477,11 +504,25 @@ public class IdentityClientTests {
     private void mockForMSICodeFlow(String tokenJson) throws Exception {
         URL u = PowerMockito.mock(URL.class);
         whenNew(URL.class).withAnyArguments().thenReturn(u);
-        HttpURLConnection huc = PowerMockito.mock(HttpURLConnection.class);
+        HttpURLConnection huc = PowerMockito.mock(HttpsURLConnection.class);
         when(u.openConnection()).thenReturn(huc);
         PowerMockito.doNothing().when(huc).setRequestMethod(anyString());
         PowerMockito.doNothing().when(huc).setRequestMethod(anyString());
         PowerMockito.doNothing().when(huc).setRequestMethod(anyString());
+        InputStream inputStream = new ByteArrayInputStream(tokenJson.getBytes(Charset.defaultCharset()));
+        when(huc.getInputStream()).thenReturn(inputStream);
+    }
+
+    private void mockForServiceFabricCodeFlow(String tokenJson) throws Exception {
+        URL u = PowerMockito.mock(URL.class);
+        whenNew(URL.class).withAnyArguments().thenReturn(u);
+        HttpsURLConnection huc = PowerMockito.mock(HttpsURLConnection.class);
+        when(u.openConnection()).thenReturn(huc);
+        PowerMockito.doNothing().when(huc).setRequestMethod(anyString());
+        PowerMockito.doNothing().when(huc).setRequestMethod(anyString());
+        PowerMockito.doNothing().when(huc).setRequestMethod(anyString());
+        PowerMockito.doNothing().when(huc).setSSLSocketFactory(any());
+
         InputStream inputStream = new ByteArrayInputStream(tokenJson.getBytes(Charset.defaultCharset()));
         when(huc.getInputStream()).thenReturn(inputStream);
     }
