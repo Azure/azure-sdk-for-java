@@ -993,8 +993,8 @@ public final class ServiceBusClientBuilder {
                     "'enableAutoComplete' is not supported in synchronous client except through callback receive.");
                 enableAutoComplete = false;
             } else if (enableAutoComplete && receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
-                throw logger.logExceptionAsError(new IllegalStateException(
-                    "'enableAutoComplete' is not valid for RECEIVE_AND_DELETE mode."));
+                logger.warning("'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.");
+                enableAutoComplete = false;
             }
 
             if (receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
@@ -1060,8 +1060,8 @@ public final class ServiceBusClientBuilder {
                     "'enableAutoComplete' is not supported in synchronous client except through callback receive.");
                 enableAutoComplete = false;
             } else if (enableAutoComplete && receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
-                throw logger.logExceptionAsError(new IllegalStateException(
-                    "'enableAutoComplete' is not valid for RECEIVE_AND_DELETE mode."));
+                logger.warning("'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.");
+                enableAutoComplete = false;
             }
 
             if (receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
@@ -1422,8 +1422,8 @@ public final class ServiceBusClientBuilder {
                     "'enableAutoComplete' is not supported in synchronous client except through callback receive.");
                 enableAutoComplete = false;
             } else if (enableAutoComplete && receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
-                throw logger.logExceptionAsError(new IllegalStateException(
-                    "'enableAutoComplete' is not valid for RECEIVE_AND_DELETE mode."));
+                logger.warning("'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.");
+                enableAutoComplete = false;
             }
 
             if (receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {

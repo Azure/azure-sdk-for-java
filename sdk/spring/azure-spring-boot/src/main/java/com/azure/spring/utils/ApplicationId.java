@@ -27,8 +27,10 @@ public class ApplicationId {
     public static final String VERSION = Optional.of(ApplicationId.class)
                                                  .map(Class::getPackage)
                                                  .map(Package::getImplementationVersion)
-                                                 .orElse("unknown-version");
+                                                 .orElse("unknown");
     public static final String AZURE_SPRING_KEY_VAULT = "az-sp-kv/" + VERSION;
     public static final String AZURE_SPRING_SERVICE_BUS = "az-sp-bus/" + VERSION;
+    public static final String AZURE_SPRING_STORAGE_BLOB = "az-sp-sb/" + VERSION;
+    public static final String AZURE_SPRING_STORAGE_FILES = "az-sp-sf/" + VERSION;
 
 }

@@ -13,7 +13,7 @@ import java.util.List;
 public final class IncidentRootCause {
     private DimensionKey seriesKey;
     private List<String> paths;
-    private double confidenceScore;
+    private double contributionScore;
     private String description;
 
     static {
@@ -30,8 +30,8 @@ public final class IncidentRootCause {
             }
 
             @Override
-            public void setConfidenceScore(IncidentRootCause rootCause, double confidenceScore) {
-                rootCause.setConfidenceScore(confidenceScore);
+            public void setContributionScore(IncidentRootCause rootCause, double confidenceScore) {
+                rootCause.setContributionScore(confidenceScore);
             }
 
             @Override
@@ -64,12 +64,12 @@ public final class IncidentRootCause {
     }
 
     /**
-     * Get the confidence score value for the returned root cause.
+     * Get the contribution score value for the returned root cause.
      *
      * @return the score value.
      */
-    public double getConfidenceScore() {
-        return this.confidenceScore;
+    public double getContributionScore() {
+        return this.contributionScore;
     }
 
     /**
@@ -89,8 +89,8 @@ public final class IncidentRootCause {
         this.paths = paths;
     }
 
-    void setConfidenceScore(double confidenceScore) {
-        this.confidenceScore = confidenceScore;
+    void setContributionScore(double contributionScore) {
+        this.contributionScore = contributionScore;
     }
 
     void setDescription(String description) {
