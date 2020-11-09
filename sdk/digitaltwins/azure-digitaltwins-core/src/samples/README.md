@@ -166,7 +166,7 @@ Use `getModel` with model's unique identifier to get a specific model.
 asyncClient.getModel(modelId)
     .subscribe(
         model -> System.out.println("Retrieved model with Id: " + model.getModelId()),
-        throwable -> System.out.println("Could not create digital twin " + twinId + " due to " + throwable)
+        throwable -> System.out.println("Could not get model " + modelId + " due to " + throwable)
     )
 ```
 
