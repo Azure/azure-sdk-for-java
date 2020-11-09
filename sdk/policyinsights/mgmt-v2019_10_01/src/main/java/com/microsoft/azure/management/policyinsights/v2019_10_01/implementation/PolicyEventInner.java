@@ -10,6 +10,8 @@ package com.microsoft.azure.management.policyinsights.v2019_10_01.implementation
 
 import java.util.Map;
 import org.joda.time.DateTime;
+import java.util.List;
+import com.microsoft.azure.management.policyinsights.v2019_10_01.ComponentEventDetails;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -194,6 +196,12 @@ public class PolicyEventInner {
     private String policyDefinitionReferenceId;
 
     /**
+     * Compliance state of the resource.
+     */
+    @JsonProperty(value = "complianceState")
+    private String complianceState;
+
+    /**
      * Tenant ID for the policy event record.
      */
     @JsonProperty(value = "tenantId")
@@ -205,6 +213,13 @@ public class PolicyEventInner {
      */
     @JsonProperty(value = "principalOid")
     private String principalOid;
+
+    /**
+     * Components events records populated only when URL contains
+     * $expand=components clause.
+     */
+    @JsonProperty(value = "components")
+    private List<ComponentEventDetails> components;
 
     /**
      * Get unmatched properties from the message are deserialized this collection.
@@ -767,6 +782,26 @@ public class PolicyEventInner {
     }
 
     /**
+     * Get compliance state of the resource.
+     *
+     * @return the complianceState value
+     */
+    public String complianceState() {
+        return this.complianceState;
+    }
+
+    /**
+     * Set compliance state of the resource.
+     *
+     * @param complianceState the complianceState value to set
+     * @return the PolicyEventInner object itself.
+     */
+    public PolicyEventInner withComplianceState(String complianceState) {
+        this.complianceState = complianceState;
+        return this;
+    }
+
+    /**
      * Get tenant ID for the policy event record.
      *
      * @return the tenantId value
@@ -803,6 +838,26 @@ public class PolicyEventInner {
      */
     public PolicyEventInner withPrincipalOid(String principalOid) {
         this.principalOid = principalOid;
+        return this;
+    }
+
+    /**
+     * Get components events records populated only when URL contains $expand=components clause.
+     *
+     * @return the components value
+     */
+    public List<ComponentEventDetails> components() {
+        return this.components;
+    }
+
+    /**
+     * Set components events records populated only when URL contains $expand=components clause.
+     *
+     * @param components the components value to set
+     * @return the PolicyEventInner object itself.
+     */
+    public PolicyEventInner withComponents(List<ComponentEventDetails> components) {
+        this.components = components;
         return this;
     }
 

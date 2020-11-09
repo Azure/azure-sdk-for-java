@@ -104,7 +104,7 @@ public final class ManageVirtualMachineAsync {
                                 .withNewDataDisk(10)
                                 .withNewDataDisk(dataDiskCreatable)
                                 .withExistingDataDisk(tuple.getT1())
-                                .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                                 .createAsync();
                         }),
                         Mono.defer(() -> {
@@ -119,7 +119,7 @@ public final class ManageVirtualMachineAsync {
                                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                                 .withRootUsername(userName)
                                 .withRootPassword(password)
-                                .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                                 .createAsync();
                         })
                     )

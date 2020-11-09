@@ -63,12 +63,12 @@ config = {
                 VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.9.RELEASE'),
             )
         },
-        'sdk/spring/azure-spring-cloud-test-eventhubs/pom.xml': {
+        'sdk/spring/azure-spring-boot-test-storage/pom.xml': {
             VERSION_UPDATE_ITEMS: (
                 VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.9.RELEASE'),
             )
         },
-        'sdk/spring/azure-spring-cloud-test-storage/pom.xml': {
+        'sdk/spring/azure-spring-cloud-test-eventhubs/pom.xml': {
             VERSION_UPDATE_ITEMS: (
                 VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.9.RELEASE'),
             )

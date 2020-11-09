@@ -227,6 +227,12 @@ class CdnProfileImpl
     }
 
     @Override
+    public CdnProfileImpl withSku(SkuName skuName) {
+        this.innerModel().withSku(new Sku().withName(skuName));
+        return this;
+    }
+
+    @Override
     public CdnProfileImpl withNewEndpoint(String endpointOriginHostname) {
         CdnEndpointImpl endpoint = this.endpoints.defineNewEndpointWithOriginHostname(endpointOriginHostname);
         this.endpoints.addEndpoint(endpoint);

@@ -32,9 +32,9 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = {TableClient.class, TableAsyncClient.class})
 public class TableClientBuilder {
-    private final ClientLogger logger = new ClientLogger(TableClientBuilder.class);
-    private final SerializerAdapter serializerAdapter = new TablesJacksonSerializer();
+    private static final SerializerAdapter TABLES_SERIALIZER = new TablesJacksonSerializer();
 
+    private final ClientLogger logger = new ClientLogger(TableClientBuilder.class);
     private String tableName;
     private final List<HttpPipelinePolicy> policies;
     private Configuration configuration;
@@ -80,7 +80,7 @@ public class TableClientBuilder {
             tablesSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, httpLogOptions,
             httpClient, policies, configuration, logger);
 
-        return new TableAsyncClient(tableName, pipeline, endpoint, serviceVersion, serializerAdapter);
+        return new TableAsyncClient(tableName, pipeline, endpoint, serviceVersion, TABLES_SERIALIZER);
     }
 
     /**
