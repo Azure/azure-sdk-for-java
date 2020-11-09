@@ -10,6 +10,7 @@
 package com.microsoft.azure.management.monitor.v2019_11_01.implementation;
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import com.microsoft.azure.management.monitor.v2019_11_01.OperationStatus;
 import com.microsoft.azure.management.monitor.v2019_11_01.PrivateLinkScopeOperationStatus;
 import rx.Observable;
 import rx.functions.Func1;
@@ -46,11 +47,11 @@ class PrivateLinkScopeOperationStatusImpl extends WrapperImpl<PrivateLinkScopeOp
     public Observable<OperationStatus> getByResourceGroupAsync(String resourceGroupName, String name) {
         return this.getInnerAsync(resourceGroupName, name).flatMap(new Func1<OperationStatusInner, Observable<OperationStatus>> () {
             @Override
-            public Observable<OperationStatus> call(OperationStatusInner innerT) {
+            public Observable<OperationStatus> call(OperationStatusInner inner) {
                 if (inner == null) {
                     return Observable.empty();
                 } else {
-                    return Observable.just((OperationStatus)wrapModel(innerT));
+                    return Observable.just((OperationStatus)wrapModel(inner));
                 }
             }
         });
