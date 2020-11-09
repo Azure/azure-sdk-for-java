@@ -5,6 +5,7 @@
 - Added support for pre-built business card recognition.
 - Added support for pre-built invoices recognition.
 - Added implementation support to create a composed model from the `FormTrainingClient` by calling method `beginCreateComposedModel`.
+- Added `language` to `RecognizeContentOptions` for users to specify a preferred language to process the document.
 - Added properties `modelName` and `customFormModelProperties` to types `CustomFormModel` and `CustomFormModelInfo`.
 - Added property `modelName` to `TrainingOptions` and new type `CreateComposedModelOptions`.
 - Added property `modelId` to `CustomFormSubmodel` and `TrainingDocumentInfo`.
