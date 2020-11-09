@@ -22,9 +22,10 @@ import reactor.core.publisher.Mono;
 public final class ManagedIdentityCredential implements TokenCredential {
     private final ManagedIdentityServiceCredential managedIdentityServiceCredential;
     private final ClientLogger logger = new ClientLogger(ManagedIdentityCredential.class);
-    private final String clientId;
 
     static final String PROPERTY_IMDS_ENDPOINT = "IMDS_ENDPOINT";
+    static final String PROPERTY_IDENTITY_SERVER_THUMBPRINT = "IDENTITY_SERVER_THUMBPRINT";
+
 
     /**
      * Creates an instance of the ManagedIdentityCredential.
@@ -32,7 +33,6 @@ public final class ManagedIdentityCredential implements TokenCredential {
      * @param identityClientOptions the options for configuring the identity client.
      */
     ManagedIdentityCredential(String clientId, IdentityClientOptions identityClientOptions) {
-        this.clientId = clientId;
         IdentityClient identityClient = new IdentityClientBuilder()
             .clientId(clientId)
             .identityClientOptions(identityClientOptions)
@@ -40,15 +40,18 @@ public final class ManagedIdentityCredential implements TokenCredential {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
         if (configuration.contains(Configuration.PROPERTY_IDENTITY_ENDPOINT)) {
             if (configuration.contains(Configuration.PROPERTY_IDENTITY_HEADER)) {
-                managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, identityClient);
-            } else if (configuration.contains(PROPERTY_IMDS_ENDPOINT)) {
+                if (configuration.contains(PROPERTY_IDENTITY_SERVER_THUMBPRINT)) {
+                    managedIdentityServiceCredential = new ServiceFabricMsiCredential(clientId, identityClient);
+                }else {
+                    managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, identityClient);
+                }
+            }  else if (configuration.contains(PROPERTY_IMDS_ENDPOINT)) {
                 managedIdentityServiceCredential = new ArcIdentityCredential(clientId, identityClient);
             } else {
-                managedIdentityServiceCredential = null;
+                managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, identityClient);
             }
         } else if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)) {
             managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, identityClient);
-
         } else {
             managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, identityClient);
         }
@@ -60,7 +63,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
      * @return the client ID of user assigned or system assigned identity.
      */
     public String getClientId() {
-        return this.clientId;
+        return managedIdentityServiceCredential.getClientId();
     }
 
     @Override
@@ -77,3 +80,5 @@ public final class ManagedIdentityCredential implements TokenCredential {
             .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
     }
 }
+
+
