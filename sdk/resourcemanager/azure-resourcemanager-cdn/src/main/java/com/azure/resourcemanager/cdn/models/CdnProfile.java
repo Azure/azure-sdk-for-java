@@ -228,6 +228,7 @@ public interface CdnProfile extends
             /**
              * Selects the SKU with SKU name.
              *
+             * @param skuName the SKU name
              * @return the next stage of the definition.
              */
             WithStandardCreate withSku(SkuName skuName);
