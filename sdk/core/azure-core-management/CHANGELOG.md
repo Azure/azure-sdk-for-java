@@ -2,6 +2,7 @@
 
 ## 1.1.0-beta.1 (Unreleased)
 
+- Fixed long-running operation, PUT method, response 201 and Location, succeeded without poll.
 
 ## 1.0.0 (2020-09-24)
 

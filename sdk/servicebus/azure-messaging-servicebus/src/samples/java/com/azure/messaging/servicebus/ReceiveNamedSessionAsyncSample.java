@@ -42,14 +42,9 @@ public class ReceiveNamedSessionAsyncSample {
 
         Mono<ServiceBusReceiverAsyncClient> receiverMono = sessionReceiver.acceptSession("greetings");
         Disposable subscription = receiverMono.flatMapMany(receiver -> receiver.receiveMessages()
-            .flatMap(context -> {
-                if (context.hasError()) {
-                    System.out.printf("An error occurred in session %s. Error: %s%n",
-                        context.getSessionId(), context.getThrowable());
-                    return Mono.empty();
-                }
+            .flatMap(message -> {
 
-                System.out.println("Processing message from session: " + context.getSessionId());
+                System.out.println("Processing message from session: " + message.getSessionId());
 
                 // Process message then complete it.
                 //return receiver.complete(context.getMessage());

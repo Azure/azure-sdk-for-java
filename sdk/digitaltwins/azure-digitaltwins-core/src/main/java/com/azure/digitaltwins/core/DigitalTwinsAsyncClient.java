@@ -9,6 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.*;
 import com.azure.core.util.Context;
+import com.azure.core.models.JsonPatchDocument;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
@@ -249,11 +250,11 @@ public final class DigitalTwinsAsyncClient {
      *
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param jsonPatch The JSON patch to apply to the specified digital twin.
-     *                                    This argument can be created using {@link UpdateOperationUtility}.
+     *                                    This argument can be created using {@link JsonPatchDocument}.
      * @return An empty Mono
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateDigitalTwin(String digitalTwinId, List<Object> jsonPatch)
+    public Mono<Void> updateDigitalTwin(String digitalTwinId, JsonPatchDocument jsonPatch)
     {
         return updateDigitalTwinWithResponse(digitalTwinId, jsonPatch, null)
             .flatMap(voidResponse -> Mono.empty());
@@ -270,17 +271,17 @@ public final class DigitalTwinsAsyncClient {
      *
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param jsonPatch The JSON patch to apply to the specified digital twin.
-     *                                    This argument can be created using {@link UpdateOperationUtility}.
+     *                                    This argument can be created using {@link JsonPatchDocument}.
      * @param options The optional parameters for this request. If null, the default option values will be used.
      * @return A {@link DigitalTwinsResponse}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DigitalTwinsResponse<Void>> updateDigitalTwinWithResponse(String digitalTwinId, List<Object> jsonPatch, UpdateDigitalTwinOptions options)
+    public Mono<DigitalTwinsResponse<Void>> updateDigitalTwinWithResponse(String digitalTwinId, JsonPatchDocument jsonPatch, UpdateDigitalTwinOptions options)
     {
         return withContext(context -> updateDigitalTwinWithResponse(digitalTwinId, jsonPatch, options, context));
     }
 
-    Mono<DigitalTwinsResponse<Void>> updateDigitalTwinWithResponse(String digitalTwinId, List<Object> jsonPatch, UpdateDigitalTwinOptions options, Context context) {
+    Mono<DigitalTwinsResponse<Void>> updateDigitalTwinWithResponse(String digitalTwinId, JsonPatchDocument jsonPatch, UpdateDigitalTwinOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
             .updateWithResponseAsync(digitalTwinId, jsonPatch, OptionsConverter.toProtocolLayerOptions(options), context)
@@ -481,11 +482,11 @@ public final class DigitalTwinsAsyncClient {
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be updated.
      * @param jsonPatch The JSON patch to apply to the specified digital twin's relationship.
-     *                                     This argument can be created using {@link UpdateOperationUtility}.
+     *                                     This argument can be created using {@link JsonPatchDocument}.
      * @return An empty Mono.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateRelationship(String digitalTwinId, String relationshipId, List<Object> jsonPatch) {
+    public Mono<Void> updateRelationship(String digitalTwinId, String relationshipId, JsonPatchDocument jsonPatch) {
         return updateRelationshipWithResponse(digitalTwinId, relationshipId, jsonPatch, null)
             .flatMap(voidResponse -> Mono.empty());
     }
@@ -500,16 +501,16 @@ public final class DigitalTwinsAsyncClient {
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be updated.
      * @param jsonPatch The JSON patch to apply to the specified digital twin's relationship.
-     *                                     This argument can be created using {@link UpdateOperationUtility}.
+     *                                     This argument can be created using {@link JsonPatchDocument}.
      * @param options The optional parameters for this request. If null, the default option values will be used.
      * @return A {@link DigitalTwinsResponse} containing no parsed payload object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DigitalTwinsResponse<Void>> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, List<Object> jsonPatch, UpdateRelationshipOptions options) {
+    public Mono<DigitalTwinsResponse<Void>> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, JsonPatchDocument jsonPatch, UpdateRelationshipOptions options) {
         return withContext(context -> updateRelationshipWithResponse(digitalTwinId, relationshipId, jsonPatch, options, context));
     }
 
-    Mono<DigitalTwinsResponse<Void>> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, List<Object> jsonPatch, UpdateRelationshipOptions options, Context context) {
+    Mono<DigitalTwinsResponse<Void>> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, JsonPatchDocument jsonPatch, UpdateRelationshipOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
             .updateRelationshipWithResponseAsync(digitalTwinId, relationshipId, jsonPatch, OptionsConverter.toProtocolLayerOptions(options), context)
@@ -978,9 +979,8 @@ public final class DigitalTwinsAsyncClient {
     }
 
     Mono<Response<Void>> decommissionModelWithResponse(String modelId, Context context) {
-        List<Object> updateOperation = new UpdateOperationUtility()
-            .appendReplaceOperation("/decommissioned", true)
-            .getUpdateOperations();
+        JsonPatchDocument updateOperation = new JsonPatchDocument()
+            .appendReplace("/decommissioned", true);
 
         return protocolLayer.getDigitalTwinModels().updateWithResponseAsync(modelId, updateOperation, null, context);
     }
@@ -1051,11 +1051,11 @@ public final class DigitalTwinsAsyncClient {
      * @param digitalTwinId The Id of the digital twin that has the component to patch.
      * @param componentName The name of the component on the digital twin.
      * @param jsonPatch The JSON patch to apply to the specified digital twin's relationship.
-     *                                  This argument can be created using {@link UpdateOperationUtility}.
+     *                                  This argument can be created using {@link JsonPatchDocument}.
      * @return An empty Mono.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateComponent(String digitalTwinId, String componentName, List<Object> jsonPatch) {
+    public Mono<Void> updateComponent(String digitalTwinId, String componentName, JsonPatchDocument jsonPatch) {
         return updateComponentWithResponse(digitalTwinId, componentName, jsonPatch, null)
             .flatMap(voidResponse -> Mono.empty());
     }
@@ -1070,16 +1070,16 @@ public final class DigitalTwinsAsyncClient {
      * @param digitalTwinId The Id of the digital twin that has the component to patch.
      * @param componentName The name of the component on the digital twin.
      * @param jsonPatch The JSON patch to apply to the specified digital twin's relationship.
-     *                                  This argument can be created using {@link UpdateOperationUtility}.
+     *                                  This argument can be created using {@link JsonPatchDocument}.
      * @param options The optional parameters for this request. If null, the default option values will be used.
      * @return A {@link DigitalTwinsResponse} containing an empty Mono.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DigitalTwinsResponse<Void>> updateComponentWithResponse(String digitalTwinId, String componentName, List<Object> jsonPatch, UpdateComponentOptions options) {
+    public Mono<DigitalTwinsResponse<Void>> updateComponentWithResponse(String digitalTwinId, String componentName, JsonPatchDocument jsonPatch, UpdateComponentOptions options) {
         return withContext(context -> updateComponentWithResponse(digitalTwinId, componentName, jsonPatch, options, context));
     }
 
-    Mono<DigitalTwinsResponse<Void>> updateComponentWithResponse(String digitalTwinId, String componentName, List<Object> jsonPatch, UpdateComponentOptions options, Context context) {
+    Mono<DigitalTwinsResponse<Void>> updateComponentWithResponse(String digitalTwinId, String componentName, JsonPatchDocument jsonPatch, UpdateComponentOptions options, Context context) {
         return protocolLayer.getDigitalTwins().updateComponentWithResponseAsync(digitalTwinId, componentName, jsonPatch, OptionsConverter.toProtocolLayerOptions(options), context)
             .flatMap(response -> {
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);

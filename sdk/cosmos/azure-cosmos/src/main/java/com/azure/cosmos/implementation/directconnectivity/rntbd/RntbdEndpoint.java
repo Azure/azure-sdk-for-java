@@ -59,7 +59,7 @@ public interface RntbdEndpoint extends AutoCloseable {
 
     SocketAddress remoteAddress();
 
-    URI remoteURI();
+    URI serverKey();
 
     int requestQueueLength();
 

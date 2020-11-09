@@ -78,7 +78,7 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
             .map(sessionId -> {
                 final ReceiverOptions newReceiverOptions = new ReceiverOptions(receiverOptions.getReceiveMode(),
                     receiverOptions.getPrefetchCount(), receiverOptions.getMaxLockRenewDuration(),
-                    receiverOptions.isAutoLockRenewEnabled(), sessionId, null);
+                    receiverOptions.isEnableAutoComplete(), sessionId, null);
                 final ServiceBusSessionManager sessionSpecificManager = new ServiceBusSessionManager(entityPath,
                     entityType, connectionProcessor, tracerProvider, messageSerializer, newReceiverOptions,
                     receiveLink);
@@ -112,14 +112,14 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
         }
         final ReceiverOptions newReceiverOptions = new ReceiverOptions(receiverOptions.getReceiveMode(),
             receiverOptions.getPrefetchCount(), receiverOptions.getMaxLockRenewDuration(),
-            receiverOptions.isAutoLockRenewEnabled(), sessionId, null);
-        final ServiceBusSessionManager sessionSpecificManager = new ServiceBusSessionManager(entityPath, entityType,
-            connectionProcessor, tracerProvider, messageSerializer, newReceiverOptions);
+            receiverOptions.isEnableAutoComplete(), sessionId, null);
 
-        return sessionSpecificManager.getActiveLink().map(receiveLink -> new ServiceBusReceiverAsyncClient(
+        ServiceBusReceiverAsyncClient sessionSpecificAsyncClient = new ServiceBusReceiverAsyncClient(
             fullyQualifiedNamespace, entityPath, entityType, newReceiverOptions, connectionProcessor,
-            ServiceBusConstants.OPERATION_TIMEOUT, tracerProvider, messageSerializer, () -> { },
-            sessionSpecificManager));
+            ServiceBusConstants.OPERATION_TIMEOUT, tracerProvider, messageSerializer, () -> { });
+
+        return sessionSpecificAsyncClient.createConsumerWithReceiveLink()
+            .thenReturn(sessionSpecificAsyncClient);
     }
 
     @Override
