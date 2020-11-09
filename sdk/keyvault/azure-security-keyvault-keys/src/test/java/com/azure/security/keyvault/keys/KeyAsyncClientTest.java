@@ -482,6 +482,41 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
         });
     }
 
+    /**
+     * Tests that a key can be exported from the key vault.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void exportKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyAsyncClient(httpClient, serviceVersion);
+        exportKeyRunner((createKeyOptions) -> {
+            StepVerifier.create(client.createKey(createKeyOptions))
+                .assertNext(response -> assertKeyEquals(createKeyOptions, response))
+                .verifyComplete();
+
+            StepVerifier.create(client.exportKey(createKeyOptions.getName(), "testEnvironment"))
+                .assertNext(response -> assertKeyEquals(createKeyOptions, response))
+                .verifyComplete();
+        });
+    }
+
+    /**
+     * Tests that a specific key version can be exported from the key vault.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void exportKeyVersion(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyAsyncClient(httpClient, serviceVersion);
+        exportKeyRunner((createKeyOptions) -> {
+            StepVerifier.create(client.createKey(createKeyOptions))
+                .assertNext(response -> assertKeyEquals(createKeyOptions, response))
+                .consumeNextWith(originalKey -> client.exportKey(createKeyOptions.getName(),
+                    originalKey.getProperties().getVersion(), "testEnvironment"))
+                .assertNext(response -> assertKeyEquals(createKeyOptions, response))
+                .verifyComplete();
+        });
+    }
+
     private void pollOnKeyDeletion(String keyName) {
         int pendingPollCount = 0;
         while (pendingPollCount < 30) {
