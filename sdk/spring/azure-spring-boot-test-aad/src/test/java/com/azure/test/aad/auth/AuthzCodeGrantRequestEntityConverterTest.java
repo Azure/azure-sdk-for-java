@@ -1,8 +1,5 @@
 package com.azure.test.aad.auth;
 
-import java.util.List;
-
-import com.azure.spring.aad.implementation.AppAutoConfiguration;
 import com.azure.spring.aad.implementation.AuthzCodeGrantRequestEntityConverter;
 import com.azure.spring.aad.implementation.AzureClientRegistrationRepository;
 import com.azure.test.utils.AppRunner;
@@ -12,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.RequestEntity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
@@ -24,7 +20,6 @@ import org.springframework.util.MultiValueMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AuthzCodeGrantRequestEntityConverterTest {
 
