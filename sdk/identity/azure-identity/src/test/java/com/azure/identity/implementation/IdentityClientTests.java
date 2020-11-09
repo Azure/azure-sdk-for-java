@@ -225,8 +225,7 @@ public class IdentityClientTests {
         configuration.put("IDENTITY_ENDPOINT", endpoint);
         configuration.put("IDENTITY_HEADER", secret);
         configuration.put("IDENTITY_SERVER_THUMBPRINT", thumbprint);
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("M/d/yyyy H:mm:ss XXX");
-        String tokenJson = "{ \"access_token\" : \"token1\", \"expires_on\" : \"" + expiresOn.format(dtf) + "\" }";
+        String tokenJson = "{ \"access_token\" : \"token1\", \"expires_on\" : \"" + expiresOn.toEpochSecond() + "\" }";
 
         // mock
         mockForServiceFabricCodeFlow(tokenJson);
