@@ -78,7 +78,7 @@ public class SqlRuleAction extends RuleAction {
      *
      * @return the properties for this action.
      */
-    public Map<String, Object> getProperties() {
+    public Map<String, Object> getParameters() {
         return properties;
     }
 

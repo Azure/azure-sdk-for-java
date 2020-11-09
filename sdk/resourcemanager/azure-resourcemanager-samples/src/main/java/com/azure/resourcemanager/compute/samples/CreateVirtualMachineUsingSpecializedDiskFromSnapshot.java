@@ -83,7 +83,7 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
                         .withPublicSetting("fileUris", apacheInstallScriptUris)
                         .withPublicSetting("commandToExecute", apacheInstallCommand)
                         .attach()
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .create();
 
             System.out.println("Created a Linux VM with managed OS and data disks: " + linuxVM.id());
@@ -192,7 +192,7 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
                     .withSpecializedOSDisk(newOSDisk, OperatingSystemTypes.LINUX)
                     .withExistingDataDisk(newDataDisks.get(0))
                     .withExistingDataDisk(newDataDisks.get(1), 1, CachingTypes.READ_WRITE)
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .create();
 
             Utils.print(linuxVM2);

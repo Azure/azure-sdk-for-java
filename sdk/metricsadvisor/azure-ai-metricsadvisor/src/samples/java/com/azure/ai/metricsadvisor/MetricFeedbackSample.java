@@ -38,14 +38,14 @@ public class MetricFeedbackSample {
 
         System.out.printf("Creating Metric Feedback%n");
         final MetricFeedback createdFeedback
-            = advisorClient.createMetricFeedback(metricId, metricChangePointFeedback);
+            = advisorClient.addFeedback(metricId, metricChangePointFeedback);
 
         System.out.printf("Created Metric Feedback: %s%n", createdFeedback.getId());
 
         System.out.printf("Fetching Metric Feedback: %s%n", createdFeedback.getId());
 
         // Retrieve the metric feedback that just created.
-        MetricFeedback fetchFeedback = advisorClient.getMetricFeedback(createdFeedback.getId());
+        MetricFeedback fetchFeedback = advisorClient.getFeedback(createdFeedback.getId());
         System.out.printf("Fetched Metric Feedback%n");
 
         System.out.printf("Metric Feedback Id : %s%n", fetchFeedback.getId());
@@ -68,7 +68,7 @@ public class MetricFeedbackSample {
 
         // List metric feedbacks.
         System.out.printf("Listing metric feedbacks%n");
-        advisorClient.listMetricFeedbacks(metricId)
+        advisorClient.listFeedback(metricId)
             .forEach(feedbackItem -> {
                 System.out.printf("Metric Feedback Id : %s%n", feedbackItem.getId());
                 System.out.printf("Metric Feedback created time : %s%n", feedbackItem.getCreatedTime());

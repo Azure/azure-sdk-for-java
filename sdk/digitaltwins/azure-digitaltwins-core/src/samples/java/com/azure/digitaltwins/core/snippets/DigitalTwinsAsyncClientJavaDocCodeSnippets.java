@@ -1,5 +1,6 @@
 package com.azure.digitaltwins.core.snippets;
 
+import com.azure.core.models.JsonPatchDocument;
 import com.azure.digitaltwins.core.BasicDigitalTwin;
 import com.azure.digitaltwins.core.BasicDigitalTwinMetadata;
 import com.azure.digitaltwins.core.BasicRelationship;
@@ -169,38 +170,38 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#updateDigitalTwin(String, List)}
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#updateDigitalTwin(String, JsonPatchDocument)}
      */
     @Override
     public void updateDigitalTwin() {
         DigitalTwinsAsyncClient digitalTwinsAsyncClient = createDigitalTwinsAsyncClient();
 
         // BEGIN: com.azure.digitaltwins.core.asyncClient.updateDigitalTwin#String-List
-        UpdateOperationUtility updateOperationUtility = new UpdateOperationUtility();
-        updateOperationUtility.appendReplaceOperation("Prop1", "newValue");
+        JsonPatchDocument jsonPatchDocument = new JsonPatchDocument();
+        jsonPatchDocument.appendReplace("Prop1", "newValue");
 
         digitalTwinsAsyncClient.updateDigitalTwin(
             "myDigitalTwinId",
-            updateOperationUtility.getUpdateOperations())
+            jsonPatchDocument)
         .subscribe();
         // END: com.azure.digitaltwins.core.asyncClient.updateDigitalTwin#String-List
     }
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsAsyncClient#updateDigitalTwinWithResponse(String, List, UpdateDigitalTwinOptions)}
+     * {@link DigitalTwinsAsyncClient#updateDigitalTwinWithResponse(String, JsonPatchDocument, UpdateDigitalTwinOptions)}
      */
     @Override
     public void updateDigitalTwinWithResponse() {
         DigitalTwinsAsyncClient digitalTwinsAsyncClient = createDigitalTwinsAsyncClient();
 
         // BEGIN: com.azure.digitaltwins.core.asyncClient.updateDigitalTwinWithResponse#String-List-Options
-        UpdateOperationUtility updateOperationUtility = new UpdateOperationUtility();
-        updateOperationUtility.appendReplaceOperation("Prop1", "newValue");
+        JsonPatchDocument jsonPatchDocument = new JsonPatchDocument();
+        jsonPatchDocument.appendReplace("Prop1", "newValue");
 
         digitalTwinsAsyncClient.updateDigitalTwinWithResponse(
             "myDigitalTwinId",
-            updateOperationUtility.getUpdateOperations(),
+            jsonPatchDocument,
             new UpdateDigitalTwinOptions())
         .subscribe(updateResponse ->
             System.out.println("Update completed with HTTP status code: " + updateResponse.getStatusCode()));
@@ -390,36 +391,36 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#updateRelationship(String, String, List)}
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#updateRelationship(String, String, JsonPatchDocument)}
      */
     @Override
     public void updateRelationship() {
         // BEGIN: com.azure.digitaltwins.core.asyncClient.updateRelationship#String-String-List
-        UpdateOperationUtility updateOperationUtility = new UpdateOperationUtility();
-        updateOperationUtility.appendReplaceOperation("/relationshipProperty1", "new property value");
+        JsonPatchDocument jsonPatchDocument = new JsonPatchDocument();
+        jsonPatchDocument.appendReplace("/relationshipProperty1", "new property value");
 
         digitalTwinsAsyncClient.updateRelationship(
             "myDigitalTwinId",
             "myRelationshipId",
-            updateOperationUtility.getUpdateOperations())
+            jsonPatchDocument)
         .subscribe();
         // END: com.azure.digitaltwins.core.asyncClient.updateRelationship#String-String-List
     }
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsAsyncClient#updateRelationshipWithResponse(String, String, List, UpdateRelationshipOptions)}
+     * {@link DigitalTwinsAsyncClient#updateRelationshipWithResponse(String, String, JsonPatchDocument, UpdateRelationshipOptions)}
      */
     @Override
     public void updateRelationshipWithResponse() {
         // BEGIN: com.azure.digitaltwins.core.asyncClient.updateRelationshipWithResponse#String-String-List-Options
-        UpdateOperationUtility updateOperationUtility = new UpdateOperationUtility();
-        updateOperationUtility.appendReplaceOperation("/relationshipProperty1", "new property value");
+        JsonPatchDocument jsonPatchDocument = new JsonPatchDocument();
+        jsonPatchDocument.appendReplace("/relationshipProperty1", "new property value");
 
         digitalTwinsAsyncClient.updateRelationshipWithResponse(
             "myDigitalTwinId",
             "myRelationshipId",
-            updateOperationUtility.getUpdateOperations(),
+            jsonPatchDocument,
             new UpdateRelationshipOptions())
         .subscribe(updateResponse ->
             System.out.println(
@@ -700,36 +701,36 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#updateComponent(String, String, List)}
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#updateComponent(String, String, JsonPatchDocument)}
      */
     @Override
     public void updateComponent() {
         // BEGIN: com.azure.digitaltwins.core.asyncClient.updateComponent#String-String-List
-        UpdateOperationUtility updateOperationUtility = new UpdateOperationUtility();
-        updateOperationUtility.appendReplaceOperation("/ComponentProp1", "Some new value");
+        JsonPatchDocument jsonPatchDocument = new JsonPatchDocument();
+        jsonPatchDocument.appendReplace("/ComponentProp1", "Some new value");
 
         digitalTwinsAsyncClient.updateComponent(
             "myDigitalTwinId",
             "myComponentName",
-            updateOperationUtility.getUpdateOperations())
+            jsonPatchDocument)
         .subscribe();
         // END: com.azure.digitaltwins.core.asyncClient.updateComponent#String-String-List
     }
 
     /**
      * Generates code samples for using
-     * {@link DigitalTwinsAsyncClient#updateComponentWithResponse(String, String, List, UpdateComponentOptions)}
+     * {@link DigitalTwinsAsyncClient#updateComponentWithResponse(String, String, JsonPatchDocument, UpdateComponentOptions)}
      */
     @Override
     public void updateComponentWithResponse() {
         // BEGIN: com.azure.digitaltwins.core.asyncClient.updateComponentWithResponse#String-String-List-Options
-        UpdateOperationUtility updateOperationUtility = new UpdateOperationUtility();
-        updateOperationUtility.appendReplaceOperation("/ComponentProp1", "Some new value");
+        JsonPatchDocument jsonPatchDocument = new JsonPatchDocument();
+        jsonPatchDocument.appendReplace("/ComponentProp1", "Some new value");
 
         digitalTwinsAsyncClient.updateComponentWithResponse(
             "myDigitalTwinId",
             "myComponentName",
-            updateOperationUtility.getUpdateOperations(),
+            jsonPatchDocument,
             new UpdateComponentOptions().setIfMatch("*"))
         .subscribe(updateResponse ->
             System.out.println(

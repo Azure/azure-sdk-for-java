@@ -24,6 +24,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
 
+import static com.azure.ai.metricsadvisor.MetricsSeriesTestBase.SERIES_KEY_FILTER;
+import static com.azure.ai.metricsadvisor.MetricsSeriesTestBase.TIME_SERIES_END_TIME;
+import static com.azure.ai.metricsadvisor.MetricsSeriesTestBase.TIME_SERIES_START_TIME;
 import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_ENDPOINT;
 import static com.azure.ai.metricsadvisor.models.FeedbackType.ANOMALY;
 import static com.azure.ai.metricsadvisor.models.FeedbackType.CHANGE_POINT;
@@ -34,13 +37,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class FeedbackTestBase extends MetricsAdvisorClientTestBase {
 
-    static final OffsetDateTime FEEDBACK_START_TIME = OffsetDateTime.parse("2020-08-05T07:00:00Z");
-    static final OffsetDateTime FEEDBACK_END_TIME = OffsetDateTime.parse("2020-08-07T07:00:00Z");
-    static final HashMap<String, String> DIMENSION_FILTER = new HashMap<String, String>() {{
-            put("Dim1", "Common Lime");
-            put("Dim2", "Amphibian");
-        }};
-    static final String COMMENT_FEEDBACK_ID = "fc2abd1f-821d-4dac-8bec-e09c977fb6fa";
+    static final OffsetDateTime FEEDBACK_START_TIME = TIME_SERIES_START_TIME;
+    static final OffsetDateTime FEEDBACK_END_TIME = TIME_SERIES_END_TIME;
+    static final HashMap<String, String> DIMENSION_FILTER = SERIES_KEY_FILTER;
 
     @Override
     protected void beforeTest() {
