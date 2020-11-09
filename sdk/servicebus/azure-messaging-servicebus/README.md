@@ -248,7 +248,7 @@ sender.sendMessage(message);
 
 Receiving messages from sessions is similar to receiving messages from a non session enabled queue or subscription. The difference is in the builder and the class you use.
 
-In non session case, you would use the `ServiceBusProcessorClient` by using the sub builder `processor()`. In case of sessions, you would use the `ServiceBusSessionProcessorClient` by using the sub builder `sessionProcessor()`. You can pass the maximum number of sessions you want the processor to process concurrently as well.
+In non-session case, you would use the sub builder `processor()`. In case of sessions, you would use the sub builder `sessionProcessor()`. Both sub builders will create an instance of `ServiceBusProcessorClient` configured to work on a session or a non-session Service Bus entity. In the case of the session processor, you can pass the maximum number of sessions you want the processor to process concurrently as well.
 
 ### Create a dead-letter queue Receiver
 
