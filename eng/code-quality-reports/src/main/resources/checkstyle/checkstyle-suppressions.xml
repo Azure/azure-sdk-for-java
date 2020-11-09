@@ -635,6 +635,8 @@
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.data.gremlin.conversion.source.AbstractGremlinSource.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.keyvault.KeyVaultOperation.java"/>
 
+  <suppress checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" files="com.azure.spring.autoconfigure.aad.AccessTokenProvider.java"></suppress>
+
   <suppress checks="MethodName" files="com.azure.spring.data.gremlin.common.GremlinConfig.java"/>
 
   <suppress checks="MethodName" files="com.azure.spring.integration.core.api.CheckpointConfig.java"/>

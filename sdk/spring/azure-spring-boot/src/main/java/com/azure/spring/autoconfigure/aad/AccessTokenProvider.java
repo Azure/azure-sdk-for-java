@@ -24,14 +24,18 @@ public class AccessTokenProvider {
     @Autowired
     private AADAuthenticationProperties aadAuthenticationProperties;
 
-    private final String clientId = aadAuthenticationProperties.getClientId();
-    private final String clientSecret = aadAuthenticationProperties.getClientSecret();
-
-    private static final String authority = "https://login.microsoftonline.com/common/";
+    private static final String AUTHORITY = "https://login.microsoftonline.com/common/";
 
     private ConfidentialClientApplication createClientApplication() throws MalformedURLException {
-        return ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.createFromSecret(clientSecret)).
-            authority(authority).build();
+
+        if(aadAuthenticationProperties == null || aadAuthenticationProperties.getClientSecret() == null
+            || aadAuthenticationProperties.getClientId() == null){
+            throw new NullPointerException("your first client was unavailable");
+        }
+
+        return ConfidentialClientApplication.builder(aadAuthenticationProperties.getClientId(),
+            ClientCredentialFactory.createFromSecret(aadAuthenticationProperties.getClientSecret())).
+            authority(AUTHORITY).build();
     }
 
     public String acquireTokenByOboflow(Set<String> scope, String accessToken) throws
