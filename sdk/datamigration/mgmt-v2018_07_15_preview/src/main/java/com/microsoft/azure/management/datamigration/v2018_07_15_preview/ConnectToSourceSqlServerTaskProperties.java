@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Properties for the task that validates connection to SQL Server and also
  * validates source server requirements.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType", defaultImpl = ConnectToSourceSqlServerTaskProperties.class)
 @JsonTypeName("ConnectToSource.SqlServer")
 public class ConnectToSourceSqlServerTaskProperties extends ProjectTaskProperties {
     /**

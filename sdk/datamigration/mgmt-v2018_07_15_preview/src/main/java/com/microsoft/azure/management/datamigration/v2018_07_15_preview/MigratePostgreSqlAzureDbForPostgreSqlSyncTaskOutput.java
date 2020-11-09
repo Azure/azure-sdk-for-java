@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
  * Output for the task that migrates PostgreSQL databases to Azure Database for
  * PostgreSQL for online migrations.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType", defaultImpl = MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput.class)
 @JsonTypeName("MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "DatabaseLevelErrorOutput", value = MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseError.class),

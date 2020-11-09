@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Describes a connection to a MongoDB data source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = MongoDbConnectionInfo.class)
 @JsonTypeName("MongoDbConnectionInfo")
 public class MongoDbConnectionInfo extends ConnectionInfo {
     /**

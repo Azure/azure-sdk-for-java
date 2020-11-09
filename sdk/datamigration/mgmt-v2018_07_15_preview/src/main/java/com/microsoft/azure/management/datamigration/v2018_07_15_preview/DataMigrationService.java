@@ -50,6 +50,11 @@ public interface DataMigrationService extends HasInner<DataMigrationServiceInner
     ServiceSku sku();
 
     /**
+     * @return the virtualNicId value.
+     */
+    String virtualNicId();
+
+    /**
      * @return the virtualSubnetId value.
      */
     String virtualSubnetId();
@@ -137,17 +142,29 @@ public interface DataMigrationService extends HasInner<DataMigrationServiceInner
         }
 
         /**
+         * The stage of the datamigrationservice definition allowing to specify VirtualNicId.
+         */
+        interface WithVirtualNicId {
+            /**
+             * Specifies virtualNicId.
+             * @param virtualNicId The ID of the Microsoft.Network/networkInterfaces resource which the service have
+             * @return the next definition stage
+             */
+            WithCreate withVirtualNicId(String virtualNicId);
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<DataMigrationService>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithEtag, DefinitionStages.WithKind, DefinitionStages.WithPublicKey, DefinitionStages.WithSku {
+        interface WithCreate extends Creatable<DataMigrationService>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithEtag, DefinitionStages.WithKind, DefinitionStages.WithPublicKey, DefinitionStages.WithSku, DefinitionStages.WithVirtualNicId {
         }
     }
     /**
      * The template for a DataMigrationService update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<DataMigrationService>, Resource.UpdateWithTags<Update>, UpdateStages.WithEtag, UpdateStages.WithKind, UpdateStages.WithPublicKey, UpdateStages.WithSku {
+    interface Update extends Appliable<DataMigrationService>, Resource.UpdateWithTags<Update>, UpdateStages.WithEtag, UpdateStages.WithKind, UpdateStages.WithPublicKey, UpdateStages.WithSku, UpdateStages.WithVirtualNicId {
     }
 
     /**
@@ -200,6 +217,18 @@ public interface DataMigrationService extends HasInner<DataMigrationServiceInner
              * @return the next update stage
              */
             Update withSku(ServiceSku sku);
+        }
+
+        /**
+         * The stage of the datamigrationservice update allowing to specify VirtualNicId.
+         */
+        interface WithVirtualNicId {
+            /**
+             * Specifies virtualNicId.
+             * @param virtualNicId The ID of the Microsoft.Network/networkInterfaces resource which the service have
+             * @return the next update stage
+             */
+            Update withVirtualNicId(String virtualNicId);
         }
 
     }

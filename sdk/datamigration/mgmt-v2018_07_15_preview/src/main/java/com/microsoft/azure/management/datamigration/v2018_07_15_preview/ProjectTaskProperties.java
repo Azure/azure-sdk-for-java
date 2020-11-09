@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
  * Base class for all types of DMS task properties. If task is not supported by
  * current client, this object is returned.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType", defaultImpl = ProjectTaskProperties.class)
 @JsonTypeName("ProjectTaskProperties")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Migrate.Ssis", value = MigrateSsisTaskProperties.class),
@@ -31,7 +31,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "ValidateMigrationInput.SqlServer.AzureSqlDbMI", value = ValidateMigrationInputSqlServerSqlMITaskProperties.class),
     @JsonSubTypes.Type(name = "ValidateMigrationInput.SqlServer.SqlDb.Sync", value = ValidateMigrationInputSqlServerSqlDbSyncTaskProperties.class),
     @JsonSubTypes.Type(name = "Migrate.Oracle.AzureDbForPostgreSql.Sync", value = MigrateOracleAzureDbForPostgreSqlSyncTaskProperties.class),
-    @JsonSubTypes.Type(name = "Migrate.PostgreSql.AzureDbForPostgreSql.Sync", value = MigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties.class),
+    @JsonSubTypes.Type(name = "Migrate.PostgreSql.AzureDbForPostgreSql.SyncV2", value = MigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties.class),
     @JsonSubTypes.Type(name = "Migrate.MySql.AzureDbForMySql.Sync", value = MigrateMySqlAzureDbForMySqlSyncTaskProperties.class),
     @JsonSubTypes.Type(name = "Migrate.SqlServer.AzureSqlDb.Sync", value = MigrateSqlServerSqlDbSyncTaskProperties.class),
     @JsonSubTypes.Type(name = "Migrate.SqlServer.SqlDb", value = MigrateSqlServerSqlDbTaskProperties.class),

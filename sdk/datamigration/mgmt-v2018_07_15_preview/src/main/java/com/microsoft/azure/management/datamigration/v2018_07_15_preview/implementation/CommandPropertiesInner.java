@@ -11,11 +11,6 @@ package com.microsoft.azure.management.datamigration.v2018_07_15_preview.impleme
 import java.util.List;
 import com.microsoft.azure.management.datamigration.v2018_07_15_preview.ODataError;
 import com.microsoft.azure.management.datamigration.v2018_07_15_preview.CommandState;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.MigrateMISyncCompleteCommandProperties;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.MigrateSyncCompleteCommandProperties;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.MongoDbCancelCommand;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.MongoDbFinishCommand;
-import com.microsoft.azure.management.datamigration.v2018_07_15_preview.MongoDbRestartCommand;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -25,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
  * Base class for all types of DMS command properties. If command is not
  * supported by current client, this object is returned.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "commandType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "commandType", defaultImpl = CommandPropertiesInner.class)
 @JsonTypeName("CommandProperties")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Migrate.SqlServer.AzureDbSqlMi.Complete", value = MigrateMISyncCompleteCommandProperties.class),

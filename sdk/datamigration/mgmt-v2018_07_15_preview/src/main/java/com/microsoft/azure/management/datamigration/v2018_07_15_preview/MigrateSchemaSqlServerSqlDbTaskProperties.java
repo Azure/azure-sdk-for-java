@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Properties for task that migrates Schema for SQL Server databases to Azure
  * SQL databases.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType", defaultImpl = MigrateSchemaSqlServerSqlDbTaskProperties.class)
 @JsonTypeName("MigrateSchemaSqlServerSqlDb")
 public class MigrateSchemaSqlServerSqlDbTaskProperties extends ProjectTaskProperties {
     /**

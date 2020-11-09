@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType", defaultImpl = MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel.class)
 @JsonTypeName("MigrationLevelOutput")
 public class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel extends MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput {
     /**
@@ -54,6 +54,28 @@ public class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel e
      */
     @JsonProperty(value = "targetServer", access = JsonProperty.Access.WRITE_ONLY)
     private String targetServer;
+
+    /**
+     * Source server type. Possible values include: 'Access', 'DB2', 'MySQL',
+     * 'Oracle', 'SQL', 'Sybase', 'PostgreSQL', 'MongoDB', 'SQLRDS',
+     * 'MySQLRDS', 'PostgreSQLRDS'.
+     */
+    @JsonProperty(value = "sourceServerType", access = JsonProperty.Access.WRITE_ONLY)
+    private ScenarioSource sourceServerType;
+
+    /**
+     * Target server type. Possible values include: 'SQLServer', 'SQLDB',
+     * 'SQLDW', 'SQLMI', 'AzureDBForMySql', 'AzureDBForPostgresSQL', 'MongoDB'.
+     */
+    @JsonProperty(value = "targetServerType", access = JsonProperty.Access.WRITE_ONLY)
+    private ScenarioTarget targetServerType;
+
+    /**
+     * Migration status. Possible values include: 'UNDEFINED', 'VALIDATING',
+     * 'PENDING', 'COMPLETE', 'ACTION_REQUIRED', 'FAILED'.
+     */
+    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
+    private ReplicateMigrationState state;
 
     /**
      * Get migration start time.
@@ -107,6 +129,33 @@ public class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel e
      */
     public String targetServer() {
         return this.targetServer;
+    }
+
+    /**
+     * Get source server type. Possible values include: 'Access', 'DB2', 'MySQL', 'Oracle', 'SQL', 'Sybase', 'PostgreSQL', 'MongoDB', 'SQLRDS', 'MySQLRDS', 'PostgreSQLRDS'.
+     *
+     * @return the sourceServerType value
+     */
+    public ScenarioSource sourceServerType() {
+        return this.sourceServerType;
+    }
+
+    /**
+     * Get target server type. Possible values include: 'SQLServer', 'SQLDB', 'SQLDW', 'SQLMI', 'AzureDBForMySql', 'AzureDBForPostgresSQL', 'MongoDB'.
+     *
+     * @return the targetServerType value
+     */
+    public ScenarioTarget targetServerType() {
+        return this.targetServerType;
+    }
+
+    /**
+     * Get migration status. Possible values include: 'UNDEFINED', 'VALIDATING', 'PENDING', 'COMPLETE', 'ACTION_REQUIRED', 'FAILED'.
+     *
+     * @return the state value
+     */
+    public ReplicateMigrationState state() {
+        return this.state;
     }
 
 }

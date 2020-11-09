@@ -10,10 +10,14 @@ package com.microsoft.azure.management.datamigration.v2018_07_15_preview;
 
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Describes the progress of a database.
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType", defaultImpl = MongoDbDatabaseProgress.class)
+@JsonTypeName("Database")
 public class MongoDbDatabaseProgress extends MongoDbProgress {
     /**
      * The progress of the collections in the database. The keys are the

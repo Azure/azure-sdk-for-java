@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Properties for task that migrates SQL Server databases to Azure SQL Database
  * Managed Instance sync scenario.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType", defaultImpl = MigrateSqlServerSqlMISyncTaskProperties.class)
 @JsonTypeName("Migrate.SqlServer.AzureSqlDbMI.Sync.LRS")
 public class MigrateSqlServerSqlMISyncTaskProperties extends ProjectTaskProperties {
     /**

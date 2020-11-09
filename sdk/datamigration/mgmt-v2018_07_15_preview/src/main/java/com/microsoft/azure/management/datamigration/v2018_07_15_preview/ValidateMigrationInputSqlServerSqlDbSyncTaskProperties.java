@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Properties for task that validates migration input for SQL to Azure SQL DB
  * sync migrations.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType", defaultImpl = ValidateMigrationInputSqlServerSqlDbSyncTaskProperties.class)
 @JsonTypeName("ValidateMigrationInput.SqlServer.SqlDb.Sync")
 public class ValidateMigrationInputSqlServerSqlDbSyncTaskProperties extends ProjectTaskProperties {
     /**

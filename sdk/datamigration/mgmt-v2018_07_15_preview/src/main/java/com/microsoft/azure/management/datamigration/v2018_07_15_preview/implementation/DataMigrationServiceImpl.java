@@ -71,6 +71,11 @@ class DataMigrationServiceImpl extends GroupableResourceCoreImpl<DataMigrationSe
     }
 
     @Override
+    public String virtualNicId() {
+        return this.inner().virtualNicId();
+    }
+
+    @Override
     public String virtualSubnetId() {
         return this.inner().virtualSubnetId();
     }
@@ -102,6 +107,12 @@ class DataMigrationServiceImpl extends GroupableResourceCoreImpl<DataMigrationSe
     @Override
     public DataMigrationServiceImpl withSku(ServiceSku sku) {
         this.inner().withSku(sku);
+        return this;
+    }
+
+    @Override
+    public DataMigrationServiceImpl withVirtualNicId(String virtualNicId) {
+        this.inner().withVirtualNicId(virtualNicId);
         return this;
     }
 
