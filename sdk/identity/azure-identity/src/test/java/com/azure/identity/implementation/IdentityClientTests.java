@@ -241,7 +241,6 @@ public class IdentityClientTests {
         Configuration configuration = Configuration.getGlobalConfiguration();
         String endpoint = "http://localhost";
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
-        OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
         configuration.put("IDENTITY_ENDPOINT", endpoint);
         // mock
         mockForArcCodeFlow(401);
@@ -257,7 +256,6 @@ public class IdentityClientTests {
         Configuration configuration = Configuration.getGlobalConfiguration();
         String endpoint = "http://localhost";
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
-        OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
         configuration.put("IDENTITY_ENDPOINT", endpoint);
         // mock
         mockForArcCodeFlow(200);

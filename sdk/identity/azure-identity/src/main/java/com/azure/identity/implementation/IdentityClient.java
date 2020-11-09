@@ -775,6 +775,11 @@ public class IdentityClient {
 
                 new Scanner(connection.getInputStream(), "UTF-8").useDelimiter("\\A");
             } catch (IOException e) {
+                if (connection == null) {
+                    throw logger.logExceptionAsError(new ClientAuthenticationException("Failed to initialize "
+                                                                       + "Http URL connection to the endpoint.",
+                        null, e));
+                }
                 int status = connection.getResponseCode();
                 if (status != 401) {
                     throw logger.logExceptionAsError(new ClientAuthenticationException(String.format("Expected a 401"
