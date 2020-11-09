@@ -3,16 +3,19 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.models.Alert;
+import com.azure.ai.metricsadvisor.models.AlertQueryTimeMode;
+import com.azure.ai.metricsadvisor.models.AnomalyAlert;
 import com.azure.ai.metricsadvisor.models.ListAlertOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
-import com.azure.ai.metricsadvisor.models.TimeMode;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
 
 public abstract class AlertTestBase extends MetricsAdvisorClientTestBase {
+
+    @Test
     public abstract void listAlerts(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
     public static final String ALERT_CONFIG_ID = "204a211a-c5f4-45f3-a30e-512fb25d1d2c";
 
@@ -21,8 +24,9 @@ public abstract class AlertTestBase extends MetricsAdvisorClientTestBase {
         static final ListAlertsInput INSTANCE = new ListAlertsInput();
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-10-10T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-10-21T00:00:00Z");
-        final TimeMode timeMode = TimeMode.ANOMALY_TIME;
-        final ListAlertOptions options = new ListAlertOptions(startTime, endTime, timeMode)
+        final AlertQueryTimeMode timeMode = AlertQueryTimeMode.ANOMALY_TIME;
+        final ListAlertOptions options = new ListAlertOptions()
+            .setAlertQueryTimeMode(timeMode)
             .setTop(10);
         final String alertConfigurationId = ALERT_CONFIG_ID;
     }
@@ -32,16 +36,16 @@ public abstract class AlertTestBase extends MetricsAdvisorClientTestBase {
         final int expectedAlerts = 4;
     }
 
-    protected void assertAlertOutput(Alert alert) {
-        Assertions.assertNotNull(alert);
-        Assertions.assertNotNull(alert.getId());
-        Assertions.assertNotNull(alert.getCreatedTime());
-        Assertions.assertNotNull(alert.getModifiedTime());
-        Assertions.assertNotNull(alert.getTimestamp());
-        boolean isInRange = (alert.getTimestamp().isEqual(ListAlertsInput.INSTANCE.startTime)
-            || alert.getTimestamp().isAfter(ListAlertsInput.INSTANCE.startTime))
-            && (alert.getTimestamp().isEqual(ListAlertsInput.INSTANCE.endTime)
-            || alert.getTimestamp().isBefore(ListAlertsInput.INSTANCE.endTime));
+    protected void assertAlertOutput(AnomalyAlert anomalyAlert) {
+        Assertions.assertNotNull(anomalyAlert);
+        Assertions.assertNotNull(anomalyAlert.getId());
+        Assertions.assertNotNull(anomalyAlert.getCreatedTime());
+        Assertions.assertNotNull(anomalyAlert.getModifiedTime());
+        Assertions.assertNotNull(anomalyAlert.getTimestamp());
+        boolean isInRange = (anomalyAlert.getTimestamp().isEqual(ListAlertsInput.INSTANCE.startTime)
+            || anomalyAlert.getTimestamp().isAfter(ListAlertsInput.INSTANCE.startTime))
+            && (anomalyAlert.getTimestamp().isEqual(ListAlertsInput.INSTANCE.endTime)
+            || anomalyAlert.getTimestamp().isBefore(ListAlertsInput.INSTANCE.endTime));
         Assertions.assertTrue(isInRange);
     }
 }

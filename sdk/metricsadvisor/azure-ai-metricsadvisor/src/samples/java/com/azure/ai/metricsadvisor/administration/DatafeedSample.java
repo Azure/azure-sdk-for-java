@@ -6,13 +6,13 @@ package com.azure.ai.metricsadvisor.administration;
 import com.azure.ai.metricsadvisor.implementation.models.DataSourceType;
 import com.azure.ai.metricsadvisor.models.AzureAppInsightsDataFeedSource;
 import com.azure.ai.metricsadvisor.models.DataFeed;
+import com.azure.ai.metricsadvisor.models.DataFeedDimension;
 import com.azure.ai.metricsadvisor.models.DataFeedGranularity;
 import com.azure.ai.metricsadvisor.models.DataFeedGranularityType;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionSettings;
+import com.azure.ai.metricsadvisor.models.DataFeedMetric;
 import com.azure.ai.metricsadvisor.models.DataFeedOptions;
 import com.azure.ai.metricsadvisor.models.DataFeedSchema;
-import com.azure.ai.metricsadvisor.models.Dimension;
-import com.azure.ai.metricsadvisor.models.Metric;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 
 import java.time.OffsetDateTime;
@@ -31,14 +31,24 @@ public class DatafeedSample {
 
         // Create Data feed
         System.out.printf("Creating Data feed%n");
+        DataFeed appInsightsDataFeed = new DataFeed()
+            .setName("sample_db")
+            .setSource(new AzureAppInsightsDataFeedSource("application_id", "api_key", "azure_Cloud", "query"))
+            .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
+            .setSchema(
+                new DataFeedSchema(
+                    Arrays.asList(
+                        new DataFeedMetric().setName("cost"),
+                        new DataFeedMetric().setName("revenue")
+                    )).setDimensions(
+                    Arrays.asList(
+                        new DataFeedDimension().setName("city"),
+                        new DataFeedDimension().setName("category")
+                    ))
+            ).setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse("2020-07-01T00:00:00Z")));
+
         DataFeed dataFeed = advisorAdministrationClient
-            .createDataFeed("sample_db",
-                new AzureAppInsightsDataFeedSource("application_id", "api_key", "azure_Cloud", "query"),
-                new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY),
-                new DataFeedSchema(Arrays.asList(new Metric().setName("cost"), new Metric().setName(
-                    "revenue"))).setDimensions(Arrays.asList(new Dimension().setName("city"),
-                    new Dimension().setName("category"))),
-                new DataFeedIngestionSettings(OffsetDateTime.parse("2020-07-01T00:00:00Z")), null);
+            .createDataFeed(appInsightsDataFeed);
 
         System.out.printf("Created data feed: %s%n", dataFeed.getId());
 
@@ -68,8 +78,8 @@ public class DatafeedSample {
         // Update the data feed.
         System.out.printf("Updating data feed: %s%n", dataFeed.getId());
         dataFeed = advisorAdministrationClient.updateDataFeed(dataFeed
-            .setOptions(new DataFeedOptions().setAdmins(Arrays.asList("admin1@admin.com"))));
-        System.out.printf("Updated data feed admin list: %s%n", dataFeed.getOptions().getAdmins());
+            .setOptions(new DataFeedOptions().setAdminEmails(Arrays.asList("admin1@admin.com"))));
+        System.out.printf("Updated data feed admin list: %s%n", dataFeed.getOptions().getAdminEmails());
 
         // Delete the data feed.
         System.out.printf("Deleting data feed: %s%n", dataFeed.getId());

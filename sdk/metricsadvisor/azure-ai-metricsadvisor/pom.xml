@@ -32,13 +32,6 @@
     <tag>HEAD</tag>
   </scm>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <legal><![CDATA[[INFO] Any downloads listed may be third party software. Microsoft grants you no rights for third party software.]]></legal>
-    <jacoco.min.branchcoverage>0.49</jacoco.min.branchcoverage>
-    <jacoco.min.linecoverage>0.68</jacoco.min.linecoverage>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
@@ -107,13 +100,6 @@
                 --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
                 --add-opens com.azure.ai.metricsadvisor/com.azure.ai.metricsadvisor=ALL-UNNAMED
               </argLine>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
               <systemPropertyVariables>
                 <!-- Parallel runs disabled due to subscriber timeout issue causing failures in tests. -->
                 <!-- https://github.com/Azure/azure-sdk-for-java/issues/17069 -->

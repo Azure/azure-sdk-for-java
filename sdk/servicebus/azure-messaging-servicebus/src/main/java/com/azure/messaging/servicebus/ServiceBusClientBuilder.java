@@ -772,6 +772,20 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
+         * Disables auto-complete and auto-abandon of received messages. By default, a successfully processed message is
+         * {@link ServiceBusReceivedMessageContext#complete() completed}. If an error happens when
+         * the message is processed, it is {@link ServiceBusReceivedMessageContext#abandon()
+         * abandoned}.
+         *
+         * @return The modified {@link ServiceBusSessionProcessorClientBuilder} object.
+         */
+        public ServiceBusSessionProcessorClientBuilder disableAutoComplete() {
+            sessionReceiverClientBuilder.disableAutoComplete();
+            processorClientOptions.setDisableAutoComplete(true);
+            return this;
+        }
+
+        /**
          * Creates a <b>session-aware</b> Service Bus processor responsible for reading
          * {@link ServiceBusReceivedMessage messages} from a specific queue or topic.
          *
@@ -979,8 +993,8 @@ public final class ServiceBusClientBuilder {
                     "'enableAutoComplete' is not supported in synchronous client except through callback receive.");
                 enableAutoComplete = false;
             } else if (enableAutoComplete && receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
-                throw logger.logExceptionAsError(new IllegalStateException(
-                    "'enableAutoComplete' is not valid for RECEIVE_AND_DELETE mode."));
+                logger.warning("'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.");
+                enableAutoComplete = false;
             }
 
             if (receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
@@ -1046,8 +1060,8 @@ public final class ServiceBusClientBuilder {
                     "'enableAutoComplete' is not supported in synchronous client except through callback receive.");
                 enableAutoComplete = false;
             } else if (enableAutoComplete && receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
-                throw logger.logExceptionAsError(new IllegalStateException(
-                    "'enableAutoComplete' is not valid for RECEIVE_AND_DELETE mode."));
+                logger.warning("'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.");
+                enableAutoComplete = false;
             }
 
             if (receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
@@ -1188,6 +1202,20 @@ public final class ServiceBusClientBuilder {
                     new IllegalArgumentException("'maxConcurrentCalls' cannot be less than 1"));
             }
             processorClientOptions.setMaxConcurrentCalls(maxConcurrentCalls);
+            return this;
+        }
+
+        /**
+         * Disables auto-complete and auto-abandon of received messages. By default, a successfully processed message is
+         * {@link ServiceBusReceivedMessageContext#complete() completed}. If an error happens when
+         * the message is processed, it is {@link ServiceBusReceivedMessageContext#abandon()
+         * abandoned}.
+         *
+         * @return The modified {@link ServiceBusProcessorClientBuilder} object.
+         */
+        public ServiceBusProcessorClientBuilder disableAutoComplete() {
+            serviceBusReceiverClientBuilder.disableAutoComplete();
+            processorClientOptions.setDisableAutoComplete(true);
             return this;
         }
 
@@ -1394,8 +1422,8 @@ public final class ServiceBusClientBuilder {
                     "'enableAutoComplete' is not supported in synchronous client except through callback receive.");
                 enableAutoComplete = false;
             } else if (enableAutoComplete && receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
-                throw logger.logExceptionAsError(new IllegalStateException(
-                    "'enableAutoComplete' is not valid for RECEIVE_AND_DELETE mode."));
+                logger.warning("'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.");
+                enableAutoComplete = false;
             }
 
             if (receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
