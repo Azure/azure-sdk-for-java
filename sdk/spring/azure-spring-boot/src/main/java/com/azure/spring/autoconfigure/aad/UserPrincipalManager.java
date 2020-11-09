@@ -197,6 +197,13 @@ public class UserPrincipalManager {
         return aadAuthenticationProperties.getAllowedTenantIds().isEmpty();
     }
 
+    public boolean isEmptyAadAuthenticationProperties() {
+        if (aadAuthenticationProperties == null) {
+            return true;
+        }
+        return false;
+    }
+
     private ConfigurableJWTProcessor<SecurityContext> getValidator(JWSAlgorithm jwsAlgorithm) {
         final ConfigurableJWTProcessor<SecurityContext> jwtProcessor = new DefaultJWTProcessor<>();
         final JWSKeySelector<SecurityContext> keySelector = new JWSVerificationKeySelector<>(jwsAlgorithm, keySource);
@@ -224,12 +231,12 @@ public class UserPrincipalManager {
                                 + "does not match neither client-id nor AppIdUri.");
                     }
                 }
-                if (isEmptyAllowTenantIds() && !StringUtils.isEmpty(aadAuthenticationProperties.getTenantId())
-                    && !isAllowedTenantId(tenant)) {
+                if (!isEmptyAadAuthenticationProperties() && isEmptyAllowTenantIds() && !StringUtils
+                    .isEmpty(aadAuthenticationProperties.getTenantId()) && !isAllowedTenantId(tenant)) {
                     throw new BadJWTException("Invalid token tenant. Provided value " + tenant
                         + " does not match neither tenant.");
                 }
-                if (!isEmptyAllowTenantIds() && !isAllowedTenantId(tenant)) {
+                if (!isEmptyAadAuthenticationProperties() && !isEmptyAllowTenantIds() && !isAllowedTenantId(tenant)) {
                     throw new BadJWTException("Invalid token tenantId. Provided value " + tenant
                         + " does not allow multi-tenant id.");
                 }
