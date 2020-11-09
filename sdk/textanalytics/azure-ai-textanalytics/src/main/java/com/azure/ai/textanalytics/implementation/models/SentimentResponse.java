@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The SentimentResponse model.
- */
+/** The SentimentResponse model. */
 @Fluent
 public final class SentimentResponse {
     /*
@@ -40,7 +38,7 @@ public final class SentimentResponse {
 
     /**
      * Get the documents property: Sentiment analysis per document.
-     * 
+     *
      * @return the documents value.
      */
     public List<DocumentSentiment> getDocuments() {
@@ -49,7 +47,7 @@ public final class SentimentResponse {
 
     /**
      * Set the documents property: Sentiment analysis per document.
-     * 
+     *
      * @param documents the documents value to set.
      * @return the SentimentResponse object itself.
      */
@@ -60,7 +58,7 @@ public final class SentimentResponse {
 
     /**
      * Get the errors property: Errors by document id.
-     * 
+     *
      * @return the errors value.
      */
     public List<DocumentError> getErrors() {
@@ -69,7 +67,7 @@ public final class SentimentResponse {
 
     /**
      * Set the errors property: Errors by document id.
-     * 
+     *
      * @param errors the errors value to set.
      * @return the SentimentResponse object itself.
      */
@@ -79,9 +77,9 @@ public final class SentimentResponse {
     }
 
     /**
-     * Get the statistics property: if showStats=true was specified in the
-     * request this field will contain information about the request payload.
-     * 
+     * Get the statistics property: if showStats=true was specified in the request this field will contain information
+     * about the request payload.
+     *
      * @return the statistics value.
      */
     public RequestStatistics getStatistics() {
@@ -89,9 +87,9 @@ public final class SentimentResponse {
     }
 
     /**
-     * Set the statistics property: if showStats=true was specified in the
-     * request this field will contain information about the request payload.
-     * 
+     * Set the statistics property: if showStats=true was specified in the request this field will contain information
+     * about the request payload.
+     *
      * @param statistics the statistics value to set.
      * @return the SentimentResponse object itself.
      */
@@ -101,9 +99,8 @@ public final class SentimentResponse {
     }
 
     /**
-     * Get the modelVersion property: This field indicates which model is used
-     * for scoring.
-     * 
+     * Get the modelVersion property: This field indicates which model is used for scoring.
+     *
      * @return the modelVersion value.
      */
     public String getModelVersion() {
@@ -111,9 +108,8 @@ public final class SentimentResponse {
     }
 
     /**
-     * Set the modelVersion property: This field indicates which model is used
-     * for scoring.
-     * 
+     * Set the modelVersion property: This field indicates which model is used for scoring.
+     *
      * @param modelVersion the modelVersion value to set.
      * @return the SentimentResponse object itself.
      */

@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The DocumentHealthcareEntities model.
- */
+/** The DocumentHealthcareEntities model. */
 @Fluent
 public final class DocumentHealthcareEntities {
     /*
@@ -46,7 +44,7 @@ public final class DocumentHealthcareEntities {
 
     /**
      * Get the id property: Unique, non-empty document identifier.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -55,7 +53,7 @@ public final class DocumentHealthcareEntities {
 
     /**
      * Set the id property: Unique, non-empty document identifier.
-     * 
+     *
      * @param id the id value to set.
      * @return the DocumentHealthcareEntities object itself.
      */
@@ -66,7 +64,7 @@ public final class DocumentHealthcareEntities {
 
     /**
      * Get the entities property: Healthcare entities.
-     * 
+     *
      * @return the entities value.
      */
     public List<HealthcareEntity> getEntities() {
@@ -75,7 +73,7 @@ public final class DocumentHealthcareEntities {
 
     /**
      * Set the entities property: Healthcare entities.
-     * 
+     *
      * @param entities the entities value to set.
      * @return the DocumentHealthcareEntities object itself.
      */
@@ -86,7 +84,7 @@ public final class DocumentHealthcareEntities {
 
     /**
      * Get the relations property: Healthcare entity relations.
-     * 
+     *
      * @return the relations value.
      */
     public List<HealthcareRelation> getRelations() {
@@ -95,7 +93,7 @@ public final class DocumentHealthcareEntities {
 
     /**
      * Set the relations property: Healthcare entity relations.
-     * 
+     *
      * @param relations the relations value to set.
      * @return the DocumentHealthcareEntities object itself.
      */
@@ -105,9 +103,8 @@ public final class DocumentHealthcareEntities {
     }
 
     /**
-     * Get the warnings property: Warnings encountered while processing
-     * document.
-     * 
+     * Get the warnings property: Warnings encountered while processing document.
+     *
      * @return the warnings value.
      */
     public List<TextAnalyticsWarning> getWarnings() {
@@ -115,9 +112,8 @@ public final class DocumentHealthcareEntities {
     }
 
     /**
-     * Set the warnings property: Warnings encountered while processing
-     * document.
-     * 
+     * Set the warnings property: Warnings encountered while processing document.
+     *
      * @param warnings the warnings value to set.
      * @return the DocumentHealthcareEntities object itself.
      */
@@ -127,9 +123,9 @@ public final class DocumentHealthcareEntities {
     }
 
     /**
-     * Get the statistics property: if showStats=true was specified in the
-     * request this field will contain information about the document payload.
-     * 
+     * Get the statistics property: if showStats=true was specified in the request this field will contain information
+     * about the document payload.
+     *
      * @return the statistics value.
      */
     public DocumentStatistics getStatistics() {
@@ -137,9 +133,9 @@ public final class DocumentHealthcareEntities {
     }
 
     /**
-     * Set the statistics property: if showStats=true was specified in the
-     * request this field will contain information about the document payload.
-     * 
+     * Set the statistics property: if showStats=true was specified in the request this field will contain information
+     * about the document payload.
+     *
      * @param statistics the statistics value to set.
      * @return the DocumentHealthcareEntities object itself.
      */

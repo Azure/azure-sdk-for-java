@@ -151,9 +151,9 @@ class DetectLanguageAsyncClient {
         Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options, Context context) {
         return service.languagesWithResponseAsync(
             new LanguageBatchInput().setDocuments(toLanguageInput(documents)),
-            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE),
             options == null ? null : options.getModelVersion(),
-            options == null ? null : options.isIncludeStatistics())
+            options == null ? null : options.isIncludeStatistics(),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
             .doOnSuccess(response -> logger.info("Detected languages for a batch of documents - {}",
                 response.getValue()))

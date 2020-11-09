@@ -7,53 +7,33 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for State.
- */
+/** Defines values for State. */
 public enum State {
-    /**
-     * Enum value notstarted.
-     */
+    /** Enum value notstarted. */
     NOTSTARTED("notstarted"),
 
-    /**
-     * Enum value running.
-     */
+    /** Enum value running. */
     RUNNING("running"),
 
-    /**
-     * Enum value succeeded.
-     */
+    /** Enum value succeeded. */
     SUCCEEDED("succeeded"),
 
-    /**
-     * Enum value failed.
-     */
+    /** Enum value failed. */
     FAILED("failed"),
 
-    /**
-     * Enum value cancelled.
-     */
+    /** Enum value cancelled. */
     CANCELLED("cancelled"),
 
-    /**
-     * Enum value cancelling.
-     */
+    /** Enum value cancelling. */
     CANCELLING("cancelling"),
 
-    /**
-     * Enum value notStarted.
-     */
+    /** Enum value notStarted. */
     NOT_STARTED("notStarted"),
 
-    /**
-     * Enum value partiallyCompleted.
-     */
+    /** Enum value partiallyCompleted. */
     PARTIALLY_COMPLETED("partiallyCompleted");
 
-    /**
-     * The actual serialized value for a State instance.
-     */
+    /** The actual serialized value for a State instance. */
     private final String value;
 
     State(String value) {
@@ -62,7 +42,7 @@ public enum State {
 
     /**
      * Parses a serialized value to a State instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed State object, or null if unable to parse.
      */

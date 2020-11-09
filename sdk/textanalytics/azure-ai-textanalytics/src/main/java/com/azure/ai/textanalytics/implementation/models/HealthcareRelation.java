@@ -7,9 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The HealthcareRelation model.
- */
+/** The HealthcareRelation model. */
 @Fluent
 public final class HealthcareRelation {
     /*
@@ -39,9 +37,9 @@ public final class HealthcareRelation {
     private String target;
 
     /**
-     * Get the relationType property: Type of relation. Examples include:
-     * `DosageOfMedication` or 'FrequencyOfMedication', etc.
-     * 
+     * Get the relationType property: Type of relation. Examples include: `DosageOfMedication` or
+     * 'FrequencyOfMedication', etc.
+     *
      * @return the relationType value.
      */
     public String getRelationType() {
@@ -49,9 +47,9 @@ public final class HealthcareRelation {
     }
 
     /**
-     * Set the relationType property: Type of relation. Examples include:
-     * `DosageOfMedication` or 'FrequencyOfMedication', etc.
-     * 
+     * Set the relationType property: Type of relation. Examples include: `DosageOfMedication` or
+     * 'FrequencyOfMedication', etc.
+     *
      * @param relationType the relationType value to set.
      * @return the HealthcareRelation object itself.
      */
@@ -61,9 +59,9 @@ public final class HealthcareRelation {
     }
 
     /**
-     * Get the bidirectional property: If true the relation between the
-     * entities is bidirectional, otherwise directionality is source to target.
-     * 
+     * Get the bidirectional property: If true the relation between the entities is bidirectional, otherwise
+     * directionality is source to target.
+     *
      * @return the bidirectional value.
      */
     public boolean isBidirectional() {
@@ -71,9 +69,9 @@ public final class HealthcareRelation {
     }
 
     /**
-     * Set the bidirectional property: If true the relation between the
-     * entities is bidirectional, otherwise directionality is source to target.
-     * 
+     * Set the bidirectional property: If true the relation between the entities is bidirectional, otherwise
+     * directionality is source to target.
+     *
      * @param bidirectional the bidirectional value to set.
      * @return the HealthcareRelation object itself.
      */
@@ -84,7 +82,7 @@ public final class HealthcareRelation {
 
     /**
      * Get the source property: Reference link to the source entity.
-     * 
+     *
      * @return the source value.
      */
     public String getSource() {
@@ -93,7 +91,7 @@ public final class HealthcareRelation {
 
     /**
      * Set the source property: Reference link to the source entity.
-     * 
+     *
      * @param source the source value to set.
      * @return the HealthcareRelation object itself.
      */
@@ -104,7 +102,7 @@ public final class HealthcareRelation {
 
     /**
      * Get the target property: Reference link to the target entity.
-     * 
+     *
      * @return the target value.
      */
     public String getTarget() {
@@ -113,7 +111,7 @@ public final class HealthcareRelation {
 
     /**
      * Set the target property: Reference link to the target entity.
-     * 
+     *
      * @param target the target value to set.
      * @return the HealthcareRelation object itself.
      */

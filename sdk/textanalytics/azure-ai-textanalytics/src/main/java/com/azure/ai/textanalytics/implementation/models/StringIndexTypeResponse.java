@@ -7,28 +7,18 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for StringIndexTypeResponse.
- */
+/** Defines values for StringIndexTypeResponse. */
 public enum StringIndexTypeResponse {
-    /**
-     * Enum value TextElements_v8.
-     */
+    /** Enum value TextElements_v8. */
     TEXT_ELEMENTS_V8("TextElements_v8"),
 
-    /**
-     * Enum value UnicodeCodePoint.
-     */
+    /** Enum value UnicodeCodePoint. */
     UNICODE_CODE_POINT("UnicodeCodePoint"),
 
-    /**
-     * Enum value Utf16CodeUnit.
-     */
+    /** Enum value Utf16CodeUnit. */
     UTF16CODE_UNIT("Utf16CodeUnit");
 
-    /**
-     * The actual serialized value for a StringIndexTypeResponse instance.
-     */
+    /** The actual serialized value for a StringIndexTypeResponse instance. */
     private final String value;
 
     StringIndexTypeResponse(String value) {
@@ -37,7 +27,7 @@ public enum StringIndexTypeResponse {
 
     /**
      * Parses a serialized value to a StringIndexTypeResponse instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed StringIndexTypeResponse object, or null if unable to parse.
      */

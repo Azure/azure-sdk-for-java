@@ -7,9 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The CancelHealthJobHeaders model.
- */
+/** The CancelHealthJobHeaders model. */
 @Fluent
 public final class CancelHealthJobHeaders {
     /*
@@ -20,7 +18,7 @@ public final class CancelHealthJobHeaders {
 
     /**
      * Get the operationLocation property: The Operation-Location property.
-     * 
+     *
      * @return the operationLocation value.
      */
     public String getOperationLocation() {
@@ -29,7 +27,7 @@ public final class CancelHealthJobHeaders {
 
     /**
      * Set the operationLocation property: The Operation-Location property.
-     * 
+     *
      * @param operationLocation the operationLocation value to set.
      * @return the CancelHealthJobHeaders object itself.
      */

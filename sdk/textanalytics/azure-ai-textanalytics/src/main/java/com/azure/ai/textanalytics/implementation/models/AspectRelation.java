@@ -7,9 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The AspectRelation model.
- */
+/** The AspectRelation model. */
 @Fluent
 public final class AspectRelation {
     /*
@@ -26,7 +24,7 @@ public final class AspectRelation {
 
     /**
      * Get the relationType property: The type related to the aspect.
-     * 
+     *
      * @return the relationType value.
      */
     public AspectRelationType getRelationType() {
@@ -35,7 +33,7 @@ public final class AspectRelation {
 
     /**
      * Set the relationType property: The type related to the aspect.
-     * 
+     *
      * @param relationType the relationType value to set.
      * @return the AspectRelation object itself.
      */
@@ -46,7 +44,7 @@ public final class AspectRelation {
 
     /**
      * Get the ref property: The JSON pointer indicating the linked object.
-     * 
+     *
      * @return the ref value.
      */
     public String getRef() {
@@ -55,7 +53,7 @@ public final class AspectRelation {
 
     /**
      * Set the ref property: The JSON pointer indicating the linked object.
-     * 
+     *
      * @param ref the ref value to set.
      * @return the AspectRelation object itself.
      */

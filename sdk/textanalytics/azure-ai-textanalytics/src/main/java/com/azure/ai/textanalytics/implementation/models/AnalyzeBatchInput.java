@@ -7,9 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The AnalyzeBatchInput model.
- */
+/** The AnalyzeBatchInput model. */
 @Fluent
 public final class AnalyzeBatchInput extends JobDescriptor {
     /*
@@ -26,9 +24,8 @@ public final class AnalyzeBatchInput extends JobDescriptor {
     private JobManifestTasks tasks;
 
     /**
-     * Get the analysisInput property: Contains a set of input documents to be
-     * analyzed by the service.
-     * 
+     * Get the analysisInput property: Contains a set of input documents to be analyzed by the service.
+     *
      * @return the analysisInput value.
      */
     public MultiLanguageBatchInput getAnalysisInput() {
@@ -36,9 +33,8 @@ public final class AnalyzeBatchInput extends JobDescriptor {
     }
 
     /**
-     * Set the analysisInput property: Contains a set of input documents to be
-     * analyzed by the service.
-     * 
+     * Set the analysisInput property: Contains a set of input documents to be analyzed by the service.
+     *
      * @param analysisInput the analysisInput value to set.
      * @return the AnalyzeBatchInput object itself.
      */
@@ -48,9 +44,9 @@ public final class AnalyzeBatchInput extends JobDescriptor {
     }
 
     /**
-     * Get the tasks property: The set of tasks to execute on the input
-     * documents. Cannot specify the same task more than once.
-     * 
+     * Get the tasks property: The set of tasks to execute on the input documents. Cannot specify the same task more
+     * than once.
+     *
      * @return the tasks value.
      */
     public JobManifestTasks getTasks() {
@@ -58,9 +54,9 @@ public final class AnalyzeBatchInput extends JobDescriptor {
     }
 
     /**
-     * Set the tasks property: The set of tasks to execute on the input
-     * documents. Cannot specify the same task more than once.
-     * 
+     * Set the tasks property: The set of tasks to execute on the input documents. Cannot specify the same task more
+     * than once.
+     *
      * @param tasks the tasks value to set.
      * @return the AnalyzeBatchInput object itself.
      */

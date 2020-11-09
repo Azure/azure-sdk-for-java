@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The JobManifestTasks model.
- */
+/** The JobManifestTasks model. */
 @Fluent
 public final class JobManifestTasks {
     /*
@@ -32,9 +30,8 @@ public final class JobManifestTasks {
     private List<KeyPhrasesTask> keyPhraseExtractionTasks;
 
     /**
-     * Get the entityRecognitionTasks property: The entityRecognitionTasks
-     * property.
-     * 
+     * Get the entityRecognitionTasks property: The entityRecognitionTasks property.
+     *
      * @return the entityRecognitionTasks value.
      */
     public List<EntitiesTask> getEntityRecognitionTasks() {
@@ -42,9 +39,8 @@ public final class JobManifestTasks {
     }
 
     /**
-     * Set the entityRecognitionTasks property: The entityRecognitionTasks
-     * property.
-     * 
+     * Set the entityRecognitionTasks property: The entityRecognitionTasks property.
+     *
      * @param entityRecognitionTasks the entityRecognitionTasks value to set.
      * @return the JobManifestTasks object itself.
      */
@@ -54,9 +50,8 @@ public final class JobManifestTasks {
     }
 
     /**
-     * Get the entityRecognitionPiiTasks property: The
-     * entityRecognitionPiiTasks property.
-     * 
+     * Get the entityRecognitionPiiTasks property: The entityRecognitionPiiTasks property.
+     *
      * @return the entityRecognitionPiiTasks value.
      */
     public List<PiiTask> getEntityRecognitionPiiTasks() {
@@ -64,11 +59,9 @@ public final class JobManifestTasks {
     }
 
     /**
-     * Set the entityRecognitionPiiTasks property: The
-     * entityRecognitionPiiTasks property.
-     * 
-     * @param entityRecognitionPiiTasks the entityRecognitionPiiTasks value to
-     * set.
+     * Set the entityRecognitionPiiTasks property: The entityRecognitionPiiTasks property.
+     *
+     * @param entityRecognitionPiiTasks the entityRecognitionPiiTasks value to set.
      * @return the JobManifestTasks object itself.
      */
     public JobManifestTasks setEntityRecognitionPiiTasks(List<PiiTask> entityRecognitionPiiTasks) {
@@ -77,9 +70,8 @@ public final class JobManifestTasks {
     }
 
     /**
-     * Get the keyPhraseExtractionTasks property: The keyPhraseExtractionTasks
-     * property.
-     * 
+     * Get the keyPhraseExtractionTasks property: The keyPhraseExtractionTasks property.
+     *
      * @return the keyPhraseExtractionTasks value.
      */
     public List<KeyPhrasesTask> getKeyPhraseExtractionTasks() {
@@ -87,11 +79,9 @@ public final class JobManifestTasks {
     }
 
     /**
-     * Set the keyPhraseExtractionTasks property: The keyPhraseExtractionTasks
-     * property.
-     * 
-     * @param keyPhraseExtractionTasks the keyPhraseExtractionTasks value to
-     * set.
+     * Set the keyPhraseExtractionTasks property: The keyPhraseExtractionTasks property.
+     *
+     * @param keyPhraseExtractionTasks the keyPhraseExtractionTasks value to set.
      * @return the JobManifestTasks object itself.
      */
     public JobManifestTasks setKeyPhraseExtractionTasks(List<KeyPhrasesTask> keyPhraseExtractionTasks) {

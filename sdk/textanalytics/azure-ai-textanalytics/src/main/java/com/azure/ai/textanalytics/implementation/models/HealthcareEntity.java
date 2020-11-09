@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The HealthcareEntity model.
- */
+/** The HealthcareEntity model. */
 @Fluent
 public final class HealthcareEntity extends Entity {
     /*
@@ -27,7 +25,7 @@ public final class HealthcareEntity extends Entity {
 
     /**
      * Get the isNegated property: The isNegated property.
-     * 
+     *
      * @return the isNegated value.
      */
     public boolean isNegated() {
@@ -36,7 +34,7 @@ public final class HealthcareEntity extends Entity {
 
     /**
      * Set the isNegated property: The isNegated property.
-     * 
+     *
      * @param isNegated the isNegated value to set.
      * @return the HealthcareEntity object itself.
      */
@@ -47,7 +45,7 @@ public final class HealthcareEntity extends Entity {
 
     /**
      * Get the links property: Entity references in known data sources.
-     * 
+     *
      * @return the links value.
      */
     public List<HealthcareEntityLink> getLinks() {
@@ -56,7 +54,7 @@ public final class HealthcareEntity extends Entity {
 
     /**
      * Set the links property: Entity references in known data sources.
-     * 
+     *
      * @param links the links value to set.
      * @return the HealthcareEntity object itself.
      */

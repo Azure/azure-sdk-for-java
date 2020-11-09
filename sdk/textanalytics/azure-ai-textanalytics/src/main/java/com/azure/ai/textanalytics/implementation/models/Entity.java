@@ -7,9 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Entity model.
- */
+/** The Entity model. */
 @Fluent
 public class Entity {
     /*
@@ -52,7 +50,7 @@ public class Entity {
 
     /**
      * Get the text property: Entity text as appears in the request.
-     * 
+     *
      * @return the text value.
      */
     public String getText() {
@@ -61,7 +59,7 @@ public class Entity {
 
     /**
      * Set the text property: Entity text as appears in the request.
-     * 
+     *
      * @param text the text value to set.
      * @return the Entity object itself.
      */
@@ -72,7 +70,7 @@ public class Entity {
 
     /**
      * Get the category property: Entity type.
-     * 
+     *
      * @return the category value.
      */
     public String getCategory() {
@@ -81,7 +79,7 @@ public class Entity {
 
     /**
      * Set the category property: Entity type.
-     * 
+     *
      * @param category the category value to set.
      * @return the Entity object itself.
      */
@@ -92,7 +90,7 @@ public class Entity {
 
     /**
      * Get the subcategory property: (Optional) Entity sub type.
-     * 
+     *
      * @return the subcategory value.
      */
     public String getSubcategory() {
@@ -101,7 +99,7 @@ public class Entity {
 
     /**
      * Set the subcategory property: (Optional) Entity sub type.
-     * 
+     *
      * @param subcategory the subcategory value to set.
      * @return the Entity object itself.
      */
@@ -111,9 +109,9 @@ public class Entity {
     }
 
     /**
-     * Get the offset property: Start position for the entity text. Use of
-     * different 'stringIndexType' values can affect the offset returned.
-     * 
+     * Get the offset property: Start position for the entity text. Use of different 'stringIndexType' values can affect
+     * the offset returned.
+     *
      * @return the offset value.
      */
     public int getOffset() {
@@ -121,9 +119,9 @@ public class Entity {
     }
 
     /**
-     * Set the offset property: Start position for the entity text. Use of
-     * different 'stringIndexType' values can affect the offset returned.
-     * 
+     * Set the offset property: Start position for the entity text. Use of different 'stringIndexType' values can affect
+     * the offset returned.
+     *
      * @param offset the offset value to set.
      * @return the Entity object itself.
      */
@@ -133,9 +131,9 @@ public class Entity {
     }
 
     /**
-     * Get the length property: Length for the entity text. Use of different
-     * 'stringIndexType' values can affect the length returned.
-     * 
+     * Get the length property: Length for the entity text. Use of different 'stringIndexType' values can affect the
+     * length returned.
+     *
      * @return the length value.
      */
     public int getLength() {
@@ -143,9 +141,9 @@ public class Entity {
     }
 
     /**
-     * Set the length property: Length for the entity text. Use of different
-     * 'stringIndexType' values can affect the length returned.
-     * 
+     * Set the length property: Length for the entity text. Use of different 'stringIndexType' values can affect the
+     * length returned.
+     *
      * @param length the length value to set.
      * @return the Entity object itself.
      */
@@ -155,9 +153,8 @@ public class Entity {
     }
 
     /**
-     * Get the confidenceScore property: Confidence score between 0 and 1 of
-     * the extracted entity.
-     * 
+     * Get the confidenceScore property: Confidence score between 0 and 1 of the extracted entity.
+     *
      * @return the confidenceScore value.
      */
     public double getConfidenceScore() {
@@ -165,9 +162,8 @@ public class Entity {
     }
 
     /**
-     * Set the confidenceScore property: Confidence score between 0 and 1 of
-     * the extracted entity.
-     * 
+     * Set the confidenceScore property: Confidence score between 0 and 1 of the extracted entity.
+     *
      * @param confidenceScore the confidenceScore value to set.
      * @return the Entity object itself.
      */
