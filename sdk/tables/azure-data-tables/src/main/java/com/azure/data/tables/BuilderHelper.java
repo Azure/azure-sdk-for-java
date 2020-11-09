@@ -21,6 +21,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.data.tables.implementation.NullHttpClient;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
@@ -96,6 +97,17 @@ final class BuilderHelper {
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
+            .build();
+    }
+
+    static HttpPipeline buildNullClientPipeline() {
+        HttpPipelinePolicy[] policies = {
+            new AddHeadersPolicy(new HttpHeaders().put("Accept", "application/json;odata=minimalmetadata"))
+        };
+
+        return new HttpPipelineBuilder()
+            .policies(policies)
+            .httpClient(new NullHttpClient())
             .build();
     }
 
