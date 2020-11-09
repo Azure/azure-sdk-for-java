@@ -228,4 +228,27 @@ public class EventHubMessageSerializerTest {
             serializer.deserialize(message, EventHubProperties.class);
         });
     }
+
+    @Test
+    public void getSizeTest() {
+        final String eventHubName = "event-hub-name-test";
+        final Date createdAtAsDate = new Date(1569275540L);
+        final String[] partitionIds = new String[]{"1", "foo", "bar", "baz"};
+        final Map<String, Object> values = new HashMap<>();
+        values.put(ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY, eventHubName);
+        values.put(ManagementChannel.MANAGEMENT_RESULT_CREATED_AT, createdAtAsDate);
+        values.put(ManagementChannel.MANAGEMENT_RESULT_PARTITION_IDS, partitionIds);
+        final AmqpValue amqpValue = new AmqpValue(values);
+
+        final Message message = Proton.message();
+        message.setBody(amqpValue);
+        int eventHubMessageSerializer = new EventHubMessageSerializer().getSize(message);
+        System.out.println("------------ " + eventHubMessageSerializer);
+
+    }
+
+    @Test
+    public void deserializeListTest() {
+        Assertions.assertThrows(NullPointerException.class, () -> serializer.deserializeList(null, EventData.class));
+    }
 }

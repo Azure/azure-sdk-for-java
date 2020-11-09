@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.util.Context;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -33,6 +34,9 @@ public class EventDataTest {
     private static final String PAYLOAD = new String(new char[10000]).replace("\0", "a");
     private static final byte[] PAYLOAD_BYTES = PAYLOAD.getBytes(UTF_8);
     private static final MessageSerializer MESSAGE_SERIALIZER = new EventHubMessageSerializer();
+    private static final String KEY_NAME = "some-key-name";
+    private static final String KEY_VALUE = "ctzMq410TV3wS7upTBcunJTDLEJwMAZuFPfr0mrrA08=";
+    final EventData eventData = new EventData(PAYLOAD_BYTES);
 
     @Test
     public void byteArrayNotNull() {
@@ -112,4 +116,54 @@ public class EventDataTest {
 
         return MESSAGE_SERIALIZER.deserialize(message, EventData.class);
     }
+
+    @Test
+    public void getBodyAsStringTest() {
+        final EventData eventData = new EventData(PAYLOAD_BYTES);
+        Assertions.assertNotNull(eventData.getBodyAsString());
+        Assertions.assertEquals(PAYLOAD, eventData.getBodyAsString());
+    }
+
+    @Test
+    public void getContextTest() {
+        final EventData eventData = new EventData(PAYLOAD_BYTES);
+        Context context = eventData.getContext();
+        Assertions.assertNotNull(context);
+    }
+
+    @Test
+    public void addContextTest() {
+        final EventData eventData = new EventData(PAYLOAD_BYTES);
+        Assertions.assertNotNull(eventData.addContext(KEY_NAME, KEY_VALUE));
+        Assertions.assertNotNull(eventData);
+    }
+
+    @Test
+    public void equalsTest() {
+        final EventData eventData1 = new EventData(PAYLOAD_BYTES);
+        boolean eventData2 = new EventData(PAYLOAD_BYTES).equals(eventData1);
+        Assertions.assertTrue(eventData2);
+    }
+
+    @Test
+    public void hashCodeTest() {
+        int hashValue = 247131905;
+        int hashCodeValue = eventData.hashCode();
+        Assertions.assertEquals(hashValue, hashCodeValue);
+    }
+
+    @Test
+    public void getOffsetTest() {
+        Long returnLongValue = eventData.getOffset();
+        Assertions.assertNotEquals(1L, returnLongValue);
+    }
+
+    @Test
+    public void eventDataStringTest() {
+        final EventData eventData = new EventData(PAYLOAD);
+        Assertions.assertNotNull(eventData.getSystemProperties());
+        Assertions.assertNotNull(eventData.getBody());
+        Assertions.assertNotNull(eventData.getProperties());
+    }
+
 }

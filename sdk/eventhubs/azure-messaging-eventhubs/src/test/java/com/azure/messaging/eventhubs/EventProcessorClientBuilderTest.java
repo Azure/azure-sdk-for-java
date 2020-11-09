@@ -3,13 +3,25 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpTransportType;
+import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.util.Configuration;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
-import java.time.Duration;
+import com.azure.messaging.eventhubs.models.CloseContext;
+import com.azure.messaging.eventhubs.models.EventBatchContext;
+import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.InitializationContext;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Duration;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -18,6 +30,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Unit tests for {@link EventProcessorClientBuilder}.
  */
 public class EventProcessorClientBuilderTest {
+
+    private EventProcessorClientBuilder eventProcessorClientBuilder;
 
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
     private static final String DEFAULT_DOMAIN_NAME = "servicebus.windows.net/";
@@ -144,4 +158,131 @@ public class EventProcessorClientBuilderTest {
         assertNotNull(eventProcessorClient);
     }
 
+    @Test
+    public void connectionStringTest() {
+        eventProcessorClientBuilder = new EventProcessorClientBuilder()
+            .connectionString(CORRECT_CONNECTION_STRING, EVENT_HUB_NAME);
+        Assertions.assertNotNull(eventProcessorClientBuilder);
+    }
+
+    @Test
+    public void configurationTest() {
+        eventProcessorClientBuilder = new EventProcessorClientBuilder()
+            .configuration(Configuration.getGlobalConfiguration());
+        Assertions.assertNotNull(eventProcessorClientBuilder);
+    }
+
+    @Test
+    public void proxyOptionTest() {
+        eventProcessorClientBuilder = new EventProcessorClientBuilder()
+            .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS);
+        Assertions.assertNotNull(eventProcessorClientBuilder);
+    }
+
+    @Test
+    public void transportTypeTest() {
+        eventProcessorClientBuilder = new EventProcessorClientBuilder()
+            .transportType(AmqpTransportType.AMQP);
+        Assertions.assertNotNull(eventProcessorClientBuilder);
+    }
+
+    @Test
+    public void retryTest() {
+
+        int maxRetries = 10;
+        Duration maxDelay = Duration.ofSeconds(120);
+        Duration delay = Duration.ofSeconds(20);
+        AmqpRetryOptions options = new AmqpRetryOptions()
+            .setMaxRetries(maxRetries)
+            .setMaxDelay(maxDelay)
+            .setDelay(delay);
+
+        eventProcessorClientBuilder = new EventProcessorClientBuilder()
+            .retry(options);
+        Assertions.assertNotNull(eventProcessorClientBuilder);
+    }
+
+    @Test
+    public void loadBalancingUpdateIntervalTest() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            eventProcessorClientBuilder = new EventProcessorClientBuilder()
+                .loadBalancingUpdateInterval(Duration.ofSeconds(0));
+            Assertions.assertNotNull(eventProcessorClientBuilder);
+        });
+    }
+
+    @Test
+    public void partitionOwnershipExpirationIntervalTest() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            eventProcessorClientBuilder = new EventProcessorClientBuilder()
+                .partitionOwnershipExpirationInterval(Duration.ZERO);
+            Assertions.assertNotNull(eventProcessorClientBuilder);
+        });
+    }
+
+    @Test
+    public void loadBalancingStrategyTest() {
+        eventProcessorClientBuilder = new EventProcessorClientBuilder()
+            .loadBalancingStrategy(LoadBalancingStrategy.BALANCED);
+        Assertions.assertNotNull(eventProcessorClientBuilder);
+    }
+
+    @Test
+    public void processEventBatchTest() {
+        eventProcessorClientBuilder = new EventProcessorClientBuilder()
+            .processEventBatch(EventBatchContext::updateCheckpoint, 1);
+        Assertions.assertNotNull(eventProcessorClientBuilder);
+    }
+
+    @Test
+    public void processEventBatchSecondTest() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            eventProcessorClientBuilder = new EventProcessorClientBuilder()
+                .processEventBatch(EventBatchContext::updateCheckpoint, 0, null);
+            Assertions.assertNotNull(eventProcessorClientBuilder);
+        });
+
+    }
+
+    @Test
+    public void processPartitionInitializationTest() {
+        Consumer<InitializationContext> initializePartition = new Consumer<InitializationContext>() {
+            @Override
+            public void accept(InitializationContext initializationContext) {
+
+            }
+        };
+        eventProcessorClientBuilder = new EventProcessorClientBuilder()
+            .processPartitionInitialization(initializePartition);
+        Assertions.assertNotNull(eventProcessorClientBuilder);
+    }
+
+    @Test
+    public void processPartitionCloseTest() {
+        Consumer<CloseContext> closePartition = new Consumer<CloseContext>() {
+            @Override
+            public void accept(CloseContext closeContext) {
+
+            }
+        };
+        eventProcessorClientBuilder = new EventProcessorClientBuilder()
+            .processPartitionClose(closePartition);
+        Assertions.assertNotNull(eventProcessorClientBuilder);
+    }
+
+    @Test
+    public void trackLastEnqueuedEventPropertiesTest() {
+        eventProcessorClientBuilder = new EventProcessorClientBuilder()
+            .trackLastEnqueuedEventProperties(false);
+        Assertions.assertNotNull(eventProcessorClientBuilder);
+    }
+
+    @Test
+    public void initialPartitionEventPositionTest() {
+
+        Map<String, EventPosition> eventMap = new HashMap<>();
+        eventProcessorClientBuilder = new EventProcessorClientBuilder()
+            .initialPartitionEventPosition(eventMap);
+        Assertions.assertNotNull(eventProcessorClientBuilder);
+    }
 }

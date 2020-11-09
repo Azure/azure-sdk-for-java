@@ -18,6 +18,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Context;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
@@ -508,5 +509,38 @@ public class EventHubProducerClientTest {
         } catch (AmqpException e) {
             Assertions.assertEquals(AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, e.getErrorCondition());
         }
+    }
+
+    @Test
+    public void getEventHubNameTest() {
+        String eventHubProducerClient = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout())
+            .getEventHubName();
+        Assertions.assertEquals(EVENT_HUB_NAME, eventHubProducerClient);
+    }
+
+    @Test
+    public void getFullyQualifiedNamespaceTest() {
+        String eventHubProducerClientString = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout())
+            .getFullyQualifiedNamespace();
+        Assertions.assertEquals(HOSTNAME, eventHubProducerClientString);
+    }
+
+    @Test
+    public void getPartitionIdsTest() {
+        IterableStream<String> partitionIds = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout())
+            .getPartitionIds();
+        Assertions.assertNotNull(partitionIds);
+    }
+
+    @Test
+    public void sendTest() {
+
+        final EventData eventData = new EventData("hello-world".getBytes(UTF_8));
+        final String partitionId = "partition-id-1";
+        final SendOptions options = new SendOptions().setPartitionId(partitionId);
+
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout()).send(eventData, options);
+        });
     }
 }

@@ -3,11 +3,13 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.util.Configuration;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
+import java.time.Duration;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -20,7 +22,8 @@ import java.util.Locale;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -35,6 +38,9 @@ public class EventHubClientBuilderTest {
 
     private static final String PROXY_HOST = "127.0.0.1";
     private static final String PROXY_PORT = "3128";
+
+    private AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(30));
+    private final Scheduler testScheduler = Schedulers.newSingle("eh-test");
 
     private static final String CORRECT_CONNECTION_STRING = String.format("Endpoint=%s;SharedAccessKeyName=%s;SharedAccessKey=%s;EntityPath=%s",
         ENDPOINT, SHARED_ACCESS_KEY_NAME, SHARED_ACCESS_KEY, EVENT_HUB_NAME);
@@ -151,6 +157,48 @@ public class EventHubClientBuilderTest {
             throw new IllegalArgumentException(String.format(Locale.US,
                 "Invalid namespace name: %s", namespace), exception);
         }
+    }
+
+    @Test
+    public void shareConnectionTest() {
+        final EventHubClientBuilder builder = new EventHubClientBuilder();
+        builder.shareConnection();
+        Assertions.assertNotNull(builder);
+    }
+
+    @Test
+    public void transportTypeTest() {
+        final EventHubClientBuilder builder = new EventHubClientBuilder()
+            .transportType(AmqpTransportType.AMQP_WEB_SOCKETS);
+        Assertions.assertNotNull(builder);
+    }
+
+    @Test
+    public void retryTest() {
+        final EventHubClientBuilder builder = new EventHubClientBuilder()
+            .retry(retryOptions);
+        Assertions.assertNotNull(builder);
+    }
+
+    @Test
+    public void schedulerTest() {
+        final EventHubClientBuilder builder = new EventHubClientBuilder()
+            .scheduler(testScheduler);
+        Assertions.assertNotNull(builder);
+    }
+
+    @Test
+    public void prefetchCountTest() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            final EventHubClientBuilder builder = new EventHubClientBuilder()
+                .prefetchCount(1);
+            Assertions.assertNotNull(builder.buildAsyncClient());
+        });
+    }
+
+    @Test
+    public void onClientCloseTest() {
+        new EventHubClientBuilder().onClientClose();
     }
 
     // TODO: add test for retry(), scheduler(), timeout(), transportType()
