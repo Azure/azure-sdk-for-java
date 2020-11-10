@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * InMage Azure V2 input to update replication protected item.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = A2AUpdateReplicationProtectedItemInput.class)
 @JsonTypeName("A2A")
 public class A2AUpdateReplicationProtectedItemInput extends UpdateReplicationProtectedItemProviderInput {
     /**

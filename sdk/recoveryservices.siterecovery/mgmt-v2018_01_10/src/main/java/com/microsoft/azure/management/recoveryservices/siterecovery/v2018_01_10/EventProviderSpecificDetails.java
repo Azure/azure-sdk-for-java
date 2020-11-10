@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Model class for provider specific details for an event.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = EventProviderSpecificDetails.class)
 @JsonTypeName("EventProviderSpecificDetails")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "A2A", value = A2AEventDetails.class),
@@ -23,7 +23,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "HyperVReplica2012R2", value = HyperVReplica2012R2EventDetails.class),
     @JsonSubTypes.Type(name = "HyperVReplicaAzure", value = HyperVReplicaAzureEventDetails.class),
     @JsonSubTypes.Type(name = "HyperVReplicaBaseEventDetails", value = HyperVReplicaBaseEventDetails.class),
-    @JsonSubTypes.Type(name = "InMageAzureV2", value = InMageAzureV2EventDetails.class)
+    @JsonSubTypes.Type(name = "InMageAzureV2", value = InMageAzureV2EventDetails.class),
+    @JsonSubTypes.Type(name = "VMwareCbt", value = VMwareCbtEventDetails.class)
 })
 public class EventProviderSpecificDetails {
 }

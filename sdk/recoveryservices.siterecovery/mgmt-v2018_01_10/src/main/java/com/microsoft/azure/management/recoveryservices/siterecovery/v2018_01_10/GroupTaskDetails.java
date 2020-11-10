@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
  * This class represents the group task details when parent child relationship
  * exists in the drill down.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = GroupTaskDetails.class)
 @JsonTypeName("GroupTaskDetails")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "InlineWorkflowTaskDetails", value = InlineWorkflowTaskDetails.class),

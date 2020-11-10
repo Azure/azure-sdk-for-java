@@ -15,14 +15,20 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * VMwareV2 fabric provider specific settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = VMwareV2FabricCreationInput.class)
 @JsonTypeName("VMwareV2")
 public class VMwareV2FabricCreationInput extends FabricSpecificCreationInput {
     /**
      * The ARM Id of the VMware site.
      */
-    @JsonProperty(value = "vmwareSiteId", required = true)
+    @JsonProperty(value = "vmwareSiteId")
     private String vmwareSiteId;
+
+    /**
+     * The ARM Id of the physical site.
+     */
+    @JsonProperty(value = "physicalSiteId")
+    private String physicalSiteId;
 
     /**
      * The ARM Id of the migration solution.
@@ -47,6 +53,26 @@ public class VMwareV2FabricCreationInput extends FabricSpecificCreationInput {
      */
     public VMwareV2FabricCreationInput withVmwareSiteId(String vmwareSiteId) {
         this.vmwareSiteId = vmwareSiteId;
+        return this;
+    }
+
+    /**
+     * Get the ARM Id of the physical site.
+     *
+     * @return the physicalSiteId value
+     */
+    public String physicalSiteId() {
+        return this.physicalSiteId;
+    }
+
+    /**
+     * Set the ARM Id of the physical site.
+     *
+     * @param physicalSiteId the physicalSiteId value to set
+     * @return the VMwareV2FabricCreationInput object itself.
+     */
+    public VMwareV2FabricCreationInput withPhysicalSiteId(String physicalSiteId) {
+        this.physicalSiteId = physicalSiteId;
         return this;
     }
 
