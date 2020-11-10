@@ -96,7 +96,6 @@ public class ManagedIdentityCredentialTest {
         String token1 = "token1";
         String endpoint = "http://localhost";
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
-        OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
         configuration.put("IDENTITY_ENDPOINT", endpoint);
         configuration.put("IMDS_ENDPOINT", endpoint);
 
@@ -104,7 +103,7 @@ public class ManagedIdentityCredentialTest {
         // test
         ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(CLIENT_ID).build();
         StepVerifier.create(credential.getToken(request))
-            .expectError(ClientAuthenticationException.class)
+            .expectErrorMatches(t -> t instanceof ClientAuthenticationException)
             .verify();
     }
 
