@@ -10,7 +10,7 @@ package com.microsoft.azure.management.iothub.v2019_03_22_preview.implementation
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.management.iothub.v2019_03_22_preview.ErrorDetailsException;
+import com.microsoft.azure.management.iothub.v2019_03_22_preview.ErrorDetailsInnerException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
@@ -138,10 +138,10 @@ public class ResourceProviderCommonsInner {
             });
     }
 
-    private ServiceResponse<PageImpl1<UserSubscriptionQuotaInner>> listDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl1<UserSubscriptionQuotaInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl1<UserSubscriptionQuotaInner>> listDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<UserSubscriptionQuotaInner>, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl1<UserSubscriptionQuotaInner>>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
