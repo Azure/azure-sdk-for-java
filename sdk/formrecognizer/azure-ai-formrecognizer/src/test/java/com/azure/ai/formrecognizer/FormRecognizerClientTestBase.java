@@ -734,8 +734,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         testRunner.accept(URL_TEST_FILE_FORMAT + fileName);
     }
 
-    void urlPdfUnlabeledRunner(Consumer<String> testRunner) {
-        testRunner.accept(getStorageTestingFileUrl(MULTIPAGE_INVOICE_PDF));
+    void testingContainerUrlRunner(Consumer<String> testRunner, String fileName) {
+        testRunner.accept(getStorageTestingFileUrl(fileName));
     }
 
     void dataRunner(BiConsumer<InputStream, Long> testRunner, String fileName) {

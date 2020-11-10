@@ -7,6 +7,7 @@ import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.Utility;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
+import com.azure.ai.formrecognizer.implementation.models.Language;
 import com.azure.ai.formrecognizer.implementation.models.Locale;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.implementation.models.SourcePath;
@@ -282,6 +283,10 @@ public final class FormRecognizerAsyncClient {
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
+     * <p>Content recognition supports auto language identification and multilanguage documents, so only
+     * provide a language code if you would like to force the documented to be processed as
+     * that specific language in the {@link RecognizeContentOptions options}.</p>
+     *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string-RecognizeContentOptions}
      *
@@ -302,17 +307,19 @@ public final class FormRecognizerAsyncClient {
     }
 
     PollerFlux<FormRecognizerOperationResult, List<FormPage>>
-        beginRecognizeContentFromUrl(String formUrl,
-        RecognizeContentOptions recognizeContentOptions, Context context) {
+        beginRecognizeContentFromUrl(String formUrl, RecognizeContentOptions recognizeContentOptions, Context context) {
         try {
             Objects.requireNonNull(formUrl, "'formUrl' is required and cannot be null.");
 
-            recognizeContentOptions = getRecognizeContentOptions(recognizeContentOptions);
+            RecognizeContentOptions finalRecognizeContentOptions = getRecognizeContentOptions(recognizeContentOptions);
             return new PollerFlux<>(
-                recognizeContentOptions.getPollInterval(),
+                finalRecognizeContentOptions.getPollInterval(),
                 urlActivationOperation(
-                    () -> service.analyzeLayoutAsyncWithResponseAsync(null, null,
-                        new SourcePath().setSource(formUrl), context)
+                    () -> service.analyzeLayoutAsyncWithResponseAsync(
+                        Language.fromString(finalRecognizeContentOptions.getLanguage()),
+                        null,
+                        new SourcePath().setSource(formUrl),
+                        context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
                     logger),
@@ -362,6 +369,10 @@ public final class FormRecognizerAsyncClient {
      * Note that the {@code data} passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
+     * <p>Content recognition supports auto language identification and multilanguage documents, so only
+     * provide a language code if you would like to force the documented to be processed as
+     * that specific language in the {@link RecognizeContentOptions options}.</p>
+
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long-RecognizeContentOptions}
      *
@@ -386,15 +397,19 @@ public final class FormRecognizerAsyncClient {
         RecognizeContentOptions recognizeContentOptions, Context context) {
         try {
             Objects.requireNonNull(form, "'form' is required and cannot be null.");
-            recognizeContentOptions = getRecognizeContentOptions(recognizeContentOptions);
+            RecognizeContentOptions finalRecognizeContentOptions = getRecognizeContentOptions(recognizeContentOptions);
             return new PollerFlux<>(
-                recognizeContentOptions.getPollInterval(),
+                finalRecognizeContentOptions.getPollInterval(),
                 streamActivationOperation(
-                    contentType -> service.analyzeLayoutAsyncWithResponseAsync(contentType, form, length,
-                        null, null, context)
+                    contentType -> service.analyzeLayoutAsyncWithResponseAsync(contentType,
+                        form,
+                        length,
+                        Language.fromString(finalRecognizeContentOptions.getLanguage()),
+                        null,
+                        context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
-                    form, recognizeContentOptions.getContentType()),
+                    form, finalRecognizeContentOptions.getContentType()),
                 pollingOperation(resultId -> service.getAnalyzeLayoutResultWithResponseAsync(resultId, context)),
                 (activationResponse, pollingContext) ->
                     monoError(logger, new RuntimeException("Cancellation is not supported")),

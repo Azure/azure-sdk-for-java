@@ -35,6 +35,7 @@ import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltT
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.INVOICE;
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.RECEIPT;
 import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
+import static com.azure.ai.formrecognizer.TestUtils.CONTENT_GERMAN_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.formrecognizer.TestUtils.FORM_JPG;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_SOURCE_URL_ERROR_CODE;
@@ -498,6 +499,36 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         }, SELECTION_MARK_PDF);
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeGermanContentFromUrl(HttpClient httpClient,
+                                              FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerClient(httpClient, serviceVersion);
+        testingContainerUrlRunner(sourceUrl -> {
+            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller =
+                client.beginRecognizeContentFromUrl(sourceUrl,
+                    new RecognizeContentOptions().setPollInterval(durationTestMode).setLanguage("de"),
+                    Context.NONE);
+            syncPoller.waitForCompletion();
+            validateContentResultData(syncPoller.getFinalResult(), false);
+            validateNetworkCallRecord("language", "de");
+        }, CONTENT_GERMAN_PDF);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeContentIncorrectLanguageFromUrl(HttpClient httpClient,
+                                                         FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerClient(httpClient, serviceVersion);
+        testingContainerUrlRunner(sourceUrl -> {
+            HttpResponseException exception
+                = assertThrows(HttpResponseException.class,
+                    () -> client.beginRecognizeContentFromUrl(sourceUrl,
+                        new RecognizeContentOptions().setPollInterval(durationTestMode).setLanguage("language"),
+                        Context.NONE));
+            assertEquals(((FormRecognizerErrorInformation) exception.getValue()).getErrorCode(), "NotSupportedLanguage");
+        }, CONTENT_GERMAN_PDF);
+    }
     // Custom form recognition
 
     // Custom form - non-URL - labeled data
@@ -904,7 +935,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeCustomFormUrlMultiPageUnlabeled(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
-        urlPdfUnlabeledRunner(fileUrl -> beginTrainingMultipageRunner((trainingFilesUrl) -> {
+        testingContainerUrlRunner(fileUrl -> beginTrainingMultipageRunner((trainingFilesUrl) -> {
             SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
                 getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, false,
                     new TrainingOptions().setPollInterval(durationTestMode), Context.NONE);
@@ -915,7 +946,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                     .setPollInterval(durationTestMode), Context.NONE);
             syncPoller.waitForCompletion();
             validateMultiPageDataUnlabeled(syncPoller.getFinalResult());
-        }));
+        }), MULTIPAGE_INVOICE_PDF);
     }
 
     // Custom form - URL - labeled data
@@ -1335,7 +1366,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
                 final RecognizedForm recognizedForm = syncPoller3.getFinalResult().stream().findFirst().get();
                 // since none of the models have a name
-                assertTrue("custom:".equals(recognizedForm.getFormType()));
+                assertEquals(recognizedForm.getFormType(), "custom:");
                 assertNotNull(recognizedForm.getFormTypeConfidence());
 
                 // check formtype set on submodel
