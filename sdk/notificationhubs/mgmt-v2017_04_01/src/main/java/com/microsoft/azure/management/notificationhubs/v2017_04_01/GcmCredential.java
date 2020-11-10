@@ -17,7 +17,8 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class GcmCredential {
     /**
-     * The GCM endpoint.
+     * The FCM legacy endpoint. Default value is
+     * 'https://fcm.googleapis.com/fcm/send'.
      */
     @JsonProperty(value = "properties.gcmEndpoint")
     private String gcmEndpoint;
@@ -29,7 +30,7 @@ public class GcmCredential {
     private String googleApiKey;
 
     /**
-     * Get the GCM endpoint.
+     * Get the FCM legacy endpoint. Default value is 'https://fcm.googleapis.com/fcm/send'.
      *
      * @return the gcmEndpoint value
      */
@@ -38,7 +39,7 @@ public class GcmCredential {
     }
 
     /**
-     * Set the GCM endpoint.
+     * Set the FCM legacy endpoint. Default value is 'https://fcm.googleapis.com/fcm/send'.
      *
      * @param gcmEndpoint the gcmEndpoint value to set
      * @return the GcmCredential object itself.
