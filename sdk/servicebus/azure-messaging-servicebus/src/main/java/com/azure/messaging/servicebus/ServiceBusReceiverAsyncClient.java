@@ -735,8 +735,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         } else if (message.getLockToken().isEmpty()) {
             return monoError(logger, new IllegalArgumentException("'message.getLockToken()' cannot be empty."));
         } else if (receiverOptions.isSessionReceiver()) {
-            return monoError(logger, new IllegalStateException(
-                String.format("Cannot renew message lock [%s] for a session receiver.", message.getLockToken())));
+            return monoError(logger, new IllegalStateException("Renewing message lock is an invalid operation when working with sessions."));
         }
 
         return renewMessageLock(message.getLockToken())
