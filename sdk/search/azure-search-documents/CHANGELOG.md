@@ -1,6 +1,6 @@
 # Release History
 
-## 11.1.2 (2020-11-03)
+## 11.1.2 (2020-11-10)
 
 ### Dependency updates
 
