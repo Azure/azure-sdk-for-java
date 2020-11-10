@@ -269,6 +269,7 @@ public class ServiceBusMessage {
      * @param messageId to be set.
      *
      * @return The updated {@link ServiceBusMessage}.
+     * @throws IllegalArgumentException if {@code messageId} is too long.
      */
     public ServiceBusMessage setMessageId(String messageId) {
         checkIdLength("messageId", messageId, MAX_MESSAGE_ID_LENGTH);
@@ -300,6 +301,7 @@ public class ServiceBusMessage {
      *
      * @return The updated {@link ServiceBusMessage}.
      * @see #getPartitionKey()
+     * @throws IllegalArgumentException if {@code partitionKey} is too long or if the {@code partitionKey} does not match the {@code sessionId}.
      */
     public ServiceBusMessage setPartitionKey(String partitionKey) {
         checkIdLength("partitionKey", partitionKey, MAX_PARTITION_KEY_LENGTH);
@@ -499,6 +501,7 @@ public class ServiceBusMessage {
      * @param sessionId to be set.
      *
      * @return The updated {@link ServiceBusMessage}.
+     * @throws IllegalArgumentException if {@code sessionId} is too long or if the  {@code sessionId} does not match the {@code partitionKey}.
      */
     public ServiceBusMessage setSessionId(String sessionId) {
         checkIdLength("sessionId", sessionId, MAX_SESSION_ID_LENGTH);
@@ -551,7 +554,8 @@ public class ServiceBusMessage {
      */
     private void checkIdLength(String fieldName, String value, int maxLength) {
         if (value != null && value.length() > maxLength) {
-            throw new IllegalArgumentException(String.format("%s cannot be longer than %d characters.", fieldName, maxLength));
+            final String message = String.format("%s cannot be longer than %d characters.", fieldName, maxLength);
+            throw new IllegalArgumentException(message);
         }
     }
 
