@@ -73,7 +73,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
     private volatile boolean isDisposed;
 
     ManagementChannel(Mono<RequestResponseChannel> createChannel, String fullyQualifiedNamespace, String entityPath,
-                      TokenManager tokenManager, MessageSerializer messageSerializer, Duration operationTimeout) {
+        TokenManager tokenManager, MessageSerializer messageSerializer, Duration operationTimeout) {
         this.createChannel = Objects.requireNonNull(createChannel, "'createChannel' cannot be null.");
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
@@ -160,7 +160,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
      */
     @Override
     public Flux<ServiceBusReceivedMessage> peek(long fromSequenceNumber, String sessionId, String associatedLinkName,
-                                                int maxMessages) {
+        int maxMessages) {
         return isAuthorized(OPERATION_PEEK).thenMany(createChannel.flatMap(channel -> {
             final Message message = createManagementMessage(OPERATION_PEEK, associatedLinkName);
 
@@ -188,10 +188,8 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
-    public Flux<ServiceBusReceivedMessage> receiveDeferredMessages(ReceiveMode receiveMode,
-                                                                   String sessionId,
-                                                                   String associatedLinkName,
-                                                                   Iterable<Long> sequenceNumbers) {
+    public Flux<ServiceBusReceivedMessage> receiveDeferredMessages(ReceiveMode receiveMode, String sessionId,
+        String associatedLinkName, Iterable<Long> sequenceNumbers) {
         if (sequenceNumbers == null) {
             return fluxError(logger, new NullPointerException("'sequenceNumbers' cannot be null"));
         }
@@ -300,7 +298,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
      */
     @Override
     public Flux<Long> schedule(List<ServiceBusMessage> messages, OffsetDateTime scheduledEnqueueTime,
-                               int maxLinkSize, String associatedLinkName, ServiceBusTransactionContext transactionContext) {
+        int maxLinkSize, String associatedLinkName, ServiceBusTransactionContext transactionContext) {
 
         return isAuthorized(OPERATION_SCHEDULE_MESSAGE).thenMany(createChannel.flatMap(channel -> {
 
@@ -399,8 +397,8 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
     @Override
     public Mono<Void> updateDisposition(String lockToken, DispositionStatus dispositionStatus, String deadLetterReason,
-                                        String deadLetterErrorDescription, Map<String, Object> propertiesToModify, String sessionId,
-                                        String associatedLinkName, ServiceBusTransactionContext transactionContext) {
+        String deadLetterErrorDescription, Map<String, Object> propertiesToModify, String sessionId,
+        String associatedLinkName, ServiceBusTransactionContext transactionContext) {
 
         final UUID[] lockTokens = new UUID[]{UUID.fromString(lockToken)};
         return isAuthorized(OPERATION_UPDATE_DISPOSITION).then(createChannel.flatMap(channel -> {
@@ -455,7 +453,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
     }
 
     private Mono<Message> sendWithVerify(RequestResponseChannel channel, Message message,
-                                         DeliveryState deliveryState) {
+        DeliveryState deliveryState) {
         return channel.sendWithAck(message, deliveryState)
             .handle((Message response, SynchronousSink<Message> sink) -> {
                 if (RequestResponseUtils.isSuccessful(response)) {
@@ -516,7 +514,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
     /**
      * Creates an AMQP message with the required application properties.
      *
-     * @param operation          Management operation to perform (ie. peek, update-disposition, etc.)
+     * @param operation Management operation to perform (ie. peek, update-disposition, etc.)
      * @param associatedLinkName Name of the open receive link that first received the message.
      * @return An AMQP message with the required headers.
      */
