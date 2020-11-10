@@ -32,13 +32,14 @@ public class ManagedIdentityCredentialTest {
      * @throws IllegalStateException if AZURE_ARC_TEST_MODE is not set to "user" or "system"
      */
     void run() throws IllegalStateException {
-        if (CoreUtils.isNullOrEmpty(CONFIGURATION.get(AZURE_MANAGED_IDENTITY_TEST_MODE))) {
-            throw logger.logExceptionAsError(
-                new IllegalStateException("Managed Identity Test mode is not set. Set environemnt "
-                                                   + "variable AZURE_MANAGED_IDENTITY_TEST_MODE to user or system"));
-        }
+//        if (CoreUtils.isNullOrEmpty(CONFIGURATION.get(AZURE_MANAGED_IDENTITY_TEST_MODE))) {
+//            throw logger.logExceptionAsError(
+//                new IllegalStateException("Managed Identity Test mode is not set. Set environemnt "
+//                                                   + "variable AZURE_MANAGED_IDENTITY_TEST_MODE to user or system"));
+//        }
 
-        String mode = CONFIGURATION.get(AZURE_MANAGED_IDENTITY_TEST_MODE).toLowerCase(Locale.ENGLISH);
+        String mode = "system";
+//        String mode = CONFIGURATION.get(AZURE_MANAGED_IDENTITY_TEST_MODE).toLowerCase(Locale.ENGLISH);
         ManagedIdentityCredentialTest identityTest = new ManagedIdentityCredentialTest();
         switch (mode) {
             case "user":
