@@ -2,7 +2,7 @@ param (
     # The root repo we scaned with.
     [string[]] $RootRepo = "./",
     # The target branch to compare with.
-    [string] $targetBranch = ${env:SYSTEM_PULLREQUEST_TARGETBRANCH}
+    [string] $targetBranch = "origin/${env:SYSTEM_PULLREQUEST_TARGETBRANCH}"
 )
 $deletedFiles = (git diff origin/$targetBranch HEAD --name-only --diff-filter=D)
 $renamedFiles = (git diff origin/$targetBranch HEAD --diff-filter=R)
