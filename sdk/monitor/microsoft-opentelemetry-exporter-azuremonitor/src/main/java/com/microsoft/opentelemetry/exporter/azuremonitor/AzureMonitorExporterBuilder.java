@@ -3,7 +3,6 @@
 
 package com.microsoft.opentelemetry.exporter.azuremonitor;
 
-import com.azure.core.util.CoreUtils;
 import com.microsoft.opentelemetry.exporter.azuremonitor.implementation.ApplicationInsightsClientImpl;
 import com.microsoft.opentelemetry.exporter.azuremonitor.implementation.ApplicationInsightsClientImplBuilder;
 import com.microsoft.opentelemetry.exporter.azuremonitor.implementation.NdJsonSerializer;
@@ -21,7 +20,8 @@ import io.opentelemetry.sdk.trace.export.SpanExporter;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -143,23 +143,30 @@ public final class AzureMonitorExporterBuilder {
      * @throws IllegalArgumentException If the connection string is invalid.
      */
     public AzureMonitorExporterBuilder connectionString(String connectionString) {
-        this.instrumentationKey = extractValueFromConnectionString(connectionString, "InstrumentationKey");
-        this.endpoint(extractValueFromConnectionString(connectionString, "IngestionEndpoint"));
+        Map<String, String> keyValues = extractKeyValuesFromConnectionString(connectionString);
+        if (!keyValues.containsKey("InstrumentationKey")) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("InstrumentationKey not found in connectionString"));
+        }
+        this.instrumentationKey = keyValues.get("InstrumentationKey");
+        String endpoint = keyValues.get("IngestionEndpoint");
+        if (endpoint != null) {
+            this.endpoint(endpoint);
+        }
         return this;
     }
 
-    private String extractValueFromConnectionString(String connectionString, String key) {
+    private Map<String, String> extractKeyValuesFromConnectionString(String connectionString) {
         Objects.requireNonNull(connectionString);
-
-        return Arrays.stream(connectionString.split(";"))
-            .filter(keyValue -> {
-                String[] keyValuePair = keyValue.split("=");
-                return keyValuePair.length == 2 && keyValuePair[0].equalsIgnoreCase(key);
-            })
-            .map(instrumentationKeyValue -> instrumentationKeyValue.split("=")[1])
-            .filter(iKey -> !CoreUtils.isNullOrEmpty(iKey))
-            .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException(key + " not found in connectionString"));
+        Map<String, String> keyValues = new HashMap<>();
+        String[] splits = connectionString.split(";");
+        for (String split : splits) {
+            String[] keyValPair = split.split("=");
+            if (keyValPair.length == 2) {
+                keyValues.put(keyValPair[0], keyValPair[1]);
+            }
+        }
+        return keyValues;
     }
 
     /**
