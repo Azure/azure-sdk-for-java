@@ -52,6 +52,10 @@ import static com.azure.core.amqp.AmqpMessageConstant.VIA_PARTITION_KEY_ANNOTATI
  * @see BinaryData
  */
 public class ServiceBusMessage {
+    private static final int MAX_MESSAGE_ID_LENGTH = 128;
+    private static final int MAX_PARTITION_KEY_LENGTH = 128;
+    private static final int MAX_SESSION_ID_LENGTH = 128;
+
     private final AmqpAnnotatedMessage amqpAnnotatedMessage;
     private final ClientLogger logger = new ClientLogger(ServiceBusMessage.class);
 
@@ -267,6 +271,7 @@ public class ServiceBusMessage {
      * @return The updated {@link ServiceBusMessage}.
      */
     public ServiceBusMessage setMessageId(String messageId) {
+        checkIdLength("messageId", messageId, MAX_MESSAGE_ID_LENGTH);
         amqpAnnotatedMessage.getProperties().setMessageId(messageId);
         return this;
     }
@@ -297,6 +302,7 @@ public class ServiceBusMessage {
      * @see #getPartitionKey()
      */
     public ServiceBusMessage setPartitionKey(String partitionKey) {
+        checkIdLength("partitionKey", partitionKey, MAX_PARTITION_KEY_LENGTH);
         amqpAnnotatedMessage.getMessageAnnotations().put(PARTITION_KEY_ANNOTATION_NAME.getValue(), partitionKey);
         return this;
     }
@@ -493,6 +499,7 @@ public class ServiceBusMessage {
      * @return The updated {@link ServiceBusMessage}.
      */
     public ServiceBusMessage setSessionId(String sessionId) {
+        checkIdLength("sessionId", sessionId, MAX_SESSION_ID_LENGTH);
         amqpAnnotatedMessage.getProperties().setGroupId(sessionId);
         return this;
     }
@@ -530,6 +537,17 @@ public class ServiceBusMessage {
     private void removeValues(Map<String, Object> dataMap, AmqpMessageConstant... keys) {
         for (AmqpMessageConstant key : keys) {
             dataMap.remove(key.getValue());
+        }
+    }
+
+    /**
+     * Checks the length of ID fields.
+     *
+     * Some fields within the message will cause a failure in the service without enough context information.
+     */
+    private void checkIdLength(String fieldName, String value, int maxLength) {
+        if (value != null && value.length() > maxLength) {
+            throw new IllegalArgumentException(String.format("%s cannot be longer than %d characters.", fieldName, maxLength));
         }
     }
 }
