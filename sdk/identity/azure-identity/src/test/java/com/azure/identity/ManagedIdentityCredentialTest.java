@@ -4,6 +4,7 @@
 package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.TestUtils;
@@ -103,7 +104,9 @@ public class ManagedIdentityCredentialTest {
         // test
         ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(CLIENT_ID).build();
         StepVerifier.create(credential.getToken(request))
-            .expectError(CredentialUnavailableException.class);
+            .expectErrorMatches(t -> t instanceof ClientAuthenticationException && t.getMessage()
+                                                .startsWith("User assigned identity is not supported by "))
+            .verify();
     }
 
 }
