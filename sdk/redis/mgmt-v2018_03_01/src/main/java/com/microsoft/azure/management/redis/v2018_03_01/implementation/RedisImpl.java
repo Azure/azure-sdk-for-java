@@ -31,8 +31,8 @@ import com.microsoft.azure.management.redis.v2018_03_01.ExportRDBParameters;
 import com.microsoft.azure.management.redis.v2018_03_01.CheckNameAvailabilityParameters;
 import com.microsoft.azure.management.redis.v2018_03_01.NotificationListResponse;
 
-class RedisImpl extends GroupableResourcesCoreImpl<RedisResource, RedisResourceImpl, RedisResourceInner, RedisInner, RedisManager>  implements Redis {
-    protected RedisImpl(RedisManager manager) {
+class RedisImpl extends GroupableResourcesCoreImpl<RedisResource, RedisResourceImpl, RedisResourceInner, RedisInner, CacheManager>  implements Redis {
+    protected RedisImpl(CacheManager manager) {
         super(manager.inner().redis(), manager);
     }
 

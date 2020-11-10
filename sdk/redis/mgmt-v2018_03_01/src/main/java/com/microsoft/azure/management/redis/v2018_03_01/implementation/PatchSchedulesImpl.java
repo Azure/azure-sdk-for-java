@@ -18,14 +18,14 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.management.redis.v2018_03_01.RedisPatchSchedule;
 
 class PatchSchedulesImpl extends WrapperImpl<PatchSchedulesInner> implements PatchSchedules {
-    private final RedisManager manager;
+    private final CacheManager manager;
 
-    PatchSchedulesImpl(RedisManager manager) {
+    PatchSchedulesImpl(CacheManager manager) {
         super(manager.inner().patchSchedules());
         this.manager = manager;
     }
 
-    public RedisManager manager() {
+    public CacheManager manager() {
         return this.manager;
     }
 
@@ -64,10 +64,14 @@ class PatchSchedulesImpl extends WrapperImpl<PatchSchedulesInner> implements Pat
     public Observable<RedisPatchSchedule> getAsync(String resourceGroupName, String name) {
         PatchSchedulesInner client = this.inner();
         return client.getAsync(resourceGroupName, name)
-        .map(new Func1<RedisPatchScheduleInner, RedisPatchSchedule>() {
+        .flatMap(new Func1<RedisPatchScheduleInner, Observable<RedisPatchSchedule>>() {
             @Override
-            public RedisPatchSchedule call(RedisPatchScheduleInner inner) {
-                return wrapModel(inner);
+            public Observable<RedisPatchSchedule> call(RedisPatchScheduleInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((RedisPatchSchedule)wrapModel(inner));
+                }
             }
        });
     }
