@@ -3,10 +3,10 @@
 
 package com.azure.ai.metricsadvisor;
 
+import com.azure.ai.metricsadvisor.models.AnomalySeverity;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesDetectedFilter;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesDetectedOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
-import com.azure.ai.metricsadvisor.models.Severity;
 
 import java.time.OffsetDateTime;
 
@@ -25,14 +25,14 @@ public class ListsAnomaliesForDetectionConfigAsyncSample {
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T12:00:00Z");
         final ListAnomaliesDetectedFilter filter = new ListAnomaliesDetectedFilter()
-            .setSeverity(Severity.LOW, Severity.MEDIUM);
-        final ListAnomaliesDetectedOptions options = new ListAnomaliesDetectedOptions(startTime, endTime)
+            .setSeverityRange(AnomalySeverity.LOW, AnomalySeverity.MEDIUM);
+        final ListAnomaliesDetectedOptions options = new ListAnomaliesDetectedOptions()
             .setTop(10)
             .setFilter(filter);
-        advisorAsyncClient.listAnomaliesForDetectionConfiguration(detectionConfigurationId,
-            options)
+        advisorAsyncClient.listAnomaliesForDetectionConfig(detectionConfigurationId,
+                startTime, endTime, options)
             .doOnNext(anomaly -> {
-                System.out.printf("Anomaly Severity: %s%n", anomaly.getSeverity());
+                System.out.printf("DataPoint Anomaly Severity: %s%n", anomaly.getSeverity());
                 System.out.printf("Series Key: %s%n", anomaly.getSeriesKey().asMap().entrySet());
             }).blockLast();
              /*

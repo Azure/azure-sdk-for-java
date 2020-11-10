@@ -119,7 +119,7 @@ public class AzureADGraphClient {
     public Set<String> getGroups(String graphApiToken) throws IOException {
         final Set<String> groups = new LinkedHashSet<>();
         final ObjectMapper objectMapper = JacksonObjectMapperFactory.getInstance();
-        String aadMembershipRestUri = serviceEndpoints.getAadMembershipRestUri();
+        String aadMembershipRestUri = getAadMembershipRestUri();
         while (aadMembershipRestUri != null) {
             String membershipsJson = getUserMemberships(graphApiToken, aadMembershipRestUri);
             Memberships memberships = objectMapper.readValue(membershipsJson, Memberships.class);
@@ -134,6 +134,20 @@ public class AzureADGraphClient {
                                            .orElse(null);
         }
         return groups;
+    }
+
+    /**
+     * Get the rest url to get the groups that the user is a member of.
+     * @return rest url
+     */
+    private String getAadMembershipRestUri() {
+        if (AADAuthenticationProperties.getDirectGroupRelationship()
+                                       .equalsIgnoreCase(aadAuthenticationProperties
+                                           .getUserGroup().getGroupRelationship())) {
+            return serviceEndpoints.getAadMembershipRestUri();
+        } else {
+            return serviceEndpoints.getAadTransitiveMemberRestUri();
+        }
     }
 
     private boolean isGroupObject(final Membership membership) {

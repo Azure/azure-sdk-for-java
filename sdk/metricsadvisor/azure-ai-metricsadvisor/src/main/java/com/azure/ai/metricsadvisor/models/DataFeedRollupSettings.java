@@ -36,15 +36,6 @@ public final class DataFeedRollupSettings {
     }
 
     /**
-     * Get the auto rollup raw grouo by column value.
-     *
-     * @return the alreadyRollupIdentificationValue value.
-     */
-    public String getAutoRollupRawGroupByColumnValue() {
-        return this.rollupIdentificationValue;
-    }
-
-    /**
      * Get the identification value when using auto rollup.
      *
      * @return the alreadyRollupIdentificationValue value.
@@ -95,21 +86,21 @@ public final class DataFeedRollupSettings {
      *
      * @param rollUpMethod the rollup method value to set.
      * @param groupByColumnNames the column names for the group by.
-     * @param generatedRawGroupByColumnValue the raw group column value.
+     * @param rollupIdentificationValue the raw group column value.
      *
      * @return the DataFeedRollupSettings object itself.
      */
     public DataFeedRollupSettings setAutoRollup(DataFeedAutoRollUpMethod rollUpMethod,
         List<String> groupByColumnNames,
-        String generatedRawGroupByColumnValue) {
+        String rollupIdentificationValue) {
         this.autoRollupGroupByColumnNames = groupByColumnNames;
-        this.rollupIdentificationValue = generatedRawGroupByColumnValue;
+        this.rollupIdentificationValue = rollupIdentificationValue;
         this.dataFeedRollupType = DataFeedRollupType.AUTO_ROLLUP;
         return this;
     }
 
     /**
-     * Set the identification value when rollup settings set to Auto.
+     * Set the identification value when rollup settings set to Auto or AlreadyRollUp.
      *
      * @param identificationValue the identification value to set.
      *
