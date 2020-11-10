@@ -39,7 +39,7 @@ public class PolicyDefinitionSummary {
     private SummaryResults results;
 
     /**
-     * Get the policyDefinitionId value.
+     * Get policy definition ID.
      *
      * @return the policyDefinitionId value
      */
@@ -48,7 +48,7 @@ public class PolicyDefinitionSummary {
     }
 
     /**
-     * Set the policyDefinitionId value.
+     * Set policy definition ID.
      *
      * @param policyDefinitionId the policyDefinitionId value to set
      * @return the PolicyDefinitionSummary object itself.
@@ -59,7 +59,7 @@ public class PolicyDefinitionSummary {
     }
 
     /**
-     * Get the policyDefinitionReferenceId value.
+     * Get policy definition reference ID.
      *
      * @return the policyDefinitionReferenceId value
      */
@@ -68,7 +68,7 @@ public class PolicyDefinitionSummary {
     }
 
     /**
-     * Set the policyDefinitionReferenceId value.
+     * Set policy definition reference ID.
      *
      * @param policyDefinitionReferenceId the policyDefinitionReferenceId value to set
      * @return the PolicyDefinitionSummary object itself.
@@ -79,7 +79,7 @@ public class PolicyDefinitionSummary {
     }
 
     /**
-     * Get the effect value.
+     * Get policy effect, i.e. policy definition action.
      *
      * @return the effect value
      */
@@ -88,7 +88,7 @@ public class PolicyDefinitionSummary {
     }
 
     /**
-     * Set the effect value.
+     * Set policy effect, i.e. policy definition action.
      *
      * @param effect the effect value to set
      * @return the PolicyDefinitionSummary object itself.
@@ -99,7 +99,7 @@ public class PolicyDefinitionSummary {
     }
 
     /**
-     * Get the results value.
+     * Get non-compliance summary for the policy definition.
      *
      * @return the results value
      */
@@ -108,7 +108,7 @@ public class PolicyDefinitionSummary {
     }
 
     /**
-     * Set the results value.
+     * Set non-compliance summary for the policy definition.
      *
      * @param results the results value to set
      * @return the PolicyDefinitionSummary object itself.
