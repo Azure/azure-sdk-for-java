@@ -1,7 +1,22 @@
 # Release History
 
-## 11.2.0-beta.3 (Unreleased)
+## 11.2.0-beta.3 (2020-11-10)
 
+### New Features
+
+- Added encryption key to `SearchIndexer`, `SearchIndexerDataSourceConnection`, and `SearchIndexerSkillset`.
+- Added ability to configure initial batch size and retry back-offs to `SearchIndexingBufferedSenderOptions`.
+
+### Breaking Changes
+
+- Removed `SearchIndexingBufferedSender.getBatchSize()`.
+- `SearchIndexingBufferedSenderOptions` now throws on invalid values instead of falling back to default.
+
+## 11.1.2 (2020-11-10)
+
+### Dependency updates
+
+- Updated `azure-core` version.
 
 ## 11.2.0-beta.2 (2020-10-06)
 
