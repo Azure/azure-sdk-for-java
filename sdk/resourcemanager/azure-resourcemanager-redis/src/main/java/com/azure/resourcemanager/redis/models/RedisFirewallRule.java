@@ -3,13 +3,13 @@
 
 package com.azure.resourcemanager.redis.models;
 
-import com.azure.resourcemanager.redis.fluent.inner.RedisFirewallRuleInner;
+import com.azure.resourcemanager.redis.fluent.models.RedisFirewallRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /** The Azure Redis Firewall rule entries are of type RedisFirewallRule. */
 public interface RedisFirewallRule
-    extends ExternalChildResource<RedisFirewallRule, RedisCache>, HasInner<RedisFirewallRuleInner> {
+    extends ExternalChildResource<RedisFirewallRule, RedisCache>, HasInnerModel<RedisFirewallRuleInner> {
     /**
      * Get the name value.
      *

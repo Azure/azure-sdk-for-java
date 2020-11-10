@@ -9,8 +9,10 @@ import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
+import com.azure.storage.file.share.models.ShareAccessTier;
 import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ListSharesOptions;
+import com.azure.storage.file.share.options.ShareCreateOptions;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -117,6 +119,20 @@ public class ShareServiceJavaDocCodeSamples {
             new Context(key1, value1));
         System.out.printf("Creating the share completed with status code %d", response.getStatusCode());
         // END: ShareServiceClient.createShareWithResponse#string-map-integer-duration-context
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareServiceClient#createShareWithResponse(String, ShareCreateOptions,
+     * Duration, Context)} with metadata
+     */
+    public void createShareWithOptions() {
+        ShareServiceClient fileServiceClient = createClientWithSASToken();
+        // BEGIN: ShareServiceClient.createShareWithResponse#String-ShareCreateOptions-Duration-Context
+        Response<ShareClient> response = fileServiceClient.createShareWithResponse("test",
+            new ShareCreateOptions().setMetadata(Collections.singletonMap("share", "metadata")).setQuotaInGb(1)
+            .setAccessTier(ShareAccessTier.HOT), Duration.ofSeconds(1), new Context(key1, value1));
+        System.out.printf("Creating the share completed with status code %d", response.getStatusCode());
+        // END: ShareServiceClient.createShareWithResponse#String-ShareCreateOptions-Duration-Context
     }
 
     /**

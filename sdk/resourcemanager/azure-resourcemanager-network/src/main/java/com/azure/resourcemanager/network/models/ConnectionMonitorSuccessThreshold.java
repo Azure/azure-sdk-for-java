@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ConnectionMonitorSuccessThreshold model. */
+/** Describes the threshold for declaring a test successful. */
 @Fluent
 public final class ConnectionMonitorSuccessThreshold {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorSuccessThreshold.class);

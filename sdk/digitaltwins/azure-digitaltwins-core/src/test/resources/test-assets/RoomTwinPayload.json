@@ -1,0 +1,9 @@
+{
+  "$metadata": {
+    "$model": "ROOM_MODEL_ID"
+  },
+  "Temperature": 80,
+  "Humidity": 25,
+  "IsOccupied": true,
+  "EmployeeId": "Employee1"
+}

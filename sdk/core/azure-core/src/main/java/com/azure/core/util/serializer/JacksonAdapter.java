@@ -174,7 +174,7 @@ public class JacksonAdapter implements SerializerAdapter {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <U> U deserialize(String value, Type type, SerializerEncoding encoding) throws IOException {
+    public <T> T deserialize(String value, Type type, SerializerEncoding encoding) throws IOException {
         if (CoreUtils.isNullOrEmpty(value)) {
             return null;
         }
@@ -182,9 +182,9 @@ public class JacksonAdapter implements SerializerAdapter {
         final JavaType javaType = createJavaType(type);
         try {
             if (encoding == SerializerEncoding.XML) {
-                return (U) xmlMapper.readValue(value, javaType);
+                return (T) xmlMapper.readValue(value, javaType);
             } else {
-                return (U) serializer().readValue(value, javaType);
+                return (T) serializer().readValue(value, javaType);
             }
         } catch (JsonParseException jpe) {
             throw logger.logExceptionAsError(new MalformedValueException(jpe.getMessage(), jpe));

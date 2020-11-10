@@ -31,6 +31,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -168,7 +169,7 @@ public class OldEncryptionTests extends TestSuiteBase {
 
         dekProvider.initialize(databaseCore, OldEncryptionTests.keyContainer.getId());
 
-        DataEncryptionKeyProperties readProperties = dekProvider.getDataEncryptionKeyContainer().readDataEncryptionKeyAsync(dekId, null).block().getItem();
+        DataEncryptionKeyProperties readProperties = dekProvider.getDataEncryptionKeyContainer().readDataEncryptionKey(dekId, null).block().getItem();
         assertThat(dekProperties).isEqualTo(readProperties);
     }
 
@@ -227,7 +228,7 @@ public class OldEncryptionTests extends TestSuiteBase {
     }
 
     private static DataEncryptionKeyProperties createDek(CosmosDataEncryptionKeyProvider dekProvider, String dekId) {
-        CosmosItemResponse<DataEncryptionKeyProperties> dekResponse = dekProvider.getDataEncryptionKeyContainer().createDataEncryptionKeyAsync(
+        CosmosItemResponse<DataEncryptionKeyProperties> dekResponse = dekProvider.getDataEncryptionKeyContainer().createDataEncryptionKey(
             dekId,
             CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED,
             OldEncryptionTests.metadata1, null).block();
@@ -242,17 +243,17 @@ public class OldEncryptionTests extends TestSuiteBase {
     }
 
     private class TestKeyWrapProvider implements EncryptionKeyWrapProvider {
-        public EncryptionKeyUnwrapResult unwrapKey(byte[] wrappedKey, EncryptionKeyWrapMetadata metadata) {
+        public Mono<EncryptionKeyUnwrapResult> unwrapKey(byte[] wrappedKey, EncryptionKeyWrapMetadata metadata) {
             int moveBy = StringUtils.equals(metadata.value, OldEncryptionTests.metadata1.value + OldEncryptionTests.metadataUpdateSuffix) ? 1 : 2;
 
             for (int i = 0; i < wrappedKey.length; i++) {
                 wrappedKey[i] = (byte) (wrappedKey[i] - moveBy);
             }
 
-            return new EncryptionKeyUnwrapResult(wrappedKey, OldEncryptionTests.cacheTTL);
+            return Mono.just(new EncryptionKeyUnwrapResult(wrappedKey, OldEncryptionTests.cacheTTL));
         }
 
-        public EncryptionKeyWrapResult wrapKey(byte[] key, EncryptionKeyWrapMetadata metadata) {
+        public Mono<EncryptionKeyWrapResult> wrapKey(byte[] key, EncryptionKeyWrapMetadata metadata) {
             EncryptionKeyWrapMetadata responseMetadata = new EncryptionKeyWrapMetadata(metadata.value + OldEncryptionTests.metadataUpdateSuffix);
             int moveBy = StringUtils.equals(metadata.value, OldEncryptionTests.metadata1.value) ? 1 : 2;
 
@@ -260,7 +261,7 @@ public class OldEncryptionTests extends TestSuiteBase {
                 key[i] = (byte) (key[i] + moveBy);
             }
 
-            return new EncryptionKeyWrapResult(key, responseMetadata);
+            return Mono.just(new EncryptionKeyWrapResult(key, responseMetadata));
         }
     }
 }

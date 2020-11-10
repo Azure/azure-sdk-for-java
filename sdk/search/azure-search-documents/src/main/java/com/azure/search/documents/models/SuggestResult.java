@@ -9,6 +9,7 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.SearchDocument;
+import com.azure.search.documents.implementation.converters.SuggestResultHelper;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -44,6 +45,15 @@ public final class SuggestResult {
 
     private static final JacksonAdapter searchJacksonAdapter = (JacksonAdapter) initializeSerializerAdapter();
 
+    static {
+        SuggestResultHelper.setAccessor(new SuggestResultHelper.SuggestResultAccessor() {
+            @Override
+            public void setAdditionalProperties(SuggestResult suggestResult, SearchDocument additionalProperties) {
+                suggestResult.setAdditionalProperties(additionalProperties);
+            }
+        });
+    }
+
     /**
      * Constructor of {@link SuggestResult}.
      *
@@ -70,7 +80,7 @@ public final class SuggestResult {
                 String serializedJson = searchJacksonAdapter.serialize(additionalProperties, SerializerEncoding.JSON);
                 return searchJacksonAdapter.deserialize(serializedJson, modelClass, SerializerEncoding.JSON);
             } catch (IOException ex) {
-                throw logger.logExceptionAsError(new RuntimeException("Something wrong with the serialization."));
+                throw logger.logExceptionAsError(new RuntimeException("Failed to deserialize suggestion result.", ex));
             }
         }
         ByteArrayOutputStream sourceStream = new ByteArrayOutputStream();
@@ -86,5 +96,15 @@ public final class SuggestResult {
      */
     public String getText() {
         return this.text;
+    }
+
+    /**
+     * The private setter to set the select property
+     * via {@link SuggestResultHelper.SuggestResultAccessor}.
+     *
+     * @param additionalProperties The unmatched properties from the message.
+     */
+    private void setAdditionalProperties(SearchDocument additionalProperties) {
+        this.additionalProperties = additionalProperties;
     }
 }

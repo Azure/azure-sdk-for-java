@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The EncryptionService model. */
+/** A service that allows server-side encryption to be used. */
 @Fluent
 public final class EncryptionService {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionService.class);

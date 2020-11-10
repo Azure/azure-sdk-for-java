@@ -9,7 +9,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SourceVault model. */
+/**
+ * The vault id is an Azure Resource Manager Resource id in the form
+ * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}.
+ */
 @Fluent
 public final class SourceVault {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SourceVault.class);

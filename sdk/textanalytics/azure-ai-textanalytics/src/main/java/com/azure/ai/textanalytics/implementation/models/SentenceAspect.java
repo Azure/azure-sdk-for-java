@@ -15,7 +15,7 @@ public final class SentenceAspect {
      * Aspect level sentiment for the aspect in the sentence.
      */
     @JsonProperty(value = "sentiment", required = true)
-    private SentenceAspectSentiment sentiment;
+    private TokenSentimentValue sentiment;
 
     /*
      * Aspect level sentiment confidence scores for the aspect in the sentence.
@@ -53,7 +53,7 @@ public final class SentenceAspect {
      *
      * @return the sentiment value.
      */
-    public SentenceAspectSentiment getSentiment() {
+    public TokenSentimentValue getSentiment() {
         return this.sentiment;
     }
 
@@ -63,7 +63,7 @@ public final class SentenceAspect {
      * @param sentiment the sentiment value to set.
      * @return the SentenceAspect object itself.
      */
-    public SentenceAspect setSentiment(SentenceAspectSentiment sentiment) {
+    public SentenceAspect setSentiment(TokenSentimentValue sentiment) {
         this.sentiment = sentiment;
         return this;
     }

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The WhatIfPropertyChange model. */
+/** The predicted change to the resource property. */
 @Fluent
 public final class WhatIfPropertyChange {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WhatIfPropertyChange.class);

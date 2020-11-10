@@ -4,31 +4,44 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
-import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import java.util.Collection;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 /** Defines values for AspectRelationType. */
-public final class AspectRelationType extends ExpandableStringEnum<AspectRelationType> {
-    /** Static value opinion for AspectRelationType. */
-    public static final AspectRelationType OPINION = fromString("opinion");
+public enum AspectRelationType {
+    /** Enum value opinion. */
+    OPINION("opinion"),
 
-    /** Static value aspect for AspectRelationType. */
-    public static final AspectRelationType ASPECT = fromString("aspect");
+    /** Enum value aspect. */
+    ASPECT("aspect");
 
-    /**
-     * Creates or finds a AspectRelationType from its string representation.
-     *
-     * @param name a name to look for.
-     * @return the corresponding AspectRelationType.
-     */
-    @JsonCreator
-    public static AspectRelationType fromString(String name) {
-        return fromString(name, AspectRelationType.class);
+    /** The actual serialized value for a AspectRelationType instance. */
+    private final String value;
+
+    AspectRelationType(String value) {
+        this.value = value;
     }
 
-    /** @return known AspectRelationType values. */
-    public static Collection<AspectRelationType> values() {
-        return values(AspectRelationType.class);
+    /**
+     * Parses a serialized value to a AspectRelationType instance.
+     *
+     * @param value the serialized value to parse.
+     * @return the parsed AspectRelationType object, or null if unable to parse.
+     */
+    @JsonCreator
+    public static AspectRelationType fromString(String value) {
+        AspectRelationType[] items = AspectRelationType.values();
+        for (AspectRelationType item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

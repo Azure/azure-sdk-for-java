@@ -7,14 +7,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.monitor.MonitorManager;
-import com.azure.resourcemanager.monitor.fluent.DiagnosticSettingsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCreation;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
@@ -26,8 +24,7 @@ public interface DiagnosticSettings
         SupportsGettingById<DiagnosticSetting>,
         SupportsDeletingById,
         SupportsBatchDeletion,
-        HasManager<MonitorManager>,
-        HasInner<DiagnosticSettingsClient> {
+        HasManager<MonitorManager> {
 
     /**
      * Lists all the Diagnostic Settings categories for Log and Metric Settings for a specific resource.

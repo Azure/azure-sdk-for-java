@@ -7,8 +7,8 @@ import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.authorization.models.ServicePrincipal;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.core.management.Region;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.ResourceManager;
 import java.io.FileOutputStream;
 import java.nio.file.Files;
@@ -22,7 +22,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
 
     @Test
     public void canCRUDServicePrincipal() throws Exception {
-        String name = sdkContext.randomResourceName("ssp", 21);
+        String name = generateRandomResourceName("ssp", 21);
         ServicePrincipal servicePrincipal = null;
         try {
             // Create
@@ -80,8 +80,8 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
     @Test
     @Disabled("Do not record - recorded JSON may contain auth info")
     public void canCRUDServicePrincipalWithRole() throws Exception {
-        String name = sdkContext.randomResourceName("ssp", 21);
-        String rgName = sdkContext.randomResourceName("rg", 22);
+        String name = generateRandomResourceName("ssp", 21);
+        String rgName = generateRandomResourceName("rg", 22);
         ServicePrincipal servicePrincipal = null;
         String authFile = "/Users/jianghlu/Downloads/graphtestapp.azureauth";
         String subscription = "0b1f6471-1bf0-4dda-aec3-cb9272f09590";
@@ -112,7 +112,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
             Assertions.assertNotNull(servicePrincipal.applicationId());
             Assertions.assertEquals(2, servicePrincipal.servicePrincipalNames().size());
 
-            SdkContext.sleep(10000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(10));
             ResourceManager resourceManager =
                 ResourceManager
                     .authenticate(credentialFromFile(), profile())
@@ -127,7 +127,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
                 .withNewRoleInResourceGroup(BuiltInRole.CONTRIBUTOR, group)
                 .apply();
 
-            SdkContext.sleep(120000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(2));
             Assertions.assertNotNull(resourceManager.resourceGroups().getByName(group.name()));
             try {
                 resourceManager.resourceGroups().define(rgName + "2").withRegion(Region.US_WEST).create();

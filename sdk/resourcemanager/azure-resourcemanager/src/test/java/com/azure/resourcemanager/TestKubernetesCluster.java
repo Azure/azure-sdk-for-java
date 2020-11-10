@@ -8,7 +8,9 @@ import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusters;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
+import org.junit.jupiter.api.Assertions;
+
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -22,14 +24,13 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Properties;
-import org.junit.jupiter.api.Assertions;
 
 public class TestKubernetesCluster extends TestTemplate<KubernetesCluster, KubernetesClusters> {
     @Override
     public KubernetesCluster createResource(KubernetesClusters kubernetesClusters) throws Exception {
         final String sshKeyData = this.getSshKey();
 
-        final String newName = "aks" + kubernetesClusters.manager().sdkContext().randomResourceName("", 8);
+        final String newName = "aks" + kubernetesClusters.manager().resourceManager().internalContext().randomResourceName("", 8);
         final String dnsPrefix = "dns" + newName;
         final String agentPoolName = "ap" + newName;
         String clientId = "clientId";
@@ -56,7 +57,7 @@ public class TestKubernetesCluster extends TestTemplate<KubernetesCluster, Kuber
                 .define(newName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup()
-                .withLatestVersion()
+                .withDefaultVersion()
                 .withRootUsername("aksadmin")
                 .withSshKey(sshKeyData)
                 .withServicePrincipalClientId(clientId)
@@ -97,7 +98,9 @@ public class TestKubernetesCluster extends TestTemplate<KubernetesCluster, Kuber
         resource =
             resource
                 .update()
-                .withAgentPoolVirtualMachineCount(agentPoolName, 5)
+                .updateAgentPool(agentPoolName)
+                    .withAgentPoolVirtualMachineCount(5)
+                    .parent()
                 .withTag("tag2", "value2")
                 .withTag("tag3", "value3")
                 .withoutTag("tag1")

@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ApplicationGatewayAuthenticationCertificate;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayAuthenticationCertificateInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayAuthenticationCertificateInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import java.io.File;
 import java.io.IOException;
@@ -32,12 +32,12 @@ class ApplicationGatewayAuthenticationCertificateImpl
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String data() {
-        return this.inner().data();
+        return this.innerModel().data();
     }
 
     // Verbs
@@ -71,7 +71,7 @@ class ApplicationGatewayAuthenticationCertificateImpl
             return this;
         }
 
-        this.inner().withData(base64data);
+        this.innerModel().withData(base64data);
         return this;
     }
 }

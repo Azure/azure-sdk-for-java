@@ -6,17 +6,17 @@ With this starter you could easily use Spring JMS Queue and Topic with Azure Ser
 
 ## Getting started
 ### Prerequisites
-- Java Development Kit (JDK) with version 8 or above
+- [Java Development Kit (JDK)][jdk_link] with version 8 or above
 - [Azure Subscription][azure_subscription]
-- [Maven](http://maven.apache.org/) 3.0 and above
+- [Maven](https://maven.apache.org/) 3.0 and above
 
 ### Include the package
-[//]: # ({x-version-update-start;com.microsoft.azure:azure-servicebus-jms-spring-boot-starter;current})
+[//]: # ({x-version-update-start;com.azure.spring:azure-spring-boot-starter-servicebus-jms;current})
 ```xml
 <dependency>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-servicebus-jms-spring-boot-starter</artifactId>
-    <version>2.3.3</version>
+    <groupId>com.azure.spring</groupId>
+    <artifactId>azure-spring-boot-starter-servicebus-jms</artifactId>
+    <version>3.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -58,8 +58,8 @@ In this section, you create the necessary Java classes for sending messages to y
 #### Define a test Java class
 
 Create a Java file named *User.java* in the package directory of your app. Define a generic user class that stores and retrieves user's name:
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/User.java#L11-L30 -->
 
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/User.java#L11-L30 -->
 ```java
 import java.io.Serializable;
 
@@ -88,46 +88,46 @@ public class User implements Serializable {
 #### Create a new class for the message send controller
 
 1. Create a Java file named *SendController.java* in the package directory of your app. Add the following code to the new file:
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/SendController.java#L11-L35 -->
-
-```java
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-@RestController
-public class SendController {
-
-    private static final String DESTINATION_NAME = "<DestinationName>";
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(SendController.class);
-
-    @Autowired
-    private JmsTemplate jmsTemplate;
-
-    @PostMapping("/messages")
-    public String postMessage(@RequestParam String message) {
-        LOGGER.info("Sending message");
-        jmsTemplate.convertAndSend(DESTINATION_NAME, new User(message));
-        return message;
+    
+    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/SendController.java#L11-L35 -->
+    ```java
+    import org.slf4j.Logger;
+    import org.slf4j.LoggerFactory;
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.jms.core.JmsTemplate;
+    import org.springframework.web.bind.annotation.PostMapping;
+    import org.springframework.web.bind.annotation.RequestParam;
+    import org.springframework.web.bind.annotation.RestController;
+    
+    @RestController
+    public class SendController {
+    
+        private static final String DESTINATION_NAME = "<DestinationName>";
+    
+        private static final Logger LOGGER = LoggerFactory.getLogger(SendController.class);
+    
+        @Autowired
+        private JmsTemplate jmsTemplate;
+    
+        @PostMapping("/messages")
+        public String postMessage(@RequestParam String message) {
+            LOGGER.info("Sending message");
+            jmsTemplate.convertAndSend(DESTINATION_NAME, new User(message));
+            return message;
+        }
     }
-}
-```
+    ```
 
-> [!NOTE]
-> Replace `<DestinationName>` with your own queue name or topic name configured in your Service Bus namespace.
+    > [!NOTE]
+    > Replace `<DestinationName>` with your own queue name or topic name configured in your Service Bus namespace.
 
 #### Create a class for the message receive controller
 
 - Receive messages from a Service Bus queue
 
     Create a Java file named *QueueReceiveController.java* in the package directory of your app. Add the following code to the new file:
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/QueueReceiveController.java#L11-L27 -->
-
+    
+    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/QueueReceiveController.java#L11-L27 -->
     ```java
     import org.slf4j.Logger;
     import org.slf4j.LoggerFactory;
@@ -154,8 +154,8 @@ public class SendController {
 - Receive messages from a Service Bus subscription
 
     Create a Java file named *TopicReceiveController.java* in the package directory of your app. Add the following code to the new file. Replace the `<ServiceBusTopicName>` placeholder with your own topic name configured in your Service Bus namespace. Replace the `<ServiceBusSubscriptionName>` placeholder with your own subscription name for your Service Bus topic.
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/TopicReceiveController.java#L11-L30 -->
-
+    
+    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/TopicReceiveController.java#L11-L30 -->
     ```java
     import org.slf4j.Logger;
     import org.slf4j.LoggerFactory;
@@ -194,7 +194,7 @@ To solve this issue, you need to add the dependency below into your classpath:
 </dependency>
 ```
 ### Enable client logging
-Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
+Azure SDKs for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
 ### Enable Spring logging
 Spring allow all the supported logging systems to set logger levels set in the Spring Environment (for example, in application.properties) by using `logging.level.<logger-name>=<level>` where level is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. The root logger can be configured by using logging.level.root.
@@ -207,20 +207,20 @@ logging.level.org.springframework.web=DEBUG
 logging.level.org.hibernate=ERROR
 ```
 
-For more information about setting loging in pring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging).
+For more information about setting logging in spring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging).
  
 
 ## Next steps
 The following section provides sample projects illustrating how to use the starter in different cases.
 ### More sample code
-- [JMS Service Bus Queue](../azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-queue)
-- [JMS Service Bus Topic](../azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-topic)
+- [JMS Service Bus Queue](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-queue)
+- [JMS Service Bus Topic](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-topic)
 
 
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
-Please follow [instructions here](../CONTRIBUTING.md) to build from source or contribute.
+Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md) to build from source or contribute.
 
 <!-- LINKS -->
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-service-bus
@@ -229,3 +229,4 @@ Please follow [instructions here](../CONTRIBUTING.md) to build from source or co
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [azure_subscription]: https://azure.microsoft.com/free
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable

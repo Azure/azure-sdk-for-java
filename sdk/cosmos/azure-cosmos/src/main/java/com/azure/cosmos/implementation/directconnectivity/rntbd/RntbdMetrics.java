@@ -99,12 +99,12 @@ public final class RntbdMetrics {
             .tags(this.tags)
             .register(registry);
 
-        Gauge.builder(nameOf("channelsAcquired"), endpoint, RntbdEndpoint::channelsAcquired)
+        Gauge.builder(nameOf("channelsAcquired"), endpoint, RntbdEndpoint::channelsAcquiredMetric)
              .description("acquired channel count")
              .tags(this.tags)
              .register(registry);
 
-        Gauge.builder(nameOf("channelsAvailable"), endpoint, RntbdEndpoint::channelsAvailable)
+        Gauge.builder(nameOf("channelsAvailable"), endpoint, RntbdEndpoint::channelsAvailableMetric)
              .description("available channel count")
              .tags(this.tags)
              .register(registry);
@@ -144,12 +144,12 @@ public final class RntbdMetrics {
 
     @JsonProperty
     public int channelsAcquired() {
-        return this.endpoint.channelsAcquired();
+        return this.endpoint.channelsAcquiredMetric();
     }
 
     @JsonProperty
     public int channelsAvailable() {
-        return this.endpoint.channelsAvailable();
+        return this.endpoint.channelsAvailableMetric();
     }
 
     /***

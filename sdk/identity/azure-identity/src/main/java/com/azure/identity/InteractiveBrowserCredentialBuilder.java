@@ -4,6 +4,7 @@
 package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.AuthenticationRecord;
 import com.azure.identity.implementation.util.ValidationUtil;
 
@@ -17,14 +18,20 @@ import java.util.HashMap;
 public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBase<InteractiveBrowserCredentialBuilder> {
     private Integer port;
     private boolean automaticAuthentication = true;
+    private String redirectUrl;
+    String clientId = IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID;
 
     /**
      * Sets the port for the local HTTP server, for which {@code http://localhost:{port}} must be
      * registered as a valid reply URL on the application.
      *
+     * @deprecated Configure the redirect URL as {@code http://localhost:{port}} via
+     * {@link InteractiveBrowserCredentialBuilder#redirectUrl(String)} instead.
+     *
      * @param port the port on which the credential will listen for the browser authentication result
      * @return the InteractiveBrowserCredentialBuilder itself
      */
+    @Deprecated
     public InteractiveBrowserCredentialBuilder port(int port) {
         this.port = port;
         return this;
@@ -37,7 +44,7 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      * @return An updated instance of this builder.
      */
     InteractiveBrowserCredentialBuilder allowUnencryptedCache() {
-        this.identityClientOptions.allowUnencryptedCache();
+        this.identityClientOptions.setAllowUnencryptedCache(true);
         return this;
     }
 
@@ -66,6 +73,21 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
         return this;
     }
 
+
+    /**
+     * Sets the Redirect URL where STS will callback the application with the security code. It is required if a custom
+     * client id is specified via {@link InteractiveBrowserCredentialBuilder#clientId(String)} and must match the
+     * redirect URL specified during the application registration.
+     *
+     * @param redirectUrl the redirect URL to listen on and receive security code.
+     *
+     * @return An updated instance of this builder with the configured redirect URL.
+     */
+    public InteractiveBrowserCredentialBuilder redirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
+        return this;
+    }
+
     /**
      * Disables the automatic authentication and prevents the {@link InteractiveBrowserCredential} from automatically
      * prompting the user. If automatic authentication is disabled a {@link AuthenticationRequiredException}
@@ -87,11 +109,11 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      * @return a {@link InteractiveBrowserCredential} with the current configurations.
      */
     public InteractiveBrowserCredential build() {
+        ValidationUtil.validateInteractiveBrowserRedirectUrlSetup(getClass().getSimpleName(), port, redirectUrl);
         ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
                 put("clientId", clientId);
-                put("port", port);
             }});
-        return new InteractiveBrowserCredential(clientId, tenantId, port, automaticAuthentication,
+        return new InteractiveBrowserCredential(clientId, tenantId, port, redirectUrl, automaticAuthentication,
             identityClientOptions);
     }
 }

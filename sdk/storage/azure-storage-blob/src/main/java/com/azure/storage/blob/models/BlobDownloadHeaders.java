@@ -320,10 +320,17 @@ public final class BlobDownloadHeaders {
     private String errorCode;
 
     /*
-     * The isSealed property.
+     * The isSealed property. Whether or not the blob is sealed  (marked as read only).
+     * This is only returned for Append blobs.
      */
     @JsonProperty(value = "IsSealed")
     private Boolean sealed;
+
+    /*
+     * The lastAccessedTime property.
+     */
+    @JsonProperty(value = "LastAccessTime")
+    private OffsetDateTime lastAccessedTime;
 
     /**
      * Get the lastModified property: Returns the date and time the container
@@ -1261,7 +1268,7 @@ public final class BlobDownloadHeaders {
     /**
      * Get the sealed property: The sealed property.
      *
-     * @return the isSealed value.
+     * @return Whether or not the blob is sealed  (marked as read only). This is only applicable for Append blobs.
      */
     public Boolean isSealed() {
         return this.sealed;
@@ -1270,11 +1277,31 @@ public final class BlobDownloadHeaders {
     /**
      * Set the sealed property: The sealed property.
      *
-     * @param sealed the sealed value to set.
+     * @param sealed Whether or not the blob is sealed  (marked as read only). This is only applicable for Append blobs.
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setSealed(Boolean sealed) {
         this.sealed = sealed;
+        return this;
+    }
+
+    /**
+     * Get the lastAccessedTime property: The lastAccessedTime property.
+     *
+     * @return the lastAccessedTime value.
+     */
+    public OffsetDateTime getLastAccessedTime() {
+        return this.lastAccessedTime;
+    }
+
+    /**
+     * Set the lastAccessedTime property: The lastAccessedTime property.
+     *
+     * @param lastAccessedTime the lastAccessedTime value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setLastAccessedTime(OffsetDateTime lastAccessedTime) {
+        this.lastAccessedTime = lastAccessedTime;
         return this;
     }
 }

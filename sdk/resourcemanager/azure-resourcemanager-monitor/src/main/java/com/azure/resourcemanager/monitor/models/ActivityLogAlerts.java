@@ -5,7 +5,6 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.monitor.MonitorManager;
-import com.azure.resourcemanager.monitor.fluent.ActivityLogAlertsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -15,7 +14,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCr
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 
 /** Entry point for Activity Log Alert management API. */
 @Fluent
@@ -28,6 +26,5 @@ public interface ActivityLogAlerts
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<ActivityLogAlert>,
         SupportsBatchDeletion,
-        HasManager<MonitorManager>,
-        HasInner<ActivityLogAlertsClient> {
+        HasManager<MonitorManager> {
 }

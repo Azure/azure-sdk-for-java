@@ -50,7 +50,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
             .buildAsyncClient());
 
         if (interceptorManager.isPlaybackMode()) {
-            when(client.getPollDuration()).thenReturn(Duration.ofMillis(10));
+            when(client.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
         }
     }
 
@@ -62,6 +62,18 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     public void setKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyAsyncClient(httpClient, serviceVersion);
         setKeyRunner((expected) -> StepVerifier.create(client.createKey(expected))
+            .assertNext(response -> assertKeyEquals(expected, response))
+            .verifyComplete());
+    }
+
+    /**
+     * Tests that a RSA key created.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void createRsaKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyAsyncClient(httpClient, serviceVersion);
+        createRsaKeyRunner((expected) -> StepVerifier.create(client.createRsaKey(expected))
             .assertNext(response -> assertKeyEquals(expected, response))
             .verifyComplete());
     }

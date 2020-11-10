@@ -11,6 +11,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.models.ChangeFeedProcessorState;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -240,9 +241,13 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
 
             // Test for "zero" lag
             Map<String, Integer> estimatedLagResult = changeFeedProcessor.getEstimatedLag()
-                .map(getEstimatedLag -> {
-                    System.out.println(getEstimatedLag);
-                    return getEstimatedLag;
+                .map(estimatedLag -> {
+                    try {
+                        log.info(OBJECT_MAPPER.writeValueAsString(estimatedLag));
+                    } catch (JsonProcessingException ex) {
+                        log.error("Unexpected", ex);
+                    }
+                    return estimatedLag;
                 }).block();
 
             int totalLag = 0;
@@ -250,15 +255,19 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 totalLag += lag;
             }
 
-            assertThat(totalLag == 0).as("Change Feed Processor estimated total lag at start").isTrue();
+            assertThat(totalLag).isEqualTo(0).as("Change Feed Processor estimated total lag at start");
 
             // Test for "FEED_COUNT total lag
             setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
 
             estimatedLagResult = changeFeedProcessor.getEstimatedLag()
-                .map(getEstimatedLag -> {
-                    System.out.println(getEstimatedLag);
-                    return getEstimatedLag;
+                .map(estimatedLag -> {
+                    try {
+                        log.info(OBJECT_MAPPER.writeValueAsString(estimatedLag));
+                    } catch (JsonProcessingException ex) {
+                        log.error("Unexpected", ex);
+                    }
+                    return estimatedLag;
                 }).block();
 
             totalLag = 0;
@@ -266,8 +275,91 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 totalLag += lag;
             }
 
-            assertThat(totalLag == FEED_COUNT).as("Change Feed Processor estimated total lag").isTrue();
+            assertThat(totalLag).isEqualTo(FEED_COUNT).as("Change Feed Processor estimated total lag");
+        } finally {
+            safeDeleteCollection(createdFeedCollection);
+            safeDeleteCollection(createdLeaseCollection);
 
+            // Allow some time for the collections to be deleted before exiting.
+            Thread.sleep(500);
+        }
+    }
+
+    @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    public void getCurrentState() throws InterruptedException {
+        CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
+        CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
+
+        try {
+            List<InternalObjectNode> createdDocuments = new ArrayList<>();
+            Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
+            ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
+                .hostName(hostName)
+                .handleChanges((List<JsonNode> docs) -> {
+                    ChangeFeedProcessorTest.log.info("START processing from thread {}", Thread.currentThread().getId());
+                    for (JsonNode item : docs) {
+                        processItem(item, receivedDocuments);
+                    }
+                    ChangeFeedProcessorTest.log.info("END processing from thread {}", Thread.currentThread().getId());
+                })
+                .feedContainer(createdFeedCollection)
+                .leaseContainer(createdLeaseCollection)
+                .buildChangeFeedProcessor();
+
+            try {
+                changeFeedProcessor.start().subscribeOn(Schedulers.elastic())
+                    .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                    .then(Mono.just(changeFeedProcessor)
+                        .delayElement(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                        .flatMap(value -> changeFeedProcessor.stop()
+                            .subscribeOn(Schedulers.elastic())
+                            .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                        ))
+                    .subscribe();
+            } catch (Exception ex) {
+                log.error("Change feed processor did not start and stopped in the expected time", ex);
+                throw ex;
+            }
+
+            Thread.sleep(4 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+            // Test for "zero" lag
+            List<ChangeFeedProcessorState> cfpCurrentState = changeFeedProcessor.getCurrentState()
+                .map(state -> {
+                    try {
+                        log.info(OBJECT_MAPPER.writeValueAsString(state));
+                    } catch (JsonProcessingException ex) {
+                        log.error("Unexpected", ex);
+                    }
+                    return state;
+                }).block();
+
+            int totalLag = 0;
+            for (ChangeFeedProcessorState item : cfpCurrentState) {
+                totalLag += item.getEstimatedLag();
+            }
+
+            assertThat(totalLag).isEqualTo(0).as("Change Feed Processor estimated total lag at start");
+
+            // Test for "FEED_COUNT total lag
+            setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
+
+            cfpCurrentState = changeFeedProcessor.getCurrentState()
+                .map(state -> {
+                    try {
+                        log.info(OBJECT_MAPPER.writeValueAsString(state));
+                    } catch (JsonProcessingException ex) {
+                        log.error("Unexpected", ex);
+                    }
+                    return state;
+                }).block();
+
+            totalLag = 0;
+            for (ChangeFeedProcessorState item : cfpCurrentState) {
+                totalLag += item.getEstimatedLag();
+            }
+
+            assertThat(totalLag).isEqualTo(FEED_COUNT).as("Change Feed Processor estimated total lag");
         } finally {
             safeDeleteCollection(createdFeedCollection);
             safeDeleteCollection(createdLeaseCollection);

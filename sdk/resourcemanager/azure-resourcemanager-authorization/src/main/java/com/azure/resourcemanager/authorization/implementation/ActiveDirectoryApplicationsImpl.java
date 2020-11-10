@@ -8,18 +8,19 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplication;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplications;
-import com.azure.resourcemanager.authorization.fluent.inner.ApplicationInner;
+import com.azure.resourcemanager.authorization.fluent.models.ApplicationInner;
 import com.azure.resourcemanager.authorization.fluent.ApplicationsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import java.util.UUID;
+
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Mono;
 
 /** The implementation of Applications and its parent interfaces. */
 public class ActiveDirectoryApplicationsImpl
     extends CreatableResourcesImpl<ActiveDirectoryApplication, ActiveDirectoryApplicationImpl, ApplicationInner>
-    implements ActiveDirectoryApplications, HasManager<AuthorizationManager>, HasInner<ApplicationsClient> {
+    implements ActiveDirectoryApplications, HasManager<AuthorizationManager> {
     private ApplicationsClient innerCollection;
     private AuthorizationManager manager;
 
@@ -31,27 +32,15 @@ public class ActiveDirectoryApplicationsImpl
 
     @Override
     public PagedIterable<ActiveDirectoryApplication> list() {
-        return this
-            .innerCollection
-            .list(null)
-            .mapPage(
-                inner -> {
-                    ActiveDirectoryApplicationImpl application = wrapModel(inner);
-                    return application.refreshCredentialsAsync().block();
-                });
+        return new PagedIterable<>(listAsync());
     }
 
     @Override
     public PagedFlux<ActiveDirectoryApplication> listAsync() {
-        return this
-            .innerCollection
-            .listAsync(null)
-            .mapPage(
-                inner -> {
-                    ActiveDirectoryApplicationImpl application = wrapModel(inner);
-                    application.refreshCredentialsAsync();
-                    return application;
-                });
+        return PagedConverter.flatMapPage(inner().listAsync(), applicationInner -> {
+            ActiveDirectoryApplicationImpl application = this.wrapModel(applicationInner);
+            return application.refreshCredentialsAsync().thenReturn(application);
+        });
     }
 
     @Override
@@ -122,8 +111,20 @@ public class ActiveDirectoryApplicationsImpl
         return this.manager;
     }
 
-    @Override
     public ApplicationsClient inner() {
         return this.innerCollection;
+    }
+
+    @Override
+    public PagedIterable<ActiveDirectoryApplication> listByFilter(String filter) {
+        return new PagedIterable<>(listByFilterAsync(filter));
+    }
+
+    @Override
+    public PagedFlux<ActiveDirectoryApplication> listByFilterAsync(String filter) {
+        return PagedConverter.flatMapPage(inner().listAsync(filter), applicationInner -> {
+            ActiveDirectoryApplicationImpl application = this.wrapModel(applicationInner);
+            return application.refreshCredentialsAsync().thenReturn(application);
+        });
     }
 }

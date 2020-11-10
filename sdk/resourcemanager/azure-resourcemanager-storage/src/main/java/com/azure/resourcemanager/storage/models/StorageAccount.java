@@ -11,7 +11,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.storage.StorageManager;
-import com.azure.resourcemanager.storage.fluent.inner.StorageAccountInner;
+import com.azure.resourcemanager.storage.fluent.models.StorageAccountInner;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -60,14 +60,6 @@ public interface StorageAccount
      *     StandardZRS and PremiumLRS accounts only return the blob endpoint
      */
     PublicEndpoints endPoints();
-
-    /**
-     * @return the encryption settings on the account.
-     * @deprecated use {@link StorageAccount#encryptionKeySource()}, {@link StorageAccount#encryptionStatuses()}
-     *     instead.
-     */
-    @Deprecated
-    Encryption encryption();
 
     /** @return the source of the key used for encryption. */
     StorageAccountEncryptionKeySource encryptionKeySource();
@@ -202,16 +194,6 @@ public interface StorageAccount
             /**
              * Specifies the sku of the storage account.
              *
-             * @param skuName the sku
-             * @return the next stage of storage account definition
-             * @deprecated use {@link WithSku#withSku(StorageAccountSkuType)} instead
-             */
-            @Deprecated
-            WithCreate withSku(SkuName skuName);
-
-            /**
-             * Specifies the sku of the storage account.
-             *
              * @param sku the sku
              * @return the next stage of storage account definition
              */
@@ -267,15 +249,6 @@ public interface StorageAccount
 
         /** The stage of a storage account definition allowing to specify encryption settings. */
         interface WithEncryption {
-            /**
-             * Specifies that encryption needs be enabled for blob service.
-             *
-             * @deprecated use {@link WithEncryption#withBlobEncryption()} instead.
-             * @return the next stage of storage account definition
-             */
-            @Deprecated
-            WithCreate withEncryption();
-
             /**
              * Specifies that encryption needs be enabled for blob service.
              *
@@ -509,16 +482,6 @@ public interface StorageAccount
             /**
              * Specifies the sku of the storage account.
              *
-             * @deprecated use {@link WithSku#withSku(StorageAccountSkuType)} instead.
-             * @param skuName the sku
-             * @return the next stage of storage account update
-             */
-            @Deprecated
-            Update withSku(SkuName skuName);
-
-            /**
-             * Specifies the sku of the storage account.
-             *
              * @param sku the sku
              * @return the next stage of storage account update
              */
@@ -558,15 +521,6 @@ public interface StorageAccount
             /**
              * Enables encryption for blob service.
              *
-             * @deprecated use {@link WithEncryption#withBlobEncryption()} instead.
-             * @return the next stage of storage account update
-             */
-            @Deprecated
-            Update withEncryption();
-
-            /**
-             * Enables encryption for blob service.
-             *
              * @return the next stage of storage account update
              */
             Update withBlobEncryption();
@@ -577,15 +531,6 @@ public interface StorageAccount
              * @return he next stage of storage account update
              */
             Update withFileEncryption();
-
-            /**
-             * Disables encryption for blob service.
-             *
-             * @deprecated use {@link WithEncryption#withoutBlobEncryption()} instead.
-             * @return the next stage of storage account update
-             */
-            @Deprecated
-            Update withoutEncryption();
 
             /**
              * Disables encryption for blob service.

@@ -9,9 +9,9 @@ import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.ComputeResourceType;
 import com.azure.resourcemanager.compute.models.ComputeSku;
 import com.azure.resourcemanager.compute.models.ComputeSkus;
-import com.azure.resourcemanager.compute.fluent.inner.ResourceSkuInner;
+import com.azure.resourcemanager.compute.fluent.models.ResourceSkuInner;
 import com.azure.resourcemanager.compute.fluent.ResourceSkusClient;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Mono;
@@ -60,9 +60,8 @@ public final class ComputeSkusImpl extends ReadableWrappersImpl<ComputeSku, Comp
         return inner().listAsync(String.format("location eq '%s'", region.name())).mapPage(this::wrapModel);
     }
 
-    @Override
     public ResourceSkusClient inner() {
-        return this.manager.inner().getResourceSkus();
+        return this.manager.serviceClient().getResourceSkus();
     }
 
     @Override

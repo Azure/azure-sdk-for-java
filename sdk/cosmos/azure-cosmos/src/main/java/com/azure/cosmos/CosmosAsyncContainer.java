@@ -14,12 +14,14 @@ import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.batch.BatchExecutor;
 import com.azure.cosmos.implementation.query.QueryInfo;
-import com.azure.cosmos.implementation.query.Transformer;
 import com.azure.cosmos.models.CosmosConflictProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -29,11 +31,12 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
+import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 
 import java.util.List;
 import java.util.function.Function;
@@ -65,6 +68,7 @@ public class CosmosAsyncContainer {
     private final String queryItemsSpanName;
     private final String readAllConflictsSpanName;
     private final String queryConflictsSpanName;
+    private final String batchSpanName;
     private CosmosAsyncScripts scripts;
 
     CosmosAsyncContainer(String id, CosmosAsyncDatabase database) {
@@ -85,6 +89,7 @@ public class CosmosAsyncContainer {
         this.queryItemsSpanName = "queryItems." + this.id;
         this.readAllConflictsSpanName = "readAllConflicts." + this.id;
         this.queryConflictsSpanName = "queryConflicts." + this.id;
+        this.batchSpanName = "transactionalBatch." + this.id;
     }
 
     /**
@@ -492,6 +497,95 @@ public class CosmosAsyncContainer {
     }
 
     /**
+     * Executes the transactional batch.
+     *
+     * @param transactionalBatch Batch having list of operation and partition key which will be executed by this container.
+     *
+     * @return A Mono response which contains details of execution of the transactional batch.
+     * <p>
+     * If the transactional batch executes successfully, the value returned by {@link
+     * TransactionalBatchResponse#getStatusCode} on the response returned will be set to 200}.
+     * <p>
+     * If an operation within the transactional batch fails during execution, no changes from the batch will be
+     * committed and the status of the failing operation is made available by {@link
+     * TransactionalBatchResponse#getStatusCode} or by the exception. To obtain information about the operations
+     * that failed in case of some user error like conflict, not found etc, the response can be enumerated.
+     * This returns {@link TransactionalBatchOperationResult} instances corresponding to each operation in the
+     * transactional batch in the order they were added to the transactional batch.
+     * For a result corresponding to an operation within the transactional batch, use
+     * {@link TransactionalBatchOperationResult#getStatusCode}
+     * to access the status of the operation. If the operation was not executed or it was aborted due to the failure of
+     * another operation within the transactional batch, the value of this field will be 424;
+     * for the operation that caused the batch to abort, the value of this field
+     * will indicate the cause of failure.
+     * <p>
+     * If there are issues such as request timeouts, Gone, session not available, network failure
+     * or if the service somehow returns 5xx then the Mono will return error instead of TransactionalBatchResponse.
+     * <p>
+     * Use {@link TransactionalBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
+     * transactional batch succeeded.
+     */
+    @Beta(Beta.SinceVersion.V4_7_0)
+    public Mono<TransactionalBatchResponse> executeTransactionalBatch(TransactionalBatch transactionalBatch) {
+        return executeTransactionalBatch(transactionalBatch, new TransactionalBatchRequestOptions());
+    }
+
+    /**
+     * Executes the transactional batch.
+     *
+     * @param transactionalBatch Batch having list of operation and partition key which will be executed by this container.
+     * @param requestOptions Options that apply specifically to batch request.
+     *
+     * @return A Mono response which contains details of execution of the transactional batch.
+     * <p>
+     * If the transactional batch executes successfully, the value returned by {@link
+     * TransactionalBatchResponse#getStatusCode} on the response returned will be set to 200}.
+     * <p>
+     * If an operation within the transactional batch fails during execution, no changes from the batch will be
+     * committed and the status of the failing operation is made available by {@link
+     * TransactionalBatchResponse#getStatusCode} or by the exception. To obtain information about the operations
+     * that failed in case of some user error like conflict, not found etc, the response can be enumerated.
+     * This returns {@link TransactionalBatchOperationResult} instances corresponding to each operation in the
+     * transactional batch in the order they were added to the transactional batch.
+     * For a result corresponding to an operation within the transactional batch, use
+     * {@link TransactionalBatchOperationResult#getStatusCode}
+     * to access the status of the operation. If the operation was not executed or it was aborted due to the failure of
+     * another operation within the transactional batch, the value of this field will be 424;
+     * for the operation that caused the batch to abort, the value of this field
+     * will indicate the cause of failure.
+     * <p>
+     * If there are issues such as request timeouts, Gone, session not available, network failure
+     * or if the service somehow returns 5xx then the Mono will return error instead of TransactionalBatchResponse.
+     * <p>
+     * Use {@link TransactionalBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
+     * transactional batch succeeded.
+     */
+    @Beta(Beta.SinceVersion.V4_7_0)
+    public Mono<TransactionalBatchResponse> executeTransactionalBatch(
+        TransactionalBatch transactionalBatch,
+        TransactionalBatchRequestOptions requestOptions) {
+
+        if (requestOptions == null) {
+            requestOptions = new TransactionalBatchRequestOptions();
+        }
+
+        final TransactionalBatchRequestOptions transactionalBatchRequestOptions = requestOptions;
+
+        return withContext(context -> {
+            final BatchExecutor executor = new BatchExecutor(this, transactionalBatch, transactionalBatchRequestOptions);
+            final Mono<TransactionalBatchResponse> responseMono = executor.executeAsync();
+
+            return database.getClient().getTracerProvider().
+                traceEnabledBatchResponsePublisher(
+                    responseMono,
+                    context,
+                    this.batchSpanName,
+                    database.getId(),
+                    database.getClient().getServiceEndpoint());
+            });
+    }
+
+    /**
      * Reads an item.
      * <p>
      * After subscription the operation will be performed.
@@ -530,6 +624,100 @@ public class CosmosAsyncContainer {
         ModelBridgeInternal.setPartitionKey(options, partitionKey);
         RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
         return withContext(context -> readItemInternal(itemId, requestOptions, itemType, context));
+    }
+
+    /**
+     * Reads many documents.
+     *
+     * @param <T> the type parameter
+     * @param itemIdentityList CosmosItem id and partition key tuple of items that that needs to be read
+     * @param classType   class type
+     * @return a Mono with feed response of cosmos items
+     */
+    @Beta(Beta.SinceVersion.V4_4_0)
+    public <T> Mono<FeedResponse<T>> readMany(
+        List<CosmosItemIdentity> itemIdentityList,
+        Class<T> classType) {
+
+        return this.readMany(itemIdentityList, null, classType);
+    }
+
+    /**
+     * Reads many documents.
+     *
+     * @param <T> the type parameter
+     * @param itemIdentityList CosmosItem id and partition key tuple of items that that needs to be read
+     * @param sessionToken the optional Session token - null if the read can be made without specific session token
+     * @param classType   class type
+     * @return a Mono with feed response of cosmos items
+     */
+    @Beta(Beta.SinceVersion.V4_4_0)
+    public <T> Mono<FeedResponse<T>> readMany(
+        List<CosmosItemIdentity> itemIdentityList,
+        String sessionToken,
+        Class<T> classType) {
+
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+
+        if (!StringUtils.isNotEmpty(sessionToken)) {
+            options = options.setSessionToken(sessionToken);
+        }
+
+        options.setMaxDegreeOfParallelism(-1);
+        return CosmosBridgeInternal
+            .getAsyncDocumentClient(this.getDatabase())
+            .readMany(itemIdentityList, BridgeInternal.getLink(this), options, classType);
+    }
+
+    /**
+     * Reads all the items of a logical partition
+     * <p>
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
+     * contain one or several feed responses of the read Cosmos items. In case of
+     * failure the {@link CosmosPagedFlux} will error.
+     *
+     * @param <T> the type parameter.
+     * @param partitionKey the partition key value of the documents that need to be read
+     * @param classType the class type.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages
+     * of the read Cosmos items or an error.
+     */
+    public <T> CosmosPagedFlux<T> readAllItems(
+        PartitionKey partitionKey,
+        Class<T> classType) {
+
+        return this.readAllItems(partitionKey, new CosmosQueryRequestOptions(), classType);
+    }
+
+    /**
+     * Reads all the items of a logical partition
+     * <p>
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
+     * contain one or several feed responses of the read Cosmos items. In case of
+     * failure the {@link CosmosPagedFlux} will error.
+     *
+     * @param <T> the type parameter.
+     * @param partitionKey the partition key value of the documents that need to be read
+     * @param options the feed options.
+     * @param classType the class type.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages 
+     * of the read Cosmos items or an error.
+     */
+    public <T> CosmosPagedFlux<T> readAllItems(
+        PartitionKey partitionKey,
+        CosmosQueryRequestOptions options,
+        Class<T> classType) {
+            
+        return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
+            pagedFluxOptions.setTracerInformation(this.getDatabase().getClient().getTracerProvider(),
+                this.readAllItemsSpanName,
+                this.getDatabase().getClient().getServiceEndpoint(), database.getId());
+            setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
+            return getDatabase()
+                .getDocClientWrapper()
+                .readAllDocuments(getLink(), partitionKey, options)
+                .map(response -> prepareFeedResponse(response, classType));
+        });
     }
 
     /**
@@ -608,7 +796,27 @@ public class CosmosAsyncContainer {
         }
         ModelBridgeInternal.setPartitionKey(options, partitionKey);
         RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
-        return withContext(context -> deleteItemInternal(itemId, requestOptions, context));
+        return withContext(context -> deleteItemInternal(itemId, null, requestOptions, context));
+    }
+
+    /**
+     * Deletes the item.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single Cosmos item response for the deleted item.
+     *
+     * @param <T> the type parameter.
+     * @param item item to be deleted.
+     * @param options the request options.
+     * @return an {@link Mono} containing the Cosmos item resource response.
+     */
+    public <T> Mono<CosmosItemResponse<Object>> deleteItem(T item, CosmosItemRequestOptions options) {
+        if (options == null) {
+            options = new CosmosItemRequestOptions();
+        }
+        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
+        InternalObjectNode internalObjectNode = InternalObjectNode.fromObjectToInternalObjectNode(item);
+        return withContext(context -> deleteItemInternal(internalObjectNode.getId(), internalObjectNode, requestOptions, context));
     }
 
     private String getItemLink(String itemId) {
@@ -741,11 +949,12 @@ public class CosmosAsyncContainer {
 
     private Mono<CosmosItemResponse<Object>> deleteItemInternal(
         String itemId,
+        InternalObjectNode internalObjectNode,
         RequestOptions requestOptions,
         Context context) {
         Mono<CosmosItemResponse<Object>> responseMono = this.getDatabase()
             .getDocClientWrapper()
-            .deleteDocument(getItemLink(itemId), requestOptions)
+            .deleteDocument(getItemLink(itemId), internalObjectNode, requestOptions)
             .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponseWithObjectType(response))
             .single();
         return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,

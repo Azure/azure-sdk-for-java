@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ServicePrincipalCreateParameters model. */
+/** Request parameters for creating a new service principal. */
 @Fluent
 public final class ServicePrincipalCreateParameters extends ServicePrincipalBase {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ServicePrincipalCreateParameters.class);

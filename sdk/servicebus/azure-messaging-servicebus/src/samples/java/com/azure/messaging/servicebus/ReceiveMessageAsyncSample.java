@@ -40,20 +40,19 @@ public class ReceiveMessageAsyncSample {
             .buildAsyncClient();
 
         Disposable subscription = receiver.receiveMessages()
-            .flatMap(context -> {
-                ServiceBusReceivedMessage message = context.getMessage();
+            .flatMap(message -> {
 
                 // process message
                 System.out.println("Received Message Id: " + message.getMessageId());
-                System.out.println("Received Message: " + new String(message.getBody()));
+                System.out.println("Received Message: " + message.getBody().toString());
 
                 boolean isSuccessfullyProcessed = processMessage(message);
 
                 // When we are finished processing the message, then complete or abandon it.
                 if (isSuccessfullyProcessed) {
-                    return receiver.complete(message.getLockToken()).thenReturn("Completed: " + message.getMessageId());
+                    return receiver.complete(message).thenReturn("Completed: " + message.getMessageId());
                 } else {
-                    return receiver.abandon(message.getLockToken()).thenReturn("Abandoned: " + message.getMessageId());
+                    return receiver.abandon(message).thenReturn("Abandoned: " + message.getMessageId());
                 }
             })
             .subscribe(message -> System.out.printf("Processed at %s. %s%n", Instant.now(), message),

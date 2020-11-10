@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The VaultCreateOrUpdateParameters model. */
+/** Parameters for creating or updating a vault. */
 @Fluent
 public final class VaultCreateOrUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VaultCreateOrUpdateParameters.class);

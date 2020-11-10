@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The EventContent model. */
+/** The content of the event request message. */
 @Fluent
 public final class EventContent {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EventContent.class);

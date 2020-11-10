@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ApplicationGatewayFirewallRuleGroup model. */
+/** A web application firewall rule group. */
 @Fluent
 public final class ApplicationGatewayFirewallRuleGroup {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayFirewallRuleGroup.class);

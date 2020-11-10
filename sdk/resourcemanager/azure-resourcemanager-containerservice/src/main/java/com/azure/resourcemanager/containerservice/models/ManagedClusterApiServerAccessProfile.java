@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ManagedClusterApiServerAccessProfile model. */
+/** Access profile for managed cluster API server. */
 @Fluent
 public final class ManagedClusterApiServerAccessProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterApiServerAccessProfile.class);

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The CertificatePatchResource model. */
+/** ARM resource for a certificate. */
 @JsonFlatten
 @Fluent
 public class CertificatePatchResource extends ProxyOnlyResource {

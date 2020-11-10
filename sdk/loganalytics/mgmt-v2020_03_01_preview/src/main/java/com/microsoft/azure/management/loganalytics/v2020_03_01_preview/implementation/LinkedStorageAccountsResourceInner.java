@@ -21,7 +21,7 @@ import com.microsoft.azure.ProxyResource;
 public class LinkedStorageAccountsResourceInner extends ProxyResource {
     /**
      * Linked storage accounts type. Possible values include: 'CustomLogs',
-     * 'AzureWatson'.
+     * 'AzureWatson', 'Query', 'Ingestion', 'Alerts'.
      */
     @JsonProperty(value = "properties.dataSourceType", access = JsonProperty.Access.WRITE_ONLY)
     private DataSourceType dataSourceType;
@@ -33,7 +33,7 @@ public class LinkedStorageAccountsResourceInner extends ProxyResource {
     private List<String> storageAccountIds;
 
     /**
-     * Get linked storage accounts type. Possible values include: 'CustomLogs', 'AzureWatson'.
+     * Get linked storage accounts type. Possible values include: 'CustomLogs', 'AzureWatson', 'Query', 'Ingestion', 'Alerts'.
      *
      * @return the dataSourceType value
      */

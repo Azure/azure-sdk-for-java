@@ -4,8 +4,7 @@
 package com.azure.resourcemanager.msi.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.msi.MSIManager;
-import com.azure.resourcemanager.msi.fluent.UserAssignedIdentitiesClient;
+import com.azure.resourcemanager.msi.MsiManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -16,7 +15,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCr
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 
 /**
  * Entry point to Azure Managed Service Identity (MSI) Identity resource management API.
@@ -32,6 +30,5 @@ public interface Identities extends
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<Identity>,
         SupportsBatchDeletion,
-        HasManager<MSIManager>,
-        HasInner<UserAssignedIdentitiesClient> {
+        HasManager<MsiManager> {
 }

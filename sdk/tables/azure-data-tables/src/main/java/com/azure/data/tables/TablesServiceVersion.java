@@ -5,10 +5,14 @@ package com.azure.data.tables;
 import com.azure.core.util.ServiceVersion;
 
 /**
- * The versions of Azure Storage Tables supported by this client library.
+ * The versions of Tables REST API supported by this client library.
  */
 public enum TablesServiceVersion implements ServiceVersion {
+    /**
+     * API version 2019-02-02
+     */
     V2019_02_02("2019-02-02");
+
     private final String version;
 
     TablesServiceVersion(String version) {
@@ -24,12 +28,20 @@ public enum TablesServiceVersion implements ServiceVersion {
     }
 
     /**
-     * Gets the latest service version supported by this client library
+     * Gets the latest REST API version supported by this client library.
      *
-     * @return the latest TablesServiceVersion
+     * @return The latest REST API version supported by this client library.
      */
     public static TablesServiceVersion getLatest() {
         return V2019_02_02;
     }
 
+    static TablesServiceVersion fromString(String version) {
+        for (TablesServiceVersion value : TablesServiceVersion.values()) {
+            if (value.version.equals(version)) {
+                return value;
+            }
+        }
+        return null;
+    }
 }

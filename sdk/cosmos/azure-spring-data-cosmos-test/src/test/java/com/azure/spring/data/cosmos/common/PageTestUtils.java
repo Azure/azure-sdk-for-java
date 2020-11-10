@@ -3,6 +3,7 @@
 package com.azure.spring.data.cosmos.common;
 
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,8 +35,14 @@ public class PageTestUtils {
             return true;
         }
 
-        final JSONObject jsonObject = new JSONObject(tokenJson);
+        final JSONObject jsonObject;
+        try {
+            jsonObject = new JSONObject(tokenJson);
+            return jsonObject.isNull("compositeToken");
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return false;
+        }
 
-        return jsonObject.isNull("compositeToken");
     }
 }

@@ -15,11 +15,9 @@ import reactor.core.publisher.Mono;
  * The Managed Service Identity credential for Azure App Service.
  */
 @Immutable
-class AppServiceMsiCredential {
+class AppServiceMsiCredential extends ManagedIdentityServiceCredential {
     private final String msiEndpoint;
     private final String msiSecret;
-    private final IdentityClient identityClient;
-    private final String clientId;
     private final ClientLogger logger = new ClientLogger(AppServiceMsiCredential.class);
 
     /**
@@ -29,24 +27,13 @@ class AppServiceMsiCredential {
      * @param identityClient The identity client to acquire a token with.
      */
     AppServiceMsiCredential(String clientId, IdentityClient identityClient) {
+        super(clientId, identityClient, "AZURE APP SERVICE MSI/IDENTITY ENDPOINT");
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
         this.msiEndpoint = configuration.get(Configuration.PROPERTY_MSI_ENDPOINT);
         this.msiSecret = configuration.get(Configuration.PROPERTY_MSI_SECRET);
-        this.identityClient = identityClient;
-        this.clientId = clientId;
-        if (!(msiEndpoint.startsWith("https") || msiEndpoint.startsWith("http"))) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("MSI Endpoint should start with 'https' or 'http' scheme."));
+        if (msiEndpoint != null) {
+            validateEndpointProtocol(this.msiEndpoint, "MSI", logger);
         }
-    }
-
-    /**
-     * Gets the client ID of the user assigned or system assigned identity.
-     *
-     * @return The client ID of user assigned or system assigned identity.
-     */
-    public String getClientId() {
-        return this.clientId;
     }
 
     /**
@@ -56,6 +43,7 @@ class AppServiceMsiCredential {
      * @return A publisher that emits an {@link AccessToken}.
      */
     public Mono<AccessToken> authenticate(TokenRequestContext request) {
-        return identityClient.authenticateToManagedIdentityEndpoint(msiEndpoint, msiSecret, request);
+        return identityClient.authenticateToManagedIdentityEndpoint(null, null, msiEndpoint,
+            msiSecret, request);
     }
 }

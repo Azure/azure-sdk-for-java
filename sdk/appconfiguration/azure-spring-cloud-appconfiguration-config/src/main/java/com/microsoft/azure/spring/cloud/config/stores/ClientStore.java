@@ -2,6 +2,15 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.config.stores;
 
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.RetryPolicy;
@@ -16,12 +25,6 @@ import com.microsoft.azure.spring.cloud.config.pipline.policies.BaseAppConfigura
 import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.microsoft.azure.spring.cloud.config.resource.Connection;
 import com.microsoft.azure.spring.cloud.config.resource.ConnectionPool;
-import java.time.Duration;
-import java.util.List;
-import java.util.Optional;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ClientStore {
 
@@ -35,6 +38,8 @@ public class ClientStore {
 
     private ConfigurationClientBuilderSetup clientProvider;
 
+    private HashMap<String, ConfigurationAsyncClient> clients;
+
     public ClientStore(AppConfigurationProviderProperties appProperties, ConnectionPool pool,
         AppConfigurationCredentialProvider tokenCredentialProvider,
         ConfigurationClientBuilderSetup clientProvider) {
@@ -42,9 +47,13 @@ public class ClientStore {
         this.pool = pool;
         this.tokenCredentialProvider = tokenCredentialProvider;
         this.clientProvider = clientProvider;
+        this.clients = new HashMap<String, ConfigurationAsyncClient>();
     }
 
-    private ConfigurationAsyncClient buildClient(String store) throws IllegalArgumentException {
+    private ConfigurationAsyncClient getClient(String store) throws IllegalArgumentException {
+        if (clients.containsKey(store)) {
+            return clients.get(store);
+        }
         ExponentialBackoff retryPolicy = new ExponentialBackoff(appProperties.getMaxRetries(),
             Duration.ofMillis(800), Duration.ofSeconds(8));
         ConfigurationClientBuilder builder = getBuilder()
@@ -76,8 +85,7 @@ public class ClientStore {
             .filter(StringUtils::isNotEmpty)
             .isPresent();
         if ((tokenCredentialIsPresent || clientIdIsPresent)
-            && connectionStringIsPresent
-        ) {
+            && connectionStringIsPresent) {
             throw new IllegalArgumentException(
                 "More than 1 Conncetion method was set for connecting to App Configuration.");
         } else if (tokenCredential != null && clientIdIsPresent) {
@@ -100,8 +108,7 @@ public class ClientStore {
             LOGGER.debug("Connecting to " + endpoint + " using Connecting String.");
             builder.connectionString(connection.getConnectionString());
         } else if (endPointIsPresent) {
-            // System Assigned Identity. Needs to be checked last as all of the above
-            // should have a Endpoint.
+            // System Assigned Identity. Needs to be checked last as all of the above should have a Endpoint.
             LOGGER.debug("Connecting to " + endpoint
                 + " using Azure System Assigned Identity or Azure User Assigned Identity.");
             ManagedIdentityCredentialBuilder micBuilder = new ManagedIdentityCredentialBuilder();
@@ -116,7 +123,8 @@ public class ClientStore {
             clientProvider.setup(builder, endpoint);
         }
 
-        return builder.buildAsyncClient();
+        clients.put(store, builder.buildAsyncClient());
+        return clients.get(store);
     }
 
     /**
@@ -124,11 +132,11 @@ public class ClientStore {
      * criteria.
      *
      * @param settingSelector Information on which setting to pull. i.e. number of results, key value...
-     * @param storeName       Name of the App Configuration store to query against.
+     * @param storeName Name of the App Configuration store to query against.
      * @return List of Configuration Settings.
      */
     public final ConfigurationSetting getRevison(SettingSelector settingSelector, String storeName) {
-        ConfigurationAsyncClient client = buildClient(storeName);
+        ConfigurationAsyncClient client = getClient(storeName);
         return client.listRevisions(settingSelector).blockFirst();
     }
 
@@ -136,11 +144,11 @@ public class ClientStore {
      * Gets a list of Configuration Settings from the given config store that match the Setting Selector criteria.
      *
      * @param settingSelector Information on which setting to pull. i.e. number of results, key value...
-     * @param storeName       Name of the App Configuration store to query against.
+     * @param storeName Name of the App Configuration store to query against.
      * @return List of Configuration Settings.
      */
     public final List<ConfigurationSetting> listSettings(SettingSelector settingSelector, String storeName) {
-        ConfigurationAsyncClient client = buildClient(storeName);
+        ConfigurationAsyncClient client = getClient(storeName);
 
         return client.listConfigurationSettings(settingSelector).collectList().block();
     }

@@ -18,7 +18,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 @Fluent
 public interface DeploymentSlots
     extends SupportsCreating<DeploymentSlot.DefinitionStages.Blank>,
-        SupportsListing<DeploymentSlot>,
+        SupportsListing<WebDeploymentSlotBasic>,
         SupportsGettingByName<DeploymentSlot>,
         SupportsGettingById<DeploymentSlot>,
         SupportsDeletingById,

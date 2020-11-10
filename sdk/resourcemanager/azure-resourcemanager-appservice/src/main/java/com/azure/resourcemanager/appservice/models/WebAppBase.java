@@ -5,7 +5,7 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.AppServiceManager;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
@@ -14,7 +14,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import java.io.File;
 import java.io.InputStream;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -23,78 +22,7 @@ import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure Web App or deployment slot. */
 @Fluent
-public interface WebAppBase extends HasName, GroupableResource<AppServiceManager, SiteInner> {
-
-    /** @return state of the web app */
-    String state();
-
-    /** @return hostnames associated with web app */
-    Set<String> hostnames();
-
-    /** @return name of repository site */
-    String repositorySiteName();
-
-    /** @return state indicating whether web app has exceeded its quota usage */
-    UsageState usageState();
-
-    /** @return true if the site is enabled; otherwise, false */
-    boolean enabled();
-
-    /** @return host names for the web app that are enabled */
-    Set<String> enabledHostNames();
-
-    /** @return management information availability state for the web app */
-    SiteAvailabilityState availabilityState();
-
-    /** @return list of SSL states used to manage the SSL bindings for site's hostnames */
-    Map<String, HostnameSslState> hostnameSslStates();
-
-    /** @return The resource ID of the app service plan */
-    String appServicePlanId();
-
-    /** @return Last time web app was modified in UTC */
-    OffsetDateTime lastModifiedTime();
-
-    /** @return list of Azure Traffic manager host names associated with web app */
-    Set<String> trafficManagerHostNames();
-
-    /** @return whether to stop SCM (KUDU) site when the web app is stopped. Default is false. */
-    boolean scmSiteAlsoStopped();
-
-    /** @return which slot this app will swap into */
-    String targetSwapSlot();
-
-    /**
-     * @return if the client affinity is enabled when load balancing http request for multiple instances of the web app
-     */
-    boolean clientAffinityEnabled();
-
-    /** @return if the client certificate is enabled for the web app */
-    boolean clientCertEnabled();
-
-    /**
-     * @return if the public hostnames are disabled the web app. If set to true the app is only accessible via API
-     *     Management process.
-     */
-    boolean hostNamesDisabled();
-
-    /**
-     * @return list of IP addresses that this web app uses for outbound connections. Those can be used when configuring
-     *     firewall rules for databases accessed by this web app.
-     */
-    Set<String> outboundIPAddresses();
-
-    /** @return size of a function container */
-    int containerSize();
-
-    /** @return information about whether the web app is cloned from another */
-    CloningInfo cloningInfo();
-
-    /** @return site is a default container */
-    boolean isDefaultContainer();
-
-    /** @return default hostname of the web app */
-    String defaultHostname();
+public interface WebAppBase extends HasName, GroupableResource<AppServiceManager, SiteInner>, WebSiteBase {
 
     /** @return the default documents */
     List<String> defaultDocuments();
@@ -137,9 +65,6 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
 
     /** @return the auto swap slot name */
     String autoSwapSlotName();
-
-    /** @return true if the web app is configured to accept only HTTPS requests. HTTP requests will be redirected. */
-    boolean httpsOnly();
 
     /** @return the state of FTP / FTPS service */
     FtpsState ftpsState();
@@ -195,14 +120,14 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
     /** @return the authentication configuration defined on the web app */
     Mono<WebAppAuthentication> getAuthenticationConfigAsync();
 
-    /** @return the operating system the web app is running on */
-    OperatingSystem operatingSystem();
-
     /** @return the architecture of the platform, either 32 bit (x86) or 64 bit (x64). */
     PlatformArchitecture platformArchitecture();
 
     /** @return the Linux app framework and version if this is a Linux web app. */
     String linuxFxVersion();
+
+    /** @return the Windows app framework and version if this is a Windows web app. */
+    String windowsFxVersion();
 
     /** @return the diagnostic logs configuration */
     WebAppDiagnosticLogs diagnosticLogsConfig();
@@ -382,18 +307,24 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
 
     /**
      * Deploys a ZIP file onto the Azure specialized Java SE image on this web app.
+     * <p>
+     * Retry by client is required if error happens, due to nature of the stream.
      *
      * @param zipFile the ZIP file to upload
+     * @param length the length of the file
      */
-    void zipDeploy(InputStream zipFile);
+    void zipDeploy(InputStream zipFile, long length);
 
     /**
      * Deploys a ZIP file onto the Azure specialized Java SE image on this web app.
+     * <p>
+     * Retry by client is required if error happens, due to nature of the stream.
      *
      * @param zipFile the ZIP file to upload
+     * @param length the length of the file
      * @return a completable of the operation
      */
-    Mono<Void> zipDeployAsync(InputStream zipFile);
+    Mono<Void> zipDeployAsync(InputStream zipFile, long length);
 
     /**************************************************************
      * Fluent interfaces to provision a Web App or deployment slot.
@@ -558,13 +489,6 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
              * @return the next stage of the definition
              */
             WithCreate<FluentT> withPhpVersion(PhpVersion version);
-
-            /**
-             * Turn off PHP support.
-             *
-             * @return the next stage of the definition
-             */
-            WithCreate<FluentT> withoutPhp();
 
             /**
              * Specifies the Java version.
@@ -1145,6 +1069,13 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
              * @return the next stage of web app update
              */
             Update<FluentT> withPhpVersion(PhpVersion version);
+
+            /**
+             * Turn off PHP support.
+             *
+             * @return the next stage of the update
+             */
+            Update<FluentT> withoutPhp();
 
             /**
              * Specifies the Java version.

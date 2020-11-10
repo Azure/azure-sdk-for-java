@@ -5,17 +5,18 @@ package com.azure.resourcemanager.redis;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.redis.fluent.RedisManagementClient;
+import com.azure.resourcemanager.redis.implementation.RedisManagementClientBuilder;
 import com.azure.resourcemanager.redis.implementation.RedisCachesImpl;
 import com.azure.resourcemanager.redis.models.RedisCaches;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure redis resource management. */
-public final class RedisManager extends Manager<RedisManager, RedisManagementClient> {
+public final class RedisManager extends Manager<RedisManagementClient> {
     // Collections
     private RedisCaches redisCaches;
 
@@ -46,20 +47,8 @@ public final class RedisManager extends Manager<RedisManager, RedisManagementCli
      * @param profile the profile to use
      * @return the RedisManager
      */
-    public static RedisManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile, new SdkContext());
-    }
-
-    /**
-     * Creates an instance of RedisManager that exposes Redis resource management API entry points.
-     *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
-     * @param profile the profile to use
-     * @param sdkContext the sdk context
-     * @return the RedisManager
-     */
-    public static RedisManager authenticate(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        return new RedisManager(httpPipeline, profile, sdkContext);
+    private static RedisManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        return new RedisManager(httpPipeline, profile);
     }
 
     /** The interface allowing configurations to be set. */
@@ -82,16 +71,15 @@ public final class RedisManager extends Manager<RedisManager, RedisManagementCli
         }
     }
 
-    private RedisManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+    private RedisManager(HttpPipeline httpPipeline, AzureProfile profile) {
         super(
             httpPipeline,
             profile,
             new RedisManagementClientBuilder()
                 .pipeline(httpPipeline)
-                .endpoint(profile.environment().getResourceManagerEndpoint())
-                .subscriptionId(profile.subscriptionId())
-                .buildClient(),
-            sdkContext);
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
+                .buildClient());
     }
 
     /** @return the Redis Cache management API entry point */

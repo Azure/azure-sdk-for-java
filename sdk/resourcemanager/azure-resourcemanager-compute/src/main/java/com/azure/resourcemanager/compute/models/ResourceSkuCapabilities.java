@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ResourceSkuCapabilities model. */
+/** Describes The SKU capabilities object. */
 @Immutable
 public final class ResourceSkuCapabilities {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuCapabilities.class);

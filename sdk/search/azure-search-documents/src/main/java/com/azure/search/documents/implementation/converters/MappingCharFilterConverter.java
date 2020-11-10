@@ -18,8 +18,8 @@ public final class MappingCharFilterConverter {
         if (obj == null) {
             return null;
         }
-        MappingCharFilter mappingCharFilter = new MappingCharFilter(obj.getName(), obj.getMappings());
-        return mappingCharFilter;
+
+        return new MappingCharFilter(obj.getName(), obj.getMappings());
     }
 
     /**
@@ -30,12 +30,9 @@ public final class MappingCharFilterConverter {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.indexes.implementation.models.MappingCharFilter mappingCharFilter =
-            new com.azure.search.documents.indexes.implementation.models.MappingCharFilter(obj.getName(),
-                obj.getMappings());
 
-        mappingCharFilter.validate();
-        return mappingCharFilter;
+        return new com.azure.search.documents.indexes.implementation.models.MappingCharFilter(obj.getName(),
+            obj.getMappings());
     }
 
     private MappingCharFilterConverter() {

@@ -10,7 +10,11 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.Region;
 import com.azure.core.management.SubResource;
+import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.authorization.models.BuiltInRole;
+import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.PowerState;
@@ -28,8 +32,6 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetPublicIpAd
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSkuTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVM;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMs;
-import com.azure.resourcemanager.authorization.models.BuiltInRole;
-import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.keyvault.models.Secret;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
@@ -44,28 +46,29 @@ import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterface;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNicIpConfiguration;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.resources.core.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountKey;
-import com.microsoft.azure.storage.CloudStorageAccount;
-import com.microsoft.azure.storage.blob.CloudBlobClient;
-import com.microsoft.azure.storage.blob.CloudBlobContainer;
-import com.microsoft.azure.storage.blob.CloudBlockBlob;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import com.azure.resourcemanager.test.utils.TestUtilities;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.blob.specialized.BlockBlobClient;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.InputStream;
+import java.net.URI;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest {
     private String rgName = "";
@@ -106,39 +109,34 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         Assertions.assertTrue(keys.size() > 0);
         String storageAccountKey = keys.get(0).value();
 
-        final String storageConnectionString =
-            String
-                .format(
-                    "DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s",
-                    storageAccount.name(), storageAccountKey);
-        // Get the script to upload
-        //
-        InputStream scriptFileAsStream =
-            VirtualMachineScaleSetOperationsTests.class.getResourceAsStream("/install_apache.sh");
-        // Get the size of the stream
-        //
-        int fileSize;
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        byte[] buffer = new byte[256];
-        int bytesRead;
-        while ((bytesRead = scriptFileAsStream.read(buffer)) != -1) {
-            outputStream.write(buffer, 0, bytesRead);
-        }
-        fileSize = outputStream.size();
-        outputStream.close();
         // Upload the script file as block blob
         //
         URI fileUri;
         if (isPlaybackMode()) {
             fileUri = new URI("http://nonexisting.blob.core.windows.net/scripts/install_apache.sh");
         } else {
-            CloudStorageAccount account = CloudStorageAccount.parse(storageConnectionString);
-            CloudBlobClient cloudBlobClient = account.createCloudBlobClient();
-            CloudBlobContainer container = cloudBlobClient.getContainerReference("scripts");
-            container.createIfNotExists();
-            CloudBlockBlob blob = container.getBlockBlobReference("install_apache.sh");
-            blob.upload(scriptFileAsStream, fileSize);
-            fileUri = blob.getUri();
+            final String storageConnectionString = ResourceManagerUtils.getStorageConnectionString(
+                storageAccount.name(), storageAccountKey, storageManager.environment());
+            // Get the script to upload
+            //
+            String filePath = VirtualMachineScaleSetOperationsTests.class.getResource("/install_apache.sh").getPath();
+            File file = new File(filePath);
+            InputStream inputStream = VirtualMachineScaleSetOperationsTests.class
+                .getResourceAsStream("/install_apache.sh");
+            inputStream = new BufferedInputStream(inputStream);
+            inputStream.mark((int) file.length());
+
+            BlobServiceClient storageClient = new BlobServiceClientBuilder()
+                .connectionString(storageConnectionString)
+                .httpClient(storageManager.httpPipeline().getHttpClient())
+                .buildClient();
+            BlobContainerClient blobContainerClient = storageClient.getBlobContainerClient("scripts");
+            blobContainerClient.create();
+
+            BlockBlobClient blockBlobClient = blobContainerClient.getBlobClient("install_apache.sh")
+                .getBlockBlobClient();
+            blockBlobClient.upload(inputStream, file.length());
+            fileUri = new URI(blockBlobClient.getBlobUrl());
         }
         List<String> fileUris = new ArrayList<>();
         fileUris.add(fileUri.toString());
@@ -227,7 +225,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         final String uname = "jvuser";
         final String password = password();
         final String apacheInstallScript =
-            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/compute/mgmt/src/test/resources/install_apache.sh";
+            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager/azure-resourcemanager-compute/src/test/resources/install_apache.sh";
         final String installCommand = "bash install_apache.sh Abc.123x(";
         List<String> fileUris = new ArrayList<>();
         fileUris.add(apacheInstallScript);
@@ -725,9 +723,14 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         Assertions.assertTrue(nicCount > 0);
     }
 
+    /*
+     * Previously name
+     * canCreateTwoRegionalVirtualMachineScaleSetsAndAssociateEachWithDifferentBackendPoolOfZoneResilientLoadBalancer
+     * but this was too long for some OSes and would cause git checkout to fail.
+     */
     @Test
     public void
-        canCreateTwoRegionalVirtualMachineScaleSetsAndAssociateEachWithDifferentBackendPoolOfZoneResilientLoadBalancer()
+        canCreateTwoRegionalVMScaleSetsWithDifferentPoolOfZoneResilientLoadBalancer()
             throws Exception {
         // Zone resilient resource -> resources deployed in all zones by the service and it will be served by all AZs
         // all the time.
@@ -1248,7 +1251,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             vmss.virtualMachines().simulateEviction(instance.instanceId());
         }
 
-        SdkContext.sleep(30 * 60 * 1000);
+        ResourceManagerUtils.sleep(Duration.ofMinutes(30));
 
         for (VirtualMachineScaleSetVM instance: vmInstances) {
             instance.refresh();

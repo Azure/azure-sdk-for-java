@@ -19,16 +19,16 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
-import com.azure.messaging.servicebus.models.CreateBatchOptions;
+import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.Signal;
 
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -46,10 +46,13 @@ import java.util.stream.Collector;
 import static com.azure.core.amqp.implementation.RetryUtil.getRetryPolicy;
 import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.fluxError;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPERATION_DISPOSED_RECEIVER;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_SERVICE_NAME;
 
 /**
  * An <b>asynchronous</b> client to send messages to a Service Bus resource.
@@ -61,10 +64,10 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
  * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiateWithDefaultCredential}
  *
  * <p><strong>Send messages to a Service Bus resource</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.createBatch}
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch}
  *
  * <p><strong>Send messages using a size-limited {@link ServiceBusMessageBatch} to a Service Bus resource</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.createBatch#CreateBatchOptionsLimitedSize}
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch#CreateMessageBatchOptionsLimitedSize}
  *
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
@@ -74,8 +77,12 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      */
     static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
     private static final String TRANSACTION_LINK_NAME = "coordinator";
+    // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
+    // for more information on Azure resource provider namespaces.
+    private static final String AZ_TRACING_NAMESPACE_VALUE = "Microsoft.ServiceBus";
 
-    private static final CreateBatchOptions DEFAULT_BATCH_OPTIONS =  new CreateBatchOptions();
+    private static final CreateMessageBatchOptions DEFAULT_BATCH_OPTIONS =  new CreateMessageBatchOptions();
+    private static final String SERVICE_BASE_NAME = "ServiceBus.";
 
     private final ClientLogger logger = new ClientLogger(ServiceBusSenderAsyncClient.class);
     private final AtomicReference<String> linkName = new AtomicReference<>();
@@ -247,8 +254,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      *
      * @return A {@link ServiceBusMessageBatch} that can fit as many messages as the transport allows.
      */
-    public Mono<ServiceBusMessageBatch> createBatch() {
-        return createBatch(DEFAULT_BATCH_OPTIONS);
+    public Mono<ServiceBusMessageBatch> createMessageBatch() {
+        return createMessageBatch(DEFAULT_BATCH_OPTIONS);
     }
 
     /**
@@ -259,7 +266,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * @return A new {@link ServiceBusMessageBatch} configured with the given options.
      * @throws NullPointerException if {@code options} is null.
      */
-    public Mono<ServiceBusMessageBatch> createBatch(CreateBatchOptions options) {
+    public Mono<ServiceBusMessageBatch> createMessageBatch(CreateMessageBatchOptions options) {
         if (Objects.isNull(options)) {
             return monoError(logger, new NullPointerException("'options' cannot be null."));
         }
@@ -273,7 +280,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
             if (maxSize > maximumLinkSize) {
                 return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
-                    "CreateBatchOptions.getMaximumSizeInBytes (%s bytes) is larger than the link size"
+                    "CreateMessageBatchOptions.getMaximumSizeInBytes (%s bytes) is larger than the link size"
                         + " (%s bytes).", maxSize, maximumLinkSize)));
             }
 
@@ -282,7 +289,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                 : maximumLinkSize;
 
             return Mono.just(
-                new ServiceBusMessageBatch(batchSize, link::getErrorContext, tracerProvider, messageSerializer));
+                new ServiceBusMessageBatch(batchSize, link::getErrorContext, tracerProvider, messageSerializer,
+                    entityName, getFullyQualifiedNamespace()));
         }));
     }
 
@@ -291,7 +299,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * enqueued and made available to receivers only at the scheduled enqueue time.
      *
      * @param message Message to be sent to the Service Bus Queue.
-     * @param scheduledEnqueueTime Instant at which the message should appear in the Service Bus queue or topic.
+     * @param scheduledEnqueueTime OffsetDateTime at which the message should appear in the Service Bus queue or topic.
      * @param transactionContext to be set on message before sending to Service Bus.
      *
      * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
@@ -299,7 +307,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code message}, {@code scheduledEnqueueTime}, {@code transactionContext} or
      * {@code transactionContext.transactionID} is {@code null}.
      */
-    public Mono<Long> scheduleMessage(ServiceBusMessage message, Instant scheduledEnqueueTime,
+    public Mono<Long> scheduleMessage(ServiceBusMessage message, OffsetDateTime scheduledEnqueueTime,
         ServiceBusTransactionContext transactionContext) {
         if (Objects.isNull(transactionContext)) {
             return monoError(logger, new NullPointerException("'transactionContext' cannot be null."));
@@ -316,14 +324,72 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * enqueued and made available to receivers only at the scheduled enqueue time.
      *
      * @param message Message to be sent to the Service Bus Queue.
-     * @param scheduledEnqueueTime Instant at which the message should appear in the Service Bus queue or topic.
+     * @param scheduledEnqueueTime OffsetDateTime at which the message should appear in the Service Bus queue or topic.
      *
      * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
      *
      * @throws NullPointerException if {@code message} or {@code scheduledEnqueueTime} is {@code null}.
      */
-    public Mono<Long> scheduleMessage(ServiceBusMessage message, Instant scheduledEnqueueTime) {
+    public Mono<Long> scheduleMessage(ServiceBusMessage message, OffsetDateTime scheduledEnqueueTime) {
         return scheduleMessageInternal(message, scheduledEnqueueTime, null);
+    }
+
+    /**
+     * Sends a scheduled messages to the Azure Service Bus entity this sender is connected to. A scheduled message is
+     * enqueued and made available to receivers only at the scheduled enqueue time.
+     *
+     * @param messages Messages to be sent to the Service Bus Queue.
+     * @param scheduledEnqueueTime OffsetDateTime at which the message should appear in the Service Bus queue or topic.
+     *
+     * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
+     *
+     * @throws NullPointerException if {@code messages} or {@code scheduledEnqueueTime} is {@code null}.
+     */
+    public Flux<Long> scheduleMessages(Iterable<ServiceBusMessage> messages, OffsetDateTime scheduledEnqueueTime) {
+        return scheduleMessages(messages, scheduledEnqueueTime, null);
+    }
+
+    /**
+     * Sends a scheduled messages to the Azure Service Bus entity this sender is connected to. A scheduled message is
+     * enqueued and made available to receivers only at the scheduled enqueue time.
+     *
+     * @param messages Messages to be sent to the Service Bus Queue.
+     * @param scheduledEnqueueTime Instant at which the message should appear in the Service Bus queue or topic.
+     * @param transactionContext to be set on batch message before scheduling them on Service Bus.
+     *
+     * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
+     *
+     * @throws NullPointerException if {@code message} or {@code scheduledEnqueueTime} is {@code null}.
+     */
+    public Flux<Long> scheduleMessages(Iterable<ServiceBusMessage> messages, OffsetDateTime scheduledEnqueueTime,
+        ServiceBusTransactionContext transactionContext) {
+        if (Objects.isNull(messages)) {
+            return fluxError(logger, new NullPointerException("'messages' cannot be null."));
+        }
+
+        if (Objects.isNull(scheduledEnqueueTime)) {
+            return fluxError(logger, new NullPointerException("'scheduledEnqueueTime' cannot be null."));
+        }
+
+        return createMessageBatch()
+            .map(messageBatch -> {
+                int index = 0;
+                for (ServiceBusMessage message : messages) {
+                    if (!messageBatch.tryAddMessage(message)) {
+                        final String error = String.format(Locale.US,
+                            "Messages exceed max allowed size for all the messages together. "
+                                + "Failed to add message at index '%s'.", index);
+                        throw logger.logExceptionAsError(new IllegalArgumentException(error));
+                    }
+                    ++index;
+                }
+                return messageBatch;
+            })
+            .flatMapMany(messageBatch -> connectionProcessor
+                .flatMap(connection -> connection.getManagementNode(entityName, entityType))
+                .flatMapMany(managementNode -> managementNode.schedule(messageBatch.getMessages(), scheduledEnqueueTime,
+                    messageBatch.getMaxSizeInBytes(), linkName.get(), transactionContext))
+            );
     }
 
     /**
@@ -342,7 +408,33 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityName, entityType))
-            .flatMap(managementNode -> managementNode.cancelScheduledMessage(sequenceNumber, linkName.get()));
+            .flatMap(managementNode -> managementNode.cancelScheduledMessages(Arrays.asList(sequenceNumber),
+                linkName.get()));
+    }
+
+    /**
+     * Cancels the enqueuing of an already scheduled message, if it was not already enqueued.
+     *
+     * @param sequenceNumbers of the scheduled messages to cancel.
+     *
+     * @return The {@link Mono} that finishes this operation on service bus resource.
+     *
+     * @throws NullPointerException if {@code sequenceNumbers} is null.
+     */
+    public Mono<Void> cancelScheduledMessages(Iterable<Long> sequenceNumbers) {
+
+        if (isDisposed.get()) {
+            return monoError(logger, new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "cancelScheduledMessages")));
+        }
+
+        if (Objects.isNull(sequenceNumbers)) {
+            return monoError(logger, new NullPointerException("'messages' cannot be null."));
+        }
+
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityName, entityType))
+            .flatMap(managementNode -> managementNode.cancelScheduledMessages(sequenceNumbers, linkName.get()));
     }
 
     /**
@@ -420,14 +512,16 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             return monoError(logger, new NullPointerException("'messages' cannot be null."));
         }
 
-        return createBatch().flatMap(messageBatch -> {
-            messages.forEach(message -> messageBatch.tryAdd(message));
+        return createMessageBatch().flatMap(messageBatch -> {
+            messages.forEach(message -> messageBatch.tryAddMessage(message));
             return sendInternal(messageBatch, transaction);
         });
     }
 
-    private Mono<Long> scheduleMessageInternal(ServiceBusMessage message, Instant scheduledEnqueueTime,
-                                               ServiceBusTransactionContext transactionContext) {
+
+
+    private Mono<Long> scheduleMessageInternal(ServiceBusMessage message, OffsetDateTime scheduledEnqueueTime,
+        ServiceBusTransactionContext transactionContext) {
         if (Objects.isNull(message)) {
             return monoError(logger, new NullPointerException("'message' cannot be null."));
         }
@@ -444,8 +538,9 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
                 return connectionProcessor
                     .flatMap(connection -> connection.getManagementNode(entityName, entityType))
-                    .flatMap(managementNode -> managementNode.schedule(message, scheduledEnqueueTime, maxSize,
-                        link.getLinkName(), transactionContext));
+                    .flatMap(managementNode -> managementNode.schedule(Arrays.asList(message), scheduledEnqueueTime,
+                        maxSize, link.getLinkName(), transactionContext)
+                    .next());
             }));
     }
 
@@ -481,7 +576,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             if (isTracingEnabled) {
                 parentContext.set(event.getContext());
                 if (i == 0) {
-                    sharedContext = tracerProvider.getSharedSpanBuilder(parentContext.get());
+                    sharedContext = tracerProvider.getSharedSpanBuilder(SERVICE_BASE_NAME, parentContext.get());
                 }
                 tracerProvider.addSpanLinks(sharedContext.addData(SPAN_CONTEXT_KEY, event.getContext()));
             }
@@ -495,17 +590,19 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             messages.add(message);
         }
 
-        final Context finalSharedContext = sharedContext != null ? sharedContext : Context.NONE;
+        if (isTracingEnabled) {
+            final Context finalSharedContext = sharedContext == null
+                ? Context.NONE
+                : sharedContext
+                    .addData(ENTITY_PATH_KEY, entityName)
+                    .addData(HOST_NAME_KEY, connectionProcessor.getFullyQualifiedNamespace())
+                    .addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
+            // Start send span and store updated context
+            parentContext.set(tracerProvider.startSpan(AZ_TRACING_SERVICE_NAME, finalSharedContext, ProcessKind.SEND));
+        }
 
         return withRetry(
             getSendLink().flatMap(link -> {
-                if (isTracingEnabled) {
-                    Context entityContext = finalSharedContext.addData(ENTITY_PATH_KEY, link.getEntityPath());
-                    // Start send span and store updated context
-                    parentContext.set(tracerProvider.startSpan(
-                        entityContext.addData(HOST_NAME_KEY, link.getHostname()), ProcessKind.SEND));
-                }
-
                 if (transactionContext != null && transactionContext.getTransactionId() != null) {
                     final TransactionalState deliveryState = new TransactionalState();
                     deliveryState.setTxnId(new Binary(transactionContext.getTransactionId().array()));
@@ -517,17 +614,12 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                         ? link.send(messages.get(0))
                         : link.send(messages);
                 }
-            })
-                .doOnEach(signal -> {
-                    if (isTracingEnabled) {
-                        tracerProvider.endSpan(parentContext.get(), signal);
-                    }
-                })
-                .doOnError(error -> {
-                    if (isTracingEnabled) {
-                        tracerProvider.endSpan(parentContext.get(), Signal.error(error));
-                    }
-                }), retryOptions.getTryTimeout(), retryPolicy);
+            }), retryOptions.getTryTimeout(), retryPolicy)
+            .doOnEach(signal -> {
+                if (isTracingEnabled) {
+                    tracerProvider.endSpan(parentContext.get(), signal);
+                }
+            });
 
     }
 
@@ -536,10 +628,11 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             .flatMap(link -> link.getLinkSize()
                 .flatMap(size -> {
                     final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
-                    final CreateBatchOptions batchOptions = new CreateBatchOptions()
+                    final CreateMessageBatchOptions batchOptions = new CreateMessageBatchOptions()
                         .setMaximumSizeInBytes(batchSize);
                     return messages.collect(new AmqpMessageCollector(batchOptions, 1,
-                        link::getErrorContext, tracerProvider, messageSerializer));
+                        link::getErrorContext, tracerProvider, messageSerializer, entityName,
+                        link.getHostname()));
                 })
                 .flatMap(list -> sendInternalBatch(Flux.fromIterable(list), transactionContext)));
     }
@@ -572,11 +665,14 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         private final ErrorContextProvider contextProvider;
         private final TracerProvider tracerProvider;
         private final MessageSerializer serializer;
+        private final String entityPath;
+        private final String hostname;
 
         private volatile ServiceBusMessageBatch currentBatch;
 
-        AmqpMessageCollector(CreateBatchOptions options, Integer maxNumberOfBatches,
-            ErrorContextProvider contextProvider, TracerProvider tracerProvider, MessageSerializer serializer) {
+        AmqpMessageCollector(CreateMessageBatchOptions options, Integer maxNumberOfBatches,
+            ErrorContextProvider contextProvider, TracerProvider tracerProvider, MessageSerializer serializer,
+            String entityPath, String hostname) {
             this.maxNumberOfBatches = maxNumberOfBatches;
             this.maxMessageSize = options.getMaximumSizeInBytes() > 0
                 ? options.getMaximumSizeInBytes()
@@ -584,8 +680,11 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             this.contextProvider = contextProvider;
             this.tracerProvider = tracerProvider;
             this.serializer = serializer;
+            this.entityPath = entityPath;
+            this.hostname = hostname;
 
-            currentBatch = new ServiceBusMessageBatch(maxMessageSize, contextProvider, tracerProvider, serializer);
+            currentBatch = new ServiceBusMessageBatch(maxMessageSize, contextProvider, tracerProvider, serializer,
+                entityPath, hostname);
         }
 
         @Override
@@ -597,7 +696,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         public BiConsumer<List<ServiceBusMessageBatch>, ServiceBusMessage> accumulator() {
             return (list, event) -> {
                 ServiceBusMessageBatch batch = currentBatch;
-                if (batch.tryAdd(event)) {
+                if (batch.tryAddMessage(event)) {
                     return;
                 }
 
@@ -609,8 +708,9 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                         contextProvider.getErrorContext());
                 }
 
-                currentBatch = new ServiceBusMessageBatch(maxMessageSize, contextProvider, tracerProvider, serializer);
-                currentBatch.tryAdd(event);
+                currentBatch = new ServiceBusMessageBatch(maxMessageSize, contextProvider, tracerProvider, serializer,
+                    entityPath, hostname);
+                currentBatch.tryAddMessage(event);
                 list.add(batch);
             };
         }

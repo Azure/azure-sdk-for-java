@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PrivateAccessSubnet model. */
+/** Description of a Virtual Network subnet that is useable for private site access. */
 @Fluent
 public final class PrivateAccessSubnet {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateAccessSubnet.class);

@@ -1,7 +1,28 @@
 # Release History
 
-## 1.6.0-beta.1 (Unreleased)
+## 1.7.0-beta.1 (Unreleased)
 
+
+## 1.6.3 (2020-10-29)
+
+### Dependency updates
+
+- Updated `azure-core` to `1.10.0`.
+
+## 1.6.2 (2020-10-01)
+
+- Updated `azure-core` version.
+
+## 1.6.1 (2020-09-08)
+
+- Updated `azure-core` version to pickup bug fix.
+
+## 1.6.0 (2020-09-03)
+
+- Added new APIs to configure request write timeout, response timeout, and response body read timeout.
+- Changed default timeouts from infinite to 60 seconds.
+- Updated `reactor-core` version to `3.3.9.RELEASE`.
+- Updated `reactor-netty` version to `0.9.11.RELEASE`.
 
 ## 1.5.4 (2020-08-07)
 

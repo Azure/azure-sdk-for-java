@@ -4,7 +4,8 @@
 package com.azure.core.management.exception;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
+import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.jupiter.api.Assertions;
@@ -19,7 +20,7 @@ public class ManagementExceptionTests {
     public void testDeserialization() throws IOException {
         final String errorBody = "{\"error\":{\"code\":\"ResourceGroupNotFound\",\"message\":\"Resource group 'rg-not-exist' could not be found.\"}}";
 
-        AzureJacksonAdapter serializerAdapter = new AzureJacksonAdapter();
+        SerializerAdapter serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
         ManagementError managementError = serializerAdapter.deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
         Assertions.assertEquals("ResourceGroupNotFound", managementError.getCode());
     }
@@ -28,7 +29,7 @@ public class ManagementExceptionTests {
     public void testSubclassDeserialization() throws IOException {
         final String errorBody = "{\"error\":{\"code\":\"WepAppError\",\"message\":\"Web app error.\",\"innererror\":\"Deployment error.\",\"details\":[{\"innererror\":\"Inner error.\"}]}}";
 
-        AzureJacksonAdapter serializerAdapter = new AzureJacksonAdapter();
+        SerializerAdapter serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
         WebError webError = serializerAdapter.deserialize(errorBody, WebError.class, SerializerEncoding.JSON);
         Assertions.assertEquals("WepAppError", webError.getCode());
 

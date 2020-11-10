@@ -1,7 +1,11 @@
 # Release History
 
-## 12.7.0-beta.1 (Unreleased)
+## 12.7.0-beta.2 (Unreleased)
 
+
+## 12.7.0-beta.1 (2020-10-01)
+- Added logging of batch operation exceptions when they are added into the aggregate batch response.
+- Removed logging of batch operation exceptions when access operation that has failed.
 
 ## 12.6.0 (2020-08-13)
 - Added support to set tier on a snapshot or version.

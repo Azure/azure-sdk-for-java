@@ -20,7 +20,8 @@ jobs:
     - template: ../common/pipelines/templates/steps/verify-links.yml
       parameters:
         Directory: ""
-
+        CheckLinkGuidance: $true
+        
     - task: Maven@3
       displayName: 'Generate Reports'
       inputs:

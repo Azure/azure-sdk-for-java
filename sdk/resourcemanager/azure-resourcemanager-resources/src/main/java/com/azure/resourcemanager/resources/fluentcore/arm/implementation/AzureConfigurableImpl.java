@@ -13,7 +13,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.policy.AuxiliaryAuthenticationPolicy;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 
 import java.time.temporal.ChronoUnit;
@@ -36,6 +36,22 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
     private RetryPolicy retryPolicy;
     private Configuration configuration;
     private List<TokenCredential> tokens;
+    private HttpPipeline httpPipeline;
+
+    /**
+     *  Configures the http pipeline.
+     * (Internal use only)
+     *
+     * @param httpPipeline the http pipeline
+     * @param azureConfigurable the azure configurable instance
+     * @param <T> the type of azure configurable
+     * @return the azure configurable instance
+     */
+    public static <T extends AzureConfigurable<?>> T configureHttpPipeline(HttpPipeline httpPipeline,
+                                                                           T azureConfigurable) {
+        ((AzureConfigurableImpl) azureConfigurable).withHttpPipeline(httpPipeline);
+        return azureConfigurable;
+    }
 
     protected AzureConfigurableImpl() {
         policies = new ArrayList<>();
@@ -125,11 +141,26 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
         return (T) this;
     }
 
+    /**
+     *  Sets the http pipeline.
+     * (Internal use only)
+     *
+     * @param httpPipeline the http pipeline
+     */
+    public void withHttpPipeline(HttpPipeline httpPipeline) {
+        Objects.requireNonNull(httpPipeline);
+        this.httpPipeline = httpPipeline;
+    }
+
     protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile) {
+        // Check if this is internal build to make sure all managers could share same http pipeline in each module.
+        if (this.httpPipeline != null) {
+            return httpPipeline;
+        }
         Objects.requireNonNull(credential);
         if (!tokens.isEmpty()) {
             policies.add(
-                new AuxiliaryAuthenticationPolicy(profile.environment(), tokens.toArray(new TokenCredential[0])));
+                new AuxiliaryAuthenticationPolicy(profile.getEnvironment(), tokens.toArray(new TokenCredential[0])));
         }
         return HttpPipelineProvider.buildHttpPipeline(credential, profile, scopes(), httpLogOptions, configuration,
             retryPolicy, policies, httpClient);

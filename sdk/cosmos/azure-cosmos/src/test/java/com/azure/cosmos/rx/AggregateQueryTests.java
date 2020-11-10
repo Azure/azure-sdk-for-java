@@ -88,11 +88,13 @@ public class AggregateQueryTests extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = 2 * TIMEOUT, dataProvider = "queryMetricsArgProvider")
-    public void queryDocumentsWithAggregates(boolean qmEnabled) throws Exception {
+    public void queryDocumentsWithAggregates(Boolean qmEnabled) throws Exception {
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
-        options.setQueryMetricsEnabled(qmEnabled);
+        if (qmEnabled != null) {
+            options.setQueryMetricsEnabled(qmEnabled);
+        }
         options.setMaxDegreeOfParallelism(2);
 
         for (QueryConfig queryConfig : queryConfigs) {

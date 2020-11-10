@@ -3,14 +3,14 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.inner.ProbeInner;
+import com.azure.resourcemanager.network.fluent.models.ProbeInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /** A client-side representation of a load balancing probe. */
 @Fluent()
 public interface LoadBalancerProbe
-    extends HasInner<ProbeInner>,
+    extends HasInnerModel<ProbeInner>,
         ChildResource<LoadBalancer>,
         HasLoadBalancingRules,
         HasProtocol<ProbeProtocol>,

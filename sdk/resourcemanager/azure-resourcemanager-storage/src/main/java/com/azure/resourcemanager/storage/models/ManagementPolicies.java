@@ -5,14 +5,12 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.storage.fluent.ManagementPoliciesClient;
 import reactor.core.publisher.Mono;
 
 /** Type representing ManagementPolicies. */
 @Fluent
 public interface ManagementPolicies
-    extends SupportsCreating<ManagementPolicy.DefinitionStages.Blank>, HasInner<ManagementPoliciesClient> {
+    extends SupportsCreating<ManagementPolicy.DefinitionStages.Blank> {
     /**
      * Gets the managementpolicy associated with the specified storage account.
      *

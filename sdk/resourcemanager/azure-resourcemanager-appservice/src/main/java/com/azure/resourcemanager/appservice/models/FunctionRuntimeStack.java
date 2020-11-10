@@ -12,37 +12,32 @@ public class FunctionRuntimeStack {
 
     /** JAVA 8. */
     public static final FunctionRuntimeStack JAVA_8 = new FunctionRuntimeStack("java", "~3",
-        "java|8", "java|8");
+        "java|8");
 
     /** JAVA 11. */
     public static final FunctionRuntimeStack JAVA_11 = new FunctionRuntimeStack("java", "~3",
-        "java|11", "java|11");
+        "java|11");
 
     private final String runtime;
     private final String version;
 
-    private final String linuxFxVersionForConsumptionPlan;
-    private final String linuxFxVersionForDedicatedPlan;
+    private final String linuxFxVersion;
 
     /**
      * Creates a custom function app runtime stack.
      *
      * @param runtime the language runtime
      * @param version the language runtime version
-     * @param linuxFxVersionForConsumptionPlan the LinuxFxVersion property value, for Consumption plan
-     * @param linuxFxVersionForDedicatedPlan the LinuxFxVersion property value, for dedicated plan (app service plan or
-     *     premium)
+     * @param linuxFxVersion the LinuxFxVersion property value
      */
     public FunctionRuntimeStack(
         String runtime,
         String version,
-        String linuxFxVersionForConsumptionPlan,
-        String linuxFxVersionForDedicatedPlan) {
+        String linuxFxVersion) {
         this.runtime = Objects.requireNonNull(runtime);
         this.version = Objects.requireNonNull(version);
 
-        this.linuxFxVersionForConsumptionPlan = Objects.requireNonNull(linuxFxVersionForConsumptionPlan);
-        this.linuxFxVersionForDedicatedPlan = Objects.requireNonNull(linuxFxVersionForDedicatedPlan);
+        this.linuxFxVersion = Objects.requireNonNull(linuxFxVersion);
     }
 
     /** @return the name of the language runtime */
@@ -56,21 +51,12 @@ public class FunctionRuntimeStack {
     }
 
     /**
-     * Gets LinuxFxVersion property value, for Consumption plan.
+     * Gets LinuxFxVersion property value.
      *
      * @return the LinuxFxVersion property value for siteConfig
      */
-    public String getLinuxFxVersionForConsumptionPlan() {
-        return linuxFxVersionForConsumptionPlan;
-    }
-
-    /**
-     * Gets LinuxFxVersion property value, for dedicated plan (app service plan or premium).
-     *
-     * @return the LinuxFxVersion property value for siteConfig
-     */
-    public String getLinuxFxVersionForDedicatedPlan() {
-        return linuxFxVersionForDedicatedPlan;
+    public String getLinuxFxVersion() {
+        return linuxFxVersion;
     }
 
     @Override

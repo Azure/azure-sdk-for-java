@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The AzureReachabilityReportParameters model. */
+/** Geographic and time constraints for Azure reachability report. */
 @Fluent
 public final class AzureReachabilityReportParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureReachabilityReportParameters.class);

@@ -41,7 +41,7 @@ public final class StopAnalyzerConverter {
             List<String> stopwords = new ArrayList<>(obj.getStopwords());
             stopAnalyzer.setStopwords(stopwords);
         }
-        stopAnalyzer.validate();
+
         return stopAnalyzer;
     }
 

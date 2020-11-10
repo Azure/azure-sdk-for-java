@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The UniqueTokenFilter model. */
+/** Filters out tokens with same text as the previous token. This token filter is implemented using Apache Lucene. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.UniqueTokenFilter")
 @JsonFlatten
@@ -26,9 +26,13 @@ public class UniqueTokenFilter extends TokenFilter {
     @JsonProperty(value = "onlyOnSamePosition")
     private Boolean onlyOnSamePosition;
 
-    /** Creates an instance of UniqueTokenFilter class. */
+    /**
+     * Creates an instance of UniqueTokenFilter class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
-    public UniqueTokenFilter(@JsonProperty(value = "name") String name) {
+    public UniqueTokenFilter(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 
@@ -52,15 +56,5 @@ public class UniqueTokenFilter extends TokenFilter {
     public UniqueTokenFilter setOnlyOnSamePosition(Boolean onlyOnSamePosition) {
         this.onlyOnSamePosition = onlyOnSamePosition;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
     }
 }

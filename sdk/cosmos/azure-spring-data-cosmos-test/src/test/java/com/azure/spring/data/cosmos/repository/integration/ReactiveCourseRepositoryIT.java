@@ -9,6 +9,7 @@ import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveCourseRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -298,5 +299,15 @@ public class ReactiveCourseRepositoryIT {
         final Flux<Course> findResult = repository.findByNameOrDepartmentAllIgnoreCase(
             COURSE_NAME_1.toLowerCase(), DEPARTMENT_NAME_3.toLowerCase());
         StepVerifier.create(findResult).expectNext(COURSE_1).verifyComplete();
+    }
+
+    @Test
+    public void testAnnotatedQueries() {
+        Flux<Course> courseFlux = repository.getCoursesWithNameDepartment(COURSE_NAME_1, DEPARTMENT_NAME_3);
+        StepVerifier.create(courseFlux).expectNext(COURSE_1).verifyComplete();
+
+        Flux<ObjectNode> courseGroupBy = repository.getCoursesGroupByDepartment();
+        StepVerifier.create(courseGroupBy).expectComplete();
+        StepVerifier.create(courseGroupBy).expectNextCount(1);
     }
 }

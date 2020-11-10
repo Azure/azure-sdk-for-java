@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CustomDomainProperties model. */
+/** Custom domain of app resource payload. */
 @Fluent
 public final class CustomDomainProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomDomainProperties.class);
@@ -23,7 +23,7 @@ public final class CustomDomainProperties {
     /*
      * The app name of domain.
      */
-    @JsonProperty(value = "appName")
+    @JsonProperty(value = "appName", access = JsonProperty.Access.WRITE_ONLY)
     private String appName;
 
     /*
@@ -59,17 +59,6 @@ public final class CustomDomainProperties {
      */
     public String appName() {
         return this.appName;
-    }
-
-    /**
-     * Set the appName property: The app name of domain.
-     *
-     * @param appName the appName value to set.
-     * @return the CustomDomainProperties object itself.
-     */
-    public CustomDomainProperties withAppName(String appName) {
-        this.appName = appName;
-        return this;
     }
 
     /**

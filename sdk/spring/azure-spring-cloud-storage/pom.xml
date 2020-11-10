@@ -10,37 +10,31 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.microsoft.azure</groupId>
-  <artifactId>spring-cloud-azure-storage</artifactId>
-  <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-storage;current} -->
-
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-cloud-storage</artifactId>
+  <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-storage;current} -->
   <name>Azure Spring Cloud Storage</name>
+
+  <properties>
+    <jacoco.min.linecoverage>0.34</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.0</jacoco.min.branchcoverage>
+  </properties>
 
   <dependencies>
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>spring-cloud-azure-context</artifactId>
-      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-context;current} -->
+      <groupId>com.azure.spring</groupId>
+      <artifactId>azure-spring-cloud-context</artifactId>
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-context;current} -->
     </dependency>
 
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>spring-cloud-azure-telemetry</artifactId>
-      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-telemetry;current} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-storage-blob</artifactId>
-      <version>12.8.0</version>  <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-configuration-processor</artifactId>
+      <version>2.3.5.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+      <optional>true</optional>
     </dependency>
 
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-storage-file-share</artifactId>
-      <version>12.6.0</version> <!-- {x-version-update;com.azure:azure-storage-file-share;dependency} -->
-    </dependency>
-
-    <!-- Storage -->
+    <!-- Storage Queue -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
@@ -48,11 +42,10 @@
       <optional>true</optional>
     </dependency>
 
-    <!-- Storage Queue -->
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>spring-integration-storage-queue</artifactId>
-      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-integration-storage-queue;current} -->
+      <groupId>com.azure.spring</groupId>
+      <artifactId>azure-spring-integration-storage-queue</artifactId>
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-storage-queue;current} -->
       <optional>true</optional>
     </dependency>
 
@@ -60,33 +53,33 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-actuator-autoconfigure</artifactId>
-      <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
+      <version>2.3.5.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>org.hibernate.validator</groupId>
       <artifactId>hibernate-validator</artifactId>
-      <version>6.1.5.Final</version> <!-- {x-version-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
+      <version>6.1.6.Final</version> <!-- {x-version-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-logging</artifactId>
-      <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-logging;external_dependency} -->
+      <version>2.3.5.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-logging;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>2.3.5.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13</version> <!-- {x-version-update;junit:junit;external_dependency} -->
+      <version>4.13.1</version> <!-- {x-version-update;junit:junit;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -132,12 +125,10 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:spring-cloud-azure-context:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-context;current} -->
-                <include>com.microsoft.azure:spring-cloud-azure-telemetry:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-telemetry;current} -->
-                <include>com.microsoft.azure:spring-integration-storage-queue:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-integration-storage-queue;current} -->
-                <include>org.hibernate.validator:hibernate-validator:[6.1.5.Final]</include> <!-- {x-include-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter-logging:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-logging;external_dependency} -->
+                <include>org.hibernate.validator:hibernate-validator:[6.1.6.Final]</include> <!-- {x-include-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[2.3.5.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-configuration-processor:[2.3.5.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-logging:[2.3.5.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-logging;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -145,4 +136,64 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <!-- Generate "spring-configuration-metadata.json" by annotation process -->
+    <profile>
+      <id>annotation-process-for-java-8</id>
+      <activation>
+        <jdk>[1.8,9)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>annotation-process-for-java-8</id>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration>
+                  <compilerArgs>
+                    <arg>-proc:only</arg> <!-- Turn on annotation processing -->
+                  </compilerArgs>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>annotation-process-for-java-11</id>
+      <activation>
+        <jdk>[11,)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>annotation-process-for-java-11</id>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration>
+                  <compilerArgs>
+                    <arg>-proc:only</arg> <!-- Turn on annotation processing -->
+                  </compilerArgs>
+                  <release>11</release>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

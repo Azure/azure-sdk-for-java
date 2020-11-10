@@ -8,7 +8,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.resources.models.Subscription;
 import com.azure.resourcemanager.resources.models.Subscriptions;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.SupportsGettingByIdImpl;
-import com.azure.resourcemanager.resources.fluent.inner.SubscriptionInner;
+import com.azure.resourcemanager.resources.fluent.models.SubscriptionInner;
 import com.azure.resourcemanager.resources.fluent.SubscriptionsClient;
 import reactor.core.publisher.Mono;
 

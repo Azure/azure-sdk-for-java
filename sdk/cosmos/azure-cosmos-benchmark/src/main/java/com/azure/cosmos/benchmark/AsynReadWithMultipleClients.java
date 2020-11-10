@@ -26,6 +26,7 @@ import com.codahale.metrics.graphite.Graphite;
 import com.codahale.metrics.graphite.GraphiteReporter;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.mpierce.metrics.reservoir.hdrhistogram.HdrHistogramResetOnSnapshotReservoir;
 import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +40,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -87,7 +87,7 @@ public class AsynReadWithMultipleClients<T> {
     void run() throws Exception {
         successMeter = metricsRegistry.meter("#Successful Operations");
         failureMeter = metricsRegistry.meter("#Unsuccessful Operations");
-        latency = metricsRegistry.timer("Latency");
+        latency = metricsRegistry.register("Latency", new Timer(new HdrHistogramResetOnSnapshotReservoir()));
         reporter.start(configuration.getPrintingInterval(), TimeUnit.SECONDS);
         AtomicLong count = new AtomicLong(0);
         long i;

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CorsRule model. */
+/** Specifies a CORS rule for the Blob service. */
 @Fluent
 public final class CorsRule {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CorsRule.class);

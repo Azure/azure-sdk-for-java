@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
@@ -31,16 +32,19 @@ import com.azure.resourcemanager.network.models.NicIpConfiguration;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.resourcemanager.network.models.Subnet;
-import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
-import com.azure.resourcemanager.storage.models.SkuName;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.storage.models.StorageAccount;
+import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -48,8 +52,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public class VirtualMachineOperationsTests extends ComputeManagementTest {
     private String rgName = "";
@@ -159,7 +161,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withUnmanagedDisks()
-            .withSize(VirtualMachineSizeTypes.STANDARD_D3)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withOSDiskName("javatest")
             .withLicenseType("Windows_Server")
@@ -194,6 +196,8 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
     @Test
     public void canCreateVirtualMachineSyncPoll() throws Exception {
+        final long defaultDelayInMillis = 10 * 1000;
+
         Accepted<VirtualMachine> acceptedVirtualMachine = computeManager
             .virtualMachines()
             .define(vmName)
@@ -206,7 +210,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withUnmanagedDisks()
-            .withSize(VirtualMachineSizeTypes.STANDARD_D3)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withOSDiskName("javatest")
             .withLicenseType("Windows_Server")
@@ -215,17 +219,17 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertNotEquals("Succeeded", createdVirtualMachine.provisioningState());
 
         LongRunningOperationStatus pollStatus = acceptedVirtualMachine.getActivationResponse().getStatus();
-        int delayInMills = acceptedVirtualMachine.getActivationResponse().getRetryAfter() == null
-            ? 0
-            : (int) acceptedVirtualMachine.getActivationResponse().getRetryAfter().toMillis();
+        long delayInMills = acceptedVirtualMachine.getActivationResponse().getRetryAfter() == null
+            ? defaultDelayInMillis
+            : acceptedVirtualMachine.getActivationResponse().getRetryAfter().toMillis();
         while (!pollStatus.isComplete()) {
-            SdkContext.sleep(delayInMills);
+            ResourceManagerUtils.sleep(Duration.ofMillis(delayInMills));
 
             PollResponse<?> pollResponse = acceptedVirtualMachine.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
             delayInMills = pollResponse.getRetryAfter() == null
-                ? 10000
-                : (int) pollResponse.getRetryAfter().toMillis();
+                ? defaultDelayInMillis
+                : pollResponse.getRetryAfter().toMillis();
         }
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollStatus);
         VirtualMachine virtualMachine = acceptedVirtualMachine.getFinalResult();
@@ -236,16 +240,16 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
         pollStatus = acceptedDelete.getActivationResponse().getStatus();
         delayInMills = acceptedDelete.getActivationResponse().getRetryAfter() == null
-            ? 0
+            ? defaultDelayInMillis
             : (int) acceptedDelete.getActivationResponse().getRetryAfter().toMillis();
 
         while (!pollStatus.isComplete()) {
-            SdkContext.sleep(delayInMills);
+            ResourceManagerUtils.sleep(Duration.ofMillis(delayInMills));
 
             PollResponse<?> pollResponse = acceptedDelete.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
             delayInMills = pollResponse.getRetryAfter() == null
-                ? 10000
+                ? defaultDelayInMillis
                 : (int) pollResponse.getRetryAfter().toMillis();
         }
 
@@ -276,7 +280,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withUnmanagedDisks()
-            .withSize(VirtualMachineSizeTypes.STANDARD_A2)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withOSDiskName("javatest")
             .withLowPriority(VirtualMachineEvictionPolicyTypes.DEALLOCATE)
@@ -391,7 +395,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withUnmanagedDisks()
-            .withSize(VirtualMachineSizeTypes.STANDARD_DS3_V2)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withOSDiskName("javatest")
             .withLicenseType("Windows_Server")
@@ -486,7 +490,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withUnmanagedDisks()
-            .withSize(VirtualMachineSizeTypes.STANDARD_DS3_V2)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withOSDiskName("javatest")
             .withLicenseType("Windows_Server")
@@ -645,17 +649,25 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                     resourceCount.incrementAndGet();
                     return createdResource;
                 })
-            .collectList()
-            .block();
-        // 1 resource group, 1 storage, 5 network, 5 publicIp, 5 nic, 5 virtual machines
-        // Additional one for CreatableUpdatableResourceRoot.
-        // TODO: - ans - We should not emit CreatableUpdatableResourceRoot.
-        Assertions.assertEquals(resourceCount.get(), 23);
+            .blockLast();
+
+        networkNames.forEach(name -> {
+            Assertions.assertNotNull(networkManager.networks().getByResourceGroup(rgName, name));
+        });
+
+        publicIPAddressNames.forEach(name -> {
+            Assertions.assertNotNull(networkManager.publicIpAddresses().getByResourceGroup(rgName, name));
+        });
+
+        Assertions.assertEquals(1, storageManager.storageAccounts().listByResourceGroup(rgName).stream().count());
+        Assertions.assertEquals(count, networkManager.networkInterfaces().listByResourceGroup(rgName).stream().count());
+
+        Assertions.assertEquals(count, resourceCount.get());
     }
 
     @Test
     public void canSetStorageAccountForUnmanagedDisk() {
-        final String storageName = sdkContext.randomResourceName("st", 14);
+        final String storageName = generateRandomResourceName("st", 14);
         // Create a premium storage account for virtual machine data disk
         //
         StorageAccount storageAccount =
@@ -664,7 +676,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .define(storageName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
-                .withSku(SkuName.PREMIUM_LRS)
+                .withSku(StorageAccountSkuType.PREMIUM_LRS)
                 .create();
 
         // Creates a virtual machine with an unmanaged data disk that gets stored in the above
@@ -693,7 +705,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withLun(3)
                 .storeAt(storageAccount.name(), "diskvhds", "datadisk2vhd.vhd")
                 .attach()
-                .withSize(VirtualMachineSizeTypes.STANDARD_DS2_V2)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
 
@@ -730,7 +742,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withRootPassword(password())
                 .withUnmanagedDisks()
                 .withExistingUnmanagedDataDisk(storageAccount.name(), "diskvhds", "datadisk1vhd.vhd")
-                .withSize(VirtualMachineSizeTypes.STANDARD_DS2_V2)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .create();
         // Gets the vm
         //
@@ -778,18 +790,18 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("firstuser")
                 .withRootPassword("afh123RVS!")
-                .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .create();
 
         // checking to see if withTag correctly update
         virtualMachine.update().withTag("test", "testValue").apply();
-        Assertions.assertEquals("testValue", virtualMachine.inner().tags().get("test"));
+        Assertions.assertEquals("testValue", virtualMachine.innerModel().tags().get("test"));
 
         // checking to see if withTags correctly updates
         Map<String, String> testTags = new HashMap<String, String>();
         testTags.put("testTag", "testValue");
         virtualMachine.update().withTags(testTags).apply();
-        Assertions.assertEquals(testTags, virtualMachine.inner().tags());
+        Assertions.assertEquals(testTags, virtualMachine.innerModel().tags());
     }
 
     @Test
@@ -833,25 +845,25 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withRootUsername("firstuser")
             .withRootPassword("afh123RVS!")
             .withSpotPriority(VirtualMachineEvictionPolicyTypes.DEALLOCATE)
-            .withSize(VirtualMachineSizeTypes.STANDARD_D2_V3)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
             .create();
 
         Assertions.assertNotNull(virtualMachine.osDiskStorageAccountType());
         Assertions.assertTrue(virtualMachine.osDiskSize() > 0);
         Disk disk = computeManager.disks().getById(virtualMachine.osDiskId());
         Assertions.assertNotNull(disk);
-        Assertions.assertEquals(DiskState.ATTACHED, disk.inner().diskState());
+        Assertions.assertEquals(DiskState.ATTACHED, disk.innerModel().diskState());
 
         // call simulate eviction
         virtualMachine.simulateEviction();
-        SdkContext.sleep(30 * 60 * 1000);
+        ResourceManagerUtils.sleep(Duration.ofMinutes(30));
 
         virtualMachine = computeManager.virtualMachines().getById(virtualMachine.id());
         Assertions.assertNotNull(virtualMachine);
         Assertions.assertNull(virtualMachine.osDiskStorageAccountType());
         Assertions.assertTrue(virtualMachine.osDiskSize() == 0);
         disk = computeManager.disks().getById(virtualMachine.osDiskId());
-        Assertions.assertEquals(DiskState.RESERVED, disk.inner().diskState());
+        Assertions.assertEquals(DiskState.RESERVED, disk.innerModel().diskState());
     }
 
     private CreatablesInfo prepareCreatableVirtualMachines(

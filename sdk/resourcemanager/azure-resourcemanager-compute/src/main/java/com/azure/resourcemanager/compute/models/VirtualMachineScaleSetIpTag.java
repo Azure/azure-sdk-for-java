@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VirtualMachineScaleSetIpTag model. */
+/** Contains the IP tag associated with the public IP address. */
 @Fluent
 public final class VirtualMachineScaleSetIpTag {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetIpTag.class);

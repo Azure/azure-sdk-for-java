@@ -66,6 +66,7 @@ import com.microsoft.azure.management.network.v2020_06_01.DefaultSecurityRules;
 import com.microsoft.azure.management.network.v2020_06_01.NetworkVirtualAppliances;
 import com.microsoft.azure.management.network.v2020_06_01.VirtualApplianceSites;
 import com.microsoft.azure.management.network.v2020_06_01.VirtualApplianceSkus;
+import com.microsoft.azure.management.network.v2020_06_01.InboundSecurityRuleOperations;
 import com.microsoft.azure.management.network.v2020_06_01.NetworkWatchers;
 import com.microsoft.azure.management.network.v2020_06_01.PacketCaptures;
 import com.microsoft.azure.management.network.v2020_06_01.ConnectionMonitors;
@@ -175,6 +176,7 @@ public final class NetworkManager extends ManagerCore<NetworkManager, NetworkMan
     private NetworkVirtualAppliances networkVirtualAppliances;
     private VirtualApplianceSites virtualApplianceSites;
     private VirtualApplianceSkus virtualApplianceSkus;
+    private InboundSecurityRuleOperations inboundSecurityRuleOperations;
     private NetworkWatchers networkWatchers;
     private PacketCaptures packetCaptures;
     private ConnectionMonitors connectionMonitors;
@@ -772,6 +774,16 @@ public final class NetworkManager extends ManagerCore<NetworkManager, NetworkMan
             this.virtualApplianceSkus = new VirtualApplianceSkusImpl(this);
         }
         return this.virtualApplianceSkus;
+    }
+
+    /**
+     * @return Entry point to manage InboundSecurityRuleOperations.
+     */
+    public InboundSecurityRuleOperations inboundSecurityRuleOperations() {
+        if (this.inboundSecurityRuleOperations == null) {
+            this.inboundSecurityRuleOperations = new InboundSecurityRuleOperationsImpl(this);
+        }
+        return this.inboundSecurityRuleOperations;
     }
 
     /**

@@ -4,13 +4,13 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.compute.fluent.inner.RunCommandResultInner;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.compute.fluent.models.RunCommandResultInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.util.List;
 
 /** Type representing sku for an Azure compute resource. */
 @Fluent
-public interface RunCommandResult extends HasInner<RunCommandResultInner> {
+public interface RunCommandResult extends HasInnerModel<RunCommandResultInner> {
     /**
      * Get run command operation response.
      *

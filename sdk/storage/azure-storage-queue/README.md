@@ -20,7 +20,7 @@ A single queue message can be up to 64 KB in size, and a queue can contain milli
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-queue</artifactId>
-  <version>12.6.0</version>
+  <version>12.7.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -464,7 +464,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
-If you would like to become an active contributor to this project please follow the instructions provided in [Microsoft Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
+If you would like to become an active contributor to this project please follow the instructions provided in [Microsoft Azure Projects Contribution Guidelines](https://azure.github.io/guidelines.html).
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
@@ -477,7 +477,7 @@ If you would like to become an active contributor to this project please follow 
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-queue/src/samples/README.md
 [api_documentation]: https://docs.microsoft.com/rest/api/storageservices/queue-service-rest-api
 [storage_docs]: https://docs.microsoft.com/azure/storage/queues/storage-queues-introduction
-[jdk]: https://docs.microsoft.com/en-us/java/azure/jdk/?view=azure-java-stable
+[jdk]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [maven]: https://maven.apache.org/
 [azure_subscription]: https://azure.microsoft.com/free/
 [storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal

@@ -6,6 +6,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.CosmosError;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -54,6 +55,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
+import static com.azure.cosmos.implementation.TestUtils.mockDocumentServiceRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
@@ -64,6 +67,8 @@ import static org.mockito.Mockito.times;
 
 public class DocumentProducerTest {
     private final static Logger logger = LoggerFactory.getLogger(DocumentProducerTest.class);
+    private final static DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
+
     private static final long TIMEOUT = 30000;
     private final static String OrderByPayloadFieldName = "payload";
     private final static String OrderByItemsFieldName = "orderByItems";
@@ -98,7 +103,7 @@ public class DocumentProducerTest {
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
         Mockito.doReturn(url).when(globalEndpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
         doReturn(false).when(globalEndpointManager).isClosed();
-        return new RetryPolicy(globalEndpointManager, ConnectionPolicy.getDefaultPolicy());
+        return new RetryPolicy(mockDiagnosticsClientContext(), globalEndpointManager, ConnectionPolicy.getDefaultPolicy());
     }
 
     @Test(groups = {"unit"}, dataProvider = "splitParamProvider", timeOut = TIMEOUT)
@@ -537,7 +542,7 @@ public class DocumentProducerTest {
     }
 
     private RxDocumentServiceRequest mockRequest(String partitionKeyRangeId) {
-        RxDocumentServiceRequest req = Mockito.mock(RxDocumentServiceRequest.class);
+        RxDocumentServiceRequest req = mockDocumentServiceRequest(clientContext);
         PartitionKeyRangeIdentity pkri = new PartitionKeyRangeIdentity(partitionKeyRangeId);
         doReturn(pkri).when(req).getPartitionKeyRangeIdentity();
         return req;
@@ -885,7 +890,7 @@ public class DocumentProducerTest {
                 @Override
                 public RxDocumentServiceRequest apply(PartitionKeyRange pkr, String cp, Integer ps) {
                     synchronized (this) {
-                        RxDocumentServiceRequest req = Mockito.mock(RxDocumentServiceRequest.class);
+                        RxDocumentServiceRequest req = mockDocumentServiceRequest(clientContext);
                         PartitionKeyRangeIdentity pkri = new PartitionKeyRangeIdentity(pkr.getId());
                         doReturn(pkri).when(req).getPartitionKeyRangeIdentity();
                         doReturn(cp).when(req).getContinuation();

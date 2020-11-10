@@ -1,14 +1,50 @@
 # Release History
 
-## 1.8.0-beta.1 (Unreleased)
+## 1.11.0-beta.1 (Unreleased)
 
+
+## 1.10.0 (2020-10-29)
+
+### New Features
+
+- Added `JsonPatchDocument` to support `json-patch` functionality.
+- Added new Identity `Configuration` properties.
+
+### Bug Fixes
+
+- Modified `ContinuablePagedFlux` implementation to prevent `OutOfMemoryError` when retrieving many pages. [#12453](https://github.com/Azure/azure-sdk-for-java/issues/12453)
+- Fixed a bug where request retrying didn't consume the network response potentially leading to resource leaking.
+
+## 1.9.0 (2020-10-01)
+
+### New Features
+
+- Added `ServiceClientProtocol` to allow the client to indicate which networking protocol it will use.
+- Added `HttpPipelinePosition` which allows `HttpPipelinePolicy`s to indicate their position when used in a client builder.
+- Added default interface method `HttpPipelinePolicy.getPipelinePosition` that returns `HttpPipelinePosition.PER_RETRY`.
+
+### Bug Fixes
+
+- Fixed a bug where calling `UrlBuilder.parse` could result in an exception. [#15013](https://github.com/Azure/azure-sdk-for-java/issues/15013)
+- Changed `ContinuablePagedIterable` implementation to use a custom iterable to prevent additional, unrequested pages from being retrieved. [#15575](https://github.com/Azure/azure-sdk-for-java/issues/15575)
+
+## 1.8.1 (2020-09-08)
+
+- Fixed a bug where some `HttpRequests` would have their body consumed before being sent resulting in an exception being thrown.
+
+## 1.8.0 (2020-09-03)
+
+- General performance fixes for serialization, URL modification and parsing, and more.
+- New `InputStream` and `OutputStream` APIs for serialization and deserialization.
+- Added logging for the request attempt count to better correlate when requests are retried.
+- Improved request and response body logging performance by using bulk `ByteBuffer` reading instead of byte by byte reading.
+- Fixed a bug where header logging checked for a log level of not equals `verbose` instead of equals `verbose`.
+- Updated `reactor-core` version to `3.3.9.RELEASE`.
+- Updated FasterXML Jackson versions to `2.11.2`.
 
 ## 1.7.0 (2020-08-07)
 
 - Updated `reactor-core` version to `3.3.8.RELEASE`.
-- Updated `reactor-netty` version to `0.9.10.RELEASE`.
-- Updated `netty` version to `4.1.51.Final`.
-- Updated `netty-tcnative` version to `2.0.31.Final`.
 - Updated handling of `OffsetDateTime` serialization to implicitly convert date strings missing time zone into UTC.
 - Updated `PollerFlux` and `SyncPoller` to propagate exceptions when polling instead of only on failed statuses.
 - Redesigned `SimpleTokenCache` to gracefully attempt a token refresh 5 minutes before actual expiry

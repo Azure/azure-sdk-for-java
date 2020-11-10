@@ -1,7 +1,36 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.6.0-beta.1 (Unreleased)
 
+
+## 1.5.1 (2020-10-29)
+
+### Dependency updates
+
+- Updated `azure-core` to `1.10.0`.
+
+### Bug Fixes
+
+- Fixed a bug in test recording redaction for redacting empty values for json key-value pairs.
+
+## 1.5.0 (2020-10-01)
+
+### New Features
+
+- Enhanced playback recording to use test class name plus test name to identify records.
+
+### Bug Fixes
+
+- Added additional response data redaction.
+- Updated handling of `HttpClient` retrieval from the classpath to no longer require dependent libraries to `add-opens` in Java 9+.
+
+## 1.4.2 (2020-09-08)
+
+- Updated `azure-core` version to pickup bug fix.
+
+## 1.4.1 (2020-09-03)
+
+- Updated `azure-core` dependency.
 
 ## 1.4.0 (2020-08-07)
 

@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The VirtualMachineIdentity model. */
+/** Identity for the virtual machine. */
 @Fluent
 public class VirtualMachineIdentity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineIdentity.class);

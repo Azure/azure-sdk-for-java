@@ -11,6 +11,7 @@ import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -20,14 +21,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.appplatform.models.ConfigServerState;
-import com.azure.resourcemanager.appplatform.models.SpringApp;
-import com.azure.resourcemanager.appplatform.models.SpringService;
-import com.azure.resourcemanager.appplatform.models.TraceProxyState;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
@@ -39,6 +39,7 @@ import com.azure.resourcemanager.appservice.models.HostnameSslState;
 import com.azure.resourcemanager.appservice.models.PublishingProfile;
 import com.azure.resourcemanager.appservice.models.SslState;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
+import com.azure.resourcemanager.appservice.models.WebSiteBase;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplication;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryObject;
@@ -53,15 +54,6 @@ import com.azure.resourcemanager.compute.models.ImageDataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineCustomImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtension;
-import com.azure.resourcemanager.containerinstance.models.Container;
-import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
-import com.azure.resourcemanager.containerinstance.models.ContainerPort;
-import com.azure.resourcemanager.containerinstance.models.EnvironmentVariable;
-import com.azure.resourcemanager.containerinstance.models.Volume;
-import com.azure.resourcemanager.containerinstance.models.VolumeMount;
-import com.azure.resourcemanager.containerregistry.models.AccessKeyType;
-import com.azure.resourcemanager.containerregistry.models.Registry;
-import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountListKeysResult;
@@ -69,11 +61,11 @@ import com.azure.resourcemanager.cosmos.models.DatabaseAccountListReadOnlyKeysRe
 import com.azure.resourcemanager.cosmos.models.Location;
 import com.azure.resourcemanager.dns.models.ARecordSet;
 import com.azure.resourcemanager.dns.models.AaaaRecordSet;
-import com.azure.resourcemanager.dns.models.CNameRecordSet;
+import com.azure.resourcemanager.dns.models.CnameRecordSet;
 import com.azure.resourcemanager.dns.models.DnsZone;
-import com.azure.resourcemanager.dns.models.MXRecordSet;
 import com.azure.resourcemanager.dns.models.MxRecord;
-import com.azure.resourcemanager.dns.models.NSRecordSet;
+import com.azure.resourcemanager.dns.models.MxRecordSet;
+import com.azure.resourcemanager.dns.models.NsRecordSet;
 import com.azure.resourcemanager.dns.models.PtrRecordSet;
 import com.azure.resourcemanager.dns.models.SoaRecord;
 import com.azure.resourcemanager.dns.models.SoaRecordSet;
@@ -104,7 +96,7 @@ import com.azure.resourcemanager.monitor.models.SmsReceiver;
 import com.azure.resourcemanager.monitor.models.VoiceReceiver;
 import com.azure.resourcemanager.monitor.models.WebhookReceiver;
 import com.azure.resourcemanager.msi.models.Identity;
-import com.azure.resourcemanager.network.fluent.inner.SecurityRuleInner;
+import com.azure.resourcemanager.network.fluent.models.SecurityRuleInner;
 import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackend;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddress;
@@ -148,31 +140,8 @@ import com.azure.resourcemanager.network.models.Topology;
 import com.azure.resourcemanager.network.models.TopologyAssociation;
 import com.azure.resourcemanager.network.models.TopologyResource;
 import com.azure.resourcemanager.network.models.VerificationIPFlow;
-import com.azure.resourcemanager.privatedns.models.CnameRecordSet;
-import com.azure.resourcemanager.privatedns.models.MxRecordSet;
-import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
-import com.azure.resourcemanager.privatedns.models.VirtualNetworkLink;
-import com.azure.resourcemanager.redis.models.RedisAccessKeys;
-import com.azure.resourcemanager.redis.models.RedisCache;
-import com.azure.resourcemanager.redis.models.RedisCachePremium;
-import com.azure.resourcemanager.redis.models.ScheduleEntry;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.sql.models.ElasticPoolActivity;
-import com.azure.resourcemanager.sql.models.ElasticPoolDatabaseActivity;
-import com.azure.resourcemanager.sql.models.PartnerInfo;
-import com.azure.resourcemanager.sql.models.SqlDatabase;
-import com.azure.resourcemanager.sql.models.SqlDatabaseMetric;
-import com.azure.resourcemanager.sql.models.SqlDatabaseMetricValue;
-import com.azure.resourcemanager.sql.models.SqlDatabaseUsageMetric;
-import com.azure.resourcemanager.sql.models.SqlElasticPool;
-import com.azure.resourcemanager.sql.models.SqlFailoverGroup;
-import com.azure.resourcemanager.sql.models.SqlFirewallRule;
-import com.azure.resourcemanager.sql.models.SqlServer;
-import com.azure.resourcemanager.sql.models.SqlServerKey;
-import com.azure.resourcemanager.sql.models.SqlSubscriptionUsageMetric;
-import com.azure.resourcemanager.sql.models.SqlVirtualNetworkRule;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountEncryptionStatus;
 import com.azure.resourcemanager.storage.models.StorageAccountKey;
@@ -181,6 +150,7 @@ import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -193,8 +163,10 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -202,6 +174,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 /**
@@ -209,11 +182,70 @@ import java.util.stream.Collectors;
  */
 
 public final class Utils {
+
+    private Utils() {
+    }
+
     /** @return a generated password */
     public static String password() {
-        String password = new SdkContext().randomResourceName("Pa5$", 12);
+        String password = new ResourceManagerUtils.InternalRuntimeContext().randomResourceName("Pa5$", 12);
         System.out.printf("Password: %s%n", password);
         return password;
+    }
+
+    /**
+     * Creates a randomized resource name.
+     * Please provider your own implementation, or avoid using the method, if code is to be used in production.
+     *
+     * @param azure the AzureResourceManager instance.
+     * @param prefix the prefix to the name.
+     * @param maxLen the max length of the name.
+     * @return the randomized resource name.
+     */
+    public static String randomResourceName(AzureResourceManager azure, String prefix, int maxLen) {
+        return azure.resourceGroups().manager().internalContext().randomResourceName(prefix, maxLen);
+    }
+
+    /**
+     * Generates the specified number of random resource names with the same prefix.
+     * Please provider your own implementation, or avoid using the method, if code is to be used in production.
+     *
+     * @param azure the AzureResourceManager instance.
+     * @param prefix the prefix to be used if possible
+     * @param maxLen the maximum length for the random generated name
+     * @param count the number of names to generate
+     * @return the randomized resource names.
+     */
+    public static String[] randomResourceNames(AzureResourceManager azure, String prefix, int maxLen, int count) {
+        String[] names = new String[count];
+        for (int i = 0; i < count; i++) {
+            names[i] = randomResourceName(azure, prefix, maxLen);
+        }
+        return names;
+    }
+
+    /**
+     * Creates a random UUID.
+     * Please provider your own implementation, or avoid using the method, if code is to be used in production.
+     *
+     * @param azure the AzureResourceManager instance.
+     * @return the random UUID.
+     */
+    public static String randomUuid(AzureResourceManager azure) {
+        return azure.resourceGroups().manager().internalContext().randomUuid();
+    }
+
+    /**
+     * Creates a randomized resource name.
+     * Please provider your own implementation, or avoid using the method, if code is to be used in production.
+     *
+     * @param authenticated the AzureResourceManager.Authenticated instance.
+     * @param prefix the prefix to the name.
+     * @param maxLen the max length of the name.
+     * @return the randomized resource name.
+     */
+    public static String randomResourceName(AzureResourceManager.Authenticated authenticated, String prefix, int maxLen) {
+        return authenticated.roleAssignments().manager().internalContext().randomResourceName(prefix, maxLen);
     }
 
     /**
@@ -611,7 +643,7 @@ public final class Utils {
                 info.append("\n\t\t\t").append(ipAddressRange);
             }
         }
-        info.append("\n\t\tTraffic allowed from only HTTPS: ").append(storageAccount.inner().enableHttpsTrafficOnly());
+        info.append("\n\t\tTraffic allowed from only HTTPS: ").append(storageAccount.innerModel().enableHttpsTrafficOnly());
 
         info.append("\n\tEncryption status: ");
         for (Map.Entry<StorageService, StorageAccountEncryptionStatus> eStatus : storageAccount.encryptionStatuses().entrySet()) {
@@ -635,58 +667,58 @@ public final class Utils {
     }
 
 
-    /**
-     * Print Redis Cache.
-     *
-     * @param redisCache a Redis cache.
-     */
-    public static void print(RedisCache redisCache) {
-        StringBuilder redisInfo = new StringBuilder()
-                .append("Redis Cache Name: ").append(redisCache.name())
-                .append("\n\tResource group: ").append(redisCache.resourceGroupName())
-                .append("\n\tRegion: ").append(redisCache.region())
-                .append("\n\tSKU Name: ").append(redisCache.sku().name())
-                .append("\n\tSKU Family: ").append(redisCache.sku().family())
-                .append("\n\tHostname: ").append(redisCache.hostname())
-                .append("\n\tSSL port: ").append(redisCache.sslPort())
-                .append("\n\tNon-SSL port (6379) enabled: ").append(redisCache.nonSslPort());
-        if (redisCache.redisConfiguration() != null && !redisCache.redisConfiguration().isEmpty()) {
-            redisInfo.append("\n\tRedis Configuration:");
-            for (Map.Entry<String, String> redisConfiguration : redisCache.redisConfiguration().entrySet()) {
-                redisInfo.append("\n\t  '").append(redisConfiguration.getKey())
-                        .append("' : '").append(redisConfiguration.getValue()).append("'");
-            }
-        }
-        if (redisCache.isPremium()) {
-            RedisCachePremium premium = redisCache.asPremium();
-            List<ScheduleEntry> scheduleEntries = premium.listPatchSchedules();
-            if (scheduleEntries != null && !scheduleEntries.isEmpty()) {
-                redisInfo.append("\n\tRedis Patch Schedule:");
-                for (ScheduleEntry schedule : scheduleEntries) {
-                    redisInfo.append("\n\t\tDay: '").append(schedule.dayOfWeek())
-                            .append("', start at: '").append(schedule.startHourUtc())
-                            .append("', maintenance window: '").append(schedule.maintenanceWindow())
-                            .append("'");
-                }
-            }
-        }
+//    /**
+//     * Print Redis Cache.
+//     *
+//     * @param redisCache a Redis cache.
+//     */
+//    public static void print(RedisCache redisCache) {
+//        StringBuilder redisInfo = new StringBuilder()
+//                .append("Redis Cache Name: ").append(redisCache.name())
+//                .append("\n\tResource group: ").append(redisCache.resourceGroupName())
+//                .append("\n\tRegion: ").append(redisCache.region())
+//                .append("\n\tSKU Name: ").append(redisCache.sku().name())
+//                .append("\n\tSKU Family: ").append(redisCache.sku().family())
+//                .append("\n\tHostname: ").append(redisCache.hostname())
+//                .append("\n\tSSL port: ").append(redisCache.sslPort())
+//                .append("\n\tNon-SSL port (6379) enabled: ").append(redisCache.nonSslPort());
+//        if (redisCache.redisConfiguration() != null && !redisCache.redisConfiguration().isEmpty()) {
+//            redisInfo.append("\n\tRedis Configuration:");
+//            for (Map.Entry<String, String> redisConfiguration : redisCache.redisConfiguration().entrySet()) {
+//                redisInfo.append("\n\t  '").append(redisConfiguration.getKey())
+//                        .append("' : '").append(redisConfiguration.getValue()).append("'");
+//            }
+//        }
+//        if (redisCache.isPremium()) {
+//            RedisCachePremium premium = redisCache.asPremium();
+//            List<ScheduleEntry> scheduleEntries = premium.listPatchSchedules();
+//            if (scheduleEntries != null && !scheduleEntries.isEmpty()) {
+//                redisInfo.append("\n\tRedis Patch Schedule:");
+//                for (ScheduleEntry schedule : scheduleEntries) {
+//                    redisInfo.append("\n\t\tDay: '").append(schedule.dayOfWeek())
+//                            .append("', start at: '").append(schedule.startHourUtc())
+//                            .append("', maintenance window: '").append(schedule.maintenanceWindow())
+//                            .append("'");
+//                }
+//            }
+//        }
+//
+//        System.out.println(redisInfo.toString());
+//    }
 
-        System.out.println(redisInfo.toString());
-    }
-
-    /**
-     * Print Redis Cache access keys.
-     *
-     * @param redisAccessKeys a keys for Redis Cache
-     */
-    public static void print(RedisAccessKeys redisAccessKeys) {
-        StringBuilder redisKeys = new StringBuilder()
-                .append("Redis Access Keys: ")
-                .append("\n\tPrimary Key: '").append(redisAccessKeys.primaryKey()).append("', ")
-                .append("\n\tSecondary Key: '").append(redisAccessKeys.secondaryKey()).append("', ");
-
-        System.out.println(redisKeys.toString());
-    }
+//    /**
+//     * Print Redis Cache access keys.
+//     *
+//     * @param redisAccessKeys a keys for Redis Cache
+//     */
+//    public static void print(RedisAccessKeys redisAccessKeys) {
+//        StringBuilder redisKeys = new StringBuilder()
+//                .append("Redis Access Keys: ")
+//                .append("\n\tPrimary Key: '").append(redisAccessKeys.primaryKey()).append("', ")
+//                .append("\n\tSecondary Key: '").append(redisAccessKeys.secondaryKey()).append("', ");
+//
+//        System.out.println(redisKeys.toString());
+//    }
 
 //    /**
 //     * Print management lock.
@@ -1058,6 +1090,29 @@ public final class Utils {
         System.out.println(builder.toString());
     }
 
+    /**
+     * Print a web site.
+     *
+     * @param resource a web site
+     */
+    public static void print(WebSiteBase resource) {
+        StringBuilder builder = new StringBuilder().append("Web app: ").append(resource.id())
+            .append("\n\tName: ").append(resource.name())
+            .append("\n\tState: ").append(resource.state())
+            .append("\n\tResource group: ").append(resource.resourceGroupName())
+            .append("\n\tRegion: ").append(resource.region())
+            .append("\n\tDefault hostname: ").append(resource.defaultHostname())
+            .append("\n\tApp service plan: ").append(resource.appServicePlanId());
+        builder = builder.append("\n\tSSL bindings: ");
+        for (HostnameSslState binding : resource.hostnameSslStates().values()) {
+            builder = builder.append("\n\t\t" + binding.name() + ": " + binding.sslState());
+            if (binding.sslState() != null && binding.sslState() != SslState.DISABLED) {
+                builder = builder.append(" - " + binding.thumbprint());
+            }
+        }
+        System.out.println(builder.toString());
+    }
+
 //    /**
 //     * Print a traffic manager profile.
 //     *
@@ -1184,18 +1239,18 @@ public final class Utils {
             }
         }
 
-        PagedIterable<CNameRecordSet> cnameRecordSets = dnsZone.cNameRecordSets().list();
+        PagedIterable<CnameRecordSet> cnameRecordSets = dnsZone.cNameRecordSets().list();
         info.append("\n\tCNAME Record sets:");
-        for (CNameRecordSet cnameRecordSet : cnameRecordSets) {
+        for (CnameRecordSet cnameRecordSet : cnameRecordSets) {
             info.append("\n\t\tId: ").append(cnameRecordSet.id())
                     .append("\n\t\tName: ").append(cnameRecordSet.name())
                     .append("\n\t\tTTL (seconds): ").append(cnameRecordSet.timeToLive())
                     .append("\n\t\tCanonical name: ").append(cnameRecordSet.canonicalName());
         }
 
-        PagedIterable<MXRecordSet> mxRecordSets = dnsZone.mxRecordSets().list();
+        PagedIterable<MxRecordSet> mxRecordSets = dnsZone.mxRecordSets().list();
         info.append("\n\tMX Record sets:");
-        for (MXRecordSet mxRecordSet : mxRecordSets) {
+        for (MxRecordSet mxRecordSet : mxRecordSets) {
             info.append("\n\t\tId: ").append(mxRecordSet.id())
                     .append("\n\t\tName: ").append(mxRecordSet.name())
                     .append("\n\t\tTTL (seconds): ").append(mxRecordSet.timeToLive())
@@ -1208,9 +1263,9 @@ public final class Utils {
             }
         }
 
-        PagedIterable<NSRecordSet> nsRecordSets = dnsZone.nsRecordSets().list();
+        PagedIterable<NsRecordSet> nsRecordSets = dnsZone.nsRecordSets().list();
         info.append("\n\tNS Record sets:");
-        for (NSRecordSet nsRecordSet : nsRecordSets) {
+        for (NsRecordSet nsRecordSet : nsRecordSets) {
             info.append("\n\t\tId: ").append(nsRecordSet.id())
                     .append("\n\t\tName: ").append(nsRecordSet.name())
                     .append("\n\t\tTTL (seconds): ").append(nsRecordSet.timeToLive())
@@ -1267,156 +1322,156 @@ public final class Utils {
         System.out.println(info.toString());
     }
 
-    /**
-     * Print a private dns zone.
-     *
-     * @param privateDnsZone a private dns zone
-     */
-    public static void print(PrivateDnsZone privateDnsZone) {
-        StringBuilder info = new StringBuilder();
-        info.append("Private DNS Zone: ").append(privateDnsZone.id())
-            .append("\n\tName (Top level domain): ").append(privateDnsZone.name())
-            .append("\n\tResource group: ").append(privateDnsZone.resourceGroupName())
-            .append("\n\tRegion: ").append(privateDnsZone.regionName())
-            .append("\n\tTags: ").append(privateDnsZone.tags())
-            .append("\n\tName servers:");
-        com.azure.resourcemanager.privatedns.models.SoaRecordSet soaRecordSet = privateDnsZone.getSoaRecordSet();
-        com.azure.resourcemanager.privatedns.models.SoaRecord soaRecord = soaRecordSet.record();
-        info.append("\n\tSOA Record:")
-            .append("\n\t\tHost:").append(soaRecord.host())
-            .append("\n\t\tEmail:").append(soaRecord.email())
-            .append("\n\t\tExpire time (seconds):").append(soaRecord.expireTime())
-            .append("\n\t\tRefresh time (seconds):").append(soaRecord.refreshTime())
-            .append("\n\t\tRetry time (seconds):").append(soaRecord.retryTime())
-            .append("\n\t\tNegative response cache ttl (seconds):").append(soaRecord.minimumTtl())
-            .append("\n\t\tTTL (seconds):").append(soaRecordSet.timeToLive());
-
-        PagedIterable<com.azure.resourcemanager.privatedns.models.ARecordSet> aRecordSets = privateDnsZone
-            .aRecordSets().list();
-        info.append("\n\tA Record sets:");
-        for (com.azure.resourcemanager.privatedns.models.ARecordSet aRecordSet : aRecordSets) {
-            info.append("\n\t\tId: ").append(aRecordSet.id())
-                .append("\n\t\tName: ").append(aRecordSet.name())
-                .append("\n\t\tTTL (seconds): ").append(aRecordSet.timeToLive())
-                .append("\n\t\tIP v4 addresses: ");
-            for (String ipAddress : aRecordSet.ipv4Addresses()) {
-                info.append("\n\t\t\t").append(ipAddress);
-            }
-        }
-
-        PagedIterable<com.azure.resourcemanager.privatedns.models.AaaaRecordSet> aaaaRecordSets = privateDnsZone
-            .aaaaRecordSets().list();
-        info.append("\n\tAAAA Record sets:");
-        for (com.azure.resourcemanager.privatedns.models.AaaaRecordSet aaaaRecordSet : aaaaRecordSets) {
-            info.append("\n\t\tId: ").append(aaaaRecordSet.id())
-                .append("\n\t\tName: ").append(aaaaRecordSet.name())
-                .append("\n\t\tTTL (seconds): ").append(aaaaRecordSet.timeToLive())
-                .append("\n\t\tIP v6 addresses: ");
-            for (String ipAddress : aaaaRecordSet.ipv6Addresses()) {
-                info.append("\n\t\t\t").append(ipAddress);
-            }
-        }
-
-        PagedIterable<CnameRecordSet> cnameRecordSets = privateDnsZone.cnameRecordSets().list();
-        info.append("\n\tCNAME Record sets:");
-        for (CnameRecordSet cnameRecordSet : cnameRecordSets) {
-            info.append("\n\t\tId: ").append(cnameRecordSet.id())
-                .append("\n\t\tName: ").append(cnameRecordSet.name())
-                .append("\n\t\tTTL (seconds): ").append(cnameRecordSet.timeToLive())
-                .append("\n\t\tCanonical name: ").append(cnameRecordSet.canonicalName());
-        }
-
-        PagedIterable<MxRecordSet> mxRecordSets = privateDnsZone.mxRecordSets().list();
-        info.append("\n\tMX Record sets:");
-        for (MxRecordSet mxRecordSet : mxRecordSets) {
-            info.append("\n\t\tId: ").append(mxRecordSet.id())
-                .append("\n\t\tName: ").append(mxRecordSet.name())
-                .append("\n\t\tTTL (seconds): ").append(mxRecordSet.timeToLive())
-                .append("\n\t\tRecords: ");
-            for (com.azure.resourcemanager.privatedns.models.MxRecord mxRecord : mxRecordSet.records()) {
-                info.append("\n\t\t\tExchange server, Preference: ")
-                    .append(mxRecord.exchange())
-                    .append(" ")
-                    .append(mxRecord.preference());
-            }
-        }
-
-        PagedIterable<com.azure.resourcemanager.privatedns.models.PtrRecordSet> ptrRecordSets = privateDnsZone
-            .ptrRecordSets().list();
-        info.append("\n\tPTR Record sets:");
-        for (com.azure.resourcemanager.privatedns.models.PtrRecordSet ptrRecordSet : ptrRecordSets) {
-            info.append("\n\t\tId: ").append(ptrRecordSet.id())
-                .append("\n\t\tName: ").append(ptrRecordSet.name())
-                .append("\n\t\tTTL (seconds): ").append(ptrRecordSet.timeToLive())
-                .append("\n\t\tTarget domain names: ");
-            for (String domainNames : ptrRecordSet.targetDomainNames()) {
-                info.append("\n\t\t\t").append(domainNames);
-            }
-        }
-
-        PagedIterable<com.azure.resourcemanager.privatedns.models.SrvRecordSet> srvRecordSets = privateDnsZone
-            .srvRecordSets().list();
-        info.append("\n\tSRV Record sets:");
-        for (com.azure.resourcemanager.privatedns.models.SrvRecordSet srvRecordSet : srvRecordSets) {
-            info.append("\n\t\tId: ").append(srvRecordSet.id())
-                .append("\n\t\tName: ").append(srvRecordSet.name())
-                .append("\n\t\tTTL (seconds): ").append(srvRecordSet.timeToLive())
-                .append("\n\t\tRecords: ");
-            for (com.azure.resourcemanager.privatedns.models.SrvRecord srvRecord : srvRecordSet.records()) {
-                info.append("\n\t\t\tTarget, Port, Priority, Weight: ")
-                    .append(srvRecord.target())
-                    .append(", ")
-                    .append(srvRecord.port())
-                    .append(", ")
-                    .append(srvRecord.priority())
-                    .append(", ")
-                    .append(srvRecord.weight());
-            }
-        }
-
-        PagedIterable<com.azure.resourcemanager.privatedns.models.TxtRecordSet> txtRecordSets = privateDnsZone
-            .txtRecordSets().list();
-        info.append("\n\tTXT Record sets:");
-        for (com.azure.resourcemanager.privatedns.models.TxtRecordSet txtRecordSet : txtRecordSets) {
-            info.append("\n\t\tId: ").append(txtRecordSet.id())
-                .append("\n\t\tName: ").append(txtRecordSet.name())
-                .append("\n\t\tTTL (seconds): ").append(txtRecordSet.timeToLive())
-                .append("\n\t\tRecords: ");
-            for (com.azure.resourcemanager.privatedns.models.TxtRecord txtRecord : txtRecordSet.records()) {
-                if (txtRecord.value().size() > 0) {
-                    info.append("\n\t\t\tValue: ").append(txtRecord.value().get(0));
-                }
-            }
-        }
-
-        PagedIterable<VirtualNetworkLink> virtualNetworkLinks = privateDnsZone.virtualNetworkLinks().list();
-        info.append("\n\tVirtual Network Links:");
-        for (VirtualNetworkLink virtualNetworkLink : virtualNetworkLinks) {
-            info.append("\n\tId: ").append(virtualNetworkLink.id())
-                .append("\n\tName: ").append(virtualNetworkLink.name())
-                .append("\n\tReference of Virtual Network: ").append(virtualNetworkLink.referencedVirtualNetworkId())
-                .append("\n\tRegistration enabled: ").append(virtualNetworkLink.isAutoRegistrationEnabled());
-        }
-        System.out.println(info.toString());
-    }
-
-    /**
-     * Print an Azure Container Registry.
-     *
-     * @param azureRegistry an Azure Container Registry
-     */
-    public static void print(Registry azureRegistry) {
-        StringBuilder info = new StringBuilder();
-
-        RegistryCredentials acrCredentials = azureRegistry.getCredentials();
-        info.append("Azure Container Registry: ").append(azureRegistry.id())
-                .append("\n\tName: ").append(azureRegistry.name())
-                .append("\n\tServer Url: ").append(azureRegistry.loginServerUrl())
-                .append("\n\tUser: ").append(acrCredentials.username())
-                .append("\n\tFirst Password: ").append(acrCredentials.accessKeys().get(AccessKeyType.PRIMARY))
-                .append("\n\tSecond Password: ").append(acrCredentials.accessKeys().get(AccessKeyType.SECONDARY));
-        System.out.println(info.toString());
-    }
+//    /**
+//     * Print a private dns zone.
+//     *
+//     * @param privateDnsZone a private dns zone
+//     */
+//    public static void print(PrivateDnsZone privateDnsZone) {
+//        StringBuilder info = new StringBuilder();
+//        info.append("Private DNS Zone: ").append(privateDnsZone.id())
+//            .append("\n\tName (Top level domain): ").append(privateDnsZone.name())
+//            .append("\n\tResource group: ").append(privateDnsZone.resourceGroupName())
+//            .append("\n\tRegion: ").append(privateDnsZone.regionName())
+//            .append("\n\tTags: ").append(privateDnsZone.tags())
+//            .append("\n\tName servers:");
+//        com.azure.resourcemanager.privatedns.models.SoaRecordSet soaRecordSet = privateDnsZone.getSoaRecordSet();
+//        com.azure.resourcemanager.privatedns.models.SoaRecord soaRecord = soaRecordSet.record();
+//        info.append("\n\tSOA Record:")
+//            .append("\n\t\tHost:").append(soaRecord.host())
+//            .append("\n\t\tEmail:").append(soaRecord.email())
+//            .append("\n\t\tExpire time (seconds):").append(soaRecord.expireTime())
+//            .append("\n\t\tRefresh time (seconds):").append(soaRecord.refreshTime())
+//            .append("\n\t\tRetry time (seconds):").append(soaRecord.retryTime())
+//            .append("\n\t\tNegative response cache ttl (seconds):").append(soaRecord.minimumTtl())
+//            .append("\n\t\tTTL (seconds):").append(soaRecordSet.timeToLive());
+//
+//        PagedIterable<com.azure.resourcemanager.privatedns.models.ARecordSet> aRecordSets = privateDnsZone
+//            .aRecordSets().list();
+//        info.append("\n\tA Record sets:");
+//        for (com.azure.resourcemanager.privatedns.models.ARecordSet aRecordSet : aRecordSets) {
+//            info.append("\n\t\tId: ").append(aRecordSet.id())
+//                .append("\n\t\tName: ").append(aRecordSet.name())
+//                .append("\n\t\tTTL (seconds): ").append(aRecordSet.timeToLive())
+//                .append("\n\t\tIP v4 addresses: ");
+//            for (String ipAddress : aRecordSet.ipv4Addresses()) {
+//                info.append("\n\t\t\t").append(ipAddress);
+//            }
+//        }
+//
+//        PagedIterable<com.azure.resourcemanager.privatedns.models.AaaaRecordSet> aaaaRecordSets = privateDnsZone
+//            .aaaaRecordSets().list();
+//        info.append("\n\tAAAA Record sets:");
+//        for (com.azure.resourcemanager.privatedns.models.AaaaRecordSet aaaaRecordSet : aaaaRecordSets) {
+//            info.append("\n\t\tId: ").append(aaaaRecordSet.id())
+//                .append("\n\t\tName: ").append(aaaaRecordSet.name())
+//                .append("\n\t\tTTL (seconds): ").append(aaaaRecordSet.timeToLive())
+//                .append("\n\t\tIP v6 addresses: ");
+//            for (String ipAddress : aaaaRecordSet.ipv6Addresses()) {
+//                info.append("\n\t\t\t").append(ipAddress);
+//            }
+//        }
+//
+//        PagedIterable<com.azure.resourcemanager.privatedns.models.CnameRecordSet> cnameRecordSets = privateDnsZone.cnameRecordSets().list();
+//        info.append("\n\tCNAME Record sets:");
+//        for (com.azure.resourcemanager.privatedns.models.CnameRecordSet cnameRecordSet : cnameRecordSets) {
+//            info.append("\n\t\tId: ").append(cnameRecordSet.id())
+//                .append("\n\t\tName: ").append(cnameRecordSet.name())
+//                .append("\n\t\tTTL (seconds): ").append(cnameRecordSet.timeToLive())
+//                .append("\n\t\tCanonical name: ").append(cnameRecordSet.canonicalName());
+//        }
+//
+//        PagedIterable<com.azure.resourcemanager.privatedns.models.MxRecordSet> mxRecordSets = privateDnsZone.mxRecordSets().list();
+//        info.append("\n\tMX Record sets:");
+//        for (com.azure.resourcemanager.privatedns.models.MxRecordSet mxRecordSet : mxRecordSets) {
+//            info.append("\n\t\tId: ").append(mxRecordSet.id())
+//                .append("\n\t\tName: ").append(mxRecordSet.name())
+//                .append("\n\t\tTTL (seconds): ").append(mxRecordSet.timeToLive())
+//                .append("\n\t\tRecords: ");
+//            for (com.azure.resourcemanager.privatedns.models.MxRecord mxRecord : mxRecordSet.records()) {
+//                info.append("\n\t\t\tExchange server, Preference: ")
+//                    .append(mxRecord.exchange())
+//                    .append(" ")
+//                    .append(mxRecord.preference());
+//            }
+//        }
+//
+//        PagedIterable<com.azure.resourcemanager.privatedns.models.PtrRecordSet> ptrRecordSets = privateDnsZone
+//            .ptrRecordSets().list();
+//        info.append("\n\tPTR Record sets:");
+//        for (com.azure.resourcemanager.privatedns.models.PtrRecordSet ptrRecordSet : ptrRecordSets) {
+//            info.append("\n\t\tId: ").append(ptrRecordSet.id())
+//                .append("\n\t\tName: ").append(ptrRecordSet.name())
+//                .append("\n\t\tTTL (seconds): ").append(ptrRecordSet.timeToLive())
+//                .append("\n\t\tTarget domain names: ");
+//            for (String domainNames : ptrRecordSet.targetDomainNames()) {
+//                info.append("\n\t\t\t").append(domainNames);
+//            }
+//        }
+//
+//        PagedIterable<com.azure.resourcemanager.privatedns.models.SrvRecordSet> srvRecordSets = privateDnsZone
+//            .srvRecordSets().list();
+//        info.append("\n\tSRV Record sets:");
+//        for (com.azure.resourcemanager.privatedns.models.SrvRecordSet srvRecordSet : srvRecordSets) {
+//            info.append("\n\t\tId: ").append(srvRecordSet.id())
+//                .append("\n\t\tName: ").append(srvRecordSet.name())
+//                .append("\n\t\tTTL (seconds): ").append(srvRecordSet.timeToLive())
+//                .append("\n\t\tRecords: ");
+//            for (com.azure.resourcemanager.privatedns.models.SrvRecord srvRecord : srvRecordSet.records()) {
+//                info.append("\n\t\t\tTarget, Port, Priority, Weight: ")
+//                    .append(srvRecord.target())
+//                    .append(", ")
+//                    .append(srvRecord.port())
+//                    .append(", ")
+//                    .append(srvRecord.priority())
+//                    .append(", ")
+//                    .append(srvRecord.weight());
+//            }
+//        }
+//
+//        PagedIterable<com.azure.resourcemanager.privatedns.models.TxtRecordSet> txtRecordSets = privateDnsZone
+//            .txtRecordSets().list();
+//        info.append("\n\tTXT Record sets:");
+//        for (com.azure.resourcemanager.privatedns.models.TxtRecordSet txtRecordSet : txtRecordSets) {
+//            info.append("\n\t\tId: ").append(txtRecordSet.id())
+//                .append("\n\t\tName: ").append(txtRecordSet.name())
+//                .append("\n\t\tTTL (seconds): ").append(txtRecordSet.timeToLive())
+//                .append("\n\t\tRecords: ");
+//            for (com.azure.resourcemanager.privatedns.models.TxtRecord txtRecord : txtRecordSet.records()) {
+//                if (txtRecord.value().size() > 0) {
+//                    info.append("\n\t\t\tValue: ").append(txtRecord.value().get(0));
+//                }
+//            }
+//        }
+//
+//        PagedIterable<VirtualNetworkLink> virtualNetworkLinks = privateDnsZone.virtualNetworkLinks().list();
+//        info.append("\n\tVirtual Network Links:");
+//        for (VirtualNetworkLink virtualNetworkLink : virtualNetworkLinks) {
+//            info.append("\n\tId: ").append(virtualNetworkLink.id())
+//                .append("\n\tName: ").append(virtualNetworkLink.name())
+//                .append("\n\tReference of Virtual Network: ").append(virtualNetworkLink.referencedVirtualNetworkId())
+//                .append("\n\tRegistration enabled: ").append(virtualNetworkLink.isAutoRegistrationEnabled());
+//        }
+//        System.out.println(info.toString());
+//    }
+//
+//    /**
+//     * Print an Azure Container Registry.
+//     *
+//     * @param azureRegistry an Azure Container Registry
+//     */
+//    public static void print(Registry azureRegistry) {
+//        StringBuilder info = new StringBuilder();
+//
+//        RegistryCredentials acrCredentials = azureRegistry.getCredentials();
+//        info.append("Azure Container Registry: ").append(azureRegistry.id())
+//                .append("\n\tName: ").append(azureRegistry.name())
+//                .append("\n\tServer Url: ").append(azureRegistry.loginServerUrl())
+//                .append("\n\tUser: ").append(acrCredentials.username())
+//                .append("\n\tFirst Password: ").append(acrCredentials.accessKeys().get(AccessKeyType.PRIMARY))
+//                .append("\n\tSecond Password: ").append(acrCredentials.accessKeys().get(AccessKeyType.SECONDARY));
+//        System.out.println(info.toString());
+//    }
 
     /**
      * Print an Azure Container Service (AKS).
@@ -1478,7 +1533,7 @@ public final class Utils {
      * @return a service principal client ID
      * @throws Exception exception
      */
-    public static String getSecondaryServicePrincipalClientID(String envSecondaryServicePrincipal) throws Exception {
+    public static String getSecondaryServicePrincipalClientID(String envSecondaryServicePrincipal) throws IOException {
         String content = new String(Files.readAllBytes(new File(envSecondaryServicePrincipal).toPath()), StandardCharsets.UTF_8).trim();
         HashMap<String, String> auth = new HashMap<>();
 
@@ -1501,7 +1556,7 @@ public final class Utils {
      * @return a service principal secret
      * @throws Exception exception
      */
-    public static String getSecondaryServicePrincipalSecret(String envSecondaryServicePrincipal) throws Exception {
+    public static String getSecondaryServicePrincipalSecret(String envSecondaryServicePrincipal) throws IOException {
         String content = new String(Files.readAllBytes(new File(envSecondaryServicePrincipal).toPath()), StandardCharsets.UTF_8).trim();
         HashMap<String, String> auth = new HashMap<>();
 
@@ -1524,7 +1579,7 @@ public final class Utils {
 //     * @return a random name
 //     */
 //    public static String createRandomName(String namePrefix) {
-//        return SdkContext.randomResourceName(namePrefix, 30);
+//        return ResourceManagerUtils.InternalRuntimeContext.randomResourceName(namePrefix, 30);
 //    }
 
     /**
@@ -1535,12 +1590,12 @@ public final class Utils {
      * @param alias User alias
      * @param password alias password
      * @param cnName domain name
+     * @param dnsName dns name in subject alternate name
      * @throws Exception exceptions from the creation
      * @throws IOException IO Exception
      */
-    public static void createCertificate(String certPath, String pfxPath,
-                                         String alias, String password, String cnName) throws Exception {
-        SdkContext.prepareFileLocation(new File(pfxPath), new File(certPath));
+    public static void createCertificate(String certPath, String pfxPath, String alias,
+                                         String password, String cnName, String dnsName) throws IOException {
         if (new File(pfxPath).exists()) {
             return;
         }
@@ -1565,6 +1620,12 @@ public final class Utils {
             "-keystore", pfxPath, "-storepass", password, "-validity",
             validityInDays, "-keyalg", keyAlg, "-sigalg", sigAlg, "-keysize", keySize,
             "-storetype", storeType, "-dname", "CN=" + cnName, "-ext", "EKU=1.3.6.1.5.5.7.3.1"};
+        if (dnsName != null) {
+            List<String> args = new ArrayList<>(Arrays.asList(commandArgs));
+            args.add("-ext");
+            args.add("san=dns:" + dnsName);
+            commandArgs = args.toArray(new String[0]);
+        }
         Utils.cmdInvocation(commandArgs, true);
 
         // Create cer file i.e. extract public key from pfx
@@ -1601,7 +1662,7 @@ public final class Utils {
      * @throws Exception exceptions thrown from the execution
      */
     public static String cmdInvocation(String[] command,
-                                       boolean ignoreErrorStream) throws Exception {
+                                       boolean ignoreErrorStream) throws IOException {
         String result = "";
         String error = "";
 
@@ -1619,267 +1680,267 @@ public final class Utils {
                 // To do - Log error message
 
                 if (!ignoreErrorStream) {
-                    throw new Exception(error, null);
+                    throw new IOException(error, null);
                 }
             }
         } catch (Exception e) {
-            throw new Exception("Exception occurred while invoking command", e);
+            throw new RuntimeException("Exception occurred while invoking command", e);
         }
         return result;
     }
 
 
-    /**
-     * Prints information for passed SQL Server.
-     *
-     * @param sqlServer sqlServer to be printed
-     */
-    public static void print(SqlServer sqlServer) {
-        StringBuilder builder = new StringBuilder().append("Sql Server: ").append(sqlServer.id())
-                .append("Name: ").append(sqlServer.name())
-                .append("\n\tResource group: ").append(sqlServer.resourceGroupName())
-                .append("\n\tRegion: ").append(sqlServer.region())
-                .append("\n\tSqlServer version: ").append(sqlServer.version())
-                .append("\n\tFully qualified name for Sql Server: ").append(sqlServer.fullyQualifiedDomainName());
-        System.out.println(builder.toString());
-    }
-
-    /**
-     * Prints information for the passed SQL Database.
-     *
-     * @param database database to be printed
-     */
-    public static void print(SqlDatabase database) {
-        StringBuilder builder = new StringBuilder().append("Sql Database: ").append(database.id())
-                .append("Name: ").append(database.name())
-                .append("\n\tResource group: ").append(database.resourceGroupName())
-                .append("\n\tRegion: ").append(database.region())
-                .append("\n\tSqlServer Name: ").append(database.sqlServerName())
-                .append("\n\tEdition of SQL database: ").append(database.edition())
-                .append("\n\tCollation of SQL database: ").append(database.collation())
-                .append("\n\tCreation date of SQL database: ").append(database.creationDate())
-                .append("\n\tIs data warehouse: ").append(database.isDataWarehouse())
-                .append("\n\tRequested service objective of SQL database: ").append(database.requestedServiceObjectiveName())
-                .append("\n\tName of current service objective of SQL database: ").append(database.currentServiceObjectiveName())
-                .append("\n\tMax size bytes of SQL database: ").append(database.maxSizeBytes())
-                .append("\n\tDefault secondary location of SQL database: ").append(database.defaultSecondaryLocation());
-
-        System.out.println(builder.toString());
-    }
-
-    /**
-     * Prints information for the passed firewall rule.
-     *
-     * @param firewallRule firewall rule to be printed.
-     */
-    public static void print(SqlFirewallRule firewallRule) {
-        StringBuilder builder = new StringBuilder().append("Sql firewall rule: ").append(firewallRule.id())
-                .append("Name: ").append(firewallRule.name())
-                .append("\n\tResource group: ").append(firewallRule.resourceGroupName())
-                .append("\n\tRegion: ").append(firewallRule.region())
-                .append("\n\tSqlServer Name: ").append(firewallRule.sqlServerName())
-                .append("\n\tStart IP Address of the firewall rule: ").append(firewallRule.startIpAddress())
-                .append("\n\tEnd IP Address of the firewall rule: ").append(firewallRule.endIpAddress());
-
-        System.out.println(builder.toString());
-    }
-
-    /**
-     * Prints information for the passed virtual network rule.
-     *
-     * @param virtualNetworkRule virtual network rule to be printed.
-     */
-    public static void print(SqlVirtualNetworkRule virtualNetworkRule) {
-        StringBuilder builder = new StringBuilder().append("SQL virtual network rule: ").append(virtualNetworkRule.id())
-                .append("Name: ").append(virtualNetworkRule.name())
-                .append("\n\tResource group: ").append(virtualNetworkRule.resourceGroupName())
-                .append("\n\tSqlServer Name: ").append(virtualNetworkRule.sqlServerName())
-                .append("\n\tSubnet ID: ").append(virtualNetworkRule.subnetId())
-                .append("\n\tState: ").append(virtualNetworkRule.state());
-
-        System.out.println(builder.toString());
-    }
-
-    /**
-     * Prints information for the passed SQL subscription usage metric.
-     *
-     * @param subscriptionUsageMetric metric to be printed.
-     */
-    public static void print(SqlSubscriptionUsageMetric subscriptionUsageMetric) {
-        StringBuilder builder = new StringBuilder().append("SQL Subscription Usage Metric: ").append(subscriptionUsageMetric.id())
-                .append("Name: ").append(subscriptionUsageMetric.name())
-                .append("\n\tDisplay Name: ").append(subscriptionUsageMetric.displayName())
-                .append("\n\tCurrent Value: ").append(subscriptionUsageMetric.currentValue())
-                .append("\n\tLimit: ").append(subscriptionUsageMetric.limit())
-                .append("\n\tUnit: ").append(subscriptionUsageMetric.unit())
-                .append("\n\tType: ").append(subscriptionUsageMetric.type());
-
-        System.out.println(builder.toString());
-    }
-
-    /**
-     * Prints information for the passed SQL database usage metric.
-     *
-     * @param dbUsageMetric metric to be printed.
-     */
-    public static void print(SqlDatabaseUsageMetric dbUsageMetric) {
-        StringBuilder builder = new StringBuilder().append("SQL Database Usage Metric")
-                .append("Name: ").append(dbUsageMetric.name())
-                .append("\n\tResource Name: ").append(dbUsageMetric.resourceName())
-                .append("\n\tDisplay Name: ").append(dbUsageMetric.displayName())
-                .append("\n\tCurrent Value: ").append(dbUsageMetric.currentValue())
-                .append("\n\tLimit: ").append(dbUsageMetric.limit())
-                .append("\n\tUnit: ").append(dbUsageMetric.unit())
-                .append("\n\tNext Reset Time: ").append(dbUsageMetric.nextResetTime());
-
-        System.out.println(builder.toString());
-    }
-
-    /**
-     * Prints information for the passed SQL database metric.
-     *
-     * @param dbMetric metric to be printed.
-     */
-    public static void print(SqlDatabaseMetric dbMetric) {
-        StringBuilder builder = new StringBuilder().append("SQL Database Metric")
-                .append("Name: ").append(dbMetric.name())
-                .append("\n\tStart Time: ").append(dbMetric.startTime())
-                .append("\n\tEnd Time: ").append(dbMetric.endTime())
-                .append("\n\tTime Grain: ").append(dbMetric.timeGrain())
-                .append("\n\tUnit: ").append(dbMetric.unit());
-        for (SqlDatabaseMetricValue metricValue : dbMetric.metricValues()) {
-            builder
-                    .append("\n\tMetric Value: ")
-                    .append("\n\t\tCount: ").append(metricValue.count())
-                    .append("\n\t\tAverage: ").append(metricValue.average())
-                    .append("\n\t\tMaximum: ").append(metricValue.maximum())
-                    .append("\n\t\tMinimum: ").append(metricValue.minimum())
-                    .append("\n\t\tTimestamp: ").append(metricValue.timestamp())
-                    .append("\n\t\tTotal: ").append(metricValue.total());
-        }
-
-        System.out.println(builder.toString());
-    }
-
-    /**
-     * Prints information for the passed Failover Group.
-     *
-     * @param failoverGroup the SQL Failover Group to be printed.
-     */
-    public static void print(SqlFailoverGroup failoverGroup) {
-        StringBuilder builder = new StringBuilder().append("SQL Failover Group: ").append(failoverGroup.id())
-                .append("Name: ").append(failoverGroup.name())
-                .append("\n\tResource group: ").append(failoverGroup.resourceGroupName())
-                .append("\n\tSqlServer Name: ").append(failoverGroup.sqlServerName())
-                .append("\n\tRead-write endpoint policy: ").append(failoverGroup.readWriteEndpointPolicy())
-                .append("\n\tData loss grace period: ").append(failoverGroup.readWriteEndpointDataLossGracePeriodMinutes())
-                .append("\n\tRead-only endpoint policy: ").append(failoverGroup.readOnlyEndpointPolicy())
-                .append("\n\tReplication state: ").append(failoverGroup.replicationState())
-                .append("\n\tReplication role: ").append(failoverGroup.replicationRole());
-        builder.append("\n\tPartner Servers: ");
-        for (PartnerInfo item : failoverGroup.partnerServers()) {
-            builder
-                    .append("\n\t\tId: ").append(item.id())
-                    .append("\n\t\tLocation: ").append(item.location())
-                    .append("\n\t\tReplication role: ").append(item.replicationRole());
-        }
-        builder.append("\n\tDatabases: ");
-        for (String databaseId : failoverGroup.databases()) {
-            builder.append("\n\t\tID: ").append(databaseId);
-        }
-
-        System.out.println(builder.toString());
-    }
-
-    /**
-     * Prints information for the passed SQL server key.
-     *
-     * @param serverKey virtual network rule to be printed.
-     */
-    public static void print(SqlServerKey serverKey) {
-        StringBuilder builder = new StringBuilder().append("SQL server key: ").append(serverKey.id())
-                .append("Name: ").append(serverKey.name())
-                .append("\n\tResource group: ").append(serverKey.resourceGroupName())
-                .append("\n\tSqlServer Name: ").append(serverKey.sqlServerName())
-                .append("\n\tRegion: ").append(serverKey.region() != null ? serverKey.region().name() : "")
-                .append("\n\tServer Key Type: ").append(serverKey.serverKeyType())
-                .append("\n\tServer Key URI: ").append(serverKey.uri())
-                .append("\n\tServer Key Thumbprint: ").append(serverKey.thumbprint())
-                .append("\n\tServer Key Creation Date: ").append(serverKey.creationDate() != null ? serverKey.creationDate().toString() : "");
-
-        System.out.println(builder.toString());
-    }
-
-    /**
-     * Prints information of the elastic pool passed in.
-     *
-     * @param elasticPool elastic pool to be printed
-     */
-    public static void print(SqlElasticPool elasticPool) {
-        StringBuilder builder = new StringBuilder().append("Sql elastic pool: ").append(elasticPool.id())
-                .append("Name: ").append(elasticPool.name())
-                .append("\n\tResource group: ").append(elasticPool.resourceGroupName())
-                .append("\n\tRegion: ").append(elasticPool.region())
-                .append("\n\tSqlServer Name: ").append(elasticPool.sqlServerName())
-                .append("\n\tEdition of elastic pool: ").append(elasticPool.edition())
-                .append("\n\tTotal number of DTUs in the elastic pool: ").append(elasticPool.dtu())
-                .append("\n\tMaximum DTUs a database can get in elastic pool: ").append(elasticPool.databaseDtuMax())
-                .append("\n\tMinimum DTUs a database is guaranteed in elastic pool: ").append(elasticPool.databaseDtuMin())
-                .append("\n\tCreation date for the elastic pool: ").append(elasticPool.creationDate())
-                .append("\n\tState of the elastic pool: ").append(elasticPool.state())
-                .append("\n\tStorage capacity in MBs for the elastic pool: ").append(elasticPool.storageCapacity());
-
-        System.out.println(builder.toString());
-    }
-
-    /**
-     * Prints information of the elastic pool activity.
-     *
-     * @param elasticPoolActivity elastic pool activity to be printed
-     */
-    public static void print(ElasticPoolActivity elasticPoolActivity) {
-        StringBuilder builder = new StringBuilder().append("Sql elastic pool activity: ").append(elasticPoolActivity.id())
-                .append("Name: ").append(elasticPoolActivity.name())
-                .append("\n\tResource group: ").append(elasticPoolActivity.resourceGroupName())
-                .append("\n\tState: ").append(elasticPoolActivity.state())
-                .append("\n\tElastic pool name: ").append(elasticPoolActivity.elasticPoolName())
-                .append("\n\tStart time of activity: ").append(elasticPoolActivity.startTime())
-                .append("\n\tEnd time of activity: ").append(elasticPoolActivity.endTime())
-                .append("\n\tError code of activity: ").append(elasticPoolActivity.errorCode())
-                .append("\n\tError message of activity: ").append(elasticPoolActivity.errorMessage())
-                .append("\n\tError severity of activity: ").append(elasticPoolActivity.errorSeverity())
-                .append("\n\tOperation: ").append(elasticPoolActivity.operation())
-                .append("\n\tCompleted percentage of activity: ").append(elasticPoolActivity.percentComplete())
-                .append("\n\tRequested DTU max limit in activity: ").append(elasticPoolActivity.requestedDatabaseDtuMax())
-                .append("\n\tRequested DTU min limit in activity: ").append(elasticPoolActivity.requestedDatabaseDtuMin())
-                .append("\n\tRequested DTU limit in activity: ").append(elasticPoolActivity.requestedDtu());
-
-        System.out.println(builder.toString());
-
-    }
-
-    /**
-     * Prints information of the database activity.
-     *
-     * @param databaseActivity database activity to be printed
-     */
-    public static void print(ElasticPoolDatabaseActivity databaseActivity) {
-        StringBuilder builder = new StringBuilder().append("Sql elastic pool database activity: ").append(databaseActivity.id())
-                .append("Name: ").append(databaseActivity.name())
-                .append("\n\tResource group: ").append(databaseActivity.resourceGroupName())
-                .append("\n\tSQL Server Name: ").append(databaseActivity.serverName())
-                .append("\n\tDatabase name name: ").append(databaseActivity.databaseName())
-                .append("\n\tCurrent elastic pool name of the database: ").append(databaseActivity.currentElasticPoolName())
-                .append("\n\tState: ").append(databaseActivity.state())
-                .append("\n\tStart time of activity: ").append(databaseActivity.startTime())
-                .append("\n\tEnd time of activity: ").append(databaseActivity.endTime())
-                .append("\n\tCompleted percentage: ").append(databaseActivity.percentComplete())
-                .append("\n\tError code of activity: ").append(databaseActivity.errorCode())
-                .append("\n\tError message of activity: ").append(databaseActivity.errorMessage())
-                .append("\n\tError severity of activity: ").append(databaseActivity.errorSeverity());
-
-        System.out.println(builder.toString());
-    }
+//    /**
+//     * Prints information for passed SQL Server.
+//     *
+//     * @param sqlServer sqlServer to be printed
+//     */
+//    public static void print(SqlServer sqlServer) {
+//        StringBuilder builder = new StringBuilder().append("Sql Server: ").append(sqlServer.id())
+//                .append("Name: ").append(sqlServer.name())
+//                .append("\n\tResource group: ").append(sqlServer.resourceGroupName())
+//                .append("\n\tRegion: ").append(sqlServer.region())
+//                .append("\n\tSqlServer version: ").append(sqlServer.version())
+//                .append("\n\tFully qualified name for Sql Server: ").append(sqlServer.fullyQualifiedDomainName());
+//        System.out.println(builder.toString());
+//    }
+//
+//    /**
+//     * Prints information for the passed SQL Database.
+//     *
+//     * @param database database to be printed
+//     */
+//    public static void print(SqlDatabase database) {
+//        StringBuilder builder = new StringBuilder().append("Sql Database: ").append(database.id())
+//                .append("Name: ").append(database.name())
+//                .append("\n\tResource group: ").append(database.resourceGroupName())
+//                .append("\n\tRegion: ").append(database.region())
+//                .append("\n\tSqlServer Name: ").append(database.sqlServerName())
+//                .append("\n\tEdition of SQL database: ").append(database.edition())
+//                .append("\n\tCollation of SQL database: ").append(database.collation())
+//                .append("\n\tCreation date of SQL database: ").append(database.creationDate())
+//                .append("\n\tIs data warehouse: ").append(database.isDataWarehouse())
+//                .append("\n\tRequested service objective of SQL database: ").append(database.requestedServiceObjectiveName())
+//                .append("\n\tName of current service objective of SQL database: ").append(database.currentServiceObjectiveName())
+//                .append("\n\tMax size bytes of SQL database: ").append(database.maxSizeBytes())
+//                .append("\n\tDefault secondary location of SQL database: ").append(database.defaultSecondaryLocation());
+//
+//        System.out.println(builder.toString());
+//    }
+//
+//    /**
+//     * Prints information for the passed firewall rule.
+//     *
+//     * @param firewallRule firewall rule to be printed.
+//     */
+//    public static void print(SqlFirewallRule firewallRule) {
+//        StringBuilder builder = new StringBuilder().append("Sql firewall rule: ").append(firewallRule.id())
+//                .append("Name: ").append(firewallRule.name())
+//                .append("\n\tResource group: ").append(firewallRule.resourceGroupName())
+//                .append("\n\tRegion: ").append(firewallRule.region())
+//                .append("\n\tSqlServer Name: ").append(firewallRule.sqlServerName())
+//                .append("\n\tStart IP Address of the firewall rule: ").append(firewallRule.startIpAddress())
+//                .append("\n\tEnd IP Address of the firewall rule: ").append(firewallRule.endIpAddress());
+//
+//        System.out.println(builder.toString());
+//    }
+//
+//    /**
+//     * Prints information for the passed virtual network rule.
+//     *
+//     * @param virtualNetworkRule virtual network rule to be printed.
+//     */
+//    public static void print(SqlVirtualNetworkRule virtualNetworkRule) {
+//        StringBuilder builder = new StringBuilder().append("SQL virtual network rule: ").append(virtualNetworkRule.id())
+//                .append("Name: ").append(virtualNetworkRule.name())
+//                .append("\n\tResource group: ").append(virtualNetworkRule.resourceGroupName())
+//                .append("\n\tSqlServer Name: ").append(virtualNetworkRule.sqlServerName())
+//                .append("\n\tSubnet ID: ").append(virtualNetworkRule.subnetId())
+//                .append("\n\tState: ").append(virtualNetworkRule.state());
+//
+//        System.out.println(builder.toString());
+//    }
+//
+//    /**
+//     * Prints information for the passed SQL subscription usage metric.
+//     *
+//     * @param subscriptionUsageMetric metric to be printed.
+//     */
+//    public static void print(SqlSubscriptionUsageMetric subscriptionUsageMetric) {
+//        StringBuilder builder = new StringBuilder().append("SQL Subscription Usage Metric: ").append(subscriptionUsageMetric.id())
+//                .append("Name: ").append(subscriptionUsageMetric.name())
+//                .append("\n\tDisplay Name: ").append(subscriptionUsageMetric.displayName())
+//                .append("\n\tCurrent Value: ").append(subscriptionUsageMetric.currentValue())
+//                .append("\n\tLimit: ").append(subscriptionUsageMetric.limit())
+//                .append("\n\tUnit: ").append(subscriptionUsageMetric.unit())
+//                .append("\n\tType: ").append(subscriptionUsageMetric.type());
+//
+//        System.out.println(builder.toString());
+//    }
+//
+//    /**
+//     * Prints information for the passed SQL database usage metric.
+//     *
+//     * @param dbUsageMetric metric to be printed.
+//     */
+//    public static void print(SqlDatabaseUsageMetric dbUsageMetric) {
+//        StringBuilder builder = new StringBuilder().append("SQL Database Usage Metric")
+//                .append("Name: ").append(dbUsageMetric.name())
+//                .append("\n\tResource Name: ").append(dbUsageMetric.resourceName())
+//                .append("\n\tDisplay Name: ").append(dbUsageMetric.displayName())
+//                .append("\n\tCurrent Value: ").append(dbUsageMetric.currentValue())
+//                .append("\n\tLimit: ").append(dbUsageMetric.limit())
+//                .append("\n\tUnit: ").append(dbUsageMetric.unit())
+//                .append("\n\tNext Reset Time: ").append(dbUsageMetric.nextResetTime());
+//
+//        System.out.println(builder.toString());
+//    }
+//
+//    /**
+//     * Prints information for the passed SQL database metric.
+//     *
+//     * @param dbMetric metric to be printed.
+//     */
+//    public static void print(SqlDatabaseMetric dbMetric) {
+//        StringBuilder builder = new StringBuilder().append("SQL Database Metric")
+//                .append("Name: ").append(dbMetric.name())
+//                .append("\n\tStart Time: ").append(dbMetric.startTime())
+//                .append("\n\tEnd Time: ").append(dbMetric.endTime())
+//                .append("\n\tTime Grain: ").append(dbMetric.timeGrain())
+//                .append("\n\tUnit: ").append(dbMetric.unit());
+//        for (SqlDatabaseMetricValue metricValue : dbMetric.metricValues()) {
+//            builder
+//                    .append("\n\tMetric Value: ")
+//                    .append("\n\t\tCount: ").append(metricValue.count())
+//                    .append("\n\t\tAverage: ").append(metricValue.average())
+//                    .append("\n\t\tMaximum: ").append(metricValue.maximum())
+//                    .append("\n\t\tMinimum: ").append(metricValue.minimum())
+//                    .append("\n\t\tTimestamp: ").append(metricValue.timestamp())
+//                    .append("\n\t\tTotal: ").append(metricValue.total());
+//        }
+//
+//        System.out.println(builder.toString());
+//    }
+//
+//    /**
+//     * Prints information for the passed Failover Group.
+//     *
+//     * @param failoverGroup the SQL Failover Group to be printed.
+//     */
+//    public static void print(SqlFailoverGroup failoverGroup) {
+//        StringBuilder builder = new StringBuilder().append("SQL Failover Group: ").append(failoverGroup.id())
+//                .append("Name: ").append(failoverGroup.name())
+//                .append("\n\tResource group: ").append(failoverGroup.resourceGroupName())
+//                .append("\n\tSqlServer Name: ").append(failoverGroup.sqlServerName())
+//                .append("\n\tRead-write endpoint policy: ").append(failoverGroup.readWriteEndpointPolicy())
+//                .append("\n\tData loss grace period: ").append(failoverGroup.readWriteEndpointDataLossGracePeriodMinutes())
+//                .append("\n\tRead-only endpoint policy: ").append(failoverGroup.readOnlyEndpointPolicy())
+//                .append("\n\tReplication state: ").append(failoverGroup.replicationState())
+//                .append("\n\tReplication role: ").append(failoverGroup.replicationRole());
+//        builder.append("\n\tPartner Servers: ");
+//        for (PartnerInfo item : failoverGroup.partnerServers()) {
+//            builder
+//                    .append("\n\t\tId: ").append(item.id())
+//                    .append("\n\t\tLocation: ").append(item.location())
+//                    .append("\n\t\tReplication role: ").append(item.replicationRole());
+//        }
+//        builder.append("\n\tDatabases: ");
+//        for (String databaseId : failoverGroup.databases()) {
+//            builder.append("\n\t\tID: ").append(databaseId);
+//        }
+//
+//        System.out.println(builder.toString());
+//    }
+//
+//    /**
+//     * Prints information for the passed SQL server key.
+//     *
+//     * @param serverKey virtual network rule to be printed.
+//     */
+//    public static void print(SqlServerKey serverKey) {
+//        StringBuilder builder = new StringBuilder().append("SQL server key: ").append(serverKey.id())
+//                .append("Name: ").append(serverKey.name())
+//                .append("\n\tResource group: ").append(serverKey.resourceGroupName())
+//                .append("\n\tSqlServer Name: ").append(serverKey.sqlServerName())
+//                .append("\n\tRegion: ").append(serverKey.region() != null ? serverKey.region().name() : "")
+//                .append("\n\tServer Key Type: ").append(serverKey.serverKeyType())
+//                .append("\n\tServer Key URI: ").append(serverKey.uri())
+//                .append("\n\tServer Key Thumbprint: ").append(serverKey.thumbprint())
+//                .append("\n\tServer Key Creation Date: ").append(serverKey.creationDate() != null ? serverKey.creationDate().toString() : "");
+//
+//        System.out.println(builder.toString());
+//    }
+//
+//    /**
+//     * Prints information of the elastic pool passed in.
+//     *
+//     * @param elasticPool elastic pool to be printed
+//     */
+//    public static void print(SqlElasticPool elasticPool) {
+//        StringBuilder builder = new StringBuilder().append("Sql elastic pool: ").append(elasticPool.id())
+//                .append("Name: ").append(elasticPool.name())
+//                .append("\n\tResource group: ").append(elasticPool.resourceGroupName())
+//                .append("\n\tRegion: ").append(elasticPool.region())
+//                .append("\n\tSqlServer Name: ").append(elasticPool.sqlServerName())
+//                .append("\n\tEdition of elastic pool: ").append(elasticPool.edition())
+//                .append("\n\tTotal number of DTUs in the elastic pool: ").append(elasticPool.dtu())
+//                .append("\n\tMaximum DTUs a database can get in elastic pool: ").append(elasticPool.databaseDtuMax())
+//                .append("\n\tMinimum DTUs a database is guaranteed in elastic pool: ").append(elasticPool.databaseDtuMin())
+//                .append("\n\tCreation date for the elastic pool: ").append(elasticPool.creationDate())
+//                .append("\n\tState of the elastic pool: ").append(elasticPool.state())
+//                .append("\n\tStorage capacity in MBs for the elastic pool: ").append(elasticPool.storageCapacity());
+//
+//        System.out.println(builder.toString());
+//    }
+//
+//    /**
+//     * Prints information of the elastic pool activity.
+//     *
+//     * @param elasticPoolActivity elastic pool activity to be printed
+//     */
+//    public static void print(ElasticPoolActivity elasticPoolActivity) {
+//        StringBuilder builder = new StringBuilder().append("Sql elastic pool activity: ").append(elasticPoolActivity.id())
+//                .append("Name: ").append(elasticPoolActivity.name())
+//                .append("\n\tResource group: ").append(elasticPoolActivity.resourceGroupName())
+//                .append("\n\tState: ").append(elasticPoolActivity.state())
+//                .append("\n\tElastic pool name: ").append(elasticPoolActivity.elasticPoolName())
+//                .append("\n\tStart time of activity: ").append(elasticPoolActivity.startTime())
+//                .append("\n\tEnd time of activity: ").append(elasticPoolActivity.endTime())
+//                .append("\n\tError code of activity: ").append(elasticPoolActivity.errorCode())
+//                .append("\n\tError message of activity: ").append(elasticPoolActivity.errorMessage())
+//                .append("\n\tError severity of activity: ").append(elasticPoolActivity.errorSeverity())
+//                .append("\n\tOperation: ").append(elasticPoolActivity.operation())
+//                .append("\n\tCompleted percentage of activity: ").append(elasticPoolActivity.percentComplete())
+//                .append("\n\tRequested DTU max limit in activity: ").append(elasticPoolActivity.requestedDatabaseDtuMax())
+//                .append("\n\tRequested DTU min limit in activity: ").append(elasticPoolActivity.requestedDatabaseDtuMin())
+//                .append("\n\tRequested DTU limit in activity: ").append(elasticPoolActivity.requestedDtu());
+//
+//        System.out.println(builder.toString());
+//
+//    }
+//
+//    /**
+//     * Prints information of the database activity.
+//     *
+//     * @param databaseActivity database activity to be printed
+//     */
+//    public static void print(ElasticPoolDatabaseActivity databaseActivity) {
+//        StringBuilder builder = new StringBuilder().append("Sql elastic pool database activity: ").append(databaseActivity.id())
+//                .append("Name: ").append(databaseActivity.name())
+//                .append("\n\tResource group: ").append(databaseActivity.resourceGroupName())
+//                .append("\n\tSQL Server Name: ").append(databaseActivity.serverName())
+//                .append("\n\tDatabase name name: ").append(databaseActivity.databaseName())
+//                .append("\n\tCurrent elastic pool name of the database: ").append(databaseActivity.currentElasticPoolName())
+//                .append("\n\tState: ").append(databaseActivity.state())
+//                .append("\n\tStart time of activity: ").append(databaseActivity.startTime())
+//                .append("\n\tEnd time of activity: ").append(databaseActivity.endTime())
+//                .append("\n\tCompleted percentage: ").append(databaseActivity.percentComplete())
+//                .append("\n\tError code of activity: ").append(databaseActivity.errorCode())
+//                .append("\n\tError message of activity: ").append(databaseActivity.errorMessage())
+//                .append("\n\tError severity of activity: ").append(databaseActivity.errorSeverity());
+//
+//        System.out.println(builder.toString());
+//    }
 
     /**
      * Print an application gateway.
@@ -2133,17 +2194,33 @@ public final class Utils {
     }
 
     /**
-     * Uploads a file to an Azure app service.
+     * Uploads a file to an Azure app service for Web App.
      *
      * @param profile the publishing profile for the app service.
      * @param fileName the name of the file on server
      * @param file the local file
      */
     public static void uploadFileViaFtp(PublishingProfile profile, String fileName, InputStream file) {
+        String path = "./site/wwwroot/webapps";
+        uploadFileViaFtp(profile, fileName, file, path);
+    }
+
+    /**
+     * Uploads a file to an Azure app service for Function App.
+     *
+     * @param profile the publishing profile for the app service.
+     * @param fileName the name of the file on server
+     * @param file the local file
+     */
+    public static void uploadFileForFunctionViaFtp(PublishingProfile profile, String fileName, InputStream file) {
+        String path = "./site/wwwroot";
+        uploadFileViaFtp(profile, fileName, file, path);
+    }
+
+    private static void uploadFileViaFtp(PublishingProfile profile, String fileName, InputStream file, String path) {
         FTPClient ftpClient = new FTPClient();
         String[] ftpUrlSegments = profile.ftpUrl().split("/", 2);
         String server = ftpUrlSegments[0];
-        String path = "./site/wwwroot/webapps";
         if (fileName.contains("/")) {
             int lastslash = fileName.lastIndexOf('/');
             path = path + "/" + fileName.substring(0, lastslash);
@@ -2165,10 +2242,6 @@ public final class Utils {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private Utils() {
-
     }
 
 //    /**
@@ -2193,7 +2266,7 @@ public final class Utils {
 //
 //        System.out.println(builder.toString());
 //    }
-
+//
 //    /**
 //     * Print service bus queue info.
 //     *
@@ -2245,9 +2318,9 @@ public final class Utils {
 //                .append("\n\tNamespace Name: ").append(queueAuthorizationRule.namespaceName())
 //                .append("\n\tQueue Name: ").append(queueAuthorizationRule.queueName());
 //
-//        List<AccessRights> rights = queueAuthorizationRule.rights();
+//        List<com.azure.resourcemanager.servicebus.models.AccessRights> rights = queueAuthorizationRule.rights();
 //        builder.append("\n\tNumber of access rights in queue: ").append(rights.size());
-//        for (AccessRights right : rights) {
+//        for (com.azure.resourcemanager.servicebus.models.AccessRights right : rights) {
 //            builder.append("\n\t\tAccessRight: ")
 //                    .append("\n\t\t\tName :").append(right.name());
 //        }
@@ -2270,7 +2343,7 @@ public final class Utils {
 //
 //        System.out.println(builder.toString());
 //    }
-
+//
 //    /**
 //     * Print service bus namespace authorization rule info.
 //     *
@@ -2283,16 +2356,16 @@ public final class Utils {
 //                .append("\n\tResourceGroupName: ").append(namespaceAuthorizationRule.resourceGroupName())
 //                .append("\n\tNamespace Name: ").append(namespaceAuthorizationRule.namespaceName());
 //
-//        List<AccessRights> rights = namespaceAuthorizationRule.rights();
+//        List<com.azure.resourcemanager.servicebus.models.AccessRights> rights = namespaceAuthorizationRule.rights();
 //        builder.append("\n\tNumber of access rights in queue: ").append(rights.size());
-//        for (AccessRights right : rights) {
+//        for (com.azure.resourcemanager.servicebus.models.AccessRights right : rights) {
 //            builder.append("\n\t\tAccessRight: ")
 //                    .append("\n\t\t\tName :").append(right.name());
 //        }
 //
 //        System.out.println(builder.toString());
 //    }
-
+//
 //    /**
 //     * Print service bus topic info.
 //     *
@@ -2325,7 +2398,7 @@ public final class Utils {
 //
 //        System.out.println(builder.toString());
 //    }
-
+//
 //    /**
 //     * Print service bus subscription info.
 //     *
@@ -2357,7 +2430,7 @@ public final class Utils {
 //
 //        System.out.println(builder.toString());
 //    }
-
+//
 //    /**
 //     * Print topic Authorization Rule info.
 //     *
@@ -2371,9 +2444,9 @@ public final class Utils {
 //                .append("\n\tNamespace Name: ").append(topicAuthorizationRule.namespaceName())
 //                .append("\n\tTopic Name: ").append(topicAuthorizationRule.topicName());
 //
-//        List<AccessRights> rights = topicAuthorizationRule.rights();
+//        List<com.azure.resourcemanager.servicebus.models.AccessRights> rights = topicAuthorizationRule.rights();
 //        builder.append("\n\tNumber of access rights in queue: ").append(rights.size());
-//        for (AccessRights right : rights) {
+//        for (com.azure.resourcemanager.servicebus.models.AccessRights right : rights) {
 //            builder.append("\n\t\tAccessRight: ")
 //                    .append("\n\t\t\tName :").append(right.name());
 //        }
@@ -2702,83 +2775,83 @@ public final class Utils {
                 .toString());
     }
 
-    /**
-     * Print container group info.
-     *
-     * @param resource a container group
-     */
-    public static void print(ContainerGroup resource) {
-        StringBuilder info = new StringBuilder().append("Container Group: ").append(resource.id())
-                .append("Name: ").append(resource.name())
-                .append("\n\tResource group: ").append(resource.resourceGroupName())
-                .append("\n\tRegion: ").append(resource.region())
-                .append("\n\tTags: ").append(resource.tags())
-                .append("\n\tOS type: ").append(resource.osType());
-
-        if (resource.ipAddress() != null) {
-            info.append("\n\tPublic IP address: ").append(resource.ipAddress());
-        }
-        if (resource.externalTcpPorts() != null) {
-            info.append("\n\tExternal TCP ports:");
-            for (int port : resource.externalTcpPorts()) {
-                info.append(" ").append(port);
-            }
-        }
-        if (resource.externalUdpPorts() != null) {
-            info.append("\n\tExternal UDP ports:");
-            for (int port : resource.externalUdpPorts()) {
-                info.append(" ").append(port);
-            }
-        }
-        if (resource.imageRegistryServers() != null) {
-            info.append("\n\tPrivate Docker image registries:");
-            for (String server : resource.imageRegistryServers()) {
-                info.append(" ").append(server);
-            }
-        }
-        if (resource.volumes() != null) {
-            info.append("\n\tVolume mapping: ");
-            for (Map.Entry<String, Volume> entry : resource.volumes().entrySet()) {
-                info.append("\n\t\tName: ").append(entry.getKey()).append(" -> ")
-                        .append(entry.getValue().azureFile() != null ? entry.getValue().azureFile().shareName() : "empty direcory volume");
-            }
-        }
-        if (resource.containers() != null) {
-            info.append("\n\tContainer instances: ");
-            for (Map.Entry<String, Container> entry : resource.containers().entrySet()) {
-                Container container = entry.getValue();
-                info.append("\n\t\tName: ").append(entry.getKey()).append(" -> ").append(container.image());
-                info.append("\n\t\t\tResources: ");
-                info.append(container.resources().requests().cpu()).append("CPUs ");
-                info.append(container.resources().requests().memoryInGB()).append("GB");
-                info.append("\n\t\t\tPorts:");
-                for (ContainerPort port : container.ports()) {
-                    info.append(" ").append(port.port());
-                }
-                if (container.volumeMounts() != null) {
-                    info.append("\n\t\t\tVolume mounts:");
-                    for (VolumeMount volumeMount : container.volumeMounts()) {
-                        info.append(" ").append(volumeMount.name()).append("->").append(volumeMount.mountPath());
-                    }
-                }
-                if (container.command() != null) {
-                    info.append("\n\t\t\tStart commands:");
-                    for (String command : container.command()) {
-                        info.append("\n\t\t\t\t").append(command);
-                    }
-                }
-                if (container.environmentVariables() != null) {
-                    info.append("\n\t\t\tENV vars:");
-                    for (EnvironmentVariable envVar : container.environmentVariables()) {
-                        info.append("\n\t\t\t\t").append(envVar.name()).append("=").append(envVar.value());
-                    }
-                }
-            }
-        }
-
-        System.out.println(info.toString());
-    }
-
+//    /**
+//     * Print container group info.
+//     *
+//     * @param resource a container group
+//     */
+//    public static void print(ContainerGroup resource) {
+//        StringBuilder info = new StringBuilder().append("Container Group: ").append(resource.id())
+//                .append("Name: ").append(resource.name())
+//                .append("\n\tResource group: ").append(resource.resourceGroupName())
+//                .append("\n\tRegion: ").append(resource.region())
+//                .append("\n\tTags: ").append(resource.tags())
+//                .append("\n\tOS type: ").append(resource.osType());
+//
+//        if (resource.ipAddress() != null) {
+//            info.append("\n\tPublic IP address: ").append(resource.ipAddress());
+//        }
+//        if (resource.externalTcpPorts() != null) {
+//            info.append("\n\tExternal TCP ports:");
+//            for (int port : resource.externalTcpPorts()) {
+//                info.append(" ").append(port);
+//            }
+//        }
+//        if (resource.externalUdpPorts() != null) {
+//            info.append("\n\tExternal UDP ports:");
+//            for (int port : resource.externalUdpPorts()) {
+//                info.append(" ").append(port);
+//            }
+//        }
+//        if (resource.imageRegistryServers() != null) {
+//            info.append("\n\tPrivate Docker image registries:");
+//            for (String server : resource.imageRegistryServers()) {
+//                info.append(" ").append(server);
+//            }
+//        }
+//        if (resource.volumes() != null) {
+//            info.append("\n\tVolume mapping: ");
+//            for (Map.Entry<String, Volume> entry : resource.volumes().entrySet()) {
+//                info.append("\n\t\tName: ").append(entry.getKey()).append(" -> ")
+//                        .append(entry.getValue().azureFile() != null ? entry.getValue().azureFile().shareName() : "empty direcory volume");
+//            }
+//        }
+//        if (resource.containers() != null) {
+//            info.append("\n\tContainer instances: ");
+//            for (Map.Entry<String, Container> entry : resource.containers().entrySet()) {
+//                Container container = entry.getValue();
+//                info.append("\n\t\tName: ").append(entry.getKey()).append(" -> ").append(container.image());
+//                info.append("\n\t\t\tResources: ");
+//                info.append(container.resources().requests().cpu()).append("CPUs ");
+//                info.append(container.resources().requests().memoryInGB()).append("GB");
+//                info.append("\n\t\t\tPorts:");
+//                for (ContainerPort port : container.ports()) {
+//                    info.append(" ").append(port.port());
+//                }
+//                if (container.volumeMounts() != null) {
+//                    info.append("\n\t\t\tVolume mounts:");
+//                    for (VolumeMount volumeMount : container.volumeMounts()) {
+//                        info.append(" ").append(volumeMount.name()).append("->").append(volumeMount.mountPath());
+//                    }
+//                }
+//                if (container.command() != null) {
+//                    info.append("\n\t\t\tStart commands:");
+//                    for (String command : container.command()) {
+//                        info.append("\n\t\t\t\t").append(command);
+//                    }
+//                }
+//                if (container.environmentVariables() != null) {
+//                    info.append("\n\t\t\tENV vars:");
+//                    for (EnvironmentVariable envVar : container.environmentVariables()) {
+//                        info.append("\n\t\t\t\t").append(envVar.name()).append("=").append(envVar.value());
+//                    }
+//                }
+//            }
+//        }
+//
+//        System.out.println(info.toString());
+//    }
+//
 //    /**
 //     * Print event hub namespace.
 //     *
@@ -2850,7 +2923,7 @@ public final class Utils {
 //        StringBuilder info = new StringBuilder();
 //        info.append("DisasterRecoveryPairing auth rule: ").append(resource.name());
 //        List<String> rightsStr = new ArrayList<>();
-//        for (com.microsoft.azure.management.eventhub.AccessRights rights : resource.rights()) {
+//        for (AccessRights rights : resource.rights()) {
 //            rightsStr.add(rights.toString());
 //        }
 //        info.append("\n\tRights: ").append(rightsStr);
@@ -3130,115 +3203,160 @@ public final class Utils {
         System.out.println(info.toString());
     }
 
+//    /**
+//     * Print spring service settings.
+//     *
+//     * @param springService spring service instance
+//     */
+//    public static void print(SpringService springService) {
+//        StringBuilder info = new StringBuilder("Spring Service: ")
+//            .append("\n\tId: ").append(springService.id())
+//            .append("\n\tName: ").append(springService.name())
+//            .append("\n\tResource Group: ").append(springService.resourceGroupName())
+//            .append("\n\tRegion: ").append(springService.region())
+//            .append("\n\tTags: ").append(springService.tags());
+//
+//        ConfigServerProperties serverProperties = springService.getServerProperties();
+//        if (serverProperties != null && serverProperties.provisioningState() != null
+//            && serverProperties.provisioningState().equals(ConfigServerState.SUCCEEDED) && serverProperties.configServer() != null) {
+//            info.append("\n\tProperties: ");
+//            if (serverProperties.configServer().gitProperty() != null) {
+//                info.append("\n\t\tGit: ").append(serverProperties.configServer().gitProperty().uri());
+//            }
+//        }
+//
+//        if (springService.sku() != null) {
+//            info.append("\n\tSku: ")
+//                .append("\n\t\tName: ").append(springService.sku().name())
+//                .append("\n\t\tTier: ").append(springService.sku().tier())
+//                .append("\n\t\tCapacity: ").append(springService.sku().capacity());
+//        }
+//
+//        MonitoringSettingProperties monitoringSettingProperties = springService.getMonitoringSetting();
+//        if (monitoringSettingProperties != null && monitoringSettingProperties.provisioningState() != null
+//            && monitoringSettingProperties.provisioningState().equals(MonitoringSettingState.SUCCEEDED)) {
+//            info.append("\n\tTrace: ")
+//                .append("\n\t\tEnabled: ").append(monitoringSettingProperties.traceEnabled())
+//                .append("\n\t\tApp Insight Instrumentation Key: ").append(monitoringSettingProperties.appInsightsInstrumentationKey());
+//        }
+//
+//        System.out.println(info.toString());
+//    }
+//
+//    /**
+//     * Print spring app settings.
+//     *
+//     * @param springApp spring app instance
+//     */
+//    public static void print(SpringApp springApp) {
+//        StringBuilder info = new StringBuilder("Spring Service: ")
+//            .append("\n\tId: ").append(springApp.id())
+//            .append("\n\tName: ").append(springApp.name())
+//            .append("\n\tCreated Time: ").append(springApp.createdTime())
+//            .append("\n\tPublic Endpoint: ").append(springApp.isPublic())
+//            .append("\n\tUrl: ").append(springApp.url())
+//            .append("\n\tHttps Only: ").append(springApp.isHttpsOnly())
+//            .append("\n\tFully Qualified Domain Name: ").append(springApp.fqdn())
+//            .append("\n\tActive Deployment Name: ").append(springApp.activeDeploymentName());
+//
+//        if (springApp.temporaryDisk() != null) {
+//            info.append("\n\tTemporary Disk:")
+//                .append("\n\t\tSize In GB: ").append(springApp.temporaryDisk().sizeInGB())
+//                .append("\n\t\tMount Path: ").append(springApp.temporaryDisk().mountPath());
+//        }
+//
+//        if (springApp.persistentDisk() != null) {
+//            info.append("\n\tPersistent Disk:")
+//                .append("\n\t\tSize In GB: ").append(springApp.persistentDisk().sizeInGB())
+//                .append("\n\t\tMount Path: ").append(springApp.persistentDisk().mountPath());
+//        }
+//
+//        if (springApp.identity() != null) {
+//            info.append("\n\tIdentity:")
+//                .append("\n\t\tType: ").append(springApp.identity().type())
+//                .append("\n\t\tPrincipal Id: ").append(springApp.identity().principalId())
+//                .append("\n\t\tTenant Id: ").append(springApp.identity().tenantId());
+//        }
+//
+//        System.out.println(info.toString());
+//    }
+
     /**
-     * Print spring service settings.
+     * Sends a GET request to target URL.
+     * <p>
+     * Retry logic tuned for AppService.
+     * The method does not handle 301 redirect.
      *
-     * @param springService spring service instance
+     * @param urlString the target URL.
+     * @return Content of the HTTP response.
      */
-    public static void print(SpringService springService) {
-        StringBuilder info = new StringBuilder("Spring Service: ")
-            .append("\n\tId: ").append(springService.id())
-            .append("\n\tName: ").append(springService.name())
-            .append("\n\tResource Group: ").append(springService.resourceGroupName())
-            .append("\n\tRegion: ").append(springService.region())
-            .append("\n\tTags: ").append(springService.tags());
+    public static String sendGetRequest(String urlString) {
+        ClientLogger logger = new ClientLogger(Utils.class);
 
-        if (springService.serverProperties() != null && springService.serverProperties().state() == ConfigServerState.SUCCEEDED && springService.serverProperties().configServer() != null) {
-            info.append("\n\tProperties: ");
-            if (springService.serverProperties().configServer().gitProperty() != null) {
-                info.append("\n\t\tGit: ").append(springService.serverProperties().configServer().gitProperty().uri());
-            }
-        }
-
-        if (springService.sku() != null) {
-            info.append("\n\tSku: ")
-                .append("\n\t\tName: ").append(springService.sku().name())
-                .append("\n\t\tTier: ").append(springService.sku().tier())
-                .append("\n\t\tCapacity: ").append(springService.sku().capacity());
-        }
-
-        if (springService.traceProperties() != null && springService.traceProperties().state() == TraceProxyState.SUCCEEDED) {
-            info.append("\n\tTrace: ")
-                .append("\n\t\tEnabled: ").append(springService.traceProperties().enabled())
-                .append("\n\t\tApp Insight Instrumentation Key: ").append(springService.traceProperties().appInsightInstrumentationKey());
-        }
-
-        System.out.println(info.toString());
-    }
-
-    /**
-     * Print spring app settings.
-     *
-     * @param springApp spring app instance
-     */
-    public static void print(SpringApp springApp) {
-        StringBuilder info = new StringBuilder("Spring Service: ")
-            .append("\n\tId: ").append(springApp.id())
-            .append("\n\tName: ").append(springApp.name())
-            .append("\n\tCreated Time: ").append(springApp.createdTime())
-            .append("\n\tPublic Endpoint: ").append(springApp.isPublic())
-            .append("\n\tUrl: ").append(springApp.url())
-            .append("\n\tHttps Only: ").append(springApp.isHttpsOnly())
-            .append("\n\tFully Qualified Domain Name: ").append(springApp.fqdn())
-            .append("\n\tActive Deployment Name: ").append(springApp.activeDeployment());
-
-        if (springApp.temporaryDisk() != null) {
-            info.append("\n\tTemporary Disk:")
-                .append("\n\t\tSize In GB: ").append(springApp.temporaryDisk().sizeInGB())
-                .append("\n\t\tMount Path: ").append(springApp.temporaryDisk().mountPath());
-        }
-
-        if (springApp.persistentDisk() != null) {
-            info.append("\n\tPersistent Disk:")
-                .append("\n\t\tSize In GB: ").append(springApp.persistentDisk().sizeInGB())
-                .append("\n\t\tMount Path: ").append(springApp.persistentDisk().mountPath());
-        }
-
-        if (springApp.identity() != null) {
-            info.append("\n\tIdentity:")
-                .append("\n\t\tType: ").append(springApp.identity().type())
-                .append("\n\t\tPrincipal Id: ").append(springApp.identity().principalId())
-                .append("\n\t\tTenant Id: ").append(springApp.identity().tenantId());
-        }
-
-        System.out.println(info.toString());
-    }
-
-    public static Response<String> curl(String urlString) {
         try {
-            return stringResponse(httpClient.getString(getHost(urlString), getPathAndQuery(urlString))).block();
+            Mono<Response<Flux<ByteBuffer>>> response =
+                HTTP_CLIENT.getString(getHost(urlString), getPathAndQuery(urlString))
+                    .retryWhen(Retry
+                        .fixedDelay(5, Duration.ofSeconds(30))
+                        .filter(t -> {
+                            boolean retry = false;
+                            if (t instanceof TimeoutException) {
+                                retry = true;
+                            } else if (t instanceof HttpResponseException
+                                && ((HttpResponseException) t).getResponse().getStatusCode() == 503) {
+                                retry = true;
+                            }
+
+                            if (retry) {
+                                logger.info("retry GET request to {}", urlString);
+                            }
+                            return retry;
+                        }));
+            Response<String> ret = stringResponse(response).block();
+            return ret == null ? null : ret.getValue();
         } catch (MalformedURLException e) {
+            logger.logThrowableAsError(e);
             return null;
         }
     }
 
-    public static String get(String urlString) {
+    /**
+     * Sends a POST request to target URL.
+     * <p>
+     * Retry logic tuned for AppService.
+     *
+     * @param urlString the target URL.
+     * @param body the request body.
+     * @return Content of the HTTP response.
+     * */
+    public static String sendPostRequest(String urlString, String body) {
+        ClientLogger logger = new ClientLogger(Utils.class);
+
         try {
-            SimpleResponse<String> response = stringResponse(httpClient.getString(getHost(urlString), getPathAndQuery(urlString))).block();
-            if (response != null) {
-                return response.getValue();
-            } else {
-                return null;
-            }
+            Mono<Response<String>> response =
+                stringResponse(HTTP_CLIENT.postString(getHost(urlString), getPathAndQuery(urlString), body))
+                    .retryWhen(Retry
+                        .fixedDelay(5, Duration.ofSeconds(30))
+                        .filter(t -> {
+                            boolean retry = false;
+                            if (t instanceof TimeoutException) {
+                                retry = true;
+                            }
+
+                            if (retry) {
+                                logger.info("retry POST request to {}", urlString);
+                            }
+                            return retry;
+                        }));
+            Response<String> ret = response.block();
+            return ret == null ? null : ret.getValue();
         } catch (Exception e) {
+            logger.logThrowableAsError(e);
             return null;
         }
     }
 
-    public static String post(String urlString, String body) {
-        try {
-            SimpleResponse<String> response = stringResponse(httpClient.postString(getHost(urlString), getPathAndQuery(urlString), body)).block();
-            if (response != null) {
-                return response.getValue();
-            } else {
-                return null;
-            }
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    private static Mono<SimpleResponse<String>> stringResponse(Mono<SimpleResponse<Flux<ByteBuffer>>> responseMono) {
+    private static Mono<Response<String>> stringResponse(Mono<Response<Flux<ByteBuffer>>> responseMono) {
         return responseMono.flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue())
                 .map(bytes -> new String(bytes, StandardCharsets.UTF_8))
                 .map(str -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), str)));
@@ -3261,10 +3379,12 @@ public final class Utils {
         return path;
     }
 
-    private static WebAppTestClient httpClient = RestProxy.create(
+    private static final WebAppTestClient HTTP_CLIENT = RestProxy.create(
             WebAppTestClient.class,
             new HttpPipelineBuilder()
-                    .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC)), new RetryPolicy("Retry-After", ChronoUnit.SECONDS))
+                    .policies(
+                        new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC)),
+                        new RetryPolicy("Retry-After", ChronoUnit.SECONDS))
                     .build());
 
     @Host("{$host}")
@@ -3272,19 +3392,18 @@ public final class Utils {
     private interface WebAppTestClient {
         @Get("{path}")
         @ExpectedResponses({200, 400, 404})
-        Mono<SimpleResponse<Flux<ByteBuffer>>> getString(@HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path);
+        Mono<Response<Flux<ByteBuffer>>> getString(@HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path);
 
         @Post("{path}")
         @ExpectedResponses({200, 400, 404})
-        Mono<SimpleResponse<Flux<ByteBuffer>>> postString(@HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path, @BodyParam("text/plain") String body);
+        Mono<Response<Flux<ByteBuffer>>> postString(@HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path, @BodyParam("text/plain") String body);
     }
 
-    public static synchronized <T> int getSize(Iterable<T> iterable) {
+    public static <T> int getSize(Iterable<T> iterable) {
         int res = 0;
         Iterator<T> iterator = iterable.iterator();
         while (iterator.hasNext()) {
             iterator.next();
-            ++res;
         }
         return res;
     }

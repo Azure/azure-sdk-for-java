@@ -1,6 +1,25 @@
 # Release History
+## 1.7.0-beta.2 (Unreleased)
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.7.0-beta.1 (2020-11-03)
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.10.0`.
+
+## 1.6.0 (2020-10-12)
+### New Features
+- Added peer certificate verification options when connecting to an AMQP endpoint.
+### Breaking Changes
+- Removed `BinaryData` type which was used for `AmqpAnnotatedMessage`. 
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.9.0`.
+
+## 1.5.1 (2020-09-10)
+- Add support for SAS when authenticating.
+
+## 1.5.0 (2020-09-10)
+- Remove unused and duplicate logic for Handlers.getErrors().
+- Close children sessions and links when a connection is disposed.
+- Added AMQP Message envelope which can be accessed using `AmqpAnnotatedMessage`.
 
 ## 1.4.0 (2020-08-11)
 

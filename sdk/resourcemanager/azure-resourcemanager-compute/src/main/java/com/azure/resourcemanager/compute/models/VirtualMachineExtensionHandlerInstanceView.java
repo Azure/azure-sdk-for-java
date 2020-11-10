@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VirtualMachineExtensionHandlerInstanceView model. */
+/** The instance view of a virtual machine extension handler. */
 @Fluent
 public final class VirtualMachineExtensionHandlerInstanceView {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineExtensionHandlerInstanceView.class);

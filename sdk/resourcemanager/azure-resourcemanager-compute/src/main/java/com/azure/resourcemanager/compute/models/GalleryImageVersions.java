@@ -6,15 +6,12 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.compute.fluent.GalleryImageVersionsClient;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
 /** Entry point to gallery image versions management API in Azure. */
 @Fluent
-public interface GalleryImageVersions
-    extends SupportsCreating<GalleryImageVersion.DefinitionStages.Blank>, HasInner<GalleryImageVersionsClient> {
+public interface GalleryImageVersions extends SupportsCreating<GalleryImageVersion.DefinitionStages.Blank> {
     /**
      * Retrieves information about a gallery image version.
      *

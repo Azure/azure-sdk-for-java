@@ -9,7 +9,7 @@ import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-/** The ArmResourceProperties model. */
+/** The core properties of ARM resources. */
 @Immutable
 public class ArmResourceProperties extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ArmResourceProperties.class);

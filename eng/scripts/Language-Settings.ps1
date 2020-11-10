@@ -1,12 +1,13 @@
 $Language = "java"
-$Lang = "java"
 $PackageRepository = "Maven"
 $packagePattern = "*.pom"
 $MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/java-packages.csv"
+$BlobStorageUrl = "https://azuresdkdocs.blob.core.windows.net/%24web?restype=container&comp=list&prefix=java%2F&delimiter=%2F"
 
-function Extract-java-PkgProperties ($pkgPath, $serviceName, $pkgName)
+function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory, $pkgName)
 {
   $projectPath = Join-Path $pkgPath "pom.xml"
+
   if (Test-Path $projectPath)
   {
     $projectData = New-Object -TypeName XML
@@ -17,7 +18,7 @@ function Extract-java-PkgProperties ($pkgPath, $serviceName, $pkgName)
 
     if ($projectPkgName -eq $pkgName)
     {
-        return [PackageProps]::new($pkgName, $pkgVersion.ToString(), $pkgPath, $serviceName, $pkgGroup)
+        return [PackageProps]::new($pkgName, $pkgVersion.ToString(), $pkgPath, $serviceDirectory, $pkgGroup)
     }
   }
   return $null
@@ -29,7 +30,7 @@ function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId)
   try 
   {
     $uri = "https://oss.sonatype.org/content/repositories/releases/$groupId/$pkgId/$pkgVersion/$pkgId-$pkgVersion.pom"
-    $pomContent = Invoke-RestMethod -MaximumRetryCount 3 -Method "GET" -uri $uri
+    $pomContent = Invoke-RestMethod -MaximumRetryCount 3 -RetryIntervalSec 10 -Method "GET" -uri $uri
 
     if ($pomContent -ne $null -or $pomContent.Length -eq 0)
     {
@@ -57,7 +58,7 @@ function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId)
 }
 
 # Parse out package publishing information given a maven POM file
-function Parse-java-Package($pkg, $workingDirectory) {
+function Get-java-PackageInfoFromPackageFile ($pkg, $workingDirectory) {
   [xml]$contentXML = Get-Content $pkg
 
   $pkgId = $contentXML.project.artifactId
@@ -83,6 +84,7 @@ function Parse-java-Package($pkg, $workingDirectory) {
 
   return New-Object PSObject -Property @{
     PackageId      = $pkgId
+    GroupId        = $groupId
     PackageVersion = $pkgVersion
     Deployable     = $forceCreate -or !(IsMavenPackageVersionPublished -pkgId $pkgId -pkgVersion $pkgVersion -groupId $groupId.Replace(".", "/"))
     ReleaseNotes   = $releaseNotes
@@ -91,13 +93,13 @@ function Parse-java-Package($pkg, $workingDirectory) {
 }
 
 # Stage and Upload Docs to blob Storage
-function StageAndUpload-java-Docs ()
+function Publish-java-GithubIODocs ($DocLocation, $PublicArtifactLocation)
 {
   $PublishedDocs = Get-ChildItem "$DocLocation" | Where-Object -FilterScript {$_.Name.EndsWith("-javadoc.jar")}
-  foreach ($Item in $PublishedDocs) 
+  foreach ($Item in $PublishedDocs)
   {
     $UnjarredDocumentationPath = ""
-    try 
+    try
     {
       $PkgName = $Item.BaseName
       # The jar's unpacking command doesn't allow specifying a target directory
@@ -135,14 +137,15 @@ function StageAndUpload-java-Docs ()
       Write-Host "DocDir $($UnjarredDocumentationPath)"
       Write-Host "PkgName $($ArtifactId)"
       Write-Host "DocVersion $($Version)"
+      $releaseTag = RetrieveReleaseTag "Maven" $PublicArtifactLocation 
+      Upload-Blobs -DocDir $UnjarredDocumentationPath -PkgName $ArtifactId -DocVersion $Version -ReleaseTag $releaseTag
 
-      Upload-Blobs -DocDir $UnjarredDocumentationPath -PkgName $ArtifactId -DocVersion $Version
-    } 
-    Finally 
+    }
+    Finally
     {
-      if (![string]::IsNullOrEmpty($UnjarredDocumentationPath)) 
+      if (![string]::IsNullOrEmpty($UnjarredDocumentationPath))
       {
-        if (Test-Path -Path $UnjarredDocumentationPath) 
+        if (Test-Path -Path $UnjarredDocumentationPath)
         {
           Write-Host "Cleaning up $UnjarredDocumentationPath"
           Remove-Item -Recurse -Force $UnjarredDocumentationPath
@@ -150,4 +153,19 @@ function StageAndUpload-java-Docs ()
       }
     }
   }
+}
+
+function Get-java-GithubIoDocIndex() {
+  # Fetch out all package metadata from csv file.
+  $metadata = Get-CSVMetadata -MetadataUri $MetadataUri
+  # Leave the track 2 packages if multiple packages fetched out.
+  $clientPackages = $metadata | Where-Object { $_.GroupId -eq 'com.azure' } 
+  $nonClientPackages = $metadata | Where-Object { $_.GroupId -ne 'com.azure' -and !$clientPackages.Package.Contains($_.Package) }
+  $uniquePackages = $clientPackages + $nonClientPackages
+  # Get the artifacts name from blob storage
+  $artifacts =  Get-BlobStorage-Artifacts -blobStorageUrl $BlobStorageUrl -blobDirectoryRegex "^java/(.*)/$" -blobArtifactsReplacement '$1'
+  # Build up the artifact to service name mapping for GithubIo toc.
+  $tocContent = Get-TocMapping -metadata $uniquePackages -artifacts $artifacts
+  # Generate yml/md toc files and build site.
+  GenerateDocfxTocContent -tocContent $tocContent -lang "Java"
 }

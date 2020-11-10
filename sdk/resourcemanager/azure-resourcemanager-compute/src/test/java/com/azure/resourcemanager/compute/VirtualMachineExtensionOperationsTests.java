@@ -9,8 +9,8 @@ import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtension;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.InputStream;
@@ -64,7 +64,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                 .withRootUsername("Foo12")
                 .withRootPassword("BaR@12abc!")
-                .withSize(VirtualMachineSizeTypes.STANDARD_D3)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .withExistingStorageAccount(storageAccount)
                 .create();
 
@@ -124,7 +124,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
                 .withRootPassword("BaR@12abc!")
-                .withSize(VirtualMachineSizeTypes.STANDARD_D3)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .create();
 
         // Using VMAccess Linux extension to reset the password for the existing user 'Foo12'
@@ -182,7 +182,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
                 .withLatestLinuxImage("Canonical", "UbuntuServer", "14.04.4-LTS")
                 .withRootUsername("Foo12")
                 .withRootPassword("BaR@12abc!")
-                .withSize(VirtualMachineSizeTypes.STANDARD_D3)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .defineNewExtension("CustomScriptForLinux")
                 .withPublisher("Microsoft.OSTCExtensions")
                 .withType("CustomScriptForLinux")
@@ -228,7 +228,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                 .withRootUsername("Foo12")
                 .withRootPassword("BaR@12abc!")
-                .withSize(VirtualMachineSizeTypes.STANDARD_D3)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .defineNewExtension("VMAccessForLinux")
                 .withPublisher("Microsoft.OSTCExtensions")
                 .withType("VMAccessForLinux")

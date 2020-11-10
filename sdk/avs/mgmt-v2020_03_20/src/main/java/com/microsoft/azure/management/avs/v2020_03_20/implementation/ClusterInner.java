@@ -9,8 +9,8 @@
 package com.microsoft.azure.management.avs.v2020_03_20.implementation;
 
 import com.microsoft.azure.management.avs.v2020_03_20.Sku;
-import java.util.List;
 import com.microsoft.azure.management.avs.v2020_03_20.ClusterProvisioningState;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.ProxyResource;
@@ -33,6 +33,13 @@ public class ClusterInner extends ProxyResource {
     private Integer clusterSize;
 
     /**
+     * The state of the cluster provisioning. Possible values include:
+     * 'Succeeded', 'Failed', 'Cancelled', 'Deleting', 'Updating'.
+     */
+    @JsonProperty(value = "properties.provisioningState")
+    private ClusterProvisioningState provisioningState;
+
+    /**
      * The identity.
      */
     @JsonProperty(value = "properties.clusterId", access = JsonProperty.Access.WRITE_ONLY)
@@ -43,13 +50,6 @@ public class ClusterInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.hosts", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> hosts;
-
-    /**
-     * The state of the cluster provisioning. Possible values include:
-     * 'Succeeded', 'Failed', 'Cancelled', 'Deleting', 'Updating'.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ClusterProvisioningState provisioningState;
 
     /**
      * Get the cluster SKU.
@@ -92,6 +92,26 @@ public class ClusterInner extends ProxyResource {
     }
 
     /**
+     * Get the state of the cluster provisioning. Possible values include: 'Succeeded', 'Failed', 'Cancelled', 'Deleting', 'Updating'.
+     *
+     * @return the provisioningState value
+     */
+    public ClusterProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Set the state of the cluster provisioning. Possible values include: 'Succeeded', 'Failed', 'Cancelled', 'Deleting', 'Updating'.
+     *
+     * @param provisioningState the provisioningState value to set
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withProvisioningState(ClusterProvisioningState provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
      * Get the identity.
      *
      * @return the clusterId value
@@ -107,15 +127,6 @@ public class ClusterInner extends ProxyResource {
      */
     public List<String> hosts() {
         return this.hosts;
-    }
-
-    /**
-     * Get the state of the cluster provisioning. Possible values include: 'Succeeded', 'Failed', 'Cancelled', 'Deleting', 'Updating'.
-     *
-     * @return the provisioningState value
-     */
-    public ClusterProvisioningState provisioningState() {
-        return this.provisioningState;
     }
 
 }

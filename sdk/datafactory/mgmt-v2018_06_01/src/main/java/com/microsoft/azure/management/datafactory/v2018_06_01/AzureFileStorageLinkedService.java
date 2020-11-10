@@ -77,6 +77,13 @@ public class AzureFileStorageLinkedService extends LinkedServiceInner {
     private Object fileShare;
 
     /**
+     * The azure file share snapshot version. Type: string (or Expression with
+     * resultType string).
+     */
+    @JsonProperty(value = "typeProperties.snapshot")
+    private Object snapshot;
+
+    /**
      * The encrypted credential used for authentication. Credentials are
      * encrypted using the integration runtime credential manager. Type: string
      * (or Expression with resultType string).
@@ -241,6 +248,26 @@ public class AzureFileStorageLinkedService extends LinkedServiceInner {
      */
     public AzureFileStorageLinkedService withFileShare(Object fileShare) {
         this.fileShare = fileShare;
+        return this;
+    }
+
+    /**
+     * Get the azure file share snapshot version. Type: string (or Expression with resultType string).
+     *
+     * @return the snapshot value
+     */
+    public Object snapshot() {
+        return this.snapshot;
+    }
+
+    /**
+     * Set the azure file share snapshot version. Type: string (or Expression with resultType string).
+     *
+     * @param snapshot the snapshot value to set
+     * @return the AzureFileStorageLinkedService object itself.
+     */
+    public AzureFileStorageLinkedService withSnapshot(Object snapshot) {
+        this.snapshot = snapshot;
         return this;
     }
 

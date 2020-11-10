@@ -473,6 +473,7 @@
               <includes combine.children="append">
                 <include>com.azure:*</include>
                 <include>com.azure.resourcemanager:*</include>
+                <include>com.azure.spring:*</include>
 
                 <!-- Used by many libraries to bring in annotations used by Reactor -->
                 <include>com.google.code.findbugs:jsr305:[3.0.2]</include> <!-- {x-include-update;com.google.code.findbugs:jsr305;external_dependency} -->
@@ -491,11 +492,6 @@
             This rule is used to enforce that all modules depend on the same version of particular dependencies or
             plugins.
             -->
-            <requireSameVersions>
-              <dependencies>
-                <dependency>com.azure.*</dependency>
-              </dependencies>
-            </requireSameVersions>
           </rules>
           <fail>true</fail>
         </configuration>
@@ -545,16 +541,20 @@
               <group>
                 <title>Azure Core</title>
                 <packages>
-                  com.azure.core:com.azure.core.annotation:com.azure.core.credentials:com.azure.core.exception:com.azure.core.http*:com.azure.core.configuration:com.azure.core.util*:com.azure.core.credential:com.azure.core.cryptography
+                  com.azure.core:com.azure.core.annotation:com.azure.core.credential:com.azure.core.cryptography:com.azure.core.exception:com.azure.core.http*:com.azure.core.models*:com.azure.core.util*
                 </packages>
               </group>
               <group>
                 <title>Azure Core - AMQP</title>
-                <packages>com.azure.core.amqp*</packages>
+                <packages>com.azure.core.amqp:com.azure.core.amqp.exception*:com.azure.core.amqp.models*</packages>
               </group>
               <group>
-                <title>Azure Core - Authentication</title>
-                <packages>com.azure.core.auth*</packages>
+                <title>Azure Core - AMQP Experimental</title>
+                <packages>com.azure.core.amqp.experimental*</packages>
+              </group>
+              <group>
+                <title>Azure Core - Experimental</title>
+                <packages>com.azure.core.experimental*</packages>
               </group>
               <group>
                 <title>Azure Core - HTTP - Netty</title>
@@ -585,6 +585,18 @@
                 <packages>com.azure.core.serializer.json.jackson*</packages>
               </group>
               <group>
+                <title>Azure Core - Test</title>
+                <packages>com.azure.core.test*</packages>
+              </group>
+              <group>
+                <title>Azure Core - Tracing - OpenTelemetry</title>
+                <packages>com.azure.core.tracing.opentelemetry*</packages>
+              </group>
+              <group>
+                <title>Azure Anomaly Detector</title>
+                <packages>com.azure.ai.anomalydetector*</packages>
+              </group>
+              <group>
                 <title>Azure App Configuration</title>
                 <packages>com.azure.data.appconfiguration*</packages>
               </group>
@@ -595,6 +607,10 @@
               <group>
                 <title>Azure Event Hubs</title>
                 <packages>com.azure.messaging.eventhubs*</packages>
+              </group>
+              <group>
+                <title>Azure Digital Twins</title>
+                <packages>com.azure.digitaltwins.core*</packages>
               </group>
               <group>
                 <title>Azure Form Recognizer</title>
@@ -609,8 +625,8 @@
                 <packages>com.azure.security.keyvault*</packages>
               </group>
               <group>
-                <title>Azure Search</title>
-                <packages>com.azure.search*</packages>
+                <title>Azure Search Documents</title>
+                <packages>com.azure.search.documents*</packages>
               </group>
               <group>
                 <title>Azure Service Bus</title>
@@ -641,8 +657,8 @@
                 <packages>com.azure.storage.blob.nio*</packages>
               </group>
               <group>
-                <title>Azure Storage - Files</title>
-                <packages>com.azure.storage.file*</packages>
+                <title>Azure Storage Files - Share</title>
+                <packages>com.azure.storage.file.share*</packages>
               </group>
               <group>
                 <title>Azure Storage Files - Data Lake</title>
@@ -653,17 +669,12 @@
                 <packages>com.azure.storage.queue*</packages>
               </group>
               <group>
-                <title>Azure Telemetry</title>
-                <title>Azure Telemetry - OpenTelemetry</title>
-                <packages>com.azure.core.tracing*</packages>
-              </group>
-              <group>
                 <title>Azure Text Analytics</title>
                 <packages>com.azure.ai.textanalytics*</packages>
               </group>
               <group>
-                  <title>Azure Resource Manager</title>
-                  <packages>com.azure.resourcemanager*</packages>
+                <title>Azure Resource Manager</title>
+                <packages>com.azure.resourcemanager*</packages>
               </group>
             </groups>
             <links>
@@ -838,6 +849,7 @@
                 -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-json-gson/src/samples/java
                 -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-json-jackson/src/samples/java
                 -snippetpath ${project.basedir}/sdk/cosmos/azure-cosmos/src/samples/java
+                -snippetpath ${project.basedir}/sdk/core/azure-digitaltwins-core/src/samples/java
                 -snippetpath ${project.basedir}/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java
                 -snippetpath ${project.basedir}/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-certificates/src/samples/java
@@ -1081,64 +1093,6 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
-              <argLine>
-                <!-- KeyVault tests fail without these exports. -->
-                --add-exports com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
-                --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
-                --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
-                --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
-
-                <!-- Needed for JUnit offline instrumentation -->
-                --add-reads com.azure.core=ALL-UNNAMED
-                --add-reads com.azure.core.test=ALL-UNNAMED
-                --add-reads com.azure.core.amqp=ALL-UNNAMED
-
-                <!-- JUnit5 and Mockito use reflection to create objects. -->
-
-                --add-opens com.azure.core/com.azure.core=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.http.rest=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.util.logging=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.util.polling=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.util.serializer=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.http=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.http.policy=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.http.rest=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
-                --add-opens com.azure.ai.formrecognizer/com.azure.ai.formrecognizer=ALL-UNNAMED
-                --add-opens com.azure.ai.textanalytics/com.azure.ai.textanalytics=ALL-UNNAMED
-                --add-opens com.azure.ai.textanalytics/com.azure.ai.textanalytics.implementation.models=com.azure.core
-                --add-opens com.azure.data.appconfiguration/com.azure.data.appconfiguration=ALL-UNNAMED
-                --add-opens com.azure.security.keyvault.certificates/com.azure.security.keyvault.certificates=ALL-UNNAMED
-                --add-opens com.azure.security.keyvault.secrets/com.azure.security.keyvault.secrets=ALL-UNNAMED
-                --add-opens com.azure.security.keyvault.keys/com.azure.security.keyvault.keys.cryptography=ALL-UNNAMED
-                --add-opens com.azure.security.keyvault.keys/com.azure.security.keyvault.keys=ALL-UNNAMED
-
-                <!-- Cosmos module need this -->
-                --add-opens com.azure.cosmos/com.azure.cosmos=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.implementation=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.caches=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.http=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.directconnectivity=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.query=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.routing=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.models=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.rx=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.rx.proxy=ALL-UNNAMED
-
-                <!-- AMQP tests fail without this. ArgumentCaptor requires reflection. -->
-                --add-opens com.azure.core.amqp/com.azure.core.amqp.implementation=ALL-UNNAMED
-                --add-opens com.azure.core.amqp/com.azure.core.amqp.implementation.handler=ALL-UNNAMED
-
-                <!-- Checkpoint store tests fail without this -->
-                --add-opens com.azure.messaging.eventhubs.checkpointstore.blob/com.azure.messaging.eventhubs.checkpointstore.blob=ALL-UNNAMED
-                --add-reads com.azure.messaging.eventhubs=ALL-UNNAMED
-
-                <!-- Azure-core needs to open the test entities to Jackson for unit tests to operate -->
-                --add-opens com.azure.core/com.azure.core.implementation.entities=com.fasterxml.jackson.databind
-                --add-opens com.azure.core/com.azure.core.implementation.entities=ALL-UNNAMED
-              </argLine>
               <systemPropertyVariables>
                 <jacoco-agent.destfile>${project.build.directory}/jacoco.exec</jacoco-agent.destfile>
               </systemPropertyVariables>

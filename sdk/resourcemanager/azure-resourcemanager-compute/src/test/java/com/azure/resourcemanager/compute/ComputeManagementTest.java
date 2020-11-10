@@ -3,9 +3,15 @@
 
 package com.azure.resourcemanager.compute;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
+import com.azure.resourcemanager.msi.MsiManager;
 import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.LoadBalancerSkuType;
 import com.azure.resourcemanager.network.models.Network;
@@ -13,27 +19,25 @@ import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.PublicIPSkuType;
 import com.azure.resourcemanager.network.models.TransportProtocol;
 import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.resources.core.TestBase;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.storage.StorageManager;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.utils.TestDelayProvider;
+import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import java.io.IOException;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 
-public abstract class ComputeManagementTest extends TestBase {
-    public ComputeManagementTest() {
-        super(TestBase.RunCondition.BOTH);
-    }
-
-    public ComputeManagementTest(TestBase.RunCondition runCondition) {
-        super(runCondition);
-    }
+public abstract class ComputeManagementTest extends ResourceManagerTestBase {
 
     protected ResourceManager resourceManager;
     protected ComputeManager computeManager;
@@ -41,21 +45,39 @@ public abstract class ComputeManagementTest extends TestBase {
     protected StorageManager storageManager;
     protected AuthorizationManager authorizationManager;
     protected KeyVaultManager keyVaultManager;
+    protected MsiManager msiManager;
+
+    @Override
+    protected HttpPipeline buildHttpPipeline(
+        TokenCredential credential,
+        AzureProfile profile,
+        HttpLogOptions httpLogOptions,
+        List<HttpPipelinePolicy> policies,
+        HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(
+            credential,
+            profile,
+            null,
+            httpLogOptions,
+            null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
+            policies,
+            httpClient);
+    }
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
-        resourceManager =
-            ResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext).withDefaultSubscription();
-
-        computeManager = ComputeManager.authenticate(httpPipeline, profile, sdkContext);
-
-        networkManager = NetworkManager.authenticate(httpPipeline, profile, sdkContext);
-
-        storageManager = StorageManager.authenticate(httpPipeline, profile, sdkContext);
-
-        keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile, sdkContext);
-
-        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile, sdkContext);
+        ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
+        ResourceManagerUtils.InternalRuntimeContext internalContext = new ResourceManagerUtils.InternalRuntimeContext();
+        internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
+        computeManager = buildManager(ComputeManager.class, httpPipeline, profile);
+        networkManager = buildManager(NetworkManager.class, httpPipeline, profile);
+        storageManager = buildManager(StorageManager.class, httpPipeline, profile);
+        keyVaultManager = buildManager(KeyVaultManager.class, httpPipeline, profile);
+        authorizationManager = buildManager(AuthorizationManager.class, httpPipeline, profile);
+        msiManager = buildManager(MsiManager.class, httpPipeline, profile);
+        resourceManager = computeManager.resourceManager();
+        setInternalContext(internalContext, computeManager, networkManager, keyVaultManager, msiManager);
     }
 
     @Override

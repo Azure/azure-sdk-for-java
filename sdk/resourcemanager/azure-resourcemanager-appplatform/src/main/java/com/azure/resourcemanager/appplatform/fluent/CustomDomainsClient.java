@@ -4,172 +4,39 @@
 
 package com.azure.resourcemanager.appplatform.fluent;
 
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.Delete;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Headers;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.Patch;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
-import com.azure.core.annotation.Put;
-import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
-import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appplatform.AppPlatformManagementClient;
-import com.azure.resourcemanager.appplatform.fluent.inner.CustomDomainResourceCollectionInner;
-import com.azure.resourcemanager.appplatform.fluent.inner.CustomDomainResourceInner;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.appplatform.fluent.models.CustomDomainResourceInner;
 import com.azure.resourcemanager.appplatform.models.CustomDomainProperties;
-import com.azure.resourcemanager.appplatform.models.CustomDomainValidatePayload;
-import com.azure.resourcemanager.appplatform.models.CustomDomainValidateResult;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CustomDomains. */
-public final class CustomDomainsClient {
-    private final ClientLogger logger = new ClientLogger(CustomDomainsClient.class);
-
-    /** The proxy service used to perform REST calls. */
-    private final CustomDomainsService service;
-
-    /** The service client containing this operation class. */
-    private final AppPlatformManagementClient client;
-
+/** An instance of this class provides access to all the operations defined in CustomDomainsClient. */
+public interface CustomDomainsClient {
     /**
-     * Initializes an instance of CustomDomainsClient.
+     * Get the custom domain of one lifecycle application.
      *
-     * @param client the instance of the service client containing this operation class.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param domainName The name of the custom domain resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the custom domain of one lifecycle application.
      */
-    public CustomDomainsClient(AppPlatformManagementClient client) {
-        this.service =
-            RestProxy.create(CustomDomainsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
-    }
-
-    /**
-     * The interface defining all the services for AppPlatformManagementClientCustomDomains to be used by the proxy
-     * service to perform REST calls.
-     */
-    @Host("{$host}")
-    @ServiceInterface(name = "AppPlatformManagemen")
-    private interface CustomDomainsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/domains/{domainName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CustomDomainResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("appName") String appName,
-            @PathParam("domainName") String domainName,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/domains/{domainName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CustomDomainResourceInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("appName") String appName,
-            @PathParam("domainName") String domainName,
-            @BodyParam("application/json") CustomDomainResourceInner domainResource,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/domains/{domainName}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("appName") String appName,
-            @PathParam("domainName") String domainName,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/domains/{domainName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CustomDomainResourceInner>> patch(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("appName") String appName,
-            @PathParam("domainName") String domainName,
-            @BodyParam("application/json") CustomDomainResourceInner domainResource,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/domains")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CustomDomainResourceCollectionInner>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("appName") String appName,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/domains/validate")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CustomDomainValidateResult>> validate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("appName") String appName,
-            @BodyParam("application/json") CustomDomainValidatePayload validatePayload,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CustomDomainResourceCollectionInner>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-    }
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<CustomDomainResourceInner>> getWithResponseAsync(
+        String resourceGroupName, String serviceName, String appName, String domainName);
 
     /**
      * Get the custom domain of one lifecycle application.
@@ -180,53 +47,29 @@ public final class CustomDomainsClient {
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the custom domain of one lifecycle application.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CustomDomainResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String domainName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            appName,
-                            domainName,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<CustomDomainResourceInner> getAsync(
+        String resourceGroupName, String serviceName, String appName, String domainName);
+
+    /**
+     * Get the custom domain of one lifecycle application.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param domainName The name of the custom domain resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the custom domain of one lifecycle application.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CustomDomainResourceInner get(String resourceGroupName, String serviceName, String appName, String domainName);
 
     /**
      * Get the custom domain of one lifecycle application.
@@ -238,144 +81,13 @@ public final class CustomDomainsClient {
      * @param domainName The name of the custom domain resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the custom domain of one lifecycle application.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CustomDomainResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String domainName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                appName,
-                domainName,
-                context);
-    }
-
-    /**
-     * Get the custom domain of one lifecycle application.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param domainName The name of the custom domain resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the custom domain of one lifecycle application.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CustomDomainResourceInner> getAsync(
-        String resourceGroupName, String serviceName, String appName, String domainName) {
-        return getWithResponseAsync(resourceGroupName, serviceName, appName, domainName)
-            .flatMap(
-                (Response<CustomDomainResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get the custom domain of one lifecycle application.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param domainName The name of the custom domain resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the custom domain of one lifecycle application.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CustomDomainResourceInner> getAsync(
-        String resourceGroupName, String serviceName, String appName, String domainName, Context context) {
-        return getWithResponseAsync(resourceGroupName, serviceName, appName, domainName, context)
-            .flatMap(
-                (Response<CustomDomainResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get the custom domain of one lifecycle application.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param domainName The name of the custom domain resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the custom domain of one lifecycle application.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomDomainResourceInner get(
-        String resourceGroupName, String serviceName, String appName, String domainName) {
-        return getAsync(resourceGroupName, serviceName, appName, domainName).block();
-    }
-
-    /**
-     * Get the custom domain of one lifecycle application.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param domainName The name of the custom domain resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the custom domain of one lifecycle application.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomDomainResourceInner get(
-        String resourceGroupName, String serviceName, String appName, String domainName, Context context) {
-        return getAsync(resourceGroupName, serviceName, appName, domainName, context).block();
-    }
+    Response<CustomDomainResourceInner> getWithResponse(
+        String resourceGroupName, String serviceName, String appName, String domainName, Context context);
 
     /**
      * Create or update custom domain of one lifecycle application.
@@ -387,63 +99,61 @@ public final class CustomDomainsClient {
      * @param domainName The name of the custom domain resource.
      * @param properties Custom domain of app resource payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return custom domain resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CustomDomainResourceInner>> createOrUpdateWithResponseAsync(
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String serviceName,
         String appName,
         String domainName,
-        CustomDomainProperties properties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
-        }
-        if (properties != null) {
-            properties.validate();
-        }
-        CustomDomainResourceInner domainResource = new CustomDomainResourceInner();
-        domainResource.withProperties(properties);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            appName,
-                            domainName,
-                            domainResource,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+        CustomDomainProperties properties);
+
+    /**
+     * Create or update custom domain of one lifecycle application.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param domainName The name of the custom domain resource.
+     * @param properties Custom domain of app resource payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom domain resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<CustomDomainResourceInner>, CustomDomainResourceInner> beginCreateOrUpdateAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String domainName,
+        CustomDomainProperties properties);
+
+    /**
+     * Create or update custom domain of one lifecycle application.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param domainName The name of the custom domain resource.
+     * @param properties Custom domain of app resource payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom domain resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<CustomDomainResourceInner>, CustomDomainResourceInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String domainName,
+        CustomDomainProperties properties);
 
     /**
      * Create or update custom domain of one lifecycle application.
@@ -456,61 +166,18 @@ public final class CustomDomainsClient {
      * @param properties Custom domain of app resource payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return custom domain resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CustomDomainResourceInner>> createOrUpdateWithResponseAsync(
+    SyncPoller<PollResult<CustomDomainResourceInner>, CustomDomainResourceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serviceName,
         String appName,
         String domainName,
         CustomDomainProperties properties,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
-        }
-        if (properties != null) {
-            properties.validate();
-        }
-        CustomDomainResourceInner domainResource = new CustomDomainResourceInner();
-        domainResource.withProperties(properties);
-        context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                appName,
-                domainName,
-                domainResource,
-                context);
-    }
+        Context context);
 
     /**
      * Create or update custom domain of one lifecycle application.
@@ -522,27 +189,56 @@ public final class CustomDomainsClient {
      * @param domainName The name of the custom domain resource.
      * @param properties Custom domain of app resource payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return custom domain resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CustomDomainResourceInner> createOrUpdateAsync(
+    Mono<CustomDomainResourceInner> createOrUpdateAsync(
         String resourceGroupName,
         String serviceName,
         String appName,
         String domainName,
-        CustomDomainProperties properties) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, appName, domainName, properties)
-            .flatMap(
-                (Response<CustomDomainResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
+        CustomDomainProperties properties);
+
+    /**
+     * Create or update custom domain of one lifecycle application.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param domainName The name of the custom domain resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom domain resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<CustomDomainResourceInner> createOrUpdateAsync(
+        String resourceGroupName, String serviceName, String appName, String domainName);
+
+    /**
+     * Create or update custom domain of one lifecycle application.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param domainName The name of the custom domain resource.
+     * @param properties Custom domain of app resource payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom domain resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CustomDomainResourceInner createOrUpdate(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String domainName,
+        CustomDomainProperties properties);
 
     /**
      * Create or update custom domain of one lifecycle application.
@@ -555,28 +251,18 @@ public final class CustomDomainsClient {
      * @param properties Custom domain of app resource payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return custom domain resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CustomDomainResourceInner> createOrUpdateAsync(
+    CustomDomainResourceInner createOrUpdate(
         String resourceGroupName,
         String serviceName,
         String appName,
         String domainName,
         CustomDomainProperties properties,
-        Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, appName, domainName, properties, context)
-            .flatMap(
-                (Response<CustomDomainResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
+        Context context);
 
     /**
      * Create or update custom domain of one lifecycle application.
@@ -586,47 +272,14 @@ public final class CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @param properties Custom domain of app resource payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return custom domain resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomDomainResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String domainName,
-        CustomDomainProperties properties) {
-        return createOrUpdateAsync(resourceGroupName, serviceName, appName, domainName, properties).block();
-    }
-
-    /**
-     * Create or update custom domain of one lifecycle application.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param domainName The name of the custom domain resource.
-     * @param properties Custom domain of app resource payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom domain resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomDomainResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String domainName,
-        CustomDomainProperties properties,
-        Context context) {
-        return createOrUpdateAsync(resourceGroupName, serviceName, appName, domainName, properties, context).block();
-    }
+    CustomDomainResourceInner createOrUpdate(
+        String resourceGroupName, String serviceName, String appName, String domainName);
 
     /**
      * Delete the custom domain of one lifecycle application.
@@ -637,53 +290,47 @@ public final class CustomDomainsClient {
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String domainName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            appName,
-                            domainName,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String serviceName, String appName, String domainName);
+
+    /**
+     * Delete the custom domain of one lifecycle application.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param domainName The name of the custom domain resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String serviceName, String appName, String domainName);
+
+    /**
+     * Delete the custom domain of one lifecycle application.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param domainName The name of the custom domain resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String serviceName, String appName, String domainName);
 
     /**
      * Delete the custom domain of one lifecycle application.
@@ -695,50 +342,13 @@ public final class CustomDomainsClient {
      * @param domainName The name of the custom domain resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String domainName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                appName,
-                domainName,
-                context);
-    }
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String serviceName, String appName, String domainName, Context context);
 
     /**
      * Delete the custom domain of one lifecycle application.
@@ -749,15 +359,27 @@ public final class CustomDomainsClient {
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String appName, String domainName) {
-        return deleteWithResponseAsync(resourceGroupName, serviceName, appName, domainName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
+    Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String appName, String domainName);
+
+    /**
+     * Delete the custom domain of one lifecycle application.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param domainName The name of the custom domain resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String serviceName, String appName, String domainName);
 
     /**
      * Delete the custom domain of one lifecycle application.
@@ -769,52 +391,11 @@ public final class CustomDomainsClient {
      * @param domainName The name of the custom domain resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName, String serviceName, String appName, String domainName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, serviceName, appName, domainName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Delete the custom domain of one lifecycle application.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param domainName The name of the custom domain resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String serviceName, String appName, String domainName) {
-        deleteAsync(resourceGroupName, serviceName, appName, domainName).block();
-    }
-
-    /**
-     * Delete the custom domain of one lifecycle application.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param domainName The name of the custom domain resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String serviceName, String appName, String domainName, Context context) {
-        deleteAsync(resourceGroupName, serviceName, appName, domainName, context).block();
-    }
+    void delete(String resourceGroupName, String serviceName, String appName, String domainName, Context context);
 
     /**
      * Update custom domain of one lifecycle application.
@@ -826,63 +407,61 @@ public final class CustomDomainsClient {
      * @param domainName The name of the custom domain resource.
      * @param properties Custom domain of app resource payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return custom domain resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CustomDomainResourceInner>> patchWithResponseAsync(
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName,
         String serviceName,
         String appName,
         String domainName,
-        CustomDomainProperties properties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
-        }
-        if (properties != null) {
-            properties.validate();
-        }
-        CustomDomainResourceInner domainResource = new CustomDomainResourceInner();
-        domainResource.withProperties(properties);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .patch(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            appName,
-                            domainName,
-                            domainResource,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+        CustomDomainProperties properties);
+
+    /**
+     * Update custom domain of one lifecycle application.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param domainName The name of the custom domain resource.
+     * @param properties Custom domain of app resource payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom domain resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<CustomDomainResourceInner>, CustomDomainResourceInner> beginUpdateAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String domainName,
+        CustomDomainProperties properties);
+
+    /**
+     * Update custom domain of one lifecycle application.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param domainName The name of the custom domain resource.
+     * @param properties Custom domain of app resource payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom domain resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<CustomDomainResourceInner>, CustomDomainResourceInner> beginUpdate(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String domainName,
+        CustomDomainProperties properties);
 
     /**
      * Update custom domain of one lifecycle application.
@@ -895,61 +474,18 @@ public final class CustomDomainsClient {
      * @param properties Custom domain of app resource payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return custom domain resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CustomDomainResourceInner>> patchWithResponseAsync(
+    SyncPoller<PollResult<CustomDomainResourceInner>, CustomDomainResourceInner> beginUpdate(
         String resourceGroupName,
         String serviceName,
         String appName,
         String domainName,
         CustomDomainProperties properties,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
-        }
-        if (properties != null) {
-            properties.validate();
-        }
-        CustomDomainResourceInner domainResource = new CustomDomainResourceInner();
-        domainResource.withProperties(properties);
-        context = this.client.mergeContext(context);
-        return service
-            .patch(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                appName,
-                domainName,
-                domainResource,
-                context);
-    }
+        Context context);
 
     /**
      * Update custom domain of one lifecycle application.
@@ -961,27 +497,56 @@ public final class CustomDomainsClient {
      * @param domainName The name of the custom domain resource.
      * @param properties Custom domain of app resource payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return custom domain resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CustomDomainResourceInner> patchAsync(
+    Mono<CustomDomainResourceInner> updateAsync(
         String resourceGroupName,
         String serviceName,
         String appName,
         String domainName,
-        CustomDomainProperties properties) {
-        return patchWithResponseAsync(resourceGroupName, serviceName, appName, domainName, properties)
-            .flatMap(
-                (Response<CustomDomainResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
+        CustomDomainProperties properties);
+
+    /**
+     * Update custom domain of one lifecycle application.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param domainName The name of the custom domain resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom domain resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<CustomDomainResourceInner> updateAsync(
+        String resourceGroupName, String serviceName, String appName, String domainName);
+
+    /**
+     * Update custom domain of one lifecycle application.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param domainName The name of the custom domain resource.
+     * @param properties Custom domain of app resource payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom domain resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CustomDomainResourceInner update(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String domainName,
+        CustomDomainProperties properties);
 
     /**
      * Update custom domain of one lifecycle application.
@@ -994,28 +559,18 @@ public final class CustomDomainsClient {
      * @param properties Custom domain of app resource payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return custom domain resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CustomDomainResourceInner> patchAsync(
+    CustomDomainResourceInner update(
         String resourceGroupName,
         String serviceName,
         String appName,
         String domainName,
         CustomDomainProperties properties,
-        Context context) {
-        return patchWithResponseAsync(resourceGroupName, serviceName, appName, domainName, properties, context)
-            .flatMap(
-                (Response<CustomDomainResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
+        Context context);
 
     /**
      * Update custom domain of one lifecycle application.
@@ -1025,47 +580,13 @@ public final class CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @param properties Custom domain of app resource payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return custom domain resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomDomainResourceInner patch(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String domainName,
-        CustomDomainProperties properties) {
-        return patchAsync(resourceGroupName, serviceName, appName, domainName, properties).block();
-    }
-
-    /**
-     * Update custom domain of one lifecycle application.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param domainName The name of the custom domain resource.
-     * @param properties Custom domain of app resource payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom domain resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomDomainResourceInner patch(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String domainName,
-        CustomDomainProperties properties,
-        Context context) {
-        return patchAsync(resourceGroupName, serviceName, appName, domainName, properties, context).block();
-    }
+    CustomDomainResourceInner update(String resourceGroupName, String serviceName, String appName, String domainName);
 
     /**
      * List the custom domains of one lifecycle application.
@@ -1075,137 +596,27 @@ public final class CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection compose of a custom domain resources list and a possible link for next page.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<CustomDomainResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String serviceName, String appName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            appName,
-                            context))
-            .<PagedResponse<CustomDomainResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * List the custom domains of one lifecycle application.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection compose of a custom domain resources list and a possible link for next page.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<CustomDomainResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String serviceName, String appName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                appName,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * List the custom domains of one lifecycle application.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection compose of a custom domain resources list and a possible link for next page.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CustomDomainResourceInner> listAsync(
-        String resourceGroupName, String serviceName, String appName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, serviceName, appName),
-            nextLink -> listNextSinglePageAsync(nextLink));
-    }
+    PagedFlux<CustomDomainResourceInner> listAsync(String resourceGroupName, String serviceName, String appName);
+
+    /**
+     * List the custom domains of one lifecycle application.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection compose of a custom domain resources list and a possible link for next page.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<CustomDomainResourceInner> list(String resourceGroupName, String serviceName, String appName);
 
     /**
      * List the custom domains of one lifecycle application.
@@ -1216,318 +627,11 @@ public final class CustomDomainsClient {
      * @param appName The name of the App resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection compose of a custom domain resources list and a possible link for next page.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CustomDomainResourceInner> listAsync(
-        String resourceGroupName, String serviceName, String appName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, serviceName, appName, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * List the custom domains of one lifecycle application.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection compose of a custom domain resources list and a possible link for next page.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CustomDomainResourceInner> list(String resourceGroupName, String serviceName, String appName) {
-        return new PagedIterable<>(listAsync(resourceGroupName, serviceName, appName));
-    }
-
-    /**
-     * List the custom domains of one lifecycle application.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection compose of a custom domain resources list and a possible link for next page.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CustomDomainResourceInner> list(
-        String resourceGroupName, String serviceName, String appName, Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, serviceName, appName, context));
-    }
-
-    /**
-     * Check the resource name is valid as well as not in use.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param name Name to be validated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return validation result for custom domain.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CustomDomainValidateResult>> validateWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String name) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        CustomDomainValidatePayload validatePayload = new CustomDomainValidatePayload();
-        validatePayload.withName(name);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .validate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            appName,
-                            validatePayload,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Check the resource name is valid as well as not in use.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param name Name to be validated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return validation result for custom domain.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CustomDomainValidateResult>> validateWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        CustomDomainValidatePayload validatePayload = new CustomDomainValidatePayload();
-        validatePayload.withName(name);
-        context = this.client.mergeContext(context);
-        return service
-            .validate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                appName,
-                validatePayload,
-                context);
-    }
-
-    /**
-     * Check the resource name is valid as well as not in use.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param name Name to be validated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return validation result for custom domain.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CustomDomainValidateResult> validateAsync(
-        String resourceGroupName, String serviceName, String appName, String name) {
-        return validateWithResponseAsync(resourceGroupName, serviceName, appName, name)
-            .flatMap(
-                (Response<CustomDomainValidateResult> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Check the resource name is valid as well as not in use.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param name Name to be validated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return validation result for custom domain.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CustomDomainValidateResult> validateAsync(
-        String resourceGroupName, String serviceName, String appName, String name, Context context) {
-        return validateWithResponseAsync(resourceGroupName, serviceName, appName, name, context)
-            .flatMap(
-                (Response<CustomDomainValidateResult> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Check the resource name is valid as well as not in use.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param name Name to be validated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return validation result for custom domain.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomDomainValidateResult validate(
-        String resourceGroupName, String serviceName, String appName, String name) {
-        return validateAsync(resourceGroupName, serviceName, appName, name).block();
-    }
-
-    /**
-     * Check the resource name is valid as well as not in use.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param name Name to be validated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return validation result for custom domain.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomDomainValidateResult validate(
-        String resourceGroupName, String serviceName, String appName, String name, Context context) {
-        return validateAsync(resourceGroupName, serviceName, appName, name, context).block();
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection compose of a custom domain resources list and a possible link for next page.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<CustomDomainResourceInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
-            .<PagedResponse<CustomDomainResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection compose of a custom domain resources list and a possible link for next page.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<CustomDomainResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
+    PagedIterable<CustomDomainResourceInner> list(
+        String resourceGroupName, String serviceName, String appName, Context context);
 }

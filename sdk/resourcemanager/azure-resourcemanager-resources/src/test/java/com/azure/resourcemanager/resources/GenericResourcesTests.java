@@ -5,14 +5,15 @@ package com.azure.resourcemanager.resources;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
-import com.azure.resourcemanager.resources.fluent.inner.GenericResourceExpandedInner;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.resourcemanager.resources.fluent.models.GenericResourceExpandedInner;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.GenericResource;
 import com.azure.resourcemanager.resources.models.GenericResources;
 import com.azure.resourcemanager.resources.models.ResourceGroups;
@@ -20,10 +21,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Optional;
 
-public class GenericResourcesTests extends ResourceManagerTestBase {
+public class GenericResourcesTests extends ResourceManagementTest {
     private ResourceGroups resourceGroups;
     private GenericResources genericResources;
 
@@ -33,7 +35,7 @@ public class GenericResourcesTests extends ResourceManagerTestBase {
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
-        testId = sdkContext.randomResourceName("", 9);
+        testId = generateRandomResourceName("", 9);
         rgName = "rg" + testId;
         newRgName = "rgB" + testId;
 
@@ -97,6 +99,8 @@ public class GenericResourcesTests extends ResourceManagerTestBase {
 
     @Test
     public void canCreateDeleteResourceSyncPoll() throws Exception {
+        final long defaultDelayInMillis = 10 * 1000;
+
         final String resourceName = "rs" + testId;
         // Create
         Accepted<GenericResource> acceptedResource = genericResources.define(resourceName)
@@ -110,17 +114,17 @@ public class GenericResourcesTests extends ResourceManagerTestBase {
             .beginCreate();
 
         LongRunningOperationStatus pollStatus = acceptedResource.getActivationResponse().getStatus();
-        int delayInMills = acceptedResource.getActivationResponse().getRetryAfter() == null
-            ? 0
-            : (int) acceptedResource.getActivationResponse().getRetryAfter().toMillis();
+        long delayInMills = acceptedResource.getActivationResponse().getRetryAfter() == null
+            ? defaultDelayInMillis
+            : acceptedResource.getActivationResponse().getRetryAfter().toMillis();
         while (!pollStatus.isComplete()) {
-            SdkContext.sleep(delayInMills);
+            ResourceManagerUtils.sleep(Duration.ofMillis(delayInMills));
 
             PollResponse<?> pollResponse = acceptedResource.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
             delayInMills = pollResponse.getRetryAfter() == null
-                ? 10000
-                : (int) pollResponse.getRetryAfter().toMillis();
+                ? defaultDelayInMillis
+                : pollResponse.getRetryAfter().toMillis();
         }
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollStatus);
         GenericResource resource = acceptedResource.getFinalResult();
@@ -128,8 +132,8 @@ public class GenericResourcesTests extends ResourceManagerTestBase {
         Assertions.assertEquals(resourceName, ResourceUtils.nameFromResourceId(resource.id()));
 
         PagedIterable<GenericResourceExpandedInner> resources =
-            genericResources.manager().inner().getResources()
-                .listByResourceGroup(rgName, null, "provisioningState", null);
+            genericResources.manager().serviceClient().getResources()
+                .listByResourceGroup(rgName, null, "provisioningState", null, Context.NONE);
         Optional<GenericResourceExpandedInner> resourceOpt
             = resources.stream().filter(r -> resourceName.equals(r.name())).findFirst();
         Assertions.assertTrue(resourceOpt.isPresent());

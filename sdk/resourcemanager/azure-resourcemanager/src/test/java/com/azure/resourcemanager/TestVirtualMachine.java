@@ -9,22 +9,21 @@ import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineDataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachines;
-import com.azure.resourcemanager.resources.core.TestBase;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
+import com.azure.core.management.Region;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.google.common.util.concurrent.SettableFuture;
 import org.junit.jupiter.api.Assertions;
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMachines> {
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
-        final String vmName = virtualMachines.manager().sdkContext().randomResourceName("vm", 10);
+        final String vmName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
 
         final VirtualMachine[] vms = new VirtualMachine[1];
         final SettableFuture<VirtualMachine> future = SettableFuture.create();
 
-        Flux<Indexable> resourceStream =
+        Mono<VirtualMachine> resourceStream =
             virtualMachines
                 .define(vmName)
                 .withRegion(Region.US_EAST)
@@ -34,12 +33,12 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
                 .withoutPrimaryPublicIPAddress()
                 .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                 .withAdminUsername("testuser")
-                .withAdminPassword(TestBase.password())
+                .withAdminPassword(ResourceManagerTestBase.password())
                 .withNewDataDisk(150)
-                .withSize(VirtualMachineSizeTypes.STANDARD_D1_V2)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .createAsync();
 
-        resourceStream.last().doOnSuccess(vm -> future.set((VirtualMachine) vm));
+        resourceStream.doOnSuccess(vm -> future.set(vm));
         vms[0] = future.get();
 
         Assertions.assertEquals(1, vms[0].dataDisks().size());
@@ -55,7 +54,7 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
 
     @Override
     public VirtualMachine updateResource(VirtualMachine resource) throws Exception {
-        resource = resource.update().withSize(VirtualMachineSizeTypes.STANDARD_D3_V2).withNewDataDisk(100).apply();
+        resource = resource.update().withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4")).withNewDataDisk(100).apply();
         return resource;
     }
 

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The DataSource model. */
+/** Class representing data source used by the detectors. */
 @Fluent
 public final class DataSource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DataSource.class);

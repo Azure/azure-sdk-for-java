@@ -17,6 +17,8 @@ import java.util.Map;
  * Used internally to encapsulates a query's information in the Azure Cosmos DB database service.
  */
 public final class QueryInfo extends JsonSerializable {
+    public static final QueryInfo EMPTY = new QueryInfo();
+
     private static final String HAS_SELECT_VALUE = "hasSelectValue";
     private Integer top;
     private List<SortOrder> orderBy;
@@ -126,6 +128,11 @@ public final class QueryInfo extends JsonSerializable {
             return distinctQueryType;
         } else {
             final String distinctType = super.getString("distinctType");
+
+            if (distinctType == null) {
+                return DistinctQueryType.NONE;
+            }
+
             switch (distinctType) {
                 case "Ordered":
                     distinctQueryType = DistinctQueryType.ORDERED;
@@ -179,6 +186,16 @@ public final class QueryInfo extends JsonSerializable {
         public Instant getEndTimeUTC() {
             return endTimeUTC;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }
 

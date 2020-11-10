@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The BaseImageTrigger model. */
+/** The trigger based on base image dependency. */
 @Fluent
 public final class BaseImageTrigger {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BaseImageTrigger.class);

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The DeploymentSettings model. */
+/** Deployment settings payload. */
 @Fluent
 public final class DeploymentSettings {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentSettings.class);
@@ -36,11 +36,10 @@ public final class DeploymentSettings {
     private String jvmOptions;
 
     /*
-     * Instance count, basic tier should be in range (1, 25), standard tier
-     * should be in range (1, 500)
+     * The path to the .NET executable relative to zip root
      */
-    @JsonProperty(value = "instanceCount")
-    private Integer instanceCount;
+    @JsonProperty(value = "netCoreMainEntryPath")
+    private String netCoreMainEntryPath;
 
     /*
      * Collection of environment variables
@@ -117,24 +116,22 @@ public final class DeploymentSettings {
     }
 
     /**
-     * Get the instanceCount property: Instance count, basic tier should be in range (1, 25), standard tier should be in
-     * range (1, 500).
+     * Get the netCoreMainEntryPath property: The path to the .NET executable relative to zip root.
      *
-     * @return the instanceCount value.
+     * @return the netCoreMainEntryPath value.
      */
-    public Integer instanceCount() {
-        return this.instanceCount;
+    public String netCoreMainEntryPath() {
+        return this.netCoreMainEntryPath;
     }
 
     /**
-     * Set the instanceCount property: Instance count, basic tier should be in range (1, 25), standard tier should be in
-     * range (1, 500).
+     * Set the netCoreMainEntryPath property: The path to the .NET executable relative to zip root.
      *
-     * @param instanceCount the instanceCount value to set.
+     * @param netCoreMainEntryPath the netCoreMainEntryPath value to set.
      * @return the DeploymentSettings object itself.
      */
-    public DeploymentSettings withInstanceCount(Integer instanceCount) {
-        this.instanceCount = instanceCount;
+    public DeploymentSettings withNetCoreMainEntryPath(String netCoreMainEntryPath) {
+        this.netCoreMainEntryPath = netCoreMainEntryPath;
         return this;
     }
 

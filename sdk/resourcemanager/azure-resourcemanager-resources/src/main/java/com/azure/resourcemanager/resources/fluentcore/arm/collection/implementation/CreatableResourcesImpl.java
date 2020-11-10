@@ -9,11 +9,11 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -42,7 +42,7 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
     @SafeVarargs
     public final CreatedResources<T> create(Creatable<T>... creatables) {
         return createAsyncNonStream(creatables)
-                .block();
+            .block();
     }
 
     @Override
@@ -52,29 +52,34 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
     }
 
     @Override
-    @SafeVarargs
-    public final Flux<Indexable> createAsync(Creatable<T>... creatables) {
-        CreatableUpdatableResourcesRootImpl<T> rootResource = new CreatableUpdatableResourcesRootImpl<>();
-        rootResource.addCreatableDependencies(creatables);
-        return rootResource.createAsync();
+    @SuppressWarnings("unchecked")
+    public final Flux<T> createAsync(Creatable<T>... creatables) {
+        return createAsync(Arrays.asList(creatables));
     }
 
     @Override
-    public final Flux<Indexable> createAsync(List<Creatable<T>> creatables) {
-        CreatableUpdatableResourcesRootImpl<T> rootResource = new CreatableUpdatableResourcesRootImpl<>();
-        rootResource.addCreatableDependencies(creatables);
-        return rootResource.createAsync();
+    public final Flux<T> createAsync(List<Creatable<T>> creatables) {
+        if (creatables == null) {
+            return Flux.empty();
+        }
+        return createWithRootResourceAsync(creatables)
+            .flatMapMany(rootResource -> Flux.fromIterable(rootResource.createdTopLevelResources()));
     }
 
     private Mono<CreatedResources<T>> createAsyncNonStream(List<Creatable<T>> creatables) {
-        return Utils.<CreatableUpdatableResourcesRoot<T>>rootResource(this.createAsync(creatables).last())
-                .map(tCreatableUpdatableResourcesRoot -> new CreatedResourcesImpl<>(tCreatableUpdatableResourcesRoot));
+        return createWithRootResourceAsync(creatables)
+                .map(CreatedResourcesImpl::new);
     }
 
     @SuppressWarnings("unchecked")
     private Mono<CreatedResources<T>> createAsyncNonStream(Creatable<T>... creatables) {
-        return Utils.<CreatableUpdatableResourcesRoot<T>>rootResource(this.createAsync(creatables).last())
-                .map(tCreatableUpdatableResourcesRoot -> new CreatedResourcesImpl<>(tCreatableUpdatableResourcesRoot));
+        return createAsyncNonStream(Arrays.asList(creatables));
+    }
+
+    private Mono<CreatableUpdatableResourcesRoot<T>> createWithRootResourceAsync(List<Creatable<T>> creatables) {
+        CreatableUpdatableResourcesRootImpl<T> rootResource = new CreatableUpdatableResourcesRootImpl<>();
+        rootResource.addCreatableDependencies(creatables);
+        return rootResource.createAsync();
     }
 
     /**

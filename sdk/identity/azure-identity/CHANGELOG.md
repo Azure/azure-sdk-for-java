@@ -1,6 +1,50 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.3.0-beta.1 (Unreleased)
+
+
+## 1.2.0 (2020-11-09)
+
+### New Features
+- Added Azure Service Fabric Managed Identity support to `ManagedIdentityCredential`
+- Added Azure Arc Managed Identity support to `ManagedIdentityCredential`
+- Added support for Docker Containers in `DefaultAzureCredential`
+
+### Fixes and improvements
+- Prevent `VisualStudioCodeCredential` using invalid authentication data when no user is signed in to Visual Studio Code
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to 1.10.0
+- Upgraded `msal4j` dependency to 1.8.0
+
+
+## 1.2.0-beta.2 (2020-10-06)
+
+### New Features
+- Added the methods `pfxCertificate(InputStream certificate, String clientCertificatePassword)` and `pemCertificate(InputStream certificate)` in `ClientCertificateCredentialBuilder`.
+- Added `includeX5c(boolean)` method in `ClientCertificateCredentialBuilder` to enable subject name / issuer based authentication.
+- Added a default `challengeConsumer` in `DeviceCodeCredentialBuilder` which prints the device code information to console. The `challengeConsumer` configuration is no longer required in `DeviceCodeCredentialBuilder`.
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to 1.9.0
+- Upgraded `jna-platform` dependency to 5.6.0
+- Upgraded `msal4j` dependency to 1.7.1
+
+
+
+
+## 1.2.0-beta.1 (2020-09-11)
+- Added `InteractiveBrowserCredentialBuilder.redirectUrl(String)` to configure the redirect URL
+- Deprecated `InteractiveBrowserCredentialBuilder.port(int)`
+- Added support for App Service 2019 MSI Endpoint in `ManagedIdentityCredential`
+- Added Shared Token cache support for MacOS Keychain, Gnome Keyring, and plain text for other Linux environments
+- Added option to write to shared token cache from `InteractiveBrowserCredential`, `AuthorizationCodeCredential`, `UsernamePasswordCredential`, `DeviceCodeCredential` `ClientSecretCredential` and `ClientCertificateCredential`
+- Added new APIs for authenticating users with `DeviceCodeCredential`,  `InteractiveBrowserCredential` and `UsernamePasswordCredential`.
+    - Added method `authenticate` which pro-actively interacts with the user to authenticate if necessary and returns a serializable `AuthenticationRecord`
+- Added following configurable options in classes `DeviceCodeCredentialBuilder` and `InteractiveBrowserCredentialBuilder`
+    - `authenticationRecord` enables initializing a credential with an `AuthenticationRecord` returned from a prior call to `Authenticate`
+    - `disableAutomaticAuthentication` disables automatic user interaction causing the credential to throw an `AuthenticationRequiredException` when interactive authentication is necessary.
+
 
 
 ## 1.1.0 (2020-08-10)

@@ -3,21 +3,28 @@
 
 package com.azure.storage.file.share
 
-import com.azure.core.test.TestMode
 import com.azure.core.util.Context
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.share.models.ListSharesOptions
+import com.azure.storage.file.share.models.ShareAccessTier
 import com.azure.storage.file.share.models.ShareCorsRule
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareItem
 import com.azure.storage.file.share.models.ShareMetrics
 import com.azure.storage.file.share.models.ShareProperties
+import com.azure.storage.file.share.models.ShareProtocolSettings
 import com.azure.storage.file.share.models.ShareRetentionPolicy
 import com.azure.storage.file.share.models.ShareServiceProperties
+import com.azure.storage.file.share.models.ShareSmbSettings
 import com.azure.storage.file.share.models.ShareStorageException
+import com.azure.storage.file.share.models.SmbMultichannel
+import com.azure.storage.file.share.options.ShareCreateOptions
+import com.azure.storage.file.share.options.ShareSetPropertiesOptions
+import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.time.OffsetDateTime
+import java.time.temporal.ChronoUnit
 
 class FileServiceAPITests extends APISpec {
     String shareName
@@ -67,7 +74,8 @@ class FileServiceAPITests extends APISpec {
 
     def "Create share max overloads"() {
         when:
-        def createShareResponse = primaryFileServiceClient.createShareWithResponse(shareName, testMetadata, 1, null, null)
+        def createShareResponse = primaryFileServiceClient.createShareWithResponse(shareName, new ShareCreateOptions()
+            .setQuotaInGb(1).setMetadata(testMetadata).setAccessTier(ShareAccessTier.HOT), null, null)
 
         then:
         FileTestHelper.assertResponseStatusCode(createShareResponse, 201)
@@ -184,6 +192,26 @@ class FileServiceAPITests extends APISpec {
         new ListSharesOptions().setIncludeMetadata(true).setIncludeSnapshots(true).setIncludeDeleted(true) | 5      | true            | true            | true
     }
 
+    def "List shares get access tier"() {
+        setup:
+        def shareName = generateShareName()
+        def share = primaryFileServiceClient.createShareWithResponse(shareName, new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null).getValue()
+
+        def time = getUTCNow().truncatedTo(ChronoUnit.SECONDS)
+        share.setProperties(new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.TRANSACTION_OPTIMIZED))
+
+        when:
+        def shares = primaryFileServiceClient.listShares(null, null, null).iterator()
+
+        then:
+        def item = shares.next()
+        item.getName() == shareName
+        item.getProperties().getAccessTier() == ShareAccessTier.TRANSACTION_OPTIMIZED.toString()
+        item.getProperties().getAccessTierChangeTime().isEqual(time) || item.getProperties().getAccessTierChangeTime().isAfter(time)
+        item.getProperties().getAccessTierChangeTime().isBefore(time.plusMinutes(1))
+        item.getProperties().getAccessTierTransitionState() == "pending-from-hot"
+    }
+
     def "List shares with premium share"() {
         setup:
         def premiumShareName = generateShareName()
@@ -219,6 +247,31 @@ class FileServiceAPITests extends APISpec {
         def getPropertiesBeforeResponse = primaryFileServiceClient.getPropertiesWithResponse(null, null)
         def setPropertiesResponse = primaryFileServiceClient.setPropertiesWithResponse(updatedProperties, null, null)
         def getPropertiesAfterResponse = primaryFileServiceClient.getPropertiesWithResponse(null, null)
+
+        then:
+        FileTestHelper.assertResponseStatusCode(getPropertiesBeforeResponse, 200)
+        FileTestHelper.assertFileServicePropertiesAreEqual(originalProperties, getPropertiesBeforeResponse.getValue())
+        FileTestHelper.assertResponseStatusCode(setPropertiesResponse, 202)
+        FileTestHelper.assertResponseStatusCode(getPropertiesAfterResponse, 200)
+        FileTestHelper.assertFileServicePropertiesAreEqual(updatedProperties, getPropertiesAfterResponse.getValue())
+    }
+
+    @Requires( { playbackMode() } )
+    def "Set and get properties premium"() {
+        given:
+        def originalProperties = premiumFileServiceClient.getProperties()
+        def retentionPolicy = new ShareRetentionPolicy().setEnabled(true).setDays(3)
+        def metrics = new ShareMetrics().setEnabled(true).setIncludeApis(false)
+            .setRetentionPolicy(retentionPolicy).setVersion("1.0")
+        def protocolSettings = new ShareProtocolSettings().setSmb(new ShareSmbSettings().setMultichannel(new SmbMultichannel().setEnabled(true)))
+        def updatedProperties = new ShareServiceProperties().setHourMetrics(metrics)
+            .setMinuteMetrics(metrics).setCors(new ArrayList<>())
+            .setProtocol(protocolSettings)
+
+        when:
+        def getPropertiesBeforeResponse = premiumFileServiceClient.getPropertiesWithResponse(null, null)
+        def setPropertiesResponse = premiumFileServiceClient.setPropertiesWithResponse(updatedProperties, null, null)
+        def getPropertiesAfterResponse = premiumFileServiceClient.getPropertiesWithResponse(null, null)
 
         then:
         FileTestHelper.assertResponseStatusCode(getPropertiesBeforeResponse, 200)
@@ -303,5 +356,17 @@ class FileServiceAPITests extends APISpec {
 
         then:
         thrown(ShareStorageException.class)
+    }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+    def "Per call policy"() {
+        def serviceClient = getServiceClient(primaryCredential, primaryFileServiceClient.getFileServiceUrl(), getPerCallVersionPolicy())
+
+        when:
+        def response = serviceClient.getPropertiesWithResponse(null, null)
+
+        then:
+        notThrown(ShareStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
 }

@@ -14,7 +14,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The StopAnalyzer model. */
+/**
+ * Divides text at non-letters; Applies the lowercase and stopword token filters. This analyzer is implemented using
+ * Apache Lucene.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.StopAnalyzer")
 @JsonFlatten
@@ -26,9 +29,13 @@ public class StopAnalyzer extends LexicalAnalyzer {
     @JsonProperty(value = "stopwords")
     private List<String> stopwords;
 
-    /** Creates an instance of StopAnalyzer class. */
+    /**
+     * Creates an instance of StopAnalyzer class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
-    public StopAnalyzer(@JsonProperty(value = "name") String name) {
+    public StopAnalyzer(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 
@@ -50,15 +57,5 @@ public class StopAnalyzer extends LexicalAnalyzer {
     public StopAnalyzer setStopwords(List<String> stopwords) {
         this.stopwords = stopwords;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
     }
 }

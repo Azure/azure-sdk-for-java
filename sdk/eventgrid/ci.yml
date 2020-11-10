@@ -16,6 +16,7 @@ trigger:
       - sdk/eventgrid/mgmt-v2019_06_01
       - sdk/eventgrid/mgmt-v2020_01_01_preview
       - sdk/eventgrid/mgmt-v2020_04_01_preview
+      - sdk/eventgrid/microsoft-azure-eventgrid
 
 pr:
   branches:
@@ -35,12 +36,13 @@ pr:
       - sdk/eventgrid/mgmt-v2019_06_01
       - sdk/eventgrid/mgmt-v2020_01_01_preview
       - sdk/eventgrid/mgmt-v2020_04_01_preview
+      - sdk/eventgrid/microsoft-azure-eventgrid
 
 extends:
-  template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: eventgrid
     Artifacts:
-      - name: azure-eventgrid
-        groupId: com.microsoft.azure
-        safeName: azureeventgrid
+      - name: azure-messaging-eventgrid
+        groupId: com.azure
+        safeName: azuremessagingeventgrid

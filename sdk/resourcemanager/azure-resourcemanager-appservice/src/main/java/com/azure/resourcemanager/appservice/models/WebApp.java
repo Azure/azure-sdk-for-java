@@ -8,7 +8,6 @@ import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import java.io.File;
 import java.io.InputStream;
@@ -16,7 +15,7 @@ import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure Web App. */
 @Fluent
-public interface WebApp extends WebAppBase, Refreshable<WebApp>, Updatable<WebApp.Update> {
+public interface WebApp extends WebAppBasic, SupportsOneDeploy, WebAppBase, Updatable<WebApp.Update> {
     /** @return the entry point to deployment slot management API under the web app */
     DeploymentSlots deploymentSlots();
 
@@ -37,18 +36,24 @@ public interface WebApp extends WebAppBase, Refreshable<WebApp>, Updatable<WebAp
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
+     * <p>
+     * Retry by client is required if error happens, due to nature of the stream.
      *
      * @param warFile the WAR file to upload
+     * @param length the length of the file
      */
-    void warDeploy(InputStream warFile);
+    void warDeploy(InputStream warFile, long length);
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
+     * <p>
+     * Retry by client is required if error happens, due to nature of the stream.
      *
      * @param warFile the WAR file to upload
+     * @param length the length of the file
      * @return a completable of the operation
      */
-    Mono<Void> warDeployAsync(InputStream warFile);
+    Mono<Void> warDeployAsync(InputStream warFile, long length);
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
@@ -69,20 +74,26 @@ public interface WebApp extends WebAppBase, Refreshable<WebApp>, Updatable<WebAp
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
+     * <p>
+     * Retry by client is required if error happens, due to nature of the stream.
      *
      * @param warFile the WAR file to upload
+     * @param length the length of the file
      * @param appName the name of the app, default to "ROOT" when not provided
      */
-    void warDeploy(InputStream warFile, String appName);
+    void warDeploy(InputStream warFile, long length, String appName);
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
+     * <p>
+     * Retry by client is required if error happens, due to nature of the stream.
      *
      * @param warFile the WAR file to upload
+     * @param length the length of the file
      * @param appName the name of the app, default to "ROOT" when not provided
      * @return a completable of the operation
      */
-    Mono<Void> warDeployAsync(InputStream warFile, String appName);
+    Mono<Void> warDeployAsync(InputStream warFile, long length, String appName);
 
     /**************************************************************
      * Fluent interfaces to provision a Web App
@@ -93,9 +104,10 @@ public interface WebApp extends WebAppBase, Refreshable<WebApp>, Updatable<WebAp
         extends DefinitionStages.Blank,
             DefinitionStages.NewAppServicePlanWithGroup,
             DefinitionStages.WithNewAppServicePlan,
-            DefinitionStages.WithDockerContainerImage,
+            DefinitionStages.WithLinuxAppFramework,
             DefinitionStages.WithCredentials,
             DefinitionStages.WithStartUpCommand,
+            DefinitionStages.WithWindowsAppFramework,
             DefinitionStages.WithCreate {
     }
 
@@ -135,7 +147,7 @@ public interface WebApp extends WebAppBase, Refreshable<WebApp>, Updatable<WebAp
              * @param groupName the name of an existing resource group to put this resource in.
              * @return the next stage of the definition
              */
-            WithWindowsRuntimeStack withExistingResourceGroup(String groupName);
+            WithWindowsAppFramework withExistingResourceGroup(String groupName);
 
             /**
              * Associates the resource with an existing resource group.
@@ -143,7 +155,7 @@ public interface WebApp extends WebAppBase, Refreshable<WebApp>, Updatable<WebAp
              * @param group an existing resource group to put the resource in
              * @return the next stage of the definition
              */
-            WithWindowsRuntimeStack withExistingResourceGroup(ResourceGroup group);
+            WithWindowsAppFramework withExistingResourceGroup(ResourceGroup group);
 
             /**
              * Creates a new resource group to put the resource in.
@@ -153,7 +165,7 @@ public interface WebApp extends WebAppBase, Refreshable<WebApp>, Updatable<WebAp
              * @param name the name of the new group
              * @return the next stage of the definition
              */
-            WithWindowsRuntimeStack withNewResourceGroup(String name);
+            WithWindowsAppFramework withNewResourceGroup(String name);
 
             /**
              * Creates a new resource group to put the resource in.
@@ -163,7 +175,7 @@ public interface WebApp extends WebAppBase, Refreshable<WebApp>, Updatable<WebAp
              *
              * @return the next stage of the definition
              */
-            WithWindowsRuntimeStack withNewResourceGroup();
+            WithWindowsAppFramework withNewResourceGroup();
 
             /**
              * Creates a new resource group to put the resource in, based on the definition specified.
@@ -171,7 +183,7 @@ public interface WebApp extends WebAppBase, Refreshable<WebApp>, Updatable<WebAp
              * @param groupDefinition a creatable definition for a new resource group
              * @return the next stage of the definition
              */
-            WithWindowsRuntimeStack withNewResourceGroup(Creatable<ResourceGroup> groupDefinition);
+            WithWindowsAppFramework withNewResourceGroup(Creatable<ResourceGroup> groupDefinition);
         }
 
         /**
@@ -184,7 +196,7 @@ public interface WebApp extends WebAppBase, Refreshable<WebApp>, Updatable<WebAp
              * @param groupName the name of an existing resource group to put this resource in.
              * @return the next stage of the definition
              */
-            WithDockerContainerImage withExistingResourceGroup(String groupName);
+            WithLinuxAppFramework withExistingResourceGroup(String groupName);
 
             /**
              * Associates the resource with an existing resource group.
@@ -192,7 +204,7 @@ public interface WebApp extends WebAppBase, Refreshable<WebApp>, Updatable<WebAp
              * @param group an existing resource group to put the resource in
              * @return the next stage of the definition
              */
-            WithDockerContainerImage withExistingResourceGroup(ResourceGroup group);
+            WithLinuxAppFramework withExistingResourceGroup(ResourceGroup group);
 
             /**
              * Creates a new resource group to put the resource in.
@@ -202,7 +214,7 @@ public interface WebApp extends WebAppBase, Refreshable<WebApp>, Updatable<WebAp
              * @param name the name of the new group
              * @return the next stage of the definition
              */
-            WithDockerContainerImage withNewResourceGroup(String name);
+            WithLinuxAppFramework withNewResourceGroup(String name);
 
             /**
              * Creates a new resource group to put the resource in.
@@ -212,7 +224,7 @@ public interface WebApp extends WebAppBase, Refreshable<WebApp>, Updatable<WebAp
              *
              * @return the next stage of the definition
              */
-            WithDockerContainerImage withNewResourceGroup();
+            WithLinuxAppFramework withNewResourceGroup();
 
             /**
              * Creates a new resource group to put the resource in, based on the definition specified.
@@ -220,7 +232,7 @@ public interface WebApp extends WebAppBase, Refreshable<WebApp>, Updatable<WebAp
              * @param groupDefinition a creatable definition for a new resource group
              * @return the next stage of the definition
              */
-            WithDockerContainerImage withNewResourceGroup(Creatable<ResourceGroup> groupDefinition);
+            WithLinuxAppFramework withNewResourceGroup(Creatable<ResourceGroup> groupDefinition);
         }
 
         /** A web app definition allowing app service plan to be set. */
@@ -231,14 +243,14 @@ public interface WebApp extends WebAppBase, Refreshable<WebApp>, Updatable<WebAp
              *
              * @return the next stage of the definition
              */
-            WithWindowsRuntimeStack withNewFreeAppServicePlan();
+            WithWindowsAppFramework withNewFreeAppServicePlan();
 
             /**
              * Creates a new shared app service plan.
              *
              * @return the next stage of the definition
              */
-            WithWindowsRuntimeStack withNewSharedAppServicePlan();
+            WithWindowsAppFramework withNewSharedAppServicePlan();
 
             /**
              * Creates a new app service plan to use.
@@ -246,7 +258,7 @@ public interface WebApp extends WebAppBase, Refreshable<WebApp>, Updatable<WebAp
              * @param pricingTier the sku of the app service plan
              * @return the next stage of the definition
              */
-            WithWindowsRuntimeStack withNewWindowsPlan(PricingTier pricingTier);
+            WithWindowsAppFramework withNewWindowsPlan(PricingTier pricingTier);
 
             /**
              * Creates a new app service plan to use.
@@ -255,7 +267,7 @@ public interface WebApp extends WebAppBase, Refreshable<WebApp>, Updatable<WebAp
              * @param pricingTier the sku of the app service plan
              * @return the next stage of the definition
              */
-            WithWindowsRuntimeStack withNewWindowsPlan(String appServicePlanName, PricingTier pricingTier);
+            WithWindowsAppFramework withNewWindowsPlan(String appServicePlanName, PricingTier pricingTier);
 
             /**
              * Creates a new app service plan to use.
@@ -263,7 +275,7 @@ public interface WebApp extends WebAppBase, Refreshable<WebApp>, Updatable<WebAp
              * @param appServicePlanCreatable the new app service plan creatable
              * @return the next stage of the definition
              */
-            WithWindowsRuntimeStack withNewWindowsPlan(Creatable<AppServicePlan> appServicePlanCreatable);
+            WithWindowsAppFramework withNewWindowsPlan(Creatable<AppServicePlan> appServicePlanCreatable);
 
             /**
              * Creates a new app service plan to use.
@@ -271,7 +283,7 @@ public interface WebApp extends WebAppBase, Refreshable<WebApp>, Updatable<WebAp
              * @param pricingTier the sku of the app service plan
              * @return the next stage of the definition
              */
-            WithDockerContainerImage withNewLinuxPlan(PricingTier pricingTier);
+            WithLinuxAppFramework withNewLinuxPlan(PricingTier pricingTier);
 
             /**
              * Creates a new app service plan to use.
@@ -280,7 +292,7 @@ public interface WebApp extends WebAppBase, Refreshable<WebApp>, Updatable<WebAp
              * @param pricingTier the sku of the app service plan
              * @return the next stage of the definition
              */
-            WithDockerContainerImage withNewLinuxPlan(String appServicePlanName, PricingTier pricingTier);
+            WithLinuxAppFramework withNewLinuxPlan(String appServicePlanName, PricingTier pricingTier);
 
             /**
              * Creates a new app service plan to use.
@@ -288,19 +300,11 @@ public interface WebApp extends WebAppBase, Refreshable<WebApp>, Updatable<WebAp
              * @param appServicePlanCreatable the new app service plan creatable
              * @return the next stage of the definition
              */
-            WithDockerContainerImage withNewLinuxPlan(Creatable<AppServicePlan> appServicePlanCreatable);
+            WithLinuxAppFramework withNewLinuxPlan(Creatable<AppServicePlan> appServicePlanCreatable);
         }
 
-        /** A web app definition allowing docker image source to be specified. */
-        interface WithDockerContainerImage {
-            /**
-             * Specifies the docker container image to be a built in one.
-             *
-             * @param runtimeStack the runtime stack installed on the image
-             * @return the next stage of the definition
-             */
-            WithCreate withBuiltInImage(RuntimeStack runtimeStack);
-
+        /** A web app definition allowing container image source to be specified. */
+        interface WithContainerImage {
             /**
              * Specifies the docker container image to be one from Docker Hub.
              *
@@ -325,6 +329,17 @@ public interface WebApp extends WebAppBase, Refreshable<WebApp>, Updatable<WebAp
              * @return the next stage of the definition
              */
             WithCredentials withPrivateRegistryImage(String imageAndTag, String serverUrl);
+        }
+
+        /** A web app definition allowing app framework on Linux operating system to be specified. */
+        interface WithLinuxAppFramework extends WithContainerImage {
+            /**
+             * Specifies the docker container image to be a built in one.
+             *
+             * @param runtimeStack the runtime stack installed on the image
+             * @return the next stage of the definition
+             */
+            WithCreate withBuiltInImage(RuntimeStack runtimeStack);
         }
 
         /** A web app definition allowing docker registry credentials to be set. */
@@ -353,8 +368,8 @@ public interface WebApp extends WebAppBase, Refreshable<WebApp>, Updatable<WebAp
             WithCreate withStartUpCommand(String startUpCommand);
         }
 
-        /** A web app definition allowing runtime stack on Windows operating system to be specified. */
-        interface WithWindowsRuntimeStack extends WithCreate {
+        /** A web app definition allowing app framework on Windows operating system to be specified. */
+        interface WithWindowsAppFramework extends WithContainerImage, WithCreate {
             /**
              * Specifies the runtime stack for the web app on Windows operating system.
              *
@@ -425,15 +440,8 @@ public interface WebApp extends WebAppBase, Refreshable<WebApp>, Updatable<WebAp
             Update withExistingAppServicePlan(AppServicePlan appServicePlan);
         }
 
-        /** A web app update allowing docker image source to be specified. */
-        interface WithDockerContainerImage {
-            /**
-             * Specifies the docker container image to be a built in one.
-             *
-             * @param runtimeStack the runtime stack installed on the image
-             * @return the next stage of the web app update
-             */
-            Update withBuiltInImage(RuntimeStack runtimeStack);
+        /** A web app update allowing container image source to be specified. */
+        interface WithContainerImage {
 
             /**
              * Specifies the docker container image to be one from Docker Hub.
@@ -459,6 +467,17 @@ public interface WebApp extends WebAppBase, Refreshable<WebApp>, Updatable<WebAp
              * @return the next stage of the web app update
              */
             WithCredentials withPrivateRegistryImage(String imageAndTag, String serverUrl);
+        }
+
+        /** A web app update allowing built-in container image on Linux operating system to be specified. */
+        interface WithLinuxAppImage {
+            /**
+             * Specifies the docker container image to be a built in one.
+             *
+             * @param runtimeStack the runtime stack installed on the image
+             * @return the next stage of the web app update
+             */
+            Update withBuiltInImage(RuntimeStack runtimeStack);
         }
 
         /** A web app update allowing docker hub credentials to be set. */
@@ -503,8 +522,9 @@ public interface WebApp extends WebAppBase, Refreshable<WebApp>, Updatable<WebAp
     interface Update
         extends Appliable<WebApp>,
             UpdateStages.WithAppServicePlan,
+            UpdateStages.WithContainerImage,
             UpdateStages.WithWindowsRuntimeStack,
-            WebAppBase.Update<WebApp>,
-            UpdateStages.WithDockerContainerImage {
+            UpdateStages.WithLinuxAppImage,
+            WebAppBase.Update<WebApp> {
     }
 }

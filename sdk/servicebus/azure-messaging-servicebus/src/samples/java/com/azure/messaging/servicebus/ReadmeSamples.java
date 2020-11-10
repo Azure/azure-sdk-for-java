@@ -7,9 +7,10 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.IterableStream;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.SubQueue;
 import reactor.core.Disposable;
+import reactor.core.publisher.Mono;
 
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +19,6 @@ import java.util.List;
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS ARE USED TO EXTRACT
  * APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING LINE NUMBERS OF EXISTING CODE
  * SAMPLES.
- *
  * Class containing code snippets that will be injected to README.md.
  */
 public class ReadmeSamples {
@@ -90,11 +90,11 @@ public class ReadmeSamples {
 
         // Receives a batch of messages when 10 messages are received or until 30 seconds have elapsed, whichever
         // happens first.
-        IterableStream<ServiceBusReceivedMessageContext> messages = receiver.receiveMessages(10, Duration.ofSeconds(30));
-        messages.forEach(context -> {
-            ServiceBusReceivedMessage message = context.getMessage();
+        IterableStream<ServiceBusReceivedMessage> messages = receiver.receiveMessages(10, Duration.ofSeconds(30));
+        messages.forEach(message -> {
+
             System.out.printf("Id: %s. Contents: %s%n", message.getMessageId(),
-                new String(message.getBody(), StandardCharsets.UTF_8));
+                message.getBody().toString());
         });
 
         // When you are done using the receiver, dispose of it.
@@ -113,10 +113,10 @@ public class ReadmeSamples {
 
         // receive() operation continuously fetches messages until the subscription is disposed.
         // The stream is infinite, and completes when the subscription or receiver is closed.
-        Disposable subscription = receiver.receiveMessages().subscribe(context -> {
-            ServiceBusReceivedMessage message = context.getMessage();
+        Disposable subscription = receiver.receiveMessages().subscribe(message -> {
+
             System.out.printf("Id: %s%n", message.getMessageId());
-            System.out.printf("Contents: %s%n", new String(message.getBody(), StandardCharsets.UTF_8));
+            System.out.printf("Contents: %s%n", message.getBody().toString());
         }, error -> {
                 System.err.println("Error occurred while receiving messages: " + error);
             }, () -> {
@@ -143,11 +143,11 @@ public class ReadmeSamples {
             .buildClient();
 
         // This fetches a batch of 10 messages or until the default operation timeout has elapsed.
-        receiver.receiveMessages(10).forEach(context -> {
-            ServiceBusReceivedMessage message = context.getMessage();
-
+        receiver.receiveMessages(10).forEach(message -> {
             // Process message and then complete it.
-            receiver.complete(message.getLockToken());
+            System.out.println("Completing message " + message.getLockToken());
+
+            receiver.complete(message);
         });
     }
 
@@ -173,12 +173,12 @@ public class ReadmeSamples {
      */
     public void namedSessionReceiver() {
         // Creates a session-enabled receiver that gets messages from the session "greetings".
-        ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+        ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
             .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
             .sessionReceiver()
             .queueName("<< QUEUE NAME >>")
-            .sessionId("greetings")
             .buildAsyncClient();
+        Mono<ServiceBusReceiverAsyncClient> receiverAsyncClient = sessionReceiver.acceptSession("greetings");
     }
 
     /**
@@ -186,11 +186,12 @@ public class ReadmeSamples {
      */
     public void unnamedSessionReceiver() {
         // Creates a session-enabled receiver that gets messages from the first available session.
-        ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+        ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
             .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
             .sessionReceiver()
             .queueName("<< QUEUE NAME >>")
             .buildAsyncClient();
+        Mono<ServiceBusReceiverAsyncClient> receiverAsyncClient = sessionReceiver.acceptNextSession();
     }
 
     /**
@@ -199,9 +200,10 @@ public class ReadmeSamples {
     public void createSynchronousServiceBusDeadLetterQueueReceiver() {
         ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
             .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
-            .deadLetterReceiver()
+            .receiver() // Use this for session or non-session enabled queue or topic/subscriptions
             .topicName("<< TOPIC NAME >>")
             .subscriptionName("<< SUBSCRIPTION NAME >>")
+            .subQueue(SubQueue.DEAD_LETTER_QUEUE)
             .buildClient();
     }
 }

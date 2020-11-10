@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RegenerateCredentialParameters model. */
+/** The parameters used to regenerate the login credential. */
 @Fluent
 public final class RegenerateCredentialParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RegenerateCredentialParameters.class);

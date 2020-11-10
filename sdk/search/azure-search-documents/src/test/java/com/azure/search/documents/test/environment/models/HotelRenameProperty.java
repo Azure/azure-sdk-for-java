@@ -3,8 +3,8 @@
 
 package com.azure.search.documents.test.environment.models;
 
-import com.azure.search.documents.indexes.SearchableFieldProperty;
-import com.azure.search.documents.indexes.SimpleFieldProperty;
+import com.azure.search.documents.indexes.SearchableField;
+import com.azure.search.documents.indexes.SimpleField;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class HotelRenameProperty {
@@ -12,7 +12,7 @@ public class HotelRenameProperty {
     private String hotelName;
     private String description;
 
-    @SimpleFieldProperty(isKey = true, isSortable = true)
+    @SimpleField(isKey = true, isSortable = true)
     @JsonProperty
     public String getHotelId() {
         return this.hotelId;
@@ -23,7 +23,7 @@ public class HotelRenameProperty {
         return this;
     }
 
-    @SearchableFieldProperty(isSortable = true, analyzerName = "en.lucene")
+    @SearchableField(isSortable = true, analyzerName = "en.lucene")
     @JsonProperty(value = "HotelName")
     public String getHotelName() {
         return this.hotelName;
@@ -34,7 +34,7 @@ public class HotelRenameProperty {
         return this;
     }
 
-    @SimpleFieldProperty
+    @SimpleField
     public String getDescription() {
         return this.description;
     }

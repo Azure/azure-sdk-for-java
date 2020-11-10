@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The DedicatedHostUpdate model. */
+/** Specifies information about the dedicated host. Only tags, autoReplaceOnFailure and licenseType may be updated. */
 @JsonFlatten
 @Fluent
 public class DedicatedHostUpdate extends UpdateResource {

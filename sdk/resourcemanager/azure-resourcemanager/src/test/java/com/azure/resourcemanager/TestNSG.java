@@ -9,22 +9,22 @@ import com.azure.resourcemanager.network.models.NetworkSecurityGroups;
 import com.azure.resourcemanager.network.models.NetworkSecurityRule;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.resourcemanager.network.models.Subnet;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
+import com.azure.core.management.Region;
 import com.google.common.util.concurrent.SettableFuture;
-import java.util.List;
 import org.junit.jupiter.api.Assertions;
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 /** Test for network security group CRUD. */
 public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityGroups> {
     @Override
     public NetworkSecurityGroup createResource(NetworkSecurityGroups nsgs) throws Exception {
-        String postFix = nsgs.manager().sdkContext().randomResourceName("", 8);
+        String postFix = nsgs.manager().resourceManager().internalContext().randomResourceName("", 8);
         final String newName = "nsg" + postFix;
         final String resourceGroupName = "rg" + postFix;
         final String nicName = "nic" + postFix;
-        final String asgName = nsgs.manager().sdkContext().randomResourceName("asg", 8);
+        final String asgName = nsgs.manager().resourceManager().internalContext().randomResourceName("asg", 8);
         final Region region = Region.US_WEST;
         final SettableFuture<NetworkSecurityGroup> nsgFuture = SettableFuture.create();
 
@@ -37,7 +37,7 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
                 .withNewResourceGroup(resourceGroupName)
                 .create();
         // Create
-        Flux<Indexable> resourceStream =
+        Mono<NetworkSecurityGroup> resourceStream =
             nsgs
                 .define(newName)
                 .withRegion(region)
@@ -63,10 +63,9 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
                 .createAsync();
 
         resourceStream
-            .last()
             .doOnSuccess((_ignore) -> System.out.print("completed"))
             .doOnError(throwable -> nsgFuture.setException(throwable))
-            .subscribe(nsg -> nsgFuture.set((NetworkSecurityGroup) nsg));
+            .subscribe(nsg -> nsgFuture.set(nsg));
 
         NetworkSecurityGroup nsg = nsgFuture.get();
 

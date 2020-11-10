@@ -7,10 +7,11 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.storage.fluent.StorageManagementClient;
+import com.azure.resourcemanager.storage.implementation.StorageManagementClientBuilder;
 import com.azure.resourcemanager.storage.implementation.BlobContainersImpl;
 import com.azure.resourcemanager.storage.implementation.BlobServicesImpl;
 import com.azure.resourcemanager.storage.implementation.ManagementPoliciesImpl;
@@ -25,7 +26,7 @@ import com.azure.resourcemanager.storage.models.StorageSkus;
 import com.azure.resourcemanager.storage.models.Usages;
 
 /** Entry point to Azure storage resource management. */
-public final class StorageManager extends Manager<StorageManager, StorageManagementClient> {
+public final class StorageManager extends Manager<StorageManagementClient> {
     // Collections
     private StorageAccounts storageAccounts;
     private Usages storageUsages;
@@ -61,20 +62,8 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
      * @param profile the profile to use
      * @return the StorageManager
      */
-    public static StorageManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile, new SdkContext());
-    }
-
-    /**
-     * Creates an instance of StorageManager that exposes storage resource management API entry points.
-     *
-     * @param httpPipeline the RestClient to be used for API calls.
-     * @param profile the profile to use
-     * @param sdkContext the sdk context
-     * @return the StorageManager
-     */
-    public static StorageManager authenticate(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        return new StorageManager(httpPipeline, profile, sdkContext);
+    private static StorageManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        return new StorageManager(httpPipeline, profile);
     }
 
     /** The interface allowing configurations to be set. */
@@ -96,16 +85,15 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
         }
     }
 
-    private StorageManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+    private StorageManager(HttpPipeline httpPipeline, AzureProfile profile) {
         super(
             httpPipeline,
             profile,
             new StorageManagementClientBuilder()
                 .pipeline(httpPipeline)
-                .endpoint(profile.environment().getResourceManagerEndpoint())
-                .subscriptionId(profile.subscriptionId())
-                .buildClient(),
-            sdkContext);
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
+                .buildClient());
     }
 
     /** @return the storage account management API entry point */

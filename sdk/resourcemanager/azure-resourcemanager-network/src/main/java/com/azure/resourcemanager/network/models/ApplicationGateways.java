@@ -4,7 +4,6 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.NetworkManager;
-import com.azure.resourcemanager.network.fluent.ApplicationGatewaysClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -15,7 +14,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCr
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Flux;
 
 import java.util.Collection;
@@ -32,8 +30,7 @@ public interface ApplicationGateways
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<ApplicationGateway>,
         SupportsBatchDeletion,
-        HasManager<NetworkManager>,
-        HasInner<ApplicationGatewaysClient> {
+        HasManager<NetworkManager> {
 
     /**
      * Starts the specified application gateways.

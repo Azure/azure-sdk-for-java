@@ -16,7 +16,7 @@ public enum ManagedServiceIdentityType {
     USER_ASSIGNED("UserAssigned"),
 
     /** Enum value SystemAssigned, UserAssigned. */
-    SYSTEM_ASSIGNED__USER_ASSIGNED("SystemAssigned, UserAssigned"),
+    SYSTEM_ASSIGNED_USER_ASSIGNED("SystemAssigned, UserAssigned"),
 
     /** Enum value None. */
     NONE("None");

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CreationData model. */
+/** Data used when creating a disk. */
 @Fluent
 public final class CreationData {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CreationData.class);

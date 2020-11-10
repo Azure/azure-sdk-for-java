@@ -311,12 +311,12 @@ public interface FeedResponseListValidator<T> {
         }
 
         @SuppressWarnings("unchecked")
-        public Builder<T> hasValidQueryMetrics(boolean shouldHaveMetrics) {
+        public Builder<T> hasValidQueryMetrics(Boolean shouldHaveMetrics) {
             validators.add(new FeedResponseListValidator<T>() {
                 @Override
                 public void validate(List<FeedResponse<T>> feedList) {
                     for(FeedResponse<T> feedPage: feedList) {
-                        if (shouldHaveMetrics) {
+                        if (shouldHaveMetrics ==  null || shouldHaveMetrics) {
                             QueryMetrics queryMetrics = BridgeInternal.createQueryMetricsFromCollection(BridgeInternal.queryMetricsFromFeedResponse(feedPage).values());
                             assertThat(queryMetrics.getIndexHitDocumentCount()).isGreaterThanOrEqualTo(0);
                             assertThat(queryMetrics.getRetrievedDocumentSize()).isGreaterThanOrEqualTo(0);

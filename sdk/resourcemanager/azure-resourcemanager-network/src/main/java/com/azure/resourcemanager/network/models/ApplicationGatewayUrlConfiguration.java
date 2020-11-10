@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ApplicationGatewayUrlConfiguration model. */
+/** Url configuration of the Actions set in Application Gateway. */
 @Fluent
 public final class ApplicationGatewayUrlConfiguration {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayUrlConfiguration.class);

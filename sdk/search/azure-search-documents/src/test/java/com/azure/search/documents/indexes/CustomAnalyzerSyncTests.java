@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.indexes;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.ExpandableStringEnum;
@@ -104,6 +105,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         getExpandableEnumValues(LexicalAnalyzerName.class);
     private static final List<LexicalTokenizerName> LEXICAL_TOKENIZER_NAMES =
         getExpandableEnumValues(LexicalTokenizerName.class);
+    private static final List<RegexFlags> REGEX_FLAGS = getExpandableEnumValues(RegexFlags.class);
 
     private SearchIndexClient searchIndexClient;
     private final List<String> indexesToCleanup = new ArrayList<>();
@@ -306,7 +308,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
             .setStopwords("stop1", "stop2")
             .setLowerCaseTerms(true)
             .setPattern(".*")
-            .setFlags(new ArrayList<>(RegexFlags.values())));
+            .setFlags(REGEX_FLAGS));
 
         SearchIndex createdIndex = searchIndexClient.createIndex(index);
         indexesToCleanup.add(index.getName());
@@ -340,7 +342,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
     public void canUseAllRegexFlagsNullNameAnalyzer() {
         SearchIndex index = createTestIndex(null).setAnalyzers(new PatternAnalyzer(null));
 
-        assertThrows(IllegalArgumentException.class, () ->
+        assertThrows(HttpResponseException.class, () ->
             searchIndexClient.createIndex(index), "Missing required property name in model LexicalAnalyzer");
 
     }
@@ -417,7 +419,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         SearchIndex index = createTestIndex(null)
             .setTokenizers(new PatternTokenizer(generateName())
                 .setPattern(".*")
-                .setFlags(new ArrayList<>(RegexFlags.values()))
+                .setFlags(REGEX_FLAGS)
                 .setGroup(0));
 
         SearchIndex createdIndex = searchIndexClient.createIndex(index);
@@ -453,7 +455,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         SearchIndex index = createTestIndex(null)
             .setTokenizers(new PatternTokenizer(null));
 
-        assertThrows(IllegalArgumentException.class, () ->
+        assertThrows(HttpResponseException.class, () ->
             searchIndexClient.createIndex(index), "Missing required property name in model SearchIndexer");
 
     }

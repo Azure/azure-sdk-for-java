@@ -9,7 +9,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The EncryptionScopeKeyVaultProperties model. */
+/**
+ * The key vault properties for the encryption scope. This is a required field if encryption scope 'source' attribute is
+ * set to 'Microsoft.KeyVault'.
+ */
 @Fluent
 public final class EncryptionScopeKeyVaultProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionScopeKeyVaultProperties.class);

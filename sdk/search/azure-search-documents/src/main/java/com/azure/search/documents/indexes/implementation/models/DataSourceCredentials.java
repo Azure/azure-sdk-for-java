@@ -9,7 +9,7 @@ package com.azure.search.documents.indexes.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DataSourceCredentials model. */
+/** Represents credentials that can be used to connect to a datasource. */
 @Fluent
 public final class DataSourceCredentials {
     /*
@@ -37,11 +37,4 @@ public final class DataSourceCredentials {
         this.connectionString = connectionString;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {}
 }

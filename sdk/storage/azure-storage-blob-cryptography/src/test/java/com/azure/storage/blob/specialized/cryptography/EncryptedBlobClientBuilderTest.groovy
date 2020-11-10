@@ -8,6 +8,7 @@ import com.azure.core.http.HttpHeaders
 import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
+import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.test.http.MockHttpResponse
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.DateTimeRfc1123
@@ -56,6 +57,31 @@ class EncryptedBlobClientBuilderTest extends Specification {
             .verifyComplete()
     }
 
+    /**
+     * Tests that a user application id will be honored in the UA string when using the encrypted blob client builder's default
+     * pipeline.
+     */
+    def "Encrypted blob client custom application id in UA string"() {
+        when:
+        def randomData = new byte[256]
+        new SecureRandom().nextBytes(randomData)
+
+        def encryptedBlobClient = new EncryptedBlobClientBuilder()
+            .endpoint(endpoint)
+            .containerName("container")
+            .blobName("blob")
+            .credential(credentials)
+            .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
+            .httpClient(new ApplicationIdUAStringTestClient())
+            .httpLogOptions(new HttpLogOptions().setApplicationId("custom-id"))
+            .buildEncryptedBlobClient()
+
+        then:
+        StepVerifier.create(encryptedBlobClient.getHttpPipeline().send(request(encryptedBlobClient.getBlobUrl())))
+            .assertNext({ it.getStatusCode() == 200 })
+            .verifyComplete()
+    }
+
     private static final class FreshDateTestClient implements HttpClient {
         private DateTimeRfc1123 firstDate
 
@@ -76,6 +102,17 @@ class EncryptedBlobClientBuilderTest extends Specification {
             }
 
             return new DateTimeRfc1123(dateHeader)
+        }
+    }
+
+    private static final class ApplicationIdUAStringTestClient implements HttpClient {
+        @Override
+        Mono<HttpResponse> send(HttpRequest request) {
+            if (CoreUtils.isNullOrEmpty(request.getHeaders().getValue("User-Agent"))) {
+                throw new RuntimeException("Failed to set 'User-Agent' header.")
+            }
+            assert request.getHeaders().getValue("User-Agent").startsWith("custom-id")
+            return Mono.just(new MockHttpResponse(request, 200))
         }
     }
 }

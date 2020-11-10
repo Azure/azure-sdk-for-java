@@ -7,13 +7,13 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolActivityInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
+import com.azure.resourcemanager.sql.fluent.models.ElasticPoolActivityInner;
 import java.time.OffsetDateTime;
 
 /** An immutable client-side representation of an Azure SQL ElasticPool's Activity. */
 @Fluent
-public interface ElasticPoolActivity extends HasInner<ElasticPoolActivityInner>, HasResourceGroup, HasName, HasId {
+public interface ElasticPoolActivity extends HasInnerModel<ElasticPoolActivityInner>, HasResourceGroup, HasName, HasId {
     /** @return the time the operation finished (ISO8601 format) */
     OffsetDateTime endTime();
 

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings model. */
+/** Describes a virtual machines scale sets network configuration's DNS settings. */
 @Fluent
 public final class VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings {
     @JsonIgnore

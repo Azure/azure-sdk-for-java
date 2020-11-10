@@ -20,7 +20,7 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -29,6 +29,7 @@ import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.Map;
 
 /**
@@ -47,14 +48,21 @@ public abstract class AzureServiceClient {
     }
 
     private final SerializerAdapter serializerAdapter;
+    private final HttpPipeline httpPipeline;
 
     private final String sdkName;
 
     protected AzureServiceClient(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
                                  AzureEnvironment environment) {
-        sdkName = this.getClass().getPackage().getName();
-
+        this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
+
+        String packageName = this.getClass().getPackage().getName();
+        String implementationSegment = ".implementation";
+        if (packageName.endsWith(implementationSegment)) {
+            packageName = packageName.substring(0, packageName.length() - implementationSegment.length());
+        }
+        this.sdkName = packageName;
     }
 
     /**
@@ -62,9 +70,25 @@ public abstract class AzureServiceClient {
      *
      * @return the serializer adapter.
      */
-    public SerializerAdapter getSerializerAdapter() {
+    private SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
+
+    /**
+     * Gets The HTTP pipeline to send requests through.
+     *
+     * @return the httpPipeline value.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return this.httpPipeline;
+    }
+
+    /**
+     * Gets The default poll interval for long-running operation.
+     *
+     * @return the defaultPollInterval value.
+     */
+    public abstract Duration getDefaultPollInterval();
 
     /**
      * Gets default client context.
@@ -110,7 +134,7 @@ public abstract class AzureServiceClient {
             httpPipeline,
             pollResultType,
             finalResultType,
-            SdkContext.getLroRetryDuration(),
+            ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(this.getDefaultPollInterval()),
             lroInit,
             context
         );

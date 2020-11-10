@@ -17,20 +17,23 @@ import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
+import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.AppServiceManager;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteConfigResourceInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteLogsConfigInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteConfigResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteLogsConfigInner;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionAuthenticationPolicy;
 import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlots;
+import com.azure.resourcemanager.appservice.models.FunctionEnvelope;
 import com.azure.resourcemanager.appservice.models.FunctionRuntimeStack;
 import com.azure.resourcemanager.appservice.models.NameValuePair;
 import com.azure.resourcemanager.appservice.models.OperatingSystem;
@@ -39,6 +42,10 @@ import com.azure.resourcemanager.appservice.models.SkuDescription;
 import com.azure.resourcemanager.appservice.models.SkuName;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
+import com.azure.resourcemanager.resources.fluentcore.policy.AuthenticationPolicy;
+import com.azure.resourcemanager.resources.fluentcore.policy.AuxiliaryAuthenticationPolicy;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountKey;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
@@ -54,7 +61,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 /** The implementation for FunctionApp. */
 class FunctionAppImpl
@@ -68,8 +74,6 @@ class FunctionAppImpl
 
     private final ClientLogger logger = new ClientLogger(getClass());
 
-    private static final String SETTING_FUNCTIONS_WORKER_RUNTIME = "FUNCTIONS_WORKER_RUNTIME";
-    private static final String SETTING_FUNCTIONS_EXTENSION_VERSION = "FUNCTIONS_EXTENSION_VERSION";
     private static final String SETTING_WEBSITE_CONTENTAZUREFILECONNECTIONSTRING =
         "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING";
     private static final String SETTING_WEBSITE_CONTENTSHARE = "WEBSITE_CONTENTSHARE";
@@ -83,11 +87,7 @@ class FunctionAppImpl
     private FunctionService functionService;
     private FunctionDeploymentSlots deploymentSlots;
 
-    private Function<AppServicePlan, SiteConfigResourceInner> linuxFxVersionSetter = null;
-    private Mono<AppServicePlan> cachedAppServicePlanObservable =
-        null; // potentially shared between submitSiteConfig and submitAppSettings
-
-    private String functionAppKeyServiceHost;
+    private final String functionAppKeyServiceHost;
     private String functionServiceHost;
 
     FunctionAppImpl(
@@ -119,7 +119,12 @@ class FunctionAppImpl
 
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             for (int i = 0, count = manager().httpPipeline().getPolicyCount(); i < count; ++i) {
-                policies.add(manager().httpPipeline().getPolicy(i));
+                HttpPipelinePolicy policy = manager().httpPipeline().getPolicy(i);
+                if (!(policy instanceof AuthenticationPolicy)
+                    && !(policy instanceof ProviderRegistrationPolicy)
+                    && !(policy instanceof AuxiliaryAuthenticationPolicy)) {
+                    policies.add(policy);
+                }
             }
             policies.add(new FunctionAuthenticationPolicy(this));
             HttpPipeline httpPipeline = new HttpPipelineBuilder()
@@ -128,7 +133,8 @@ class FunctionAppImpl
                 .build();
             functionServiceHost = baseUrl;
             functionService =
-                RestProxy.create(FunctionService.class, httpPipeline, new AzureJacksonAdapter());
+                RestProxy.create(FunctionService.class, httpPipeline,
+                    SerializerFactory.createDefaultManagementSerializerAdapter());
         }
     }
 
@@ -172,18 +178,6 @@ class FunctionAppImpl
     }
 
     @Override
-    Mono<Indexable> submitSiteConfig() {
-        if (linuxFxVersionSetter != null) {
-            cachedAppServicePlanObservable = this.cachedAppServicePlanObservable(); // first usage, so get a new one
-            return cachedAppServicePlanObservable
-                .map(linuxFxVersionSetter)
-                .flatMap(ignored -> FunctionAppImpl.super.submitSiteConfig());
-        } else {
-            return super.submitSiteConfig();
-        }
-    }
-
-    @Override
     Mono<Indexable> submitAppSettings() {
         if (storageAccountCreatable != null && this.taskResult(storageAccountCreatable.key()) != null) {
             storageAccountToSet = this.taskResult(storageAccountCreatable.key());
@@ -191,18 +185,15 @@ class FunctionAppImpl
         if (storageAccountToSet == null) {
             return super.submitAppSettings();
         } else {
-            if (cachedAppServicePlanObservable == null) {
-                cachedAppServicePlanObservable = this.cachedAppServicePlanObservable();
-            }
             return Flux
                 .concat(
                     storageAccountToSet
                         .getKeysAsync()
                         .map(storageAccountKeys -> storageAccountKeys.get(0))
                         .zipWith(
-                            cachedAppServicePlanObservable,
+                            this.manager().appServicePlans().getByIdAsync(this.appServicePlanId()),
                             (StorageAccountKey storageAccountKey, AppServicePlan appServicePlan) -> {
-                                String connectionString = com.azure.resourcemanager.resources.fluentcore.utils.Utils
+                                String connectionString = ResourceManagerUtils
                                     .getStorageConnectionString(storageAccountToSet.name(), storageAccountKey.value(),
                                         manager().environment());
                                 addAppSettingIfNotModified(SETTING_WEB_JOBS_STORAGE, connectionString);
@@ -215,7 +206,8 @@ class FunctionAppImpl
                                         SETTING_WEBSITE_CONTENTAZUREFILECONNECTIONSTRING, connectionString);
                                     addAppSettingIfNotModified(
                                         SETTING_WEBSITE_CONTENTSHARE,
-                                        this.manager().sdkContext().randomResourceName(name(), 32));
+                                        this.manager().resourceManager().internalContext()
+                                            .randomResourceName(name(), 32));
                                 }
                                 return FunctionAppImpl.super.submitAppSettings();
                             }))
@@ -227,7 +219,6 @@ class FunctionAppImpl
                                 currentStorageAccount = storageAccountToSet;
                                 storageAccountToSet = null;
                                 storageAccountCreatable = null;
-                                cachedAppServicePlanObservable = null;
                                 return this;
                             }));
         }
@@ -235,7 +226,8 @@ class FunctionAppImpl
 
     @Override
     public OperatingSystem operatingSystem() {
-        return (inner().reserved() == null || !inner().reserved()) ? OperatingSystem.WINDOWS : OperatingSystem.LINUX;
+        return (innerModel().reserved() == null || !innerModel().reserved())
+            ? OperatingSystem.WINDOWS : OperatingSystem.LINUX;
     }
 
     private void addAppSettingIfNotModified(String key, String value) {
@@ -256,14 +248,6 @@ class FunctionAppImpl
         SkuDescription description = pricingTier.toSkuDescription();
         return SkuName.DYNAMIC.toString().equalsIgnoreCase(description.tier())
             || SkuName.ELASTIC_PREMIUM.toString().equalsIgnoreCase(description.tier());
-    }
-
-    private static boolean isConsumptionPlan(PricingTier pricingTier) {
-        if (pricingTier == null || pricingTier.toSkuDescription() == null) {
-            return true;
-        }
-        SkuDescription description = pricingTier.toSkuDescription();
-        return SkuName.DYNAMIC.toString().equalsIgnoreCase(description.tier());
     }
 
     @Override
@@ -293,24 +277,6 @@ class FunctionAppImpl
         } else {
             return withWebAppAlwaysOn(false);
         }
-    }
-
-    @Override
-    public FunctionAppImpl withNewStorageAccount(String name, com.azure.resourcemanager.storage.models.SkuName sku) {
-        StorageAccount.DefinitionStages.WithGroup storageDefine =
-            manager().storageManager().storageAccounts().define(name).withRegion(regionName());
-        if (super.creatableGroup != null && isInCreateMode()) {
-            storageAccountCreatable =
-                storageDefine.withNewResourceGroup(super.creatableGroup).withGeneralPurposeAccountKind().withSku(sku);
-        } else {
-            storageAccountCreatable =
-                storageDefine
-                    .withExistingResourceGroup(resourceGroupName())
-                    .withGeneralPurposeAccountKind()
-                    .withSku(sku);
-        }
-        this.addDependency(storageAccountCreatable);
-        return this;
     }
 
     @Override
@@ -346,7 +312,7 @@ class FunctionAppImpl
 
     @Override
     public FunctionAppImpl withDailyUsageQuota(int quota) {
-        inner().withDailyMemoryTimeQuota(quota);
+        innerModel().withDailyMemoryTimeQuota(quota);
         return this;
     }
 
@@ -399,15 +365,7 @@ class FunctionAppImpl
         }
         withRuntime(runtimeStack.runtime());
         withRuntimeVersion(runtimeStack.version());
-        linuxFxVersionSetter =
-            appServicePlan -> {
-                if (appServicePlan == null || isConsumptionPlan(appServicePlan.pricingTier())) {
-                    siteConfig.withLinuxFxVersion(runtimeStack.getLinuxFxVersionForConsumptionPlan());
-                } else {
-                    siteConfig.withLinuxFxVersion(runtimeStack.getLinuxFxVersionForDedicatedPlan());
-                }
-                return siteConfig;
-            };
+        siteConfig.withLinuxFxVersion(runtimeStack.getLinuxFxVersion());
         return this;
     }
 
@@ -431,9 +389,11 @@ class FunctionAppImpl
 
     @Override
     protected void cleanUpContainerSettings() {
-        linuxFxVersionSetter = null;
         if (siteConfig != null && siteConfig.linuxFxVersion() != null) {
             siteConfig.withLinuxFxVersion(null);
+        }
+        if (siteConfig != null && siteConfig.windowsFxVersion() != null) {
+            siteConfig.withWindowsFxVersion(null);
         }
         // Docker Hub
         withoutAppSetting(SETTING_DOCKER_IMAGE);
@@ -446,14 +406,9 @@ class FunctionAppImpl
     protected OperatingSystem appServicePlanOperatingSystem(AppServicePlan appServicePlan) {
         // Consumption plan or premium (elastic) plan would have "functionapp" or "elastic" in "kind" property, no
         // "linux" in it.
-        return (appServicePlan.inner().reserved() == null || !appServicePlan.inner().reserved())
+        return (appServicePlan.innerModel().reserved() == null || !appServicePlan.innerModel().reserved())
             ? OperatingSystem.WINDOWS
             : OperatingSystem.LINUX;
-    }
-
-    private Mono<AppServicePlan> cachedAppServicePlanObservable() {
-        // it could get more than one subscriber, so hot observable + caching
-        return this.manager().appServicePlans().getByIdAsync(this.appServicePlanId()).cache();
     }
 
     @Override
@@ -468,6 +423,9 @@ class FunctionAppImpl
 
     @Override
     public Mono<String> getMasterKeyAsync() {
+        Context context1 = (this.manager().serviceClient() instanceof WebSiteManagementClientImpl)
+            ? ((WebSiteManagementClientImpl) this.manager().serviceClient()).getContext()
+            : Context.NONE;
         return FluxUtil
             .withContext(
                 context ->
@@ -480,7 +438,12 @@ class FunctionAppImpl
                             "2019-08-01"))
             .map(ListKeysResult::getMasterKey)
             .subscriberContext(
-                context -> context.putAll(FluxUtil.toReactorContext(this.manager().inner().getContext())));
+                context -> context.putAll(FluxUtil.toReactorContext(context1)));
+    }
+
+    @Override
+    public PagedIterable<FunctionEnvelope> listFunctions() {
+        return this.manager().functionApps().listFunctions(resourceGroupName(), name());
     }
 
     @Override
@@ -551,7 +514,7 @@ class FunctionAppImpl
     @Override
     public Mono<Void> syncTriggersAsync() {
         return manager()
-            .inner()
+            .serviceClient()
             .getWebApps()
             .syncFunctionTriggersAsync(resourceGroupName(), name())
             .onErrorResume(
@@ -620,25 +583,26 @@ class FunctionAppImpl
     }
 
     @Override
-    public Mono<Void> zipDeployAsync(InputStream zipFile) {
-        return kuduClient.zipDeployAsync(zipFile);
+    public Mono<Void> zipDeployAsync(InputStream zipFile, long length) {
+        return kuduClient.zipDeployAsync(zipFile, length);
     }
 
     @Override
-    public void zipDeploy(InputStream zipFile) {
-        zipDeployAsync(zipFile).block();
+    public void zipDeploy(InputStream zipFile, long length) {
+        zipDeployAsync(zipFile, length).block();
     }
 
     @Override
-    public Flux<Indexable> createAsync() {
+    public Mono<FunctionApp> createAsync() {
         if (this.isInCreateMode()) {
-            if (inner().serverFarmId() == null) {
+            if (innerModel().serverFarmId() == null) {
                 withNewConsumptionPlan();
             }
             if (currentStorageAccount == null && storageAccountToSet == null && storageAccountCreatable == null) {
                 withNewStorageAccount(
-                    this.manager().sdkContext().randomResourceName(name(), 20),
-                    com.azure.resourcemanager.storage.models.SkuName.STANDARD_GRS);
+                    this.manager().resourceManager().internalContext()
+                        .randomResourceName(getStorageAccountName(), 20),
+                    StorageAccountSkuType.STANDARD_GRS);
             }
         }
         return super.createAsync();
@@ -668,11 +632,11 @@ class FunctionAppImpl
     }
 
     @Host("{$host}")
-    @ServiceInterface(name = "FunctionAppKeyService")
+    @ServiceInterface(name = "FunctionKeyService")
     private interface FunctionAppKeyService {
         @Headers({
-            "Content-Type: application/json; charset=utf-8",
-            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listKeys"
+            "Accept: application/json",
+            "Content-Type: application/json; charset=utf-8"
         })
         @Post(
             "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}"
@@ -689,16 +653,16 @@ class FunctionAppImpl
     @ServiceInterface(name = "FunctionService")
     private interface FunctionService {
         @Headers({
-            "Content-Type: application/json; charset=utf-8",
-            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listFunctionKeys"
+            "Accept: application/json",
+            "Content-Type: application/json; charset=utf-8"
         })
         @Get("admin/functions/{name}/keys")
         Mono<FunctionKeyListResult> listFunctionKeys(
             @HostParam("$host") String host, @PathParam("name") String functionName);
 
         @Headers({
-            "Content-Type: application/json; charset=utf-8",
-            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps addFunctionKey"
+            "Accept: application/json",
+            "Content-Type: application/json; charset=utf-8"
         })
         @Put("admin/functions/{name}/keys/{keyName}")
         Mono<NameValuePair> addFunctionKey(
@@ -708,8 +672,8 @@ class FunctionAppImpl
             @BodyParam("application/json") NameValuePair key);
 
         @Headers({
-            "Content-Type: application/json; charset=utf-8",
-            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps generateFunctionKey"
+            "Accept: application/json",
+            "Content-Type: application/json; charset=utf-8"
         })
         @Post("admin/functions/{name}/keys/{keyName}")
         Mono<NameValuePair> generateFunctionKey(
@@ -718,8 +682,7 @@ class FunctionAppImpl
             @PathParam("keyName") String keyName);
 
         @Headers({
-            "Content-Type: application/json; charset=utf-8",
-            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps deleteFunctionKey"
+            "Content-Type: application/json; charset=utf-8"
         })
         @Delete("admin/functions/{name}/keys/{keyName}")
         Mono<Void> deleteFunctionKey(
@@ -728,22 +691,19 @@ class FunctionAppImpl
             @PathParam("keyName") String keyName);
 
         @Headers({
-            "Content-Type: application/json; charset=utf-8",
-            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps ping"
+            "Content-Type: application/json; charset=utf-8"
         })
         @Post("admin/host/ping")
         Mono<Void> ping(@HostParam("$host") String host);
 
         @Headers({
-            "Content-Type: application/json; charset=utf-8",
-            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getHostStatus"
+            "Content-Type: application/json; charset=utf-8"
         })
         @Get("admin/host/status")
         Mono<Void> getHostStatus(@HostParam("$host") String host);
 
         @Headers({
-            "Content-Type: application/json; charset=utf-8",
-            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps triggerFunction"
+            "Content-Type: application/json; charset=utf-8"
         })
         @Post("admin/functions/{name}")
         Mono<Void> triggerFunction(
@@ -755,6 +715,10 @@ class FunctionAppImpl
     private static class FunctionKeyListResult {
         @JsonProperty("keys")
         private List<NameValuePair> keys;
+    }
+
+    private String getStorageAccountName() {
+        return name().replaceAll("[^a-zA-Z0-9]", "");
     }
 
     /*

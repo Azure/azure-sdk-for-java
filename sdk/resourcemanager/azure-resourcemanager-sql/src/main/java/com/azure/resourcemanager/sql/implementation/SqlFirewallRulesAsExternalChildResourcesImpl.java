@@ -6,7 +6,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.SqlFirewallRule;
 import com.azure.resourcemanager.sql.models.SqlServer;
-import com.azure.resourcemanager.sql.fluent.inner.FirewallRuleInner;
+import com.azure.resourcemanager.sql.fluent.models.FirewallRuleInner;
 
 /** Represents a SQL Firewall rules collection associated with an Azure SQL server. */
 public class SqlFirewallRulesAsExternalChildResourcesImpl

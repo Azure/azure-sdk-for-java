@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The RunCommandInput model. */
+/** Capture Virtual Machine parameters. */
 @Fluent
 public final class RunCommandInput {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RunCommandInput.class);

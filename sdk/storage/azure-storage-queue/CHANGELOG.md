@@ -1,8 +1,16 @@
 # Release History
 
-## 12.7.0-beta.1 (Unreleased)
+## 12.7.0-beta.2 (Unreleased)
+- Added support to specify whether or not a pipeline policy should be added per call or per retry.
+- Fixed a bug that would cause a NPE when visibilityTimeout was set to null in QueueClient.updateMessage
+
+## 12.7.0-beta.1 (2020-10-01)
+- Added support for the 2020-02-10 service version. 
+- Fixed a bug where the TokenCredential scope would be incorrect for custom URLs.
+- Fixed a bug where Default Azure Credential would not work with Azurite.
 - Fixed a bug that would cause message text to be erased when only updating the visibility timeout
 - Fixed a bug that would cause auth failures when building a client by passing an endpoint which had a sas token with protocol set to https,http
+- Fixed a bug where a custom application id in HttpLogOptions would not be added to the User Agent String.
 
 ## 12.6.0 (2020-08-13)
 - GA release for 2019-12-12 service version.

@@ -11,7 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ApplicationGatewayFrontendIpConfiguration model. */
+/** Frontend IP configuration of an application gateway. */
 @JsonFlatten
 @Fluent
 public class ApplicationGatewayFrontendIpConfiguration extends SubResource {

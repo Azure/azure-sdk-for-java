@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The Status model. */
+/** The status of an Azure resource at the time the operation was called. */
 @Immutable
 public final class Status {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Status.class);

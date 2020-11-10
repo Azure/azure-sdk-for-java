@@ -4,10 +4,11 @@ package com.azure.resourcemanager.dns.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.dns.models.RecordType;
 import com.azure.resourcemanager.dns.models.SrvRecordSet;
 import com.azure.resourcemanager.dns.models.SrvRecordSets;
-import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
+import com.azure.resourcemanager.dns.fluent.models.RecordSetInner;
 import reactor.core.publisher.Mono;
 
 /** Implementation of SrvRecordSets. */
@@ -27,7 +28,7 @@ class SrvRecordSetsImpl extends DnsRecordSetsBaseImpl<SrvRecordSet, SrvRecordSet
         return this
             .parent()
             .manager()
-            .inner()
+            .serviceClient()
             .getRecordSets()
             .getAsync(this.dnsZone.resourceGroupName(), this.dnsZone.name(), name, this.recordType)
             .map(this::wrapModel);
@@ -40,14 +41,15 @@ class SrvRecordSetsImpl extends DnsRecordSetsBaseImpl<SrvRecordSet, SrvRecordSet
                 this
                     .parent()
                     .manager()
-                    .inner()
+                    .serviceClient()
                     .getRecordSets()
                     .listByType(
                         this.dnsZone.resourceGroupName(),
                         this.dnsZone.name(),
                         this.recordType,
                         pageSize,
-                        recordSetNameSuffix));
+                        recordSetNameSuffix,
+                        Context.NONE));
     }
 
     @Override
@@ -56,7 +58,7 @@ class SrvRecordSetsImpl extends DnsRecordSetsBaseImpl<SrvRecordSet, SrvRecordSet
             this
                 .parent()
                 .manager()
-                .inner()
+                .serviceClient()
                 .getRecordSets()
                 .listByTypeAsync(this.dnsZone.resourceGroupName(), this.dnsZone.name(), this.recordType));
     }

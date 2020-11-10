@@ -19,12 +19,14 @@ import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.IntegrationTestBase;
 import com.azure.messaging.eventhubs.TestUtils;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
+import org.apache.qpid.proton.engine.SslDomain;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
@@ -46,6 +48,7 @@ import static com.azure.core.amqp.implementation.CbsAuthorizationType.SHARED_ACC
  */
 @Tag(TestUtils.INTEGRATION)
 class CBSChannelTest extends IntegrationTestBase {
+    private static final ClientOptions CLIENT_OPTIONS = new ClientOptions();
     private static final String CONNECTION_ID = "CbsChannelTest-Connection";
     private static String product;
     private static String clientVersion;
@@ -105,7 +108,8 @@ class CBSChannelTest extends IntegrationTestBase {
             connectionProperties.getSharedAccessKeyName(), connectionProperties.getSharedAccessKey());
         ConnectionOptions connectionOptions = new ConnectionOptions(connectionProperties.getEndpoint().getHost(),
             tokenCredential, SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP,
-            RETRY_OPTIONS, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.elastic());
+            RETRY_OPTIONS, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.elastic(), CLIENT_OPTIONS,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME);
         connection = new TestReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, handlerProvider,
             azureTokenManagerProvider, messageSerializer, product, clientVersion);
 
@@ -127,7 +131,7 @@ class CBSChannelTest extends IntegrationTestBase {
 
         final ConnectionOptions connectionOptions = new ConnectionOptions(connectionProperties.getEndpoint().getHost(),
             invalidToken, SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, RETRY_OPTIONS, ProxyOptions.SYSTEM_DEFAULTS,
-            Schedulers.elastic());
+            Schedulers.elastic(), CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER);
         connection = new TestReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, handlerProvider,
             azureTokenManagerProvider, messageSerializer, product, clientVersion);
 

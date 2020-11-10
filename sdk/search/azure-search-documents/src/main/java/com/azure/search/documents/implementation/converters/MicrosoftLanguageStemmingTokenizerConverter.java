@@ -4,7 +4,6 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.MicrosoftLanguageStemmingTokenizer;
-import com.azure.search.documents.indexes.models.MicrosoftStemmingTokenizerLanguage;
 
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageStemmingTokenizer}
@@ -26,9 +25,7 @@ public final class MicrosoftLanguageStemmingTokenizerConverter {
         microsoftLanguageStemmingTokenizer.setMaxTokenLength(maxTokenLength);
 
         if (obj.getLanguage() != null) {
-            MicrosoftStemmingTokenizerLanguage language =
-                MicrosoftStemmingTokenizerLanguageConverter.map(obj.getLanguage());
-            microsoftLanguageStemmingTokenizer.setLanguage(language);
+            microsoftLanguageStemmingTokenizer.setLanguage(obj.getLanguage());
         }
 
         Boolean isSearchTokenizer = obj.isSearchTokenizer();
@@ -51,9 +48,7 @@ public final class MicrosoftLanguageStemmingTokenizerConverter {
         microsoftLanguageStemmingTokenizer.setMaxTokenLength(maxTokenLength);
 
         if (obj.getLanguage() != null) {
-            com.azure.search.documents.indexes.implementation.models.MicrosoftStemmingTokenizerLanguage language =
-                MicrosoftStemmingTokenizerLanguageConverter.map(obj.getLanguage());
-            microsoftLanguageStemmingTokenizer.setLanguage(language);
+            microsoftLanguageStemmingTokenizer.setLanguage(obj.getLanguage());
         }
 
         Boolean isSearchTokenizer = obj.isSearchTokenizer();

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The LuceneStandardTokenizerV2 model. */
+/** Breaks text following the Unicode Text Segmentation rules. This tokenizer is implemented using Apache Lucene. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.StandardTokenizerV2")
 @JsonFlatten
@@ -27,9 +27,13 @@ public class LuceneStandardTokenizerV2 extends LexicalTokenizer {
     @JsonProperty(value = "maxTokenLength")
     private Integer maxTokenLength;
 
-    /** Creates an instance of LuceneStandardTokenizerV2 class. */
+    /**
+     * Creates an instance of LuceneStandardTokenizerV2 class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
-    public LuceneStandardTokenizerV2(@JsonProperty(value = "name") String name) {
+    public LuceneStandardTokenizerV2(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 
@@ -53,15 +57,5 @@ public class LuceneStandardTokenizerV2 extends LexicalTokenizer {
     public LuceneStandardTokenizerV2 setMaxTokenLength(Integer maxTokenLength) {
         this.maxTokenLength = maxTokenLength;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
     }
 }

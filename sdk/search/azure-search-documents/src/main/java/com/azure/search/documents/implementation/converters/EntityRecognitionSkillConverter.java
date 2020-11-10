@@ -4,9 +4,7 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.EntityRecognitionSkill;
-import com.azure.search.documents.indexes.models.EntityRecognitionSkillLanguage;
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
-import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,9 +25,7 @@ public final class EntityRecognitionSkillConverter {
 
         List<InputFieldMappingEntry> inputs = obj.getInputs() == null ? null
             : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-        List<OutputFieldMappingEntry> outputs = obj.getOutputs() == null ? null
-            : obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-        EntityRecognitionSkill entityRecognitionSkill = new EntityRecognitionSkill(inputs, outputs);
+        EntityRecognitionSkill entityRecognitionSkill = new EntityRecognitionSkill(inputs, obj.getOutputs());
 
 
         String name = obj.getName();
@@ -45,15 +41,11 @@ public final class EntityRecognitionSkillConverter {
         entityRecognitionSkill.setTypelessEntitiesIncluded(includeTypelessEntities);
 
         if (obj.getDefaultLanguageCode() != null) {
-            EntityRecognitionSkillLanguage defaultLanguageCode =
-                EntityRecognitionSkillLanguageConverter.map(obj.getDefaultLanguageCode());
-            entityRecognitionSkill.setDefaultLanguageCode(defaultLanguageCode);
+            entityRecognitionSkill.setDefaultLanguageCode(obj.getDefaultLanguageCode());
         }
 
         if (obj.getCategories() != null) {
-            entityRecognitionSkill.setCategories(obj.getCategories().stream()
-                .map(EntityCategoryConverter::map)
-                .collect(Collectors.toList()));
+            entityRecognitionSkill.setCategories(obj.getCategories());
         }
 
         Double minimumPrecision = obj.getMinimumPrecision();
@@ -70,15 +62,12 @@ public final class EntityRecognitionSkillConverter {
             return null;
         }
 
-        List<com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry> outputs =
-            obj.getOutputs() == null ? null
-                : obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-
         List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
             obj.getInputs() == null ? null
                 : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
         com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkill entityRecognitionSkill =
-            new com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkill(inputs, outputs);
+            new com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkill(inputs,
+                obj.getOutputs());
 
         String name = obj.getName();
         entityRecognitionSkill.setName(name);
@@ -93,20 +82,16 @@ public final class EntityRecognitionSkillConverter {
         entityRecognitionSkill.setIncludeTypelessEntities(includeTypelessEntities);
 
         if (obj.getDefaultLanguageCode() != null) {
-            com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkillLanguage defaultLanguageCode =
-                EntityRecognitionSkillLanguageConverter.map(obj.getDefaultLanguageCode());
-            entityRecognitionSkill.setDefaultLanguageCode(defaultLanguageCode);
+            entityRecognitionSkill.setDefaultLanguageCode(obj.getDefaultLanguageCode());
         }
 
         if (obj.getCategories() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.EntityCategory> categories =
-                obj.getCategories().stream().map(EntityCategoryConverter::map).collect(Collectors.toList());
-            entityRecognitionSkill.setCategories(categories);
+            entityRecognitionSkill.setCategories(obj.getCategories());
         }
 
         Double minimumPrecision = obj.getMinimumPrecision();
         entityRecognitionSkill.setMinimumPrecision(minimumPrecision);
-        entityRecognitionSkill.validate();
+
         return entityRecognitionSkill;
     }
 

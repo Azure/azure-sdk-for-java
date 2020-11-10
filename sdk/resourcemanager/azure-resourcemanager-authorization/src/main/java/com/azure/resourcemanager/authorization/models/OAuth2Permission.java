@@ -9,7 +9,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The OAuth2Permission model. */
+/**
+ * Represents an OAuth 2.0 delegated permission scope. The specified OAuth 2.0 delegated permission scopes may be
+ * requested by client applications (through the requiredResourceAccess collection on the Application object) when
+ * calling a resource application. The oauth2Permissions property of the ServicePrincipal entity and of the Application
+ * entity is a collection of OAuth2Permission.
+ */
 @Fluent
 public final class OAuth2Permission {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OAuth2Permission.class);

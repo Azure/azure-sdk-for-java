@@ -6,7 +6,6 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.compute.ComputeManager;
-import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -17,7 +16,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCr
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import java.io.IOException;
 import java.util.List;
 import reactor.core.publisher.Mono;
@@ -34,8 +32,7 @@ public interface VirtualMachineScaleSets
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<VirtualMachineScaleSet>,
         SupportsBatchDeletion,
-        HasManager<ComputeManager>,
-        HasInner<VirtualMachineScaleSetsClient> {
+        HasManager<ComputeManager> {
     /**
      * Shuts down the virtual machines in the scale set and releases the compute resources.
      *

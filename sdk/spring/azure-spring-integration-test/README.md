@@ -1,6 +1,6 @@
 # Azure Spring Integration shared library for Java
+This package is an internal package providing test base classes for Azure Spring integration.
 
-## Key concepts
 ## Getting started
 ## Key concepts
 ## Examples

@@ -5,7 +5,6 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.compute.ComputeManager;
-import com.azure.resourcemanager.compute.fluent.DisksClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -17,7 +16,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreatin
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
 /** Entry point to managed disk management API in Azure. */
@@ -32,8 +30,7 @@ public interface Disks
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<Disk>,
         SupportsBatchDeletion,
-        HasManager<ComputeManager>,
-        HasInner<DisksClient> {
+        HasManager<ComputeManager> {
 
     /**
      * Grants access to a disk.

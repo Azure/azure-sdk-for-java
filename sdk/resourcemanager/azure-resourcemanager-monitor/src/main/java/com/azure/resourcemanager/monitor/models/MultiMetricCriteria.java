@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** The MultiMetricCriteria model. */
+/** The types of conditions for a multi resource alert. */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -61,6 +61,13 @@ public class MultiMetricCriteria {
      */
     @JsonProperty(value = "dimensions")
     private List<MetricDimension> dimensions;
+
+    /*
+     * Allows creating an alert rule on a custom metric that isn't yet emitted,
+     * by causing the metric validation to be skipped.
+     */
+    @JsonProperty(value = "skipMetricValidation")
+    private Boolean skipMetricValidation;
 
     /*
      * The types of conditions for a multi resource alert.
@@ -164,6 +171,28 @@ public class MultiMetricCriteria {
      */
     public MultiMetricCriteria withDimensions(List<MetricDimension> dimensions) {
         this.dimensions = dimensions;
+        return this;
+    }
+
+    /**
+     * Get the skipMetricValidation property: Allows creating an alert rule on a custom metric that isn't yet emitted,
+     * by causing the metric validation to be skipped.
+     *
+     * @return the skipMetricValidation value.
+     */
+    public Boolean skipMetricValidation() {
+        return this.skipMetricValidation;
+    }
+
+    /**
+     * Set the skipMetricValidation property: Allows creating an alert rule on a custom metric that isn't yet emitted,
+     * by causing the metric validation to be skipped.
+     *
+     * @param skipMetricValidation the skipMetricValidation value to set.
+     * @return the MultiMetricCriteria object itself.
+     */
+    public MultiMetricCriteria withSkipMetricValidation(Boolean skipMetricValidation) {
+        this.skipMetricValidation = skipMetricValidation;
         return this;
     }
 

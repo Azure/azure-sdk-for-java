@@ -142,7 +142,8 @@ public final class BlobUrlParts {
     /**
      * Sets the blob name that will be used as part of the URL path.
      *
-     * @param blobName The blob name.
+     * @param blobName The blob name. If the blob name contains special characters, pass in the url encoded version
+     * of the blob name.
      * @return the updated BlobUrlParts object.
      */
     public BlobUrlParts setBlobName(String blobName) {

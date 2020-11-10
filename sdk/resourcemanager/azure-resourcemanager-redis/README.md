@@ -15,7 +15,7 @@ Azure Resource Manager redis cache client library for Java
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-redis</artifactId>
-    <version>2.0.0-beta.4</version>
+    <version>2.0.0-beta.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -31,7 +31,7 @@ Azure Resource Manager redis cache client library for Java
 ## Contributing
 
 If you would like to become an active contributor to this project please follow the instructions provided in [Microsoft
-Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
+Azure Projects Contribution Guidelines](https://azure.github.io/guidelines.html).
 
 1. Fork it
 1. Create your feature branch (`git checkout -b my-new-feature`)

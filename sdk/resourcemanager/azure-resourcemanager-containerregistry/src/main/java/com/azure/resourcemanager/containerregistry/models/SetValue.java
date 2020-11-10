@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SetValue model. */
+/** The properties of a overridable value that can be passed to a task template. */
 @Fluent
 public final class SetValue {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SetValue.class);

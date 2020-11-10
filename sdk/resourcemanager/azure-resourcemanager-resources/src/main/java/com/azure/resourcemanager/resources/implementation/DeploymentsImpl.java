@@ -12,7 +12,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.SupportsGettingByResourceGroupImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
-import com.azure.resourcemanager.resources.fluent.inner.DeploymentExtendedInner;
+import com.azure.resourcemanager.resources.fluent.models.DeploymentExtendedInner;
 import com.azure.resourcemanager.resources.fluent.DeploymentsClient;
 import reactor.core.publisher.Mono;
 
@@ -37,7 +37,7 @@ public final class DeploymentsImpl
 
     @Override
     public PagedIterable<Deployment> listByResourceGroup(String groupName) {
-        return this.manager().inner().getDeployments()
+        return this.manager().serviceClient().getDeployments()
             .listByResourceGroup(groupName).mapPage(inner -> createFluentModel(inner));
     }
 
@@ -48,13 +48,13 @@ public final class DeploymentsImpl
 
     @Override
     public Mono<Deployment> getByNameAsync(String name) {
-        return this.manager().inner().getDeployments().getAtTenantScopeAsync(name)
+        return this.manager().serviceClient().getDeployments().getAtTenantScopeAsync(name)
             .map(inner -> new DeploymentImpl(inner, inner.name(), this.resourceManager));
     }
 
     @Override
     public Mono<Deployment> getByResourceGroupAsync(String groupName, String name) {
-        return this.manager().inner().getDeployments()
+        return this.manager().serviceClient().getDeployments()
             .getByResourceGroupAsync(groupName, name).map(deploymentExtendedInner -> {
                 if (deploymentExtendedInner != null) {
                     return createFluentModel(deploymentExtendedInner);
@@ -72,7 +72,7 @@ public final class DeploymentsImpl
 
     @Override
     public Mono<Void> deleteByResourceGroupAsync(String groupName, String name) {
-        return this.manager().inner().getDeployments().deleteAsync(groupName, name);
+        return this.manager().serviceClient().getDeployments().deleteAsync(groupName, name);
     }
 
     @Override
@@ -82,7 +82,7 @@ public final class DeploymentsImpl
 
     @Override
     public boolean checkExistence(String resourceGroupName, String deploymentName) {
-        return this.manager().inner().getDeployments().checkExistence(resourceGroupName, deploymentName);
+        return this.manager().serviceClient().getDeployments().checkExistence(resourceGroupName, deploymentName);
     }
 
     protected DeploymentImpl createFluentModel(String name) {
@@ -117,14 +117,14 @@ public final class DeploymentsImpl
 
     @Override
     public PagedFlux<Deployment> listAsync() {
-        return PagedConverter.flatMapPage(this.manager().resourceGroups().listAsync(),
+        return PagedConverter.mergePagedFlux(this.manager().resourceGroups().listAsync(),
             resourceGroup -> listByResourceGroupAsync(resourceGroup.name()));
     }
 
 
     @Override
     public PagedFlux<Deployment> listByResourceGroupAsync(String resourceGroupName) {
-        final DeploymentsClient client = this.manager().inner().getDeployments();
+        final DeploymentsClient client = this.manager().serviceClient().getDeployments();
         return client.listByResourceGroupAsync(resourceGroupName)
             .mapPage(deploymentExtendedInner -> createFluentModel(deploymentExtendedInner));
     }

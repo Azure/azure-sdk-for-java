@@ -14,7 +14,7 @@ import com.azure.resourcemanager.containerregistry.models.SourceTriggerUpdatePar
 import com.azure.resourcemanager.containerregistry.models.SourceUpdateParameters;
 import com.azure.resourcemanager.containerregistry.models.TokenType;
 import com.azure.resourcemanager.containerregistry.models.TriggerStatus;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +23,7 @@ class RegistrySourceTriggerImpl
         RegistrySourceTrigger.Definition,
         RegistrySourceTrigger.Update,
         RegistrySourceTrigger.UpdateDefinition,
-        HasInner<SourceTrigger> {
+        HasInnerModel<SourceTrigger> {
     private SourceTrigger inner;
     private RegistryTaskImpl registryTaskImpl;
     private SourceTriggerUpdateParameters sourceTriggerUpdateParameters;
@@ -31,7 +31,7 @@ class RegistrySourceTriggerImpl
     RegistrySourceTriggerImpl(String sourceTriggerName, RegistryTaskImpl registryTaskImpl, boolean creation) {
         if (creation) {
             this.registryTaskImpl = registryTaskImpl;
-            if (registryTaskImpl.inner().id() == null) {
+            if (registryTaskImpl.innerModel().id() == null) {
                 this.inner = new SourceTrigger();
                 this.inner.withSourceRepository(new SourceProperties());
                 this.inner.withName(sourceTriggerName);
@@ -258,12 +258,12 @@ class RegistrySourceTriggerImpl
     }
 
     @Override
-    public SourceTrigger inner() {
+    public SourceTrigger innerModel() {
         return this.inner;
     }
 
     private boolean isInCreateMode() {
-        if (this.registryTaskImpl.inner().id() == null) {
+        if (this.registryTaskImpl.innerModel().id() == null) {
             return true;
         }
         return false;

@@ -4,250 +4,40 @@
 
 package com.azure.resourcemanager.appplatform.fluent;
 
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.Delete;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Headers;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.Patch;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
-import com.azure.core.annotation.Put;
-import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
-import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.core.util.serializer.CollectionFormat;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.resourcemanager.appplatform.AppPlatformManagementClient;
-import com.azure.resourcemanager.appplatform.fluent.inner.DeploymentResourceCollectionInner;
-import com.azure.resourcemanager.appplatform.fluent.inner.DeploymentResourceInner;
-import com.azure.resourcemanager.appplatform.fluent.inner.LogFileUrlResponseInner;
-import com.azure.resourcemanager.appplatform.models.DeploymentResourceProperties;
+import com.azure.resourcemanager.appplatform.fluent.models.DeploymentResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.LogFileUrlResponseInner;
 import java.nio.ByteBuffer;
 import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Deployments. */
-public final class DeploymentsClient {
-    private final ClientLogger logger = new ClientLogger(DeploymentsClient.class);
-
-    /** The proxy service used to perform REST calls. */
-    private final DeploymentsService service;
-
-    /** The service client containing this operation class. */
-    private final AppPlatformManagementClient client;
-
+/** An instance of this class provides access to all the operations defined in DeploymentsClient. */
+public interface DeploymentsClient {
     /**
-     * Initializes an instance of DeploymentsClient.
+     * Get a Deployment and its properties.
      *
-     * @param client the instance of the service client containing this operation class.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Deployment and its properties.
      */
-    public DeploymentsClient(AppPlatformManagementClient client) {
-        this.service =
-            RestProxy.create(DeploymentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
-    }
-
-    /**
-     * The interface defining all the services for AppPlatformManagementClientDeployments to be used by the proxy
-     * service to perform REST calls.
-     */
-    @Host("{$host}")
-    @ServiceInterface(name = "AppPlatformManagemen")
-    private interface DeploymentsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/deployments/{deploymentName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("appName") String appName,
-            @PathParam("deploymentName") String deploymentName,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/deployments/{deploymentName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("appName") String appName,
-            @PathParam("deploymentName") String deploymentName,
-            @BodyParam("application/json") DeploymentResourceInner deploymentResource,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/deployments/{deploymentName}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("appName") String appName,
-            @PathParam("deploymentName") String deploymentName,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/deployments/{deploymentName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("appName") String appName,
-            @PathParam("deploymentName") String deploymentName,
-            @BodyParam("application/json") DeploymentResourceInner deploymentResource,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/deployments")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentResourceCollectionInner>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("appName") String appName,
-            @QueryParam("version") String version,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/deployments")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentResourceCollectionInner>> listClusterAllDeployments(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("version") String version,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/deployments/{deploymentName}/start")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> start(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("appName") String appName,
-            @PathParam("deploymentName") String deploymentName,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/deployments/{deploymentName}/stop")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> stop(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("appName") String appName,
-            @PathParam("deploymentName") String deploymentName,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/deployments/{deploymentName}/restart")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> restart(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("appName") String appName,
-            @PathParam("deploymentName") String deploymentName,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/deployments/{deploymentName}/getLogFileUrl")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LogFileUrlResponseInner>> getLogFileUrl(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("appName") String appName,
-            @PathParam("deploymentName") String deploymentName,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentResourceCollectionInner>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentResourceCollectionInner>> listClusterAllDeploymentsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-    }
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<DeploymentResourceInner>> getWithResponseAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName);
 
     /**
      * Get a Deployment and its properties.
@@ -258,53 +48,29 @@ public final class DeploymentsClient {
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Deployment and its properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeploymentResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            appName,
-                            deploymentName,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<DeploymentResourceInner> getAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName);
+
+    /**
+     * Get a Deployment and its properties.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Deployment and its properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DeploymentResourceInner get(String resourceGroupName, String serviceName, String appName, String deploymentName);
 
     /**
      * Get a Deployment and its properties.
@@ -316,506 +82,171 @@ public final class DeploymentsClient {
      * @param deploymentName The name of the Deployment resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Deployment and its properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeploymentResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                appName,
-                deploymentName,
-                context);
-    }
+    Response<DeploymentResourceInner> getWithResponse(
+        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context);
 
     /**
-     * Get a Deployment and its properties.
+     * Create a new Deployment or update an exiting Deployment.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
+     * @param deploymentResource Deployment resource payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Deployment and its properties.
+     * @return deployment resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentResourceInner> getAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName) {
-        return getWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName)
-            .flatMap(
-                (Response<DeploymentResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DeploymentResourceInner deploymentResource);
 
     /**
-     * Get a Deployment and its properties.
+     * Create a new Deployment or update an exiting Deployment.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
+     * @param deploymentResource Deployment resource payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginCreateOrUpdateAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DeploymentResourceInner deploymentResource);
+
+    /**
+     * Create a new Deployment or update an exiting Deployment.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param deploymentResource Deployment resource payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DeploymentResourceInner deploymentResource);
+
+    /**
+     * Create a new Deployment or update an exiting Deployment.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param deploymentResource Deployment resource payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Deployment and its properties.
+     * @return deployment resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentResourceInner> getAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
-        return getWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName, context)
-            .flatMap(
-                (Response<DeploymentResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
+    SyncPoller<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DeploymentResourceInner deploymentResource,
+        Context context);
 
     /**
-     * Get a Deployment and its properties.
+     * Create a new Deployment or update an exiting Deployment.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
+     * @param deploymentResource Deployment resource payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Deployment and its properties.
+     * @return deployment resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeploymentResourceInner get(
-        String resourceGroupName, String serviceName, String appName, String deploymentName) {
-        return getAsync(resourceGroupName, serviceName, appName, deploymentName).block();
-    }
+    Mono<DeploymentResourceInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DeploymentResourceInner deploymentResource);
 
     /**
-     * Get a Deployment and its properties.
+     * Create a new Deployment or update an exiting Deployment.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
+     * @param deploymentResource Deployment resource payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DeploymentResourceInner createOrUpdate(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DeploymentResourceInner deploymentResource);
+
+    /**
+     * Create a new Deployment or update an exiting Deployment.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param deploymentResource Deployment resource payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Deployment and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeploymentResourceInner get(
-        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
-        return getAsync(resourceGroupName, serviceName, appName, deploymentName, context).block();
-    }
-
-    /**
-     * Create a new Deployment or update an exiting Deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+    DeploymentResourceInner createOrUpdate(
         String resourceGroupName,
         String serviceName,
         String appName,
         String deploymentName,
-        DeploymentResourceProperties properties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        if (properties != null) {
-            properties.validate();
-        }
-        DeploymentResourceInner deploymentResource = new DeploymentResourceInner();
-        deploymentResource.withProperties(properties);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            appName,
-                            deploymentName,
-                            deploymentResource,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Create a new Deployment or update an exiting Deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DeploymentResourceProperties properties,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        if (properties != null) {
-            properties.validate();
-        }
-        DeploymentResourceInner deploymentResource = new DeploymentResourceInner();
-        deploymentResource.withProperties(properties);
-        context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                appName,
-                deploymentName,
-                deploymentResource,
-                context);
-    }
-
-    /**
-     * Create a new Deployment or update an exiting Deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DeploymentResourceProperties properties) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName, properties);
-        return this
-            .client
-            .<DeploymentResourceInner, DeploymentResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DeploymentResourceInner.class,
-                DeploymentResourceInner.class,
-                Context.NONE);
-    }
-
-    /**
-     * Create a new Deployment or update an exiting Deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DeploymentResourceProperties properties,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, serviceName, appName, deploymentName, properties, context);
-        return this
-            .client
-            .<DeploymentResourceInner, DeploymentResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DeploymentResourceInner.class,
-                DeploymentResourceInner.class,
-                context);
-    }
-
-    /**
-     * Create a new Deployment or update an exiting Deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DeploymentResourceProperties properties) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, properties)
-            .getSyncPoller();
-    }
-
-    /**
-     * Create a new Deployment or update an exiting Deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DeploymentResourceProperties properties,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, properties, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Create a new Deployment or update an exiting Deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DeploymentResourceProperties properties) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, properties)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create a new Deployment or update an exiting Deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DeploymentResourceProperties properties,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, properties, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create a new Deployment or update an exiting Deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeploymentResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DeploymentResourceProperties properties) {
-        return createOrUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, properties).block();
-    }
-
-    /**
-     * Create a new Deployment or update an exiting Deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeploymentResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DeploymentResourceProperties properties,
-        Context context) {
-        return createOrUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, properties, context)
-            .block();
-    }
+        DeploymentResourceInner deploymentResource,
+        Context context);
 
     /**
      * Operation to delete a Deployment.
@@ -826,53 +257,47 @@ public final class DeploymentsClient {
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            appName,
-                            deploymentName,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName);
+
+    /**
+     * Operation to delete a Deployment.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName);
+
+    /**
+     * Operation to delete a Deployment.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String serviceName, String appName, String deploymentName);
 
     /**
      * Operation to delete a Deployment.
@@ -884,50 +309,13 @@ public final class DeploymentsClient {
      * @param deploymentName The name of the Deployment resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                appName,
-                deploymentName,
-                context);
-    }
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context);
 
     /**
      * Operation to delete a Deployment.
@@ -938,15 +326,27 @@ public final class DeploymentsClient {
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String appName, String deploymentName) {
-        return deleteWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
+    Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String appName, String deploymentName);
+
+    /**
+     * Operation to delete a Deployment.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String serviceName, String appName, String deploymentName);
 
     /**
      * Operation to delete a Deployment.
@@ -958,120 +358,101 @@ public final class DeploymentsClient {
      * @param deploymentName The name of the Deployment resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
+    void delete(String resourceGroupName, String serviceName, String appName, String deploymentName, Context context);
 
     /**
-     * Operation to delete a Deployment.
+     * Operation to update an exiting Deployment.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
+     * @param deploymentResource Deployment resource payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String serviceName, String appName, String deploymentName) {
-        deleteAsync(resourceGroupName, serviceName, appName, deploymentName).block();
-    }
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DeploymentResourceInner deploymentResource);
 
     /**
-     * Operation to delete a Deployment.
+     * Operation to update an exiting Deployment.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
+     * @param deploymentResource Deployment resource payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginUpdateAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DeploymentResourceInner deploymentResource);
+
+    /**
+     * Operation to update an exiting Deployment.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param deploymentResource Deployment resource payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginUpdate(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DeploymentResourceInner deploymentResource);
+
+    /**
+     * Operation to update an exiting Deployment.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param deploymentResource Deployment resource payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
-        deleteAsync(resourceGroupName, serviceName, appName, deploymentName, context).block();
-    }
-
-    /**
-     * Operation to update an exiting Deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+    SyncPoller<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginUpdate(
         String resourceGroupName,
         String serviceName,
         String appName,
         String deploymentName,
-        DeploymentResourceProperties properties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        if (properties != null) {
-            properties.validate();
-        }
-        DeploymentResourceInner deploymentResource = new DeploymentResourceInner();
-        deploymentResource.withProperties(properties);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            appName,
-                            deploymentName,
-                            deploymentResource,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+        DeploymentResourceInner deploymentResource,
+        Context context);
 
     /**
      * Operation to update an exiting Deployment.
@@ -1081,288 +462,65 @@ public final class DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
+     * @param deploymentResource Deployment resource payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<DeploymentResourceInner> updateAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DeploymentResourceInner deploymentResource);
+
+    /**
+     * Operation to update an exiting Deployment.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param deploymentResource Deployment resource payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DeploymentResourceInner update(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DeploymentResourceInner deploymentResource);
+
+    /**
+     * Operation to update an exiting Deployment.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param deploymentResource Deployment resource payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+    DeploymentResourceInner update(
         String resourceGroupName,
         String serviceName,
         String appName,
         String deploymentName,
-        DeploymentResourceProperties properties,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        if (properties != null) {
-            properties.validate();
-        }
-        DeploymentResourceInner deploymentResource = new DeploymentResourceInner();
-        deploymentResource.withProperties(properties);
-        context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                appName,
-                deploymentName,
-                deploymentResource,
-                context);
-    }
-
-    /**
-     * Operation to update an exiting Deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DeploymentResourceProperties properties) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName, properties);
-        return this
-            .client
-            .<DeploymentResourceInner, DeploymentResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DeploymentResourceInner.class,
-                DeploymentResourceInner.class,
-                Context.NONE);
-    }
-
-    /**
-     * Operation to update an exiting Deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DeploymentResourceProperties properties,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName, properties, context);
-        return this
-            .client
-            .<DeploymentResourceInner, DeploymentResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DeploymentResourceInner.class,
-                DeploymentResourceInner.class,
-                context);
-    }
-
-    /**
-     * Operation to update an exiting Deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DeploymentResourceProperties properties) {
-        return beginUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, properties).getSyncPoller();
-    }
-
-    /**
-     * Operation to update an exiting Deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DeploymentResourceProperties properties,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, properties, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Operation to update an exiting Deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentResourceInner> updateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DeploymentResourceProperties properties) {
-        return beginUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, properties)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Operation to update an exiting Deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentResourceInner> updateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DeploymentResourceProperties properties,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, properties, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Operation to update an exiting Deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeploymentResourceInner update(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DeploymentResourceProperties properties) {
-        return updateAsync(resourceGroupName, serviceName, appName, deploymentName, properties).block();
-    }
-
-    /**
-     * Operation to update an exiting Deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeploymentResourceInner update(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DeploymentResourceProperties properties,
-        Context context) {
-        return updateAsync(resourceGroupName, serviceName, appName, deploymentName, properties, context).block();
-    }
+        DeploymentResourceInner deploymentResource,
+        Context context);
 
     /**
      * Handles requests to list all resources in an App.
@@ -1373,61 +531,28 @@ public final class DeploymentsClient {
      * @param appName The name of the App resource.
      * @param version Array of Get5ItemsItem.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of App resources and a possible link for next set.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DeploymentResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String serviceName, String appName, List<String> version) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        String versionConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(version, CollectionFormat.CSV);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            appName,
-                            versionConverted,
-                            context))
-            .<PagedResponse<DeploymentResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<DeploymentResourceInner> listAsync(
+        String resourceGroupName, String serviceName, String appName, List<String> version);
+
+    /**
+     * Handles requests to list all resources in an App.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return object that includes an array of App resources and a possible link for next set.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<DeploymentResourceInner> listAsync(String resourceGroupName, String serviceName, String appName);
 
     /**
      * Handles requests to list all resources in an App.
@@ -1439,101 +564,13 @@ public final class DeploymentsClient {
      * @param version Array of Get5ItemsItem.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DeploymentResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String serviceName, String appName, List<String> version, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        String versionConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(version, CollectionFormat.CSV);
-        context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                appName,
-                versionConverted,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Handles requests to list all resources in an App.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param version Array of Get5ItemsItem.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of App resources and a possible link for next set.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeploymentResourceInner> listAsync(
-        String resourceGroupName, String serviceName, String appName, List<String> version) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, serviceName, appName, version),
-            nextLink -> listNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Handles requests to list all resources in an App.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param version Array of Get5ItemsItem.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeploymentResourceInner> listAsync(
-        String resourceGroupName, String serviceName, String appName, List<String> version, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, serviceName, appName, version, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
-    }
+    PagedIterable<DeploymentResourceInner> list(
+        String resourceGroupName, String serviceName, String appName, List<String> version, Context context);
 
     /**
      * Handles requests to list all resources in an App.
@@ -1543,76 +580,12 @@ public final class DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of App resources and a possible link for next set.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeploymentResourceInner> listAsync(String resourceGroupName, String serviceName, String appName) {
-        final List<String> version = null;
-        final Context context = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, serviceName, appName, version),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Handles requests to list all resources in an App.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param version Array of Get5ItemsItem.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeploymentResourceInner> list(
-        String resourceGroupName, String serviceName, String appName, List<String> version) {
-        return new PagedIterable<>(listAsync(resourceGroupName, serviceName, appName, version));
-    }
-
-    /**
-     * Handles requests to list all resources in an App.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param version Array of Get5ItemsItem.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeploymentResourceInner> list(
-        String resourceGroupName, String serviceName, String appName, List<String> version, Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, serviceName, appName, version, context));
-    }
-
-    /**
-     * Handles requests to list all resources in an App.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeploymentResourceInner> list(String resourceGroupName, String serviceName, String appName) {
-        final List<String> version = null;
-        final Context context = null;
-        return new PagedIterable<>(listAsync(resourceGroupName, serviceName, appName, version));
-    }
+    PagedIterable<DeploymentResourceInner> list(String resourceGroupName, String serviceName, String appName);
 
     /**
      * List deployments for a certain service.
@@ -1622,57 +595,27 @@ public final class DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param version Array of Get4ItemsItem.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of App resources and a possible link for next set.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DeploymentResourceInner>> listClusterAllDeploymentsSinglePageAsync(
-        String resourceGroupName, String serviceName, List<String> version) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        String versionConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(version, CollectionFormat.CSV);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listClusterAllDeployments(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            versionConverted,
-                            context))
-            .<PagedResponse<DeploymentResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<DeploymentResourceInner> listForClusterAsync(
+        String resourceGroupName, String serviceName, List<String> version);
+
+    /**
+     * List deployments for a certain service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return object that includes an array of App resources and a possible link for next set.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<DeploymentResourceInner> listForClusterAsync(String resourceGroupName, String serviceName);
 
     /**
      * List deployments for a certain service.
@@ -1683,95 +626,13 @@ public final class DeploymentsClient {
      * @param version Array of Get4ItemsItem.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DeploymentResourceInner>> listClusterAllDeploymentsSinglePageAsync(
-        String resourceGroupName, String serviceName, List<String> version, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        String versionConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(version, CollectionFormat.CSV);
-        context = this.client.mergeContext(context);
-        return service
-            .listClusterAllDeployments(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                versionConverted,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * List deployments for a certain service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param version Array of Get4ItemsItem.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of App resources and a possible link for next set.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeploymentResourceInner> listClusterAllDeploymentsAsync(
-        String resourceGroupName, String serviceName, List<String> version) {
-        return new PagedFlux<>(
-            () -> listClusterAllDeploymentsSinglePageAsync(resourceGroupName, serviceName, version),
-            nextLink -> listClusterAllDeploymentsNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * List deployments for a certain service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param version Array of Get4ItemsItem.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeploymentResourceInner> listClusterAllDeploymentsAsync(
-        String resourceGroupName, String serviceName, List<String> version, Context context) {
-        return new PagedFlux<>(
-            () -> listClusterAllDeploymentsSinglePageAsync(resourceGroupName, serviceName, version, context),
-            nextLink -> listClusterAllDeploymentsNextSinglePageAsync(nextLink, context));
-    }
+    PagedIterable<DeploymentResourceInner> listForCluster(
+        String resourceGroupName, String serviceName, List<String> version, Context context);
 
     /**
      * List deployments for a certain service.
@@ -1780,75 +641,12 @@ public final class DeploymentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of App resources and a possible link for next set.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeploymentResourceInner> listClusterAllDeploymentsAsync(
-        String resourceGroupName, String serviceName) {
-        final List<String> version = null;
-        final Context context = null;
-        return new PagedFlux<>(
-            () -> listClusterAllDeploymentsSinglePageAsync(resourceGroupName, serviceName, version),
-            nextLink -> listClusterAllDeploymentsNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * List deployments for a certain service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param version Array of Get4ItemsItem.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeploymentResourceInner> listClusterAllDeployments(
-        String resourceGroupName, String serviceName, List<String> version) {
-        return new PagedIterable<>(listClusterAllDeploymentsAsync(resourceGroupName, serviceName, version));
-    }
-
-    /**
-     * List deployments for a certain service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param version Array of Get4ItemsItem.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeploymentResourceInner> listClusterAllDeployments(
-        String resourceGroupName, String serviceName, List<String> version, Context context) {
-        return new PagedIterable<>(listClusterAllDeploymentsAsync(resourceGroupName, serviceName, version, context));
-    }
-
-    /**
-     * List deployments for a certain service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeploymentResourceInner> listClusterAllDeployments(
-        String resourceGroupName, String serviceName) {
-        final List<String> version = null;
-        final Context context = null;
-        return new PagedIterable<>(listClusterAllDeploymentsAsync(resourceGroupName, serviceName, version));
-    }
+    PagedIterable<DeploymentResourceInner> listForCluster(String resourceGroupName, String serviceName);
 
     /**
      * Start the deployment.
@@ -1859,53 +657,47 @@ public final class DeploymentsClient {
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .start(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            appName,
-                            deploymentName,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName);
+
+    /**
+     * Start the deployment.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<Void>, Void> beginStartAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName);
+
+    /**
+     * Start the deployment.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginStart(
+        String resourceGroupName, String serviceName, String appName, String deploymentName);
 
     /**
      * Start the deployment.
@@ -1917,50 +709,13 @@ public final class DeploymentsClient {
      * @param deploymentName The name of the Deployment resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .start(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                appName,
-                deploymentName,
-                context);
-    }
+    SyncPoller<PollResult<Void>, Void> beginStart(
+        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context);
 
     /**
      * Start the deployment.
@@ -1971,19 +726,27 @@ public final class DeploymentsClient {
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginStartAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            startWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
-    }
+    Mono<Void> startAsync(String resourceGroupName, String serviceName, String appName, String deploymentName);
+
+    /**
+     * Start the deployment.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void start(String resourceGroupName, String serviceName, String appName, String deploymentName);
 
     /**
      * Start the deployment.
@@ -1995,137 +758,11 @@ public final class DeploymentsClient {
      * @param deploymentName The name of the Deployment resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginStartAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            startWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Start the deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginStart(
-        String resourceGroupName, String serviceName, String appName, String deploymentName) {
-        return beginStartAsync(resourceGroupName, serviceName, appName, deploymentName).getSyncPoller();
-    }
-
-    /**
-     * Start the deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginStart(
-        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
-        return beginStartAsync(resourceGroupName, serviceName, appName, deploymentName, context).getSyncPoller();
-    }
-
-    /**
-     * Start the deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> startAsync(String resourceGroupName, String serviceName, String appName, String deploymentName) {
-        return beginStartAsync(resourceGroupName, serviceName, appName, deploymentName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Start the deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> startAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
-        return beginStartAsync(resourceGroupName, serviceName, appName, deploymentName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Start the deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void start(String resourceGroupName, String serviceName, String appName, String deploymentName) {
-        startAsync(resourceGroupName, serviceName, appName, deploymentName).block();
-    }
-
-    /**
-     * Start the deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void start(
-        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
-        startAsync(resourceGroupName, serviceName, appName, deploymentName, context).block();
-    }
+    void start(String resourceGroupName, String serviceName, String appName, String deploymentName, Context context);
 
     /**
      * Stop the deployment.
@@ -2136,53 +773,47 @@ public final class DeploymentsClient {
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .stop(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            appName,
-                            deploymentName,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName);
+
+    /**
+     * Stop the deployment.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<Void>, Void> beginStopAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName);
+
+    /**
+     * Stop the deployment.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginStop(
+        String resourceGroupName, String serviceName, String appName, String deploymentName);
 
     /**
      * Stop the deployment.
@@ -2194,50 +825,13 @@ public final class DeploymentsClient {
      * @param deploymentName The name of the Deployment resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .stop(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                appName,
-                deploymentName,
-                context);
-    }
+    SyncPoller<PollResult<Void>, Void> beginStop(
+        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context);
 
     /**
      * Stop the deployment.
@@ -2248,19 +842,27 @@ public final class DeploymentsClient {
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginStopAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            stopWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
-    }
+    Mono<Void> stopAsync(String resourceGroupName, String serviceName, String appName, String deploymentName);
+
+    /**
+     * Stop the deployment.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void stop(String resourceGroupName, String serviceName, String appName, String deploymentName);
 
     /**
      * Stop the deployment.
@@ -2272,137 +874,11 @@ public final class DeploymentsClient {
      * @param deploymentName The name of the Deployment resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginStopAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            stopWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Stop the deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginStop(
-        String resourceGroupName, String serviceName, String appName, String deploymentName) {
-        return beginStopAsync(resourceGroupName, serviceName, appName, deploymentName).getSyncPoller();
-    }
-
-    /**
-     * Stop the deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginStop(
-        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
-        return beginStopAsync(resourceGroupName, serviceName, appName, deploymentName, context).getSyncPoller();
-    }
-
-    /**
-     * Stop the deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> stopAsync(String resourceGroupName, String serviceName, String appName, String deploymentName) {
-        return beginStopAsync(resourceGroupName, serviceName, appName, deploymentName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Stop the deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> stopAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
-        return beginStopAsync(resourceGroupName, serviceName, appName, deploymentName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Stop the deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void stop(String resourceGroupName, String serviceName, String appName, String deploymentName) {
-        stopAsync(resourceGroupName, serviceName, appName, deploymentName).block();
-    }
-
-    /**
-     * Stop the deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void stop(
-        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
-        stopAsync(resourceGroupName, serviceName, appName, deploymentName, context).block();
-    }
+    void stop(String resourceGroupName, String serviceName, String appName, String deploymentName, Context context);
 
     /**
      * Restart the deployment.
@@ -2413,53 +889,47 @@ public final class DeploymentsClient {
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .restart(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            appName,
-                            deploymentName,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName);
+
+    /**
+     * Restart the deployment.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<Void>, Void> beginRestartAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName);
+
+    /**
+     * Restart the deployment.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginRestart(
+        String resourceGroupName, String serviceName, String appName, String deploymentName);
 
     /**
      * Restart the deployment.
@@ -2471,50 +941,13 @@ public final class DeploymentsClient {
      * @param deploymentName The name of the Deployment resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .restart(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                appName,
-                deploymentName,
-                context);
-    }
+    SyncPoller<PollResult<Void>, Void> beginRestart(
+        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context);
 
     /**
      * Restart the deployment.
@@ -2525,19 +958,27 @@ public final class DeploymentsClient {
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginRestartAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            restartWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
-    }
+    Mono<Void> restartAsync(String resourceGroupName, String serviceName, String appName, String deploymentName);
+
+    /**
+     * Restart the deployment.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void restart(String resourceGroupName, String serviceName, String appName, String deploymentName);
 
     /**
      * Restart the deployment.
@@ -2549,138 +990,11 @@ public final class DeploymentsClient {
      * @param deploymentName The name of the Deployment resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginRestartAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            restartWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Restart the deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginRestart(
-        String resourceGroupName, String serviceName, String appName, String deploymentName) {
-        return beginRestartAsync(resourceGroupName, serviceName, appName, deploymentName).getSyncPoller();
-    }
-
-    /**
-     * Restart the deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginRestart(
-        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
-        return beginRestartAsync(resourceGroupName, serviceName, appName, deploymentName, context).getSyncPoller();
-    }
-
-    /**
-     * Restart the deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> restartAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName) {
-        return beginRestartAsync(resourceGroupName, serviceName, appName, deploymentName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Restart the deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> restartAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
-        return beginRestartAsync(resourceGroupName, serviceName, appName, deploymentName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Restart the deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void restart(String resourceGroupName, String serviceName, String appName, String deploymentName) {
-        restartAsync(resourceGroupName, serviceName, appName, deploymentName).block();
-    }
-
-    /**
-     * Restart the deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void restart(
-        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
-        restartAsync(resourceGroupName, serviceName, appName, deploymentName, context).block();
-    }
+    void restart(String resourceGroupName, String serviceName, String appName, String deploymentName, Context context);
 
     /**
      * Get deployment log file URL.
@@ -2691,53 +1005,47 @@ public final class DeploymentsClient {
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment log file URL.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LogFileUrlResponseInner>> getLogFileUrlWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getLogFileUrl(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            appName,
-                            deploymentName,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<LogFileUrlResponseInner>> getLogFileUrlWithResponseAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName);
+
+    /**
+     * Get deployment log file URL.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment log file URL.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<LogFileUrlResponseInner> getLogFileUrlAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName);
+
+    /**
+     * Get deployment log file URL.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment log file URL.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LogFileUrlResponseInner getLogFileUrl(
+        String resourceGroupName, String serviceName, String appName, String deploymentName);
 
     /**
      * Get deployment log file URL.
@@ -2749,257 +1057,11 @@ public final class DeploymentsClient {
      * @param deploymentName The name of the Deployment resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment log file URL.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LogFileUrlResponseInner>> getLogFileUrlWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .getLogFileUrl(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                appName,
-                deploymentName,
-                context);
-    }
-
-    /**
-     * Get deployment log file URL.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment log file URL.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LogFileUrlResponseInner> getLogFileUrlAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName) {
-        return getLogFileUrlWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName)
-            .flatMap(
-                (Response<LogFileUrlResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get deployment log file URL.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment log file URL.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LogFileUrlResponseInner> getLogFileUrlAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
-        return getLogFileUrlWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName, context)
-            .flatMap(
-                (Response<LogFileUrlResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get deployment log file URL.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment log file URL.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LogFileUrlResponseInner getLogFileUrl(
-        String resourceGroupName, String serviceName, String appName, String deploymentName) {
-        return getLogFileUrlAsync(resourceGroupName, serviceName, appName, deploymentName).block();
-    }
-
-    /**
-     * Get deployment log file URL.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment log file URL.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LogFileUrlResponseInner getLogFileUrl(
-        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
-        return getLogFileUrlAsync(resourceGroupName, serviceName, appName, deploymentName, context).block();
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DeploymentResourceInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
-            .<PagedResponse<DeploymentResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DeploymentResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DeploymentResourceInner>> listClusterAllDeploymentsNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listClusterAllDeploymentsNext(nextLink, context))
-            .<PagedResponse<DeploymentResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DeploymentResourceInner>> listClusterAllDeploymentsNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listClusterAllDeploymentsNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
+    Response<LogFileUrlResponseInner> getLogFileUrlWithResponse(
+        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context);
 }

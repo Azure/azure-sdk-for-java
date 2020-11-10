@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
 
-/** The VaultPatchProperties model. */
+/** Properties of the vault. */
 @Fluent
 public final class VaultPatchProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VaultPatchProperties.class);
@@ -30,7 +30,7 @@ public final class VaultPatchProperties {
     private Sku sku;
 
     /*
-     * An array of 0 to 16 identities that have access to the key vault. All
+     * An array of 0 to 1024 identities that have access to the key vault. All
      * identities in the array must use the same tenant ID as the key vault's
      * tenant ID.
      */
@@ -133,8 +133,8 @@ public final class VaultPatchProperties {
     }
 
     /**
-     * Get the accessPolicies property: An array of 0 to 16 identities that have access to the key vault. All identities
-     * in the array must use the same tenant ID as the key vault's tenant ID.
+     * Get the accessPolicies property: An array of 0 to 1024 identities that have access to the key vault. All
+     * identities in the array must use the same tenant ID as the key vault's tenant ID.
      *
      * @return the accessPolicies value.
      */
@@ -143,8 +143,8 @@ public final class VaultPatchProperties {
     }
 
     /**
-     * Set the accessPolicies property: An array of 0 to 16 identities that have access to the key vault. All identities
-     * in the array must use the same tenant ID as the key vault's tenant ID.
+     * Set the accessPolicies property: An array of 0 to 1024 identities that have access to the key vault. All
+     * identities in the array must use the same tenant ID as the key vault's tenant ID.
      *
      * @param accessPolicies the accessPolicies value to set.
      * @return the VaultPatchProperties object itself.

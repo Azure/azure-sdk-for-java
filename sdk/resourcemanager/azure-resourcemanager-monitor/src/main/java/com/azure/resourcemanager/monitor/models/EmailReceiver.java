@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The EmailReceiver model. */
+/** An email receiver. */
 @Fluent
 public final class EmailReceiver {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EmailReceiver.class);

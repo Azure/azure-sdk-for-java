@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The HostingEnvironmentProfile model. */
+/** Specification for an App Service Environment to use for this resource. */
 @Fluent
 public final class HostingEnvironmentProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(HostingEnvironmentProfile.class);

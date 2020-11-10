@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The LeaseContainerRequest model. */
+/** Lease Container request schema. */
 @Fluent
 public final class LeaseContainerRequest {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LeaseContainerRequest.class);

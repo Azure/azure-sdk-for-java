@@ -9,7 +9,7 @@ import java.time.Duration;
  */
 public interface DelayProvider {
     /**
-     * Get the duration for delay.
+     * Gets the duration for delay.
      *
      * @param delay the duration of proposed delay.
      * @return the duration of delay.

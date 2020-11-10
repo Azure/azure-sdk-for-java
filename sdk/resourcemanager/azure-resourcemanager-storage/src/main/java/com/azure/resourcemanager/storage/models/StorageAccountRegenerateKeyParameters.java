@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The StorageAccountRegenerateKeyParameters model. */
+/** The parameters used to regenerate the storage account key. */
 @Fluent
 public final class StorageAccountRegenerateKeyParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountRegenerateKeyParameters.class);

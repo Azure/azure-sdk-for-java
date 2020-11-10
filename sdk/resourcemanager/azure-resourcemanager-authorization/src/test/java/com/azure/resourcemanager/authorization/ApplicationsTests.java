@@ -5,14 +5,17 @@ package com.azure.resourcemanager.authorization;
 
 import java.time.Duration;
 
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplication;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class ApplicationsTests extends GraphRbacManagementTest {
     @Test
     public void canCRUDApplication() throws Exception {
-        String name = sdkContext.randomResourceName("javasdkapp", 20);
+        String name = generateRandomResourceName("javasdkapp", 20);
 
         ActiveDirectoryApplication application = null;
         try {
@@ -49,5 +52,16 @@ public class ApplicationsTests extends GraphRbacManagementTest {
                 authorizationManager.applications().deleteById(application.id());
             }
         }
+    }
+
+    @Test
+    @DoNotRecord
+    public void canListApplications() {
+        if (skipInPlayback()) {
+            return;
+        }
+
+        PagedIterable<ActiveDirectoryApplication> applications = authorizationManager.applications().list();
+        Assertions.assertTrue(TestUtilities.getSize(applications) > 0);
     }
 }

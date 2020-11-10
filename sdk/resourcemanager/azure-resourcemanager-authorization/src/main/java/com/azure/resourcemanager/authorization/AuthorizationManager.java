@@ -5,6 +5,11 @@ package com.azure.resourcemanager.authorization;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.authorization.fluent.AuthorizationManagementClient;
+import com.azure.resourcemanager.authorization.implementation.AuthorizationManagementClientBuilder;
+import com.azure.resourcemanager.authorization.fluent.GraphRbacManagementClient;
+import com.azure.resourcemanager.authorization.implementation.GraphRbacManagementClientBuilder;
 import com.azure.resourcemanager.authorization.implementation.ActiveDirectoryApplicationsImpl;
 import com.azure.resourcemanager.authorization.implementation.ActiveDirectoryGroupsImpl;
 import com.azure.resourcemanager.authorization.implementation.ActiveDirectoryUsersImpl;
@@ -19,15 +24,14 @@ import com.azure.resourcemanager.authorization.models.RoleDefinitions;
 import com.azure.resourcemanager.authorization.models.ServicePrincipals;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.model.HasServiceClient;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 
-/** Entry point to Azure Graph RBAC management. */
-public final class AuthorizationManager implements HasInner<GraphRbacManagementClient> {
+/** Entry point to Azure Authorization and Graph RBAC management. */
+public final class AuthorizationManager implements HasServiceClient<GraphRbacManagementClient> {
     private final String tenantId;
-    private final SdkContext sdkContext;
+    private ResourceManagerUtils.InternalRuntimeContext internalContext;
     // The sdk clients
     private final GraphRbacManagementClient graphRbacManagementClient;
     private final AuthorizationManagementClient authorizationManagementClient;
@@ -40,42 +44,31 @@ public final class AuthorizationManager implements HasInner<GraphRbacManagementC
     private RoleDefinitions roleDefinitions;
 
     /**
-     * Creates an instance of GraphRbacManager that exposes Graph RBAC management API entry points.
+     * Creates an instance of AuthorizationManager that exposes Authorization
+     * and Graph RBAC management API entry points.
      *
      * @param credential the credential to use
      * @param profile the profile to use
-     * @return the GraphRbacManager instance
+     * @return the AuthorizationManager instance
      */
     public static AuthorizationManager authenticate(TokenCredential credential, AzureProfile profile) {
         return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
     /**
-     * Creates an instance of GraphRbacManager that exposes Graph RBAC management API entry points.
+     * Creates an instance of AuthorizationManager that exposes Authorization
+     * and Graph RBAC management API entry points.
      *
      * @param httpPipeline the HttpPipeline to be used for API calls
      * @param profile the profile used in Active Directory
-     * @return the interface exposing Graph RBAC management API entry points that work across subscriptions
+     * @return the AuthorizationManager instance
      */
-    public static AuthorizationManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile, new SdkContext());
+    private static AuthorizationManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        return new AuthorizationManager(httpPipeline, profile);
     }
 
     /**
-     * Creates an instance of GraphRbacManager that exposes Graph RBAC management API entry points.
-     *
-     * @param httpPipeline the HttpPipeline to be used for API calls
-     * @param profile the profile used in Active Directory
-     * @param sdkContext the sdk context
-     * @return the interface exposing Graph RBAC management API entry points that work across subscriptions
-     */
-    public static AuthorizationManager authenticate(
-        HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        return new AuthorizationManager(httpPipeline, profile, sdkContext);
-    }
-
-    /**
-     * Get a Configurable instance that can be used to create GraphRbacManager with optional configuration.
+     * Get a Configurable instance that can be used to create AuthorizationManager with optional configuration.
      *
      * @return the instance allowing configurations
      */
@@ -84,18 +77,19 @@ public final class AuthorizationManager implements HasInner<GraphRbacManagementC
     }
 
     @Override
-    public GraphRbacManagementClient inner() {
+    public GraphRbacManagementClient serviceClient() {
         return this.graphRbacManagementClient;
     }
 
     /** The interface allowing configurations to be set. */
     public interface Configurable extends AzureConfigurable<Configurable> {
         /**
-         * Creates an instance of GraphRbacManager that exposes resource management API entry points.
+         * Creates an instance of AuthorizationManager that exposes Authorization
+         * and Graph RBAC management API entry points.
          *
          * @param credential the credential to use
          * @param profile the profile to use
-         * @return the interface exposing resource management API entry points that work across subscriptions
+         * @return the AuthorizationManager instance
          */
         AuthorizationManager authenticate(TokenCredential credential, AzureProfile profile);
     }
@@ -104,32 +98,31 @@ public final class AuthorizationManager implements HasInner<GraphRbacManagementC
     private static class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         public AuthorizationManager authenticate(TokenCredential credential, AzureProfile profile) {
             return AuthorizationManager
-                .authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
+                .authenticate(buildHttpPipeline(credential, profile), profile);
         }
     }
 
-    private AuthorizationManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+    private AuthorizationManager(HttpPipeline httpPipeline, AzureProfile profile) {
         this.graphRbacManagementClient =
             new GraphRbacManagementClientBuilder()
                 .pipeline(httpPipeline)
-                .endpoint(profile.environment().getGraphEndpoint())
-                .tenantId(profile.tenantId())
+                .endpoint(profile.getEnvironment().getGraphEndpoint())
+                .tenantId(profile.getTenantId())
                 .buildClient();
         this.authorizationManagementClient =
             new AuthorizationManagementClientBuilder()
                 .pipeline(httpPipeline)
-                .endpoint(profile.environment().getResourceManagerEndpoint())
-                .subscriptionId(profile.subscriptionId())
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
                 .buildClient();
-        this.tenantId = profile.tenantId();
-        this.sdkContext = sdkContext;
+        this.tenantId = profile.getTenantId();
     }
 
     /**
      * @return wrapped inner authorization client providing direct access to auto-generated API implementation, based on
      *     Azure REST API
      */
-    public AuthorizationManagementClient roleInner() {
+    public AuthorizationManagementClient roleServiceClient() {
         return authorizationManagementClient;
     }
 
@@ -138,9 +131,12 @@ public final class AuthorizationManager implements HasInner<GraphRbacManagementC
         return tenantId;
     }
 
-    /** @return the sdk context in graph manager */
-    public SdkContext sdkContext() {
-        return sdkContext;
+    /** @return the {@link ResourceManagerUtils.InternalRuntimeContext} associated with this manager */
+    public ResourceManagerUtils.InternalRuntimeContext internalContext() {
+        if (internalContext == null) {
+            internalContext = new ResourceManagerUtils.InternalRuntimeContext();
+        }
+        return internalContext;
     }
 
     /** @return the Active Directory user management API entry point */

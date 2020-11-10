@@ -8,8 +8,8 @@
 // */
 //package com.azure.management.resources;
 //
-//import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-//import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+//import com.azure.core.management.Region;
+//import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 //import com.microsoft.rest.RestClient;
 //import org.junit.jupiter.api.Disabled;
 //import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@
 //import rx.functions.Func1;
 //import rx.schedulers.Schedulers;
 //
-//public class TooManyRequestsRetryInterceptorTests extends ResourceManagerTestBase {
+//public class TooManyRequestsRetryInterceptorTests extends ResourceManagementTest {
 //    private static ResourceGroups resourceGroups;
 //
 //    private String rgName;
@@ -27,7 +27,7 @@
 //
 //    @Override
 //    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-//        testId = SdkContext.randomResourceName("", 9);
+//        testId = ResourceManagerUtils.InternalRuntimeContext.randomResourceName("", 9);
 //        rgName = "rg429" + testId;
 //
 //        super.initializeClients(restClient, defaultSubscription, domain);

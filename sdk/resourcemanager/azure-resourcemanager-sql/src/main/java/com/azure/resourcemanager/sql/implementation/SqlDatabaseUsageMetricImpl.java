@@ -4,7 +4,7 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.resourcemanager.sql.models.SqlDatabaseUsageMetric;
-import com.azure.resourcemanager.sql.fluent.inner.DatabaseUsageInner;
+import com.azure.resourcemanager.sql.fluent.models.DatabaseUsageInner;
 import java.time.OffsetDateTime;
 
 /** Implementation for Azure SQL Database usage. */
@@ -16,36 +16,36 @@ public class SqlDatabaseUsageMetricImpl extends WrapperImpl<DatabaseUsageInner> 
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String resourceName() {
-        return this.inner().resourceName();
+        return this.innerModel().resourceName();
     }
 
     @Override
     public String displayName() {
-        return this.inner().displayName();
+        return this.innerModel().displayName();
     }
 
     @Override
     public double currentValue() {
-        return this.inner().currentValue() != null ? this.inner().currentValue() : 0;
+        return this.innerModel().currentValue() != null ? this.innerModel().currentValue() : 0;
     }
 
     @Override
     public double limit() {
-        return this.inner().limit() != null ? this.inner().limit() : 0;
+        return this.innerModel().limit() != null ? this.innerModel().limit() : 0;
     }
 
     @Override
     public String unit() {
-        return this.inner().unit();
+        return this.innerModel().unit();
     }
 
     @Override
     public OffsetDateTime nextResetTime() {
-        return this.inner().nextResetTime();
+        return this.innerModel().nextResetTime();
     }
 }

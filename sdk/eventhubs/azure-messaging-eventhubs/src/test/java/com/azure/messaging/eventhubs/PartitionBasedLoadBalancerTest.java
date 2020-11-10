@@ -120,7 +120,7 @@ public class PartitionBasedLoadBalancerTest {
                 return new PartitionEvent(partitionContext, eventDataList.get(i), null);
             }));
 
-        PartitionBasedLoadBalancer partitionBasedLoadBalancer = createPartitionLoadBalancer("owner1");
+        PartitionBasedLoadBalancer partitionBasedLoadBalancer = createPartitionLoadBalancer("owner1", LoadBalancingStrategy.BALANCED);
 
         IntStream.range(0, partitionIds.size()).forEach(index -> {
             partitionBasedLoadBalancer.loadBalance();
@@ -156,8 +156,8 @@ public class PartitionBasedLoadBalancerTest {
                 return new PartitionEvent(partitionContext, eventDataList.get(i), null);
             }));
 
-        PartitionBasedLoadBalancer partitionBasedLoadBalancer1 = createPartitionLoadBalancer("owner1");
-        PartitionBasedLoadBalancer partitionBasedLoadBalancer2 = createPartitionLoadBalancer("owner2");
+        PartitionBasedLoadBalancer partitionBasedLoadBalancer1 = createPartitionLoadBalancer("owner1", LoadBalancingStrategy.BALANCED);
+        PartitionBasedLoadBalancer partitionBasedLoadBalancer2 = createPartitionLoadBalancer("owner2", LoadBalancingStrategy.BALANCED);
 
         IntStream.range(0, partitionIds.size()).forEach(index -> {
             partitionBasedLoadBalancer1.loadBalance();
@@ -192,7 +192,7 @@ public class PartitionBasedLoadBalancerTest {
                 return new PartitionEvent(partitionContext, eventDataList.get(i), null);
             }));
 
-        PartitionBasedLoadBalancer partitionBasedLoadBalancer1 = createPartitionLoadBalancer("owner1");
+        PartitionBasedLoadBalancer partitionBasedLoadBalancer1 = createPartitionLoadBalancer("owner1", LoadBalancingStrategy.BALANCED);
 
         // First event processor claims all partitions
         IntStream.range(0, partitionIds.size()).forEach(index -> {
@@ -207,7 +207,7 @@ public class PartitionBasedLoadBalancerTest {
 
         // Now, second event processor comes online and steals a partition as the number of partitions
         // are not evenly distributed
-        PartitionBasedLoadBalancer partitionBasedLoadBalancer2 = createPartitionLoadBalancer("owner2");
+        PartitionBasedLoadBalancer partitionBasedLoadBalancer2 = createPartitionLoadBalancer("owner2", LoadBalancingStrategy.BALANCED);
         partitionBasedLoadBalancer2.loadBalance();
         List<PartitionOwnership> partitionOwnership = checkpointStore.listOwnership(fqNamespace, eventHubName,
             consumerGroupName).collectList().block();
@@ -233,7 +233,7 @@ public class PartitionBasedLoadBalancerTest {
             }));
 
         List<PartitionBasedLoadBalancer> loadBalancers = new ArrayList<>();
-        IntStream.range(0, 4).forEach(index -> loadBalancers.add(createPartitionLoadBalancer("owner" + index)));
+        IntStream.range(0, 4).forEach(index -> loadBalancers.add(createPartitionLoadBalancer("owner" + index, LoadBalancingStrategy.BALANCED)));
 
         IntStream.range(0, partitionIds.size()).forEach(index -> {
             loadBalancers.forEach(lb -> lb.loadBalance());
@@ -271,7 +271,7 @@ public class PartitionBasedLoadBalancerTest {
             }));
 
         List<PartitionBasedLoadBalancer> loadBalancers = new ArrayList<>();
-        IntStream.range(0, 4).forEach(index -> loadBalancers.add(createPartitionLoadBalancer("owner" + index)));
+        IntStream.range(0, 4).forEach(index -> loadBalancers.add(createPartitionLoadBalancer("owner" + index, LoadBalancingStrategy.BALANCED)));
 
         IntStream.range(0, partitionIds.size()).forEach(index -> {
             loadBalancers.forEach(lb -> lb.loadBalance());
@@ -335,7 +335,7 @@ public class PartitionBasedLoadBalancerTest {
         PartitionBasedLoadBalancer loadBalancer = new PartitionBasedLoadBalancer(checkpointStore,
             eventHubAsyncClient, fqNamespace, eventHubName, consumerGroupName, "owner", TimeUnit.SECONDS.toSeconds(5),
             partitionPumpManager, ec -> {
-        });
+        }, LoadBalancingStrategy.BALANCED);
         loadBalancer.loadBalance();
         sleep(2);
         verify(partitionProcessor, never()).processEvent(any(EventContext.class));
@@ -360,7 +360,7 @@ public class PartitionBasedLoadBalancerTest {
         PartitionBasedLoadBalancer loadBalancer = new PartitionBasedLoadBalancer(checkpointStore,
             eventHubAsyncClient, fqNamespace, eventHubName, consumerGroupName, "owner", TimeUnit.SECONDS.toSeconds(5),
             partitionPumpManager, ec -> {
-        });
+        }, LoadBalancingStrategy.BALANCED);
         loadBalancer.loadBalance();
         sleep(5);
         verify(eventHubAsyncClient, atLeast(1)).getPartitionIds();
@@ -386,7 +386,7 @@ public class PartitionBasedLoadBalancerTest {
         PartitionBasedLoadBalancer loadBalancer = new PartitionBasedLoadBalancer(checkpointStore,
             eventHubAsyncClient, fqNamespace, eventHubName, consumerGroupName, "owner", TimeUnit.SECONDS.toSeconds(5),
             partitionPumpManager, ec -> {
-        });
+        }, LoadBalancingStrategy.BALANCED);
         loadBalancer.loadBalance();
         sleep(2);
         verify(eventHubAsyncClient, atLeast(1)).getPartitionIds();
@@ -430,7 +430,8 @@ public class PartitionBasedLoadBalancerTest {
             }));
 
         String ownerName = "owner1";
-        PartitionBasedLoadBalancer partitionBasedLoadBalancer = createPartitionLoadBalancer(ownerName);
+        PartitionBasedLoadBalancer partitionBasedLoadBalancer = createPartitionLoadBalancer(ownerName,
+            LoadBalancingStrategy.BALANCED);
 
         IntStream.range(0, partitionIds.size()).forEach(index -> {
             partitionBasedLoadBalancer.loadBalance();
@@ -479,7 +480,7 @@ public class PartitionBasedLoadBalancerTest {
         PartitionBasedLoadBalancer partitionBasedLoadBalancer = new PartitionBasedLoadBalancer(checkpointStore,
             eventHubAsyncClient, fqNamespace, eventHubName, consumerGroupName, "owner1",
             TimeUnit.SECONDS.toSeconds(10), partitionPumpManager,
-            ec -> { });
+            ec -> { }, LoadBalancingStrategy.BALANCED);
 
         partitionBasedLoadBalancer.loadBalance();
         // after first iteration, both partitions are owned by owner1, so both partitions should be renewed
@@ -526,6 +527,62 @@ public class PartitionBasedLoadBalancerTest {
             .setLastModifiedTime(System.currentTimeMillis());
     }
 
+    @Test
+    public void testSingleEventProcessorWithGreedyStrategy() throws InterruptedException {
+        List<String> partitionIds = Arrays.asList("1", "2", "3");
+        when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
+        when(eventHubAsyncClient.createConsumer(anyString(), anyInt())).thenReturn(eventHubConsumer);
+
+        when(eventHubConsumer.receiveFromPartition(any(), any(), any(ReceiveOptions.class)))
+            .thenReturn(Flux.interval(Duration.ofSeconds(1)).map(index -> {
+                final PartitionContext partitionContext = new PartitionContext("ns", "foo", "bar", "bazz");
+                int i = index.intValue() % eventDataList.size();
+                return new PartitionEvent(partitionContext, eventDataList.get(i), null);
+            }));
+
+        PartitionBasedLoadBalancer partitionBasedLoadBalancer = createPartitionLoadBalancer("owner1",
+            LoadBalancingStrategy.GREEDY);
+
+        // single call to load balance should own all partitions
+        partitionBasedLoadBalancer.loadBalance();
+
+        List<PartitionOwnership> partitionOwnership = checkpointStore.listOwnership(fqNamespace, eventHubName,
+            consumerGroupName).collectList().block();
+        assertNotNull(partitionOwnership);
+        assertEquals(3, partitionOwnership.size());
+        partitionOwnership.forEach(po -> assertEquals("owner1", partitionOwnership.get(0).getOwnerId()));
+        assertEquals(3, partitionOwnership.stream().map(po -> po.getPartitionId()).distinct().count());
+    }
+
+
+    @Test
+    public void testMultipleEventProcessorsWithGreedyStrategy() {
+        List<String> partitionIds = Arrays.asList("1", "2", "3", "4", "5");
+        when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
+        when(eventHubAsyncClient.createConsumer(anyString(), anyInt())).thenReturn(eventHubConsumer);
+        when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
+            .thenReturn(Flux.interval(Duration.ofSeconds(1)).map(index -> {
+                final PartitionContext partitionContext = new PartitionContext("ns", "foo", "bar", "bazz");
+                int i = index.intValue() % eventDataList.size();
+                return new PartitionEvent(partitionContext, eventDataList.get(i), null);
+            }));
+
+        PartitionBasedLoadBalancer partitionBasedLoadBalancer1 = createPartitionLoadBalancer("owner1",
+            LoadBalancingStrategy.GREEDY);
+        PartitionBasedLoadBalancer partitionBasedLoadBalancer2 = createPartitionLoadBalancer("owner2",
+            LoadBalancingStrategy.GREEDY);
+
+        // one execution of load balancer for both instances should result in a 3-2 split
+        partitionBasedLoadBalancer1.loadBalance();
+        partitionBasedLoadBalancer2.loadBalance();
+        List<PartitionOwnership> partitionOwnership = checkpointStore.listOwnership(fqNamespace, eventHubName,
+            consumerGroupName).collectList().block();
+        assertEquals(5, partitionOwnership.size());
+        assertEquals(2, partitionOwnership.stream().map(PartitionOwnership::getOwnerId).distinct().count());
+        assertTrue(partitionOwnership.stream().filter(po -> po.getOwnerId().equals("owner1")).count() >= 2);
+        assertTrue(partitionOwnership.stream().filter(po -> po.getOwnerId().equals("owner2")).count() >= 2);
+    }
+
     private PartitionPumpManager getPartitionPumpManager(TracerProvider tracerProvider) {
         return new PartitionPumpManager(checkpointStore,
             () -> new PartitionProcessor() {
@@ -549,11 +606,11 @@ public class PartitionBasedLoadBalancerTest {
             }, eventHubClientBuilder, false, tracerProvider, new HashMap<>(), 1, null, batchReceiveMode);
     }
 
-    private PartitionBasedLoadBalancer createPartitionLoadBalancer(String owner) {
+    private PartitionBasedLoadBalancer createPartitionLoadBalancer(String owner, LoadBalancingStrategy loadBalancingStrategy) {
         PartitionPumpManager partitionPumpManager = getPartitionPumpManager(tracerProvider);
         return new PartitionBasedLoadBalancer(checkpointStore, eventHubAsyncClient, fqNamespace,
             eventHubName, consumerGroupName, owner, TimeUnit.SECONDS.toSeconds(5), partitionPumpManager,
             ec -> {
-            });
+            }, loadBalancingStrategy);
     }
 }

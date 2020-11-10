@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VirtualMachineScaleSetVMProfile model. */
+/** Describes a virtual machine scale set virtual machine profile. */
 @Fluent
 public final class VirtualMachineScaleSetVMProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMProfile.class);

@@ -3,10 +3,10 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayAuthenticationCertificateInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayAuthenticationCertificateInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.io.IOException;
 /** A client-side representation of an application gateway authentication certificate. */
 @Fluent()
 public interface ApplicationGatewayAuthenticationCertificate
-    extends HasInner<ApplicationGatewayAuthenticationCertificateInner>, ChildResource<ApplicationGateway> {
+    extends HasInnerModel<ApplicationGatewayAuthenticationCertificateInner>, ChildResource<ApplicationGateway> {
 
     /** @return base-64 encoded bytes of the X.509 certificate */
     String data();

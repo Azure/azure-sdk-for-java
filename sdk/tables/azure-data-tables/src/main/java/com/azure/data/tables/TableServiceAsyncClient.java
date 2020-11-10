@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -18,14 +19,16 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.AzureTableImpl;
 import com.azure.data.tables.implementation.AzureTableImplBuilder;
+import com.azure.data.tables.implementation.ModelHelper;
 import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableQueryResponse;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
-import com.azure.data.tables.models.QueryParams;
-import com.azure.data.tables.models.Table;
+import com.azure.data.tables.implementation.models.TableServiceErrorException;
+import com.azure.data.tables.models.ListTablesOptions;
+import com.azure.data.tables.models.TableItem;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,18 +38,27 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * async client for account operations
+ * Provides an asynchronous service client for accessing the Azure Tables service.
+ *
+ * The client encapsulates the URL for the Tables service endpoint and the credentials for accessing the storage or
+ * CosmosDB table API account. It provides methods to create, delete, and list tables within the account. These methods
+ * invoke REST API operations to make the requests and obtain the results that are returned.
+ *
+ * Instances of this client are obtained by calling the {@link TableServiceClientBuilder#buildAsyncClient()} method on a
+ * {@link TableServiceClientBuilder} object.
  */
 @ServiceClient(builder = TableServiceClientBuilder.class, isAsync = true)
 public class TableServiceAsyncClient {
     private final ClientLogger logger = new ClientLogger(TableServiceAsyncClient.class);
     private final AzureTableImpl implementation;
+    private final String accountName;
 
     TableServiceAsyncClient(HttpPipeline pipeline, String url, TablesServiceVersion serviceVersion,
         SerializerAdapter serializerAdapter) {
 
         try {
             final URI uri = URI.create(url);
+            this.accountName = uri.getHost().split("\\.", 2)[0];
             logger.verbose("Table Service URI: {}", uri);
         } catch (IllegalArgumentException ex) {
             throw logger.logExceptionAsError(ex);
@@ -61,70 +73,129 @@ public class TableServiceAsyncClient {
     }
 
     /**
-     * retrieves the async table client for the provided table or creates one if it doesn't exist
+     * Gets the name of the account containing the table.
      *
-     * @param tableName the tableName of the table
-     * @return associated TableAsyncClient
+     * @return The name of the account containing the table.
      */
-    public TableAsyncClient getTableAsyncClient(String tableName) {
-        return null; //return new TableAsyncClient(implementation.getTables(), tableName);
+    public String getAccountName() {
+        return accountName;
     }
 
     /**
-     * gets a given table by name
+     * Gets the absolute URL for the Tables service endpoint.
      *
-     * @param name the name of the table
-     * @return associated azure table object
+     * @return The absolute URL for the Tables service endpoint.
      */
-    public Table getTable(String name) {
-        return null; //TODO: idk how to do this one
+    public String getServiceUrl() {
+        return implementation.getUrl();
     }
 
     /**
-     * creates the table with the given name.  If a table with the same name already exists, the operation fails.
+     * Gets the REST API version used by this client.
      *
-     * @param tableName the name of the table to create
-     * @return the azure table object for the created table
+     * @return The REST API version used by this client.
+     */
+    public TablesServiceVersion getApiVersion() {
+        return TablesServiceVersion.fromString(implementation.getVersion());
+    }
+
+    /**
+     * Gets a {@link TableAsyncClient} instance for the provided table in the account.
+     *
+     * @param tableName The name of the table.
+     * @return A {@link TableAsyncClient} instance for the provided table in the account.
+     * @throws NullPointerException if {@code tableName} is {@code null} or empty.
+     */
+    public TableAsyncClient getTableClient(String tableName) {
+        return new TableClientBuilder()
+            .pipeline(this.implementation.getHttpPipeline())
+            .serviceVersion(this.getApiVersion())
+            .endpoint(this.getServiceUrl())
+            .tableName(tableName)
+            .buildAsyncClient();
+    }
+
+    /**
+     * Creates a table within the Tables service.
+     *
+     * @param tableName The name of the table to create.
+     * @return An empty reactive result.
+     * @throws IllegalArgumentException if {@code tableName} is {@code null} or empty.
+     * @throws TableServiceErrorException if a table with the same name already exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Table> createTable(String tableName) {
+    public Mono<Void> createTable(String tableName) {
         return createTableWithResponse(tableName).flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
     /**
-     * creates the table with the given name.  If a table with the same name already exists, the operation fails.
+     * Creates a table within the Tables service.
      *
-     * @param tableName the name of the table to create
-     * @return a response wth the azure table object for the created table
+     * @param tableName The name of the table to create.
+     * @return A reactive result containing the HTTP response.
+     * @throws IllegalArgumentException if {@code tableName} is {@code null} or empty.
+     * @throws TableServiceErrorException if a table with the same name already exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Table>> createTableWithResponse(String tableName) {
+    public Mono<Response<Void>> createTableWithResponse(String tableName) {
         return withContext(context -> createTableWithResponse(tableName, context));
     }
 
-    Mono<Response<Table>> createTableWithResponse(String tableName, Context context) {
+    Mono<Response<Void>> createTableWithResponse(String tableName, Context context) {
         context = context == null ? Context.NONE : context;
         final TableProperties properties = new TableProperties().setTableName(tableName);
 
         try {
-            return implementation.getTables().createWithResponseAsync(properties,
-                null,
-                ResponseFormat.RETURN_CONTENT, null, context)
-                .map(response -> {
-                    final Table table = new Table(response.getValue().getTableName());
-                    return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), table);
-                });
+            return implementation.getTables().createWithResponseAsync(properties, null,
+                ResponseFormat.RETURN_NO_CONTENT, null, context)
+                .map(response -> new SimpleResponse<>(response, null));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     /**
-     * deletes the given table. Will error if the table doesn't exists or cannot be found with the given name.
+     * Creates a table within the Tables service if the table does not already exist.
      *
-     * @param tableName the name of the table to delete
-     * @return mono void
+     * @param tableName The name of the table to create.
+     * @return An empty reactive result.
+     * @throws IllegalArgumentException if {@code tableName} is {@code null} or empty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createTableIfNotExists(String tableName) {
+        return createTableIfNotExistsWithResponse(tableName).flatMap(response -> Mono.justOrEmpty(response.getValue()));
+    }
+
+    /**
+     * Creates a table within the Tables service if the table does not already exist.
+     *
+     * @param tableName The name of the table to create.
+     * @return A reactive result containing the HTTP response.
+     * @throws IllegalArgumentException if {@code tableName} is {@code null} or empty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> createTableIfNotExistsWithResponse(String tableName) {
+        return withContext(context -> createTableIfNotExistsWithResponse(tableName, context));
+    }
+
+    Mono<Response<Void>> createTableIfNotExistsWithResponse(String tableName, Context context) {
+        return createTableWithResponse(tableName, context).onErrorResume(e -> e instanceof TableServiceErrorException
+                && ((TableServiceErrorException) e).getResponse() != null
+                && ((TableServiceErrorException) e).getResponse().getStatusCode() == 409,
+            e -> {
+                HttpResponse response = ((TableServiceErrorException) e).getResponse();
+                return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), null));
+            });
+    }
+
+    /**
+     * Deletes a table within the Tables service.
+     *
+     * @param tableName The name of the table to delete.
+     * @return An empty reactive result.
+     * @throws IllegalArgumentException if {@code tableName} is {@code null} or empty.
+     * @throws TableServiceErrorException if no table with the provided name exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteTable(String tableName) {
@@ -132,10 +203,12 @@ public class TableServiceAsyncClient {
     }
 
     /**
-     * deletes the given table. Will error if the table doesn't exists or cannot be found with the given name.
+     * Deletes a table within the Tables service.
      *
-     * @param tableName the name of the table to delete
-     * @return a response
+     * @param tableName The name of the table to delete.
+     * @return A reactive result containing the HTTP response.
+     * @throws IllegalArgumentException if {@code tableName} is {@code null} or empty.
+     * @throws TableServiceErrorException if no table with the provided name exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTableWithResponse(String tableName) {
@@ -144,64 +217,63 @@ public class TableServiceAsyncClient {
 
     Mono<Response<Void>> deleteTableWithResponse(String tableName, Context context) {
         context = context == null ? Context.NONE : context;
-        return implementation.getTables().deleteWithResponseAsync(tableName, null, context).map(response -> {
-            return new SimpleResponse<>(response, null);
-        });
+        return implementation.getTables().deleteWithResponseAsync(tableName, null, context)
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
-     * query all the tables under the storage account and returns the tables that fit the query params
+     * Lists all tables within the account.
      *
-     * @return a flux of the tables that met this criteria
+     * @return A paged reactive result containing all tables within the account.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Table> listTables() {
-        return listTables(new QueryParams());
+    public PagedFlux<TableItem> listTables() {
+        return listTables(new ListTablesOptions());
     }
 
     /**
-     * query all the tables under the storage account and returns the tables that fit the query params
+     * Lists tables using the parameters in the provided options.
      *
-     * @param queryParams the odata query object
-     * @return a flux of the tables that met this criteria
+     * If the `filter` parameter in the options is set, only tables matching the filter will be returned. If the `top`
+     * parameter is set, the number of returned tables will be limited to that value.
+     *
+     * @param options The `filter` and `top` OData query options to apply to this operation.
+     *
+     * @return A paged reactive result containing matching tables within the account.
+     * @throws IllegalArgumentException if one or more of the OData query options in {@code options} is malformed.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Table> listTables(QueryParams queryParams) {
+    public PagedFlux<TableItem> listTables(ListTablesOptions options) {
 
         return new PagedFlux<>(
-            () -> withContext(context -> listTablesFirstPage(context, queryParams)),
-            token -> withContext(context -> listTablesNextPage(token, context, queryParams)));
-    } //802
+            () -> withContext(context -> listTablesFirstPage(context, options)),
+            token -> withContext(context -> listTablesNextPage(token, context, options)));
+    }
 
-    PagedFlux<Table> listTables(QueryParams queryParams, Context context) {
-
-        return new PagedFlux<>(
-            () -> listTablesFirstPage(context, queryParams),
-            token -> listTablesNextPage(token, context, queryParams));
-    } //802
-
-    private Mono<PagedResponse<Table>> listTablesFirstPage(Context context, QueryParams queryParams) {
+    private Mono<PagedResponse<TableItem>> listTablesFirstPage(Context context, ListTablesOptions options) {
         try {
-            return listTables(null, context, queryParams);
+            return listTables(null, context, options);
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
-    } //1459
+    }
 
-    private Mono<PagedResponse<Table>> listTablesNextPage(String token, Context context, QueryParams queryParams) {
+    private Mono<PagedResponse<TableItem>> listTablesNextPage(String token, Context context,
+                                                              ListTablesOptions options) {
         try {
-            return listTables(token, context, queryParams);
+            return listTables(token, context, options);
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
-    } //1459
+    }
 
-    private Mono<PagedResponse<Table>> listTables(String nextTableName, Context context, QueryParams queryParams) {
+    private Mono<PagedResponse<TableItem>> listTables(String nextTableName, Context context,
+                                                      ListTablesOptions options) {
+        context = context == null ? Context.NONE : context;
         QueryOptions queryOptions = new QueryOptions()
-            .setFilter(queryParams.getFilter())
-            .setTop(queryParams.getTop())
-            .setSelect(queryParams.getSelect())
-            .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_MINIMALMETADATA);
+            .setFilter(options.getFilter())
+            .setTop(options.getTop())
+            .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
         return implementation.getTables().queryWithResponseAsync(null, nextTableName, queryOptions, context)
             .flatMap(response -> {
                 TableQueryResponse tableQueryResponse = response.getValue();
@@ -212,25 +284,21 @@ public class TableServiceAsyncClient {
                 if (tableResponsePropertiesList == null) {
                     return Mono.empty();
                 }
-                final List<Table> tables = tableResponsePropertiesList.stream()
-                    .map(e -> {
-                        Table table = new Table(e.getTableName());
-                        return table;
-                    }).collect(Collectors.toList());
+                final List<TableItem> tables = tableResponsePropertiesList.stream()
+                    .map(ModelHelper::createItem).collect(Collectors.toList());
 
                 return Mono.just(new TablePaged(response, tables,
                     response.getDeserializedHeaders().getXMsContinuationNextTableName()));
 
             });
-    } //1836
+    }
 
-
-    private static class TablePaged implements PagedResponse<Table> {
+    private static class TablePaged implements PagedResponse<TableItem> {
         private final Response<TableQueryResponse> httpResponse;
-        private final IterableStream<Table> tableStream;
+        private final IterableStream<TableItem> tableStream;
         private final String continuationToken;
 
-        TablePaged(Response<TableQueryResponse> httpResponse, List<Table> tableList, String continuationToken) {
+        TablePaged(Response<TableQueryResponse> httpResponse, List<TableItem> tableList, String continuationToken) {
             this.httpResponse = httpResponse;
             this.tableStream = IterableStream.of(tableList);
             this.continuationToken = continuationToken;
@@ -252,7 +320,7 @@ public class TableServiceAsyncClient {
         }
 
         @Override
-        public IterableStream<Table> getElements() {
+        public IterableStream<TableItem> getElements() {
             return tableStream;
         }
 

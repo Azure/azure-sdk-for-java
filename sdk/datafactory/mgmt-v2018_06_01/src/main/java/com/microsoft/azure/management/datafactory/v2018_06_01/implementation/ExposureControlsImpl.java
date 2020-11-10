@@ -15,6 +15,8 @@ import rx.functions.Func1;
 import rx.Observable;
 import com.microsoft.azure.management.datafactory.v2018_06_01.ExposureControlResponse;
 import com.microsoft.azure.management.datafactory.v2018_06_01.ExposureControlRequest;
+import com.microsoft.azure.management.datafactory.v2018_06_01.ExposureControlBatchResponse;
+import java.util.List;
 
 class ExposureControlsImpl extends WrapperImpl<ExposureControlsInner> implements ExposureControls {
     private final DataFactoryManager manager;
@@ -48,6 +50,18 @@ class ExposureControlsImpl extends WrapperImpl<ExposureControlsInner> implements
             @Override
             public ExposureControlResponse call(ExposureControlResponseInner inner) {
                 return new ExposureControlResponseImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<ExposureControlBatchResponse> queryFeatureValuesByFactoryAsync(String resourceGroupName, String factoryName, List<ExposureControlRequest> exposureControlRequests) {
+        ExposureControlsInner client = this.inner();
+        return client.queryFeatureValuesByFactoryAsync(resourceGroupName, factoryName, exposureControlRequests)
+        .map(new Func1<ExposureControlBatchResponseInner, ExposureControlBatchResponse>() {
+            @Override
+            public ExposureControlBatchResponse call(ExposureControlBatchResponseInner inner) {
+                return new ExposureControlBatchResponseImpl(inner, manager());
             }
         });
     }

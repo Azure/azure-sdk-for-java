@@ -43,7 +43,7 @@ public class UsernamePasswordCredentialBuilder extends AadCredentialBuilderBase<
      * @return An updated instance of this builder.
      */
     UsernamePasswordCredentialBuilder allowUnencryptedCache() {
-        this.identityClientOptions.allowUnencryptedCache();
+        this.identityClientOptions.setAllowUnencryptedCache(true);
         return this;
     }
 

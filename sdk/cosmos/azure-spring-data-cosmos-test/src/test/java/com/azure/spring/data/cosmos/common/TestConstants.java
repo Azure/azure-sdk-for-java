@@ -12,10 +12,12 @@ public final class TestConstants {
 
     private static final Address ADDRESS_1 = new Address("201107", "Zixing Road", "Shanghai");
     private static final Address ADDRESS_2 = new Address("200000", "Xuhui", "Shanghai");
-    public static final List<String> HOBBIES = Arrays.asList("photography", "fishing");
+    public static final String HOBBY1 = "photography";
+    public static final List<String> HOBBIES = Arrays.asList(HOBBY1, "fishing");
     public static final List<Address> ADDRESSES = Arrays.asList(ADDRESS_1, ADDRESS_2);
 
     public static final String ROLE_COLLECTION_NAME = "RoleCollectionName";
+    public static final String BOOK_COLLECTION_NAME = "BookCollectionName";
     public static final int TIME_TO_LIVE = 5;
     public static final boolean INDEXING_POLICY_AUTOMATIC = true;
     public static final IndexingMode INDEXING_POLICY_MODE = IndexingMode.CONSISTENT;
@@ -88,6 +90,8 @@ public final class TestConstants {
 
     public static final String COURSE_NAME = "test-course";
     public static final String DEPARTMENT = "test-department";
+
+    public static final Integer AGE = 24;
 
     private TestConstants() {
     }

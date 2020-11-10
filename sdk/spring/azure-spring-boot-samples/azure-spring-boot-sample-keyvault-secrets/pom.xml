@@ -10,7 +10,7 @@
     <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
   </parent>
 
-  <groupId>com.azure</groupId>
+  <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-sample-keyvault-secrets</artifactId>
   <version>1.0.0</version>
   <packaging>jar</packaging>
@@ -21,19 +21,17 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-keyvault-secrets-spring-boot-starter</artifactId>
-      <version>2.4.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault-secrets-spring-boot-starter;current} -->
+      <groupId>com.azure.spring</groupId>
+      <artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
+      <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-keyvault-secrets;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-actuator-autoconfigure</artifactId>
-      <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
+      <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
-      <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
     </dependency>
   </dependencies>
 

@@ -5,13 +5,13 @@ package com.azure.ai.textanalytics.implementation;
 
 import com.azure.ai.textanalytics.implementation.models.DocumentStatistics;
 import com.azure.ai.textanalytics.implementation.models.ErrorCodeValue;
+import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
 import com.azure.ai.textanalytics.implementation.models.InnerError;
 import com.azure.ai.textanalytics.implementation.models.InnerErrorCodeValue;
 import com.azure.ai.textanalytics.implementation.models.LanguageInput;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageInput;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
-import com.azure.ai.textanalytics.implementation.models.TextAnalyticsErrorException;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
@@ -46,7 +46,7 @@ public final class Utility {
      *
      * @param documents A list of documents.
      *
-     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      */
     public static void inputDocumentsValidation(Iterable<?> documents) {
@@ -103,17 +103,17 @@ public final class Utility {
     }
 
     /**
-     * Mapping a {@link TextAnalyticsErrorException} to {@link HttpResponseException} if exist. Otherwise, return
+     * Mapping a {@link ErrorResponseException} to {@link HttpResponseException} if exist. Otherwise, return
      * original {@link Throwable}.
      *
      * @param throwable A {@link Throwable}.
      * @return A {@link HttpResponseException} or the original throwable type.
      */
     public static Throwable mapToHttpResponseExceptionIfExist(Throwable throwable) {
-        if (throwable instanceof TextAnalyticsErrorException) {
-            TextAnalyticsErrorException errorException = (TextAnalyticsErrorException) throwable;
+        if (throwable instanceof ErrorResponseException) {
+            ErrorResponseException errorException = (ErrorResponseException) throwable;
             return new HttpResponseException(errorException.getMessage(), errorException.getResponse(),
-                toTextAnalyticsError(errorException.getValue()));
+                toTextAnalyticsError(errorException.getValue().getError()));
         }
         return throwable;
     }

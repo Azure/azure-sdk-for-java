@@ -4,7 +4,6 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.NetworkManager;
-import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
@@ -14,7 +13,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCr
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 
 /** Entry point to express route circuits management API in Azure. */
 @Fluent
@@ -27,6 +25,5 @@ public interface ExpressRouteCircuits
         SupportsDeletingById,
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<ExpressRouteCircuit>,
-        HasManager<NetworkManager>,
-        HasInner<ExpressRouteCircuitsClient> {
+        HasManager<NetworkManager> {
 }

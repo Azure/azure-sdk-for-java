@@ -23,8 +23,23 @@ public interface Operation extends HasInner<OperationInner>, HasManager<AVSManag
     OperationDisplay display();
 
     /**
+     * @return the isDataAction value.
+     */
+    Boolean isDataAction();
+
+    /**
      * @return the name value.
      */
     String name();
+
+    /**
+     * @return the origin value.
+     */
+    String origin();
+
+    /**
+     * @return the properties value.
+     */
+    OperationProperties properties();
 
 }

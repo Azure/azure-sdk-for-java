@@ -4,14 +4,14 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.sql.fluent.inner.LocationCapabilitiesInner;
+import com.azure.core.management.Region;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
+import com.azure.resourcemanager.sql.fluent.models.LocationCapabilitiesInner;
 import java.util.Map;
 
 /** An immutable client-side representation of an Azure SQL server capabilities for a given region. */
 @Fluent
-public interface RegionCapabilities extends HasInner<LocationCapabilitiesInner> {
+public interface RegionCapabilities extends HasInnerModel<LocationCapabilitiesInner> {
     /** @return the location name */
     Region region();
 

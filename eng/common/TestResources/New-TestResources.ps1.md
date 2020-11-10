@@ -8,33 +8,31 @@ schema: 2.0.0
 # New-TestResources.ps1
 
 ## SYNOPSIS
-
 Deploys live test resources defined for a service directory to Azure.
 
 ## SYNTAX
 
 ### Default (Default)
-
-```text
-New-TestResources.ps1 [-BaseName] <String> -ServiceDirectory <String> -TestApplicationId <String>
- [-TestApplicationSecret <String>] [-TestApplicationOid <String>] [-DeleteAfterHours <Int32>]
- [-Location <String>] [-Environment <String>] [-AdditionalParameters <Hashtable>] [-CI] [-Force] [-WhatIf]
+```
+New-TestResources.ps1 [-BaseName <String>] [-ResourceGroupName <String>] [-ServiceDirectory] <String>
+ [-TestApplicationId <String>] [-TestApplicationSecret <String>] [-TestApplicationOid <String>]
+ [-DeleteAfterHours <Int32>] [-Location <String>] [-Environment <String>] [-ArmTemplateParameters <Hashtable>]
+ [-AdditionalParameters <Hashtable>] [-EnvironmentVariables <Hashtable>] [-CI] [-Force] [-OutFile] [-WhatIf]
  [-Confirm] [<CommonParameters>]
 ```
 
 ### Provisioner
-
-```text
-New-TestResources.ps1 [-BaseName] <String> -ServiceDirectory <String> -TestApplicationId <String>
- [-TestApplicationSecret <String>] [-TestApplicationOid <String>] -TenantId <String> [-SubscriptionId <String>]
- -ProvisionerApplicationId <String> -ProvisionerApplicationSecret <String> [-DeleteAfterHours <Int32>]
- [-Location <String>] [-Environment <String>] [-AdditionalParameters <Hashtable>] [-CI] [-Force] [-WhatIf]
- [-Confirm] [<CommonParameters>]
+```
+New-TestResources.ps1 [-BaseName <String>] [-ResourceGroupName <String>] [-ServiceDirectory] <String>
+ [-TestApplicationId <String>] [-TestApplicationSecret <String>] [-TestApplicationOid <String>]
+ -TenantId <String> [-SubscriptionId <String>] -ProvisionerApplicationId <String>
+ -ProvisionerApplicationSecret <String> [-DeleteAfterHours <Int32>] [-Location <String>]
+ [-Environment <String>] [-ArmTemplateParameters <Hashtable>] [-AdditionalParameters <Hashtable>]
+ [-EnvironmentVariables <Hashtable>] [-CI] [-Force] [-OutFile] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-
-Deploys live test resources specified in test-resources.json files to a resource
+Deploys live test resouces specified in test-resources.json files to a resource
 group.
 
 This script searches the directory specified in $ServiceDirectory recursively
@@ -56,8 +54,7 @@ specified in $ProvisionerApplicationId and $ProvisionerApplicationSecret.
 ## EXAMPLES
 
 ### EXAMPLE 1
-
-```text
+```
 Connect-AzAccount -Subscription "REPLACE_WITH_SUBSCRIPTION_ID"
 $testAadApp = New-AzADServicePrincipal -Role Owner -DisplayName 'azure-sdk-live-test-app'
 New-TestResources.ps1 `
@@ -74,8 +71,7 @@ Requires PowerShell 7 to use ConvertFrom-SecureString -AsPlainText or convert
 the SecureString to plaintext by another means.
 
 ### EXAMPLE 2
-
-```text
+```
 New-TestResources.ps1 `
     -BaseName 'Generated' `
     -ServiceDirectory '$(ServiceDirectory)' `
@@ -90,7 +86,7 @@ New-TestResources.ps1 `
     -Verbose
 ```
 
-Run this in an Azure DevOps CI (with appropriate variables configured) before
+Run this in an Azure DevOps CI (with approrpiate variables configured) before
 executing live tests.
 The script will output variables as secrets (to enable
 log redaction).
@@ -98,14 +94,46 @@ log redaction).
 ## PARAMETERS
 
 ### -BaseName
-
 A name to use in the resource group and passed to the ARM template as 'baseName'.
 Limit $BaseName to enough characters to be under limit plus prefixes specified in
 the ARM template.
 See also https://docs.microsoft.com/azure/architecture/best-practices/resource-naming
 
-Note: The value specified for this parameter will be overridden and generated
+Note: The value specified for this parameter will be overriden and generated
 by New-TestResources.ps1 if $CI is specified.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ResourceGroupName
+Set this value to deploy directly to a Resource Group that has already been
+created.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ServiceDirectory
+A directory under 'sdk' in the repository root - optionally with subdirectories
+specified - in which to discover ARM templates named 'test-resources.json'.
+This can also be an absolute path or specify parent directories.
 
 ```yaml
 Type: String
@@ -119,26 +147,7 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ServiceDirectory
-
-A directory under 'sdk' in the repository root - optionally with subdirectories
-specified - in which to discover ARM templates named 'test-resources.json'.
-This can also be an absolute path or specify parent directories.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -TestApplicationId
-
 The AAD Application ID to authenticate the test runner against deployed
 resources.
 Passed to the ARM template as 'testApplicationId'.
@@ -151,7 +160,7 @@ Type: String
 Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -159,7 +168,6 @@ Accept wildcard characters: False
 ```
 
 ### -TestApplicationSecret
-
 Optional service principal secret (password) to authenticate the test runner
 against deployed resources.
 Passed to the ARM template as
@@ -181,7 +189,6 @@ Accept wildcard characters: False
 ```
 
 ### -TestApplicationOid
-
 Service Principal Object ID of the AAD Test application.
 This is used to assign
 permissions to the AAD application so it can access tested features on the live
@@ -191,7 +198,7 @@ It is passed as to the ARM
 template as 'testApplicationOid'
 
 For more information on the relationship between AAD Applications and Service
-Principals see: https://docs.microsoft.com/en-us/azure/active-directory/develop/app-objects-and-service-principals
+Principals see: https://docs.microsoft.com/azure/active-directory/develop/app-objects-and-service-principals
 
 ```yaml
 Type: String
@@ -206,7 +213,6 @@ Accept wildcard characters: False
 ```
 
 ### -TenantId
-
 The tenant ID of a service principal when a provisioner is specified.
 The same
 Tenant ID is used for Test Application and Provisioner Application.
@@ -226,7 +232,6 @@ Accept wildcard characters: False
 ```
 
 ### -SubscriptionId
-
 Optional subscription ID to use for new resources when logging in as a
 provisioner.
 You can also use Set-AzContext if not provisioning.
@@ -244,7 +249,6 @@ Accept wildcard characters: False
 ```
 
 ### -ProvisionerApplicationId
-
 The AAD Application ID used to provision test resources when a provisioner is
 specified.
 
@@ -265,7 +269,6 @@ Accept wildcard characters: False
 ```
 
 ### -ProvisionerApplicationSecret
-
 A service principal secret (password) used to provision test resources when a
 provisioner is specified.
 
@@ -286,7 +289,6 @@ Accept wildcard characters: False
 ```
 
 ### -DeleteAfterHours
-
 Optional.
 Positive integer number of hours from the current time to set the
 'DeleteAfter' tag on the created resource group.
@@ -299,7 +301,7 @@ created resource group.
 An optional cleanup process can delete resource groups whose "DeleteAfter"
 timestamp is less than the current time.
 
-This is used for CI automation.
+This isused for CI automation.
 
 ```yaml
 Type: Int32
@@ -314,7 +316,6 @@ Accept wildcard characters: False
 ```
 
 ### -Location
-
 Optional location where resources should be created.
 If left empty, the default
 is based on the cloud to which the template is being deployed:
@@ -322,6 +323,7 @@ is based on the cloud to which the template is being deployed:
 * AzureCloud -\> 'westus2'
 * AzureUSGovernment -\> 'usgovvirginia'
 * AzureChinaCloud -\> 'chinaeast2'
+* Dogfood -\> 'westus'
 
 ```yaml
 Type: String
@@ -336,10 +338,9 @@ Accept wildcard characters: False
 ```
 
 ### -Environment
-
 Name of the cloud environment.
 The default is the Azure Public Cloud
-('PublicCloud')
+('AzureCloud')
 
 ```yaml
 Type: String
@@ -353,8 +354,7 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -AdditionalParameters
-
+### -ArmTemplateParameters
 Optional key-value pairs of parameters to pass to the ARM template(s).
 
 ```yaml
@@ -369,8 +369,37 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -CI
+### -AdditionalParameters
+Optional key-value pairs of parameters to pass to the ARM template(s) and pre-post scripts.
 
+```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -EnvironmentVariables
+Optional key-value pairs of parameters to set as environment variables to the shell.
+
+```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: @{}
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -CI
 Indicates the script is run as part of a Continuous Integration / Continuous
 Deployment (CI/CD) build (only Azure Pipelines is currently supported).
 
@@ -387,7 +416,6 @@ Accept wildcard characters: False
 ```
 
 ### -Force
-
 Force creation of resources instead of being prompted.
 
 ```yaml
@@ -402,8 +430,25 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -WhatIf
+### -OutFile
+Save test environment settings into a test-resources.json.env file next to test-resources.json.
+File is protected via DPAPI.
+Supported only on windows.
+The environment file would be scoped to the current repository directory.
 
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WhatIf
 Shows what would happen if the cmdlet runs.
 The cmdlet is not run.
 
@@ -420,7 +465,6 @@ Accept wildcard characters: False
 ```
 
 ### -Confirm
-
 Prompts you for confirmation before running the cmdlet.
 
 ```yaml
@@ -435,27 +479,8 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -OutFile
-
-save test environment settings into a test-resources.json.env file next to test-resources.json.
-The file is protected via DPAPI. The environment file would be scoped to the current repository directory.
-Note: Supported only on Windows.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### CommonParameters
-
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
@@ -464,5 +489,3 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
-
-[Remove-TestResources.ps1](./Remove-TestResources.ps1.md)

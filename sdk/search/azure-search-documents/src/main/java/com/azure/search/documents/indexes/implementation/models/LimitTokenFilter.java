@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The LimitTokenFilter model. */
+/** Limits the number of tokens while indexing. This token filter is implemented using Apache Lucene. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.LimitTokenFilter")
 @JsonFlatten
@@ -32,9 +32,13 @@ public class LimitTokenFilter extends TokenFilter {
     @JsonProperty(value = "consumeAllTokens")
     private Boolean consumeAllTokens;
 
-    /** Creates an instance of LimitTokenFilter class. */
+    /**
+     * Creates an instance of LimitTokenFilter class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
-    public LimitTokenFilter(@JsonProperty(value = "name") String name) {
+    public LimitTokenFilter(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 
@@ -78,15 +82,5 @@ public class LimitTokenFilter extends TokenFilter {
     public LimitTokenFilter setConsumeAllTokens(Boolean consumeAllTokens) {
         this.consumeAllTokens = consumeAllTokens;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
     }
 }

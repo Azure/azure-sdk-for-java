@@ -1,7 +1,7 @@
 # Sample for Azure Key Vault Secrets Spring Boot Starter client library for Java
 
 ## Key concepts
-This sample illustrates how to use [Azure Key Vault Secrets Spring Boot Starter](../../azure-spring-boot-starter-keyvault-secrets/README.md).
+This sample illustrates how to use [Azure Spring Boot Starter Key Vault Secrets ](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-secrets/README.md).
 
 In this sample, a secret named `spring-datasource-url` is stored into an Azure Key Vault, and a sample Spring application will use its value as a configuration property value.
 
@@ -36,7 +36,7 @@ az keyvault set-policy --name <your_keyvault_name>   \
 ```
 > **IMPORTANT** 
 >
-> The property `azure.keyvault.secret.keys` specifies which exact secrets the application will load from Key Vault. If this property is not set, which means the application will have to **list** all the secrets in Key Vault, you have to grant both **LIST** and **GET** secret permission to the service principal. Otherwise, only **GET** secret permission is needed.  
+> The property `azure.keyvault.secret-keys` specifies which exact secrets the application will load from Key Vault. If this property is not set, which means the application will have to **list** all the secrets in Key Vault, you have to grant both **LIST** and **GET** secret permission to the service principal. Otherwise, only **GET** secret permission is needed.  
 
 Save the displayed Key Vault uri for later use.
 
@@ -62,13 +62,30 @@ azure.keyvault.uri=put-your-azure-keyvault-uri-here
 azure.keyvault.client-id=put-your-azure-client-id-here
 azure.keyvault.client-key=put-your-azure-client-key-here
 azure.keyvault.tenant-id=put-your-azure-tenant-id-here
+azure.keyvault.authority-host=put-your-own-authority-host-here(fill with default value if empty)
+azure.keyvault.secret-service-version=specify secretServiceVersion value(fill with default value if empty)
+
 
 # Uncomment following property if you want to specify the secrets to load from Key Vault
-# azure.keyvault.secret.keys=yourSecretPropertyName1,yourSecretPropertyName2
+# azure.keyvault.secret-keys=yourSecretPropertyName1,yourSecretPropertyName2
 ```
 
+`azure.keyvault.authority-host`
+
+The URL at which your identity provider can be reached.
+
+- If working with azure global, just left the property blank, and the value will be filled with the default value.
+
+- If working with azure stack, set the property with authority URL.
+
+`azure.keyvault.secret-service-version`
+
+The valid secret-service-version value can be found [here][version_link]. 
+
+If property not set, the property will be filled with the latest value.
 
 ## Run with Maven
+First, we need to ensure that this [instruction] is completed before run.
 ```
 # Under sdk/spring project root directory
 mvn clean install -DskipTests
@@ -79,3 +96,8 @@ mvn spring-boot:run
 ## Troubleshooting
 ## Next steps
 ## Contributing
+
+
+<!-- links -->
+[version_link]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-secrets/src/main/java/com/azure/security/keyvault/secrets/SecretServiceVersion.java#L12
+[instruction]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source

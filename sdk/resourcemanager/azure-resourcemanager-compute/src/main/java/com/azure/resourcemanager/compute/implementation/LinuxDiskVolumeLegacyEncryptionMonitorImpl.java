@@ -8,7 +8,7 @@ import com.azure.resourcemanager.compute.models.DiskVolumeEncryptionMonitor;
 import com.azure.resourcemanager.compute.models.EncryptionStatus;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineExtensionInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import java.util.HashMap;
 import java.util.Map;
@@ -115,7 +115,7 @@ class LinuxDiskVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryption
     private Mono<VirtualMachineExtensionInner> retrieveExtensionWithInstanceViewAsync(
         VirtualMachineExtensionInner extension) {
         return computeManager
-            .inner()
+            .serviceClient()
             .getVirtualMachineExtensions()
             .getAsync(rgName, vmName, extension.name(), "instanceView");
     }
@@ -129,7 +129,7 @@ class LinuxDiskVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryption
      */
     private Mono<VirtualMachineExtensionInner> retrieveEncryptExtensionWithInstanceViewFromVMAsync() {
         return computeManager
-            .inner()
+            .serviceClient()
             .getVirtualMachines()
             .getByResourceGroupAsync(rgName, vmName)
             // Exception if vm not found
@@ -139,8 +139,7 @@ class LinuxDiskVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryption
                         for (VirtualMachineExtensionInner extension : virtualMachine.resources()) {
                             if (EncryptionExtensionIdentifier.isEncryptionPublisherName(extension.publisher())
                                 && EncryptionExtensionIdentifier
-                                    .isEncryptionTypeName(
-                                        extension.virtualMachineExtensionType(), OperatingSystemTypes.LINUX)) {
+                                    .isEncryptionTypeName(extension.typePropertiesType(), OperatingSystemTypes.LINUX)) {
                                 return retrieveExtensionWithInstanceViewAsync(extension);
                             }
                         }

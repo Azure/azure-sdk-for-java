@@ -11,7 +11,7 @@ import com.azure.resourcemanager.monitor.models.ScaleDirection;
 import com.azure.resourcemanager.monitor.models.ScaleRule;
 import com.azure.resourcemanager.monitor.models.ScaleType;
 import com.azure.resourcemanager.monitor.models.TimeAggregationType;
-import com.azure.resourcemanager.monitor.fluent.inner.ScaleRuleInner;
+import com.azure.resourcemanager.monitor.fluent.models.ScaleRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import java.time.Duration;
 
@@ -28,106 +28,106 @@ class ScaleRuleImpl extends WrapperImpl<ScaleRuleInner>
     ScaleRuleImpl(ScaleRuleInner innerObject, AutoscaleProfileImpl parent) {
         super(innerObject);
         this.parent = parent;
-        if (this.inner().metricTrigger() == null) {
-            this.inner().withMetricTrigger(new MetricTrigger());
+        if (this.innerModel().metricTrigger() == null) {
+            this.innerModel().withMetricTrigger(new MetricTrigger());
         }
-        if (this.inner().scaleAction() == null) {
-            this.inner().withScaleAction(new ScaleAction());
+        if (this.innerModel().scaleAction() == null) {
+            this.innerModel().withScaleAction(new ScaleAction());
         }
     }
 
     @Override
     public String metricSource() {
-        if (this.inner().metricTrigger() != null) {
-            return this.inner().metricTrigger().metricResourceUri();
+        if (this.innerModel().metricTrigger() != null) {
+            return this.innerModel().metricTrigger().metricResourceUri();
         }
         return null;
     }
 
     @Override
     public String metricName() {
-        if (this.inner().metricTrigger() != null) {
-            return this.inner().metricTrigger().metricName();
+        if (this.innerModel().metricTrigger() != null) {
+            return this.innerModel().metricTrigger().metricName();
         }
         return null;
     }
 
     @Override
     public Duration duration() {
-        if (this.inner().metricTrigger() != null) {
-            return this.inner().metricTrigger().timeWindow();
+        if (this.innerModel().metricTrigger() != null) {
+            return this.innerModel().metricTrigger().timeWindow();
         }
         return null;
     }
 
     @Override
     public Duration frequency() {
-        if (this.inner().metricTrigger() != null) {
-            return this.inner().metricTrigger().timeGrain();
+        if (this.innerModel().metricTrigger() != null) {
+            return this.innerModel().metricTrigger().timeGrain();
         }
         return null;
     }
 
     @Override
     public MetricStatisticType frequencyStatistic() {
-        if (this.inner().metricTrigger() != null) {
-            return this.inner().metricTrigger().statistic();
+        if (this.innerModel().metricTrigger() != null) {
+            return this.innerModel().metricTrigger().statistic();
         }
         return null;
     }
 
     @Override
     public ComparisonOperationType condition() {
-        if (this.inner().metricTrigger() != null) {
-            return this.inner().metricTrigger().operator();
+        if (this.innerModel().metricTrigger() != null) {
+            return this.innerModel().metricTrigger().operator();
         }
         return null;
     }
 
     @Override
     public TimeAggregationType timeAggregation() {
-        if (this.inner().metricTrigger() != null) {
-            return this.inner().metricTrigger().timeAggregation();
+        if (this.innerModel().metricTrigger() != null) {
+            return this.innerModel().metricTrigger().timeAggregation();
         }
         return null;
     }
 
     @Override
     public double threshold() {
-        if (this.inner().metricTrigger() != null) {
-            return this.inner().metricTrigger().threshold();
+        if (this.innerModel().metricTrigger() != null) {
+            return this.innerModel().metricTrigger().threshold();
         }
         return 0;
     }
 
     @Override
     public ScaleDirection scaleDirection() {
-        if (this.inner().scaleAction() != null) {
-            return this.inner().scaleAction().direction();
+        if (this.innerModel().scaleAction() != null) {
+            return this.innerModel().scaleAction().direction();
         }
         return null;
     }
 
     @Override
     public ScaleType scaleType() {
-        if (this.inner().scaleAction() != null) {
-            return this.inner().scaleAction().type();
+        if (this.innerModel().scaleAction() != null) {
+            return this.innerModel().scaleAction().type();
         }
         return null;
     }
 
     @Override
     public int scaleInstanceCount() {
-        if (this.inner().scaleAction() != null) {
-            return Integer.parseInt(this.inner().scaleAction().value());
+        if (this.innerModel().scaleAction() != null) {
+            return Integer.parseInt(this.innerModel().scaleAction().value());
         }
         return 0;
     }
 
     @Override
     public Duration cooldown() {
-        if (this.inner().scaleAction() != null) {
-            return this.inner().scaleAction().cooldown();
+        if (this.innerModel().scaleAction() != null) {
+            return this.innerModel().scaleAction().cooldown();
         }
         return null;
     }
@@ -145,21 +145,21 @@ class ScaleRuleImpl extends WrapperImpl<ScaleRuleInner>
 
     @Override
     public ScaleRuleImpl withMetricSource(String metricSourceResourceId) {
-        this.inner().metricTrigger().withMetricResourceUri(metricSourceResourceId);
+        this.innerModel().metricTrigger().withMetricResourceUri(metricSourceResourceId);
         return this;
     }
 
     @Override
     public ScaleRuleImpl withMetricName(String metricName) {
-        this.inner().metricTrigger().withMetricName(metricName);
+        this.innerModel().metricTrigger().withMetricName(metricName);
         return this;
     }
 
     @Override
     public ScaleRuleImpl withStatistic(Duration duration, Duration frequency, MetricStatisticType statisticType) {
-        this.inner().metricTrigger().withStatistic(statisticType);
-        this.inner().metricTrigger().withTimeWindow(duration);
-        this.inner().metricTrigger().withTimeGrain(frequency);
+        this.innerModel().metricTrigger().withStatistic(statisticType);
+        this.innerModel().metricTrigger().withTimeWindow(duration);
+        this.innerModel().metricTrigger().withTimeGrain(frequency);
         return this;
     }
 
@@ -181,19 +181,19 @@ class ScaleRuleImpl extends WrapperImpl<ScaleRuleInner>
     @Override
     public ScaleRuleImpl withCondition(
         TimeAggregationType timeAggregation, ComparisonOperationType condition, double threshold) {
-        this.inner().metricTrigger().withOperator(condition);
-        this.inner().metricTrigger().withTimeAggregation(timeAggregation);
-        this.inner().metricTrigger().withThreshold(threshold);
+        this.innerModel().metricTrigger().withOperator(condition);
+        this.innerModel().metricTrigger().withTimeAggregation(timeAggregation);
+        this.innerModel().metricTrigger().withThreshold(threshold);
         return this;
     }
 
     @Override
     public ScaleRuleImpl withScaleAction(
         ScaleDirection direction, ScaleType type, int instanceCountChange, Duration cooldown) {
-        this.inner().scaleAction().withDirection(direction);
-        this.inner().scaleAction().withType(type);
-        this.inner().scaleAction().withValue(Integer.toString(instanceCountChange));
-        this.inner().scaleAction().withCooldown(cooldown);
+        this.innerModel().scaleAction().withDirection(direction);
+        this.innerModel().scaleAction().withType(type);
+        this.innerModel().scaleAction().withValue(Integer.toString(instanceCountChange));
+        this.innerModel().scaleAction().withCooldown(cooldown);
         return this;
     }
 }

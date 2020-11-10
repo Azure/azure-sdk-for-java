@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VpnLinkBgpSettings model. */
+/** BGP settings details for a link. */
 @Fluent
 public final class VpnLinkBgpSettings {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnLinkBgpSettings.class);

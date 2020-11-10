@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SoaRecord model. */
+/** An SOA record. */
 @Fluent
 public final class SoaRecord {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SoaRecord.class);

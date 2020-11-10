@@ -17,9 +17,9 @@ import com.azure.resourcemanager.compute.models.VirtualMachineCustomImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineDataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineUnmanagedDataDisk;
-import com.azure.resourcemanager.resources.core.TestUtilities;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.test.utils.TestUtilities;
+import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import java.io.IOException;
 import java.util.Map;
@@ -113,7 +113,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withGeneralizedLinuxCustomImage(image.id())
                 .withRootUsername("javauser")
                 .withRootPassword("12NewPA$$w0rd!")
-                .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
 
@@ -193,7 +193,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
 
         customImage = computeManager.virtualMachineCustomImages().getByResourceGroup(rgName, imageName);
         Assertions.assertNotNull(customImage);
-        Assertions.assertNotNull(customImage.inner());
+        Assertions.assertNotNull(customImage.innerModel());
         computeManager.virtualMachineCustomImages().deleteById(customImage.id());
     }
 
@@ -222,7 +222,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withCaching(CachingTypes.READ_ONLY)
                 .attach()
                 .withNewUnmanagedDataDisk(100)
-                .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .withNewStorageAccount(storageAccountName)
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
@@ -367,7 +367,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withNewVhd(60)
                 .withCaching(CachingTypes.READ_ONLY)
                 .attach()
-                .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .withNewStorageAccount(generateRandomResourceName("stg", 17))
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();

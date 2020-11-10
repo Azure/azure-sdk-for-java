@@ -61,6 +61,9 @@ public class Configuration {
     @Parameter(names = "-maxConnectionPoolSize", description = "Max Connection Pool Size")
     private Integer maxConnectionPoolSize = 1000;
 
+    @Parameter(names = "-diagnosticsThresholdDuration", description = "Latency threshold for printing diagnostics", converter = DurationConverter.class)
+    private Duration diagnosticsThresholdDuration = Duration.ofSeconds(60);
+
     @Parameter(names = "-disablePassingPartitionKeyAsOptionOnWrite", description = "Disables passing partition in request options for write operation;" +
         " in this case, json will be parsed and partition key will be extracted (this requires more computational overhead).")
     private boolean disablePassingPartitionKeyAsOptionOnWrite = false;
@@ -104,6 +107,7 @@ public class Configuration {
         + "\tMixed - runa workload of 90 reads, 9 writes and 1 QueryTopOrderby per 100 operations *\n"
         + "\tReadMyWrites - run a workflow of writes followed by reads and queries attempting to read the write.*\n"
         + "\tCtlWorkload - run a ctl workflow.*\n"
+        + "\tReadAllItemsOfLogicalPartition - run a workload that uses readAllItems for a logical partition and prints throughput\n"
         + "\n\t* writes 10k documents initially, which are used in the reads", converter = OperationTypeConverter.class)
     private Operation operation = Operation.WriteThroughput;
 
@@ -137,6 +141,15 @@ public class Configuration {
     @Parameter(names = "-numberOfPreCreatedDocuments", description = "Total NUMBER Of Documents To pre create for a read workload to use")
     private int numberOfPreCreatedDocuments = 1000;
 
+    @Parameter(names = "-sparsityWaitTime", description = "Sleep time before making each request. Default is no sleep time."
+        + " NOTE: For now only ReadLatency and ReadThroughput support this."
+        + " Format: A string representation of this duration using ISO-8601 seconds based representation, such as "
+        + "PT20.345S (20.345 seconds), PT15M (15 minutes)", converter = DurationConverter.class)
+    private Duration sparsityWaitTime = null;
+
+    @Parameter(names = "-skipWarmUpOperations", description = "the number of operations to be skipped before starting perf numbers.")
+    private int skipWarmUpOperations = 0;
+
     @Parameter(names = "-useSync", description = "Uses Sync API")
     private boolean useSync = false;
 
@@ -163,7 +176,8 @@ public class Configuration {
         Mixed,
         ReadMyWrites,
         ReadThroughputWithMultipleClients,
-        CtlWorkload;
+        CtlWorkload,
+        ReadAllItemsOfLogicalPartition;
 
         static Operation fromString(String code) {
 
@@ -222,6 +236,13 @@ public class Configuration {
         }
     }
 
+    public int getSkipWarmUpOperations() {
+        return skipWarmUpOperations;
+    }
+
+    public Duration getSparsityWaitTime() {
+        return sparsityWaitTime;
+    }
 
     public boolean isDisablePassingPartitionKeyAsOptionOnWrite() {
         return disablePassingPartitionKeyAsOptionOnWrite;
@@ -297,6 +318,10 @@ public class Configuration {
 
     public int getPrintingInterval() {
         return printingInterval;
+    }
+
+    public Duration getDiagnosticsThresholdDuration() {
+        return diagnosticsThresholdDuration;
     }
 
     public File getReportingDirectory() {

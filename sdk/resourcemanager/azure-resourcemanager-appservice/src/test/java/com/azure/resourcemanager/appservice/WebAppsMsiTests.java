@@ -13,18 +13,18 @@ import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebContainer;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.msi.models.Identity;
-import com.azure.resourcemanager.msi.MSIManager;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+
+import java.time.Duration;
 import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class WebAppsMsiTests extends AppServiceTest {
-    private MSIManager msiManager;
     private String rgName1 = "";
     private String webappName1 = "";
     private String vaultName = "";
@@ -34,8 +34,6 @@ public class WebAppsMsiTests extends AppServiceTest {
         webappName1 = generateRandomResourceName("java-webapp-", 20);
         rgName1 = generateRandomResourceName("javacsmrg", 20);
         vaultName = generateRandomResourceName("java-vault-", 20);
-        this.msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
-
         super.initializeClients(httpPipeline, profile);
     }
 
@@ -81,7 +79,7 @@ public class WebAppsMsiTests extends AppServiceTest {
                 "appservicemsi.war",
                 WebAppsMsiTests.class.getResourceAsStream("/appservicemsi.war"));
 
-            SdkContext.sleep(30000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(30));
 
             Response<String> response = curl("http://" + webappName1 + "." + "azurewebsites.net/appservicemsi/");
             Assertions.assertEquals(200, response.getStatusCode());
@@ -165,7 +163,7 @@ public class WebAppsMsiTests extends AppServiceTest {
                 "appservicemsi.war",
                 WebAppsMsiTests.class.getResourceAsStream("/appservicemsi.war"));
 
-            SdkContext.sleep(30000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(30));
 
             Response<String> response = curl("http://" + webappName1 + "." + "azurewebsites.net/appservicemsi/");
             Assertions.assertEquals(200, response.getStatusCode());

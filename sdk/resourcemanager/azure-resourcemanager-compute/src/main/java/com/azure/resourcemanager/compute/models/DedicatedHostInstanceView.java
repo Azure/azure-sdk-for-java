@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The DedicatedHostInstanceView model. */
+/** The instance view of a dedicated host. */
 @Fluent
 public final class DedicatedHostInstanceView {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedHostInstanceView.class);

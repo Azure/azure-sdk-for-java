@@ -8,13 +8,17 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.search.documents.indexes.models.CjkBigramTokenFilterScripts;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The CjkBigramTokenFilter model. */
+/**
+ * Forms bigrams of CJK terms that are generated from the standard tokenizer. This token filter is implemented using
+ * Apache Lucene.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.CjkBigramTokenFilter")
 @JsonFlatten
@@ -33,9 +37,13 @@ public class CjkBigramTokenFilter extends TokenFilter {
     @JsonProperty(value = "outputUnigrams")
     private Boolean outputUnigrams;
 
-    /** Creates an instance of CjkBigramTokenFilter class. */
+    /**
+     * Creates an instance of CjkBigramTokenFilter class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
-    public CjkBigramTokenFilter(@JsonProperty(value = "name") String name) {
+    public CjkBigramTokenFilter(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 
@@ -79,15 +87,5 @@ public class CjkBigramTokenFilter extends TokenFilter {
     public CjkBigramTokenFilter setOutputUnigrams(Boolean outputUnigrams) {
         this.outputUnigrams = outputUnigrams;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
     }
 }

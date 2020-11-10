@@ -3,17 +3,17 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayRedirectConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayRedirectConfigurationInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import java.util.Map;
 
 /** A client-side representation of an application gateway's redirect configuration. */
 @Fluent()
 public interface ApplicationGatewayRedirectConfiguration
-    extends HasInner<ApplicationGatewayRedirectConfigurationInner>, ChildResource<ApplicationGateway> {
+    extends HasInnerModel<ApplicationGatewayRedirectConfigurationInner>, ChildResource<ApplicationGateway> {
 
     /** @return the type of redirection. */
     ApplicationGatewayRedirectType type();

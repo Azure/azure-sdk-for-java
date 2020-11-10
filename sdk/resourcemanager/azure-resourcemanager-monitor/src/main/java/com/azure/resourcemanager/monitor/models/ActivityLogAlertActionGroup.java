@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The ActivityLogAlertActionGroup model. */
+/** A pointer to an Azure Action Group. */
 @Fluent
 public final class ActivityLogAlertActionGroup {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ActivityLogAlertActionGroup.class);

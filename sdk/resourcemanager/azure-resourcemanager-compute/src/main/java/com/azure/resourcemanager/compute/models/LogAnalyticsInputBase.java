@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The LogAnalyticsInputBase model. */
+/** Api input base class for LogAnalytics Api. */
 @Fluent
 public class LogAnalyticsInputBase {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LogAnalyticsInputBase.class);

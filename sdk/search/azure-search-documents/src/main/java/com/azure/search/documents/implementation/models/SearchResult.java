@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** The SearchResult model. */
+/** Contains a document found by a search query, plus associated metadata. */
 @Fluent
 public final class SearchResult {
     /*
@@ -39,9 +39,15 @@ public final class SearchResult {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of SearchResult class. */
+    /**
+     * Creates an instance of SearchResult class.
+     *
+     * @param score the score value to set.
+     */
     @JsonCreator
-    public SearchResult(@JsonProperty(value = "@search.score") double score) {
+    public SearchResult(
+            @JsonProperty(value = "@search.score", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    double score) {
         this.score = score;
     }
 
@@ -92,11 +98,4 @@ public final class SearchResult {
         }
         additionalProperties.put(key, value);
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {}
 }

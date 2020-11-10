@@ -6,17 +6,18 @@ package com.azure.resourcemanager.keyvault;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
+import com.azure.resourcemanager.keyvault.fluent.KeyVaultManagementClient;
+import com.azure.resourcemanager.keyvault.implementation.KeyVaultManagementClientBuilder;
 import com.azure.resourcemanager.keyvault.implementation.VaultsImpl;
 import com.azure.resourcemanager.keyvault.models.Vaults;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure KeyVault resource management. */
-public final class KeyVaultManager extends Manager<KeyVaultManager, KeyVaultManagementClient> {
+public final class KeyVaultManager extends Manager<KeyVaultManagementClient> {
     // Service managers
     private final AuthorizationManager authorizationManager;
     // Collections
@@ -52,21 +53,8 @@ public final class KeyVaultManager extends Manager<KeyVaultManager, KeyVaultMana
      * @param profile the profile to use
      * @return the KeyVaultManager
      */
-    public static KeyVaultManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile, new SdkContext());
-    }
-
-    /**
-     * Creates an instance of KeyVaultManager that exposes KeyVault resource management API entry points.
-     *
-     * @param httpPipeline the HttpPipeline to be used for API calls
-     * @param profile the profile to use
-     * @param sdkContext the sdk context
-     * @return the KeyVaultManager
-     */
-    public static KeyVaultManager authenticate(
-        HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        return new KeyVaultManager(httpPipeline, profile, sdkContext);
+    private static KeyVaultManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        return new KeyVaultManager(httpPipeline, profile);
     }
 
     /** The interface allowing configurations to be set. */
@@ -91,18 +79,19 @@ public final class KeyVaultManager extends Manager<KeyVaultManager, KeyVaultMana
     }
 
     private KeyVaultManager(
-        final HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+        final HttpPipeline httpPipeline, AzureProfile profile) {
         super(
             httpPipeline,
             profile,
             new KeyVaultManagementClientBuilder()
                 .pipeline(httpPipeline)
-                .endpoint(profile.environment().getResourceManagerEndpoint())
-                .subscriptionId(profile.subscriptionId())
-                .buildClient(),
-            sdkContext);
-        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile, sdkContext);
-        this.tenantId = profile.tenantId();
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
+                .buildClient());
+        authorizationManager = AzureConfigurableImpl
+            .configureHttpPipeline(httpPipeline, AuthorizationManager.configure())
+            .authenticate(null, profile);
+        this.tenantId = profile.getTenantId();
     }
 
     /** @return the KeyVault account management API entry point */

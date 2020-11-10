@@ -10,7 +10,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The OSProfile model. */
+/**
+ * Specifies the operating system settings for the virtual machine. Some of the settings cannot be changed once VM is
+ * provisioned.
+ */
 @Fluent
 public final class OSProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OSProfile.class);

@@ -98,7 +98,7 @@ public final class WordDelimiterTokenFilterConverter {
 
         Boolean catenateWords = obj.areWordsCatenated();
         wordDelimiterTokenFilter.setCatenateWords(catenateWords);
-        wordDelimiterTokenFilter.validate();
+
         return wordDelimiterTokenFilter;
     }
 

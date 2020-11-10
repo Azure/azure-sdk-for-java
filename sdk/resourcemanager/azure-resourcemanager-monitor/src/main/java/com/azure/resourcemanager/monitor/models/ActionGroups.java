@@ -5,7 +5,6 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.monitor.MonitorManager;
-import com.azure.resourcemanager.monitor.fluent.ActionGroupsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -15,7 +14,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCr
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
 /** Entry point for Action Group management API. */
@@ -29,8 +27,7 @@ public interface ActionGroups
         SupportsDeletingById,
         SupportsDeletingByResourceGroup,
         SupportsBatchDeletion,
-        HasManager<MonitorManager>,
-        HasInner<ActionGroupsClient> {
+        HasManager<MonitorManager> {
 
     /**
      * Enable a receiver in an action group. This changes the receiver's status from Disabled to Enabled. This operation

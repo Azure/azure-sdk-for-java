@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RoleAssignmentCreateParameters model. */
+/** Role assignment create parameters. */
 @JsonFlatten
 @Fluent
 public class RoleAssignmentCreateParameters {

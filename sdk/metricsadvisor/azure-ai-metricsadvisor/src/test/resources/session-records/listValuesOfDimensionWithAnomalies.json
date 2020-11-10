@@ -1,0 +1,70 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//enrichment/anomalyDetection/configurations/fb5a6ed6-2b9e-4b72-8b0c-0046ead1c15c/anomalies/dimension/query?$top=10",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.2 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "834648bb-277d-4f74-848c-ac0447a2a1be",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "808b1836-f65c-4dd3-a07e-beda03b295f3",
+      "x-envoy-upstream-service-time" : "5281",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "808b1836-f65c-4dd3-a07e-beda03b295f3",
+      "retry-after" : "0",
+      "Content-Length" : "445",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[\"Shoes Handbags & Sunglasses\",\"__SUM__\",\"Handmade\",\"Home & Garden\",\"Industrial & Scientific\",\"Cell Phones\",\"Office Products\",\"Electronics (Consumer)\",\"Software & Computer Games\",\"Historical & Advertising Collectibles\"],\"@nextLink\":\"https://js-metrics-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/fb5a6ed6-2b9e-4b72-8b0c-0046ead1c15c/anomalies/dimension/query?$top=10&$skip=10\"}",
+      "Date" : "Sun, 25 Oct 2020 00:24:36 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com:443/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/fb5a6ed6-2b9e-4b72-8b0c-0046ead1c15c/anomalies/dimension/query?$top=10&$skip=10",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.2 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "480fecc2-c6ca-4856-b2fe-f6e07a827885",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "193af37c-a459-4003-bc12-238991528525",
+      "x-envoy-upstream-service-time" : "158",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "193af37c-a459-4003-bc12-238991528525",
+      "retry-after" : "0",
+      "Content-Length" : "454",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[\"Automotive & Powersports\",\"Electronics (Accessories)\",\"Grocery & Gourmet Food\",\"Musical Instruments\",\"Camera & Photo\",\"Device Accessories\",\"Jewelry\",\"Baby Products (Excluding Apparel)\",\"Collectible Coins\",\"Personal Computers\"],\"@nextLink\":\"https://js-metrics-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/fb5a6ed6-2b9e-4b72-8b0c-0046ead1c15c/anomalies/dimension/query?$top=10&$skip=20\"}",
+      "Date" : "Sun, 25 Oct 2020 00:24:38 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com:443/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/fb5a6ed6-2b9e-4b72-8b0c-0046ead1c15c/anomalies/dimension/query?$top=10&$skip=20",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.2 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "62b0f6ed-f999-410d-b193-1e6ee757ce88",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "da1c8f17-e6b6-42bb-8818-474e259a84f3",
+      "x-envoy-upstream-service-time" : "246",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "da1c8f17-e6b6-42bb-8818-474e259a84f3",
+      "retry-after" : "0",
+      "Content-Length" : "39",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[\"Outdoors\"],\"@nextLink\":null}",
+      "Date" : "Sun, 25 Oct 2020 00:24:39 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

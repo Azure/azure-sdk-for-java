@@ -3,21 +3,28 @@
 
 package com.azure.cosmos.implementation.encryption;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.encryption.DecryptionResult;
+import com.azure.cosmos.encryption.AzureKeyVaultKeyWrapMetadata;
+import com.azure.cosmos.encryption.DecryptableItem;
+import com.azure.cosmos.encryption.DecryptionContext;
+import com.azure.cosmos.encryption.DecryptionInfo;
+import com.azure.cosmos.encryption.EncryptableItem;
 import com.azure.cosmos.encryption.EncryptionCosmosAsyncContainer;
+import com.azure.cosmos.encryption.EncryptionException;
 import com.azure.cosmos.encryption.EncryptionItemRequestOptions;
 import com.azure.cosmos.encryption.EncryptionKeyUnwrapResult;
 import com.azure.cosmos.encryption.EncryptionKeyWrapMetadata;
 import com.azure.cosmos.encryption.EncryptionKeyWrapProvider;
 import com.azure.cosmos.encryption.EncryptionKeyWrapResult;
-import com.azure.cosmos.encryption.EncryptionQueryRequestOptions;
 import com.azure.cosmos.encryption.Encryptor;
+import com.azure.cosmos.encryption.KeyVaultAccessClientTests;
+import com.azure.cosmos.encryption.KeyVaultTokenCredentialFactory;
 import com.azure.cosmos.encryption.WithEncryption;
 import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -31,6 +38,7 @@ import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -40,6 +48,7 @@ import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.mockito.Mockito;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -50,19 +59,22 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.function.Consumer;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+import static com.azure.cosmos.encryption.KeyVaultAccessClientTests.*;
+import static com.azure.cosmos.implementation.encryption.ImplementationBridgeHelpers.EncryptionKeyWrapMetadataHelper;
 
+// TODO: moderakh fix/update the comments on the key wrap/unwrap tests.
 public class EncryptionTests extends TestSuiteBase {
-
     private static EncryptionKeyWrapMetadata metadata1 = new EncryptionKeyWrapMetadata("metadata1");
     private static EncryptionKeyWrapMetadata metadata2 = new EncryptionKeyWrapMetadata("metadata2");
     private final static String metadataUpdateSuffix = "updated";
@@ -86,7 +98,12 @@ public class EncryptionTests extends TestSuiteBase {
     private static CosmosDataEncryptionKeyProvider dekProvider;
     //    private static TestEncryptor encryptor;
     private String decryptionFailedDocId;
-    private List<DecryptionResult> capturedDecryptionResults = Collections.synchronizedList(new ArrayList<>());
+
+    private static byte[] rawDekForKeyVault;
+    private static URI keyVaultKeyUri;
+    private static AzureKeyVaultKeyWrapMetadata azureKeyVaultKeyWrapMetadata;
+    private static AzureKeyVaultKeyWrapProvider azureKeyVaultKeyWrapProvider;
+    private static EncryptionTestsTokenCredentialFactory encryptionTestsTokenCredentialFactory;
 
     @DataProvider
     public static Object[][] directClientBuilderWithSessionConsistency() {
@@ -101,7 +118,7 @@ public class EncryptionTests extends TestSuiteBase {
     }
 
     @BeforeTest(groups = { "encryption" })
-    public void beforeTest() {
+    public void beforeTest() throws Exception {
         dekProvider = new CosmosDataEncryptionKeyProvider(new TestKeyWrapProvider());
 
         EncryptionTests.encryptor = new TestEncryptor(EncryptionTests.dekProvider);
@@ -120,8 +137,15 @@ public class EncryptionTests extends TestSuiteBase {
 
         EncryptionTests.encryptionContainer = WithEncryption.withEncryptor(EncryptionTests.itemContainer, encryptor);
         EncryptionTests.dekProperties = EncryptionTests.createDek(EncryptionTests.dekProvider, dekId);
+        EncryptionTests.rawDekForKeyVault = DataEncryptionKey.generate(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED);
 
-        capturedDecryptionResults.clear();
+        EncryptionTests.encryptionTestsTokenCredentialFactory = new EncryptionTestsTokenCredentialFactory();
+        EncryptionTests.azureKeyVaultKeyWrapProvider = new AzureKeyVaultKeyWrapProvider(encryptionTestsTokenCredentialFactory,
+            new KeyVaultAccessClientTests.KeyClientTestFactory(),
+            new KeyVaultAccessClientTests.CryptographyClientFactoryTestFactory());
+        keyVaultKeyUri = new URI("https://testdemo1.vault.azure.net/keys/testkey1/47d306aeaae74baab294672354603ca3");
+        EncryptionTests.azureKeyVaultKeyWrapMetadata = new AzureKeyVaultKeyWrapMetadata(keyVaultKeyUri.toURL());
+
         EncryptionTests.encryptor.failDecryption = false;
     }
 
@@ -223,7 +247,7 @@ public class EncryptionTests extends TestSuiteBase {
         dekProvider.initialize(databaseCore, EncryptionTests.keyContainer.getId());
 
         DataEncryptionKeyProperties readProperties =
-            dekProvider.getDataEncryptionKeyContainer().readDataEncryptionKeyAsync(dekId, null).block().getItem();
+            dekProvider.getDataEncryptionKeyContainer().readDataEncryptionKey(dekId, null).block().getItem();
         assertThat(dekProperties).isEqualTo(readProperties);
     }
 
@@ -234,7 +258,7 @@ public class EncryptionTests extends TestSuiteBase {
         assertThat(dekProperties.encryptionKeyWrapMetadata
             ).isEqualTo(new EncryptionKeyWrapMetadata(EncryptionTests.metadata1.value + EncryptionTests.metadataUpdateSuffix));
 
-        CosmosItemResponse<DataEncryptionKeyProperties> dekResponse =  EncryptionTests.dekProvider.getDataEncryptionKeyContainer().rewrapDataEncryptionKeyAsync(
+        CosmosItemResponse<DataEncryptionKeyProperties> dekResponse =  EncryptionTests.dekProvider.getDataEncryptionKeyContainer().rewrapDataEncryptionKey(
             dekId,
             EncryptionTests.metadata2, null).block();
 
@@ -248,7 +272,7 @@ public class EncryptionTests extends TestSuiteBase {
         // Use different DEK provider to avoid (unintentional) cache impact
         CosmosDataEncryptionKeyProvider dekProvider = new CosmosDataEncryptionKeyProvider(new TestKeyWrapProvider());
          dekProvider.initialize(EncryptionTests.databaseCore, EncryptionTests.keyContainer.getId());
-        DataEncryptionKeyProperties readProperties =  dekProvider.getDataEncryptionKeyContainer().readDataEncryptionKeyAsync(dekId, null).block().getItem();
+        DataEncryptionKeyProperties readProperties =  dekProvider.getDataEncryptionKeyContainer().readDataEncryptionKey(dekId, null).block().getItem();
         assertThat(readProperties).isEqualTo(readProperties);
     }
 
@@ -361,62 +385,84 @@ public class EncryptionTests extends TestSuiteBase {
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
-    public void encryptionHandleDecryptionFailure() {
+    public void ValidateDecryptableContent() {
+        TestDoc testDoc = TestDoc.create();
+        EncryptableItem<TestDoc> encryptableItem = new EncryptableItem<TestDoc>(testDoc);
+
+        try {
+            encryptableItem.getDecryptableItem().getDecryptionResult(TestDoc.class);
+        } catch (Exception e) {
+            assertThat(e).isInstanceOf(RuntimeException.class);
+            assertThat(e.getMessage()).isEqualTo("Decryptable content is not initialized.");
+        }
+    }
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
+    public void EncryptionCreateItemWithLazyDecryption() throws Exception
+    {
+        TestDoc testDoc = TestDoc.create();
+        CosmosItemResponse<EncryptableItem<TestDoc>> createResponse = EncryptionTests.encryptionContainer.createItem(
+            new EncryptableItem<>(testDoc),
+            new PartitionKey(testDoc.pk),
+            EncryptionTests.getRequestOptions(EncryptionTests.dekId, TestDoc.PathsToEncrypt)).block();
+
+        assertThat(createResponse.getStatusCode()).isEqualTo(ResponseStatusCode.CREATED);
+        assertThat(createResponse.getItem()).isNotNull();
+
+        EncryptionTests.validateDecryptableItem(createResponse.getItem().getDecryptableItem(), testDoc);
+
+        // TODO: stream or byte array support?
+        // stream
+//        TestDoc testDoc1 = TestDoc.create();
+//        ItemResponse<EncryptableI> createResponseStream = EncryptionTests.encryptionContainer.createItem(
+//        new EncryptableItemStream(TestCommon.ToStream(testDoc1)),
+//        new PartitionKey(testDoc1.PK),
+//        EncryptionTests.GetRequestOptions(EncryptionTests.dekId, TestDoc.PathsToEncrypt));
+//
+//        Assert.AreEqual(HttpStatusCode.Created, createResponseStream.StatusCode);
+//        Assert.IsNotNull(createResponseStream.Resource);
+//
+//        await EncryptionTests.ValidateDecryptableItem(createResponseStream.Resource.DecryptableItem, testDoc1);
+    }
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
+    public void EncryptionHandleDecryptionFailure() {
         String dek2 = "failDek";
-        EncryptionTests.createDek(EncryptionTests.dekProvider, dek2);
+         EncryptionTests.createDek(EncryptionTests.dekProvider, dek2);
 
         TestDoc testDoc1 =  EncryptionTests.createItem(EncryptionTests.encryptionContainer, dek2, TestDoc.PathsToEncrypt).getItem();
         TestDoc testDoc2 =  EncryptionTests.createItem(EncryptionTests.encryptionContainer, EncryptionTests.dekId, TestDoc.PathsToEncrypt).getItem();
 
-        String projectionQueryWithNoEncryptedFields = String.format("SELECT * FROM c WHERE c.PK in ('%s', '%s')", testDoc1.pk, testDoc2.pk);
-
+        String query = String.format("SELECT * FROM c WHERE c.PK in ('%s', '%s')", testDoc1.pk, testDoc2.pk);
         // success
-        EncryptionTests.validateQueryResultsMultipleDocuments(EncryptionTests.encryptionContainer, testDoc1, testDoc2, projectionQueryWithNoEncryptedFields);
-        assertThat(capturedDecryptionResults).hasSize(0);
+         EncryptionTests.validateQueryResultsMultipleDocuments(EncryptionTests.encryptionContainer, testDoc1, testDoc2, query);
 
-        // induce failure
+        // induce failure for one document
         EncryptionTests.encryptor.failDecryption = true;
-        decryptionFailedDocId = testDoc1.id;
         testDoc1.sensitive = null;
 
-         EncryptionTests.verifyItemByRead(
-            EncryptionTests.encryptionContainer,
-            testDoc1,
-            getItemRequestOptionsWithDecryptionResultHandler());
+        CosmosPagedFlux<DecryptableItem> queryPageFlux =
+            EncryptionTests.encryptionContainer.queryItems(new SqlQuerySpec(query), null, DecryptableItem.class);
+        FeedResponse<DecryptableItem> readDocsLazily = queryPageFlux.byPage().blockFirst();
+         this.ValidateLazyDecryptionResponse(readDocsLazily, dek2);
 
-        assertThat(capturedDecryptionResults).hasSize(1);
-        capturedDecryptionResults.clear();
+         // TODO: add test for changefeed
+//        // validate changeFeed handling
+//        FeedIterator<DecryptableItem> changeIterator = EncryptionTests.encryptionContainer.GetChangeFeedIterator<DecryptableItem>(
+//            continuationToken: null,
+//        new ChangeFeedRequestOptions()
+//        {
+//            StartTime = DateTime.MinValue.ToUniversalTime()
+//        });
 
-        EncryptionQueryRequestOptions queryRequestOptions = new EncryptionQueryRequestOptions();
-        queryRequestOptions.setDecryptionResultHandler(this::errorHandler);
-
-         EncryptionTests.validateQueryResultsMultipleDocuments(
-            EncryptionTests.encryptionContainer,
-            testDoc1,
-            testDoc2,
-            projectionQueryWithNoEncryptedFields,
-            queryRequestOptions);
-
-        capturedDecryptionResults.clear();
-        assertThat(capturedDecryptionResults).hasSize(0);
-
-
-        EncryptionTests.validateQueryResultsMultipleDocuments(
-            EncryptionTests.encryptionContainer,
-            testDoc1,
-            testDoc2,
-            String.format("SELECT * FROM r where r.id in ('%s', '%s')", testDoc1.id, testDoc2.id),
-            queryRequestOptions);
-
-        assertThat(capturedDecryptionResults).hasSize(1);
-        capturedDecryptionResults.clear();
-
-
-        //        await this.ValidateChangeFeedIteratorResponse(
-//            EncryptionTests.encryptionContainer,
-//            testDoc1,
-//            testDoc2,
-//            EncryptionTests.ErrorHandler);
+//        while (changeIterator.HasMoreResults)
+//        {
+//            readDocsLazily = await changeIterator.ReadNextAsync();
+//            if (readDocsLazily.Resource != null)
+//            {
+//                await this.ValidateLazyDecryptionResponse(readDocsLazily, dek2);
+//            }
+//        }
 
         // await this.ValidateChangeFeedProcessorResponse(EncryptionTests.itemContainerCore, testDoc1, testDoc2, false);
         EncryptionTests.encryptor.failDecryption = false;
@@ -437,18 +483,20 @@ public class EncryptionTests extends TestSuiteBase {
 
     @Test(groups = { "encryption" }, timeOut = TIMEOUT)
     public void encryptionDecryptQueryResultMultipleEncryptedProperties() {
+        List<String> pathsEncrypted = ImmutableList.of("/Sensitive", "/NonSensitive");
 
         TestDoc testDoc = EncryptionTests.createItem(
             EncryptionTests.encryptionContainer,
             EncryptionTests.dekId,
-            ImmutableList.of("/Sensitive", "/NonSensitive")).getItem();
+            pathsEncrypted).getItem();
 
         TestDoc expectedDoc = new TestDoc(testDoc);
 
         EncryptionTests.validateQueryResults(
             EncryptionTests.encryptionContainer,
             "SELECT * FROM c",
-            expectedDoc);
+            expectedDoc,
+            pathsEncrypted);
     }
 
     @Test(groups = { "encryption" }, timeOut = TIMEOUT)
@@ -468,6 +516,8 @@ public class EncryptionTests extends TestSuiteBase {
             Integer.class).collectList().block().stream().mapToInt(i -> i).sum();
 
         assertThat(value2).isEqualTo(value1);
+
+        EncryptionTests.ValidateQueryResponseWithLazyDecryption(EncryptionTests.encryptionContainer, query);
     }
 
     @Test(groups = { "encryption" }, timeOut = TIMEOUT)
@@ -530,6 +580,58 @@ public class EncryptionTests extends TestSuiteBase {
 
         EncryptionTests.verifyItemByRead(EncryptionTests.encryptionContainer, replacedDoc);
         EncryptionTests.deleteItem(EncryptionTests.encryptionContainer, replacedDoc);
+    }
+
+
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT)
+    public void EncryptionRudItemLazyDecryption() {
+        TestDoc testDoc = TestDoc.create();
+        // Upsert (item doesn't exist)
+        CosmosItemResponse <EncryptableItem<TestDoc>> upsertResponse =  EncryptionTests.encryptionContainer.upsertItem(
+        new EncryptableItem<TestDoc>(testDoc),
+        new PartitionKey(testDoc.pk),
+        EncryptionTests.getRequestOptions(EncryptionTests.dekId, TestDoc.PathsToEncrypt)).block();
+
+        assertThat(upsertResponse.getStatusCode()).isEqualTo(ResponseStatusCode.CREATED);
+        assertThat(upsertResponse.getItem()).isNotNull();
+
+         EncryptionTests.validateDecryptableItem(upsertResponse.getItem().getDecryptableItem(), testDoc);
+         EncryptionTests.verifyItemByRead(EncryptionTests.encryptionContainer, testDoc);
+
+        // Upsert with stream (item exists)
+        testDoc.nonSensitive = UUID.randomUUID().toString();
+        testDoc.sensitive = UUID.randomUUID().toString();
+
+        // stream
+//        ItemResponse<EncryptableItemStream> upsertResponseStream =  EncryptionTests.encryptionContainer.UpsertItemAsync(
+//        new EncryptableItemStream(TestCommon.ToStream(testDoc)),
+//        new PartitionKey(testDoc.PK),
+//        EncryptionTests.GetRequestOptions(EncryptionTests.dekId, TestDoc.PathsToEncrypt));
+//
+//        Assert.AreEqual(HttpStatusCode.OK, upsertResponseStream.StatusCode);
+//        Assert.IsNotNull(upsertResponseStream.Resource);
+
+//         EncryptionTests.ValidateDecryptableItem(upsertResponseStream.Resource.DecryptableItem, testDoc);
+//         EncryptionTests.VerifyItemByReadAsync(EncryptionTests.encryptionContainer, testDoc);
+
+        // replace
+        testDoc.nonSensitive = UUID.randomUUID().toString();
+        testDoc.sensitive = UUID.randomUUID().toString();
+
+        CosmosItemResponse<EncryptableItem<TestDoc>> replaceResponseStream =
+            EncryptionTests.encryptionContainer.replaceItem(
+            new EncryptableItem<>(testDoc),
+            testDoc.id,
+            new PartitionKey(testDoc.pk),
+            EncryptionTests.getRequestOptions(EncryptionTests.dekId, TestDoc.PathsToEncrypt,
+                upsertResponse.getETag())).block();
+
+        assertThat(replaceResponseStream.getStatusCode()).isEqualTo(ResponseStatusCode.OK);
+        assertThat(replaceResponseStream.getItem()).isNotNull();
+
+        EncryptionTests.validateDecryptableItem(replaceResponseStream.getItem().getDecryptableItem(), testDoc);
+        EncryptionTests.verifyItemByRead(EncryptionTests.encryptionContainer, testDoc);
+        EncryptionTests.deleteItem(EncryptionTests.encryptionContainer, testDoc);
     }
 
     @Test(groups = {"encryption"}, enabled = false, timeOut = TIMEOUT)
@@ -656,6 +758,266 @@ public class EncryptionTests extends TestSuiteBase {
                     .verifyComplete();
     }
 
+    // key wrap/unwrap
+    /// Validates UnWrapKey via KeyVault Wrap Provider.
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT)
+    public void unWrapKeyUsingKeyVault() {
+        EncryptionKeyWrapResult wrappedKey = EncryptionTests.wrapDekKeyVaultAsync(rawDekForKeyVault, azureKeyVaultKeyWrapMetadata).block();
+        byte[] wrappedDek = wrappedKey.getWrappedDataEncryptionKey();
+        EncryptionKeyWrapMetadata wrappedKeyVaultMetaData = wrappedKey.getEncryptionKeyWrapMetadata();
+        EncryptionKeyUnwrapResult keyUnwrapResponse = EncryptionTests.unwrapDekKeyVaultAsync(wrappedDek, wrappedKeyVaultMetaData).block();
+
+        assertThat(keyUnwrapResponse).isNotNull();
+        assertThat(keyUnwrapResponse.getClientCacheTimeToLive()).isNotNull();
+        assertThat(keyUnwrapResponse.getDataEncryptionKey()).isNotNull();
+
+        assertThat(keyUnwrapResponse.getDataEncryptionKey()).isEqualTo(rawDekForKeyVault);
+    }
+
+    /// Validates handling of PurgeProtection Settings.
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT)
+    public void setKeyVaultValidatePurgeProtectionAndSoftDeleteSettingsAsync() throws Exception {
+        KeyVaultAccessClient keyVaultAccessClient = new KeyVaultAccessClient(encryptionTestsTokenCredentialFactory, new KeyClientTestFactory(),
+            new KeyVaultAccessClientTests.CryptographyClientFactoryTestFactory());
+
+        keyVaultKeyUri = new URI("https://testdemo3.vault.azure.net/keys/testkey1/47d306aeaae74baab294672354603ca3");
+        AzureKeyVaultKeyWrapMetadata wrapKeyVaultMetaData = new AzureKeyVaultKeyWrapMetadata(keyVaultKeyUri.toURL());
+
+        AtomicReference<KeyVaultKeyUriProperties> keyVaultKeyUriPropertiesRef = new AtomicReference<KeyVaultKeyUriProperties>();
+        KeyVaultKeyUriProperties.tryParse(new URI(wrapKeyVaultMetaData.value), keyVaultKeyUriPropertiesRef);
+        boolean validatepurgeprotection =
+            keyVaultAccessClient.validatePurgeProtectionAndSoftDeleteSettings(keyVaultKeyUriPropertiesRef.get()).block();
+
+        assertThat(validatepurgeprotection).isEqualTo(true);
+    }
+
+    /// Validates handling of PurgeProtection Settings.
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT)
+    public void notSetKeyVaultValidatePurgeProtectionAndSoftDeleteSettingsAsync2() throws Exception {
+        KeyVaultAccessClient keyVaultAccessClient = new KeyVaultAccessClient(encryptionTestsTokenCredentialFactory, new KeyClientTestFactory(), new CryptographyClientFactoryTestFactory());
+
+        URI keyVaultKeyUriPurgeTest = new URI("https://testdemo2.vault.azure.net/keys/testkey2/ad47829797dc46489223cc5da3cba3ca");
+        AzureKeyVaultKeyWrapMetadata wrapKeyVaultMetaData = new AzureKeyVaultKeyWrapMetadata(keyVaultKeyUriPurgeTest.toURL());
+        AtomicReference<KeyVaultKeyUriProperties> keyVaultUriPropertiesRef = new AtomicReference<>();
+        KeyVaultKeyUriProperties.tryParse(new URI(wrapKeyVaultMetaData.value), keyVaultUriPropertiesRef);
+
+        boolean validatepurgeprotection =
+            keyVaultAccessClient.validatePurgeProtectionAndSoftDeleteSettings(keyVaultUriPropertiesRef.get()).block();
+
+        assertThat(validatepurgeprotection).isEqualTo(false);
+    }
+
+
+    /// Validates handling of Null Wrapped Key Returned from Key Vault
+    //        [ExpectedException(typeof(ArgumentNullException),
+    //        "ArgumentNullException when provided with null key.")]
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT,
+        expectedExceptions = { IllegalArgumentException.class },
+        expectedExceptionsMessageRegExp = "keyVaultAccessClient.wrapKey returned no bytes: wrappedDataEncryptionKey is null")
+    public void validateNullWrappedKeyResult() throws Exception {
+        URI keyUri =
+            new URI("https://testdemo.vault.azure.net/keys/testkey1/" + KeyVaultTestConstants.ValidateNullWrappedKey);
+        EncryptionKeyWrapMetadata invalidWrapMetadata = EncryptionKeyWrapMetadataHelper.create("akv", keyUri.toString());
+
+        EncryptionKeyWrapResult keyWrapResponse = azureKeyVaultKeyWrapProvider.wrapKey(
+            rawDekForKeyVault,
+            invalidWrapMetadata).block();
+    }
+
+    /// Validates handling of Null Unwrapped Key from Key Vault
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT,
+        expectedExceptions = {IllegalArgumentException.class},
+        expectedExceptionsMessageRegExp = "keyVaultAccessClient.unwrapKey returned no bytes: dataEncryptionKey is null")
+    public void validateNullUnwrappedKeyResult() throws Exception {
+        URI keyUri = new URI("https://testdemo.vault.azure.net/keys/testkey1/" + KeyVaultTestConstants.ValidateNullUnwrappedKey);
+        EncryptionKeyWrapMetadata invalidWrapMetadata = EncryptionKeyWrapMetadataHelper.create("akv", keyUri.toString(), KeyVaultConstants.RsaOaep256.toString());
+
+        EncryptionKeyWrapResult wrappedKey = EncryptionTests.wrapDekKeyVaultAsync(rawDekForKeyVault, azureKeyVaultKeyWrapMetadata).block();
+        byte[] wrappedDek = wrappedKey.getWrappedDataEncryptionKey();
+
+        EncryptionKeyUnwrapResult keyWrapResponse = azureKeyVaultKeyWrapProvider.unwrapKey(
+            wrappedDek,
+            invalidWrapMetadata).block();
+    }
+
+    /// Validates Null Response from KeyVault
+    //        [ExpectedException(typeof(NullReferenceException),
+    //        "ArgumentNullException Method should catch Null References sent back by GetKeyAsync")]
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT, expectedExceptions = { IllegalArgumentException.class },
+        expectedExceptionsMessageRegExp = "Key Vault https://testdemo.vault.azure"
+            + ".net/keys/nullKeyVaultKey/47d306aeaae74baab294672354603ca3 provided must have soft delete and purge "
+            + "protection enabled.")
+    public void validateKeyClientReturnsNullKeyVaultResponse() throws Exception {
+        URI keyUri = new URI("https://testdemo.vault.azure.net/keys/" + KeyVaultTestConstants.ValidateNullKeyVaultKey + "47d306aeaae74baab294672354603ca3");
+        EncryptionKeyWrapMetadata invalidWrapMetadata = EncryptionKeyWrapMetadataHelper.create("akv", keyUri.toString());
+        EncryptionKeyWrapResult keyWrapResponse =  EncryptionTests.wrapDekKeyVaultAsync(rawDekForKeyVault, invalidWrapMetadata).block();
+    }
+
+    /// Validates handling of Wrapping of Dek.
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT)
+    public void wrapKeyUsingKeyVault() {
+        EncryptionKeyWrapResult keyWrapResponse =  EncryptionTests.wrapDekKeyVaultAsync(rawDekForKeyVault, azureKeyVaultKeyWrapMetadata).block();
+
+        assertThat(keyWrapResponse).isNotNull();
+        assertThat(keyWrapResponse.getEncryptionKeyWrapMetadata()).isNotNull();
+        assertThat(keyWrapResponse.getWrappedDataEncryptionKey()).isNotNull();
+    }
+
+    /// Validates handling of KeyClient returning a Request Failed.
+    //        [ExpectedException(typeof(KeyVaultAccessException),
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT, expectedExceptions = { IllegalArgumentException.class },
+        expectedExceptionsMessageRegExp = "Key Vault https://testdemo.vault.azure"
+            + ".net/keys/requestFailed/47d306aeaae74baab294672354603ca3 provided must have soft delete and purge "
+            + "protection enabled.")
+    //
+    //        "ArgumentNullException Method catches and returns RequestFailed Exception KeyVaultAccess Client to
+    //        throw inner exception")]
+    public void validateKeyClientReturnRequestFailed() throws Exception {
+        URI keyUri =
+            new URI("https://testdemo.vault.azure.net/keys/" + KeyVaultTestConstants.ValidateRequestFailedEx +
+                "47d306aeaae74baab294672354603ca3");
+        EncryptionKeyWrapMetadata invalidWrapMetadata = EncryptionKeyWrapMetadataHelper.create("akv", keyUri.toString());
+        EncryptionKeyWrapResult keyWrapResponse = EncryptionTests.wrapDekKeyVaultAsync(rawDekForKeyVault,
+            invalidWrapMetadata).block();
+    }
+
+    /// Integration validation of DEK Provider with KeyVault Wrap Provider.
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT)
+    public void encryptionCreateDekKeyVaultWrapProvider() {
+        String dekId = "DekWithKeyVault";
+        DataEncryptionKeyProperties dekProperties = EncryptionTests.createDek(EncryptionTests.dekProvider, dekId);
+        assertThat(new EncryptionKeyWrapMetadata(EncryptionTests.metadata1.value + EncryptionTests.metadataUpdateSuffix))
+            .isEqualTo(dekProperties.encryptionKeyWrapMetadata);
+        CosmosDataEncryptionKeyProvider dekProvider = new CosmosDataEncryptionKeyProvider(azureKeyVaultKeyWrapProvider);
+
+        dekProvider.initialize(EncryptionTests.databaseCore, EncryptionTests.keyContainer.getId());
+        DataEncryptionKeyProperties readProperties =
+            dekProvider.getDataEncryptionKeyContainer().readDataEncryptionKey(dekId,
+                new CosmosItemRequestOptions()).block().getItem();
+
+        assertThat(readProperties).isEqualTo(dekProperties);
+    }
+
+    /// Integration testing for Rewrapping Dek with KeyVault Wrap Provider.
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT)
+    public void encryptionRewrapDekWithKeyVaultWrapProvider() {
+        String dekId = "randomDekKeyVault";
+        DataEncryptionKeyProperties dekProperties = EncryptionTests.createDek(EncryptionTests.dekProvider, dekId);
+        assertThat(new EncryptionKeyWrapMetadata(EncryptionTests.metadata1.value + EncryptionTests.metadataUpdateSuffix))
+            .isEqualTo(dekProperties.encryptionKeyWrapMetadata);
+
+        CosmosItemResponse<DataEncryptionKeyProperties> dekResponse =
+            EncryptionTests.dekProvider.getDataEncryptionKeyContainer().rewrapDataEncryptionKey(
+            dekId,
+            EncryptionTests.metadata2, new CosmosItemRequestOptions()).block();
+
+        assertThat(dekResponse.getStatusCode()).isEqualTo(ResponseStatusCode.OK);
+
+        //        Assert.AreEqual(HttpStatusCode.OK, dekResponse.StatusCode);
+        dekProperties = EncryptionTests.verifyDekResponse(
+            dekResponse,
+            dekId);
+
+        assertThat(new EncryptionKeyWrapMetadata(EncryptionTests.metadata2.value + EncryptionTests.metadataUpdateSuffix)).isEqualTo(dekProperties.encryptionKeyWrapMetadata);
+        //        Assert.AreEqual(
+        //            EncryptionKeyWrapMetadataHelper.create(EncryptionTests.metadata2.Value + EncryptionTests
+        //            .metadataUpdateSuffix),
+        //            dekProperties.EncryptionKeyWrapMetadata);
+
+        CosmosDataEncryptionKeyProvider dekProvider = new CosmosDataEncryptionKeyProvider(azureKeyVaultKeyWrapProvider);
+        dekProvider.initialize(EncryptionTests.databaseCore, EncryptionTests.keyContainer.getId());
+        DataEncryptionKeyProperties readProperties =
+            dekProvider.getDataEncryptionKeyContainer().readDataEncryptionKey(dekId,
+                new CosmosItemRequestOptions()).block().getItem();
+
+        assertThat(readProperties).isEqualTo(dekProperties);
+    }
+
+    /// Validates handling of Null Key Passed to Wrap Provider.
+    //    expectedExceptionsMessageRegExp = "Key is Null.")
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT, expectedExceptions = { RuntimeException.class })
+    // TODO: fix the error message validation and the type
+    public void wrapNullKeyUsingKeyVault() {
+        EncryptionKeyWrapResult keyWrapResponse = EncryptionTests.wrapDekKeyVaultAsync(null, azureKeyVaultKeyWrapMetadata).block();
+    }
+
+
+    /// Validates handling of Incorrect Wrap Meta to Wrap Provider.
+    //        [ExpectedException(typeof(ArgumentException),
+    //        "ArgumentException when provided with incorrect WrapMetaData TypeConstants")]
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT, expectedExceptions = { RuntimeException.class })
+    // TODO: fix the error message validation and the type
+    public void wrapKeyUsingKeyVaultInValidTypeConstants() throws Exception {
+        URI keyUri = new URI("https://testdemo.vault.azure.net/keys/testkey1/47d306aeaae74baab294672354603ca3");
+        EncryptionKeyWrapMetadata invalidWrapMetadata = EncryptionKeyWrapMetadataHelper.create("incorrectConstant",
+            keyUri.toString());
+        EncryptionKeyWrapResult keyWrapResponse = EncryptionTests.wrapDekKeyVaultAsync(rawDekForKeyVault,
+            invalidWrapMetadata).block();
+    }
+
+    /// Simulates a KeyClient Constructor returning an ArgumentNullException.
+    //        [ExpectedException(typeof(ArgumentNullException),
+    //        "ArgumentNullException Method catches and returns NullException")]
+    // TODO: check error message
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT, expectedExceptions = {RuntimeException.class})
+    public void validateKeyClientReturnNullArgument() {
+        EncryptionKeyWrapMetadata invalidWrapMetadata = EncryptionKeyWrapMetadataHelper.create("akv", null);
+        EncryptionKeyWrapResult keyWrapResponse = EncryptionTests.wrapDekKeyVaultAsync(rawDekForKeyVault, invalidWrapMetadata).block();
+    }
+
+    /// Validate Azure Key Wrap Provider handling of Incorrect KeyVault Uris.
+    //        [ExpectedException(typeof(ArgumentException),
+    //        "ArgumentException when provided with incorrect WrapMetaData Value")]
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT, expectedExceptions = {RuntimeException.class})
+    public void wrapKeyUsingKeyVaultInValidValue() throws Exception {
+        URI keyUri = new URI("https://testdemo.vault.azure.net/key/testkey1/47d306aeaae74baab294672354603ca3");
+        EncryptionKeyWrapMetadata invalidWrapMetadata = EncryptionKeyWrapMetadataHelper.create("akv", keyUri.toString());
+        EncryptionKeyWrapResult keyWrapResponse = EncryptionTests.wrapDekKeyVaultAsync(rawDekForKeyVault, invalidWrapMetadata).block();
+    }
+
+    private static void validateDecryptableItem(DecryptableItem decryptableItem,
+                                                TestDoc testDoc,
+                                                String dekId,
+                                                List<String> pathsEncrypted,
+                                                boolean isDocDecrypted) {
+        DecryptableItem.DecryptionResult<TestDoc> res = decryptableItem.getDecryptionResult(TestDoc.class).block();
+        TestDoc readDoc = res.getDecryptedItem();
+        DecryptionContext decryptionContext = res.getContext();
+        assertThat(readDoc).isEqualTo(testDoc);
+        if (isDocDecrypted && testDoc.sensitive != null) {
+            EncryptionTests.validateDecryptionContext(decryptionContext, dekId, pathsEncrypted);
+        } else {
+            assertThat(decryptionContext).isNull();
+        }
+    }
+
+    private static void validateDecryptableItem(DecryptableItem decryptableItem,
+                                                TestDoc testDoc) {
+        validateDecryptableItem(decryptableItem, testDoc, null, null, true);
+    }
+
+    private static void validateDecryptionContext(
+        DecryptionContext decryptionContext) {
+        validateDecryptionContext(decryptionContext, null, null);
+    }
+
+    private static void validateDecryptionContext(DecryptionContext decryptionContext,
+                                                  String dekId,
+                                                  List<String> pathsEncrypted) {
+        assertThat(decryptionContext.getDecryptionInfoList()).isNotNull();
+        assertThat(decryptionContext.getDecryptionInfoList()).hasSize(1);
+        
+        DecryptionInfo decryptionInfo = decryptionContext.getDecryptionInfoList().get(0);
+        assertThat(decryptionInfo.getDataEncryptionKeyId()).isEqualTo(dekId != null ? dekId : EncryptionTests.dekId);
+
+        if (pathsEncrypted == null) {
+            pathsEncrypted = TestDoc.PathsToEncrypt;
+        }
+
+        assertThat(decryptionInfo.getPathsDecrypted()).hasSameSizeAs(pathsEncrypted);
+        assertThat(pathsEncrypted.stream().filter(path -> !decryptionInfo.getPathsDecrypted().contains(path)).findAny()).isNotPresent();
+    }
+
     private void validateWriteResponseIsValid(TestDoc originalItem, TestDoc result) {
         assertThat(result.sensitive).isEqualTo(originalItem.sensitive);
         assertThat(result.id).isEqualTo(originalItem.id);
@@ -681,8 +1043,7 @@ public class EncryptionTests extends TestSuiteBase {
         EncryptionCosmosAsyncContainer container,
         TestDoc testDoc1,
         TestDoc testDoc2,
-        String query)
-    {
+        String query) {
         validateQueryResultsMultipleDocuments(container, testDoc1, testDoc2, query, null);
     }
 
@@ -691,13 +1052,23 @@ public class EncryptionTests extends TestSuiteBase {
         TestDoc testDoc1,
         TestDoc testDoc2,
         String query,
-        CosmosQueryRequestOptions requestOptions)
-    {
+        CosmosQueryRequestOptions requestOptions) {
         CosmosPagedFlux<TestDoc> pageFlux = container.queryItems(new SqlQuerySpec(query), requestOptions, TestDoc.class);
         List<TestDoc> readDocs = pageFlux.collectList().block();
 
         assertThat(readDocs.size()).isEqualTo(2);
         assertThat(readDocs).containsExactlyInAnyOrder(testDoc1, testDoc2);
+
+
+        CosmosPagedFlux<DecryptableItem> lazyDecraptablePageFlux = container.queryItems(new SqlQuerySpec(query), requestOptions, DecryptableItem.class);
+        List<DecryptableItem> lazyDecreptableItems = lazyDecraptablePageFlux.collectList().block();
+
+        assertThat(readDocs.size()).isEqualTo(2);
+        assertThat(readDocs).containsExactlyInAnyOrder(testDoc1, testDoc2);
+
+
+        assertThat(lazyDecreptableItems.size()).isEqualTo(2);
+        assertThat(lazyDecreptableItems.stream().map(ldi -> ldi.getDecryptionResult(TestDoc.class).block().getDecryptedItem())).containsExactlyInAnyOrder(testDoc1, testDoc2);
     }
 
     private static <T> void validateQueryResponse(EncryptionCosmosAsyncContainer container,
@@ -712,27 +1083,63 @@ public class EncryptionTests extends TestSuiteBase {
         EncryptionCosmosAsyncContainer container,
         String query,
         TestDoc expectedDoc) {
-        validateQueryResults(container, new SqlQuerySpec(query), expectedDoc);
+        validateQueryResults(container, query, expectedDoc, null);
+    }
+
+    private static void validateQueryResults(
+        EncryptionCosmosAsyncContainer container,
+        String query,
+        TestDoc expectedDoc,
+        List<String> pathsEncrypted) {
+        validateQueryResults(container, new SqlQuerySpec(query), expectedDoc, pathsEncrypted);
     }
 
     private static void validateQueryResults(
         EncryptionCosmosAsyncContainer container,
         SqlQuerySpec query,
         TestDoc expectedDoc) {
+        validateQueryResults(container, query, expectedDoc, null);
+    }
+
+    private static void validateQueryResults(
+        EncryptionCosmosAsyncContainer container,
+        SqlQuerySpec query,
+        TestDoc expectedDoc,
+        List<String> pathsEncrypted) {
+
         CosmosQueryRequestOptions requestOptions = expectedDoc != null
             ? new CosmosQueryRequestOptions().setPartitionKey(new PartitionKey(expectedDoc.pk)) : null;
 
 
         CosmosPagedFlux<TestDoc> queryResponseIterator = container.queryItems(query, requestOptions, TestDoc.class);
+        CosmosPagedFlux<DecryptableItem> queryResponseIteratorForLazyDecryption = container.queryItems(query, requestOptions, DecryptableItem.class);
+
         List<TestDoc> results = queryResponseIterator.collectList().block();
+        List<DecryptableItem> lazyResults = queryResponseIteratorForLazyDecryption.collectList().block();
 
         if (expectedDoc != null) {
             assertThat(results.size()).isEqualTo(1);
             assertThat(results.get(0)).isEqualTo(expectedDoc);
 
+            assertThat(lazyResults.size()).isEqualTo(1);
+            EncryptionTests.validateDecryptableItem(lazyResults.get(0), expectedDoc, null, pathsEncrypted, true);
+
         } else {
             assertThat(results.size()).isEqualTo(0);
         }
+    }
+
+    private static void ValidateQueryResponseWithLazyDecryption(EncryptionCosmosAsyncContainer container,
+                                                                           String query) {
+        CosmosPagedFlux<DecryptableItem> queryResponseIteratorForLazyDecryption = container.queryItems(new SqlQuerySpec(query), null, DecryptableItem.class);
+        FeedResponse<DecryptableItem> readDocsLazily = queryResponseIteratorForLazyDecryption.byPage().blockFirst();
+        assertThat(readDocsLazily.getContinuationToken()).isNull();
+        assertThat(readDocsLazily.getElements()).hasSize(1);
+        DecryptableItem.DecryptionResult<Long> result =
+            readDocsLazily.getResults().get(0).getDecryptionResult(Long.class).block();
+
+        assertThat(result.getContext()).isNull();
+        assertThat(result.getDecryptedItem()).isGreaterThanOrEqualTo(1l);
     }
 
     private static void verifyDataIsEncrypted(String id, PartitionKey partitionKey) {
@@ -757,7 +1164,7 @@ public class EncryptionTests extends TestSuiteBase {
 
     private static DataEncryptionKeyProperties createDek(CosmosDataEncryptionKeyProvider dekProvider, String dekId)
     {
-        CosmosItemResponse<DataEncryptionKeyProperties> dekResponse =  dekProvider.getDataEncryptionKeyContainer().createDataEncryptionKeyAsync(
+        CosmosItemResponse<DataEncryptionKeyProperties> dekResponse =  dekProvider.getDataEncryptionKeyContainer().createDataEncryptionKey(
         dekId,
         CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED,
         EncryptionTests.metadata1,
@@ -830,7 +1237,7 @@ public class EncryptionTests extends TestSuiteBase {
     }
 
     private class TestKeyWrapProvider implements EncryptionKeyWrapProvider {
-        public EncryptionKeyUnwrapResult unwrapKey(byte[] wrappedKey, EncryptionKeyWrapMetadata metadata) {
+        public Mono<EncryptionKeyUnwrapResult> unwrapKey(byte[] wrappedKey, EncryptionKeyWrapMetadata metadata) {
             int moveBy = StringUtils.equals(metadata.value,
                 EncryptionTests.metadata1.value + EncryptionTests.metadataUpdateSuffix) ? 1 : 2;
 
@@ -838,10 +1245,10 @@ public class EncryptionTests extends TestSuiteBase {
                 wrappedKey[i] = (byte) (wrappedKey[i] - moveBy);
             }
 
-            return new EncryptionKeyUnwrapResult(wrappedKey, EncryptionTests.cacheTTL);
+            return Mono.just(new EncryptionKeyUnwrapResult(wrappedKey, EncryptionTests.cacheTTL));
         }
 
-        public EncryptionKeyWrapResult wrapKey(byte[] key, EncryptionKeyWrapMetadata metadata) {
+        public Mono<EncryptionKeyWrapResult> wrapKey(byte[] key, EncryptionKeyWrapMetadata metadata) {
             EncryptionKeyWrapMetadata responseMetadata =
                 new EncryptionKeyWrapMetadata(metadata.value + EncryptionTests.metadataUpdateSuffix);
             int moveBy = StringUtils.equals(metadata.value, EncryptionTests.metadata1.value) ? 1 : 2;
@@ -850,7 +1257,7 @@ public class EncryptionTests extends TestSuiteBase {
                 key[i] = (byte) (key[i] + moveBy);
             }
 
-            return new EncryptionKeyWrapResult(key, responseMetadata);
+            return Mono.just(new EncryptionKeyWrapResult(key, responseMetadata));
         }
     }
 
@@ -864,7 +1271,7 @@ public class EncryptionTests extends TestSuiteBase {
             this.failDecryption = false;
         }
 
-        public Mono<byte[]> decryptAsync(
+        public Mono<byte[]> decrypt(
             byte[] cipherText,
             String dataEncryptionKeyId,
             String encryptionAlgorithm) {
@@ -889,7 +1296,7 @@ public class EncryptionTests extends TestSuiteBase {
             );
         }
 
-        public Mono<byte[]> encryptAsync(
+        public Mono<byte[]> encrypt(
             byte[] plainText,
             String dataEncryptionKeyId,
             String encryptionAlgorithm) {
@@ -949,6 +1356,36 @@ public class EncryptionTests extends TestSuiteBase {
         }
 
         return item != null;
+    }
+
+    private void ValidateLazyDecryptionResponse(FeedResponse<DecryptableItem> readDocsLazily,
+                                                String failureDek) {
+        int decryptedDoc = 0;
+        int failedDoc = 0;
+
+        for (DecryptableItem doc : readDocsLazily.getElements()) {
+            try {
+                DecryptableItem.DecryptionResult<ObjectNode> result = doc.getDecryptionResult(ObjectNode.class).block();
+                decryptedDoc++;
+            } catch (EncryptionException encryptionException) {
+                failedDoc++;
+                this.validateEncryptionException(encryptionException, failureDek);
+            }
+        }
+
+        assertThat(decryptedDoc >= 1).isTrue();
+        assertThat(failedDoc).isEqualTo(1);
+    }
+
+    private void validateEncryptionException(
+        EncryptionException encryptionException,
+        String failureDek) {
+
+        assertThat(encryptionException.getDataEncryptionKeyId()).isEqualTo(failureDek);
+        assertThat(encryptionException.getEncryptedContent()).isNotNull();
+        assertThat(encryptionException.getCause()).isNotNull();
+        assertThat(encryptionException.getCause()).isInstanceOf(IllegalArgumentException.class);
+        assertThat(encryptionException.getCause().getMessage()).isEqualTo("Null DataEncryptionKey returned.");
     }
 
     private static CosmosItemResponse<TestDoc> createItem(
@@ -1031,28 +1468,24 @@ public class EncryptionTests extends TestSuiteBase {
         return deleteResponse;
     }
 
-    private void errorHandler(DecryptionResult decryptionErrorDetails) {
-        capturedDecryptionResults.add(decryptionErrorDetails);
-        assertThat(decryptionErrorDetails.getException().getMessage()).isEqualTo("Null DataEncryptionKey returned.");
-        byte[] content = decryptionErrorDetails.getEncryptedContent();
-
-        ObjectNode itemJObj = TestCommon.fromStream(content, ObjectNode.class);
-        JsonNode encryptionPropertiesJProp = itemJObj.get("_ei");
-        assertThat(encryptionPropertiesJProp).isNotNull();
-        assertThat(itemJObj.get("id").textValue()).isEqualTo(decryptionFailedDocId);
+    private static Mono<EncryptionKeyWrapResult> wrapDekKeyVaultAsync(byte[] rawDek, EncryptionKeyWrapMetadata wrapMetaData) {
+        return azureKeyVaultKeyWrapProvider.wrapKey(
+            rawDek,
+            wrapMetaData);
     }
 
-    private CosmosItemRequestOptions getItemRequestOptionsWithDecryptionResultHandler()
-    {
-        EncryptionItemRequestOptions options = new EncryptionItemRequestOptions();
+    private static Mono<EncryptionKeyUnwrapResult> unwrapDekKeyVaultAsync(byte[] wrappedDek, EncryptionKeyWrapMetadata unwrapMetaData) {
+        return azureKeyVaultKeyWrapProvider.unwrapKey(
+            wrappedDek,
+            unwrapMetaData);
+    }
 
-        options.setDecryptionResultHandler(new Consumer<DecryptionResult>() {
-            @Override
-            public void accept(DecryptionResult decryptionResult) {
-                errorHandler(decryptionResult);
-            }
-        });
-        return options;
+    class EncryptionTestsTokenCredentialFactory extends KeyVaultTokenCredentialFactory {
+        public Mono<TokenCredential> getTokenCredential(URI keyVaultKeyUri) {
+
+            // TODO: DefaultAzureCredentials
+            return Mono.just(Mockito.mock(TokenCredential.class));
+        }
     }
 
     public static class ResponseStatusCode {

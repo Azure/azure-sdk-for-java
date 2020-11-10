@@ -5,7 +5,7 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasParent;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.util.Map;
 
 /**
@@ -13,7 +13,9 @@ import java.util.Map;
  */
 @Fluent
 public interface ApplicationGatewayBackendHttpConfigurationHealth
-    extends HasInner<ApplicationGatewayBackendHealthHttpSettings>, HasParent<ApplicationGatewayBackendHealth>, HasName {
+    extends HasInnerModel<ApplicationGatewayBackendHealthHttpSettings>,
+        HasParent<ApplicationGatewayBackendHealth>,
+        HasName {
 
     /**
      * @return the associated application gateway backend HTTP configuration settings this health information pertains

@@ -259,7 +259,7 @@ public final class TextAnalyticsClientBuilder {
      *
      * @param keyCredential {@link AzureKeyCredential} API key credential
      * @return The updated {@link TextAnalyticsClientBuilder} object.
-     * @throws NullPointerException If {@code keyCredential} is {@code null}
+     * @throws NullPointerException If {@code keyCredential} is null
      */
     public TextAnalyticsClientBuilder credential(AzureKeyCredential keyCredential) {
         this.credential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
@@ -271,7 +271,7 @@ public final class TextAnalyticsClientBuilder {
      *
      * @param tokenCredential {@link TokenCredential} used to authenticate HTTP requests.
      * @return The updated {@link TextAnalyticsClientBuilder} object.
-     * @throws NullPointerException If {@code tokenCredential} is {@code null}.
+     * @throws NullPointerException If {@code tokenCredential} is null.
      */
     public TextAnalyticsClientBuilder credential(TokenCredential tokenCredential) {
         Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
@@ -297,7 +297,7 @@ public final class TextAnalyticsClientBuilder {
      *
      * @param policy The retry policy for service requests.
      * @return The updated {@link TextAnalyticsClientBuilder} object.
-     * @throws NullPointerException If {@code policy} is {@code null}.
+     * @throws NullPointerException If {@code policy} is null.
      */
     public TextAnalyticsClientBuilder addPolicy(HttpPipelinePolicy policy) {
         policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));

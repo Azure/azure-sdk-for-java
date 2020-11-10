@@ -28,11 +28,11 @@ import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
 import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.mpierce.metrics.reservoir.hdrhistogram.HdrHistogramResetOnSnapshotReservoir;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -246,8 +246,8 @@ abstract class SyncBenchmark<T> {
 
         switch (configuration.getOperationType()) {
             case ReadLatency:
+            case WriteLatency:
                 // TODO: support for other operationTypes will be added later
-//            case WriteLatency:
 //            case QueryInClauseParallel:
 //            case QueryCross:
 //            case QuerySingle:
@@ -258,7 +258,7 @@ abstract class SyncBenchmark<T> {
 //            case QueryAggregateTopOrderby:
 //            case QueryTopOrderby:
             case Mixed:
-                latency = metricsRegistry.timer("Latency");
+                latency = metricsRegistry.register("Latency", new Timer(new HdrHistogramResetOnSnapshotReservoir()));
                 break;
             default:
                 break;
@@ -308,8 +308,8 @@ abstract class SyncBenchmark<T> {
 
             switch (configuration.getOperationType()) {
                 case ReadLatency:
+                case WriteLatency:
                     // TODO: support for other operation types will be added later
-//                case WriteLatency:
 //                case QueryInClauseParallel:
 //                case QueryCross:
 //                case QuerySingle:

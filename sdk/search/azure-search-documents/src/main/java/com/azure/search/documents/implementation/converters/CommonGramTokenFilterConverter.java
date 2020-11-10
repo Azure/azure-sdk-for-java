@@ -47,7 +47,7 @@ public final class CommonGramTokenFilterConverter {
 
         Boolean useQueryMode = obj.isQueryModeUsed();
         commonGramTokenFilter.setUseQueryMode(useQueryMode);
-        commonGramTokenFilter.validate();
+
         return commonGramTokenFilter;
     }
 

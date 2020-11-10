@@ -62,12 +62,19 @@ import reactor.core.publisher.Mono;
 public class AppConfigurationPropertySourceTest {
 
     public static final List<ConfigurationSetting> FEATURE_ITEMS = new ArrayList<>();
+
     public static final List<ConfigurationSetting> FEATURE_ITEMS_TARGETING = new ArrayList<>();
+
     private static final String EMPTY_CONTENT_TYPE = "";
+
     private static final String USERS = "users";
+
     private static final String GROUPS = "groups";
+
     private static final String DEFAULT_ROLLOUT_PERCENTAGE = "defaultRolloutPercentage";
+
     private static final AppConfigurationProperties TEST_PROPS = new AppConfigurationProperties();
+
     private static final ConfigurationSetting item1 = createItem(TEST_CONTEXT, TEST_KEY_1, TEST_VALUE_1, TEST_LABEL_1,
         EMPTY_CONTENT_TYPE);
 
@@ -96,29 +103,44 @@ public class AppConfigurationPropertySourceTest {
 
     private static final ConfigurationSetting featureItemTargeting = createItem(".appconfig.featureflag/", "target",
         FEATURE_VALUE_TARGETING, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
+
     private static final String FEATURE_MANAGEMENT_KEY = "feature-management.featureManagement";
+
     private static ObjectMapper mapper = new ObjectMapper();
+
     public List<ConfigurationSetting> testItems = new ArrayList<>();
+
     @Rule
     public ExpectedException expected = ExpectedException.none();
+
     private AppConfigurationPropertySource propertySource;
+
     private AppConfigurationProperties appConfigurationProperties;
+
     @Mock
     private ClientStore clientStoreMock;
+
     @Mock
     private ConfigurationAsyncClient configClientMock;
+
     @Mock
     private PagedFlux<ConfigurationSetting> settingsMock;
+
     @Mock
     private Flux<PagedResponse<ConfigurationSetting>> pageMock;
+
     @Mock
     private Mono<List<PagedResponse<ConfigurationSetting>>> collectionMock;
+
     @Mock
     private List<PagedResponse<ConfigurationSetting>> itemsMock;
+
     @Mock
     private Iterator<PagedResponse<ConfigurationSetting>> itemsIteratorMock;
+
     @Mock
     private PagedResponse<ConfigurationSetting> pagedResponseMock;
+
     private AppConfigurationProviderProperties appProperties;
 
     private KeyVaultCredentialProvider tokenCredentialProvider = null;
@@ -226,8 +248,7 @@ public class AppConfigurationPropertySourceTest {
         FeatureSet featureSetExpected = new FeatureSet();
         Feature feature = new Feature();
         feature.setKey("Alpha");
-        HashMap<Integer, FeatureFilterEvaluationContext> filters =
-            new HashMap<Integer, FeatureFilterEvaluationContext>();
+        HashMap<Integer, FeatureFilterEvaluationContext> filters = new HashMap<Integer, FeatureFilterEvaluationContext>();
         FeatureFilterEvaluationContext ffec = new FeatureFilterEvaluationContext();
         ffec.setName("TestFilter");
         filters.put(0, ffec);
@@ -275,8 +296,7 @@ public class AppConfigurationPropertySourceTest {
 
         FeatureSet featureSetExpected = new FeatureSet();
 
-        HashMap<Integer, FeatureFilterEvaluationContext> filters =
-            new HashMap<Integer, FeatureFilterEvaluationContext>();
+        HashMap<Integer, FeatureFilterEvaluationContext> filters = new HashMap<Integer, FeatureFilterEvaluationContext>();
         FeatureFilterEvaluationContext ffec = new FeatureFilterEvaluationContext();
         ffec.setName("TestFilter");
 
@@ -286,8 +306,7 @@ public class AppConfigurationPropertySourceTest {
         alpha.setKey("Alpha");
         alpha.setEnabledFor(filters);
 
-        HashMap<Integer, FeatureFilterEvaluationContext> filters2 =
-            new HashMap<Integer, FeatureFilterEvaluationContext>();
+        HashMap<Integer, FeatureFilterEvaluationContext> filters2 = new HashMap<Integer, FeatureFilterEvaluationContext>();
         FeatureFilterEvaluationContext ffec2 = new FeatureFilterEvaluationContext();
         ffec2.setName("TestFilter");
 
@@ -368,8 +387,7 @@ public class AppConfigurationPropertySourceTest {
         FeatureSet featureSetExpected = new FeatureSet();
         Feature feature = new Feature();
         feature.setKey("target");
-        HashMap<Integer, FeatureFilterEvaluationContext> filters =
-            new HashMap<Integer, FeatureFilterEvaluationContext>();
+        HashMap<Integer, FeatureFilterEvaluationContext> filters = new HashMap<Integer, FeatureFilterEvaluationContext>();
         FeatureFilterEvaluationContext ffec = new FeatureFilterEvaluationContext();
         ffec.setName("targetingFilter");
 
