@@ -28,7 +28,7 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
     protected static final String CONTENTS = "Track 2 AMQP message - Perf Test";
     protected static final int TOTAL_MESSAGE_MULTIPLIER = 300;
 
-    private static final String AZURE_SERVICE_BUS_CONNECTION_STRING = "AZURE_SERVICE_BUS_CONNECTION_STRING";
+    private static final String AZURE_SERVICEBUS_CONNECTION_STRING = "AZURE_SERVICEBUS_CONNECTION_STRING";
     private static final String AZURE_SERVICEBUS_QUEUE_NAME = "AZURE_SERVICEBUS_QUEUE_NAME";
     private static final String AZURE_SERVICEBUS_TOPIC_NAME = "AZURE_SERVICEBUS_TOPIC_NAME";
     private static final String AZURE_SERVICEBUS_SUBSCRIPTION_NAME = "AZURE_SERVICEBUS_SUBSCRIPTION_NAME";
@@ -46,10 +46,10 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
      */
     ServiceTest(TOptions options, ServiceBusReceiveMode receiveMode) {
         super(options);
-        String connectionString = System.getenv(AZURE_SERVICE_BUS_CONNECTION_STRING);
+        String connectionString = System.getenv(AZURE_SERVICEBUS_CONNECTION_STRING);
         if (CoreUtils.isNullOrEmpty(connectionString)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Environment variable "
-                + AZURE_SERVICE_BUS_CONNECTION_STRING + " must be set."));
+                + AZURE_SERVICEBUS_CONNECTION_STRING + " must be set."));
         }
 
         String queueName = System.getenv(AZURE_SERVICEBUS_QUEUE_NAME);
