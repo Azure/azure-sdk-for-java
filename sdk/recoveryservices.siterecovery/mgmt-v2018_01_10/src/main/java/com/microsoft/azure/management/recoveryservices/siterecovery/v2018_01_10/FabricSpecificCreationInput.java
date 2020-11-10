@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Fabric provider specific settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = FabricSpecificCreationInput.class)
 @JsonTypeName("FabricSpecificCreationInput")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Azure", value = AzureFabricCreationInput.class),

@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Hyper-V Replica Blue specific protection profile details.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = HyperVReplicaBluePolicyDetails.class)
 @JsonTypeName("HyperVReplica2012R2")
 public class HyperVReplicaBluePolicyDetails extends PolicyProviderSpecificDetails {
     /**
