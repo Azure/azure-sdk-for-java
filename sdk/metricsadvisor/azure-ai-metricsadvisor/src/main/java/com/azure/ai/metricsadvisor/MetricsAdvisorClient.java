@@ -188,7 +188,7 @@ public class MetricsAdvisorClient {
      * @param metricId metric unique id.
      * @param startTime The start time for querying the time series data.
      * @param endTime The end time for querying the time series data.
-     * @param options th e additional configurable options to specify when querying the result.
+     * @param options the additional configurable options to specify when querying the result.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return the list of enrichment status's for the specified metric.
