@@ -86,7 +86,7 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
                         .withPublicSetting("commandToExecute", apacheInstallCommand)
                         .attach()
                     .withNewStorageAccount(storageAccountName)
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .create();
 
             System.out.println("Created a Linux VM with un-managed OS and data disks: " + linuxVM.id());
@@ -162,7 +162,7 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
                     .withSpecializedOSDisk(osDisk, OperatingSystemTypes.LINUX)
                     .withExistingDataDisk(dataDisks.get(0))
                     .withExistingDataDisk(dataDisks.get(1), 1, CachingTypes.READ_WRITE)
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .create();
 
             Utils.print(linuxVM2);

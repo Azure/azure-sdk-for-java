@@ -29,7 +29,7 @@ public class TestVirtualMachineInAvailabilitySet extends TestTemplate<VirtualMac
                 .withRootUsername("testuser")
                 .withRootPassword("12NewPA$$w0rd!")
                 .withComputerName("myvm123")
-                .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .withNewAvailabilitySet(newAvailSetName)
                 .create();
 
