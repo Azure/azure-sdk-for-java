@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.aad.implementation;
 
 import org.springframework.http.HttpEntity;
@@ -8,7 +11,8 @@ import org.springframework.util.MultiValueMap;
 
 import java.util.Optional;
 
-public class AzureOAuth2AuthorizationCodeGrantRequestEntityConverter extends OAuth2AuthorizationCodeGrantRequestEntityConverter {
+public class AzureOAuth2AuthorizationCodeGrantRequestEntityConverter
+    extends OAuth2AuthorizationCodeGrantRequestEntityConverter {
 
     private final DefaultClient defaultClient;
 

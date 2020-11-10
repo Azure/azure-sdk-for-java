@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.aad.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +45,7 @@ public class AzureActiveDirectoryAutoConfiguration {
         return new DefaultClient(clientRegistration, defaultScopes());
     }
 
-    private String [] allScopes() {
+    private String[] allScopes() {
         List<String> result = openidScopes();
         for (AuthorizationProperties authz : azureActiveDirectoryProperties.getAuthorization().values()) {
             result.addAll(authz.scopes());
@@ -50,7 +53,7 @@ public class AzureActiveDirectoryAutoConfiguration {
         return result.toArray(new String[0]);
     }
 
-    private String [] defaultScopes() {
+    private String[] defaultScopes() {
         List<String> result = openidScopes();
         AuthorizationProperties authorizationProperties =
             azureActiveDirectoryProperties.getAuthorization().get(DEFAULT_CLIENT);

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.aad.implementation;
 
 import org.springframework.security.core.Authentication;
@@ -53,7 +56,7 @@ public class AzureOAuth2AuthorizedClientRepository implements OAuth2AuthorizedCl
 
     @Override
     @SuppressWarnings("unchecked")
-    public OAuth2AuthorizedClient loadAuthorizedClient(
+    public <T extends OAuth2AuthorizedClient> T loadAuthorizedClient(
         String id,
         Authentication principal,
         HttpServletRequest request
@@ -61,12 +64,12 @@ public class AzureOAuth2AuthorizedClientRepository implements OAuth2AuthorizedCl
         OAuth2AuthorizedClient result =
             delegatedOAuth2AuthorizedClientRepository.loadAuthorizedClient(id, principal, request);
         if (result != null) {
-            return result;
+            return (T) result;
         }
         if (azureClientRegistrationRepository.isAuthorizedClient(id)) {
             OAuth2AuthorizedClient defaultOAuth2AuthorizedClient =
                 loadAuthorizedClient(defaultClientRegistrationId(), principal, request);
-            return toOauth2AuthorizedClient(defaultOAuth2AuthorizedClient, id, principal);
+            return (T) toOauth2AuthorizedClient(defaultOAuth2AuthorizedClient, id, principal);
         }
         return null;
     }
