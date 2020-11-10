@@ -49,7 +49,7 @@ import java.util.stream.Collectors;
  */
 public class ReadmeSamples {
 
-    private static final String rgName = "rg-test";
+    private final String rgName = "rg-test";
 
     // extra empty lines to compensate import lines
 
