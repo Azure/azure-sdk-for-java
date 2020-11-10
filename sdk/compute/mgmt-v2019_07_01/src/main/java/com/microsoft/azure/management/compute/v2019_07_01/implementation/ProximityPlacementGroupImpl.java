@@ -18,6 +18,7 @@ import com.microsoft.azure.management.compute.v2019_07_01.SubResourceWithColocat
 import com.microsoft.azure.management.compute.v2019_07_01.InstanceViewStatus;
 
 class ProximityPlacementGroupImpl extends GroupableResourceCoreImpl<ProximityPlacementGroup, ProximityPlacementGroupInner, ProximityPlacementGroupImpl, ComputeManager> implements ProximityPlacementGroup, ProximityPlacementGroup.Definition, ProximityPlacementGroup.Update {
+    private Map<String, String> utags;
     ProximityPlacementGroupImpl(String name, ProximityPlacementGroupInner inner, ComputeManager manager) {
         super(name, inner, manager);
     }
@@ -32,7 +33,7 @@ class ProximityPlacementGroupImpl extends GroupableResourceCoreImpl<ProximityPla
     @Override
     public Observable<ProximityPlacementGroup> updateResourceAsync() {
         ProximityPlacementGroupsInner client = this.manager().inner().proximityPlacementGroups();
-        return client.updateAsync(this.resourceGroupName(), this.name(), this.tags())
+        return client.updateAsync(this.resourceGroupName(), this.name(), this.utags)
             .map(innerToFluentMap(this));
     }
 
@@ -84,4 +85,11 @@ class ProximityPlacementGroupImpl extends GroupableResourceCoreImpl<ProximityPla
         this.inner().withProximityPlacementGroupType(proximityPlacementGroupType);
         return this;
     }
+
+    @Override
+    public ProximityPlacementGroupImpl withTags(Map<String, String> tags) {
+        this.utags = tags;
+        return this;
+    }
+
 }
