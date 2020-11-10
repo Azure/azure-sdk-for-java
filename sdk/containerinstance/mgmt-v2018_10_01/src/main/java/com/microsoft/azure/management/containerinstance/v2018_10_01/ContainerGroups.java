@@ -45,4 +45,15 @@ public interface ContainerGroups extends SupportsCreating<ContainerGroup.Definit
      */
     Completable stopAsync(String resourceGroupName, String containerGroupName);
 
+    /**
+     * Starts all containers in a container group.
+     * Starts all containers in a container group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable startAsync(String resourceGroupName, String containerGroupName);
+
 }

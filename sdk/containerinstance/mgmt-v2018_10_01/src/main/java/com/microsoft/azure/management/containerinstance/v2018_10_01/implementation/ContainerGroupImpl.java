@@ -23,6 +23,7 @@ import com.microsoft.azure.management.containerinstance.v2018_10_01.ContainerGro
 import com.microsoft.azure.management.containerinstance.v2018_10_01.ContainerGroupDiagnostics;
 import com.microsoft.azure.management.containerinstance.v2018_10_01.ContainerGroupNetworkProfile;
 import com.microsoft.azure.management.containerinstance.v2018_10_01.DnsConfiguration;
+import java.util.ArrayList;
 import rx.functions.Func1;
 
 class ContainerGroupImpl extends GroupableResourceCoreImpl<ContainerGroup, ContainerGroupInner, ContainerGroupImpl, ContainerInstanceManager> implements ContainerGroup, ContainerGroup.Definition, ContainerGroup.Update {

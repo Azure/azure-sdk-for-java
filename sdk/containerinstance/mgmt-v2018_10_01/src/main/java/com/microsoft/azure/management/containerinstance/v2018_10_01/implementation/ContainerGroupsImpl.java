@@ -138,6 +138,12 @@ class ContainerGroupsImpl extends GroupableResourcesCoreImpl<ContainerGroup, Con
     }
 
     @Override
+    public Completable startAsync(String resourceGroupName, String containerGroupName) {
+        ContainerGroupsInner client = this.inner();
+        return client.startAsync(resourceGroupName, containerGroupName).toCompletable();
+    }
+
+    @Override
     protected ContainerGroupImpl wrapModel(ContainerGroupInner inner) {
         return  new ContainerGroupImpl(inner.name(), inner, manager());
     }
