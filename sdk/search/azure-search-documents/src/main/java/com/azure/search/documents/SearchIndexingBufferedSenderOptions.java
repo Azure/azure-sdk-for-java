@@ -29,12 +29,12 @@ public final class SearchIndexingBufferedSenderOptions<T> {
 
     private final ClientLogger logger = new ClientLogger(SearchIndexingBufferedSenderOptions.class);
 
-    private Boolean autoFlush;
-    private Duration autoFlushWindow;
+    private boolean autoFlush = DEFAULT_AUTO_FLUSH;
+    private Duration autoFlushWindow = DEFAULT_FLUSH_WINDOW;
     private int initialBatchActionCount = DEFAULT_INITIAL_BATCH_ACTION_COUNT;
     private int maxRetries = DEFAULT_MAX_RETRIES;
-    private Duration retryDelay;
-    private Duration maxRetryDelay;
+    private Duration retryDelay = DEFAULT_RETRY_DELAY;
+    private Duration maxRetryDelay = DEFAULT_MAX_RETRY_DELAY;
 
     private Consumer<IndexAction<T>> onActionAddedConsumer;
     private Consumer<IndexAction<T>> onActionSucceededConsumer;
@@ -52,7 +52,7 @@ public final class SearchIndexingBufferedSenderOptions<T> {
      * @param autoFlush Flag determining whether a buffered sender will automatically flush.
      * @return The updated SearchIndexingBufferedSenderOptions object.
      */
-    public SearchIndexingBufferedSenderOptions<T> setAutoFlush(Boolean autoFlush) {
+    public SearchIndexingBufferedSenderOptions<T> setAutoFlush(boolean autoFlush) {
         this.autoFlush = autoFlush;
         return this;
     }
@@ -63,7 +63,7 @@ public final class SearchIndexingBufferedSenderOptions<T> {
      * @return Flag indicating if the buffered sender will automatically flush.
      */
     public boolean getAutoFlush() {
-        return (autoFlush == null) ? DEFAULT_AUTO_FLUSH : autoFlush;
+        return autoFlush;
     }
 
     /**
@@ -72,14 +72,16 @@ public final class SearchIndexingBufferedSenderOptions<T> {
      * The buffered sender will reset the duration when documents are sent for indexing, either by reaching {@link
      * #setInitialBatchActionCount(int)} or by a manual trigger.
      * <p>
-     * If {@code flushWindow} is negative or zero and {@link #setAutoFlush(Boolean)} is enabled the buffered sender will
-     * only flush when {@link #setInitialBatchActionCount(int)} is met. If {@code flushWindow} is null a default value
-     * of 60 seconds is used.
+     * If {@code flushWindow} is negative or zero and {@link #setAutoFlush(boolean)} is enabled the buffered sender will
+     * only flush when {@link #setInitialBatchActionCount(int)} is met.
      *
      * @param autoFlushWindow Duration between document batches being sent for indexing.
      * @return The updated SearchIndexingBufferedSenderOptions object.
+     * @throws NullPointerException If {@code autoFlushWindow} is null.
      */
     public SearchIndexingBufferedSenderOptions<T> setAutoFlushWindow(Duration autoFlushWindow) {
+        Objects.requireNonNull(autoFlushWindow, "'autoFlushWindow' cannot be null.");
+
         this.autoFlushWindow = autoFlushWindow;
         return this;
     }
@@ -99,7 +101,7 @@ public final class SearchIndexingBufferedSenderOptions<T> {
      * flushed.
      */
     public Duration getAutoFlushWindow() {
-        return (autoFlushWindow == null) ? DEFAULT_FLUSH_WINDOW : autoFlushWindow;
+        return autoFlushWindow;
     }
 
     /**
@@ -170,9 +172,12 @@ public final class SearchIndexingBufferedSenderOptions<T> {
      * @param retryDelay The initial duration requests will delay when the service is throttling.
      * @return The updated SearchIndexingBufferedSenderOptions object.
      * @throws IllegalArgumentException If {@code retryDelay.isNegative()} or {@code retryDelay.isZero()} is true.
+     * @throws NullPointerException If {@code retryDelay} is null.
      */
     public SearchIndexingBufferedSenderOptions<T> setRetryDelay(Duration retryDelay) {
-        if (retryDelay != null && (retryDelay.isNegative() || retryDelay.isZero())) {
+        Objects.requireNonNull(retryDelay, "'retryDelay' cannot be null.");
+
+        if (retryDelay.isNegative() || retryDelay.isZero()) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'retryDelay' cannot be negative or zero."));
         }
 
@@ -186,7 +191,7 @@ public final class SearchIndexingBufferedSenderOptions<T> {
      * @return The initial duration requests will delay when the service is throttling.
      */
     public Duration getRetryDelay() {
-        return (retryDelay == null) ? DEFAULT_RETRY_DELAY : retryDelay;
+        return retryDelay;
     }
 
     /**
@@ -201,9 +206,12 @@ public final class SearchIndexingBufferedSenderOptions<T> {
      * @return The updated SearchIndexingBufferedSenderOptions object.
      * @throws IllegalArgumentException If {@code maxRetryDelay.isNegative()} or {@code maxRetryDelay.isZero()} is
      * true.
+     * @throws NullPointerException If {@code maxRetryDelay} is null.
      */
     public SearchIndexingBufferedSenderOptions<T> setMaxRetryDelay(Duration maxRetryDelay) {
-        if (maxRetryDelay != null && (maxRetryDelay.isNegative() || maxRetryDelay.isZero())) {
+        Objects.requireNonNull(maxRetryDelay, "'maxRetryDelay' cannot be null.");
+
+        if (maxRetryDelay.isNegative() || maxRetryDelay.isZero()) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("'maxRetryDelay' cannot be negative or zero."));
         }
@@ -218,7 +226,7 @@ public final class SearchIndexingBufferedSenderOptions<T> {
      * @return The maximum duration requests will delay when the service is throttling.
      */
     public Duration getMaxRetryDelay() {
-        return (maxRetryDelay == null) ? DEFAULT_MAX_RETRY_DELAY : maxRetryDelay;
+        return maxRetryDelay;
     }
 
     /**
