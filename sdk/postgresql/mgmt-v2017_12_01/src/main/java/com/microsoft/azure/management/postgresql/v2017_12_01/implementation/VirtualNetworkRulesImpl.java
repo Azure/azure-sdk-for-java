@@ -18,14 +18,14 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.management.postgresql.v2017_12_01.VirtualNetworkRule;
 
 class VirtualNetworkRulesImpl extends WrapperImpl<VirtualNetworkRulesInner> implements VirtualNetworkRules {
-    private final PostgreSQLManager manager;
+    private final DBForPostgreSQLManager manager;
 
-    VirtualNetworkRulesImpl(PostgreSQLManager manager) {
+    VirtualNetworkRulesImpl(DBForPostgreSQLManager manager) {
         super(manager.inner().virtualNetworkRules());
         this.manager = manager;
     }
 
-    public PostgreSQLManager manager() {
+    public DBForPostgreSQLManager manager() {
         return this.manager;
     }
 
@@ -64,10 +64,14 @@ class VirtualNetworkRulesImpl extends WrapperImpl<VirtualNetworkRulesInner> impl
     public Observable<VirtualNetworkRule> getAsync(String resourceGroupName, String serverName, String virtualNetworkRuleName) {
         VirtualNetworkRulesInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, virtualNetworkRuleName)
-        .map(new Func1<VirtualNetworkRuleInner, VirtualNetworkRule>() {
+        .flatMap(new Func1<VirtualNetworkRuleInner, Observable<VirtualNetworkRule>>() {
             @Override
-            public VirtualNetworkRule call(VirtualNetworkRuleInner inner) {
-                return wrapModel(inner);
+            public Observable<VirtualNetworkRule> call(VirtualNetworkRuleInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((VirtualNetworkRule)wrapModel(inner));
+                }
             }
        });
     }

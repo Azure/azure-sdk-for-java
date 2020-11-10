@@ -13,12 +13,12 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 
 class ConfigurationImpl extends CreatableUpdatableImpl<Configuration, ConfigurationInner, ConfigurationImpl> implements Configuration, Configuration.Definition, Configuration.Update {
-    private final PostgreSQLManager manager;
+    private final DBForPostgreSQLManager manager;
     private String resourceGroupName;
     private String serverName;
     private String configurationName;
 
-    ConfigurationImpl(String name, PostgreSQLManager manager) {
+    ConfigurationImpl(String name, DBForPostgreSQLManager manager) {
         super(name, new ConfigurationInner());
         this.manager = manager;
         // Set resource name
@@ -26,7 +26,7 @@ class ConfigurationImpl extends CreatableUpdatableImpl<Configuration, Configurat
         //
     }
 
-    ConfigurationImpl(ConfigurationInner inner, PostgreSQLManager manager) {
+    ConfigurationImpl(ConfigurationInner inner, DBForPostgreSQLManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -39,7 +39,7 @@ class ConfigurationImpl extends CreatableUpdatableImpl<Configuration, Configurat
     }
 
     @Override
-    public PostgreSQLManager manager() {
+    public DBForPostgreSQLManager manager() {
         return this.manager;
     }
 

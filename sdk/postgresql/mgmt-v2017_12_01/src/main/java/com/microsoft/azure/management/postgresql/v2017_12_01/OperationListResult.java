@@ -10,7 +10,7 @@ package com.microsoft.azure.management.postgresql.v2017_12_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.postgresql.v2017_12_01.implementation.PostgreSQLManager;
+import com.microsoft.azure.management.postgresql.v2017_12_01.implementation.DBForPostgreSQLManager;
 import com.microsoft.azure.management.postgresql.v2017_12_01.implementation.OperationListResultInner;
 import com.microsoft.azure.management.postgresql.v2017_12_01.implementation.OperationInner;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Type representing OperationListResult.
  */
-public interface OperationListResult extends HasInner<OperationListResultInner>, HasManager<PostgreSQLManager> {
+public interface OperationListResult extends HasInner<OperationListResultInner>, HasManager<DBForPostgreSQLManager> {
     /**
      * @return the value value.
      */

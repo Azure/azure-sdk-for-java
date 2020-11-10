@@ -21,7 +21,7 @@ public interface FirewallRules extends SupportsCreating<FirewallRule.DefinitionS
     /**
      * Gets information about a server firewall rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -32,7 +32,7 @@ public interface FirewallRules extends SupportsCreating<FirewallRule.DefinitionS
     /**
      * List all the firewall rules in a given server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -42,7 +42,7 @@ public interface FirewallRules extends SupportsCreating<FirewallRule.DefinitionS
     /**
      * Deletes a server firewall rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation

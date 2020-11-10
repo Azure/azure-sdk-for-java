@@ -11,18 +11,24 @@ package com.microsoft.azure.management.postgresql.v2017_12_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.postgresql.v2017_12_01.implementation.ServerInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.postgresql.v2017_12_01.implementation.PostgreSQLManager;
+import com.microsoft.azure.management.postgresql.v2017_12_01.implementation.DBForPostgreSQLManager;
 import org.joda.time.DateTime;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Type representing ServerServer.
  */
-public interface ServerServer extends HasInner<ServerInner>, HasManager<PostgreSQLManager> {
+public interface ServerServer extends HasInner<ServerInner>, HasManager<DBForPostgreSQLManager> {
     /**
      * @return the administratorLogin value.
      */
     String administratorLogin();
+
+    /**
+     * @return the byokEnforcement value.
+     */
+    String byokEnforcement();
 
     /**
      * @return the earliestRestoreDate value.
@@ -40,6 +46,16 @@ public interface ServerServer extends HasInner<ServerInner>, HasManager<PostgreS
     String id();
 
     /**
+     * @return the identity value.
+     */
+    ResourceIdentity identity();
+
+    /**
+     * @return the infrastructureEncryption value.
+     */
+    InfrastructureEncryption infrastructureEncryption();
+
+    /**
      * @return the location value.
      */
     String location();
@@ -50,9 +66,24 @@ public interface ServerServer extends HasInner<ServerInner>, HasManager<PostgreS
     String masterServerId();
 
     /**
+     * @return the minimalTlsVersion value.
+     */
+    MinimalTlsVersionEnum minimalTlsVersion();
+
+    /**
      * @return the name value.
      */
     String name();
+
+    /**
+     * @return the privateEndpointConnections value.
+     */
+    List<ServerPrivateEndpointConnection> privateEndpointConnections();
+
+    /**
+     * @return the publicNetworkAccess value.
+     */
+    PublicNetworkAccessEnum publicNetworkAccess();
 
     /**
      * @return the replicaCapacity value.
