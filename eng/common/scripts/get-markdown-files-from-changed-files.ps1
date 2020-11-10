@@ -1,7 +1,6 @@
 param (
     # The root repo we scaned with.
     [string[]] $RootRepo = "./",
-    [Parameter(Mandatory = $true)]
     [string] $targetBranch = ${env:SYSTEM_PULLREQUEST_TARGETBRANCH}
 )
 $deletedFiles = (git diff origin/$targetBranch HEAD --name-only --diff-filter=D)
