@@ -86,4 +86,24 @@ public class ManagedIdentityCredentialTest {
                         && expiresOn.getSecond() == token.getExpiresAt().getSecond())
                 .verifyComplete();
     }
+
+    @Test
+    public void testArcUserAssigned() throws Exception {
+        Configuration configuration = Configuration.getGlobalConfiguration();
+
+        // setup
+        String token1 = "token1";
+        String endpoint = "http://localhost";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        configuration.put("IDENTITY_ENDPOINT", endpoint);
+        configuration.put("IMDS_ENDPOINT", endpoint);
+
+
+        // test
+        ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(CLIENT_ID).build();
+        StepVerifier.create(credential.getToken(request))
+            .expectError(CredentialUnavailableException.class);
+    }
+
 }
