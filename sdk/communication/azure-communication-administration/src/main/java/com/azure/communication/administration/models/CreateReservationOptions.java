@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CreateSearchOptions model. */
+/** The CreateReservationOptions model. */
 @Fluent
-public final class CreateSearchOptions {
+public final class CreateReservationOptions {
     /*
      * Display name of the search.
      */
@@ -60,9 +60,9 @@ public final class CreateSearchOptions {
      * Set the displayName property: Display name of the search.
      *
      * @param displayName the displayName value to set.
-     * @return the CreateSearchOptions object itself.
+     * @return the CreateReservationOptions object itself.
      */
-    public CreateSearchOptions setDisplayName(String displayName) {
+    public CreateReservationOptions setDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -80,9 +80,9 @@ public final class CreateSearchOptions {
      * Set the description property: Description of the search.
      *
      * @param description the description value to set.
-     * @return the CreateSearchOptions object itself.
+     * @return the CreateReservationOptions object itself.
      */
-    public CreateSearchOptions setDescription(String description) {
+    public CreateReservationOptions setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -100,9 +100,9 @@ public final class CreateSearchOptions {
      * Set the phonePlanIds property: The plan subtype ids from which to create the search.
      *
      * @param phonePlanIds the phonePlanIds value to set.
-     * @return the CreateSearchOptions object itself.
+     * @return the CreateReservationOptions object itself.
      */
-    public CreateSearchOptions setPhonePlanIds(List<String> phonePlanIds) {
+    public CreateReservationOptions setPhonePlanIds(List<String> phonePlanIds) {
         this.phonePlanIds = phonePlanIds;
         return this;
     }
@@ -120,9 +120,9 @@ public final class CreateSearchOptions {
      * Set the areaCode property: The area code from which to create the search.
      *
      * @param areaCode the areaCode value to set.
-     * @return the CreateSearchOptions object itself.
+     * @return the CreateReservationOptions object itself.
      */
-    public CreateSearchOptions setAreaCode(String areaCode) {
+    public CreateReservationOptions setAreaCode(String areaCode) {
         this.areaCode = areaCode;
         return this;
     }
@@ -140,9 +140,9 @@ public final class CreateSearchOptions {
      * Set the quantity property: The quantity of phone numbers to request.
      *
      * @param quantity the quantity value to set.
-     * @return the CreateSearchOptions object itself.
+     * @return the CreateReservationOptions object itself.
      */
-    public CreateSearchOptions setQuantity(Integer quantity) {
+    public CreateReservationOptions setQuantity(Integer quantity) {
         this.quantity = quantity;
         return this;
     }
@@ -160,9 +160,9 @@ public final class CreateSearchOptions {
      * Set the locationOptions property: The location options of the search.
      *
      * @param locationOptions the locationOptions value to set.
-     * @return the CreateSearchOptions object itself.
+     * @return the CreateReservationOptions object itself.
      */
-    public CreateSearchOptions setLocationOptions(List<LocationOptionsDetails> locationOptions) {
+    public CreateReservationOptions setLocationOptions(List<LocationOptionsDetails> locationOptions) {
         this.locationOptions = locationOptions;
         return this;
     }

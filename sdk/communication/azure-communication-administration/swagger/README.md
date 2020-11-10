@@ -44,34 +44,64 @@ These settings apply only when `--tag=phonenumber` is specified on the command l
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/257f060be8b60d8468584682aa2d71b1faa5f82c/specification/communication/data-plane/Microsoft.CommunicationServicesAdministration/preview/2020-07-20-preview1/communicationservicesadministration.json
 override-client-name: PhoneNumberAdminClient
 ```
-### Rename searchId to reservationId
 
-
+### Rename searchId to reservationId in CreateSearchResponse
 
 ``` yaml
-
 directive:
-
   - from: swagger-document
-
-    where: $.definitions.PhoneNumberSearch.properties.searchId
-
+    where: $.definitions.CreateSearchResponse.properties.searchId
     transform: >
-
       $["x-ms-client-name"] = "reservationId";
-
 ```
+### Rename searchId to reservationId in PhoneNumberSearch 
+
+``` yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.PhoneNumberSearch.properties.searchId
+    transform: >
+      $["x-ms-client-name"] = "reservationId";
+```
+### Rename AddChatThreadMembersRequest to AddChatThreadMembersOptions
+``` yaml
+directive:
+- from: swagger-document
+  where: $["paths"]["/chat/threads/{chatThreadId}/members"].post.parameters[2]
+  transform: >
+    if ($.schema && $.schema.$ref && $.schema.$ref.endsWith("AddChatThreadMembersRequest")) {
+        const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/AddChatThreadMembersOptions");
+        $.schema = { "$ref": path };
+    }
+```
+
 ### Rename PhoneNumberSearch to PhoneNumberReservation
 
 ``` yaml
 directive:
     - rename-model:
-
         from: PhoneNumberSearch
-
         to: PhoneNumberReservation
-
 ```
+
+### Rename CreateSearchOptions to CreateReservationOptions
+
+``` yaml
+directive:
+    - rename-model:
+        from: CreateSearchOptions
+        to: CreateReservationOptions
+```
+
+### Rename CreateSearchResponse to CreateReservationResponse
+
+``` yaml
+directive:
+    - rename-model:
+        from: CreateSearchResponse
+        to: CreateReservationResponse
+```
+
 
 
 ### Code generation settings
