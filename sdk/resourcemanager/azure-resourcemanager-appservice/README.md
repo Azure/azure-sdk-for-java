@@ -41,6 +41,7 @@ In addition, Azure subscription ID can be configured via environment variable `A
 
 With above configuration, `azure` client can be authenticated by following code:
 
+<!-- embedme ./src/samples/java/com/azure/resourcemanager/appservice/ReadmeSamples.java#L21-L26 -->
 ```java
 AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
