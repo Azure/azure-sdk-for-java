@@ -14,14 +14,14 @@ import com.microsoft.azure.management.iothub.v2019_07_01_preview.IotHubs;
 import rx.Completable;
 
 class IotHubsImpl extends WrapperImpl<IotHubsInner> implements IotHubs {
-    private final IoTHubManager manager;
+    private final DevicesManager manager;
 
-    IotHubsImpl(IoTHubManager manager) {
+    IotHubsImpl(DevicesManager manager) {
         super(manager.inner().iotHubs());
         this.manager = manager;
     }
 
-    public IoTHubManager manager() {
+    public DevicesManager manager() {
         return this.manager;
     }
 
