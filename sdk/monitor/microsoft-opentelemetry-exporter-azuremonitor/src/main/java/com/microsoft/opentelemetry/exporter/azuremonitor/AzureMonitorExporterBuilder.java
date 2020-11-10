@@ -47,12 +47,12 @@ public final class AzureMonitorExporterBuilder {
      * @throws NullPointerException if {@code endpoint} is null.
      * @throws IllegalArgumentException if {@code endpoint} cannot be parsed into a valid URL.
      */
-    public AzureMonitorExporterBuilder endpoint(String endpoint) {
+    AzureMonitorExporterBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
 
         try {
             URL url = new URL(endpoint);
-            restServiceClientBuilder.host(url.getHost());
+            restServiceClientBuilder.host(url.getProtocol() + "://" + url.getHost());
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsWarning(
                 new IllegalArgumentException("'endpoint' must be a valid URL.", ex));
@@ -143,22 +143,23 @@ public final class AzureMonitorExporterBuilder {
      * @throws IllegalArgumentException If the connection string is invalid.
      */
     public AzureMonitorExporterBuilder connectionString(String connectionString) {
-        this.instrumentationKey = extractInstrumentationKey(connectionString);
+        this.instrumentationKey = extractValueFromConnectionString(connectionString, "InstrumentationKey");
+        this.endpoint(extractValueFromConnectionString(connectionString, "IngestionEndpoint"));
         return this;
     }
 
-    private String extractInstrumentationKey(String connectionString) {
+    private String extractValueFromConnectionString(String connectionString, String key) {
         Objects.requireNonNull(connectionString);
 
         return Arrays.stream(connectionString.split(";"))
             .filter(keyValue -> {
                 String[] keyValuePair = keyValue.split("=");
-                return keyValuePair.length == 2 && keyValuePair[0].equalsIgnoreCase("InstrumentationKey");
+                return keyValuePair.length == 2 && keyValuePair[0].equalsIgnoreCase(key);
             })
             .map(instrumentationKeyValue -> instrumentationKeyValue.split("=")[1])
             .filter(iKey -> !CoreUtils.isNullOrEmpty(iKey))
             .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("'InstrumentationKey' not found in connectionString"));
+            .orElseThrow(() -> new IllegalArgumentException(key + " not found in connectionString"));
     }
 
     /**

@@ -29,6 +29,9 @@ public class AzureMonitorExporterBuilderTest {
         return Stream.of(
             Arguments.of(null, NullPointerException.class),
             Arguments.of("", IllegalArgumentException.class),
+            Arguments.of("InstrumentationKey=key;", IllegalArgumentException.class),
+            Arguments.of("InstrumentationKey=key;IngestionEndpoint=", IllegalArgumentException.class),
+            Arguments.of("InstrumentationKey=key;IngestionEndpoin=url", IllegalArgumentException.class),
             Arguments.of("InstrumentationKey=;IngestionEndpoint=url", IllegalArgumentException.class),
             Arguments.of("Instrumentation=iKey;IngestionEndpoint=url", IllegalArgumentException.class),
             Arguments.of("InstrumentationKey;IngestionEndpoint=url", IllegalArgumentException.class),
