@@ -20,7 +20,7 @@ public interface VirtualMachineExtensions {
      * @param name resource name.
      * @return the first stage of the new Extension definition.
      */
-    VirtualMachineVirtualMachineExtension.DefinitionStages.Blank defineExtension(String name);
+    VirtualMachineExtension.DefinitionStages.Blank defineExtension(String name);
 
     /**
      * The operation to get the extension.
@@ -31,7 +31,7 @@ public interface VirtualMachineExtensions {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<VirtualMachineVirtualMachineExtension> getAsync(String resourceGroupName, String vmName, String vmExtensionName);
+    Observable<VirtualMachineExtension> getAsync(String resourceGroupName, String vmName, String vmExtensionName);
 
     /**
      * The operation to delete the extension.

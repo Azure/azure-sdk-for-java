@@ -11,46 +11,46 @@ package com.microsoft.azure.management.compute.v2020_06_01;
 import com.microsoft.azure.arm.collection.SupportsCreating;
 import rx.Completable;
 import rx.Observable;
-import com.microsoft.azure.management.compute.v2020_06_01.implementation.VirtualMachineScaleSetVMExtensionsInner;
+import com.microsoft.azure.management.compute.v2020_06_01.implementation.VirtualMachineScaleSetVMRunCommandsInner;
 import com.microsoft.azure.arm.model.HasInner;
 
 /**
- * Type representing VirtualMachineScaleSetVMExtensions.
+ * Type representing VirtualMachineScaleSetVMRunCommands.
  */
-public interface VirtualMachineScaleSetVMExtensions extends SupportsCreating<VirtualMachineScaleSetVMExtension.DefinitionStages.Blank>, HasInner<VirtualMachineScaleSetVMExtensionsInner> {
+public interface VirtualMachineScaleSetVMRunCommands extends SupportsCreating<VirtualMachineScaleSetVirtualMachineRunCommand.DefinitionStages.Blank>, HasInner<VirtualMachineScaleSetVMRunCommandsInner> {
     /**
-     * The operation to get all extensions of an instance in Virtual Machine Scaleset.
+     * The operation to get the VMSS VM run command.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
+     * @param runCommandName The name of the virtual machine run command.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<VirtualMachineScaleSetVMExtensionsListResult> listAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
+    Observable<VirtualMachineScaleSetVirtualMachineRunCommand> getAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName);
 
     /**
-     * The operation to get the VMSS VM extension.
+     * The operation to get all run commands of an instance in Virtual Machine Scaleset.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param vmExtensionName The name of the virtual machine extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<VirtualMachineScaleSetVMExtension> getAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName);
+    Observable<VirtualMachineScaleSetVirtualMachineRunCommand> listAsync(final String resourceGroupName, final String vmScaleSetName, final String instanceId);
 
     /**
-     * The operation to delete the VMSS VM extension.
+     * The operation to delete the VMSS VM run command.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param vmExtensionName The name of the virtual machine extension.
+     * @param runCommandName The name of the virtual machine run command.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable deleteAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName);
+    Completable deleteAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName);
 
 }
