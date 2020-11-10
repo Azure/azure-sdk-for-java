@@ -23,9 +23,7 @@ public class App {
      * @throws RuntimeException If not able to load test classes.
      */
     public static void main(String[] args) {
-        Class<?>[] testClasses = null;
-
-        testClasses = new Class<?>[]{
+        Class<?>[] testClasses = new Class<?>[]{
             ReceiveAndDeleteMessageTest.class,
             ReceiveAndLockMessageTest.class,
             SendMessageTest.class,
