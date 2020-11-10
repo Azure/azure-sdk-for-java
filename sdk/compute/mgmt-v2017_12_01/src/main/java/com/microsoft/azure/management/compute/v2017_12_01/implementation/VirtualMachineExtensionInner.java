@@ -79,7 +79,7 @@ public class VirtualMachineExtensionInner extends Resource {
     private VirtualMachineExtensionInstanceView instanceView;
 
     /**
-     * Get the forceUpdateTag value.
+     * Get how the extension handler should be forced to update even if the extension configuration has not changed.
      *
      * @return the forceUpdateTag value
      */
@@ -88,7 +88,7 @@ public class VirtualMachineExtensionInner extends Resource {
     }
 
     /**
-     * Set the forceUpdateTag value.
+     * Set how the extension handler should be forced to update even if the extension configuration has not changed.
      *
      * @param forceUpdateTag the forceUpdateTag value to set
      * @return the VirtualMachineExtensionInner object itself.
@@ -99,7 +99,7 @@ public class VirtualMachineExtensionInner extends Resource {
     }
 
     /**
-     * Get the publisher value.
+     * Get the name of the extension handler publisher.
      *
      * @return the publisher value
      */
@@ -108,7 +108,7 @@ public class VirtualMachineExtensionInner extends Resource {
     }
 
     /**
-     * Set the publisher value.
+     * Set the name of the extension handler publisher.
      *
      * @param publisher the publisher value to set
      * @return the VirtualMachineExtensionInner object itself.
@@ -119,7 +119,7 @@ public class VirtualMachineExtensionInner extends Resource {
     }
 
     /**
-     * Get the virtualMachineExtensionType value.
+     * Get specifies the type of the extension; an example is "CustomScriptExtension".
      *
      * @return the virtualMachineExtensionType value
      */
@@ -128,7 +128,7 @@ public class VirtualMachineExtensionInner extends Resource {
     }
 
     /**
-     * Set the virtualMachineExtensionType value.
+     * Set specifies the type of the extension; an example is "CustomScriptExtension".
      *
      * @param virtualMachineExtensionType the virtualMachineExtensionType value to set
      * @return the VirtualMachineExtensionInner object itself.
@@ -139,7 +139,7 @@ public class VirtualMachineExtensionInner extends Resource {
     }
 
     /**
-     * Get the typeHandlerVersion value.
+     * Get specifies the version of the script handler.
      *
      * @return the typeHandlerVersion value
      */
@@ -148,7 +148,7 @@ public class VirtualMachineExtensionInner extends Resource {
     }
 
     /**
-     * Set the typeHandlerVersion value.
+     * Set specifies the version of the script handler.
      *
      * @param typeHandlerVersion the typeHandlerVersion value to set
      * @return the VirtualMachineExtensionInner object itself.
@@ -159,7 +159,7 @@ public class VirtualMachineExtensionInner extends Resource {
     }
 
     /**
-     * Get the autoUpgradeMinorVersion value.
+     * Get indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set to true.
      *
      * @return the autoUpgradeMinorVersion value
      */
@@ -168,7 +168,7 @@ public class VirtualMachineExtensionInner extends Resource {
     }
 
     /**
-     * Set the autoUpgradeMinorVersion value.
+     * Set indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set to true.
      *
      * @param autoUpgradeMinorVersion the autoUpgradeMinorVersion value to set
      * @return the VirtualMachineExtensionInner object itself.
@@ -179,7 +179,7 @@ public class VirtualMachineExtensionInner extends Resource {
     }
 
     /**
-     * Get the settings value.
+     * Get json formatted public settings for the extension.
      *
      * @return the settings value
      */
@@ -188,7 +188,7 @@ public class VirtualMachineExtensionInner extends Resource {
     }
 
     /**
-     * Set the settings value.
+     * Set json formatted public settings for the extension.
      *
      * @param settings the settings value to set
      * @return the VirtualMachineExtensionInner object itself.
@@ -199,7 +199,7 @@ public class VirtualMachineExtensionInner extends Resource {
     }
 
     /**
-     * Get the protectedSettings value.
+     * Get the extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all.
      *
      * @return the protectedSettings value
      */
@@ -208,7 +208,7 @@ public class VirtualMachineExtensionInner extends Resource {
     }
 
     /**
-     * Set the protectedSettings value.
+     * Set the extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all.
      *
      * @param protectedSettings the protectedSettings value to set
      * @return the VirtualMachineExtensionInner object itself.
@@ -219,7 +219,7 @@ public class VirtualMachineExtensionInner extends Resource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get the provisioning state, which only appears in the response.
      *
      * @return the provisioningState value
      */
@@ -228,7 +228,7 @@ public class VirtualMachineExtensionInner extends Resource {
     }
 
     /**
-     * Get the instanceView value.
+     * Get the virtual machine extension instance view.
      *
      * @return the instanceView value
      */
@@ -237,7 +237,7 @@ public class VirtualMachineExtensionInner extends Resource {
     }
 
     /**
-     * Set the instanceView value.
+     * Set the virtual machine extension instance view.
      *
      * @param instanceView the instanceView value to set
      * @return the VirtualMachineExtensionInner object itself.

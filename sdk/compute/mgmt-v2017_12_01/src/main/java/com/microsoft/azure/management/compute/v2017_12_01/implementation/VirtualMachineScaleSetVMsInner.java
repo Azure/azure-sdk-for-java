@@ -35,6 +35,8 @@ import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
+import com.microsoft.azure.LongRunningFinalState;
+import com.microsoft.azure.LongRunningOperationOptions;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -233,7 +235,7 @@ public class VirtualMachineScaleSetVMsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Observable<Response<ResponseBody>> observable = service.reimage(resourceGroupName, vmScaleSetName, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -403,7 +405,7 @@ public class VirtualMachineScaleSetVMsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Observable<Response<ResponseBody>> observable = service.reimageAll(resourceGroupName, vmScaleSetName, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -573,7 +575,7 @@ public class VirtualMachineScaleSetVMsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Observable<Response<ResponseBody>> observable = service.deallocate(resourceGroupName, vmScaleSetName, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -1337,9 +1339,9 @@ public class VirtualMachineScaleSetVMsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the VM scale set.
-     * @param filter The filter to apply to the operation.
-     * @param select The list parameters.
-     * @param expand The expand expression to apply to the operation.
+     * @param filter The filter to apply to the operation. Allowed values are 'startswith(instanceView/statuses/code, 'PowerState') eq true', 'properties/latestModelApplied eq true', 'properties/latestModelApplied eq false'.
+     * @param select The list parameters. Allowed values are 'instanceView', 'instanceView/statuses'.
+     * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1360,9 +1362,9 @@ public class VirtualMachineScaleSetVMsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the VM scale set.
-     * @param filter The filter to apply to the operation.
-     * @param select The list parameters.
-     * @param expand The expand expression to apply to the operation.
+     * @param filter The filter to apply to the operation. Allowed values are 'startswith(instanceView/statuses/code, 'PowerState') eq true', 'properties/latestModelApplied eq true', 'properties/latestModelApplied eq false'.
+     * @param select The list parameters. Allowed values are 'instanceView', 'instanceView/statuses'.
+     * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -1384,9 +1386,9 @@ public class VirtualMachineScaleSetVMsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the VM scale set.
-     * @param filter The filter to apply to the operation.
-     * @param select The list parameters.
-     * @param expand The expand expression to apply to the operation.
+     * @param filter The filter to apply to the operation. Allowed values are 'startswith(instanceView/statuses/code, 'PowerState') eq true', 'properties/latestModelApplied eq true', 'properties/latestModelApplied eq false'.
+     * @param select The list parameters. Allowed values are 'instanceView', 'instanceView/statuses'.
+     * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;VirtualMachineScaleSetVMInner&gt; object
      */
@@ -1405,9 +1407,9 @@ public class VirtualMachineScaleSetVMsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the VM scale set.
-     * @param filter The filter to apply to the operation.
-     * @param select The list parameters.
-     * @param expand The expand expression to apply to the operation.
+     * @param filter The filter to apply to the operation. Allowed values are 'startswith(instanceView/statuses/code, 'PowerState') eq true', 'properties/latestModelApplied eq true', 'properties/latestModelApplied eq false'.
+     * @param select The list parameters. Allowed values are 'instanceView', 'instanceView/statuses'.
+     * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;VirtualMachineScaleSetVMInner&gt; object
      */
@@ -1430,9 +1432,9 @@ public class VirtualMachineScaleSetVMsInner {
      *
     ServiceResponse<PageImpl1<VirtualMachineScaleSetVMInner>> * @param resourceGroupName The name of the resource group.
     ServiceResponse<PageImpl1<VirtualMachineScaleSetVMInner>> * @param virtualMachineScaleSetName The name of the VM scale set.
-    ServiceResponse<PageImpl1<VirtualMachineScaleSetVMInner>> * @param filter The filter to apply to the operation.
-    ServiceResponse<PageImpl1<VirtualMachineScaleSetVMInner>> * @param select The list parameters.
-    ServiceResponse<PageImpl1<VirtualMachineScaleSetVMInner>> * @param expand The expand expression to apply to the operation.
+    ServiceResponse<PageImpl1<VirtualMachineScaleSetVMInner>> * @param filter The filter to apply to the operation. Allowed values are 'startswith(instanceView/statuses/code, 'PowerState') eq true', 'properties/latestModelApplied eq true', 'properties/latestModelApplied eq false'.
+    ServiceResponse<PageImpl1<VirtualMachineScaleSetVMInner>> * @param select The list parameters. Allowed values are 'instanceView', 'instanceView/statuses'.
+    ServiceResponse<PageImpl1<VirtualMachineScaleSetVMInner>> * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;VirtualMachineScaleSetVMInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -1543,7 +1545,7 @@ public class VirtualMachineScaleSetVMsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Observable<Response<ResponseBody>> observable = service.powerOff(resourceGroupName, vmScaleSetName, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -1713,7 +1715,7 @@ public class VirtualMachineScaleSetVMsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Observable<Response<ResponseBody>> observable = service.restart(resourceGroupName, vmScaleSetName, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -1883,7 +1885,7 @@ public class VirtualMachineScaleSetVMsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Observable<Response<ResponseBody>> observable = service.start(resourceGroupName, vmScaleSetName, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -1981,7 +1983,7 @@ public class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * Redeploys a virtual machine in a VM scale set.
+     * Shuts down the virtual machine in the virtual machine scale set, moves it to a new node, and powers it back on.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -1996,7 +1998,7 @@ public class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * Redeploys a virtual machine in a VM scale set.
+     * Shuts down the virtual machine in the virtual machine scale set, moves it to a new node, and powers it back on.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -2010,7 +2012,7 @@ public class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * Redeploys a virtual machine in a VM scale set.
+     * Shuts down the virtual machine in the virtual machine scale set, moves it to a new node, and powers it back on.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -2028,7 +2030,7 @@ public class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * Redeploys a virtual machine in a VM scale set.
+     * Shuts down the virtual machine in the virtual machine scale set, moves it to a new node, and powers it back on.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -2053,11 +2055,11 @@ public class VirtualMachineScaleSetVMsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Observable<Response<ResponseBody>> observable = service.redeploy(resourceGroupName, vmScaleSetName, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
-     * Redeploys a virtual machine in a VM scale set.
+     * Shuts down the virtual machine in the virtual machine scale set, moves it to a new node, and powers it back on.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -2072,7 +2074,7 @@ public class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * Redeploys a virtual machine in a VM scale set.
+     * Shuts down the virtual machine in the virtual machine scale set, moves it to a new node, and powers it back on.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -2086,7 +2088,7 @@ public class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * Redeploys a virtual machine in a VM scale set.
+     * Shuts down the virtual machine in the virtual machine scale set, moves it to a new node, and powers it back on.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -2104,7 +2106,7 @@ public class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * Redeploys a virtual machine in a VM scale set.
+     * Shuts down the virtual machine in the virtual machine scale set, moves it to a new node, and powers it back on.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -2223,7 +2225,7 @@ public class VirtualMachineScaleSetVMsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Observable<Response<ResponseBody>> observable = service.performMaintenance(resourceGroupName, vmScaleSetName, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
