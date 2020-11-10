@@ -42,7 +42,7 @@ $markdownContainLinks += $adjustedReadmes
 # Get rid of any duplicated ones.
 $allMarkdowns = [string[]]($markdownContainLinks | Sort-Object | Get-Unique)
 
-Write-Host "Here are all markdown files need to scan against:"
+Write-Host "Here are all markdown files we need to check based on the changed files:"
 foreach ($file in $allMarkdowns) {
     Write-Host "    $file"
 }
