@@ -301,7 +301,8 @@ public class ServiceBusMessage {
      *
      * @return The updated {@link ServiceBusMessage}.
      * @see #getPartitionKey()
-     * @throws IllegalArgumentException if {@code partitionKey} is too long or if the {@code partitionKey} does not match the {@code sessionId}.
+     * @throws IllegalArgumentException if {@code partitionKey} is too long or if the {@code partitionKey}
+     * does not match the {@code sessionId}.
      */
     public ServiceBusMessage setPartitionKey(String partitionKey) {
         checkIdLength("partitionKey", partitionKey, MAX_PARTITION_KEY_LENGTH);
@@ -501,7 +502,8 @@ public class ServiceBusMessage {
      * @param sessionId to be set.
      *
      * @return The updated {@link ServiceBusMessage}.
-     * @throws IllegalArgumentException if {@code sessionId} is too long or if the  {@code sessionId} does not match the {@code partitionKey}.
+     * @throws IllegalArgumentException if {@code sessionId} is too long or if the  {@code sessionId}
+     * does not match the {@code partitionKey}.
      */
     public ServiceBusMessage setSessionId(String sessionId) {
         checkIdLength("sessionId", sessionId, MAX_SESSION_ID_LENGTH);

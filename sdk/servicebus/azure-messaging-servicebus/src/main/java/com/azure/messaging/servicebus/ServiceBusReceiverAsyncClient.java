@@ -735,7 +735,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         } else if (message.getLockToken().isEmpty()) {
             return monoError(logger, new IllegalArgumentException("'message.getLockToken()' cannot be empty."));
         } else if (receiverOptions.isSessionReceiver()) {
-            return monoError(logger, new IllegalStateException("Renewing message lock is an invalid operation when working with sessions."));
+            final String errorMessage = "Renewing message lock is an invalid operation when working with sessions.";
+            return monoError(logger, new IllegalStateException(errorMessage));
         }
 
         return renewMessageLock(message.getLockToken())
@@ -988,8 +989,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 new IllegalArgumentException("The message has either been deleted or already settled.")));
         } else if (message.getLockToken() == null) {
             // message must be a peeked message (or somehow they created a message w/o a lock token)
+            final String errorMessage = "This operation is not supported for peeked messages. " +
+                "Only messages received using receiveMessages() or receiveMessagesWithContext() " +
+                "in PEEK_LOCK mode can be settled.";
             return Mono.error(
-                logger.logExceptionAsError(new UnsupportedOperationException("This operation is not supported for peeked messages. Only messages received using receiveMessages() or receiveMessagesWithContext() in PEEK_LOCK mode can be settled."))
+                logger.logExceptionAsError(new UnsupportedOperationException(errorMessage))
             );
         }
 
