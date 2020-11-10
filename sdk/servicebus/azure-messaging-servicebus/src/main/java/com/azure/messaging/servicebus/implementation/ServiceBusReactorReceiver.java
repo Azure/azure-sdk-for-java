@@ -256,7 +256,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     private void updateOutcome(String lockToken, Delivery delivery) {
         final DeliveryState remoteState = delivery.getRemoteState();
 
-        logger.info("entityPath[{}], linkName[{}], deliveryTag[{}], state[{}]. Received update disposition delivery.",
+        logger.verbose("entityPath[{}], linkName[{}], deliveryTag[{}], state[{}] Received update disposition delivery.",
             getEntityPath(), getLinkName(), lockToken, remoteState);
 
         final Outcome remoteOutcome;

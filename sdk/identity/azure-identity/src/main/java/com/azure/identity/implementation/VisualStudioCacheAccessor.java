@@ -131,7 +131,7 @@ public class VisualStudioCacheAccessor {
 
                 byte[] readCreds = keyRingAccessor.read();
                 credential = new String(readCreds, StandardCharsets.UTF_8);
-            } catch (Exception e) {
+            } catch (Exception | UnsatisfiedLinkError e) {
                 throw logger.logExceptionAsError(new CredentialUnavailableException(
                         "Failed to read Vs Code credentials from Linux Key Ring.", e));
             }

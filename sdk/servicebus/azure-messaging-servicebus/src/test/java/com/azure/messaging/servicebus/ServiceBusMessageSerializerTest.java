@@ -129,14 +129,7 @@ class ServiceBusMessageSerializerTest {
         });
 
         // Verifying the contents of our message is the same.
-        assertEquals(payload, new String(actualMessage.getBody(), UTF_8));
-    }
-
-    private void assertValues(Map<Symbol, Object> expected, Map<String, Object> actual) {
-        assertEquals(expected.size(), actual.size());
-        for (Map.Entry<Symbol, Object> expectedEntry : expected.entrySet()) {
-            assertEquals(expectedEntry.getValue(), actual.get(expectedEntry.getKey().toString()));
-        }
+        assertEquals(payload, actualMessage.getBody().toString());
     }
 
     /**
@@ -158,5 +151,12 @@ class ServiceBusMessageSerializerTest {
         // Assert
         Assertions.assertNotNull(actual);
         Assertions.assertTrue(actual.isEmpty());
+    }
+
+    private void assertValues(Map<Symbol, Object> expected, Map<String, Object> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (Map.Entry<Symbol, Object> expectedEntry : expected.entrySet()) {
+            assertEquals(expectedEntry.getValue(), actual.get(expectedEntry.getKey().toString()));
+        }
     }
 }

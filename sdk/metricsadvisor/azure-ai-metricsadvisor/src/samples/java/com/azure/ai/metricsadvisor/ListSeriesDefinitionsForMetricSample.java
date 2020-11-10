@@ -5,6 +5,7 @@ package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.models.ListMetricSeriesDefinitionOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
+import com.azure.core.util.Context;
 
 import java.time.OffsetDateTime;
 import java.util.Collections;
@@ -24,16 +25,17 @@ public class ListSeriesDefinitionsForMetricSample {
                 .buildClient();
 
         String metricId = "b460abfc-7a58-47d7-9d99-21ee21fdfc6e";
+        final OffsetDateTime activeSince = OffsetDateTime.parse("2020-07-10T00:00:00Z");
         final ListMetricSeriesDefinitionOptions options
-            = new ListMetricSeriesDefinitionOptions(OffsetDateTime.parse("2020-07-10T00:00:00Z"))
+            = new ListMetricSeriesDefinitionOptions()
             .setTop(10)
             .setDimensionCombinationToFilter(new HashMap<String, List<String>>() {{
-                    put("Dim2", Collections.singletonList("Angelfish"));
+                    put("city", Collections.singletonList("Redmond"));
                 }});
 
-        advisorClient.listMetricSeriesDefinitions(metricId, options)
+        advisorClient.listMetricSeriesDefinitions(metricId, activeSince, options, Context.NONE)
             .forEach(metricSeriesDefinition -> {
-                System.out.printf("Metric Id : %s%n", metricSeriesDefinition.getMetricId());
+                System.out.printf("Data Feed Metric Id : %s%n", metricSeriesDefinition.getMetricId());
                 System.out.printf("Series Key: %s%n", metricSeriesDefinition.getSeriesKey().asMap());
             });
     }

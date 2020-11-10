@@ -703,6 +703,56 @@ class ServiceBusManagementSerializerTest {
         }
     }
 
+    @Test
+    void deserializeRuleEntry() throws IOException {
+        // Arrange
+        final String contents = getContents("CreateRuleEntry.xml");
+
+        final RuleDescription description = new RuleDescription()
+            .setName("connies-bar")
+            .setAction(new SqlRuleActionImpl().setSqlExpression("SET Label = 'my-label'"))
+            .setFilter(new TrueFilterImpl().setSqlExpression("1=1"));
+        final RuleDescriptionEntryContent content = new RuleDescriptionEntryContent()
+            .setRuleDescription(description)
+            .setType("application/xml");
+        final RuleDescriptionEntry expected = new RuleDescriptionEntry().setContent(content);
+
+        // Act
+        final RuleDescriptionEntry actual = serializer.deserialize(contents, RuleDescriptionEntry.class);
+
+        // Assert
+        assertRuleEntryEquals(expected, actual);
+    }
+
+    @Test
+    void deserializeRuleEntryResponse() throws IOException {
+        // Arrange
+        final String contents = getContents("CreateRuleEntryResponse.xml");
+
+        final RuleDescription description = new RuleDescription()
+            .setName("connies-bar")
+            .setAction(new SqlRuleActionImpl().setSqlExpression("SET Label = 'my-label'").setCompatibilityLevel("20"))
+            .setFilter(new TrueFilterImpl().setSqlExpression("1=1").setCompatibilityLevel("20"))
+            .setCreatedAt(OffsetDateTime.parse("2020-10-05T23:34:21.5963322Z"));
+        final RuleDescriptionEntryContent content = new RuleDescriptionEntryContent()
+            .setRuleDescription(description)
+            .setType("application/xml");
+        final RuleDescriptionEntry expected = new RuleDescriptionEntry()
+            .setId("https://sb-java.servicebus.windows.net/topic-1/Subscriptions/subscription/Rules/connies-bar?api-version=2017-04")
+            .setPublished(OffsetDateTime.parse("2020-10-05T23:31:21Z"))
+            .setUpdated(OffsetDateTime.parse("2020-10-05T23:30:21Z"))
+            .setLink(new ResponseLink()
+                .setRel("self")
+                .setHref("https://sb-java.servicebus.windows.net/topic-1/Subscriptions/subscription/Rules/connies-bar?api-version=2017-04"))
+            .setContent(content);
+
+        // Act
+        final RuleDescriptionEntry actual = serializer.deserialize(contents, RuleDescriptionEntry.class);
+
+        // Assert
+        assertRuleEntryEquals(expected, actual);
+    }
+
     /**
      * Given a file name, gets the corresponding resource and its contents as a string.
      *

@@ -32,17 +32,41 @@ add-context-parameter: true
 models-subpackage: implementation.models
 context-client-method-parameter: true
 custom-types-subpackage: models
-custom-types: AnomalyDetectorDirection,AnomalyStatus,AnomalyValue,ChangePointValue,ChangeThresholdCondition,DataFeedIngestionProgress,Dimension,EnrichmentStatus,HardThresholdCondition,IncidentStatus,IngestionStatusType,Metric,PeriodType,Severity,SeverityCondition,SmartDetectionCondition,SnoozeScope,SuppressCondition,TimeMode,TopNGroupScope,DataFeedIngestionStatus,MetricAnomalyAlertSnoozeCondition,MetricSeriesDefinition,FeedbackQueryTimeMode,Alert,DataFeedGranularityType,DataFeedRollupType,DataFeedAutoRollUpMethod,DataFeedStatus,ErrorCodeException,ErrorCode
+custom-types: AnomalyDetectorDirection,AnomalyStatus,AnomalyValue,ChangePointValue,ChangeThresholdCondition,DataFeedIngestionProgress,DataFeedDimension,EnrichmentStatus,HardThresholdCondition,AnomalyIncidentStatus,IngestionStatusType,DataFeedMetric,PeriodType,AnomalySeverity,SeverityCondition,SmartDetectionCondition,SnoozeScope,SuppressCondition,AlertQueryTimeMode,TopNGroupScope,DataFeedIngestionStatus,MetricAnomalyAlertSnoozeCondition,MetricSeriesDefinition,FeedbackQueryTimeMode,AnomalyAlert,DataFeedGranularityType,DataFeedRollupType,DataFeedAutoRollUpMethod,DataFeedStatus,ErrorCodeException,ErrorCode
 ```
 
 ### Generated types renamed and moved to model
 
-#### AlertResult -> Alert
+#### TimeMode -> AlertQueryTimeMode
+```yaml
+directive:
+  - rename-model:
+      from: TimeMode
+      to: AlertQueryTimeModel
+```
+
+#### Severity -> AnomalySeverity
+```yaml
+directive:
+  - rename-model:
+      from: Severity
+      to: AnomalySeverity
+```
+
+#### IncidentStatus -> AnomalyIncidentStatus
+```yaml
+directive:
+  - rename-model:
+      from: IncidentStatus
+      to: AnomalyIncidentStatus
+```
+
+#### AlertResult -> AnomalyAlert
 ```yaml
 directive:
   - rename-model:
       from: AlertResult
-      to: Alert
+      to: AnomalyAlert
 ```
 
 #### IngestionStatus -> DataFeedIngestionStatus
@@ -176,6 +200,22 @@ directive:
   where: $.definitions.Metric
   transform: >
     delete $.properties.metricId["format"];
+```
+
+### Rename Metric to DataFeedMetric
+```yaml
+directive:
+  - rename-model:
+      from: Metric
+      to: DataFeedMetric
+```
+
+### Rename Dimension to DataFeedDimension
+```yaml
+directive:
+  - rename-model:
+      from: Dimension
+      to: DataFeedDimension
 ```
 
 ### Add x-ms-paths section if not exists

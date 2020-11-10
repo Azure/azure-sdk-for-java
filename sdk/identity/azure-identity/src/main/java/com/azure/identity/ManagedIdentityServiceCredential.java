@@ -21,7 +21,7 @@ abstract class ManagedIdentityServiceCredential {
      * Creates an instance of ManagedIdentityServiceCredential.
      * @param clientId the client id of user assigned or system assigned identity
      * @param identityClient the identity client to acquire a token with.
-     * @param environment the service environment of the credential.
+     * @param environment The service environment of the credential.
      */
     ManagedIdentityServiceCredential(String clientId, IdentityClient identityClient, String environment) {
         this.identityClient = identityClient;

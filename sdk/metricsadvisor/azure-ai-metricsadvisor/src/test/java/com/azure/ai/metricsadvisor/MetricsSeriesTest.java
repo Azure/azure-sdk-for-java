@@ -6,7 +6,6 @@ package com.azure.ai.metricsadvisor;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.models.EnrichmentStatus;
 import com.azure.ai.metricsadvisor.models.ListMetricDimensionValuesOptions;
-import com.azure.ai.metricsadvisor.models.ListMetricSeriesDataOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricSeriesDefinitionOptions;
 import com.azure.ai.metricsadvisor.models.MetricSeriesDefinition;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
@@ -77,13 +76,12 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
     public void listMetricSeriesData(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
         client.listMetricSeriesData(METRIC_ID, Collections.singletonList(new DimensionKey(SERIES_KEY_FILTER)),
-            new ListMetricSeriesDataOptions(TIME_SERIES_START_TIME,
-                TIME_SERIES_END_TIME))
+            TIME_SERIES_START_TIME, TIME_SERIES_END_TIME)
             .forEach(metricSeriesData -> {
                 assertEquals(METRIC_ID, metricSeriesData.getMetricId());
                 assertEquals(SERIES_KEY_FILTER, metricSeriesData.getSeriesKey().asMap());
-                assertNotNull(metricSeriesData.getTimestampList());
-                assertNotNull(metricSeriesData.getValueList());
+                assertNotNull(metricSeriesData.getTimestamps());
+                assertNotNull(metricSeriesData.getMetricValues());
             });
     }
 
@@ -95,7 +93,7 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
     public void listMetricSeriesDefinitions(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
         client.listMetricSeriesDefinitions(METRIC_ID,
-            new ListMetricSeriesDefinitionOptions(TIME_SERIES_START_TIME))
+                TIME_SERIES_START_TIME)
             .forEach(metricSeriesDefinition -> {
                 assertNotNull(metricSeriesDefinition.getMetricId());
                 assertNotNull(metricSeriesDefinition.getSeriesKey());
@@ -110,16 +108,18 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
     public void listMetricSeriesDefinitionsDimensionFilter(HttpClient httpClient,
         MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
-        List<MetricSeriesDefinition> actualMetricSeriesDefinitions = client.listMetricSeriesDefinitions(METRIC_ID,
-            new ListMetricSeriesDefinitionOptions(TIME_SERIES_START_TIME)
+        List<MetricSeriesDefinition> actualMetricSeriesDefinitions
+            = client.listMetricSeriesDefinitions(METRIC_ID, TIME_SERIES_START_TIME,
+            new ListMetricSeriesDefinitionOptions()
                 .setDimensionCombinationToFilter(new HashMap<String, List<String>>() {{
-                        put("Dim2", Collections.singletonList("Angelfish"));
-                    }})).stream().collect(Collectors.toList());
+                        put("city", Collections.singletonList("Miami"));
+                    }}), Context.NONE)
+            .stream().collect(Collectors.toList());
 
         actualMetricSeriesDefinitions.forEach(metricSeriesDefinition -> {
-            final String dimensionFilterValue = metricSeriesDefinition.getSeriesKey().asMap().get("Dim2");
+            final String dimensionFilterValue = metricSeriesDefinition.getSeriesKey().asMap().get("city");
             assertNotNull(dimensionFilterValue);
-            assertEquals("Angelfish", dimensionFilterValue);
+            assertEquals("Miami", dimensionFilterValue);
         });
     }
 
@@ -132,7 +132,7 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
         List<EnrichmentStatus> enrichmentStatuses =
             client.listMetricEnrichmentStatus(ListEnrichmentStatusInput.INSTANCE.metricId,
-                ListEnrichmentStatusInput.INSTANCE.options)
+                    TIME_SERIES_START_TIME, TIME_SERIES_END_TIME)
                 .stream()
                 .collect(Collectors.toList());
 

@@ -39,8 +39,6 @@ import java.util.regex.Pattern;
  */
 @ServiceClientBuilder(serviceClients = {DigitalTwinsClient.class, DigitalTwinsAsyncClient.class})
 public final class DigitalTwinsClientBuilder {
-
-    private static final Pattern ADT_PUBLIC_SCOPE_VALIDATION_PATTERN = Pattern.compile("(ppe|azure)\\.net");
     private static final String[] ADT_PUBLIC_SCOPE = new String[]{"https://digitaltwins.azure.net" + "/.default"};
 
     // This is the name of the properties file in this repo that contains the default properties
@@ -124,7 +122,7 @@ public final class DigitalTwinsClientBuilder {
         policies.add(new AddDatePolicy());
 
         // Add authentication policy so that each HTTP request has authorization header
-        HttpPipelinePolicy credentialPolicy = new BearerTokenAuthenticationPolicy(tokenCredential, getAuthorizationScopes(endpoint));
+        HttpPipelinePolicy credentialPolicy = new BearerTokenAuthenticationPolicy(tokenCredential, ADT_PUBLIC_SCOPE);
         policies.add(credentialPolicy);
 
         policies.addAll(additionalPolicies);
@@ -151,16 +149,6 @@ public final class DigitalTwinsClientBuilder {
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
-    }
-
-    private static String[] getAuthorizationScopes(String endpoint) {
-        // If the endpoint is in Azure public cloud, the suffix will have "azure.net" or "ppe.net".
-        // Once ADT becomes available in other clouds, their corresponding scope has to be matched and set.
-        if (ADT_PUBLIC_SCOPE_VALIDATION_PATTERN.matcher(endpoint).find()) {
-            return ADT_PUBLIC_SCOPE;
-        }
-
-        throw new IllegalArgumentException(String.format("Azure digital twins instance endpoint %s is not valid.", endpoint));
     }
 
     /**
