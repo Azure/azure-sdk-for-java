@@ -106,7 +106,7 @@ public interface VirtualMachineScaleSetVMs extends HasInner<VirtualMachineScaleS
     Completable redeployAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
 
     /**
-     * Performs maintenance on a virtual machine in a VM scale set.
+     * Shuts down the virtual machine in a VMScaleSet, moves it to an already updated node, and powers it back on during the self-service phase of planned maintenance.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
