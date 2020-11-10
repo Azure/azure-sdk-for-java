@@ -19,6 +19,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -132,7 +133,7 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
         List<EnrichmentStatus> enrichmentStatuses =
             client.listMetricEnrichmentStatus(ListEnrichmentStatusInput.INSTANCE.metricId,
-                    TIME_SERIES_START_TIME, TIME_SERIES_END_TIME)
+                OffsetDateTime.parse("2020-10-01T00:00:00Z"), OffsetDateTime.parse("2020-10-30T00:00:00Z"))
                 .stream()
                 .collect(Collectors.toList());
 

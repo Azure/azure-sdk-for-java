@@ -5,6 +5,7 @@ package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.models.ListMetricEnrichmentStatusOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
+import com.azure.core.util.Context;
 
 import java.time.OffsetDateTime;
 
@@ -24,7 +25,7 @@ public class ListEnrichmentStatusForMetricSample {
         final ListMetricEnrichmentStatusOptions options = new ListMetricEnrichmentStatusOptions()
             .setTop(10);
 
-        advisorClient.listMetricEnrichmentStatus(metricId, startTime, endTime)
+        advisorClient.listMetricEnrichmentStatus(metricId, startTime, endTime, options, Context.NONE)
             .forEach(enrichmentStatus -> {
                 System.out.printf("Data Feed Metric enrichment status : %s%n", enrichmentStatus.getStatus());
                 System.out.printf("Data Feed Metric enrichment status message: %s%n", enrichmentStatus.getMessage());
