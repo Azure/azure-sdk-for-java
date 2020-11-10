@@ -13,14 +13,14 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.iothub.v2018_04_01.AccessRights;
 
 class SharedAccessSignatureAuthorizationRuleImpl extends WrapperImpl<SharedAccessSignatureAuthorizationRuleInner> implements SharedAccessSignatureAuthorizationRule {
-    private final IoTHubManager manager;
-    SharedAccessSignatureAuthorizationRuleImpl(SharedAccessSignatureAuthorizationRuleInner inner, IoTHubManager manager) {
+    private final DevicesManager manager;
+    SharedAccessSignatureAuthorizationRuleImpl(SharedAccessSignatureAuthorizationRuleInner inner, DevicesManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public IoTHubManager manager() {
+    public DevicesManager manager() {
         return this.manager;
     }
 
