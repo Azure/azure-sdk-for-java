@@ -303,6 +303,8 @@ public class ServiceBusMessage {
      */
     public ServiceBusMessage setPartitionKey(String partitionKey) {
         checkIdLength("partitionKey", partitionKey, MAX_PARTITION_KEY_LENGTH);
+        checkPartitionKey(partitionKey);
+
         amqpAnnotatedMessage.getMessageAnnotations().put(PARTITION_KEY_ANNOTATION_NAME.getValue(), partitionKey);
         return this;
     }
@@ -500,6 +502,8 @@ public class ServiceBusMessage {
      */
     public ServiceBusMessage setSessionId(String sessionId) {
         checkIdLength("sessionId", sessionId, MAX_SESSION_ID_LENGTH);
+        checkSessionId(sessionId);
+
         amqpAnnotatedMessage.getProperties().setGroupId(sessionId);
         return this;
     }
@@ -550,4 +554,25 @@ public class ServiceBusMessage {
             throw new IllegalArgumentException(String.format("%s cannot be longer than %d characters.", fieldName, maxLength));
         }
     }
+
+    /**
+     * Validates that the user can't set the partitionKey to a different value than the session ID.
+     * (this will eventually migrate to a service-side check)
+     */
+    private void checkSessionId(String proposedSessionId) {
+        if (this.getPartitionKey() != null && this.getPartitionKey().compareTo(proposedSessionId) != 0) {
+            throw new IllegalArgumentException( String.format("sessionId:%s cannot be set to a different value than partitionKey:%s.", proposedSessionId, this.getPartitionKey()));
+        }
+    }
+
+    /**
+     * Validates that the user can't set the partitionKey to a different value than the session ID.
+     * (this will eventually migrate to a service-side check)
+     */
+    private void checkPartitionKey(String proposedPartitionKey) {
+        if (this.getSessionId() != null && this.getSessionId().compareTo(proposedPartitionKey) != 0) {
+            throw new IllegalArgumentException( String.format("partitionKey:%s cannot be set to a different value than sessionId:%s.", proposedPartitionKey, this.getSessionId()));
+        }
+    }
+
 }
