@@ -282,8 +282,8 @@ public class ServiceBusMessageTest {
     void idsCannotBeTooLong() {
         // Arrange
         final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage("not-used-for-test");
-        var longId = new String(new char[128 + 1]).replace("\0", "a");
-        var justRightId = new String(new char[128]).replace("\0", "a");
+        final String longId = new String(new char[128 + 1]).replace("\0", "a");
+        final String justRightId = new String(new char[128]).replace("\0", "a");
 
         // Assert
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
