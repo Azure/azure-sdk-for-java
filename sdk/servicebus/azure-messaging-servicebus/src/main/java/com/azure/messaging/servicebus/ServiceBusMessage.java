@@ -555,7 +555,7 @@ public class ServiceBusMessage {
     private void checkIdLength(String fieldName, String value, int maxLength) {
         if (value != null && value.length() > maxLength) {
             final String message = String.format("%s cannot be longer than %d characters.", fieldName, maxLength);
-            throw new IllegalArgumentException(message);
+            throw logger.logExceptionAsError(new IllegalArgumentException(message));
         }
     }
 
@@ -569,7 +569,11 @@ public class ServiceBusMessage {
         }
 
         if (this.getPartitionKey() != null && this.getPartitionKey().compareTo(proposedSessionId) != 0) {
-            throw new IllegalArgumentException( String.format("sessionId:%s cannot be set to a different value than partitionKey:%s.", proposedSessionId, this.getPartitionKey()));
+            final String message = String.format(
+                "sessionId:%s cannot be set to a different value than partitionKey:%s.",
+                proposedSessionId,
+                this.getPartitionKey());
+            throw logger.logExceptionAsError(new IllegalArgumentException(message));
         }
     }
 
@@ -583,7 +587,12 @@ public class ServiceBusMessage {
         }
 
         if (this.getSessionId() != null && this.getSessionId().compareTo(proposedPartitionKey) != 0) {
-            throw new IllegalArgumentException( String.format("partitionKey:%s cannot be set to a different value than sessionId:%s.", proposedPartitionKey, this.getSessionId()));
+            final String message = String.format(
+                "partitionKey:%s cannot be set to a different value than sessionId:%s.",
+                proposedPartitionKey,
+                this.getSessionId());
+
+            throw logger.logExceptionAsError(new IllegalArgumentException(message));
         }
     }
 

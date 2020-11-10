@@ -188,8 +188,10 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
-    public Flux<ServiceBusReceivedMessage> receiveDeferredMessages(ReceiveMode receiveMode, String sessionId,
-                                                                   String associatedLinkName, Iterable<Long> sequenceNumbers) {
+    public Flux<ServiceBusReceivedMessage> receiveDeferredMessages(ReceiveMode receiveMode,
+                                                                   String sessionId,
+                                                                   String associatedLinkName,
+                                                                   Iterable<Long> sequenceNumbers) {
         if (sequenceNumbers == null) {
             return fluxError(logger, new NullPointerException("'sequenceNumbers' cannot be null"));
         }

@@ -431,7 +431,7 @@ class ManagementChannelTests {
     @Test
     void getDeferredMessagesWithEmptyArrayReturnsAnEmptyFlux() {
         // Arrange, act, assert
-        StepVerifier.create(managementChannel.receiveDeferredMessages(ReceiveMode.PEEK_LOCK, null, null, Arrays.asList(new Long[0] )))
+        StepVerifier.create(managementChannel.receiveDeferredMessages(ReceiveMode.PEEK_LOCK, null, null, Arrays.asList(new Long[0])))
             .verifyComplete();
     }
 
