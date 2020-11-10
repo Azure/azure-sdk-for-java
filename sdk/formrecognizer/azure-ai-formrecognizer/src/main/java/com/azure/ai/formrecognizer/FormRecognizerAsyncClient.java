@@ -283,6 +283,10 @@ public final class FormRecognizerAsyncClient {
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
+     * <p>Content recognition supports auto language identification and multilanguage documents, so only
+     * provide a language code if you would like to force the documented to be processed as
+     * that specific language in the {@link RecognizeContentOptions options}.</p>
+     *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string-RecognizeContentOptions}
      *
@@ -365,6 +369,10 @@ public final class FormRecognizerAsyncClient {
      * Note that the {@code data} passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
+     * <p>Content recognition supports auto language identification and multilanguage documents, so only
+     * provide a language code if you would like to force the documented to be processed as
+     * that specific language in the {@link RecognizeContentOptions options}.</p>
+
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long-RecognizeContentOptions}
      *
