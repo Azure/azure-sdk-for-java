@@ -386,7 +386,7 @@ public class GatewayAddressCache implements IAddressCache {
             if (!(exception instanceof CosmosException)) {
                 // wrap in CosmosException
                 logger.error("Network failure", exception);
-                dce = BridgeInternal.createCosmosException(request.getResourceAddress(), 0, exception);
+                dce = BridgeInternal.createCosmosException(request.requestContext.resourcePhysicalAddress, 0, exception);
                 BridgeInternal.setRequestHeaders(dce, request.getHeaders());
             } else {
                 dce = (CosmosException) exception;
@@ -618,7 +618,7 @@ public class GatewayAddressCache implements IAddressCache {
             if (!(exception instanceof CosmosException)) {
                 // wrap in CosmosException
                 logger.error("Network failure", exception);
-                dce = BridgeInternal.createCosmosException(request.getResourceAddress(), 0, exception);
+                dce = BridgeInternal.createCosmosException(request.requestContext.resourcePhysicalAddress, 0, exception);
                 BridgeInternal.setRequestHeaders(dce, request.getHeaders());
             } else {
                 dce = (CosmosException) exception;

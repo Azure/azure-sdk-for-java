@@ -42,7 +42,7 @@ public class HttpClientUtils {
         return readStream.map(body -> {
             CosmosError cosmosError = new CosmosError(body);
 
-            return BridgeInternal.createCosmosException(request.getResourceAddress(), httpResponse.statusCode(),
+            return BridgeInternal.createCosmosException(request.requestContext.resourcePhysicalAddress, httpResponse.statusCode(),
                 cosmosError, httpResponse.headers().toMap());
         });
     }
