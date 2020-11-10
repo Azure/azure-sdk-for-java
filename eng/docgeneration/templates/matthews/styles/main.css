@@ -256,7 +256,7 @@ article h4 {
   color: #ecdbff;
 }
 .versionarrow {
-  margin: 1em;
+  margin: 1.5em;
 }
 
 .versionarrow::before {
