@@ -51,7 +51,7 @@ public final class AmqpDataBody implements AmqpMessageBody {
      * @throws NullPointerException if {@code data} is null.
      */
     public AmqpDataBody(byte[] data) {
-        this.data =Objects.requireNonNull(data, "'data' cannot be null.");
+        this.data = Objects.requireNonNull(data, "'data' cannot be null.");
     }
 
     /**
@@ -77,4 +77,5 @@ public final class AmqpDataBody implements AmqpMessageBody {
     public List<byte[]> getData() {
         return Collections.singletonList(data);
     }
+
 }

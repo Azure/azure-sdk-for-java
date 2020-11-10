@@ -269,6 +269,12 @@
         "code": "java.annotation.added",
         "new": "class com.azure.storage.blob.models.PageList",
         "justification": "Annotation required to resolve deserialization bug."
+      },
+      {
+        "code": "java.method.returnTypeChanged",
+        "old": "method com.azure.core.util.IterableStream<byte[]> com.azure.core.amqp.models.AmqpDataBody::getData()",
+        "new": "method java.util.List<byte[]> com.azure.core.amqp.models.AmqpDataBody::getData()",
+        "justification": "Updated "
       }
     ]
   }

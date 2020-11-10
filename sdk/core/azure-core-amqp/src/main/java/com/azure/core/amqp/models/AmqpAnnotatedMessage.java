@@ -61,6 +61,8 @@ public final class AmqpAnnotatedMessage {
                 amqpMessageBody = new AmqpDataBody((AmqpDataBody) message.getBody());
                 break;
             case SEQUENCE:
+                amqpMessageBody = new AmqpSequenceBody(((AmqpSequenceBody) message.getBody()).getSequence());
+                break;
             case VALUE:
                 throw logger.logExceptionAsError(new UnsupportedOperationException("Body type not supported yet "
                     + bodyType.toString()));
