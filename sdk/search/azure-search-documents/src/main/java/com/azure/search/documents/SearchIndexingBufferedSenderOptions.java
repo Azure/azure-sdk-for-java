@@ -46,8 +46,6 @@ public final class SearchIndexingBufferedSenderOptions<T> {
     /**
      * Sets the flag determining whether a buffered sender will automatically flush its document batch based on the
      * configurations of {@link #setAutoFlushWindow(Duration)} and {@link #setInitialBatchActionCount(int)}.
-     * <p>
-     * If {@code autoFlush} is null the buffered sender will be set to automatically flush.
      *
      * @param autoFlush Flag determining whether a buffered sender will automatically flush.
      * @return The updated SearchIndexingBufferedSenderOptions object.
@@ -95,7 +93,7 @@ public final class SearchIndexingBufferedSenderOptions<T> {
      * If the duration is less than or equal to zero the buffered sender will only flush when {@link
      * #getInitialBatchActionCount()} is triggered.
      * <p>
-     * This configuration is only taken into account if {@link #getAutoFlush()} is true or null.
+     * This configuration is only taken into account if {@link #getAutoFlush()} is true.
      *
      * @return The {@link Duration} to wait after the last document has been added to the batch before the batch is
      * flushed.
@@ -126,7 +124,7 @@ public final class SearchIndexingBufferedSenderOptions<T> {
     /**
      * Gets the number of documents required in a batch for it to be flushed.
      * <p>
-     * This configuration is only taken into account if {@link #getAutoFlush()} is true or null.
+     * This configuration is only taken into account if {@link #getAutoFlush()} is true.
      *
      * @return The number of documents required before a flush is triggered.
      */
