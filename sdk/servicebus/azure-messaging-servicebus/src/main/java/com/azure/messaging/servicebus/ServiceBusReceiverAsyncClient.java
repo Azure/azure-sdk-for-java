@@ -988,7 +988,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 new IllegalArgumentException("The message has either been deleted or already settled.")));
         } else if (message.getLockToken() == null) {
             // message must be a peeked message (or somehow they created a message w/o a lock token)
-            throw new IllegalArgumentException("This operation is not supported for peeked messages. Only messages received using receiveMessages() or receiveMessagesWithContext() in PEEK_LOCK mode can be settled.");
+            return Mono.error(
+                logger.logExceptionAsError(new UnsupportedOperationException("This operation is not supported for peeked messages. Only messages received using receiveMessages() or receiveMessagesWithContext() in PEEK_LOCK mode can be settled."))
+            );
         }
 
         final String sessionIdToUse;
