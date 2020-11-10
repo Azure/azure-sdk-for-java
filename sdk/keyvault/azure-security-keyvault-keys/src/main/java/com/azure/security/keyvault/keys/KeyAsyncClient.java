@@ -109,9 +109,9 @@ public final class KeyAsyncClient {
      * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the
      * {@code keys/create} permission.
      *
-     * <p>The {@link KeyType keyType} indicates the type of key to create. Possible values include: {@link KeyType#EC
-     * EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM} and
-     * {@link KeyType#OCT OCT}.</p>
+     * <p>The {@link KeyType keyType} indicates the type of key to create. Possible values include:
+     * {@link KeyType#EC EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM},
+     * {@link KeyType#OCT OCT} and {@link KeyType#OCT_HSM OCT-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new EC key. Subscribes to the call asynchronously and prints out the newly created key details when
@@ -140,9 +140,9 @@ public final class KeyAsyncClient {
      * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the
      * {@code keys/create} permission.
      *
-     * <p>The {@link KeyType keyType} indicates the type of key to create. Possible values include: {@link KeyType#EC
-     * EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM} and
-     * {@link KeyType#OCT OCT}.</p>
+     * <p>The {@link KeyType keyType} indicates the type of key to create. Possible values include:
+     * {@link KeyType#EC EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM},
+     * {@link KeyType#OCT OCT} and {@link KeyType#OCT_HSM OCT-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new EC key. Subscribes to the call asynchronously and prints out the newly created key details when
@@ -183,9 +183,9 @@ public final class KeyAsyncClient {
      * CreateKeyOptions#getNotBefore() notBefore} values are optional. The {@link CreateKeyOptions#isEnabled() enabled}
      * field is set to true by Azure Key Vault, if not specified.</p>
      *
-     * <p>The {@link CreateKeyOptions#getKeyType() keyType} indicates the type of key to create. Possible values include:
-     * {@link KeyType#EC EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM}
-     * and {@link KeyType#OCT OCT}.</p>
+     * <p>The {@link CreateKeyOptions#getKeyType() keyType} indicates the type of key to create. Possible values
+     * include: {@link KeyType#EC EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA},
+     * {@link KeyType#RSA_HSM RSA-HSM}, {@link KeyType#OCT OCT} and {@link KeyType#OCT_HSM OCT-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new Rsa key which activates in one day and expires in one year. Subscribes to the call

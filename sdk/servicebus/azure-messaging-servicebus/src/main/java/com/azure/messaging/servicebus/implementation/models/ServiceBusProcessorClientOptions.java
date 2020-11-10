@@ -13,6 +13,24 @@ import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 public final class ServiceBusProcessorClientOptions {
 
     private int maxConcurrentCalls = 1;
+    private boolean disableAutoComplete;
+
+    /**
+     * Returns true if the auto-complete and auto-abandon feature is disabled.
+     * @return true if the auto-complete and auto-abandon feature is disabled.
+     */
+    public boolean isDisableAutoComplete() {
+        return disableAutoComplete;
+    }
+
+    /**
+     * Disables auto-complete and auto-abandon feature if this is set to {@code true}.
+     * @param disableAutoComplete Disables auto-complete and auto-abandon feature if this is set to {@code true}.
+     */
+    public ServiceBusProcessorClientOptions setDisableAutoComplete(boolean disableAutoComplete) {
+        this.disableAutoComplete = disableAutoComplete;
+        return this;
+    }
 
     /**
      * The max concurrent messages that should be processed by the processor.

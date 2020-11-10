@@ -3,15 +3,15 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
-import com.azure.ai.metricsadvisor.models.Anomaly;
+import com.azure.ai.metricsadvisor.models.AnomalySeverity;
+import com.azure.ai.metricsadvisor.models.DataPointAnomaly;
 import com.azure.ai.metricsadvisor.models.AnomalyStatus;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
-import com.azure.ai.metricsadvisor.models.Severity;
 
 import java.time.OffsetDateTime;
 
 /**
- * The helper class to set the non-public properties of an {@link Anomaly} instance.
+ * The helper class to set the non-public properties of an {@link DataPointAnomaly} instance.
  */
 public final class AnomalyHelper {
     private static AnomalyAccessor accessor;
@@ -19,21 +19,21 @@ public final class AnomalyHelper {
     private AnomalyHelper() { }
 
     /**
-     * Type defining the methods to set the non-public properties of an {@link Anomaly} instance.
+     * Type defining the methods to set the non-public properties of an {@link DataPointAnomaly} instance.
      */
     public interface AnomalyAccessor {
-        void setMetricId(Anomaly anomaly, String metricId);
-        void setSeriesKey(Anomaly anomaly, DimensionKey seriesKey);
-        void setDetectionConfigurationId(Anomaly anomaly, String detectionConfigurationId);
-        void setSeverity(Anomaly anomaly, Severity severity);
-        void setStatus(Anomaly anomaly, AnomalyStatus status);
-        void setTimeStamp(Anomaly anomaly, OffsetDateTime timeStamp);
-        void setCreatedTime(Anomaly anomaly, OffsetDateTime createdTime);
-        void setModifiedTime(Anomaly anomaly, OffsetDateTime modifiedTime);
+        void setMetricId(DataPointAnomaly anomaly, String metricId);
+        void setSeriesKey(DataPointAnomaly anomaly, DimensionKey seriesKey);
+        void setDetectionConfigurationId(DataPointAnomaly anomaly, String detectionConfigurationId);
+        void setSeverity(DataPointAnomaly anomaly, AnomalySeverity severity);
+        void setStatus(DataPointAnomaly anomaly, AnomalyStatus status);
+        void setTimeStamp(DataPointAnomaly anomaly, OffsetDateTime timeStamp);
+        void setCreatedTime(DataPointAnomaly anomaly, OffsetDateTime createdTime);
+        void setModifiedTime(DataPointAnomaly anomaly, OffsetDateTime modifiedTime);
     }
 
     /**
-     * The method called from {@link Anomaly} to set it's accessor.
+     * The method called from {@link DataPointAnomaly} to set it's accessor.
      *
      * @param anomalyAccessor The accessor.
      */
@@ -41,35 +41,35 @@ public final class AnomalyHelper {
         accessor = anomalyAccessor;
     }
 
-    static void setMetricId(Anomaly anomaly, String metricId) {
+    static void setMetricId(DataPointAnomaly anomaly, String metricId) {
         accessor.setMetricId(anomaly, metricId);
     }
 
-    static void setSeriesKey(Anomaly anomaly, DimensionKey seriesKey) {
+    static void setSeriesKey(DataPointAnomaly anomaly, DimensionKey seriesKey) {
         accessor.setSeriesKey(anomaly, seriesKey);
     }
 
-    static void setDetectionConfigurationId(Anomaly anomaly, String detectionConfigurationId) {
+    static void setDetectionConfigurationId(DataPointAnomaly anomaly, String detectionConfigurationId) {
         accessor.setDetectionConfigurationId(anomaly, detectionConfigurationId);
     }
 
-    static void setSeverity(Anomaly anomaly, Severity severity) {
+    static void setSeverity(DataPointAnomaly anomaly, AnomalySeverity severity) {
         accessor.setSeverity(anomaly, severity);
     }
 
-    static void setStatus(Anomaly anomaly, AnomalyStatus status) {
+    static void setStatus(DataPointAnomaly anomaly, AnomalyStatus status) {
         accessor.setStatus(anomaly, status);
     }
 
-    static void setTimeStamp(Anomaly anomaly, OffsetDateTime timeStamp) {
+    static void setTimeStamp(DataPointAnomaly anomaly, OffsetDateTime timeStamp) {
         accessor.setTimeStamp(anomaly, timeStamp);
     }
 
-    static void setCreatedTime(Anomaly anomaly, OffsetDateTime createdTime) {
+    static void setCreatedTime(DataPointAnomaly anomaly, OffsetDateTime createdTime) {
         accessor.setCreatedTime(anomaly, createdTime);
     }
 
-    static void setModifiedTime(Anomaly anomaly, OffsetDateTime modifiedTime) {
+    static void setModifiedTime(DataPointAnomaly anomaly, OffsetDateTime modifiedTime) {
         accessor.setModifiedTime(anomaly, modifiedTime);
     }
 }

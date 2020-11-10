@@ -8,15 +8,15 @@ import com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration;
 import com.azure.ai.metricsadvisor.models.AnomalyDetectorDirection;
 import com.azure.ai.metricsadvisor.models.ChangeThresholdCondition;
 import com.azure.ai.metricsadvisor.models.DataFeed;
+import com.azure.ai.metricsadvisor.models.DataFeedDimension;
 import com.azure.ai.metricsadvisor.models.DataFeedGranularity;
 import com.azure.ai.metricsadvisor.models.DataFeedGranularityType;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionSettings;
 import com.azure.ai.metricsadvisor.models.DataFeedSchema;
 import com.azure.ai.metricsadvisor.models.DetectionConditionsOperator;
-import com.azure.ai.metricsadvisor.models.Dimension;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.models.HardThresholdCondition;
-import com.azure.ai.metricsadvisor.models.Metric;
+import com.azure.ai.metricsadvisor.models.DataFeedMetric;
 import com.azure.ai.metricsadvisor.models.MetricSeriesGroupDetectionCondition;
 import com.azure.ai.metricsadvisor.models.MetricWholeSeriesDetectionCondition;
 import com.azure.ai.metricsadvisor.models.MetricSingleSeriesDetectionCondition;
@@ -27,7 +27,6 @@ import com.azure.ai.metricsadvisor.models.SuppressCondition;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.Assertions;
 
-import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
@@ -793,19 +792,17 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
         DataFeed dataFeed = new DataFeed().setSource(new SQLServerDataFeedSource(SQL_SERVER_CONNECTION_STRING,
             TEMPLATE_QUERY));
         dataFeed.setSchema(new DataFeedSchema(Arrays.asList(
-            new Metric().setName("cost").setDisplayName("cost"),
-            new Metric().setName("revenue").setDisplayName("revenue")))
+            new DataFeedMetric().setName("cost").setDisplayName("cost"),
+            new DataFeedMetric().setName("revenue").setDisplayName("revenue")))
             .setDimensions(Arrays.asList(
-                new Dimension().setName("city").setDisplayName("city"),
-                new Dimension().setName("category").setDisplayName("category"))))
+                new DataFeedDimension().setName("city").setDisplayName("city"),
+                new DataFeedDimension().setName("category").setDisplayName("category"))))
             .setName("java_data_feed_for_detection" + UUID.randomUUID())
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
-            .setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse(INGESTION_START_TIME)));
+            .setIngestionSettings(new DataFeedIngestionSettings(INGESTION_START_TIME));
 
-        return client.createDataFeed(dataFeed.getName(),
-            dataFeed.getSource(), dataFeed.getGranularity(),
-            dataFeed.getSchema(), dataFeed.getIngestionSettings(),
-            dataFeed.getOptions());
+        return client.createDataFeed(
+                dataFeed);
     }
 
     protected void assertUpdateDetectionConfigurationOutput(

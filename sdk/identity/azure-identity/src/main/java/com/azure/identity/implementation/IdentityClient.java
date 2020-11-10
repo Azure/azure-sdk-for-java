@@ -23,6 +23,7 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.DeviceCodeInfo;
 import com.azure.identity.implementation.util.CertificateUtil;
+import com.azure.identity.implementation.util.IdentitySslUtil;
 import com.azure.identity.implementation.util.ScopeUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
@@ -44,6 +45,7 @@ import com.microsoft.aad.msal4jextensions.persistence.linux.KeyRingAccessExcepti
 import com.sun.jna.Platform;
 import reactor.core.publisher.Mono;
 
+import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -118,6 +120,7 @@ public class IdentityClient {
     private static final String MSI_ENDPOINT_VERSION = "2017-09-01";
     private static final String ADFS_TENANT = "adfs";
     private static final String HTTP_LOCALHOST = "http://localhost";
+    private static final String SERVICE_FABRIC_MANAGED_IDENTITY_API_VERSION = "2019-07-01-preview";
     private final ClientLogger logger = new ClientLogger(IdentityClient.class);
 
     private final IdentityClientOptions options;
@@ -745,6 +748,161 @@ public class IdentityClient {
                     }));
     }
 
+
+    /**
+     * Asynchronously acquire a token from the Azure Arc Managed Service Identity endpoint.
+     *
+     * @param identityEndpoint the Identity endpoint to acquire token from
+     * @param request the details of the token request
+     * @return a Publisher that emits an AccessToken
+     */
+    public Mono<AccessToken> authenticateToArcManagedIdentityEndpoint(String identityEndpoint,
+                                                                      TokenRequestContext request) {
+        return Mono.fromCallable(() -> {
+            HttpURLConnection connection = null;
+            StringBuilder payload = new StringBuilder();
+            payload.append("resource=");
+            payload.append(URLEncoder.encode(ScopeUtil.scopesToResource(request.getScopes()), "UTF-8"));
+            payload.append("&api-version=");
+            payload.append(URLEncoder.encode("2019-11-01", "UTF-8"));
+
+            URL url = new URL(String.format("%s?%s", identityEndpoint, payload));
+
+
+            String secretKey = null;
+            try {
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Metadata", "true");
+                connection.connect();
+
+                new Scanner(connection.getInputStream(), "UTF-8").useDelimiter("\\A");
+            } catch (IOException e) {
+                if (connection == null) {
+                    throw logger.logExceptionAsError(new ClientAuthenticationException("Failed to initialize "
+                                                                       + "Http URL connection to the endpoint.",
+                        null, e));
+                }
+                int status = connection.getResponseCode();
+                if (status != 401) {
+                    throw logger.logExceptionAsError(new ClientAuthenticationException(String.format("Expected a 401"
+                         + " Unauthorized response from Azure Arc Managed Identity Endpoint, received: %d", status),
+                        null, e));
+                }
+
+                String realm = connection.getHeaderField("WWW-Authenticate");
+
+                if (realm == null) {
+                    throw logger.logExceptionAsError(new ClientAuthenticationException("Did not receive a value"
+                           + " for WWW-Authenticate header in the response from Azure Arc Managed Identity Endpoint",
+                        null));
+                }
+
+                int separatorIndex = realm.indexOf("=");
+                if (separatorIndex == -1) {
+                    throw logger.logExceptionAsError(new ClientAuthenticationException("Did not receive a correct value"
+                           + " for WWW-Authenticate header in the response from Azure Arc Managed Identity Endpoint",
+                        null));
+                }
+
+                String secretKeyPath = realm.substring(separatorIndex + 1);
+                secretKey = new String(Files.readAllBytes(Paths.get(secretKeyPath)), StandardCharsets.UTF_8);
+
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+            }
+
+
+            if (secretKey == null) {
+                throw logger.logExceptionAsError(new ClientAuthenticationException("Did not receive a secret value"
+                     + " in the response from Azure Arc Managed Identity Endpoint",
+                    null));
+            }
+
+
+            try {
+
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Authorization", String.format("Basic %s", secretKey));
+                connection.setRequestProperty("Metadata", "true");
+                connection.connect();
+
+                Scanner scanner = new Scanner(connection.getInputStream(), "UTF-8").useDelimiter("\\A");
+                String result = scanner.hasNext() ? scanner.next() : "";
+
+                return SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
+
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+            }
+        });
+    }
+
+    /**
+     * Asynchronously acquire a token from the Azure Service Fabric Managed Service Identity endpoint.
+     *
+     * @param identityEndpoint the Identity endpoint to acquire token from
+     * @param identityHeader the identity header to acquire token with
+     * @param request the details of the token request
+     * @return a Publisher that emits an AccessToken
+     */
+    public Mono<AccessToken> authenticateToServiceFabricManagedIdentityEndpoint(String identityEndpoint,
+                                                                                String identityHeader,
+                                                                                String thumbprint,
+                                                                                TokenRequestContext request) {
+        return Mono.fromCallable(() -> {
+
+            HttpsURLConnection connection = null;
+            String endpoint = identityEndpoint;
+            String headerValue = identityHeader;
+            String endpointVersion = SERVICE_FABRIC_MANAGED_IDENTITY_API_VERSION;
+
+            String resource = ScopeUtil.scopesToResource(request.getScopes());
+            StringBuilder payload = new StringBuilder();
+
+            payload.append("resource=");
+            payload.append(URLEncoder.encode(resource, "UTF-8"));
+            payload.append("&api-version=");
+            payload.append(URLEncoder.encode(endpointVersion, "UTF-8"));
+            if (clientId != null) {
+                payload.append("&client_id=");
+                payload.append(URLEncoder.encode(clientId, "UTF-8"));
+            }
+
+            try {
+
+                URL url = new URL(String.format("%s?%s", endpoint, payload));
+                connection = (HttpsURLConnection) url.openConnection();
+
+                IdentitySslUtil.addTrustedCertificateThumbprint(getClass().getSimpleName(), connection,
+                    thumbprint);
+                connection.setRequestMethod("GET");
+                if (headerValue != null) {
+                    connection.setRequestProperty("Secret", headerValue);
+                }
+                connection.setRequestProperty("Metadata", "true");
+
+                connection.connect();
+
+                Scanner s = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name())
+                                .useDelimiter("\\A");
+
+                String result = s.hasNext() ? s.next() : "";
+                return SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
+
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+            }
+        });
+    }
+
     /**
      * Asynchronously acquire a token from the App Service Managed Service Identity endpoint.
      *
@@ -876,6 +1034,12 @@ public class IdentityClient {
                                 "ManagedIdentityCredential authentication unavailable. "
                                     + "Connection to IMDS endpoint cannot be established, "
                                     + e.getMessage() + ".", e));
+                    }
+                    if (responseCode == 400) {
+                        throw logger.logExceptionAsError(
+                            new CredentialUnavailableException(
+                                "ManagedIdentityCredential authentication unavailable. "
+                                    + "Connection to IMDS endpoint cannot be established.", null));
                     }
                     if (responseCode == 410
                             || responseCode == 429

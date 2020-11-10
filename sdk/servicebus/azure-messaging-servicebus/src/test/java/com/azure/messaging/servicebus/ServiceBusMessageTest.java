@@ -173,12 +173,28 @@ public class ServiceBusMessageTest {
     }
 
     /**
+     * Verify body is created.
+     */
+    @Test
+    void bodyAsBytes() {
+        // Arrange
+        byte[] expected = "some-contents".getBytes(UTF_8);
+
+        // Act
+        ServiceBusMessage message = new ServiceBusMessage(expected);
+
+        // Assert
+        assertArrayEquals(expected, message.getBody().toBytes());
+    }
+
+    /**
      * Verify that expected exceptions are thrown.
      */
     @Test
     void bodyNotNull() {
         assertThrows(NullPointerException.class, () -> new ServiceBusMessage((String) null));
         assertThrows(NullPointerException.class, () -> new ServiceBusMessage((BinaryData) null));
+        assertThrows(NullPointerException.class, () -> new ServiceBusMessage((byte[]) null));
     }
 
     @Test
