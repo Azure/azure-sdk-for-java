@@ -11,19 +11,28 @@ import com.azure.core.credential.TokenRequestContext;
 
 import reactor.core.publisher.Mono;
 
+/**
+ * This class serves as a CommunicationUserCredential wrapper that 
+ * allows using BearerAuthenticationPolicy in different clients
+ */
 public class CommunicationTokenCredential implements TokenCredential {
-    private CommunicationUserCredential credential;
+    private final CommunicationUserCredential credential;
 
-    public CommunicationTokenCredential(CommunicationUserCredential communicationUserCrendential){
-        credential = communicationUserCrendential;
+    /**
+     * Creates a CommunicationTokenCredential
+     *
+     * @param communicationUserCredential The {@link CommunicationUserCredential} to use 
+     * in the BearerAuthenticationPolicy.
+     */
+    public CommunicationTokenCredential(CommunicationUserCredential communicationUserCredential) {
+        credential = communicationUserCredential;
     }
 
     @Override
-    public Mono<AccessToken> getToken(TokenRequestContext request){
-        try{
+    public Mono<AccessToken> getToken(TokenRequestContext request) {
+        try {
             return Mono.just(credential.getToken().get());
-        }
-        catch (InterruptedException ex) {
+        } catch (InterruptedException ex) {
             return Mono.error(ex);
         } catch (ExecutionException ex) {
             return Mono.error(ex);

@@ -168,7 +168,8 @@ public final class ChatClientBuilder {
         } else {
             Objects.requireNonNull(communicationUserCredential);
             Objects.requireNonNull(httpClient);
-            CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(communicationUserCredential);
+            CommunicationTokenCredential tokenCredential = 
+                new CommunicationTokenCredential(communicationUserCredential);
 
             pipeline = createHttpPipeline(httpClient,
                 new BearerTokenAuthenticationPolicy(tokenCredential, ""),
