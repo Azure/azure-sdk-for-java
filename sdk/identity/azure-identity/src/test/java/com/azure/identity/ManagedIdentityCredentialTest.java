@@ -90,7 +90,7 @@ public class ManagedIdentityCredentialTest {
 
     @Test
     public void testArcUserAssigned() throws Exception {
-        Configuration configuration = Configuration.getGlobalConfiguration();
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
 
         // setup
         String token1 = "token1";
