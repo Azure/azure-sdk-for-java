@@ -127,7 +127,7 @@ class RemediationImpl extends CreatableUpdatableImpl<Remediation, RemediationInn
     }
 
     @Override
-    public RemediationImpl withManagementGroupId(String managementGroupId) {
+    public RemediationImpl withExistingMicrosoft.PolicyInsight(String managementGroupId) {
         this.managementGroupId = managementGroupId;
         return this;
     }

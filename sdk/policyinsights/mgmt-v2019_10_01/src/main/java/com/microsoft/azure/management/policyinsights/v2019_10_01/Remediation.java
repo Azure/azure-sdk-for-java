@@ -80,7 +80,7 @@ public interface Remediation extends HasInner<RemediationInner>, Indexable, Upda
     /**
      * The entirety of the Remediation definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithManagementGroupId, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithMicrosoft.PolicyInsight, DefinitionStages.WithCreate {
     }
 
     /**
@@ -90,19 +90,19 @@ public interface Remediation extends HasInner<RemediationInner>, Indexable, Upda
         /**
          * The first stage of a Remediation definition.
          */
-        interface Blank extends WithManagementGroupId {
+        interface Blank extends WithMicrosoft.PolicyInsight {
         }
 
         /**
          * The stage of the remediation definition allowing to specify Microsoft.PolicyInsight.
          */
-        interface WithManagementGroupId {
+        interface WithMicrosoft.PolicyInsight {
            /**
             * Specifies managementGroupId.
             * @param managementGroupId Management group ID
             * @return the next definition stage
             */
-            WithCreate withManagementGroupId(String managementGroupId);
+            WithCreate withExistingMicrosoft.PolicyInsight(String managementGroupId);
         }
 
         /**
