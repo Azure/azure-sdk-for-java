@@ -26,12 +26,12 @@ public class ListsAnomaliesForAlertsAsyncSample {
             alertId,
             options)
             .doOnNext(anomaly -> {
-                System.out.printf("Metric Id: %s%n", anomaly.getMetricId());
+                System.out.printf("Data Feed Metric Id: %s%n", anomaly.getMetricId());
                 System.out.printf("Detection Configuration Id: %s%n", anomaly.getDetectionConfigurationId());
-                System.out.printf("Anomaly Created Time: %s%n", anomaly.getCreatedTime());
-                System.out.printf("Anomaly Modified Time: %s%n", anomaly.getModifiedTime());
-                System.out.printf("Anomaly Severity: %s%n", anomaly.getSeverity());
-                System.out.printf("Anomaly Status: %s%n", anomaly.getStatus());
+                System.out.printf("DataPoint Anomaly Created Time: %s%n", anomaly.getCreatedTime());
+                System.out.printf("DataPoint Anomaly Modified Time: %s%n", anomaly.getModifiedTime());
+                System.out.printf("DataPoint Anomaly Severity: %s%n", anomaly.getSeverity());
+                System.out.printf("DataPoint Anomaly Status: %s%n", anomaly.getStatus());
                 System.out.printf("Series Key: %s%n", anomaly.getSeriesKey().asMap());
             }).blockLast();
             /*

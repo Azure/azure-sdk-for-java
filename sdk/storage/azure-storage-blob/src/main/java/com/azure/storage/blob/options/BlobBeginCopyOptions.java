@@ -160,7 +160,7 @@ public class BlobBeginCopyOptions {
 
     /**
      *  Only applicable for Append Blobs.
-     * @return Whether or not the destination blob should be sealed.
+     * @return Whether or not the destination blob should be sealed (marked as read only).
      */
     public Boolean isSealDestination() {
         return sealDestination;
@@ -169,7 +169,7 @@ public class BlobBeginCopyOptions {
     /**
      * Only applicable for Append Blobs.
      *
-     * @param sealDestination Whether or not the destination blob should be sealed.
+     * @param sealDestination Whether or not the destination blob should be sealed (marked as read only).
      * @return The updated options.
      */
     public BlobBeginCopyOptions setSealDestination(Boolean sealDestination) {
