@@ -56,6 +56,11 @@ public interface NamespaceResource extends HasInner<NamespaceResourceInner>, Res
     String provisioningState();
 
     /**
+     * @return the region value.
+     */
+    String region();
+
+    /**
      * @return the scaleUnit value.
      */
     String scaleUnit();
@@ -175,6 +180,18 @@ public interface NamespaceResource extends HasInner<NamespaceResourceInner>, Res
         }
 
         /**
+         * The stage of the namespaceresource definition allowing to specify Region.
+         */
+        interface WithRegion {
+            /**
+             * Specifies region.
+             * @param region Specifies the targeted region in which the namespace should be created. It can be any of the following values: Australia East, Australia Southeast, Central US, East US, East US 2, West US, North Central US, South Central US, East Asia, Southeast Asia, Brazil South, Japan East, Japan West, North Europe, West Europe
+             * @return the next definition stage
+             */
+            WithCreate withRegion(String region);
+        }
+
+        /**
          * The stage of the namespaceresource definition allowing to specify ScaleUnit.
          */
         interface WithScaleUnit {
@@ -239,7 +256,7 @@ public interface NamespaceResource extends HasInner<NamespaceResourceInner>, Res
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<NamespaceResource>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithCreatedAt, DefinitionStages.WithCritical, DefinitionStages.WithEnabled, DefinitionStages.WithNamespaceCreateOrUpdateParametersName, DefinitionStages.WithNamespaceType, DefinitionStages.WithProvisioningState, DefinitionStages.WithScaleUnit, DefinitionStages.WithServiceBusEndpoint, DefinitionStages.WithSku, DefinitionStages.WithStatus, DefinitionStages.WithSubscriptionId {
+        interface WithCreate extends Creatable<NamespaceResource>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithCreatedAt, DefinitionStages.WithCritical, DefinitionStages.WithEnabled, DefinitionStages.WithNamespaceCreateOrUpdateParametersName, DefinitionStages.WithNamespaceType, DefinitionStages.WithProvisioningState, DefinitionStages.WithRegion, DefinitionStages.WithScaleUnit, DefinitionStages.WithServiceBusEndpoint, DefinitionStages.WithSku, DefinitionStages.WithStatus, DefinitionStages.WithSubscriptionId {
         }
     }
     /**

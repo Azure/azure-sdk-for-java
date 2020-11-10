@@ -81,10 +81,14 @@ class NotificationHubsImpl extends WrapperImpl<NotificationHubsInner> implements
     public Observable<NotificationHubResource> getAsync(String resourceGroupName, String namespaceName, String notificationHubName) {
         NotificationHubsInner client = this.inner();
         return client.getAsync(resourceGroupName, namespaceName, notificationHubName)
-        .map(new Func1<NotificationHubResourceInner, NotificationHubResource>() {
+        .flatMap(new Func1<NotificationHubResourceInner, Observable<NotificationHubResource>>() {
             @Override
-            public NotificationHubResource call(NotificationHubResourceInner inner) {
-                return wrapModel(inner);
+            public Observable<NotificationHubResource> call(NotificationHubResourceInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((NotificationHubResource)wrapModel(inner));
+                }
             }
        });
     }
@@ -133,10 +137,14 @@ class NotificationHubsImpl extends WrapperImpl<NotificationHubsInner> implements
     public Observable<NotificationHubNamespaceSharedAccessAuthorizationRuleResource> getAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String notificationHubName, String authorizationRuleName) {
         NotificationHubsInner client = this.inner();
         return client.getAuthorizationRuleAsync(resourceGroupName, namespaceName, notificationHubName, authorizationRuleName)
-        .map(new Func1<SharedAccessAuthorizationRuleResourceInner, NotificationHubNamespaceSharedAccessAuthorizationRuleResource>() {
+        .flatMap(new Func1<SharedAccessAuthorizationRuleResourceInner, Observable<NotificationHubNamespaceSharedAccessAuthorizationRuleResource>>() {
             @Override
-            public NotificationHubNamespaceSharedAccessAuthorizationRuleResource call(SharedAccessAuthorizationRuleResourceInner inner) {
-                return wrapNotificationHubNamespaceSharedAccessAuthorizationRuleResourceModel(inner);
+            public Observable<NotificationHubNamespaceSharedAccessAuthorizationRuleResource> call(SharedAccessAuthorizationRuleResourceInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((NotificationHubNamespaceSharedAccessAuthorizationRuleResource)wrapNotificationHubNamespaceSharedAccessAuthorizationRuleResourceModel(inner));
+                }
             }
        });
     }
