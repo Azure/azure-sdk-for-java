@@ -98,6 +98,7 @@ public class AzureActiveDirectoryAutoConfiguration {
         return ClientRegistration.withRegistrationId(registrationId)
                                  .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                                  .redirectUriTemplate("{baseUrl}/login/oauth2/code/{registrationId}")
+                                 .clientId(azureActiveDirectoryProperties.getClientId())
                                  .clientSecret(azureActiveDirectoryProperties.getClientSecret())
                                  .authorizationUri(endpoints.authorizationEndpoint(tenantId))
                                  .tokenUri(endpoints.tokenEndpoint(tenantId))
