@@ -29,7 +29,7 @@ import com.microsoft.azure.management.compute.v2020_06_01.BillingProfile;
 import com.microsoft.azure.management.compute.v2020_06_01.VirtualMachineIdentity;
 import com.microsoft.azure.management.compute.v2020_06_01.VirtualMachineInstanceView;
 import java.util.ArrayList;
-import com.microsoft.azure.management.compute.v2020_06_01.VirtualMachineVirtualMachineExtension;
+import com.microsoft.azure.management.compute.v2020_06_01.VirtualMachineExtension;
 import rx.functions.Func1;
 
 class VirtualMachineImpl extends CreatableUpdatableImpl<VirtualMachine, VirtualMachineInner, VirtualMachineImpl> implements VirtualMachine, VirtualMachine.Definition, VirtualMachine.Update {
@@ -218,11 +218,11 @@ class VirtualMachineImpl extends CreatableUpdatableImpl<VirtualMachine, VirtualM
     }
 
     @Override
-    public List<VirtualMachineVirtualMachineExtension> resources() {
-        List<VirtualMachineVirtualMachineExtension> lst = new ArrayList<VirtualMachineVirtualMachineExtension>();
+    public List<VirtualMachineExtension> resources() {
+        List<VirtualMachineExtension> lst = new ArrayList<VirtualMachineExtension>();
         if (this.inner().resources() != null) {
             for (VirtualMachineExtensionInner inner : this.inner().resources()) {
-                lst.add( new VirtualMachineVirtualMachineExtensionImpl(inner, manager()));
+                lst.add( new VirtualMachineExtensionImpl(inner, manager()));
             }
         }
         return lst;
@@ -264,7 +264,7 @@ class VirtualMachineImpl extends CreatableUpdatableImpl<VirtualMachine, VirtualM
     }
 
     @Override
-    public VirtualMachineImpl withExistingResourceGroup(String resourceGroupName) {
+    public VirtualMachineImpl withExistingLocation(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
     }

@@ -133,7 +133,7 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Indexable
     /**
      * @return the resources value.
      */
-    List<VirtualMachineVirtualMachineExtension> resources();
+    List<VirtualMachineExtension> resources();
 
     /**
      * @return the securityProfile value.
@@ -173,7 +173,7 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Indexable
     /**
      * The entirety of the VirtualMachine definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithResourceGroup, DefinitionStages.WithLocation, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation, DefinitionStages.WithLocation, DefinitionStages.WithCreate {
     }
 
     /**
@@ -183,19 +183,19 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Indexable
         /**
          * The first stage of a VirtualMachine definition.
          */
-        interface Blank extends WithResourceGroup {
+        interface Blank extends WithLocation {
         }
 
         /**
          * The stage of the virtualmachine definition allowing to specify Location.
          */
-        interface WithResourceGroup {
+        interface WithLocation {
            /**
             * Specifies resourceGroupName.
             * @param resourceGroupName The name of the resource group
             * @return the next definition stage
             */
-            WithLocation withExistingResourceGroup(String resourceGroupName);
+            WithLocation withExistingLocation(String resourceGroupName);
         }
 
         /**
@@ -336,7 +336,7 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Indexable
         interface WithLicenseType {
             /**
              * Specifies licenseType.
-             * @param licenseType Specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; Windows_Client &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; If this element is included in a request for an update, the value must match the initial value. This value cannot be updated. &lt;br&gt;&lt;br&gt; For more information, see [Azure Hybrid Use Benefit for Windows Server](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-hybrid-use-benefit-licensing?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json) &lt;br&gt;&lt;br&gt; Minimum api-version: 2015-06-15
+             * @param licenseType Specifies that the image or disk that is being used was licensed on-premises. &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt; Windows_Client &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server operating system are: &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE) &lt;br&gt;&lt;br&gt; For more information, see [Azure Hybrid Use Benefit for Windows Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing) &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) &lt;br&gt;&lt;br&gt; Minimum api-version: 2015-06-15
              * @return the next definition stage
              */
             WithCreate withLicenseType(String licenseType);
@@ -606,7 +606,7 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Indexable
         interface WithLicenseType {
             /**
              * Specifies licenseType.
-             * @param licenseType Specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; Windows_Client &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; If this element is included in a request for an update, the value must match the initial value. This value cannot be updated. &lt;br&gt;&lt;br&gt; For more information, see [Azure Hybrid Use Benefit for Windows Server](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-hybrid-use-benefit-licensing?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json) &lt;br&gt;&lt;br&gt; Minimum api-version: 2015-06-15
+             * @param licenseType Specifies that the image or disk that is being used was licensed on-premises. &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt; Windows_Client &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server operating system are: &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE) &lt;br&gt;&lt;br&gt; For more information, see [Azure Hybrid Use Benefit for Windows Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing) &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) &lt;br&gt;&lt;br&gt; Minimum api-version: 2015-06-15
              * @return the next update stage
              */
             Update withLicenseType(String licenseType);

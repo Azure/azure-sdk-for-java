@@ -13,7 +13,7 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.compute.v2020_06_01.VirtualMachineExtensions;
 import rx.Observable;
 import rx.functions.Func1;
-import com.microsoft.azure.management.compute.v2020_06_01.VirtualMachineVirtualMachineExtension;
+import com.microsoft.azure.management.compute.v2020_06_01.VirtualMachineExtension;
 import rx.Completable;
 import com.microsoft.azure.management.compute.v2020_06_01.VirtualMachineExtensionsListResult;
 
@@ -30,16 +30,16 @@ class VirtualMachineExtensionsImpl extends WrapperImpl<VirtualMachineExtensionsI
     }
 
     @Override
-    public VirtualMachineVirtualMachineExtensionImpl defineExtension(String name) {
+    public VirtualMachineExtensionImpl defineExtension(String name) {
         return wrapExtensionModel(name);
     }
 
-    private VirtualMachineVirtualMachineExtensionImpl wrapExtensionModel(String name) {
-        return new VirtualMachineVirtualMachineExtensionImpl(name, this.manager());
+    private VirtualMachineExtensionImpl wrapExtensionModel(String name) {
+        return new VirtualMachineExtensionImpl(name, this.manager());
     }
 
-    private VirtualMachineVirtualMachineExtensionImpl wrapVirtualMachineVirtualMachineExtensionModel(VirtualMachineExtensionInner inner) {
-        return  new VirtualMachineVirtualMachineExtensionImpl(inner, manager());
+    private VirtualMachineExtensionImpl wrapVirtualMachineExtensionModel(VirtualMachineExtensionInner inner) {
+        return  new VirtualMachineExtensionImpl(inner, manager());
     }
 
     private Observable<VirtualMachineExtensionInner> getVirtualMachineExtensionInnerUsingVirtualMachineExtensionsInnerAsync(String id) {
@@ -51,16 +51,16 @@ class VirtualMachineExtensionsImpl extends WrapperImpl<VirtualMachineExtensionsI
     }
 
     @Override
-    public Observable<VirtualMachineVirtualMachineExtension> getAsync(String resourceGroupName, String vmName, String vmExtensionName) {
+    public Observable<VirtualMachineExtension> getAsync(String resourceGroupName, String vmName, String vmExtensionName) {
         VirtualMachineExtensionsInner client = this.inner();
         return client.getAsync(resourceGroupName, vmName, vmExtensionName)
-        .flatMap(new Func1<VirtualMachineExtensionInner, Observable<VirtualMachineVirtualMachineExtension>>() {
+        .flatMap(new Func1<VirtualMachineExtensionInner, Observable<VirtualMachineExtension>>() {
             @Override
-            public Observable<VirtualMachineVirtualMachineExtension> call(VirtualMachineExtensionInner inner) {
+            public Observable<VirtualMachineExtension> call(VirtualMachineExtensionInner inner) {
                 if (inner == null) {
                     return Observable.empty();
                 } else {
-                    return Observable.just((VirtualMachineVirtualMachineExtension)wrapVirtualMachineVirtualMachineExtensionModel(inner));
+                    return Observable.just((VirtualMachineExtension)wrapVirtualMachineExtensionModel(inner));
                 }
             }
        });
