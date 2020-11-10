@@ -189,10 +189,10 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             ClientTelemetry.recordValue(latencyHistogram, latency.toNanos() / 1000);
         } else {
             if (statusCode == HttpConstants.StatusCodes.OK) {
-                latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX,
+                latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX_MICRO_SEC,
                     ClientTelemetry.REQUEST_LATENCY_SUCCESS_PRECISION);
             } else {
-                latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX,
+                latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX_MICRO_SEC,
                     ClientTelemetry.REQUEST_LATENCY_FAILURE_PRECISION);
             }
 

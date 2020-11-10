@@ -232,9 +232,9 @@ public class TracerProvider {
             ClientTelemetry.recordValue(latencyHistogram, cosmosDiagnostics.getDuration().toNanos()/1000);
         } else {
             if (statusCode == HttpConstants.StatusCodes.OK || statusCode == HttpConstants.StatusCodes.CREATED) {
-                latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX, ClientTelemetry.REQUEST_LATENCY_SUCCESS_PRECISION);
+                latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX_MICRO_SEC, ClientTelemetry.REQUEST_LATENCY_SUCCESS_PRECISION);
             } else {
-                latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX, ClientTelemetry.REQUEST_LATENCY_FAILURE_PRECISION);
+                latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX_MICRO_SEC, ClientTelemetry.REQUEST_LATENCY_FAILURE_PRECISION);
             }
 
             latencyHistogram.setAutoResize(true);
@@ -274,7 +274,7 @@ public class TracerProvider {
             BridgeInternal.getContextClient(cosmosAsyncClient).getConsistencyLevel() :
             consistencyLevel);
         if (objectSize != null) {
-            reportPayload.setGreaterThan1Kb(objectSize > 1024);
+            reportPayload.setGreaterThan1Kb(objectSize > ClientTelemetry.ONE_KB_TO_BYTES);
         }
 
         reportPayload.setDatabasesName(databaseId);

@@ -28,11 +28,12 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadFactory;
 
 public class ClientTelemetry {
-    public final static int REQUEST_LATENCY_MAX = 300000000;
+    public final static int ONE_KB_TO_BYTES = 1024;
+    public final static int REQUEST_LATENCY_MAX_MICRO_SEC = 300000000;
     public final static int REQUEST_LATENCY_SUCCESS_PRECISION = 4;
     public final static int REQUEST_LATENCY_FAILURE_PRECISION = 2;
     public final static String REQUEST_LATENCY_NAME = "RequestLatency";
@@ -48,7 +49,7 @@ public class ClientTelemetry {
     private final static String CPU_NAME = "CPU";
     private final static String CPU_UNIT = "Percentage";
 
-    public final static int MEMORY_MAX = 102400;
+    public final static int MEMORY_MAX_IN_MB = 102400;
     public final static int MEMORY_PRECISION = 2;
     private final static String MEMORY_NAME = "MemoryRemaining";
     private final static String MEMORY_UNIT = "MB";
@@ -56,8 +57,8 @@ public class ClientTelemetry {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private ClientTelemetryInfo clientTelemetryInfo;
     private HttpClient httpClient;
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
-    private final Scheduler scheduler = Schedulers.fromExecutor(executor);
+    private final ScheduledThreadPoolExecutor scheduledExecutorService = new ScheduledThreadPoolExecutor(1, new DaemonThreadFactory());
+    private final Scheduler scheduler = Schedulers.fromExecutor(scheduledExecutorService);
     private static final Logger logger = LoggerFactory.getLogger(GlobalEndpointManager.class);
     private volatile boolean isClosed;
     private volatile boolean isClientTelemetryEnabled;
@@ -97,7 +98,7 @@ public class ClientTelemetry {
         try {
             doubleHistogram.recordValue(value);
         } catch (Exception ex) {
-            logger.warn("Error while recording value for client telemetry", ex.getMessage());
+            logger.warn("Error while recording value for client telemetry. ", ex);
         }
     }
 
@@ -105,7 +106,7 @@ public class ClientTelemetry {
         try {
             doubleHistogram.recordValue(value);
         } catch (Exception ex) {
-            logger.warn("Error while recording value for client telemetry", ex.getMessage());
+            logger.warn("Error while recording value for client telemetry. ", ex);
         }
     }
 
@@ -116,7 +117,7 @@ public class ClientTelemetry {
 
     public void close() {
         this.isClosed = true;
-        this.executor.shutdown();
+        this.scheduledExecutorService.shutdown();
         logger.debug("GlobalEndpointManager closed.");
     }
 
@@ -137,13 +138,13 @@ public class ClientTelemetry {
                 try {
                     logger.info("ClientTelemetry {}", OBJECT_MAPPER.writeValueAsString(this.clientTelemetryInfo));
                 } catch (JsonProcessingException e) {
-                    e.printStackTrace();
+                    logger.error("Error which parsing client telemetry into json. ", e);
                 }
                 clearDataForNextRun();
                 return this.sendClientTelemetry();
             }).onErrorResume(ex -> {
                 logger.error("sendClientTelemetry() - Unable to send client telemetry" +
-                    ". Exception: {}", ex.toString(), ex);
+                    ". Exception: ", ex);
                 clearDataForNextRun();
                 return this.sendClientTelemetry();
             }).subscribeOn(scheduler);
@@ -192,7 +193,7 @@ public class ClientTelemetry {
         clientTelemetryInfo.getSystemInfoMap().put(cpuReportPayload, cpuHistogram);
 
         //Filling memory information
-        ConcurrentDoubleHistogram memoryHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.MEMORY_MAX,
+        ConcurrentDoubleHistogram memoryHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.MEMORY_MAX_IN_MB,
             ClientTelemetry.MEMORY_PRECISION);
         memoryHistogram.setAutoResize(true);
         for(double val : CpuMemoryMonitor.getClientTelemetryMemoryLatestList()) {
@@ -226,5 +227,14 @@ public class ClientTelemetry {
         percentile.put(PERCENTILE_99, histogram.getValueAtPercentile(PERCENTILE_99));
         percentile.put(PERCENTILE_999, histogram.getValueAtPercentile(PERCENTILE_999));
         payload.getMetricInfo().setPercentiles(percentile);
+    }
+
+    private static class DaemonThreadFactory implements ThreadFactory {
+        @Override
+        public Thread newThread(Runnable r) {
+            Thread t = new Thread(r);
+            t.setDaemon(true);
+            return t;
+        }
     }
 }

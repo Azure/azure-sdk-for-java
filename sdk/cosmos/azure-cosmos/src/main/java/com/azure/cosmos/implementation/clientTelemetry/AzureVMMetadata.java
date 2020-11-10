@@ -16,7 +16,7 @@ public class AzureVMMetadata {
         this.compute = compute;
     }
 
-    static class Compute{
+    private static class Compute{
         private String location;
 
         public String getLocation() {

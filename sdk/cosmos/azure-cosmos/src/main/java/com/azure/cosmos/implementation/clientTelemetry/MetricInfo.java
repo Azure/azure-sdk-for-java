@@ -12,7 +12,7 @@ public class MetricInfo {
     private long count;
     private double min;
     private double max;
-    private Map<Double, Double> percentiles = new HashMap<>();//strict contract, ,  validation on key required
+    private Map<Double, Double> percentiles;
 
     public MetricInfo(String metricsName, String unitName) {
         this.metricsName = metricsName;
