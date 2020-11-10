@@ -34,6 +34,7 @@ import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltT
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.INVOICE;
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.RECEIPT;
 import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
+import static com.azure.ai.formrecognizer.TestUtils.CONTENT_GERMAN_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.formrecognizer.TestUtils.FORM_JPG;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_IMAGE_URL_ERROR_CODE;
@@ -524,6 +525,37 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         }, SELECTION_MARK_PDF);
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeGermanContentFromUrl(HttpClient httpClient,
+                                              FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        testingContainerUrlRunner(sourceUrl -> {
+            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller =
+                client.beginRecognizeContentFromUrl(sourceUrl,
+                    new RecognizeContentOptions().setPollInterval(durationTestMode).setLanguage("de"))
+                    .getSyncPoller();
+            syncPoller.waitForCompletion();
+            validateContentResultData(syncPoller.getFinalResult(), false);
+            validateNetworkCallRecord("language", "de");
+        }, CONTENT_GERMAN_PDF);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeContentIncorrectLanguageFromUrl(HttpClient httpClient,
+                                              FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        testingContainerUrlRunner(sourceUrl -> {
+            HttpResponseException exception
+                = assertThrows(HttpResponseException.class,
+                    () -> client.beginRecognizeContentFromUrl(sourceUrl,
+                        new RecognizeContentOptions().setPollInterval(durationTestMode).setLanguage("language"))
+                        .getSyncPoller());
+            assertEquals(((FormRecognizerErrorInformation) exception.getValue()).getErrorCode(), "NotSupportedLanguage");
+        }, CONTENT_GERMAN_PDF);
+    }
+
     // Custom form recognition
 
     // Custom form - non-URL - labeled data
@@ -980,7 +1012,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     public void recognizeCustomFormUrlMultiPageUnlabeled(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        urlPdfUnlabeledRunner(fileUrl ->
+        testingContainerUrlRunner(fileUrl ->
             beginTrainingMultipageRunner((trainingFilesUrl) -> {
                 SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
                     getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
@@ -993,7 +1025,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                         .getSyncPoller();
                 syncPoller.waitForCompletion();
                 validateMultiPageDataUnlabeled(syncPoller.getFinalResult());
-            }));
+            }), MULTIPAGE_INVOICE_PDF);
     }
 
     // Custom form - URL - labeled data
