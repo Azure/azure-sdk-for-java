@@ -14,6 +14,12 @@ import rx.Observable;
 import com.microsoft.azure.management.postgresql.v2017_12_01_preview.ServerUpdateParameters;
 import com.microsoft.azure.management.postgresql.v2017_12_01_preview.ServerForCreate;
 import org.joda.time.DateTime;
+import com.microsoft.azure.management.postgresql.v2017_12_01_preview.ResourceIdentity;
+import com.microsoft.azure.management.postgresql.v2017_12_01_preview.InfrastructureEncryption;
+import com.microsoft.azure.management.postgresql.v2017_12_01_preview.MinimalTlsVersionEnum;
+import java.util.List;
+import com.microsoft.azure.management.postgresql.v2017_12_01_preview.ServerPrivateEndpointConnection;
+import com.microsoft.azure.management.postgresql.v2017_12_01_preview.PublicNetworkAccessEnum;
 import com.microsoft.azure.management.postgresql.v2017_12_01_preview.Sku;
 import com.microsoft.azure.management.postgresql.v2017_12_01_preview.SslEnforcementEnum;
 import com.microsoft.azure.management.postgresql.v2017_12_01_preview.StorageProfile;
@@ -22,10 +28,10 @@ import com.microsoft.azure.management.postgresql.v2017_12_01_preview.ServerVersi
 import com.microsoft.azure.management.postgresql.v2017_12_01_preview.ServerPropertiesForCreate;
 import rx.functions.Func1;
 
-class ServerImpl extends GroupableResourceCoreImpl<Server, ServerInner, ServerImpl, PostgreSQLManager> implements Server, Server.Definition, Server.Update {
+class ServerImpl extends GroupableResourceCoreImpl<Server, ServerInner, ServerImpl, DBForPostgreSQLManager> implements Server, Server.Definition, Server.Update {
     private ServerForCreate createParameter;
     private ServerUpdateParameters updateParameter;
-    ServerImpl(String name, ServerInner inner, PostgreSQLManager manager) {
+    ServerImpl(String name, ServerInner inner, DBForPostgreSQLManager manager) {
         super(name, inner, manager);
         this.createParameter = new ServerForCreate();
         this.updateParameter = new ServerUpdateParameters();
@@ -83,6 +89,11 @@ class ServerImpl extends GroupableResourceCoreImpl<Server, ServerInner, ServerIm
     }
 
     @Override
+    public String byokEnforcement() {
+        return this.inner().byokEnforcement();
+    }
+
+    @Override
     public DateTime earliestRestoreDate() {
         return this.inner().earliestRestoreDate();
     }
@@ -93,8 +104,33 @@ class ServerImpl extends GroupableResourceCoreImpl<Server, ServerInner, ServerIm
     }
 
     @Override
+    public ResourceIdentity identity() {
+        return this.inner().identity();
+    }
+
+    @Override
+    public InfrastructureEncryption infrastructureEncryption() {
+        return this.inner().infrastructureEncryption();
+    }
+
+    @Override
     public String masterServerId() {
         return this.inner().masterServerId();
+    }
+
+    @Override
+    public MinimalTlsVersionEnum minimalTlsVersion() {
+        return this.inner().minimalTlsVersion();
+    }
+
+    @Override
+    public List<ServerPrivateEndpointConnection> privateEndpointConnections() {
+        return this.inner().privateEndpointConnections();
+    }
+
+    @Override
+    public PublicNetworkAccessEnum publicNetworkAccess() {
+        return this.inner().publicNetworkAccess();
     }
 
     @Override
@@ -141,6 +177,12 @@ class ServerImpl extends GroupableResourceCoreImpl<Server, ServerInner, ServerIm
     @Override
     public ServerImpl withAdministratorLoginPassword(String administratorLoginPassword) {
         this.updateParameter.withAdministratorLoginPassword(administratorLoginPassword);
+        return this;
+    }
+
+    @Override
+    public ServerImpl withMinimalTlsVersion(MinimalTlsVersionEnum minimalTlsVersion) {
+        this.updateParameter.withMinimalTlsVersion(minimalTlsVersion);
         return this;
     }
 

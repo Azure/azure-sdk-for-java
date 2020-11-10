@@ -16,12 +16,12 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.postgresql.v2017_12_01_preview.implementation.PostgreSQLManager;
+import com.microsoft.azure.management.postgresql.v2017_12_01_preview.implementation.DBForPostgreSQLManager;
 
 /**
  * Type representing VirtualNetworkRule.
  */
-public interface VirtualNetworkRule extends HasInner<VirtualNetworkRuleInner>, Indexable, Refreshable<VirtualNetworkRule>, Updatable<VirtualNetworkRule.Update>, HasManager<PostgreSQLManager> {
+public interface VirtualNetworkRule extends HasInner<VirtualNetworkRuleInner>, Indexable, Refreshable<VirtualNetworkRule>, Updatable<VirtualNetworkRule.Update>, HasManager<DBForPostgreSQLManager> {
     /**
      * @return the id value.
      */

@@ -15,11 +15,11 @@ import com.microsoft.azure.management.postgresql.v2017_12_01_preview.ServerSecur
 import java.util.List;
 
 class ServerSecurityAlertPolicyImpl extends CreatableUpdatableImpl<ServerSecurityAlertPolicy, ServerSecurityAlertPolicyInner, ServerSecurityAlertPolicyImpl> implements ServerSecurityAlertPolicy, ServerSecurityAlertPolicy.Definition, ServerSecurityAlertPolicy.Update {
-    private final PostgreSQLManager manager;
+    private final DBForPostgreSQLManager manager;
     private String resourceGroupName;
     private String serverName;
 
-    ServerSecurityAlertPolicyImpl(String name, PostgreSQLManager manager) {
+    ServerSecurityAlertPolicyImpl(String name, DBForPostgreSQLManager manager) {
         super(name, new ServerSecurityAlertPolicyInner());
         this.manager = manager;
         // Set resource name
@@ -27,7 +27,7 @@ class ServerSecurityAlertPolicyImpl extends CreatableUpdatableImpl<ServerSecurit
         //
     }
 
-    ServerSecurityAlertPolicyImpl(ServerSecurityAlertPolicyInner inner, PostgreSQLManager manager) {
+    ServerSecurityAlertPolicyImpl(ServerSecurityAlertPolicyInner inner, DBForPostgreSQLManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -39,7 +39,7 @@ class ServerSecurityAlertPolicyImpl extends CreatableUpdatableImpl<ServerSecurit
     }
 
     @Override
-    public PostgreSQLManager manager() {
+    public DBForPostgreSQLManager manager() {
         return this.manager;
     }
 

@@ -13,12 +13,12 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 
 class FirewallRuleImpl extends CreatableUpdatableImpl<FirewallRule, FirewallRuleInner, FirewallRuleImpl> implements FirewallRule, FirewallRule.Definition, FirewallRule.Update {
-    private final PostgreSQLManager manager;
+    private final DBForPostgreSQLManager manager;
     private String resourceGroupName;
     private String serverName;
     private String firewallRuleName;
 
-    FirewallRuleImpl(String name, PostgreSQLManager manager) {
+    FirewallRuleImpl(String name, DBForPostgreSQLManager manager) {
         super(name, new FirewallRuleInner());
         this.manager = manager;
         // Set resource name
@@ -26,7 +26,7 @@ class FirewallRuleImpl extends CreatableUpdatableImpl<FirewallRule, FirewallRule
         //
     }
 
-    FirewallRuleImpl(FirewallRuleInner inner, PostgreSQLManager manager) {
+    FirewallRuleImpl(FirewallRuleInner inner, DBForPostgreSQLManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -39,7 +39,7 @@ class FirewallRuleImpl extends CreatableUpdatableImpl<FirewallRule, FirewallRule
     }
 
     @Override
-    public PostgreSQLManager manager() {
+    public DBForPostgreSQLManager manager() {
         return this.manager;
     }
 

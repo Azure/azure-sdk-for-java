@@ -8,12 +8,18 @@
 
 package com.microsoft.azure.management.postgresql.v2017_12_01_preview.implementation;
 
+import com.microsoft.azure.management.postgresql.v2017_12_01_preview.ResourceIdentity;
 import com.microsoft.azure.management.postgresql.v2017_12_01_preview.Sku;
 import com.microsoft.azure.management.postgresql.v2017_12_01_preview.ServerVersion;
 import com.microsoft.azure.management.postgresql.v2017_12_01_preview.SslEnforcementEnum;
+import com.microsoft.azure.management.postgresql.v2017_12_01_preview.MinimalTlsVersionEnum;
+import com.microsoft.azure.management.postgresql.v2017_12_01_preview.InfrastructureEncryption;
 import com.microsoft.azure.management.postgresql.v2017_12_01_preview.ServerState;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.postgresql.v2017_12_01_preview.StorageProfile;
+import com.microsoft.azure.management.postgresql.v2017_12_01_preview.PublicNetworkAccessEnum;
+import java.util.List;
+import com.microsoft.azure.management.postgresql.v2017_12_01_preview.ServerPrivateEndpointConnection;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -23,6 +29,12 @@ import com.microsoft.azure.Resource;
  */
 @JsonFlatten
 public class ServerInner extends Resource {
+    /**
+     * The Azure Active Directory identity of the server.
+     */
+    @JsonProperty(value = "identity")
+    private ResourceIdentity identity;
+
     /**
      * The SKU (pricing tier) of the server.
      */
@@ -51,8 +63,29 @@ public class ServerInner extends Resource {
     private SslEnforcementEnum sslEnforcement;
 
     /**
+     * Enforce a minimal Tls version for the server. Possible values include:
+     * 'TLS1_0', 'TLS1_1', 'TLS1_2', 'TLSEnforcementDisabled'.
+     */
+    @JsonProperty(value = "properties.minimalTlsVersion")
+    private MinimalTlsVersionEnum minimalTlsVersion;
+
+    /**
+     * Status showing whether the server data encryption is enabled with
+     * customer-managed keys.
+     */
+    @JsonProperty(value = "properties.byokEnforcement", access = JsonProperty.Access.WRITE_ONLY)
+    private String byokEnforcement;
+
+    /**
+     * Status showing whether the server enabled infrastructure encryption.
+     * Possible values include: 'Enabled', 'Disabled'.
+     */
+    @JsonProperty(value = "properties.infrastructureEncryption")
+    private InfrastructureEncryption infrastructureEncryption;
+
+    /**
      * A state of a server that is visible to user. Possible values include:
-     * 'Ready', 'Dropping', 'Disabled'.
+     * 'Ready', 'Dropping', 'Disabled', 'Inaccessible'.
      */
     @JsonProperty(value = "properties.userVisibleState")
     private ServerState userVisibleState;
@@ -92,6 +125,40 @@ public class ServerInner extends Resource {
      */
     @JsonProperty(value = "properties.replicaCapacity")
     private Integer replicaCapacity;
+
+    /**
+     * Whether or not public endpoint access is allowed for this server.  Value
+     * is optional but if passed in, must be 'Enabled' or 'Disabled'. Possible
+     * values include: 'Enabled', 'Disabled'.
+     */
+    @JsonProperty(value = "properties.publicNetworkAccess")
+    private PublicNetworkAccessEnum publicNetworkAccess;
+
+    /**
+     * List of private endpoint connections on a server.
+     */
+    @JsonProperty(value = "properties.privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<ServerPrivateEndpointConnection> privateEndpointConnections;
+
+    /**
+     * Get the Azure Active Directory identity of the server.
+     *
+     * @return the identity value
+     */
+    public ResourceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the Azure Active Directory identity of the server.
+     *
+     * @param identity the identity value to set
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withIdentity(ResourceIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
 
     /**
      * Get the SKU (pricing tier) of the server.
@@ -174,7 +241,56 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Get a state of a server that is visible to user. Possible values include: 'Ready', 'Dropping', 'Disabled'.
+     * Get enforce a minimal Tls version for the server. Possible values include: 'TLS1_0', 'TLS1_1', 'TLS1_2', 'TLSEnforcementDisabled'.
+     *
+     * @return the minimalTlsVersion value
+     */
+    public MinimalTlsVersionEnum minimalTlsVersion() {
+        return this.minimalTlsVersion;
+    }
+
+    /**
+     * Set enforce a minimal Tls version for the server. Possible values include: 'TLS1_0', 'TLS1_1', 'TLS1_2', 'TLSEnforcementDisabled'.
+     *
+     * @param minimalTlsVersion the minimalTlsVersion value to set
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withMinimalTlsVersion(MinimalTlsVersionEnum minimalTlsVersion) {
+        this.minimalTlsVersion = minimalTlsVersion;
+        return this;
+    }
+
+    /**
+     * Get status showing whether the server data encryption is enabled with customer-managed keys.
+     *
+     * @return the byokEnforcement value
+     */
+    public String byokEnforcement() {
+        return this.byokEnforcement;
+    }
+
+    /**
+     * Get status showing whether the server enabled infrastructure encryption. Possible values include: 'Enabled', 'Disabled'.
+     *
+     * @return the infrastructureEncryption value
+     */
+    public InfrastructureEncryption infrastructureEncryption() {
+        return this.infrastructureEncryption;
+    }
+
+    /**
+     * Set status showing whether the server enabled infrastructure encryption. Possible values include: 'Enabled', 'Disabled'.
+     *
+     * @param infrastructureEncryption the infrastructureEncryption value to set
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withInfrastructureEncryption(InfrastructureEncryption infrastructureEncryption) {
+        this.infrastructureEncryption = infrastructureEncryption;
+        return this;
+    }
+
+    /**
+     * Get a state of a server that is visible to user. Possible values include: 'Ready', 'Dropping', 'Disabled', 'Inaccessible'.
      *
      * @return the userVisibleState value
      */
@@ -183,7 +299,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Set a state of a server that is visible to user. Possible values include: 'Ready', 'Dropping', 'Disabled'.
+     * Set a state of a server that is visible to user. Possible values include: 'Ready', 'Dropping', 'Disabled', 'Inaccessible'.
      *
      * @param userVisibleState the userVisibleState value to set
      * @return the ServerInner object itself.
@@ -311,6 +427,35 @@ public class ServerInner extends Resource {
     public ServerInner withReplicaCapacity(Integer replicaCapacity) {
         this.replicaCapacity = replicaCapacity;
         return this;
+    }
+
+    /**
+     * Get whether or not public endpoint access is allowed for this server.  Value is optional but if passed in, must be 'Enabled' or 'Disabled'. Possible values include: 'Enabled', 'Disabled'.
+     *
+     * @return the publicNetworkAccess value
+     */
+    public PublicNetworkAccessEnum publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set whether or not public endpoint access is allowed for this server.  Value is optional but if passed in, must be 'Enabled' or 'Disabled'. Possible values include: 'Enabled', 'Disabled'.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withPublicNetworkAccess(PublicNetworkAccessEnum publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get list of private endpoint connections on a server.
+     *
+     * @return the privateEndpointConnections value
+     */
+    public List<ServerPrivateEndpointConnection> privateEndpointConnections() {
+        return this.privateEndpointConnections;
     }
 
 }

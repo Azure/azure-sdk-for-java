@@ -17,14 +17,14 @@ import java.util.List;
 import com.microsoft.azure.management.postgresql.v2017_12_01_preview.LogFile;
 
 class LogFilesImpl extends WrapperImpl<LogFilesInner> implements LogFiles {
-    private final PostgreSQLManager manager;
+    private final DBForPostgreSQLManager manager;
 
-    LogFilesImpl(PostgreSQLManager manager) {
+    LogFilesImpl(DBForPostgreSQLManager manager) {
         super(manager.inner().logFiles());
         this.manager = manager;
     }
 
-    public PostgreSQLManager manager() {
+    public DBForPostgreSQLManager manager() {
         return this.manager;
     }
 

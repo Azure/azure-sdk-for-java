@@ -16,12 +16,12 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.postgresql.v2017_12_01_preview.implementation.PostgreSQLManager;
+import com.microsoft.azure.management.postgresql.v2017_12_01_preview.implementation.DBForPostgreSQLManager;
 
 /**
  * Type representing Configuration.
  */
-public interface Configuration extends HasInner<ConfigurationInner>, Indexable, Refreshable<Configuration>, Updatable<Configuration.Update>, HasManager<PostgreSQLManager> {
+public interface Configuration extends HasInner<ConfigurationInner>, Indexable, Refreshable<Configuration>, Updatable<Configuration.Update>, HasManager<DBForPostgreSQLManager> {
     /**
      * @return the allowedValues value.
      */

@@ -15,15 +15,15 @@ import java.util.List;
 import com.microsoft.azure.management.postgresql.v2017_12_01_preview.PerformanceTierServiceLevelObjectives;
 
 class PerformanceTierPropertiesImpl extends WrapperImpl<PerformanceTierPropertiesInner> implements PerformanceTierProperties {
-    private final PostgreSQLManager manager;
+    private final DBForPostgreSQLManager manager;
 
-    PerformanceTierPropertiesImpl(PerformanceTierPropertiesInner inner,  PostgreSQLManager manager) {
+    PerformanceTierPropertiesImpl(PerformanceTierPropertiesInner inner,  DBForPostgreSQLManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public PostgreSQLManager manager() {
+    public DBForPostgreSQLManager manager() {
         return this.manager;
     }
 
