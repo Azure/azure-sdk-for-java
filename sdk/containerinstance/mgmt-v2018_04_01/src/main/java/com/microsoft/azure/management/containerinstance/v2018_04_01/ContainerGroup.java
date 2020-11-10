@@ -93,7 +93,9 @@ public interface ContainerGroup extends HasInner<ContainerGroupInner>, Resource,
         interface WithContainers {
            /**
             * Specifies containers.
-            */
+            * @param containers The containers within the container group
+            * @return the next definition stage
+*/
             WithOsType withContainers(List<Container> containers);
         }
 
@@ -103,46 +105,60 @@ public interface ContainerGroup extends HasInner<ContainerGroupInner>, Resource,
         interface WithOsType {
            /**
             * Specifies osType.
-            */
+            * @param osType The operating system type required by the containers in the container group. Possible values include: 'Windows', 'Linux'
+            * @return the next definition stage
+*/
             WithCreate withOsType(OperatingSystemTypes osType);
         }
 
         /**
-         * The stage of the containergroup update allowing to specify ImageRegistryCredentials.
+         * The stage of the containergroup definition allowing to specify ImageRegistryCredentials.
          */
         interface WithImageRegistryCredentials {
             /**
              * Specifies imageRegistryCredentials.
+             * @param imageRegistryCredentials The image registry credentials by which the container group is created from
+             * @return the next definition stage
              */
             WithCreate withImageRegistryCredentials(List<ImageRegistryCredential> imageRegistryCredentials);
         }
 
         /**
-         * The stage of the containergroup update allowing to specify IpAddress.
+         * The stage of the containergroup definition allowing to specify IpAddress.
          */
         interface WithIpAddress {
             /**
              * Specifies ipAddress.
+             * @param ipAddress The IP address type of the container group
+             * @return the next definition stage
              */
             WithCreate withIpAddress(IpAddress ipAddress);
         }
 
         /**
-         * The stage of the containergroup update allowing to specify RestartPolicy.
+         * The stage of the containergroup definition allowing to specify RestartPolicy.
          */
         interface WithRestartPolicy {
             /**
              * Specifies restartPolicy.
+             * @param restartPolicy Restart policy for all containers within the container group.
+ - `Always` Always restart
+ - `OnFailure` Restart on failure
+ - `Never` Never restart
+ . Possible values include: 'Always', 'OnFailure', 'Never'
+             * @return the next definition stage
              */
             WithCreate withRestartPolicy(ContainerGroupRestartPolicy restartPolicy);
         }
 
         /**
-         * The stage of the containergroup update allowing to specify Volumes.
+         * The stage of the containergroup definition allowing to specify Volumes.
          */
         interface WithVolumes {
             /**
              * Specifies volumes.
+             * @param volumes The list of volumes that can be mounted by containers in this container group
+             * @return the next definition stage
              */
             WithCreate withVolumes(List<Volume> volumes);
         }
