@@ -560,6 +560,10 @@ public class ServiceBusMessage {
      * (this will eventually migrate to a service-side check)
      */
     private void checkSessionId(String proposedSessionId) {
+        if (proposedSessionId == null) {
+            return;
+        }
+
         if (this.getPartitionKey() != null && this.getPartitionKey().compareTo(proposedSessionId) != 0) {
             throw new IllegalArgumentException( String.format("sessionId:%s cannot be set to a different value than partitionKey:%s.", proposedSessionId, this.getPartitionKey()));
         }
@@ -570,6 +574,10 @@ public class ServiceBusMessage {
      * (this will eventually migrate to a service-side check)
      */
     private void checkPartitionKey(String proposedPartitionKey) {
+        if (proposedPartitionKey == null) {
+            return;
+        }
+
         if (this.getSessionId() != null && this.getSessionId().compareTo(proposedPartitionKey) != 0) {
             throw new IllegalArgumentException( String.format("partitionKey:%s cannot be set to a different value than sessionId:%s.", proposedPartitionKey, this.getSessionId()));
         }
