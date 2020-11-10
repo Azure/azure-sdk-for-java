@@ -107,7 +107,6 @@
       <artifactId>reactor-test</artifactId>
       <version>3.3.11.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
-      
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
