@@ -108,15 +108,6 @@ public enum AmqpErrorCondition {
      */
     CONNECTION_FRAMING_ERROR("amqp:connection:framing-error"),
     /**
-     * A producer is disconnected because another higher epoc producer connects to the service.
-     */
-    PRODUCER_EPOCH_STOLEN("com.microsoft:producer-epoch-stolen"),
-
-    /**
-     * An idempotent producer is sending an event without a consecutive producer sequence number.
-     */
-    OUT_OF_ORDER_SEQUENCE("com.microsoft:out-of-order-sequence"),
-    /**
      * The operation was cancelled.
      */
     OPERATION_CANCELLED("com.microsoft:operation-cancelled"),
@@ -148,7 +139,15 @@ public enum AmqpErrorCondition {
     /**
      * Error condition when a subscription client tries to create a rule with the name of an already existing rule.
      */
-    ENTITY_ALREADY_EXISTS("com.microsoft:entity-already-exists");
+    ENTITY_ALREADY_EXISTS("com.microsoft:entity-already-exists"),
+    /**
+     * A producer is disconnected because another higher epoc producer connects to the service.
+     */
+    PRODUCER_EPOCH_STOLEN("com.microsoft:producer-epoch-stolen"),
+    /**
+     * An idempotent producer is sending an event without a consecutive producer sequence number.
+     */
+    OUT_OF_ORDER_SEQUENCE("com.microsoft:out-of-order-sequence");
 
     private static final Map<String, AmqpErrorCondition> ERROR_CONSTANT_MAP = new HashMap<>();
     private final String errorCondition;
