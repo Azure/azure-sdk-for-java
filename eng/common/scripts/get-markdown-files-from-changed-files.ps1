@@ -1,14 +1,14 @@
 param (
     # The root repo we scaned with.
-    [string[]] $RootRepo = "./"
+    [Parameter(Mandatory = $false)]
+    [string[]] $RootRepo = "./",
+
+    [Parameter(Mandatory = $true)]
+    [string] $targetBranch = ${env:SYSTEM_PULLREQUEST_TARGETBRANCH}
 )
-$deletedFiles = (git diff origin/${env:SYSTEM_PULLREQUEST_TARGETBRANCH} HEAD --name-only --diff-filter=D)
-$renamedFiles = (git diff origin/${env:SYSTEM_PULLREQUEST_TARGETBRANCH} HEAD --diff-filter=R)
-$changedMarkdowns = (git diff origin/${env:SYSTEM_PULLREQUEST_TARGETBRANCH} HEAD --name-only -- '*.md')
-# These are for local testing.
-# $deletedFiles = (git diff origin/master HEAD --name-only --diff-filter=D)
-# $renamedFiles = (git diff origin/master HEAD --diff-filter=R)
-# $changedMarkdowns = (git diff origin/master HEAD --name-only -- '*.md')
+$deletedFiles = (git diff origin/$targetBranch HEAD --name-only --diff-filter=D)
+$renamedFiles = (git diff origin/$targetBranch HEAD --diff-filter=R)
+$changedMarkdowns = (git diff origin/$targetBranch HEAD --name-only -- '*.md')
 
 $beforeRenameFiles = @()
 # Retrieve the renamed from files.
