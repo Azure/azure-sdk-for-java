@@ -18,6 +18,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -138,7 +139,8 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
         List<EnrichmentStatus> enrichmentStatuses = new ArrayList<>();
         StepVerifier.create(
             client.listMetricEnrichmentStatus(ListEnrichmentStatusInput.INSTANCE.metricId,
-                TIME_SERIES_START_TIME, TIME_SERIES_END_TIME, ListEnrichmentStatusInput.INSTANCE.options))
+                OffsetDateTime.parse("2020-10-01T00:00:00Z"), OffsetDateTime.parse("2020-10-30T00:00:00Z"),
+                ListEnrichmentStatusInput.INSTANCE.options))
             .thenConsumeWhile(enrichmentStatuses::add)
             .verifyComplete();
 
