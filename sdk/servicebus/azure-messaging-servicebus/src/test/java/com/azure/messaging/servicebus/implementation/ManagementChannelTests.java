@@ -12,6 +12,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
+import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
@@ -42,23 +43,10 @@ import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneOffset;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Stream;
 
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.ASSOCIATED_LINK_NAME_KEY;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.DEADLETTER_DESCRIPTION_KEY;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.DEADLETTER_REASON_KEY;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.DISPOSITION_STATUS_KEY;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.LOCK_TOKENS_KEY;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.MANAGEMENT_OPERATION_KEY;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_SESSION_STATE;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_RENEW_SESSION_LOCK;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_SET_SESSION_STATE;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_UPDATE_DISPOSITION;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.PROPERTIES_TO_MODIFY_KEY;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -438,6 +426,20 @@ class ManagementChannelTests {
                 assertFalse(((AmqpException) error).isTransient());
             })
             .verify();
+    }
+
+    @Test
+    void getDeferredMessagesWithEmptyArrayReturnsAnEmptyFlux() {
+        // Arrange, act, assert
+        StepVerifier.create(managementChannel.receiveDeferredMessages(ReceiveMode.PEEK_LOCK, null, null, Arrays.asList(new Long[0] )))
+            .verifyComplete();
+    }
+
+    @Test
+    void getDeferredMessagesWithNullThrows() {
+        // Arrange, act, assert
+        StepVerifier.create(managementChannel.receiveDeferredMessages(ReceiveMode.PEEK_LOCK, null, null, null))
+            .verifyError(NullPointerException.class);
     }
 
     private static Stream<Arguments> updateDisposition() {
