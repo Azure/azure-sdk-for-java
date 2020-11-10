@@ -7,10 +7,12 @@ import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationC
 import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 
-public abstract class AzureOAuth2Configuration extends WebSecurityConfigurerAdapter {
+import java.util.Optional;
+
+public abstract class AzureOAuth2WebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private AzureClientRegistrationRepository repo;
+    private AzureClientRegistrationRepository azureClientRegistrationRepository;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -19,7 +21,10 @@ public abstract class AzureOAuth2Configuration extends WebSecurityConfigurerAdap
 
     protected OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
         DefaultAuthorizationCodeTokenResponseClient result = new DefaultAuthorizationCodeTokenResponseClient();
-        result.setRequestEntityConverter(new AuthzCodeGrantRequestEntityConverter(repo.defaultClient()));
+        Optional.ofNullable(azureClientRegistrationRepository)
+                .map(AzureClientRegistrationRepository::defaultClient)
+                .map(AzureOAuth2AuthorizationCodeGrantRequestEntityConverter::new)
+                .ifPresent(result::setRequestEntityConverter);
         return result;
     }
 }

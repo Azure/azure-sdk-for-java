@@ -5,12 +5,11 @@ import com.nimbusds.oauth2.sdk.util.StringUtils;
 public class IdentityEndpoints {
 
     private static final String IDENTITY_PLATFORM = "https://login.microsoftonline.com/";
-
     private static final String AUTHORIZATION_ENDPOINT = "/oauth2/v2.0/authorize";
     private static final String TOKEN_ENDPOINT = "/oauth2/v2.0/token";
     private static final String JWK_SET_ENDPOINT = "/discovery/v2.0/keys";
 
-    private String baseUri;
+    private final String baseUri;
 
     public IdentityEndpoints() {
         this(IDENTITY_PLATFORM);

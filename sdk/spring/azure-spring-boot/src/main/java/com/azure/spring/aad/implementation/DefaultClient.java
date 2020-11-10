@@ -7,23 +7,23 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 
 public class DefaultClient {
 
-    private ClientRegistration client;
-    private String [] scope;
+    private final ClientRegistration clientRegistration;
+    private final String [] scope;
 
-    public DefaultClient(ClientRegistration client, String [] scope) {
-        this.client = client;
+    public DefaultClient(ClientRegistration clientRegistration, String [] scope) {
+        this.clientRegistration = clientRegistration;
         this.scope = scope;
     }
 
-    public ClientRegistration client() {
-        return client;
+    public ClientRegistration getClientRegistration() {
+        return clientRegistration;
     }
 
-    public String [] scope() {
+    public String [] getScope() {
         return scope;
     }
 
-    public List<String> scopes() {
+    public List<String> getScopeList() {
         return Arrays.asList(scope);
     }
 }

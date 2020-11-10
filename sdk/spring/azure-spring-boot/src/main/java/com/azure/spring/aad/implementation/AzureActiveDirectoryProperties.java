@@ -1,12 +1,12 @@
 package com.azure.spring.aad.implementation;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
 @ConfigurationProperties("azure.activedirectory")
-public class AppProperties {
+public class AzureActiveDirectoryProperties {
 
     private String uri;
     private String tenantId;
