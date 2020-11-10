@@ -19,7 +19,7 @@ public class AzureMonitorExporterSample {
      */
     public static void main(String[] args) {
         AzureMonitorExporter azureMonitorExporter = new AzureMonitorExporterBuilder()
-            .instrumentationKey("{instrumentation-key}")
+            .connectionString("{connection-string}")
             .buildExporter();
         CompletableResultCode resultCode =
             azureMonitorExporter.export(Collections.singleton(new AzureMonitorExporterTest.RequestSpanData()));
