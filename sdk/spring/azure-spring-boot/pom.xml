@@ -262,7 +262,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
-      <version>5.2.9.RELEASE</version>
+      <version>5.2.10.RELEASE</version> <!-- {x-version-update;org.springframework:spring-core;external_dependency} -->
     </dependency>
   </dependencies>
 
