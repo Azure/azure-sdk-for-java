@@ -1,5 +1,17 @@
 # Release History
 
+## 3.0.3 (2020-11-10)
+### Dependency updates
+- Update dependency version, `azure-core`, `azure-core-http-netty` and `azure-identity`.
+
+## 3.0.2 (2020-10-06)
+### Dependency updates
+- Update dependency version, `azure-core` to 1.9.0 and `azure-core-http-netty` to 1.6.2.
+
+## 3.0.1 (2020-09-10)
+### Dependency updates
+- Updated dependency version, `azure-core` to 1.8.1 and `azure-core-http-netty` to 1.6.1.
+
 ## 3.0.0 (2020-08-20)
 First stable release of the azure-ai-formrecognizer client library supporting Azure Form Recognizer service API version v2.0.
 
