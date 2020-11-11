@@ -12,6 +12,8 @@ Write-host "Service Directory is: $ServiceDirectory"
 
 . $PSScriptRoot\MavenPackaging.ps1
 
+ls $ServiceDirectory
+
 Write-Host "Searching for packages in: $SourceDirectory"
 $packageDetails = Get-MavenPackageDetails -ArtifactDirectory $SourceDirectory
 Write-Host "Found $($packageDetails.Count) packages in: $SourceDirectory"
