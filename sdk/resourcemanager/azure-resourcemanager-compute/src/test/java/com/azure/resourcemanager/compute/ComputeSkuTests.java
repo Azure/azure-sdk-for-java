@@ -11,12 +11,22 @@ import com.azure.resourcemanager.compute.models.EncryptionStatus;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.core.management.Region;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import com.azure.core.management.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class ComputeSkuTests extends ComputeManagementTest {
@@ -139,5 +149,43 @@ public class ComputeSkuTests extends ComputeManagementTest {
                 .listByRegionAndResourceType(Region.US_EAST2, ComputeResourceType.fromString("Unknown"));
         Assertions.assertNotNull(skus);
         Assertions.assertEquals(0, TestUtilities.getSize(skus));
+    }
+
+    @Test
+    @Disabled("Only for VirtualMachineSizeTypes update")
+    public void generateVMSizes() throws IOException {
+        StringBuilder builder = new StringBuilder();
+        Set<String> vmSizes = new TreeSet<>();
+        computeManager.computeSkus().list()
+            .forEach(computeSku -> {
+                if ("virtualMachines".equalsIgnoreCase(computeSku.resourceType().toString())) {
+                    vmSizes.add(computeSku.name().toString());
+                }
+            });
+
+        for (String vmSize : vmSizes) {
+            builder.append(String.format("    /** Static value %s for VirtualMachineSizeTypes. */\n", vmSize))
+                .append(String.format("    public static final VirtualMachineSizeTypes %s = fromString(\"%s\");\n\n",
+                    vmSize.toUpperCase(Locale.ROOT).replace("-", "_"), vmSize));
+        }
+
+        String vmSizeTypes = new String(readAllBytes(getClass().getResourceAsStream("/VirtualMachineSizeTypes.java")), StandardCharsets.UTF_8);
+        vmSizeTypes = vmSizeTypes.replace("TYPES_PLACE_HOLDER", builder.toString());
+
+        Files.write(new File("src/main/java/com/azure/resourcemanager/compute/models/VirtualMachineSizeTypes.java").toPath(), vmSizeTypes.getBytes(StandardCharsets.UTF_8));
+    }
+
+    private byte[] readAllBytes(InputStream inputStream) throws IOException {
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            byte[] data = new byte[4096];
+            while (true) {
+                int size = inputStream.read(data);
+                if (size > 0) {
+                    outputStream.write(data, 0, size);
+                } else {
+                    return outputStream.toByteArray();
+                }
+            }
+        }
     }
 }
