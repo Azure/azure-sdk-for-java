@@ -8,44 +8,45 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ChatThreadMembersCollection model. */
+/** The ChatParticipantsCollection model. */
 @Fluent
-public final class ChatThreadMembersCollection {
+public final class ChatParticipantsCollection {
     /*
-     * Chat thread members.
+     * Chat participants.
      */
     @JsonProperty(value = "value")
-    private List<ChatThreadMember> value;
+    private List<ChatParticipant> value;
 
     /*
-     * If there are more chat threads that can be retrieved, the next link will
-     * be populated.
+     * If there are more chat participants that can be retrieved, the next link
+     * will be populated.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
-     * Get the value property: Chat thread members.
+     * Get the value property: Chat participants.
      *
      * @return the value value.
      */
-    public List<ChatThreadMember> getValue() {
+    public List<ChatParticipant> getValue() {
         return this.value;
     }
 
     /**
-     * Set the value property: Chat thread members.
+     * Set the value property: Chat participants.
      *
      * @param value the value value to set.
-     * @return the ChatThreadMembersCollection object itself.
+     * @return the ChatParticipantsCollection object itself.
      */
-    public ChatThreadMembersCollection setValue(List<ChatThreadMember> value) {
+    public ChatParticipantsCollection setValue(List<ChatParticipant> value) {
         this.value = value;
         return this;
     }
 
     /**
-     * Get the nextLink property: If there are more chat threads that can be retrieved, the next link will be populated.
+     * Get the nextLink property: If there are more chat participants that can be retrieved, the next link will be
+     * populated.
      *
      * @return the nextLink value.
      */

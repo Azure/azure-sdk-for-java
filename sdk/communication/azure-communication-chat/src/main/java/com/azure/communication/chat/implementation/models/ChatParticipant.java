@@ -8,31 +8,30 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The ChatThreadMember model. */
+/** The ChatParticipant model. */
 @Fluent
-public final class ChatThreadMember {
+public final class ChatParticipant {
     /*
-     * The id of the chat thread member in the format
-     * `8:acs:ResourceId_AcsUserId`.
+     * The id of the chat participant.
      */
     @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
-     * Display name for the chat thread member.
+     * Display name for the chat participant.
      */
     @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
-     * Time from which the chat history is shared with the member. The
+     * Time from which the chat history is shared with the participant. The
      * timestamp is in ISO8601 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
     @JsonProperty(value = "shareHistoryTime")
     private OffsetDateTime shareHistoryTime;
 
     /**
-     * Get the id property: The id of the chat thread member in the format `8:acs:ResourceId_AcsUserId`.
+     * Get the id property: The id of the chat participant.
      *
      * @return the id value.
      */
@@ -41,18 +40,18 @@ public final class ChatThreadMember {
     }
 
     /**
-     * Set the id property: The id of the chat thread member in the format `8:acs:ResourceId_AcsUserId`.
+     * Set the id property: The id of the chat participant.
      *
      * @param id the id value to set.
-     * @return the ChatThreadMember object itself.
+     * @return the ChatParticipant object itself.
      */
-    public ChatThreadMember setId(String id) {
+    public ChatParticipant setId(String id) {
         this.id = id;
         return this;
     }
 
     /**
-     * Get the displayName property: Display name for the chat thread member.
+     * Get the displayName property: Display name for the chat participant.
      *
      * @return the displayName value.
      */
@@ -61,19 +60,19 @@ public final class ChatThreadMember {
     }
 
     /**
-     * Set the displayName property: Display name for the chat thread member.
+     * Set the displayName property: Display name for the chat participant.
      *
      * @param displayName the displayName value to set.
-     * @return the ChatThreadMember object itself.
+     * @return the ChatParticipant object itself.
      */
-    public ChatThreadMember setDisplayName(String displayName) {
+    public ChatParticipant setDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
 
     /**
-     * Get the shareHistoryTime property: Time from which the chat history is shared with the member. The timestamp is
-     * in ISO8601 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * Get the shareHistoryTime property: Time from which the chat history is shared with the participant. The timestamp
+     * is in ISO8601 format: `yyyy-MM-ddTHH:mm:ssZ`.
      *
      * @return the shareHistoryTime value.
      */
@@ -82,13 +81,13 @@ public final class ChatThreadMember {
     }
 
     /**
-     * Set the shareHistoryTime property: Time from which the chat history is shared with the member. The timestamp is
-     * in ISO8601 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * Set the shareHistoryTime property: Time from which the chat history is shared with the participant. The timestamp
+     * is in ISO8601 format: `yyyy-MM-ddTHH:mm:ssZ`.
      *
      * @param shareHistoryTime the shareHistoryTime value to set.
-     * @return the ChatThreadMember object itself.
+     * @return the ChatParticipant object itself.
      */
-    public ChatThreadMember setShareHistoryTime(OffsetDateTime shareHistoryTime) {
+    public ChatParticipant setShareHistoryTime(OffsetDateTime shareHistoryTime) {
         this.shareHistoryTime = shareHistoryTime;
         return this;
     }

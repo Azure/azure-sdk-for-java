@@ -8,34 +8,34 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ReadReceiptsCollection model. */
+/** The ChatMessageReadReceiptsCollection model. */
 @Immutable
-public final class ReadReceiptsCollection {
+public final class ChatMessageReadReceiptsCollection {
     /*
-     * Collection of read receipts.
+     * Collection of chat message read receipts.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ReadReceipt> value;
+    private List<ChatMessageReadReceipt> value;
 
     /*
-     * If there are more read receipts that can be retrieved, the next link
-     * will be populated.
+     * If there are more chat message read receipts that can be retrieved, the
+     * next link will be populated.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
-     * Get the value property: Collection of read receipts.
+     * Get the value property: Collection of chat message read receipts.
      *
      * @return the value value.
      */
-    public List<ReadReceipt> getValue() {
+    public List<ChatMessageReadReceipt> getValue() {
         return this.value;
     }
 
     /**
-     * Get the nextLink property: If there are more read receipts that can be retrieved, the next link will be
-     * populated.
+     * Get the nextLink property: If there are more chat message read receipts that can be retrieved, the next link will
+     * be populated.
      *
      * @return the nextLink value.
      */

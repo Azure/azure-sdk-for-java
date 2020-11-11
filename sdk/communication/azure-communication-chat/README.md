@@ -294,7 +294,7 @@ chatThreadMembersResponse.iterableByPage().forEach(resp -> {
 #### Add thread members
 
 Use `addMembers` method to add thread members to the thread identified by threadId.
-`addChatThreadMembersOptions` describes the request object containing the members to be added; Use `.setMembers()` to set the thread members to be added to the thread;
+`addChatParticipantsOptions` describes the request object containing the members to be added; Use `.setMembers()` to set the thread members to be added to the thread;
 
 - `user`, required, is the CommunicationUser you've created by using the CommunicationIdentityClient. More info at: [Create A User](https://docs.microsoft.com/azure/communication-services/quickstarts/access-tokens?pivots=programming-language-java#create-a-user).
 - `display_name`, optional, is the display name for the thread member.
@@ -315,9 +315,9 @@ ChatThreadMember secondThreadMember = new ChatThreadMember()
 members.add(firstThreadMember);
 members.add(secondThreadMember);
 
-AddChatThreadMembersOptions addChatThreadMembersOptions = new AddChatThreadMembersOptions()
+AddChatThreadMembersOptions addChatParticipantsOptions = new AddChatThreadMembersOptions()
     .setMembers(members);
-chatThreadClient.addMembers(addChatThreadMembersOptions);
+chatThreadClient.addMembers(addChatParticipantsOptions);
 ```
 
 #### Remove chat thread member

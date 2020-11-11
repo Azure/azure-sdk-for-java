@@ -129,9 +129,9 @@ public class ChatClientTestBase extends TestBase {
         return idToken.serialize();
     }
 
-    protected boolean checkMembersListContainsMemberId(List<ChatThreadMember> memberList, String memberId) {
-        for (ChatThreadMember member: memberList) {
-            if (member.getUser().getId().equals(memberId)) {
+    protected boolean checkParticipantsListContainsParticipantId(List<ChatParticipant> participantList, String participantId) {
+        for (ChatParticipant participant: participantList) {
+            if (participant.getUser().getId().equals(participantId)) {
                 return true;
             }
         }
@@ -139,8 +139,8 @@ public class ChatClientTestBase extends TestBase {
         return false;
     }
 
-    protected boolean checkReadReceiptListContainsMessageId(List<ReadReceipt> receiptList, String messageId) {
-        for (ReadReceipt receipt: receiptList) {
+    protected boolean checkReadReceiptListContainsMessageId(List<ChatMessageReadReceipt> receiptList, String messageId) {
+        for (ChatMessageReadReceipt receipt: receiptList) {
             if (receipt.getChatMessageId().equals(messageId)) {
                 return true;
             }
