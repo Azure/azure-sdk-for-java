@@ -24,16 +24,18 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 
 public class ConnectionStateListenerTest {
+    private static final Logger logger = LoggerFactory.getLogger(ConnectionStateListenerTest.class);
 
     private static int port = 8082;
-    private static String serverUriString = "rntbd://localhost:" + port;
-    private static final Logger logger = LoggerFactory.getLogger(ConnectionStateListenerTest.class);
+    private static String serverAddress = "rntbd://localhost:";
+    private static Random random = new Random();
 
     @DataProvider(name = "connectionStateListenerConfigProvider")
     public Object[][] connectionStateListenerConfigProvider() {
@@ -52,7 +54,9 @@ public class ConnectionStateListenerTest {
         RequestResponseType responseType,
         int times) throws ExecutionException, InterruptedException {
 
-        TcpServer server = TcpServerFactory.startNewRntbdServer(port);
+        // using a random generated server port
+        int serverPort = port + random.nextInt(1000);
+        TcpServer server = TcpServerFactory.startNewRntbdServer(serverPort);
         // Inject fake response
         server.injectServerResponse(responseType);
 
@@ -78,7 +82,7 @@ public class ConnectionStateListenerTest {
                 getDocumentDefinition(), new HashMap<>());
         req.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity("fakeCollectionId","fakePartitionKeyRangeId"));
 
-        Uri targetUri = new Uri(serverUriString);
+        Uri targetUri = new Uri(serverAddress + serverPort);
         try {
             client.invokeStoreAsync(targetUri, req).block();
         } catch (Exception e) {
