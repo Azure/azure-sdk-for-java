@@ -96,7 +96,7 @@ com.azure:azure-storage-file-share;12.7.0;12.8.0-beta.1
 com.azure:azure-storage-file-datalake;12.2.0;12.3.0
 com.azure:azure-storage-internal-avro;12.0.0;12.0.1
 com.azure:azure-storage-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-storage-queue;12.6.0;12.7.0
+com.azure:azure-storage-queue;12.7.0;12.8.0-beta.1
 com.azure:perf-test-core;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:azure-spring-boot-starter-active-directory-b2c;3.0.0-beta.1;3.0.0-beta.1
 com.azure.spring:azure-spring-boot-starter-active-directory;3.0.0-beta.1;3.0.0-beta.1
