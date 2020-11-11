@@ -56,7 +56,7 @@ public class ResumeBackupAndRestoreAsync {
                 .last();
 
         // Get the backup URI to begin a restore operation at some point.
-        String backupFolderUrl = backupMono.block().getValue().getAzureStorageBlobContainerUri();
+        String backupFolderUrl = backupMono.block().getValue().getAzureStorageBlobContainerUrl();
 
         PollerFlux<KeyVaultRestoreOperation, Void> originalRestorePollerFlux =
             backupAsyncClient.beginRestore(backupFolderUrl, sasToken);

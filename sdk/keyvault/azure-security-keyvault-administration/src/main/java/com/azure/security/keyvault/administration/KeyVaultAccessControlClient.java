@@ -47,7 +47,7 @@ public final class KeyVaultAccessControlClient {
 
     /**
      * Get all {@link KeyVaultRoleDefinition role definitions} that are applicable at the given
-     * {@link KeyVaultRoleScope roleScope} and above.
+     * {@link KeyVaultRoleScope role scope} and above.
      *
      * @param roleScope The {@link KeyVaultRoleScope roleScope} of the {@link KeyVaultRoleDefinition role
      * definitions}.
@@ -62,10 +62,9 @@ public final class KeyVaultAccessControlClient {
 
     /**
      * Get all {@link KeyVaultRoleDefinition role definitions} that are applicable at the given
-     * {@link KeyVaultRoleScope roleScope} and above.
+     * {@link KeyVaultRoleScope role scope} and above.
      *
-     * @param roleScope The {@link KeyVaultRoleScope roleScope} of the {@link KeyVaultRoleDefinition role
-     * definitions}.
+     * @param roleScope The {@link KeyVaultRoleScope scope} of the {@link KeyVaultRoleDefinition role definitions}.
      * @param context Additional {@link Context} that is passed through the HTTP pipeline during the service call.
      * @return A {@link PagedIterable} containing the {@link KeyVaultRoleDefinition role definitions} for the given
      * {@link KeyVaultRoleScope roleScope}.
@@ -78,9 +77,9 @@ public final class KeyVaultAccessControlClient {
 
     /**
      * Get all {@link KeyVaultRoleAssignment role assignments} that are applicable at the given
-     * {@link KeyVaultRoleScope roleScope} and above.
+     * {@link KeyVaultRoleScope role scope} and above.
      *
-     * @param roleScope The {@link KeyVaultRoleScope roleScope} of the {@link KeyVaultRoleAssignment}.
+     * @param roleScope The {@link KeyVaultRoleScope scope} of the {@link KeyVaultRoleAssignment}.
      * @return A {@link PagedIterable} containing the {@link KeyVaultRoleAssignment role assignments} for the given
      * {@link KeyVaultRoleScope roleScope}.
      * @throws NullPointerException if the {@link KeyVaultRoleScope roleScope} is {@code null}.
@@ -92,9 +91,9 @@ public final class KeyVaultAccessControlClient {
 
     /**
      * Get all {@link KeyVaultRoleAssignment role assignments} that are applicable at the given
-     * {@link KeyVaultRoleScope roleScope} and above.
+     * {@link KeyVaultRoleScope role scope} and above.
      *
-     * @param roleScope The {@link KeyVaultRoleScope roleScope} of the {@link KeyVaultRoleAssignment}.
+     * @param roleScope The {@link KeyVaultRoleScope scope} of the {@link KeyVaultRoleAssignment}.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return A {@link PagedIterable} containing the {@link KeyVaultRoleAssignment role assignments} for the given
      * {@link KeyVaultRoleScope roleScope}.
@@ -108,8 +107,7 @@ public final class KeyVaultAccessControlClient {
     /**
      * Creates a {@link KeyVaultRoleAssignment} with a randomly generated {@link String name}.
      *
-     * @param roleScope The {@link KeyVaultRoleScope roleScope} of the {@link KeyVaultRoleAssignment} to
-     * create.
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment} to create.
      * @param roleDefinitionId The {@link KeyVaultRoleDefinition role definition} ID for the role assignment.
      * @param principalId The principal ID assigned to the role. This maps to the ID inside the Active Directory.
      * @return A {@link Mono} containing the created {@link KeyVaultRoleAssignment}.
@@ -125,10 +123,8 @@ public final class KeyVaultAccessControlClient {
     /**
      * Creates a {@link KeyVaultRoleAssignment}.
      *
-     * @param roleScope The {@link KeyVaultRoleScope roleScope} of the {@link KeyVaultRoleAssignment} to
-     * create.
-     * @param roleAssignmentName The roleAssignmentName used to create the {@link KeyVaultRoleAssignment}. It can be any
-     * valid UUID.
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment} to create.
+     * @param roleAssignmentName The name used to create the {@link KeyVaultRoleAssignment}. It can be any valid UUID.
      * @param roleDefinitionId The {@link KeyVaultRoleDefinition role definition} ID for the role assignment.
      * @param principalId The principal ID assigned to the role. This maps to the ID inside the Active Directory.
      * @return The created {@link KeyVaultRoleAssignment}.
@@ -137,17 +133,15 @@ public final class KeyVaultAccessControlClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultRoleAssignment createRoleAssignment(KeyVaultRoleScope roleScope, String roleAssignmentName, String roleDefinitionId, String principalId) {
-        return createRoleAssignmentWithResponse(roleScope, roleAssignmentName, roleAssignmentName, principalId,
+        return createRoleAssignmentWithResponse(roleScope, roleAssignmentName, roleDefinitionId, principalId,
             Context.NONE).getValue();
     }
 
     /**
      * Creates a {@link KeyVaultRoleAssignment}.
      *
-     * @param roleScope The {@link KeyVaultRoleScope roleScope} of the {@link KeyVaultRoleAssignment} to
-     * create.
-     * @param roleAssignmentName The roleAssignmentName used to create the {@link KeyVaultRoleAssignment}. It can be any
-     * valid UUID.
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment} to create.
+     * @param roleAssignmentName The name used to create the {@link KeyVaultRoleAssignment}. It can be any valid UUID.
      * @param roleDefinitionId The {@link KeyVaultRoleDefinition role definition} ID for the role assignment.
      * @param principalId The principal ID assigned to the role. This maps to the ID inside the Active Directory.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
@@ -158,14 +152,15 @@ public final class KeyVaultAccessControlClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultRoleAssignment> createRoleAssignmentWithResponse(KeyVaultRoleScope roleScope, String roleAssignmentName, String roleDefinitionId, String principalId, Context context) {
-        return asyncClient.createRoleAssignmentWithResponse(roleScope, roleAssignmentName, roleDefinitionId, principalId, context).block();
+        return asyncClient.createRoleAssignmentWithResponse(roleScope, roleAssignmentName, roleDefinitionId,
+            principalId, context).block();
     }
 
     /**
      * Gets a {@link KeyVaultRoleAssignment}.
      *
-     * @param roleScope The {@link KeyVaultRoleScope roleScope} of the {@link KeyVaultRoleAssignment}.
-     * @param roleAssignmentName The roleAssignmentName of the {@link KeyVaultRoleAssignment}.
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment}.
+     * @param roleAssignmentName The name of the {@link KeyVaultRoleAssignment}.
      * @return The {@link KeyVaultRoleAssignment}.
      * @throws NullPointerException if the {@link KeyVaultRoleScope roleScope} or {@link String roleAssignmentName} are
      * {@code null}.
@@ -178,8 +173,8 @@ public final class KeyVaultAccessControlClient {
     /**
      * Gets a {@link KeyVaultRoleAssignment}.
      *
-     * @param roleScope The {@link KeyVaultRoleScope roleScope} of the {@link KeyVaultRoleAssignment}.
-     * @param roleAssignmentName The roleAssignmentName of the {@link KeyVaultRoleAssignment}.
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment}.
+     * @param roleAssignmentName The name of the {@link KeyVaultRoleAssignment}.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return The {@link KeyVaultRoleAssignment}.
      * @throws NullPointerException if the {@link KeyVaultRoleScope roleScope} or {@link String roleAssignmentName} are
@@ -193,8 +188,8 @@ public final class KeyVaultAccessControlClient {
     /**
      * Deletes a {@link KeyVaultRoleAssignment}.
      *
-     * @param roleScope The {@link KeyVaultRoleScope roleScope} of the {@link KeyVaultRoleAssignment}.
-     * @param roleAssignmentName The roleAssignmentName of the {@link KeyVaultRoleAssignment}.
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment}.
+     * @param roleAssignmentName The name of the {@link KeyVaultRoleAssignment}.
      * @return The {@link KeyVaultRoleAssignment}.
      * @throws NullPointerException if the {@link KeyVaultRoleScope roleScope} or {@link String roleAssignmentName} are
      * {@code null}.
@@ -207,8 +202,8 @@ public final class KeyVaultAccessControlClient {
     /**
      * Deletes a {@link KeyVaultRoleAssignment}.
      *
-     * @param roleScope The {@link KeyVaultRoleScope roleScope} of the {@link KeyVaultRoleAssignment}.
-     * @param roleAssignmentName The roleAssignmentName of the {@link KeyVaultRoleAssignment}.
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment}.
+     * @param roleAssignmentName The name of the {@link KeyVaultRoleAssignment}.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return The {@link KeyVaultRoleAssignment}.
      * @throws NullPointerException if the {@link KeyVaultRoleScope roleScope} or {@link String roleAssignmentName} are

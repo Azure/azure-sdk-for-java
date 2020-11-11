@@ -9,8 +9,6 @@ import com.azure.core.util.ServiceVersion;
  * The versions of Azure Key Vault Administration service supported by this client library.
  */
 public enum KeyVaultAdministrationServiceVersion implements ServiceVersion {
-    V7_0("7.0"),
-    V7_1("7.1"),
     V7_2_PREVIEW("7.2-preview");
 
     private final String version;

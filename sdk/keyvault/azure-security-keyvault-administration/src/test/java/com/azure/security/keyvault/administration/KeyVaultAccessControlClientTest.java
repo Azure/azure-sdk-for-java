@@ -134,7 +134,7 @@ public class KeyVaultAccessControlClientTest extends KeyVaultAccessControlClient
             assertNotNull(createdRoleAssignment.getId());
             assertEquals(createdRoleAssignment.getName(), roleAssignmentName);
             assertNotNull(createdRoleAssignment.getType());
-            assertNotNull(createdRoleAssignment.getScope());
+            assertNotNull(createdRoleAssignment.getRoleScope());
 
             KeyVaultRoleAssignmentProperties properties = createdRoleAssignment.getProperties();
 
@@ -194,7 +194,7 @@ public class KeyVaultAccessControlClientTest extends KeyVaultAccessControlClient
             assertEquals(createdRoleAssignment.getId(), retrievedRoleAssignment.getId());
             assertEquals(createdRoleAssignment.getName(), retrievedRoleAssignment.getName());
             assertEquals(createdRoleAssignment.getType(), retrievedRoleAssignment.getType());
-            assertEquals(createdRoleAssignment.getScope(), retrievedRoleAssignment.getScope());
+            assertEquals(createdRoleAssignment.getRoleScope(), retrievedRoleAssignment.getRoleScope());
 
             KeyVaultRoleAssignmentProperties retrievedProperties = retrievedRoleAssignment.getProperties();
 
@@ -252,7 +252,7 @@ public class KeyVaultAccessControlClientTest extends KeyVaultAccessControlClient
         assertEquals(createdRoleAssignment.getId(), deletedRoleAssignment.getId());
         assertEquals(createdRoleAssignment.getName(), deletedRoleAssignment.getName());
         assertEquals(createdRoleAssignment.getType(), deletedRoleAssignment.getType());
-        assertEquals(createdRoleAssignment.getScope(), deletedRoleAssignment.getScope());
+        assertEquals(createdRoleAssignment.getRoleScope(), deletedRoleAssignment.getRoleScope());
 
         KeyVaultRoleAssignmentProperties retrievedProperties = deletedRoleAssignment.getProperties();
 

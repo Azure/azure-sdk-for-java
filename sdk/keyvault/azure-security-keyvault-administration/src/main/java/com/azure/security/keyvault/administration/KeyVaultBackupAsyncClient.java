@@ -34,6 +34,9 @@ import reactor.core.publisher.Mono;
 
 import java.net.URL;
 import java.time.Duration;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.function.Function;
@@ -222,7 +225,7 @@ public final class KeyVaultBackupAsyncClient {
         return (pollingContext) -> {
             try {
                 String blobContainerUri =
-                    pollingContext.getLatestResponse().getValue().getAzureStorageBlobContainerUri();
+                    pollingContext.getLatestResponse().getValue().getAzureStorageBlobContainerUrl();
 
                 if (blobContainerUri == null) {
                     return Mono.empty();
@@ -679,24 +682,26 @@ public final class KeyVaultBackupAsyncClient {
         if (operation instanceof RestoreOperation) {
             RestoreOperation restoreOperation = (RestoreOperation) operation;
 
-            return new KeyVaultRestoreOperation(restoreOperation.getStatus(),
-                restoreOperation.getStatusDetails(),
+            return new KeyVaultRestoreOperation(restoreOperation.getStatus(), restoreOperation.getStatusDetails(),
                 createKeyVaultErrorFromError(restoreOperation.getError()), restoreOperation.getJobId(),
-                restoreOperation.getStartTime(), restoreOperation.getEndTime());
+                longToOffsetDateTime(restoreOperation.getStartTime()),
+                longToOffsetDateTime(restoreOperation.getEndTime()));
         } else if (operation instanceof SelectiveKeyRestoreOperation) {
             SelectiveKeyRestoreOperation selectiveKeyRestoreOperation = (SelectiveKeyRestoreOperation) operation;
 
             return new KeyVaultRestoreOperation(selectiveKeyRestoreOperation.getStatus(),
                 selectiveKeyRestoreOperation.getStatusDetails(),
                 createKeyVaultErrorFromError(selectiveKeyRestoreOperation.getError()),
-                selectiveKeyRestoreOperation.getJobId(), selectiveKeyRestoreOperation.getStartTime(),
-                selectiveKeyRestoreOperation.getEndTime());
+                selectiveKeyRestoreOperation.getJobId(),
+                longToOffsetDateTime(selectiveKeyRestoreOperation.getStartTime()),
+                longToOffsetDateTime(selectiveKeyRestoreOperation.getEndTime()));
         } else if (operation instanceof FullBackupOperation) {
             FullBackupOperation fullBackupOperation = (FullBackupOperation) operation;
 
             return new KeyVaultBackupOperation(fullBackupOperation.getStatus(), fullBackupOperation.getStatusDetails(),
                 createKeyVaultErrorFromError(fullBackupOperation.getError()), fullBackupOperation.getJobId(),
-                fullBackupOperation.getStartTime(), fullBackupOperation.getEndTime(),
+                longToOffsetDateTime(fullBackupOperation.getStartTime()),
+                longToOffsetDateTime(fullBackupOperation.getEndTime()),
                 fullBackupOperation.getAzureStorageBlobContainerUri());
         } else {
             throw new UnsupportedOperationException();
@@ -710,5 +715,10 @@ public final class KeyVaultBackupAsyncClient {
 
         return
             new KeyVaultError(error.getCode(), error.getMessage(), createKeyVaultErrorFromError(error.getInnerError()));
+    }
+
+    private static OffsetDateTime longToOffsetDateTime(Long epochInSeconds) {
+        return epochInSeconds == null ? null
+            : OffsetDateTime.ofInstant(Instant.ofEpochSecond(epochInSeconds), ZoneOffset.UTC);
     }
 }
