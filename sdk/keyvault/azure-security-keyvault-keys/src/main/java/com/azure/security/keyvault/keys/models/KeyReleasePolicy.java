@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Class that contains the policy rules under which the key can be exported.
  */
 @Fluent
-public class ReleasePolicy {
+public class KeyReleasePolicy {
     /**
      * Content type and version of key release policy.
      */
@@ -37,9 +37,9 @@ public class ReleasePolicy {
      * Set the content type of the release policy.
      *
      * @param contentType The content type to set.
-     * @return The updated {@link ReleasePolicy} object.
+     * @return The updated {@link KeyReleasePolicy} object.
      */
-    public ReleasePolicy setContentType(String contentType) {
+    public KeyReleasePolicy setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -48,9 +48,9 @@ public class ReleasePolicy {
      * Set the blob encoding the policy rules under which the key can be exported.
      *
      * @param data Blob encoding the policy rules under which the key can be exported.
-     * @return The updated {@link ReleasePolicy} object.
+     * @return The updated {@link KeyReleasePolicy} object.
      */
-    public ReleasePolicy setData(byte[] data) {
+    public KeyReleasePolicy setData(byte[] data) {
         this.data = Base64Url.encode(data);
         return this;
     }

@@ -6,7 +6,7 @@ package com.azure.security.keyvault.keys;
 import com.azure.core.annotation.Fluent;
 import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
-import com.azure.security.keyvault.keys.models.ReleasePolicy;
+import com.azure.security.keyvault.keys.models.KeyReleasePolicy;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -57,7 +57,7 @@ class KeyRequestParameters {
      * The policy rules under which the key can be exported.
      */
     @JsonProperty(value = "release_policy")
-    private ReleasePolicy releasePolicy;
+    private KeyReleasePolicy releasePolicy;
 
     /**
      * The public exponent for an RSA key.
@@ -190,7 +190,7 @@ class KeyRequestParameters {
      *
      * @return The release policy.
      */
-    public ReleasePolicy getReleasePolicy() {
+    public KeyReleasePolicy getReleasePolicy() {
         return releasePolicy;
     }
 
@@ -200,7 +200,7 @@ class KeyRequestParameters {
      * @param releasePolicy The release policy to set.
      * @return The updated {@link KeyRequestParameters} object.
      */
-    public KeyRequestParameters setReleasePolicy(ReleasePolicy releasePolicy) {
+    public KeyRequestParameters setReleasePolicy(KeyReleasePolicy releasePolicy) {
         this.releasePolicy = releasePolicy;
         return this;
     }

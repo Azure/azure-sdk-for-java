@@ -102,7 +102,7 @@ public class KeyVaultKey {
      *
      * @return The release policy.
      */
-    public ReleasePolicy getReleasePolicy() {
+    public KeyReleasePolicy getReleasePolicy() {
         return properties.getReleasePolicy();
     }
 
@@ -132,7 +132,7 @@ public class KeyVaultKey {
     }
 
     @JsonProperty(value = "release_policy")
-    private void setReleasePolicy(ReleasePolicy releasePolicy) {
+    private void setReleasePolicy(KeyReleasePolicy releasePolicy) {
         properties.setReleasePolicy(releasePolicy);
     }
 }

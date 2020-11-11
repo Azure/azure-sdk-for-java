@@ -115,7 +115,7 @@ public class ImportKeyOptions extends KeyProperties {
      * @return The updated {@link ImportKeyOptions} object.
      */
     @Override
-    public ImportKeyOptions setReleasePolicy(ReleasePolicy releasePolicy) {
+    public ImportKeyOptions setReleasePolicy(KeyReleasePolicy releasePolicy) {
         this.releasePolicy = releasePolicy;
         return this;
     }
