@@ -374,7 +374,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                     .getFinalResult());
             FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation) errorResponseException.getValue();
             assertEquals(EXPECTED_INVALID_IMAGE_CODE, errorInformation.getErrorCode());
-            assertEquals(EXPECTED_INVALID_IMAGE_ERROR_MESSAGE, errorInformation.getMessage());
         });
     }
 
