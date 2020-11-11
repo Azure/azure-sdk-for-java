@@ -30,5 +30,6 @@ foreach ($packageDetail in $packageDetails) {
 
 # Copy service directory level readme.
 if (Test-Path '$ServiceDirectory/README.md') {
+  Write-Host "Copying '$ServiceDirectory/README.md' to: $TargetDirectory"
   Copy-Item -Path '$ServiceDirectory/README.md' -Destination $TargetDirectory
 }
