@@ -71,10 +71,14 @@ class ClusterVersionsImpl extends WrapperImpl<ClusterVersionsInner> implements C
     public Observable<ClusterCodeVersionsListResult> getAsync(String location, String clusterVersion) {
         ClusterVersionsInner client = this.inner();
         return client.getAsync(location, clusterVersion)
-        .map(new Func1<ClusterCodeVersionsListResultInner, ClusterCodeVersionsListResult>() {
+        .flatMap(new Func1<ClusterCodeVersionsListResultInner, Observable<ClusterCodeVersionsListResult>>() {
             @Override
-            public ClusterCodeVersionsListResult call(ClusterCodeVersionsListResultInner inner) {
-                return wrapModel(inner);
+            public Observable<ClusterCodeVersionsListResult> call(ClusterCodeVersionsListResultInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ClusterCodeVersionsListResult)wrapModel(inner));
+                }
             }
        });
     }

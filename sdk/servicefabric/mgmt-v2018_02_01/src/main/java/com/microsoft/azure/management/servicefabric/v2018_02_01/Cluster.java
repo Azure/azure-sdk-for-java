@@ -295,7 +295,7 @@ public interface Cluster extends HasInner<ClusterInner>, Resource, GroupableReso
         interface WithReliabilityLevel {
             /**
              * Specifies reliabilityLevel.
-             * @param reliabilityLevel The reliability level sets the replica set size of system services. Learn about [ReliabilityLevel](https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity).
+             * @param reliabilityLevel The reliability level sets the replica set size of system services. Learn about [ReliabilityLevel](https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity).
    - None - Run the System services with a target replica set count of 1. This should only be used for test clusters.
    - Bronze - Run the System services with a target replica set count of 3. This should only be used for test clusters.
    - Silver - Run the System services with a target replica set count of 5.
@@ -490,7 +490,7 @@ public interface Cluster extends HasInner<ClusterInner>, Resource, GroupableReso
         interface WithReliabilityLevel {
             /**
              * Specifies reliabilityLevel.
-             * @param reliabilityLevel The reliability level sets the replica set size of system services. Learn about [ReliabilityLevel](https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity).
+             * @param reliabilityLevel The reliability level sets the replica set size of system services. Learn about [ReliabilityLevel](https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity).
    - None - Run the System services with a target replica set count of 1. This should only be used for test clusters.
    - Bronze - Run the System services with a target replica set count of 3. This should only be used for test clusters.
    - Silver - Run the System services with a target replica set count of 5.
