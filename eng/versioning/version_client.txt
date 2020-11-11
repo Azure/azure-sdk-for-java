@@ -12,12 +12,22 @@
 # com.azure:azure-example as a dependency.
 #
 # When releasing a library the current-version should be set to the version being released to Maven. Upon release of the
-# library an automated PR will be submitted to update the dependency-version to the version that was released and the
-# dependency-version to the next in development version.
+# library an automated PR will be submitted to update the dependency-version and current-version, the updates are
+# dependent on the current and previous releases of the library.
 #
-# The next in development version is determined by the version that was released.
-# - If a beta version was released the beta number is incremented. (1.2.0-beta.1 -> 1.2.0-beta.2)
-# - If a GA version was released the current-version is the next minor beta. (1.2.0 -> 1.3.0-beta.1)
+# - When both dependency and current are beta both versions will update upon release. Given the version release state
+#   of 1.0.0-beta.2;1.0.0-beta.3 the updated versions will become 1.0.0-beta.3;1.0.0-beta.4.
+#
+# - When both dependency and current are GA both versions will update upon release. Given the version release state of
+#   1.0.0;1.0.1 the updated versions will become 1.0.1;1.1.0-beta.1. Current version will always become the next minor
+#   beta version.
+#
+# - When dependency is GA and current is beta only the current version will update upon release. Given the version
+#   release state of 1.0.0;1.1.0-beta.1 the updated versions will become 1.0.0;1.1.0-beta.2. The dependency version will
+#   remain as-is as GA libraries could depend on the library being released, if they were to take a beta dependencies it
+#   could result in an invalid release state (GA libraries can never have beta dependencies). The current version will
+#   become the next beta increment version. If a library requires the released beta version as a dependency view the
+#   beta dependency guidelines below.
 #
 # When adding a new library the dependency-version and current-version will be the same until the first release is
 # performed. So, if com.azure:azure-new-library is added with major version 2 it'll use
@@ -35,7 +45,7 @@ com.azure:azure-communication-common;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-communication-administration;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-communication-sms;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-core;1.10.0;1.11.0-beta.1
-com.azure:azure-core-amqp;1.6.0;1.7.0-beta.1
+com.azure:azure-core-amqp;1.6.0;1.7.0-beta.2
 com.azure:azure-core-amqp-experimental;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core-experimental;1.0.0-beta.8;1.0.0-beta.9
 com.azure:azure-core-http-jdk-httpclient;1.0.0-beta.1;1.0.0-beta.1
@@ -58,15 +68,15 @@ com.azure:azure-data-schemaregistry-avro;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-data-tables;12.0.0-beta.2;12.0.0-beta.3
 com.azure:azure-digitaltwins-core;1.0.1;1.1.0-beta.1
 com.azure:azure-e2e;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-identity;1.1.3;1.2.0-beta.3
+com.azure:azure-identity;1.2.0;1.3.0-beta.1
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventgrid;2.0.0-beta.3;2.0.0-beta.4
 com.azure:azure-messaging-eventhubs;5.3.1;5.4.0-beta.1
 com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.3.1;1.4.0-beta.1
-com.azure:azure-messaging-servicebus;7.0.0-beta.6;7.0.0-beta.7
+com.azure:azure-messaging-servicebus;7.0.0-beta.7;7.0.0-beta.8
 com.azure:azure-messaging-servicebus-track1-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-servicebus-track2-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-search-documents;11.1.1;11.2.0-beta.3
+com.azure:azure-search-documents;11.1.2;11.2.0-beta.4
 com.azure:azure-search-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-security-keyvault-administration;4.0.0-beta.2;4.0.0-beta.3
 com.azure:azure-security-keyvault-certificates;4.1.2;4.2.0-beta.3
@@ -76,17 +86,17 @@ com.azure:azure-security-keyvault-secrets;4.2.2;4.3.0-beta.3
 com.azure:azure-sdk-template;1.2.1-beta.2;1.2.1-beta.16
 com.azure:azure-spring-data-cosmos;3.1.0;3.2.0-beta.1
 com.azure:azure-spring-data-cosmos-test;3.0.0-beta.1;3.0.0-beta.1
-com.azure:azure-storage-blob;12.8.0;12.9.0-beta.3
-com.azure:azure-storage-blob-batch;12.6.0;12.7.0-beta.2
+com.azure:azure-storage-blob;12.8.0;12.9.0
+com.azure:azure-storage-blob-batch;12.6.0;12.7.0
 com.azure:azure-storage-blob-changefeed;12.0.0-beta.3;12.0.0-beta.4
-com.azure:azure-storage-blob-cryptography;12.8.0;12.9.0-beta.2
+com.azure:azure-storage-blob-cryptography;12.8.0;12.9.0
 com.azure:azure-storage-blob-nio;12.0.0-beta.2;12.0.0-beta.3
-com.azure:azure-storage-common;12.8.0;12.9.0-beta.3
-com.azure:azure-storage-file-share;12.6.0;12.7.0-beta.2
-com.azure:azure-storage-file-datalake;12.2.0;12.3.0-beta.2
-com.azure:azure-storage-internal-avro;12.0.0;12.0.1-beta.3
+com.azure:azure-storage-common;12.8.0;12.9.0
+com.azure:azure-storage-file-share;12.6.0;12.7.0
+com.azure:azure-storage-file-datalake;12.2.0;12.3.0
+com.azure:azure-storage-internal-avro;12.0.0;12.0.1
 com.azure:azure-storage-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-storage-queue;12.6.0;12.7.0-beta.2
+com.azure:azure-storage-queue;12.6.0;12.7.0
 com.azure:perf-test-core;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:azure-spring-boot-starter-active-directory-b2c;3.0.0-beta.1;3.0.0-beta.1
 com.azure.spring:azure-spring-boot-starter-active-directory;3.0.0-beta.1;3.0.0-beta.1
@@ -95,6 +105,7 @@ com.azure.spring:azure-spring-boot-starter-data-gremlin;3.0.0-beta.1;3.0.0-beta.
 com.azure.spring:azure-spring-boot-starter-keyvault-certificates;3.0.0-beta.1;3.0.0-beta.2
 com.azure.spring:azure-spring-boot-starter-keyvault-secrets;3.0.0-beta.1;3.0.0-beta.1
 com.azure.spring:azure-spring-boot-starter-servicebus-jms;3.0.0-beta.1;3.0.0-beta.1
+com.azure.spring:azure-spring-boot-starter-storage;3.0.0-beta.1;3.0.0-beta.1
 com.azure.spring:azure-spring-boot-starter;3.0.0-beta.1;3.0.0-beta.1
 com.azure.spring:azure-spring-boot;3.0.0-beta.1;3.0.0-beta.1
 com.azure.spring:azure-spring-cloud-autoconfigure;2.0.0-beta.1;2.0.0-beta.1
@@ -118,7 +129,6 @@ com.azure.spring:azure-spring-integration-eventhubs;2.0.0-beta.1;2.0.0-beta.1
 com.azure.spring:azure-spring-integration-servicebus;2.0.0-beta.1;2.0.0-beta.1
 com.azure.spring:azure-spring-integration-storage-queue;2.0.0-beta.1;2.0.0-beta.1
 com.azure.spring:azure-spring-integration-test;2.0.0-beta.1;2.0.0-beta.1
-com.azure.spring:azure-spring-starter-storage;2.0.0-beta.1;2.0.0-beta.1
 com.azure.spring:azure-spring-cloud-appconfiguration-config-web;1.2.8-beta.1;1.2.8-beta.1
 com.azure.spring:azure-spring-cloud-appconfiguration-config;1.2.8-beta.1;1.2.8-beta.1
 com.azure.spring:azure-spring-cloud-feature-management-web;1.2.8-beta.1;1.2.8-beta.1
@@ -166,9 +176,7 @@ com.microsoft:microsoft-opentelemetry-exporter-azuremonitor;1.0.0-beta.1;1.0.0-b
 # Format;
 # unreleased_<groupId>:<artifactId>;dependency-version
 # note: The unreleased dependencies will not be manipulated with the automatic PR creation code.
-unreleased_com.azure:azure-core-amqp;1.7.0-beta.1
 unreleased_com.azure:azure-core-experimental;1.0.0-beta.9
-unreleased_com.azure:azure-identity;1.2.0-beta.2
 unreleased_com.azure:azure-messaging-servicebus;7.0.0-beta.7
 unreleased_com.azure:azure-messaging-eventhubs;5.3.0
 
@@ -181,3 +189,4 @@ unreleased_com.azure:azure-messaging-eventhubs;5.3.0
 # note: Released beta versions will not be manipulated with the automatic PR creation code.
 beta_com.azure:azure-security-keyvault-keys;4.3.0-beta.1
 beta_com.azure:azure-storage-common;12.9.0-beta.1
+beta_com.azure:azure-core-amqp;1.7.0-beta.1

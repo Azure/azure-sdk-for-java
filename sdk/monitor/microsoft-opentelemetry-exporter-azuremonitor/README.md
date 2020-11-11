@@ -23,7 +23,7 @@ For more information, please read [introduction to Application Insights][applica
 <dependency>
   <groupId>com.microsoft</groupId>
   <artifactId>microsoft-opentelemetry-exporter-azuremonitor</artifactId>
-  <version>1.0.0-beta.1</version>
+  <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -41,7 +41,7 @@ right corner.
 <!-- embedme ./src/samples/java/com/microsoft/opentelemetry/exporter/azuremonitor/ReadmeSamples.java#L26-L28 -->
 ```java
 AzureMonitorExporter azureMonitorExporter = new AzureMonitorExporterBuilder()
-    .instrumentationKey("{instrumentation-key}")
+    .connectionString("{connection-string}")
     .buildExporter();
 ```
 
@@ -53,7 +53,7 @@ The following example shows how to export a collection of available [Spans][span
 <!-- embedme ./src/samples/java/com/microsoft/opentelemetry/exporter/azuremonitor/ReadmeSamples.java#L35-L40 -->
 ```java
 AzureMonitorExporter azureMonitorExporter = new AzureMonitorExporterBuilder()
-    .instrumentationKey("{instrumentation-key}")
+    .connectionString("{connection-string}")
     .buildExporter();
 
 CompletableResultCode resultCode = azureMonitorExporter.export(getSpanDataCollection());
