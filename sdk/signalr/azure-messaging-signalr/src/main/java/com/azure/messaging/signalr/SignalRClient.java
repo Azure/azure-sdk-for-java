@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.messaging.signalr.implementation.WebSocketConnectionApisImpl;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -48,8 +49,8 @@ import static com.azure.core.annotation.ReturnType.SINGLE;
  * @see SignalRGroupClient
  */
 @ServiceClient(
-    builder = SignalRClientBuilder.class
-//    serviceInterfaces = WebSocketConnectionApisService.class // TODO (jgiles) private interface, can't set it
+    builder = SignalRClientBuilder.class,
+    serviceInterfaces = WebSocketConnectionApisImpl.WebSocketConnectionApisService.class
 )
 public final class SignalRClient {
     private final SignalRAsyncClient asyncClient;
