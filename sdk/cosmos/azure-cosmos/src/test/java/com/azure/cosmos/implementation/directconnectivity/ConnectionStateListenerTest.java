@@ -34,7 +34,7 @@ public class ConnectionStateListenerTest {
     private static final Logger logger = LoggerFactory.getLogger(ConnectionStateListenerTest.class);
 
     private static int port = 8082;
-    private static String serverAddress = "rntbd://localhost:";
+    private static String serverAddressPrefix = "rntbd://localhost:";
     private static Random random = new Random();
 
     @DataProvider(name = "connectionStateListenerConfigProvider")
@@ -82,7 +82,7 @@ public class ConnectionStateListenerTest {
                 getDocumentDefinition(), new HashMap<>());
         req.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity("fakeCollectionId","fakePartitionKeyRangeId"));
 
-        Uri targetUri = new Uri(serverAddress + serverPort);
+        Uri targetUri = new Uri(serverAddressPrefix + serverPort);
         try {
             client.invokeStoreAsync(targetUri, req).block();
         } catch (Exception e) {
