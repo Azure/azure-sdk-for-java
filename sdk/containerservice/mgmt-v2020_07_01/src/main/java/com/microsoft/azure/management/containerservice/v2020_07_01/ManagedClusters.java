@@ -114,16 +114,4 @@ public interface ManagedClusters extends SupportsCreating<ManagedCluster.Definit
      */
     Observable<ManagedClusterAccessProfile> getAccessProfileAsync(String resourceGroupName, String resourceName, String roleName);
 
-    /**
-     * Upgrade node image version of an agent pool to the latest.
-     * Upgrade node image version of an agent pool to the latest.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<AgentPool> upgradeNodeImageVersionAsync(String resourceGroupName, String resourceName, String agentPoolName);
-
 }
